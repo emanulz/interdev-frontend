@@ -1,0 +1,73 @@
+.lockScreen
+  position: absolute
+  top: 0
+  bottom: 0
+  right: 0
+  left: 0
+  // background-color: #43525A
+  background-color: $PRIMARY-COLOR
+  font-family: Lato,sans-serif
+  z-index: 2
+  & .clock
+    margin: 0 auto
+    margin-top: 70px
+    text-align: center
+    font-size: 15px
+    color: white
+    font-family: Lato,sans-serif
+    & .time
+      font-size: 80px
+      font-weight: 300
+    & .date
+      padding-top: 20px
+  &-logout
+    width: 100%
+    text-align: center
+    margin-top: 60px
+    & a
+      font-size: 13px
+      color: #cacaca
+      text-decoration: underline
+      &:hover
+        color: white
+
+.lockScreen-form
+  padding-top: 60px
+  margin: 0 auto
+  display: flex
+  flex-flow: row
+  max-width: 505px
+  text-align: center
+  font-family: Lato,sans-serif
+  & label
+    color: black
+    width: 200px
+    font-weight: 400
+    background: white
+    position: relative
+    text-align: center
+    margin-right: -5px
+    display: inline-block
+    padding: 12.5px 25px
+    height: 50px
+    margin-top: 37px
+    line-height: 25px
+  & img
+    border-radius: 100px
+    display: inline-block
+    border: 6px solid white
+    width: 128px
+    heigh: 128px
+  & input
+    width: 200px
+    height: auto
+    border: none
+    margin-left: -5px
+    text-align: center
+    position: relative
+    display: inline-block
+    padding: 12.5px 25px
+    height: 50px
+    margin-top: 37px
+    line-height: 25px
+    border-radius: 0 !important

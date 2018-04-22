@@ -1,0 +1,37 @@
+#############
+## Python
+#############
+*.py[cod]
+.pyc
+# Packages
+*.egg
+*.egg-info
+/*.pyc
+build/
+eggs/
+parts/
+.idea/
+.idea
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+
+__pycache__/
+__pycache__
+/__pycache__
+*/__pycache__
+*/__pycache__/*
+
+# Installer logs
+pip-log.txt
+
+*/node_modules/*
+/node_modules/*
+/venv/*
+.vscode/*
+/config/user/*.json
+
+*.old
+*.env
+yarn.lock

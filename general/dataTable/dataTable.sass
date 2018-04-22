@@ -1,0 +1,67 @@
+
+.dataTables
+    font-family: 'Source Sans Pro', sans-serif
+    font-size: 13px
+    font-weight: 300
+    &_wrapper
+    &_length
+        font-family: 'Source Sans Pro', sans-serif
+        font-size: 14px
+        font-weight: 800
+        & select
+            font-weight: 200
+            border-color: $TABLE-BORDER-COLOR
+            &:focus
+                outline: none
+    &_filter
+        width: 100%
+        font-size: 14px
+        font-weight: 800
+        font-family: 'Source Sans Pro Bold', sans-serif
+        & input
+            padding-left: 5px
+            font-weight: 400
+            border: 2px solid $TABLE-BORDER-COLOR
+            height: 30px
+            border-radius: 10px !important
+            &:focus
+                border: 2px solid gray
+
+                outline: none
+
+    &_info
+    &_paginate
+      & .paginate_button
+          border-radius: 20px !important
+    & .topPagination
+      padding: 20px 0
+    & .bottomPagination
+      padding: 20px 0
+
+.dataTable
+  font-family: 'Source Sans Pro', sans-serif
+  color: gray
+  & thead
+    font-family: 'Source Sans Pro Bold', sans-serif
+  & tfoot
+    font-family: 'Source Sans Pro Bold', sans-serif
+
+.addBtn
+    margin-bottom: 20px
+    float: right
+    height: 30px
+    width: 100px
+    background-color: $PRIMARY-COLOR
+    border-radius: 5px
+    text-align: center
+    line-height: 30px
+    cursor: pointer
+    font-size: 14px
+    color: white
+    text-decoration: none
+    &:hover
+        color: white
+        text-decoration: none
+        background-color: $PRIMARY-COLOR-ACCENT
+    & span
+        margin-right: 5px
