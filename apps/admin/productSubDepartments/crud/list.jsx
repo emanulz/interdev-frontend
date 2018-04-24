@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import ListComponent from './list/list.jsx'
-import Unauthorized from '../../../general/unauthorized.jsx'
+import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 
 @connect((store) => {

@@ -13,7 +13,7 @@ import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Configbar from '../layout/configBar/configBar.jsx'
 import {hideConfigBar} from '../layout/configBar/actions'
 import LockScreen from '../lockScreen/lockScreen.jsx'
-import Fetching from '../../general/fetching/fetching.jsx'
+import Fetching from '../../../general/fetching/fetching.jsx'
 
 import routes from './routes.js'
 

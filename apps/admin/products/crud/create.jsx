@@ -6,7 +6,7 @@ import Form from './form/form.jsx'
 import Form2 from './form/form2.jsx'
 import Form3 from './form/form3.jsx'
 
-import Unauthorized from '../../../general/unauthorized.jsx'
+import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 import CreateButtons from './form/createButtons.jsx'
 import ItemsBar from '../../layout/itemsBar/itemsBar.jsx'

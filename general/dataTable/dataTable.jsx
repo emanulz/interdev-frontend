@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {formatDateTimeAmPm} from '../utils/formatDate.js'
+import {formatDateTimeAmPm} from '../../utils/formatDate.js'
 
 // data Tables
 const $ = require('jquery')

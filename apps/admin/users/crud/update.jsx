@@ -4,7 +4,7 @@
 import React from 'react'
 import Form from './form/updateForm.jsx'
 
-import Unauthorized from '../../../general/unauthorized.jsx'
+import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 import UpdateButtons from './form/updateButtons.jsx'
 import ItemsBar from '../../layout/itemsBar/itemsBar.jsx'

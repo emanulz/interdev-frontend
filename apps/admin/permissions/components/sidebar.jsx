@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { setItem } from '../../../utils/api'
+import { setItem } from '../../../../utils/api'
 
 @connect((store) => {
   return {

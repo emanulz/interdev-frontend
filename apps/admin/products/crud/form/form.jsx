@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { setItem, getItemDispatch } from '../../../../utils/api'
+import { setItem, getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {

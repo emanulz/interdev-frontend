@@ -16,12 +16,12 @@ const routes = <div className='heigh100'>
 
   <Route exact path='/admin' component={Home} />
   <Route path='/admin/users' component={Users} />
-  <Route path='/admin/permissions' component={Permissions} />
   <Route path='/admin/clients' component={Clients} />
-  <Route path='/admin/suppliers' component={Suppliers} />
   <Route path='/admin/products' component={Products} />
   <Route path='/admin/productdepartments' component={ProductDepartments} />
   <Route path='/admin/productsubdepartments' component={ProductSubDepartments} />
+  <Route path='/admin/permissions' component={Permissions} />
+  <Route path='/admin/suppliers' component={Suppliers} />
 
 </div>
 

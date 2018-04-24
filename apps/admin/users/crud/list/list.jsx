@@ -3,8 +3,8 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DataTable from '../../../../general/dataTable/dataTable.jsx'
-import { getItemDispatch } from '../../../../utils/api.js'
+import DataTable from '../../../../../general/dataTable/dataTable.jsx'
+import { getItemDispatch } from '../../../../../utils/api'
 
 @connect((store) => {
   return {

@@ -4,7 +4,6 @@
 import React from 'react'
 import {Bar} from 'react-chartjs-2'
 
-
 export default class Home extends React.Component {
 
   // Main Layout

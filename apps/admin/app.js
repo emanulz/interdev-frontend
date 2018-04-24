@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import alertify from 'alertifyjs'
 
-import formatMoney from '../utils/formatMoney.js'
+import formatMoney from '../../utils/formatMoney.js'
 
 // REDUX PROVIDER
 import {Provider} from 'react-redux'

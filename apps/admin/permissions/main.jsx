@@ -2,9 +2,9 @@
  * Module dependencies
  */
 import React from 'react'
-import { checkUserPermissions } from '../../utils/checkPermissions'
-import { getItemDispatch } from '../../utils/api.js'
-import Unauthorized from '../../general/unauthorized.jsx'
+import { checkUserPermissions } from '../../../utils/checkPermissions'
+import { getItemDispatch } from '../../../utils/api.js'
+import Unauthorized from '../../../general/unauthorized.jsx'
 import ContainerComponent from './components/container.jsx'
 import {connect} from 'react-redux'
 

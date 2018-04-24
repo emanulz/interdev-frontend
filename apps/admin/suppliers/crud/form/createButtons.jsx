@@ -1,7 +1,7 @@
 import React from 'react'
 import alertify from 'alertifyjs'
 import {connect} from 'react-redux'
-import {saveItem} from '../../../../utils/api'
+import {saveItem} from '../../../../../utils/api'
 import {checkSupplierData} from '../../actions'
 import { withRouter } from 'react-router-dom'
 

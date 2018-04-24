@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {checkData} from '../../actions'
-import {getItemDoubleDispatch, deleteItem, patchItems} from '../../../../utils/api'
+import {getItemDoubleDispatch, deleteItem, patchItems} from '../../../../../utils/api'
 import { withRouter } from 'react-router-dom'
 import alertify from 'alertifyjs'
 

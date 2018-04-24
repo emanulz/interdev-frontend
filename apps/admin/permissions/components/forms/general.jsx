@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {assingUserPermission, checkSingleUserPermissions} from '../../../../utils/checkPermissions'
+import {assingUserPermission, checkSingleUserPermissions} from '../../../../../utils/checkPermissions'
 
 @connect((store) => {
   return {
