@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {loadGlobalConfig} from '../../../../utils/api.js'
+import {loadGlobalConfig} from '../../../../../utils/api.js'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 

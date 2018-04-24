@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import fetching from '../general/fetching/reducer.js'
+import fetching from '../../general/fetching/reducer.js'
 import layout from './layout/reducer.js'
 import user from './user/reducer.js'
 import cart from './general/cart/reducer.js'

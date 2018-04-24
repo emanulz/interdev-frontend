@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {getItemDispatch} from '../../../utils/api'
+import {getItemDispatch} from '../../../../utils/api'
 import {productSelected} from './actions.js'
 
 @connect((store) => {

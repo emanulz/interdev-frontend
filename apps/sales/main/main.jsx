@@ -11,7 +11,7 @@ import routes from './routes'
 
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
-import Fetching from '../../general/fetching/fetching.jsx'
+import Fetching from '../../../general/fetching/fetching.jsx'
 
 // import routes from './routes.js'
 

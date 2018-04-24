@@ -5,8 +5,8 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {clientSelected, searchClient, userSelected} from './actions'
-import {getItemDispatch} from '../../../utils/api'
-import {getClientDebt} from '../../../utils/getClientDebt'
+import {getItemDispatch} from '../../../../utils/api'
+import {getClientDebt} from '../../../../utils/getClientDebt'
 import {recalcCart} from '../../general/product/actions'
 
 @connect((store) => {

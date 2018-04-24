@@ -4,7 +4,7 @@
 import alertify from 'alertifyjs'
 
 import axios from 'axios'
-import { saveLog } from '../../../utils/api'
+import { saveLog } from '../../../../utils/api'
 
 // ------------------------------------------------------------------------------------------
 // SAVE FUNCTION (CREATE)
