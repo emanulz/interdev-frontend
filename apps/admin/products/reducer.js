@@ -38,8 +38,13 @@ const productModel = {
   ask_price: false,
   use_taxes: false,
   taxes: 0,
+  taxes_code: '00',
   use_taxes2: false,
   taxes2: 0,
+  taxes_code2: '00',
+  use_taxes3: false,
+  taxes3: 0,
+  taxes_code3: '00',
   pred_discount: 0,
   is_active: false,
   consignment: false,
@@ -56,7 +61,8 @@ const stateConst = {
   productActiveOld: productModel,
   nextProduct: 0,
   previousProduct: 0,
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  taxes: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -138,6 +144,23 @@ export default function reducer(state = stateConst, action) {
         productActiveOld: productModel
       }
     }
+
+    case 'FETCH_TAXES_FULFILLED':
+    {
+      return {
+        ...state,
+        taxes: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_TAXES_REJECTED':
+    {
+      return {
+        ...state,
+        taxes: []
+      }
+    } // case
 
   } // switch
 

@@ -85,13 +85,22 @@ export function determinAmounts(product, fieldName, value) {
       product = taxesChanged(product)
       return product
     }
-
+    case 'taxes3':
+    {
+      product = taxesChanged(product)
+      return product
+    }
     case 'use_taxes':
     {
       product = taxesChanged(product)
       return product
     }
     case 'use_taxes2':
+    {
+      product = taxesChanged(product)
+      return product
+    }
+    case 'use_taxes3':
     {
       product = taxesChanged(product)
       return product
@@ -124,8 +133,9 @@ function fromSellPrice(product, value, priceField, utilityField) {
   if (value) {
     const iv1 = (product.use_taxes && product.taxes) ? parseFloat(product.taxes) / 100 : 0
     const iv2 = (product.use_taxes2 && product.taxes2) ? parseFloat(product.taxes2) / 100 : 0
+    const iv3 = (product.use_taxes3 && product.taxes3) ? parseFloat(product.taxes3) / 100 : 0
 
-    const price = parseFloat(value / (1 + iv1 + iv2))
+    const price = parseFloat(value / (1 + iv1 + iv2 + iv3))
 
     product[priceField] = price.toFixed(2)
 
@@ -149,8 +159,9 @@ function fromPrice(product, value, sellField, utilityField) {
   if (value) {
     const iv1 = (product.use_taxes && product.taxes) ? parseFloat(product.taxes) / 100 : 0
     const iv2 = (product.use_taxes2 && product.taxes2) ? parseFloat(product.taxes2) / 100 : 0
+    const iv3 = (product.use_taxes3 && product.taxes3) ? parseFloat(product.taxes3) / 100 : 0
 
-    const sellPrice = (value * iv1) + (value * iv2) + value
+    const sellPrice = (value * iv1) + (value * iv2) + (value * iv3) + value
     product[sellField] = sellPrice.toFixed(2)
 
     const utility = product.cost ? ((value / parseFloat(product.cost)) - 1) * 100 : 0
@@ -169,6 +180,7 @@ function fromCost(product, cost) {
   if (product.cost_based) { // IF PRICE DEPENDS ON COST
     const iv1 = (product.use_taxes && product.taxes) ? parseFloat(product.taxes) / 100 : 0
     const iv2 = (product.use_taxes2 && product.taxes2) ? parseFloat(product.taxes2) / 100 : 0
+    const iv3 = (product.use_taxes3 && product.taxes3) ? parseFloat(product.taxes3) / 100 : 0
 
     const price = cost && product.utility ? parseFloat(cost) * (1 + (parseFloat(product.utility) / 100)) : 0
     product['price'] = price.toFixed(2)
@@ -179,13 +191,13 @@ function fromCost(product, cost) {
     const price3 = cost && product.utility3 ? parseFloat(cost) * (1 + (parseFloat(product.utility3) / 100)) : 0
     product['price3'] = price3.toFixed(2)
 
-    const sellPrice = (price * iv1) + (price * iv2) + price
+    const sellPrice = (price * iv1) + (price * iv2) + (price * iv3) + price
     product['sell_price'] = sellPrice.toFixed(2)
 
-    const sellPrice2 = (price2 * iv1) + (price2 * iv2) + price2
+    const sellPrice2 = (price2 * iv1) + (price2 * iv2) + (price2 * iv3) + price2
     product['sell_price2'] = sellPrice2.toFixed(2)
 
-    const sellPrice3 = (price3 * iv1) + (price3 * iv2) + price3
+    const sellPrice3 = (price3 * iv1) + (price3 * iv2) + (price3 * iv3) + price3
     product['sell_price3'] = sellPrice3 ? sellPrice3.toFixed(2) : 0
 
     return product
@@ -209,11 +221,12 @@ function fromUtility(product, utility, priceField, sellPriceField) {
   if (product.cost_based) {
     const iv1 = (product.use_taxes && product.taxes) ? parseFloat(product.taxes) / 100 : 0
     const iv2 = (product.use_taxes2 && product.taxes2) ? parseFloat(product.taxes2) / 100 : 0
+    const iv3 = (product.use_taxes3 && product.taxes3) ? parseFloat(product.taxes3) / 100 : 0
 
     const price = product.cost && utility ? parseFloat(product.cost) * (1 + (parseFloat(utility) / 100)) : 0
     product[priceField] = price.toFixed(2)
 
-    const sellPrice = (price * iv1) + (price * iv2) + price
+    const sellPrice = (price * iv1) + (price * iv2) + (price * iv3) + price
     product[sellPriceField] = sellPrice.toFixed(2)
 
     return product

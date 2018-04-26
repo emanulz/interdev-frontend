@@ -44,6 +44,17 @@ export default class List extends React.Component {
     this.props.dispatch(getItemDispatch(productKwargs))
     // *******************************************************************
 
+    // Then fetch the elements of the taxes model and dispatch to reducer
+    // *******************************************************************
+    const taxesKwargs = {
+      url: '/api/taxes',
+      successType: 'FETCH_TAXES_FULFILLED',
+      errorType: 'FETCH_TAXES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(taxesKwargs))
+    // *******************************************************************
+
   }
 
   // Main Layout
