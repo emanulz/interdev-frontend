@@ -178,6 +178,11 @@ export default class SideMenu extends React.Component {
               Permisos</Link>
           </li>
           <ComposedItem mainTittle='Clientes' mainIcon='fa-users' childItems={childClients} />
+          <li>
+            <Link to='/admin/senders'>
+              <span className='fa fa-user' />
+              Emisores</Link>
+          </li>
           <ComposedItem mainTittle='Productos' mainIcon='fa-gift' childItems={childProducts} />
           <ComposedItem mainTittle='Proveedores' mainIcon='fa-truck' childItems={childSuppliers} />
 

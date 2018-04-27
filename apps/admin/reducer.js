@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 import users from './users/reducer.js'
 import clients from './clients/reducer.js'
+import senders from './senders/reducer.js'
 import products from './products/reducer.js'
 import productDepartments from './productDepartments/reducer.js'
 import productSubDepartments from './productSubDepartments/reducer.js'
@@ -10,10 +11,12 @@ import lockScreen from './lockScreen/reducer.js'
 import user from './user/reducer.js'
 import permissions from './permissions/reducer.js'
 import fetching from '../../general/fetching/reducer.js'
+import addresses from './addresses/reducer.js'
 
 export default combineReducers({
   users,
   clients,
+  senders,
   products,
   productDepartments,
   productSubDepartments,
@@ -21,5 +24,6 @@ export default combineReducers({
   lockScreen,
   user,
   fetching,
-  permissions
+  permissions,
+  addresses
 })

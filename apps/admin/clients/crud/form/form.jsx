@@ -141,9 +141,9 @@ class Form extends React.Component {
           <label>Tipo de Identificación</label>
           <select onChange={this.handleInputChange.bind(this)} className='form-control' name='id_type'
             value={this.props.client.id_type} >
-            <option value='PER'>Cédula Física</option>
-            <option value='JUR'>Cédula Jurídica</option>
-            <option value='PAS'>Pasaporte</option>
+            <option value='01'>Cédula Física</option>
+            <option value='02'>Cédula Jurídica</option>
+            <option value='03'>Pasaporte</option>
           </select>
         </div>
 
