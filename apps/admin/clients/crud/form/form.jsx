@@ -2,11 +2,16 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { setItem } from '../../../../../utils/api'
+import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
     client: store.clients.clientActive,
-    clients: store.clients.clients
+    clients: store.clients.clients,
+    provinces: store.addresses.provinces,
+    cantons: store.addresses.cantons,
+    districts: store.addresses.districts,
+    towns: store.addresses.towns
   }
 })
 
@@ -85,6 +90,12 @@ class Form extends React.Component {
           : 0
         break
       }
+      case 'select-one':
+      {
+        this.clearAdrresses(target.name)
+        value = target.value
+        break
+      }
       default:
       {
         value = target.value
@@ -102,11 +113,69 @@ class Form extends React.Component {
     this.props.dispatch({type: 'SET_CLIENT', payload: client})
   }
 
+  clearAdrresses(name) {
+    if (name == 'province') {
+      this.props.dispatch({type: 'CLEAR_CANTON', payload: ''})
+      this.props.dispatch({type: 'CLEAR_DISTRICT', payload: ''})
+      this.props.dispatch({type: 'CLEAR_TOWN', payload: ''})
+    }
+    if (name == 'canton') {
+      this.props.dispatch({type: 'CLEAR_DISTRICT', payload: ''})
+      this.props.dispatch({type: 'CLEAR_TOWN', payload: ''})
+    }
+    if (name == 'district') {
+      this.props.dispatch({type: 'CLEAR_TOWN', payload: ''})
+    }
+  }
+
   fieldFocus(ev) {
     ev.target.select()
   }
 
   render() {
+
+    // ********************************************************************
+    // SELECT2 DATA
+    // ********************************************************************
+    const provinces = this.props.provinces
+    const cantons = this.props.cantons
+    const districts = this.props.districts
+    const towns = this.props.towns
+
+    // map the provinces and return items to render in Select2
+    const provincesData = provinces.map(province => {
+      return {text: `${province.code} - ${province.name}`, id: `${province.code}`}
+    })
+
+    // Filter the cantons data Based on the province selection stored in client active item
+    const filteredCantons = cantons.filter(el => {
+      return el.province_code == this.props.client.province
+    })
+
+    // map the filtered cantons and return items to render in Select2
+    const cantonsData = filteredCantons.map(canton => {
+      return {text: `${canton.code} - ${canton.name}`, id: canton.code}
+    })
+
+    // Filter the districts data Based on the province and canton selection stored in client active item
+    const filteredDistricts = districts.filter(el => {
+      return el.province_code == this.props.client.province && el.canton_code == this.props.client.canton
+    })
+
+    // map the filtered districts and return items to render in Select2
+    const districtsData = filteredDistricts.map(district => {
+      return {text: `${district.code} - ${district.name}`, id: district.code}
+    })
+
+    // Filter the towns data Based on the province and canton selection stored in client active item
+    const filteredTowns = towns.filter(el => {
+      return el.province_code == this.props.client.province && el.canton_code == this.props.client.canton && el.district_code == this.props.client.district
+    })
+
+    // map the filtered towns and return items to render in Select2
+    const townsData = filteredTowns.map(town => {
+      return {text: `${town.code} - ${town.name}`, id: town.code}
+    })
 
     // ********************************************************************
     // RETURN BLOCK
@@ -153,40 +222,108 @@ class Form extends React.Component {
             className='form-control' />
         </div>
 
-      </div>
-
-      <div className='col-xs-12 col-sm-4 fields-container buttons second'>
-
-        <span>Contacto y tipo</span>
-        <hr />
-
-        <div className='form-group'>
-          <label>Dirección</label>
-          <input value={this.props.client.address} name='address' onChange={this.handleInputChange.bind(this)}
-            type='text'
-            className='form-control' />
-        </div>
-
-        <div className='form-group'>
-          <label>Teléfono</label>
-          <input value={this.props.client.phone_number} name='phone_number' onChange={this.handleInputChange.bind(this)}
-            type='text'
-            className='form-control' />
-        </div>
-
-        <div className='form-group'>
-          <label>Celular</label>
-          <input value={this.props.client.cellphone_number} name='cellphone_number'
-            onChange={this.handleInputChange.bind(this)}
-            type='text'
-            className='form-control' />
-        </div>
-
         <div className='form-group'>
           <label>Email</label>
           <input value={this.props.client.email} name='email' onChange={this.handleInputChange.bind(this)} type='email'
             className='form-control' />
         </div>
+
+      </div>
+
+      <div className='col-xs-12 col-sm-4 fields-container buttons second'>
+
+        <span>Contacto y dirección</span>
+        <hr />
+
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+
+            <label>Teléfono</label>
+            <input value={this.props.client.phone_number} name='phone_number' onChange={this.handleInputChange.bind(this)}
+              type='text'
+              className='form-control' />
+          </div>
+
+          <div className='col-xs-6 second'>
+            <label>Celular</label>
+            <input value={this.props.client.cellphone_number} name='cellphone_number'
+              onChange={this.handleInputChange.bind(this)}
+              type='text'
+              className='form-control' />
+          </div>
+        </div>
+        <div className='form-group'>
+          <label>Provincia</label>
+          <Select2
+            name='province'
+            data={provincesData}
+            value={this.props.client.province}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija una Provincia...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+
+        <div className='form-group'>
+          <label>Cantón</label>
+          <Select2
+            name='canton'
+            data={cantonsData}
+            value={this.props.client.canton}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija un Cantón...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+
+        <div className='form-group'>
+          <label>Distrito</label>
+          <Select2
+            name='district'
+            data={districtsData}
+            value={this.props.client.district}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija un Distrito...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+
+        <div className='form-group'>
+          <label>Barrio</label>
+          <Select2
+            name='town'
+            data={townsData}
+            value={this.props.client.town}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija un Barrio...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+
+        <div className='form-group'>
+          <label>Otras Señas</label>
+          <input value={this.props.client.other_address} name='other_address' onChange={this.handleInputChange.bind(this)} type='text'
+            className='form-control' />
+        </div>
+
+      </div>
+
+      <div className='col-xs-12 col-sm-4 fields-container buttons second'>
+
+        <span>Crédito y Decuentos</span>
+        <hr />
 
         <div className='form-group'>
           <label>Tipo</label>
@@ -197,13 +334,6 @@ class Form extends React.Component {
             <option value='WHOLESA'>Mayorista</option>
           </select>
         </div>
-
-      </div>
-
-      <div className='col-xs-12 col-sm-4 fields-container buttons second'>
-
-        <span>Crédito y Decuentos</span>
-        <hr />
 
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>

@@ -7,7 +7,11 @@ const defaultPermissions = {
 
 const clientModel = {
   id: '0000000000',
-  address: '',
+  province: '',
+  canton: '',
+  district: '',
+  town: '',
+  other_address: '',
   cellphone_number: '',
   client_type: 'GENERAL',
   code: '',
@@ -39,6 +43,36 @@ const stateConst = {
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'CLEAR_CANTON':
+    {
+      const client = state.clientActive
+      client.canton = ''
+      return {
+        ...state,
+        clientActive: client
+      }
+    } // case
+
+    case 'CLEAR_DISTRICT':
+    {
+      const client = state.clientActive
+      client.district = ''
+      return {
+        ...state,
+        clientActive: client
+      }
+    } // case
+
+    case 'CLEAR_TOWN':
+    {
+      const client = state.clientActive
+      client.town = ''
+      return {
+        ...state,
+        clientActive: client
+      }
+    } // case
 
     case 'FETCH_USER_CLIENT_PERMISSIONS_FULLFILLED':
     {

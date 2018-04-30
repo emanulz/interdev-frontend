@@ -44,6 +44,50 @@ export default class List extends React.Component {
     this.props.dispatch(getItemDispatch(clientKwargs))
     // *******************************************************************
 
+    // Then fetch provinces of the model and dispatch to reducer
+    // *******************************************************************
+    const provinceKwargs = {
+      url: '/api/provinces',
+      successType: 'FETCH_PROVINCES_FULFILLED',
+      errorType: 'FETCH_PROVINCES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(provinceKwargs))
+    // *******************************************************************
+
+    // Then fetch cantons of the model and dispatch to reducer
+    // *******************************************************************
+    const cantonKwargs = {
+      url: '/api/cantons',
+      successType: 'FETCH_CANTONS_FULFILLED',
+      errorType: 'FETCH_CANTONS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(cantonKwargs))
+    // *******************************************************************
+
+    // Then fetch districts of the model and dispatch to reducer
+    // *******************************************************************
+    const districtKwargs = {
+      url: '/api/districts',
+      successType: 'FETCH_DISTRICTS_FULFILLED',
+      errorType: 'FETCH_DISTRICTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(districtKwargs))
+    // *******************************************************************
+
+    // Then fetch towns of the model and dispatch to reducer
+    // *******************************************************************
+    const townKwargs = {
+      url: '/api/towns',
+      successType: 'FETCH_TOWNS_FULFILLED',
+      errorType: 'FETCH_TOWNS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(townKwargs))
+    // *******************************************************************
+
   }
 
   // Main Layout

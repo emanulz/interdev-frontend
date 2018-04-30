@@ -26,7 +26,11 @@ export function updateTotals(inCart) {
       ? item.subtotal * (item.product.taxes2 / 100)
       : 0
 
-    taxes = taxes + taxesCalc + taxesCalc2
+    const taxesCalc3 = (item.product.use_taxes3)
+      ? item.subtotal * (item.product.taxes3 / 100)
+      : 0
+
+    taxes = taxes + taxesCalc + taxesCalc2 + taxesCalc3
 
     discountTotal = discountTotal + item.discountCurrency // this is the value in currency
 
