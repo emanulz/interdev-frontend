@@ -20,7 +20,7 @@ const clientModel = {
   email: '',
   has_credit: false,
   id_num: '',
-  id_type: 'PER',
+  id_type: '01',
   last_name: '',
   max_discount: 0,
   max_line_discount: 0,

@@ -67,6 +67,7 @@ export default class DataTable extends React.Component {
   render() {
     const headerOrder = this.props.headerOrder
     const model = this.props.model
+    const app = this.props.app ? this.props.app : 'admin'
     const data = this.props.data.length
       ? this.props.data
       : []
@@ -74,12 +75,12 @@ export default class DataTable extends React.Component {
     const tableHeader = headerOrder.map(item => {
 
       const ret = item.type != 'bool'
-        ? <th key={item.field}>
+        ? <th key={`${item.field}_${item.type}`}>
           {item.text}
         </th>
         : <th style={{
           textAlign: 'center'
-        }} key={item.field}>
+        }} key={`${item.field}_${item.type}`}>
           {item.text}
         </th>
       return ret
@@ -151,7 +152,7 @@ export default class DataTable extends React.Component {
                                               {itemToRender}
                                           </Link> */}
                 <Link to={{
-                  pathname: `/admin/${model}/edit/${itemToRender}`,
+                  pathname: `/${app}/${model}/edit/${itemToRender}`,
                   state: {
                     el: el
                   }
@@ -170,7 +171,7 @@ export default class DataTable extends React.Component {
                                               {itemToRender}
                                           </Link> */}
                 <Link to={{
-                  pathname: `/admin/${model}/${itemToRender}`,
+                  pathname: `/${app}/${model}/${itemToRender}`,
                   state: {
                     el: el
                   }
@@ -191,6 +192,19 @@ export default class DataTable extends React.Component {
                 <a target='_blank' href={`${header.baseLink}/${itemToRender}`}>
                   {itemToRender}
                 </a>
+              </td>
+              break
+            }
+
+            case 'textLink':
+            {
+
+              item = <td key={`${el[idField]}_${header.field}_${header.type}`} data-order={itemToRender}>
+                <Link to={{
+                  pathname: `/${app}/${model}/${itemToRender}`
+                }}>
+                  {header.textToRender}
+                </Link>
               </td>
               break
             }
@@ -232,15 +246,17 @@ export default class DataTable extends React.Component {
       </tr>
     })
 
+    const addLink = this.props.addLink
+      ? <Link className='addBtn' to={`${this.props.addLink}`}>
+        <span className='fa fa-plus' />
+        Agregar
+      </Link>
+      : ''
+
     return <div className='dataTables'>
 
       <div>
-        <Link className='addBtn' to={`${this.props.addLink}`}>
-
-          <span className='fa fa-plus' />
-          Agregar
-
-        </Link>
+        {addLink}
       </div>
 
       <table ref='table' className='table' cellSpacing='0' width='100%'>
