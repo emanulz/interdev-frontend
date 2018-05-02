@@ -1,63 +1,81 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
-import {fetchItems, setItemsQuery, getNextNumericCode, saveItem} from '../../utils/api'
-import {getClientDebt} from '../../utils/receivable'
-import {checkSalesDebt} from '../statement/actions'
-import alertify from 'alertifyjs'
+// import alertify from 'alertifyjs'
+import {getItemDispatch} from '../../../utils/api'
+import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
 
 @connect((store) => {
   return {
-    movement: store.receivable.clientmovementActive,
-    movements: store.receivable.clientmovements,
-    paymentArray: store.receivable.paymentArray,
+    paymentArray: store.payments.paymentArray,
     clients: store.clients.clients,
-    clientId: store.receivable.paymentClientSelected,
-    creditSales: store.receivable.clientActiveCreditSales,
-    debt: store.receivable.clientActiveDebt,
-    creditSalesD: store.receivable.clientActiveCreditSalesD
+    client: store.clients.clientActive,
+    clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt
   }
 })
 export default class Update extends React.Component {
 
   componentWillMount() {
-    const kwargs = {
-      db: 'general',
-      docType: 'CLIENT_MOVEMENT',
-      dispatchType: 'FETCH_CLIENT_MOVEMENTS_FULFILLED',
-      dispatchErrorType: 'FETCH_CLIENT_MOVEMENTS_REJECTED'
-    }
-    this.props.dispatch(fetchItems(kwargs)) // fetch client movements before mount, send dispatch to reducer.
+    this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
 
-    const kwargs2 = {
-      db: 'general',
-      docType: 'CLIENT',
-      dispatchType: 'FETCH_CLIENTS_FULFILLED',
-      dispatchErrorType: 'FETCH_CLIENTS_REJECTED'
+    // Then fetch the elements of the model and dispatch to reducer
+    // *******************************************************************
+    const clientsKwargs = {
+      url: '/api/clients',
+      successType: 'FETCH_CLIENTS_FULFILLED',
+      errorType: 'FETCH_CLIENTS_REJECTED'
     }
-    this.props.dispatch(fetchItems(kwargs2)) // fetch clients before mount, send dispatch to reducer.
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(clientsKwargs))
+
+    // *******************************************************************
   }
 
   componentWillReceiveProps(nextprops) {
-    if (nextprops.creditSales.length != this.props.creditSales.length) {
-      this.props.dispatch(checkSalesDebt(nextprops.creditSales, 'general'))
+    if (nextprops.client.id != '0000000000' && nextprops.client.id != this.props.client.id) {
+
+      const id = nextprops.client.id
+      const kwargs = {
+        url: '/api/sales',
+        clientId: id,
+        successType: 'FETCH_CLIENT_SALES_WITH_DEBT_FULFILLED',
+        errorType: 'FETCH_CLIENT_SALES_WITH_DEBT_REJECTED'
+      }
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getClientPendingSales(kwargs))
+
     }
+
   }
 
   selectClient(event) {
-
+    event.preventDefault()
     const target = event.target
     const value = target.value
 
-    this.props.dispatch({type: 'SET_PAYMENT_CLIENT_SELECTED', payload: value})
-    const debt = getClientDebt(value, this.props.movements)
-    this.props.dispatch({type: 'SET_PAYMENT_CLIENT_SELECTED_DEBT', payload: debt})
+    const clients = [
+      ...this.props.clients
+    ]
+
+    const clientSelected = clients.filter(client => {
+      return client.id == value
+    })
+
+    this.props.dispatch({type: 'SET_CLIENT', payload: clientSelected[0]})
+  }
+
+  unselectClient() {
+    this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
   }
 
   paySaleComplete(sale, event) {
 
-    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale._id})
+    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+    document.getElementById(`${sale.id}-checkbox-partial`).checked = false
+    document.getElementById(`${sale.id}-input-partial`).value = ''
 
     if (event.target.checked) {
       const item = {
@@ -68,13 +86,15 @@ export default class Update extends React.Component {
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
 
     } else {
-      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale._id})
+      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
     }
   }
 
   paySaleAmount(sale, event) {
 
-    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale._id})
+    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+
+    document.getElementById(`${sale.id}-checkbox-complete`).checked = false
 
     if (event.target.checked) {
       const item = {
@@ -85,7 +105,7 @@ export default class Update extends React.Component {
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
 
     } else {
-      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale._id})
+      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
     }
   }
 
@@ -96,22 +116,7 @@ export default class Update extends React.Component {
   }
 
   onConsultBtn() {
-    const clientId = this.props.clientId
-    if (clientId) {
 
-      this.props.dispatch({type: 'CLEAR_CLIENT_ACTIVE_CREDIT_SALES', payload: ''})
-
-      const kwargs2 = {
-        db: 'sales',
-        query: {'docType': {$eq: 'SALE'}, 'client._id': {$eq: clientId}, 'pay.payMethod': {$eq: 'CREDIT'}},
-        notFoundMsg: `No se encontraron facturas de crédito con el código del cliente`,
-        successDispatchType: 'SET_CLIENT_ACTIVE_CREDIT_SALES'
-      }
-
-      this.props.dispatch(setItemsQuery(kwargs2))
-    } else {
-      alertify.alert('Error', 'Debe Seleccionar un cliente primero')
-    }
   }
 
   paymentTableItem(sale) {
@@ -120,25 +125,28 @@ export default class Update extends React.Component {
     const date = formatDate(sale.created)
     const debt = sale.debt ? sale.debt : 0
     if (debt > 0) {
-      return <tr className={`${movClass}`} key={sale._id}>
-        <td>{sale.id}</td>
+      return <tr className={`${movClass}`} key={sale.id}>
+        <td>{sale.bill_number}</td>
         <td>{date}</td>
         <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
         <td>₡ {sale.debt ? sale.debt.formatMoney(2, ',', '.') : 0}</td>
         <td>
           <input
+            id={`${sale.id}-checkbox-complete`}
             type='checkbox'
             onClick={this.paySaleComplete.bind(this, sale)}
           />
         </td>
         <td>
           <input
+            id={`${sale.id}-checkbox-partial`}
             type='checkbox'
             onClick={this.paySaleAmount.bind(this, sale)}
           />
         </td>
         <td>
           <input
+            id={`${sale.id}-input-partial`}
             type='number'
             onChange={this.setPaySaleAmount.bind(this, sale)}
           />
@@ -148,34 +156,9 @@ export default class Update extends React.Component {
   }
 
   saveMovements() {
-    const movements = this.props.movements
-    const paymentArray = this.props.paymentArray
-    paymentArray.map(item => {
-      const movement = {
-        'document': 0,
-        'docType': 'CLIENT_MOVEMENT',
-        'created': new Date(),
-        'updated': '',
-        'clientId': this.props.clientId,
-        'type': 'DEBIT',
-        'amount': item.amount,
-        'date': new Date(),
-        'saleId': item.sale.id,
-        'sale_id': item.sale._id,
-        'description': `Pago a Factura # ${item.sale.id}`
-      }
-      movement.document = getNextNumericCode(movements, 'document')
-      const obj = {
-        db: 'general',
-        item: movement,
-        sucessMessage: 'Movimiento creado correctamente',
-        errorMessage: 'Hubo un error al crear el Movimiento, intente de nuevo.',
-        dispatchType: ''
-      }
 
-      this.props.dispatch(saveItem(obj))
-    })
   }
+
   render() {
 
     // ********************************************************************
@@ -188,10 +171,10 @@ export default class Update extends React.Component {
       : []
 
     const clientsSelect = clientsWithCredit.map(client => {
-      return {text: `${client.code} - ${client.name} ${client.last_name}`, id: client._id}
+      return {text: `${client.code} - ${client.name} ${client.last_name}`, id: client.id}
     })
 
-    const sales = this.props.creditSalesD
+    const sales = this.props.clientActiveSalesWithDebt
     sales.sort((a, b) => {
       return new Date(a.created) - new Date(b.created)
     })
@@ -200,11 +183,15 @@ export default class Update extends React.Component {
       ? sales.map(sale => {
         return this.paymentTableItem(sale)
       })
-      : <tr>
-        <td>-</td>
-      </tr>
+      : this.props.client.code
+        ? <tr>
+          <td>SIN FACTURAS PENDIENTES</td>
+        </tr>
+        : <tr>
+          <td>SELECCIONE UN CLIENTE</td>
+        </tr>
 
-    const clientDebt = this.props.debt
+    const clientDebt = this.props.client.debt
     let paymentTotal = 0
     const array = this.props.paymentArray
 
@@ -216,78 +203,70 @@ export default class Update extends React.Component {
 
     const amountLeft = clientDebt - paymentTotal
 
-    return <div className='create'>
+    return <div className='payment'>
       <h1>Registrar pago a Facturas:</h1>
 
-      <div className='row'>
+      <div className='payment-header'>
+        <div className='payment-header-select'>
+          <Select2
+            data={clientsSelect}
+            onSelect={this.selectClient.bind(this)}
+            value={this.props.client.id}
+            className='form-control'
+            onUnselect={this.unselectClient.bind(this)}
+            options={{
+              placeholder: 'Elija un cliente...',
+              allowClear: true
+            }}
+          />
+        </div>
+        <div className='payment-header-container'>
+          <div className='payment-header-container-totals'>
+            <table className='table table-bordered'>
+              <tbody>
+                <tr>
+                  <th>Saldo Anterior</th>
+                  <td>₡ {clientDebt.formatMoney(2, ',', '.')}</td>
+                </tr>
+                <tr>
+                  <th>Este Abono:</th>
+                  <td>₡ {paymentTotal.formatMoney(2, ',', '.')}</td>
+                </tr>
+                <tr>
+                  <th>Saldo:</th>
+                  <td>₡ {amountLeft.formatMoney(2, ',', '.')}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div className='col-xs-12'>
-          <div className='form-group row create-input-block'>
+          <div className='payment-header-container-btn'>
 
-            <div className='col-xs-12 col-sm-4 paymentBlock'>
-              <Select2
-                name='clientId'
-                data={clientsSelect}
-                className='form-control'
-                onSelect={this.selectClient.bind(this)}
-                value={this.props.clientId}
-                options={{
-                  placeholder: 'Elija un cliente...'
-                }}
-              />
-            </div>
-            <div className='col-xs-12 col-sm-4 col-sm-offset-1 paymentBlock'>
-              <button className='form-control btn btn-primary' onClick={this.onConsultBtn.bind(this)}>
-                Consultar
-              </button>
-            </div>
-
-            <div className='col-xs-12 col-sm-4 paymentBlock'>
-              <table className='table table-bordered'>
-                <tbody>
-                  <tr>
-                    <th>Saldo Anterior</th>
-                    <td>₡ {clientDebt.formatMoney(2, ',', '.')}</td>
-                  </tr>
-                  <tr>
-                    <th>Abono:</th>
-                    <td>₡ {paymentTotal.formatMoney(2, ',', '.')}</td>
-                  </tr>
-                  <tr>
-                    <th>Saldo:</th>
-                    <td>₡ {amountLeft.formatMoney(2, ',', '.')}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div className='col-xs-12 col-sm-4 col-sm-offset-1 paymentBlock'>
-              <button onClick={this.saveMovements.bind(this)} disabled={!this.props.paymentArray.length} className='form-control btn-success'>
-                Registrar
-              </button>
-            </div>
+            <button onClick={this.saveMovements.bind(this)} disabled={!this.props.paymentArray.length} className='form-control'>
+              Registrar
+            </button>
 
           </div>
         </div>
+      </div>
 
-        <div className='col-xs-12 tableBlock'>
-          <table className='table table-bordered'>
-            <thead>
-              <tr>
-                <th>Fact #</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Deuda</th>
-                <th>Completa</th>
-                <th>Otro</th>
-                <th>Monto</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows}
-            </tbody>
-          </table>
-        </div>
+      <div className='payment-table'>
+        <table className='table table-bordered'>
+          <thead>
+            <tr>
+              <th>Fact #</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Deuda</th>
+              <th>Completa</th>
+              <th>Otro</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
       </div>
 
     </div>

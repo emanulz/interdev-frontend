@@ -11,10 +11,10 @@ import {formatDate} from '../../../../utils/formatDate.js'
 @connect((store) => {
   return {
     client: store.clients.clientActive,
-    clientActiveSalesWithDebt: store.statement.clientActiveSalesWithDebt
+    clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt
   }
 })
-export default class Statement extends React.Component {
+export default class UnpaidSales extends React.Component {
 
   componentWillMount() {
 
@@ -70,7 +70,7 @@ export default class Statement extends React.Component {
         <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
         <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td>
         <td>₡ {sale.debt ? sale.debt.formatMoney(2, ',', '.') : 0}</td>
-        <td><Link to={`/admin/receivable/statement/${client.code}/billmovements/${sale.id}`}>Ver</Link></td>
+        <td><Link to={`/credits/receivable/${client.code}/${sale.bill_number}`}>Ver Movimientos</Link></td>
       </tr>
     }
   }
@@ -92,47 +92,48 @@ export default class Statement extends React.Component {
         <td>NO HAY MOVIMIENTOS</td>
       </tr>
 
-    return <div className='list-container'>
+    return <div className='unpaidSales'>
 
-      <h1>Estado de Cuenta</h1>
+      <h1>REPORTE DE VENTAS PENDIENTES DE PAGO</h1>
 
-      <div className='row movements'>
-
-        <div className='totals-sidebar col-xs-12 col-sm-10'>
-          <table className='table table-bordered'>
-            <tbody>
-              <tr>
-                <th>Cliente</th>
-                <td>{`${this.props.client.code} - ${this.props.client.name} ${this.props.client.last_name}`}</td>
-              </tr>
-              <tr>
-                <th>Saldo Total:</th>
-                <td>₡ {this.props.client.debt.formatMoney(2, ',', '.')}</td>
-              </tr>
-            </tbody>
-          </table>
+      <div className='unpaidSales-header'>
+        <div className='unpaidSales-header-tittle'>
+          <div>
+            Cliente
+          </div>
+          <div>
+          Saldo Total:
+          </div>
         </div>
-
-        <div className='col-xs-12 col-sm-10'>
-          <table className='table table-bordered'>
-            <thead>
-              <tr>
-                <th>Factura #</th>
-                <th>Fecha</th>
-                <th>Monto</th>
-                <th>Abonos</th>
-                <th>Deuda</th>
-                <th>Movimientos</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows}
-            </tbody>
-          </table>
+        <div className='unpaidSales-header-data'>
+          <div>
+            {`${this.props.client.code} - ${this.props.client.name} ${this.props.client.last_name}`}
+          </div>
+          <div>
+            ₡ {this.props.client.debt.formatMoney(2, ',', '.')}
+          </div>
         </div>
+      </div>
 
+      <div className='unpaidSales-body'>
+        <table className='table table-bordered'>
+          <thead>
+            <tr>
+              <th>Factura #</th>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Abonos</th>
+              <th>Deuda</th>
+              <th>Movimientos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
       </div>
 
     </div>
+
   }
 }

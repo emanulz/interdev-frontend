@@ -57,8 +57,8 @@ export default class List extends React.Component {
       },
       {
         field: 'code',
-        text: 'Estado de Cuenta',
-        textToRender: 'Ver Estado',
+        text: 'Facturas Pendientes',
+        textToRender: 'Ver Pendientes',
         type: 'textLink'
       }
     ]

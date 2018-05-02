@@ -1,23 +1,51 @@
-.paymentBlock
-  margin-top: 10px
-  font-family: sans-serif
-  & th
-    font-size: 13px
-    background-color: $PRIMARY-COLOR
-    color: white
-    width: 40%
-  & td
-    font-size: 13px
-  & .select2
-    width: 100% !important
-  & .table
-    margin-bottom: 0
+.payment
+  font-family: 'Lato', sans-serif
+  & h1
+    font-size: 20px
+    font-weight: bold
+    margin-bottom: 20px
+  &-header
+    &-select
+      width: 350px
+      margin-bottom: 20px
+      
+    &-container
+      display: flex
+      flex-flow: row
+      justify-content: space-between
+      &-totals
+        width: 55%
+        & th
+          background-color: $PRIMARY-COLOR
+          color: white
+        & td
+          font-weight: bold
+      &-btn
+        width: 30%
+        display: flex
+        flex-flow: column
+        justify-content: flex-end
+        padding-bottom: 20px
+        & button
+          background-color: $PRIMARY-COLOR
+          color: white
+          &[disabled]
+            background-color: $SECONDARY-COLOR
+            color: white
 
-.tableBlock
-  font-family: sans-serif
-  & th
-    font-size: 13px
-    background-color: $PRIMARY-COLOR
-    color: white
-  & td
-    font-size: 13px
+  &-table
+    & th
+        background-color: $PRIMARY-COLOR
+        color: white
+        font-size: 16px
+    & tbody
+      font-size: 15px
+    
+
+  & .select2
+    font-family: 'Lato', sans-serif !important
+  
+  & .select2-selection__clear
+    padding-right: 10px 
+    font-size: 22px !important
+  

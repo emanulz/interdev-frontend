@@ -4,12 +4,16 @@ import fetching from '../../general/fetching/reducer.js'
 import layout from './layout/reducer.js'
 import user from './user/reducer.js'
 import clients from './clients/reducer.js'
-import statement from './receivable/statement/reducer.js'
+import unpaidSales from './receivable/unpaidSales/reducer.js'
+import saleMovements from './receivable/saleMovements/reducer.js'
+import payments from './payments/reducer.js'
 
 export default combineReducers({
   fetching,
   layout,
   user,
   clients,
-  statement
+  unpaidSales,
+  saleMovements,
+  payments
 })

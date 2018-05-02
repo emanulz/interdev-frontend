@@ -14,33 +14,16 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // ------------------------------------------------------------------------------------------
 // GET SALES, RETRIEVE WITH DEBT
 // ------------------------------------------------------------------------------------------
-export function getClientPendingSales(kwargs) {
+export function getSaleMovements(kwargs) {
 
   const url = kwargs.url
   const successType = kwargs.successType
   const errorType = kwargs.errorType
-  const clientId = kwargs.clientId
+  const saleId = kwargs.saleId
 
   return function(dispatch) {
-    axios.get(`${url}/?client_id=${clientId}`).then(function(response) {
-      const responseData = response.data.filter(item => {
-        return item.debt > 0
-      })
-      // parse the items in JSON objects stored as strings
-      const responseData2 = responseData.map(item => {
-        const cart = JSON.parse(item.cart)
-        const user = JSON.parse(item.user)
-        const client = JSON.parse(item.client)
-        const pay = JSON.parse(item.pay)
-        return {...item,
-          cart: cart,
-          user: user,
-          client,
-          pay: pay
-        }
-      })
-      // Then Dispatch
-      dispatch({type: successType, payload: responseData2})
+    axios.get(`${url}/?sale_id=${saleId}`).then(function(response) {
+      dispatch({type: successType, payload: response.data})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE

@@ -6,18 +6,18 @@
 @import "../../../node_modules/react-table/react-table.css"
 @import "../../../node_modules/react-web-tabs/dist/react-web-tabs.css"
 
-
 //boostrap just forms and tables
 @import "../../../../backend/static/vendor/bootstrap/bootstrap.min"
 //grid system
 @import "../../../../backend/static/vendor/flexboxGrid/flexboxgrid.min"
 
+@import "adminVars"
 @import "../../../styles/reset"
 @import "../../../styles/globalVars"
 @import "../../../styles/tabs"
-@import "adminVars"
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro')
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900')
+
 
 //defaults
 .mainContainer
@@ -44,12 +44,11 @@
 .ajs-button
   font-family: 'Source Sans Pro', sans-serif
 
-
 @import "../layout/_all"
 @import "../../../general/dataTable/dataTable"
-@import "./crud/createUpdate"
-@import "./crud/buttons"
-@import "./crud/list"
 @import "../lockScreen/lockScreen"
 @import "../../../general/fetching/fetching"
 @import "../permissions/_all"
+@import "./crud/createUpdate"
+@import "./crud/buttons"
+@import "./crud/list"
