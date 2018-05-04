@@ -13,7 +13,6 @@ const productModel = {
   fractioned: false,
   department: '0000000000',
   subdepartment: '0000000000',
-  base_code: '000000',
   barcode: '',
   internal_barcode: '',
   supplier_code: '',
