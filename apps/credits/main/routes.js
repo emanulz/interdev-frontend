@@ -5,13 +5,15 @@ import {Route} from 'react-router-dom'
 
 import Home from '../home/home.jsx'
 import Receivable from '../receivable/main.jsx'
-import Payments from '../payments/payments.jsx'
+import Payment from '../payments/payments.jsx'
+import PaymentList from '../payments/list.jsx'
 
 const routes = <div className='heigh100'>
 
   <Route exact path='/credits' component={Home} />
   <Route path='/credits/receivable' component={Receivable} />
-  <Route path='/credits/payments' component={Payments} />
+  <Route path='/credits/payment' component={Payment} />
+  <Route path='/credits/payments' component={PaymentList} />
 
 </div>
 

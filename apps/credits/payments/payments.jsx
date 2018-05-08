@@ -1,16 +1,19 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
+import alertify from 'alertifyjs'
 // import alertify from 'alertifyjs'
 import {getItemDispatch} from '../../../utils/api'
 import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
+import {savePayment, saveMovement} from './actions.js'
 
 @connect((store) => {
   return {
     paymentArray: store.payments.paymentArray,
     clients: store.clients.clients,
     client: store.clients.clientActive,
+    user: store.user.user,
     clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt
   }
 })
@@ -19,6 +22,7 @@ export default class Update extends React.Component {
   componentWillMount() {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
     this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_PAYMENT_ARRAY', payload: ''})
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
@@ -115,10 +119,6 @@ export default class Update extends React.Component {
     this.props.dispatch({type: 'SET_AMOUNT_PAYMENT_ARRAY', payload: {amount: value, sale: sale}})
   }
 
-  onConsultBtn() {
-
-  }
-
   paymentTableItem(sale) {
 
     const movClass = sale.type == 'CREDIT' ? 'credit' : 'debit'
@@ -156,6 +156,91 @@ export default class Update extends React.Component {
   }
 
   saveMovements() {
+    // ITEMS USED BY PAYMENT OBJECT
+    const array = [...this.props.paymentArray]
+    const user = JSON.stringify(this.props.user)
+    const client = JSON.stringify(this.props.client)
+    const sales = JSON.stringify(this.props.paymentArray)
+    const clientId = this.props.client.id
+
+    let amount = 0
+
+    // CALC THE TOTAL AMOUNT OF PAYMENT
+    array.map(item => {
+      amount = amount + item.amount
+    })
+
+    const payment = {
+      user: user,
+      client: client,
+      sales: sales,
+      client_id: clientId,
+      amount: amount
+    }
+
+    const kwargs = {
+      url: '/api/creditpayments/',
+      item: payment,
+      logCode: 'CREDIT_PAYMENT_CREATE',
+      logDescription: 'Creación de nuevo pago de crédito',
+      logModel: 'CREDIT_PAYMENT',
+      user: this.props.user
+    }
+
+    // MAKE "THIS" AVAILABLE FOR SUB-FUNCTIONS
+    const _this = this
+
+    const savePaymentPromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch(savePayment(kwargs, resolve, reject))
+    })
+
+    savePaymentPromise.then((data) => {
+
+      const movementsPromiseArray = []
+
+      // CREATE A PROMISE FOR EACH OBJECT IN PAYMENT ARRAY USING PAYMENT ID and Data
+      array.map(item => {
+
+        const movement = {
+          payment_id: data.id,
+          bill_id: item.sale.id,
+          client_id: data.client_id,
+          movement_type: 'DEBI',
+          amount: item.amount,
+          description: `Pago a facturas #${data.payment_number}`
+        }
+
+        const kwargs = {
+          url: '/api/creditmovements/',
+          item: movement,
+          logCode: 'CREDIT_MOVEMENT_CREATE',
+          logDescription: 'Creación de nuevo movimiento de crédito',
+          logModel: 'CREDIT_MOVEMENT',
+          user: this.props.user
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          _this.props.dispatch(saveMovement(kwargs, resolve, reject))
+        })
+
+        movementsPromiseArray.push(promise)
+      })
+
+      // RESOLVE ALL PROMISES, SAVING THE MOVEMENTS ITEMS
+      Promise.all(movementsPromiseArray).then(() => {
+
+        this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        this.props.dispatch({type: 'SHOW_PRINT_PANEL', payload: ''})
+        alertify.alert('COMPLETADO', 'Pago Almacenado correctamente')
+
+      }).catch((err) => {
+        console.log(err)
+      }) // CATCH OF PROMISE ALL
+
+    }).catch((err) => {
+      console.log(err)
+    }) // CATCH OF PAYMENT SAVE
 
   }
 

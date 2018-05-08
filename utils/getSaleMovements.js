@@ -22,7 +22,7 @@ export function getSaleMovements(kwargs) {
   const saleId = kwargs.saleId
 
   return function(dispatch) {
-    axios.get(`${url}/?sale_id=${saleId}`).then(function(response) {
+    axios.get(`${url}/?bill_id=${saleId}`).then(function(response) {
       dispatch({type: successType, payload: response.data})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {

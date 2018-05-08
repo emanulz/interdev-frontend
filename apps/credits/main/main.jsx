@@ -12,6 +12,7 @@ import routes from './routes'
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
+import Invoice from '../invoice/invoicePanel/invoicePanel.jsx'
 
 // import routes from './routes.js'
 
@@ -40,6 +41,7 @@ export default class Main extends React.Component {
           <div className='mainContainer-content'>
             {routes}
             {fetching}
+            <Invoice />
           </div>
         </div>
       </div>

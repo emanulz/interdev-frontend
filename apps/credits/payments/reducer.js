@@ -1,14 +1,74 @@
 const stateConst = {
-  paymentArray: []
+  paymentArray: [],
+  payment: {},
+  payments: []
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+    // ***********************************
+    // PAYMENTS
+    // ***********************************
+    case 'FETCH_PAYMENTS_FULFILLED':
+    {
+      const payments = action.payload
+      payments.forEach(payment => {
+        const client = JSON.parse(payment.client)
+        payment.client = client
+      })
+      return {
+        ...state,
+        payments: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_PAYMENTS_REJECTED':
+    {
+      return {
+        ...state,
+        payments: []
+      }
+    } // case
+
+    case 'CLEAR_PAYMENTS':
+    {
+      return {
+        ...state,
+        payments: []
+      }
+    } // case
 
     // ***********************************
-    // CLIENT MOVEMENTS
+    // PAYMENT OBJECT
     // ***********************************
+    case 'CLEAR_PAYMENT':
+    {
+      return {
+        ...state,
+        payment: {}
+      }
+    }
+
+    case 'SET_PAYMENT':
+    {
+      return {
+        ...state,
+        payment: action.payload
+      }
+    }
+
+    // ***********************************
+    // PAYMENT ARRAY
+    // ***********************************
+    case 'CLEAR_PAYMENT_ARRAY':
+    {
+      return {
+        ...state,
+        paymentArray: []
+      }
+    }
 
     case 'ADD_TO_PAYMENT_ARRAY':
     {
