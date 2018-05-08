@@ -20,7 +20,8 @@ const jsConfig = Object.assign({}, config, {
     // reports: './apps/reports/app.js',
     admin: './apps/admin/app.js',
     sales: './apps/sales/app.js',
-    credits: './apps/credits/app.js'
+    credits: './apps/credits/app.js',
+    workshop: './apps/workshop/app.js'
   },
   module: {
     rules: [
