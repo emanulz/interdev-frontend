@@ -34,7 +34,7 @@ export function saveItem(kwargs, resolve, reject) {
         if (response.data.pay_type == 'CRED') {
           const creditMovement = kwargs.creditMovement
           creditMovement.bill_id = response.data.id
-          creditMovement.description = `Venta de crédito #${response.data.bill_number}`
+          creditMovement.description = `Venta de crédito #${response.data.consecutive}`
           saveCreditMovement(creditMovement, response.data, kwargs, dispatch, resolve, reject)
 
         // IF IS CASH THEN JUST RESOLVE

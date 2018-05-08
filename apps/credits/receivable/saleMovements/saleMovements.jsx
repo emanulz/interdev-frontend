@@ -61,7 +61,7 @@ export default class MovementsList extends React.Component {
     const date = new Date(movement.created)
 
     return <tr className={`${movClass}`} key={movement.id}>
-      <td>{movement.movement_number}</td>
+      <td>{movement.consecutive}</td>
       <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
       <td>{typeText}</td>
       <td>₡ {parseFloat(movement.amount).formatMoney(2, ',', '.')}</td>

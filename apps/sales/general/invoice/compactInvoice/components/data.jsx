@@ -14,7 +14,7 @@ export default class Data extends React.Component {
       ${sale.created.getFullYear()}`
       : '01/01/1970'
     const client = sale.client ? `${sale.client.code} - ${sale.client.name} ${sale.client.last_name}` : '00 - Cliente de Contado'
-    const id = sale.bill_number ? sale.bill_number : '0001'
+    const id = sale.consecutive ? sale.consecutive : '0001'
     const clientAdress = sale.client.adress
       ? <tr>
         <th>Direc:</th>

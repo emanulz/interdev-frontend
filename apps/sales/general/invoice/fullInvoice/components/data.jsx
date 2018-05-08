@@ -20,7 +20,7 @@ export default class Data extends React.Component {
         <td className='clientAdress'>DIRECCIÓN: {sale.client.adress}</td>
       </tr>
       : <tr />
-    const id = sale.bill_number ? sale.bill_number : '00001'
+    const id = sale.consecutive ? sale.consecutive : '00001'
 
     return <div className='full-invoice-data'>
 

@@ -1,6 +1,6 @@
 const saleActiveModel = {
   id: 0,
-  bill_number: '',
+  consecutive: '',
   cart: {},
   client: '',
   user: '',
@@ -94,7 +94,7 @@ export default function reducer(state = stateConst, action) {
 
       const sale = {
         id: action.payload.id,
-        bill_number: action.payload.bill_number,
+        consecutive: action.payload.consecutive,
         cart: cart,
         client: client,
         user: user,
