@@ -23,7 +23,7 @@ export default class Home extends React.Component {
   render() {
 
     return <div className='Main heigh100'>
-      HOME
+      HOME SALES
     </div>
 
   }
