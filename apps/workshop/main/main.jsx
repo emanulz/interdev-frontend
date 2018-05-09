@@ -9,7 +9,7 @@ import routes from './routes'
 
 // COMPONENTS
 
-import TopBar from '../../../general/layout/topBar/topBar.jsx'
+import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 

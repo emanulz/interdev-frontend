@@ -15,7 +15,6 @@ import store from './store.js'
 window.alertify = alertify
 formatMoney()
 
-console.log("STORE" +  store)
 
 ReactDOM.render(
   <Provider store={store}>
