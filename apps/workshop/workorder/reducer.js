@@ -1,5 +1,16 @@
-const stateConst = {
-    fullWidth: false
+
+
+const defaultPermissions = {
+    add: 'unfetched',
+    change: 'unfetched',
+    list: 'unfetched',
+    delete: 'unfetched'
+  }
+  
+  const stateConst = {
+    fullWidth: false,
+    permissions: defaultPermissions,
+    workorders:[]
 }
 
 export default function reducer(state = stateConst, action){
@@ -11,6 +22,37 @@ export default function reducer(state = stateConst, action){
             return {
                 ...state,
                 fullWidth: width
+            }
+        }
+
+        case 'FETCH_USER_WORKSHOP_PERMISSIONS_FULLFILLED':
+        {
+            return{
+                ...state,
+                permissions: action.payload
+            }
+        }
+        case 'FETCH_USER_WORKSHOP_PERMISSIONS_REJECTED':
+        {
+            return{
+                ...state,
+                permissions: defaultPermissions
+            }
+        }
+
+        case 'FETCH_WORKORDERS_FULFILLED':
+        {
+            return {
+                ...state,
+                workorders: action.payload
+            }
+        }
+
+        case 'FETCH_WORKORDERS_REJECTED':
+        {
+            return {
+                ...state,
+                workorders: []
             }
         }
     }
