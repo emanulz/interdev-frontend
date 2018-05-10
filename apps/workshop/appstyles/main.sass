@@ -2,7 +2,7 @@
 @import "../../../node_modules/alertifyjs/build/css/themes/semantic"
 
 @import "../../../node_modules/react-select2-wrapper/css/select2.min.css"
-
+@import "../../../node_modules/react-table/react-table.css"
 
 //boostrap just forms and tables
 @import "../../../../backend/static/vendor/bootstrap/bootstrap.min"
@@ -47,6 +47,11 @@
 .heigh100
   height: 100%
 
+@import "../../../general/dataTable/dataTable"
 @import "../../../general/fetching/fetching"
 @import "../layout/_all"
 
+@import "./crud/createUpdate"
+@import "./crud/buttons"
+@import "./crud/list"
+@import "../workorder/_all"

@@ -13,6 +13,8 @@ export default class List extends React.Component{
     
     componentWillMount(){
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        //todo: add a clear work orders signal to make sure the list
+        //truly displays the updated items
 
         const workordersKwargs = {
             url: '/api/workorders',
@@ -26,13 +28,13 @@ export default class List extends React.Component{
     render(){
         const headerOrder =[
             {
-                field: 'code',
-                text: 'Código',
+                field: 'consecutive',
+                text: 'Consecutivo',
                 type: 'primary'
             },
             {
-                field: 'description',
-                text: 'Descripción'
+                field: 'malfunction_details',
+                text: 'Falla'
             }
         ]
 
@@ -42,7 +44,7 @@ export default class List extends React.Component{
 
         const content = this.props.fetching ? fetching : list
 
-        return <div className=' list list-container'>
+        return <div className='list list-container'>
             <h1>Listado Órdenes de Trabajo: </h1>
             {content}
         </div>

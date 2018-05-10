@@ -37,6 +37,10 @@ import {connect} from 'react-redux'
         }
 
         return <div className='create heigh100'>
+            <div className='create-edit-header'>
+                <h1>CREAR ORDEN DE TRABAJO</h1>
+                <span className='list fa fa-list' />
+            </div>
             {content}
         </div>
     }

@@ -36,9 +36,6 @@ export default class WorkOrder extends React.Component{
         this.props.dispatch(checkUserPermissions(kwargs))
         
 
-        this.props.dispatch({
-            type: 'WORKSHOP_PANEL_MOUNTED', payload : ''
-        })
         
     }
 
