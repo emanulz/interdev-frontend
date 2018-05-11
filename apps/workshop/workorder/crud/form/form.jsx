@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { setItem, getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
+import Client from '../../../general/clients/clients.jsx'
 
 @connect((store)=>{
     return {
@@ -228,23 +229,23 @@ export default class Form extends React.Component {
 
             <div className='col-xs-12 col-sm-6 fields-container first'>
 
-            <span>Detalles del Artículo</span>
-            <hr/>
+                <span>Detalles del Artículo</span>
+                <hr/>
 
-            <div className="row first">
-                <div className="col-xs-6 first">
-                    <label>Tipo electrodoméstico</label>
-                    <Select2
-                        name='article_type'
-                        value={this.props.work_order.article_type}
-                        onSelect={this.handleInputChange.bind(this)}
-                        options={{
-                            placeholder: 'Elija el tipo de artículo...',
-                            noResultsText: 'Sin elementos'
-                        }}
-                        data={this.props.article_types}
-                    />
-                </div>
+                <div className="row first">
+                    <div className="col-xs-6 first">
+                        <label>Tipo electrodoméstico</label>
+                        <Select2
+                            name='article_type'
+                            value={this.props.work_order.article_type}
+                            onSelect={this.handleInputChange.bind(this)}
+                            options={{
+                                placeholder: 'Elija el tipo de artículo...',
+                                noResultsText: 'Sin elementos'
+                            }}
+                            data={this.props.article_types}
+                        />
+                    </div>
 
                 <div className="col-xs-6 second">
                         <label> Marca</label>
@@ -258,7 +259,6 @@ export default class Form extends React.Component {
                         }}
                         data={this.props.article_brands}
                     />
-
                 </div>
             </div>
 
@@ -336,8 +336,17 @@ export default class Form extends React.Component {
 
             </div>
 
+            <div className='col-xs-12 col-sm-6 fields-container second'>
+                <span>Cliente</span>
+                <hr/>
+                <div className="row third">
+                    <div className="col-xs-6 first">
+                        <Client/>
+                    </div>
+                </div>
+            </div>
+
         </div>
     }
 }
 
-//
