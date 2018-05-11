@@ -84,7 +84,7 @@ export default class Form extends React.Component {
                     var new_failures_list = this.props.work_order.malfunction_details
                     const exists = this.props.work_order.malfunction_details.find(item => item.value === temp_failure)
                     if(exists === undefined){ //only add if not in list
-                        new_failures_list.push({'key':new_failures_list.length+1,'value':temp_failure})
+                        new_failures_list.push({'key':temp_failure.id,'value':temp_failure})
                     }            
                     work_order["malfunction_details"] = new_failures_list
                 }

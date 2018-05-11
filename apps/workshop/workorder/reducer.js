@@ -145,10 +145,7 @@ export default function reducer(state = stateConst, action){
 
         case 'CHANGE_MALFUNCTION_INPUT':
         {
-            var next_val = true
-            if(action.payload === 'text'){
-                next_val = false
-            }
+            let next_val = state.failure_input_dropdown ? false : true
             return {
                 ...state,
                 failure_input_dropdown: next_val
