@@ -1,22 +1,17 @@
-
 const stateConst = {
-  visible: false
+  fullWidth: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    // ***********************************
-    // LAYOUT
-    // ***********************************
-
-    case 'TOGGLE_PANEL':
+    case 'TOGGLE_FULL_WIDTH':
     {
-      const visible = state.visible
+      const width = !state.fullWidth
       return {
         ...state,
-        visible: !visible
+        fullWidth: width
       }
     } // case
 

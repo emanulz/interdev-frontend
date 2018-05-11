@@ -12,6 +12,7 @@ import Products from '../products/main.jsx'
 import Permissions from '../permissions/main.jsx'
 import ProductDepartments from '../productDepartments/main.jsx'
 import ProductSubDepartments from '../productSubDepartments/main.jsx'
+import Warehouses from '../warehouses/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -24,6 +25,7 @@ const routes = <div className='heigh100'>
   <Route path='/admin/productsubdepartments' component={ProductSubDepartments} />
   <Route path='/admin/permissions' component={Permissions} />
   <Route path='/admin/suppliers' component={Suppliers} />
+  <Route path='/admin/warehouses' component={Warehouses} />
 
 </div>
 

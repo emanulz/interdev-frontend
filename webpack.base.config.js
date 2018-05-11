@@ -21,7 +21,8 @@ const jsConfig = Object.assign({}, config, {
     admin: './apps/admin/app.js',
     sales: './apps/sales/app.js',
     credits: './apps/credits/app.js',
-    workshop: './apps/workshop/app.js'
+    workshop: './apps/workshop/app.js',
+    inventories: './apps/inventories/app.js'
   },
   module: {
     rules: [
@@ -67,7 +68,8 @@ const stylesConfig = Object.assign({}, config, {
     // reports: './apps/reports/appstyles/main.sass',
     admin: './apps/admin/appstyles/main.sass',
     sales: './apps/sales/appstyles/main.sass',
-    credits: './apps/credits/appstyles/main.sass'
+    credits: './apps/credits/appstyles/main.sass',
+    inventories: './apps/inventories/appstyles/main.sass'
   },
   module: {
     rules: [

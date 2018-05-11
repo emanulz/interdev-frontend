@@ -3,22 +3,22 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
-import Filters from '../filters/filters.jsx'
-import Products from '../products/products.jsx'
-import SidePanel from '../sidePanel/sidePanel.jsx'
+import routes from './routes'
 
 // COMPONENTS
 
-import TopBar from '../../../general/layout/topBar/topBar.jsx'
-import SideMenu from '../../../general/layout/sideMenu/sideMenu.jsx'
+import TopBar from '../layout/topBar/topBar.jsx'
+import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 
 // import routes from './routes.js'
 
 @connect((store) => {
   return {
-    fetching: store.fetching.fetching
+    fetching: store.fetching.fetching,
+    sideMenuVisible: store.layout.sideMenuVisible
   }
 })
 export default class Main extends React.Component {
@@ -31,19 +31,19 @@ export default class Main extends React.Component {
   render() {
 
     const fetching = this.props.fetching ? <Fetching /> : ''
-
-    const content = <div>
-      <SideMenu />
-      <div id='mainContainer' className='mainContainer'>
-        <TopBar />
-        <div className='mainContainer-content'>
-          <Filters />
-          <Products />
-          <SidePanel />
-          {fetching}
+    const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer' : 'mainContainer sideHidden'
+    const content = <Router>
+      <div>
+        <SideMenu />
+        <div id='mainContainer' className={mainContainerClass}>
+          <TopBar />
+          <div className='mainContainer-content'>
+            {routes}
+            {fetching}
+          </div>
         </div>
       </div>
-    </div>
+    </Router>
 
     return <div>
       {content}

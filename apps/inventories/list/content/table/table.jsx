@@ -9,18 +9,17 @@ import {filterProducts} from './actions'
 @connect((store) => {
   return {
     products: store.products.products,
-    warehouses: store.products.warehouses,
-    warehouseActive: store.products.warehouseActive,
-    movements: store.products.productmovements,
+    warehouses: store.warehouses.warehouses,
+    warehouseActive: store.warehouses.warehouseActive,
     departmentActive: store.products.departmentActive,
     subdepartmentActive: store.products.subdepartmentActive,
     filterText: store.products.filterText,
-    movement: store.products.productmovementActive,
     productActive: store.products.productActive,
+    movement: store.movements.productmovementActive,
     isPhysicalTake: store.products.isPhysicalTake
   }
 })
-export default class Products extends React.Component {
+export default class Table extends React.Component {
 
   bntMovementClick(product, event) {
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
@@ -29,7 +28,7 @@ export default class Products extends React.Component {
       ...this.props.movement
     }
 
-    movement.productId = product._id
+    movement.productId = product.id
     this.props.dispatch({type: 'SET_PRODUCT_MOVEMENT', payload: movement})
   }
 
@@ -47,12 +46,12 @@ export default class Products extends React.Component {
           product.inventory = {}
           let amount = 0
           warehouses.map(warehouse => {
-            warehouseName = warehouse._id == this.props.warehouseActive ? warehouse.name : warehouseName
-            const amountWarehouse = getAmountWarehouse(product._id, warehouse._id, movements)
-            product.inventory[warehouse._id] = amountWarehouse
+            warehouseName = warehouse.id == this.props.warehouseActive ? warehouse.name : warehouseName
+            const amountWarehouse = getAmountWarehouse(product.id, warehouse.id, movements)
+            product.inventory[warehouse.id] = amountWarehouse
             amount = amount + amountWarehouse
           })
-          // product.inventory = getAmount(product._id, movements)
+          // product.inventory = getAmount(product.id, movements)
           product.inventory.total = amount
         } else {
           product.inventory = '-'
@@ -99,7 +98,7 @@ export default class Products extends React.Component {
         ? product.inventory[this.props.warehouseActive]
         : product.inventory.total
 
-      return <tr key={product._id}>
+      return <tr key={product.id}>
         <td>{product.code}</td>
         <td>{product.description}</td>
         <td className='center'>{inventory}</td>
@@ -108,18 +107,14 @@ export default class Products extends React.Component {
     })
 
     // RETURN BLOCK
-    return <div className='products'>
-      <table className='products-table table col-xs-12'>
-        <thead>
-          {header}
-        </thead>
-        <tbody>
-          {body}
-        </tbody>
-      </table>
-
-    </div>
-
+    return <table className='inventories-list-content-table-table table'>
+      <thead>
+        {header}
+      </thead>
+      <tbody>
+        {body}
+      </tbody>
+    </table>
   }
 
 }
