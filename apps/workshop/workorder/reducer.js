@@ -55,7 +55,7 @@ const article_observations = [
     {"id":1, "text":"1-Rayado"},
     {"id":2, "text":"2-Presupuestar"},
     {"id":3, "text":"3-Teflón Malo"},
-    {"id":99, "text":"99-Otro"}
+    {"id":99, "text":"99-Otra"}
 ]
 
 const work_order_model = {
@@ -143,6 +143,15 @@ export default function reducer(state = stateConst, action){
             }
         }
 
+        case 'CHANGE_OBSERVATION_INPUT':
+        {
+            let next_val = state.observation_input_dropdown ? false:true
+            return {
+                ...state,
+                observation_input_dropdown : next_val
+            }
+        }
+
         case 'CHANGE_MALFUNCTION_INPUT':
         {
             let next_val = state.failure_input_dropdown ? false : true
@@ -157,6 +166,14 @@ export default function reducer(state = stateConst, action){
             return {
                 ...state,
                 article_custom_failure: action.payload
+            }
+        }
+        case 'UPDATE_CUSTOM_OBSERVATION_INPUT':
+        {
+
+            return {
+                ...state,
+                article_custom_observation: action.payload
             }
         }
         case 'CHANGE_OBSERVATION_INPUT':

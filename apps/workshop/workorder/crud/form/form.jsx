@@ -37,8 +37,8 @@ export default class Form extends React.Component {
         console.log(event.target.attributes)
         let value
 
-        
-        var temp_name = target.name
+        let temp_name = target.name
+
         switch (target.type) {
             case 'checkbox':
                 value = target.checked
@@ -57,6 +57,9 @@ export default class Form extends React.Component {
                     if(parts[0]==="failure_id"){
                         temp_name = "remove_malfunction"
                         value = parseInt(parts[1])
+                    }else if(parts[0]==="observation_id"){
+                        temp_name ="remove_observation"
+                        value = parseInt(parts[1])
                     }
                 }else{
                     value = target.value
@@ -73,15 +76,12 @@ export default class Form extends React.Component {
         switch(name){
             case "failures_list":
             {
-                //deep clone current workorder
                 const temp_failure = this.props.article_failures.find(item => {return item.id == target.value})['text']
-                //const temp_failure = this.props.article_failures[target.value]['text']
                 if(temp_failure ==="99-Otro"){//handle particular case where the failure is not listed
                     this.props.dispatch({type:'CHANGE_MALFUNCTION_INPUT', payload:'text'})
                     return
-
                 }else{
-                    var new_failures_list = this.props.work_order.malfunction_details
+                    let new_failures_list = this.props.work_order.malfunction_details
                     const exists = this.props.work_order.malfunction_details.find(item => item.value === temp_failure)
                     if(exists === undefined){ //only add if not in list
                         new_failures_list.push({'key':temp_failure.id,'value':temp_failure})
@@ -90,14 +90,53 @@ export default class Form extends React.Component {
                 }
                 break
             }
+            case "observations_list":
+            {
+                
+                const temp_observation = this.props.article_observations.find(item=>{return item.id == target.value})['text']
+                if(temp_observation ==="99-Otra"){
+                    this.props.dispatch({type:'CHANGE_OBSERVATION_INPUT', payload:'text'})
+                    return
+                }else{
+                    let new_observations_list = this.props.work_order.observations_list
+                    let exists = this.props.work_order.observations_list.find(item => item.value === temp_observation)
+                    if(exists === undefined){
+                        new_observations_list.push({'key':temp_observation.id, 'value':temp_observation})
+                    }
+                    work_order['observations_list'] = new_observations_list
+                }
+                break
+            }
+            case "remove_observation":
+            {
+                let new_observations_list = this.props.work_order.observations_list
+                const target_index = this.props.work_order.observations_list.splice(value, 1)
+                work_order['observations_list'] = new_observations_list
+                break
+            }
             case "remove_malfunction":
             {
-                var new_failures_list = this.props.work_order.malfunction_details
+                let new_failures_list = this.props.work_order.malfunction_details
                 const target_index = this.props.work_order.malfunction_details.splice(value,1)
                 work_order['malfunction_details'] = new_failures_list
                 break
             }
-
+            case "custom_observation_input":
+            {
+                if(event.type ==='blur' && value.length>3){
+                    let new_list =  this.props.work_order.observations_list
+                    const exists = this.props.work_order.observations_list.find(item => item.value === value)
+                    if(exists === undefined){ //only add if not in list
+                        new_list.push({'key':new_list.length+1,'value':value})
+                    }            
+                    work_order["observations_list"] = new_list
+                    this.props.dispatch({type:'UPDATE_CUSTOM_OBSERVATION_INPUT', payload:''})
+                    this.props.dispatch({type:'CHANGE_OBSERVATION_INPUT', payload:''})
+                }else{
+                    this.props.dispatch({type:'UPDATE_CUSTOM_OBSERVATION_INPUT', payload:value})
+                }
+                break                
+            }
             case "custom_malfunction_input":
             {
                 if(event.type ==='blur' && value.length>3){
@@ -157,8 +196,9 @@ export default class Form extends React.Component {
         }
         //build a list with the observations about the object state
         const observations_list = this.props.work_order.observations_list.map((observation, index)=>
-            <li key={malfunction.key} className="workshop-list-observation-item">
-            <span id={"observation_id-"+index} className="fa fa-minus-square" />{observation.value}
+            <li key={observation.key} className="workshop-list-observation-item">
+            <span id={"observation_id-"+index} className="fa fa-minus-square" 
+            onClick={this.handleInputChange.bind(this)}/> {observation.value}
             </li>
         )
 
