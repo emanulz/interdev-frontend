@@ -30,7 +30,8 @@ const article_brands = [
     {"id": 5, "text" :"5-LG"},
     {"id": 6, "text" :"6-GE"},
     {"id": 7, "text" :"7-Black&Decker"},
-    {"id": 8, "text" :"8-Hamilton Beach"}
+    {"id": 8, "text" :"8-Hamilton Beach"},
+    {"id":99, "text":"99-Otra"}
 ]
 
 const article_colors = [
@@ -39,12 +40,21 @@ const article_colors = [
     {"id": 2, "text" :"2-Gris"},
     {"id": 3, "text" :"3-Inox"},
     {"id": 4, "text" :"4-Rojo"},
+    {"id":99, "text":"99-Otro"}
 ]
 
 const article_failures = [
     {"id":0, "text":"0-Cambiar Pin"},
     {"id":1, "text": "1-No enciende"},
     {"id":2, "text":"2-No calienta"},
+    {"id":99, "text":"99-Otro"}
+]
+
+const article_observations = [
+    {"id":0, "text":"0-Completo"},
+    {"id":1, "text":"1-Rayado"},
+    {"id":2, "text":"2-Presupuestar"},
+    {"id":3, "text":"3-Teflón Malo"},
     {"id":99, "text":"99-Otro"}
 ]
 
@@ -64,6 +74,7 @@ const work_order_model = {
     article_data: '',
     article_warranty_bd:'',
     malfunction_details: [],
+    observations_list:[],
     observations: ''
 
 
@@ -78,9 +89,15 @@ const work_order_model = {
     article_types: article_types,
     article_brands: article_brands,
     article_colors:article_colors,
+
     article_failures:article_failures,
     article_custom_failure: '',
-    failure_input_dropdown: true
+    failure_input_dropdown: true,
+
+    article_observations:article_observations,
+    article_custom_observation:'',
+    observation_input_dropdown: true
+
 }
 
 export default function reducer(state = stateConst, action){
@@ -143,6 +160,17 @@ export default function reducer(state = stateConst, action){
             return {
                 ...state,
                 article_custom_failure: action.payload
+            }
+        }
+        case 'CHANGE_OBSERVATION_INPUT':
+        {
+            var next_val = true
+            if(action.payload ==='text'){
+                next_val = false
+            }
+            return {
+                ...state,
+                observation_input_dropdown: next_val
             }
         }
         case 'SET_WORK_ORDER':

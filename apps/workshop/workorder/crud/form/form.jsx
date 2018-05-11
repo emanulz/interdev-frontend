@@ -10,8 +10,14 @@ import Select2 from 'react-select2-wrapper'
         article_colors: store.workorder.article_colors,
         article_failures: store.workorder.article_failures,
         article_custom_failure : store.workorder.article_custom_failure,
-        work_order: store.workorder.work_order,
-        failure_input_dropdown: store.workorder.failure_input_dropdown
+        failure_input_dropdown: store.workorder.failure_input_dropdown,
+
+        article_observations: store.workorder.article_observations,
+        article_custom_observation: store.workorder.custom_observation,
+        observation_input_dropdown: store.workorder.observation_input_dropdown,
+        
+        work_order: store.workorder.work_order
+        
     }
 })
 
@@ -68,7 +74,6 @@ export default class Form extends React.Component {
             case "failures_list":
             {
                 //deep clone current workorder
-                
                 const temp_failure = this.props.article_failures.find(item => {return item.id == target.value})['text']
                 //const temp_failure = this.props.article_failures[target.value]['text']
                 if(temp_failure ==="99-Otro"){//handle particular case where the failure is not listed
@@ -87,7 +92,6 @@ export default class Form extends React.Component {
             }
             case "remove_malfunction":
             {
-                //deep clone current workorder
                 var new_failures_list = this.props.work_order.malfunction_details
                 const target_index = this.props.work_order.malfunction_details.splice(value,1)
                 work_order['malfunction_details'] = new_failures_list
@@ -102,7 +106,6 @@ export default class Form extends React.Component {
                     if(exists === undefined){ //only add if not in list
                         new_failures_list.push({'key':new_failures_list.length+1,'value':value})
                     }            
-        
                     work_order["malfunction_details"] = new_failures_list
                     this.props.dispatch({type:'UPDATE_CUSTOM_MALFUNCTION_INPUT', payload:''})
                     this.props.dispatch({type:'CHANGE_MALFUNCTION_INPUT', payload:''})
@@ -119,9 +122,7 @@ export default class Form extends React.Component {
             work_order[name] = value
             }
         }
-
         this.props.dispatch({type: 'SET_WORK_ORDER', payload: work_order})
-
 
     }
 
@@ -134,9 +135,7 @@ export default class Form extends React.Component {
             </li>
         )
         let failure_input_object=''
-        console.log('Changed ' + this.props.failure_input_dropdown)
         if(this.props.failure_input_dropdown==true){
-            console.log("Render select")
             failure_input_object = <Select2
             name='failures_list'
             className='form-control'
@@ -148,15 +147,41 @@ export default class Form extends React.Component {
             }}
             />
         }else{
-            console.log("Render text input")
             failure_input_object = <div className="col-xs-6 second">
-            <label>Descripción Falla</label>
             <input type="text" value={this.props.article_custom_failure} 
                 name="custom_malfunction_input" 
                 onBlur={this.handleInputChange.bind(this)} 
                 onChange={this.handleInputChange.bind(this)}
                 className='form-control' placeholder="Falla.."/>
             </div>
+        }
+        //build a list with the observations about the object state
+        const observations_list = this.props.work_order.observations_list.map((observation, index)=>
+            <li key={malfunction.key} className="workshop-list-observation-item">
+            <span id={"observation_id-"+index} className="fa fa-minus-square" />{observation.value}
+            </li>
+        )
+
+        let observations_input_object = ''
+        if(this.props.observation_input_dropdown==true){
+            observations_input_object = <Select2
+            name='observations_list'
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            data={this.props.article_observations}
+            options={{
+                placeholder: 'Elija un observación de la lista..',
+                noResultsText: 'Sin elementos'
+            }}
+            />           
+        }else{
+            observations_input_object = <div className="col-xs-6 second">
+            <input type="text" value={this.props.article_custom_observation} 
+                name="custom_observation_input" 
+                onBlur={this.handleInputChange.bind(this)} 
+                onChange={this.handleInputChange.bind(this)}
+                className='form-control' placeholder="Observación.."/>
+            </div>           
         }
 
         return <div className='col-xs-12 row form-container workshop-form'>
@@ -253,6 +278,21 @@ export default class Form extends React.Component {
                 </div>
             </div>
             
+            <span>Observaciones Artículo</span>
+            <hr/>
+
+            <div className="row fifth">
+                <div className="col-xs-6 first">
+                    <label>Observaciones</label>
+                    <ul className="list-group workshop-list-observations">
+                    {observations_list}
+                    </ul>
+                </div>
+                <div className="col-xs-6 second">
+                    <label>Seleccionar observación</label>
+                    {observations_input_object}
+                </div>
+            </div>
 
             </div>
 
