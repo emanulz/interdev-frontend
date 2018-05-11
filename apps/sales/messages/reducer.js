@@ -5,7 +5,6 @@ const stateConst = {
 }
 
 export default function reducer(state = stateConst, action) {
-
   switch (action.type) {
 
     case 'PRODUCT_NOT_FOUND':

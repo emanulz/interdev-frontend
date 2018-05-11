@@ -72,15 +72,18 @@ const work_order_model = {
     article_serial: '',
     article_color : '',
     article_data: '',
-    article_warranty_bd:'',
     malfunction_details: [],
     observations_list:[],
-    observations: ''
-
+    observations: '',
+    is_warranty:false,
+    warranty_number_bd:'',
+    warranty_invoice_date:'',
+    warranty_supplier_name:'',
+    warranty_invoice_number:'',
+    warranty_repaired_by:''
 
 }
 
-  
   const stateConst = {
     work_order :  work_order_model,
     fullWidth: false,
@@ -96,7 +99,13 @@ const work_order_model = {
 
     article_observations:article_observations,
     article_custom_observation:'',
-    observation_input_dropdown: true
+    observation_input_dropdown: true,
+
+    is_bd_warranty : false,
+
+    cash_advance: 0
+
+
 
 }
 

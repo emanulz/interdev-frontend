@@ -1,17 +1,11 @@
 const clientSelectedModel = {
   code: '0000',
-  clientType: 'GENERAL',
-  created: '',
-  credit_days: 0,
-  credit_limit: 0,
-  docType: 'CLIENT',
-  has_credit: false,
   id: '000000000',
   last_name: 'Contado',
   name: 'Cliente',
-  updated: '',
-  saleLoaded: false,
-  _id: 0
+  phone_number : '',
+  cellphone_number: '',
+  email: ''
 }
 
 const userSelectedModel = {
@@ -19,7 +13,6 @@ const userSelectedModel = {
   name: '',
   last_name: '',
   id: '0000',
-  _id: 0
 }
 
 const stateConst = {
@@ -29,8 +22,7 @@ const stateConst = {
   clients: [],
   users: [],
   clientSelected: clientSelectedModel,
-  userSelected: userSelectedModel,
-  clientSelectedDebt: 0
+  userSelected: userSelectedModel
 }
 
 export default function reducer(state = stateConst, action) {
