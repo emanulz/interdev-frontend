@@ -5,23 +5,20 @@
   height: 100%
   position: relative
   font-family: 'Source Sans Pro', sans-serif
+  &-create
+    padding: 30px 20px
+  &-list-damages
+    &-item
+      padding: 0 10 0 0
   &-content
     height: 100%
     width: 70%
     transition: width 0.3s ease
     position: absolute
+    padding: 30px 20px
     left: 0
     &.fullWidth
       width: 100%
-    &-product
-      padding: 0 20px
-      padding-top: 20px
-    &-cart
-      width: 100%
-      padding: 20px
-      height: calc(100% - 125px)
-      &.fullHeight
-        height: calc(100% - 65px)
     &-total
       height: 60px
       width: 100%
@@ -82,6 +79,3 @@
     &-content
       margin-top: 20px
       overflow-x: auto
-    //   visibility: visible
-    //   &.collapsed
-    //     visibility: hidden

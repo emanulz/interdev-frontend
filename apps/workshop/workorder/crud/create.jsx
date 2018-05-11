@@ -7,6 +7,8 @@ import React from 'react'
 import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 
+import Form from './form/form.jsx'
+
 @connect((store) => {
     return {
         permissions: store.workorder.permissions
@@ -22,7 +24,7 @@ import {connect} from 'react-redux'
         switch (this.props.permissions.add){
             case true:
             {
-                content = <div>Can create workorders</div>
+                content = <Form />
                 break
             }
             case false:
@@ -36,7 +38,7 @@ import {connect} from 'react-redux'
             }
         }
 
-        return <div className='create heigh100'>
+        return <div className='workshop-create heigh100'>
             <div className='create-edit-header'>
                 <h1>CREAR ORDEN DE TRABAJO</h1>
                 <span className='list fa fa-list' />
