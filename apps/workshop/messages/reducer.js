@@ -16,6 +16,16 @@ export default function reducer(state = stateConst, action){
           }
         } // case
 
+        case 'CASH_ADVANCE_INVALID':
+        {
+            alertify.alert('ERROR: MONTO DE ADELANTO INVÁLIDO',
+                'El adelando de dinero debe ser un valor númerico')
+            return {
+                ...state,
+                messages: true
+            }
+        }
+
     }
     return state
 }

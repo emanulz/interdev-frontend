@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import { setItem, getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
 import Client from '../../../general/clients/clients.jsx'
+import {checkCashAdvance} from '../../actions.js'
 
 @connect((store)=>{
     return {
@@ -35,9 +36,55 @@ export default class Form extends React.Component {
 
     }
 
+    handleOtherInput(event){
+        const target = event.target
+        let value
+        const name = target.name
+        switch(target.type){
+            case 'checkbox':
+            {
+                value = target.checked
+                break
+            }  
+            case 'number':
+            {
+                value = parseFloat(target.value)
+                    ? parseFloat(target.value)
+                    : 0
+                break
+            }
+            default:
+            {
+                value = target.value
+            }
+        }
+
+        switch(name){
+            case 'cash_advance':
+            {
+                const advance_valid = checkCashAdvance(value)
+                let type_dispatch = "CASH_ADVANCE_UPDATED"
+                let payload_dispatch = value
+                if(!advance_valid){
+                    type_dispatch = "CASH_ADVANCE_CLEAR"
+                    payload_dispatch = ''
+                    //trigger a message indicating the error
+                    this.props.dispatch({type:'CASH_ADVANCE_INVALID'})
+                }
+                this.props.dispatch({type:type_dispatch, payload:payload_dispatch})
+            }
+            default:
+            {
+
+            }
+        }
+        
+        
+
+    }
+
     handleInputChange(event){
         const target = event.target
-        console.log(event.target.attributes)
         let value
 
         let temp_name = target.name
@@ -400,7 +447,7 @@ export default class Form extends React.Component {
                     <input name="cash_advance" type='text'
                     value={this.props.cash_advance} className="form-control"
                     placeholder="Ingrese monto adelanto.." 
-                    onChange={this.handleInputChange.bind(this)} />
+                    onChange={this.handleOtherInput.bind(this)} />
                     {repaired_by_element}
                 </div>
                 

@@ -203,6 +203,21 @@ export default function reducer(state = stateConst, action){
                 work_order: action.payload
             }
         }
+        case 'CASH_ADVANCE_UPDATED':
+        {
+            return {
+                ...state,
+                cash_advance:action.payload
+            }
+        }
+
+        case 'CASH_ADVANCE_CLEAR':
+        {
+            return {
+                ...state,
+                cash_advance:stateConst.cash_advance
+            }
+        }
     }
 
     return state //default return
