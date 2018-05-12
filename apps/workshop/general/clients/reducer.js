@@ -73,6 +73,14 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLIENT_UNSELECT':
+    {
+      return {
+        ...state,
+        clientSelected: clientSelectedModel
+      }
+    }
+
     // ******** USERS ********
     case 'FETCH_USERS_REJECTED':
     {

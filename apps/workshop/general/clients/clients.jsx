@@ -37,6 +37,10 @@ export default class Clients extends React.Component {
 
   }
 
+  componentWillUnmount(){
+    this.props.dispatch({type:'CLIENT_UNSELECT'})
+  }
+
   inputKeyPress(ev) {
     // if Key pressed id Enter
     if (ev.key == 'Enter') {

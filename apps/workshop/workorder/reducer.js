@@ -8,17 +8,17 @@ const defaultPermissions = {
   }
 
 const article_types = [
-    {"id": 0, "text" : "0-Lavadora"},
-    {"id": 1, "text" :"1-Licuadora"},
-    {"id": 2, "text" :"2-Percolador"},
-    {"id": 3, "text" :"3-Refrigeradora"},
-    {"id": 4, "text" :"4-Olla Arrocera"},
-    {"id": 5, "text" :"5-Microondas"},
-    {"id": 6, "text" :"6-Cafetera Eléctrica"},
-    {"id": 7, "text" :"7-Moledor de café"},
-    {"id": 8, "text" :"8-Plancha"},
-    {"id": 9, "text" :"9-Batidora"},
-    {"id": 10, "text" :"10-Tostadora"}
+    {"id": "Lavadora", "text" : "0-Lavadora"},
+    {"id": "Licuadora", "text" :"1-Licuadora"},
+    {"id": "Percolador", "text" :"2-Percolador"},
+    {"id": "Refrigeradora", "text" :"3-Refrigeradora"},
+    {"id": "Olla Arrocera", "text" :"4-Olla Arrocera"},
+    {"id": "Microondas", "text" :"5-Microondas"},
+    {"id": "Cafetera Eléctrica", "text" :"6-Cafetera Eléctrica"},
+    {"id": "Moledor de café", "text" :"7-Moledor de café"},
+    {"id": "Plancha", "text" :"8-Plancha"},
+    {"id": "Batidora", "text" :"9-Batidora"},
+    {"id": "Tostadora", "text" :"10-Tostadora"}
 ]
 
 const article_brands = [
@@ -35,27 +35,27 @@ const article_brands = [
 ]
 
 const article_colors = [
-    {"id": 0, "text" : "0-Blanco"},
-    {"id": 1, "text" :"1-Negro"},
-    {"id": 2, "text" :"2-Gris"},
-    {"id": 3, "text" :"3-Inox"},
-    {"id": 4, "text" :"4-Rojo"},
-    {"id":99, "text":"99-Otro"}
+    {"id": "Blanco", "text" : "0-Blanco"},
+    {"id": "Negro", "text" :"1-Negro"},
+    {"id": "Gris", "text" :"2-Gris"},
+    {"id": "Inox", "text" :"3-Inox"},
+    {"id": "Rojo", "text" :"4-Rojo"},
+    {"id": "Otro", "text":"99-Otro"}
 ]
 
 const article_failures = [
-    {"id":'0', "text":"0-Cambiar Pin"},
-    {"id":'1', "text": "1-No enciende"},
-    {"id":'2', "text":"2-No calienta"},
-    {"id":'99', "text":"99-Otro"}
+    {"id":'Cambiar Pin', "text":"0-Cambiar Pin"},
+    {"id":'No enciende', "text": "1-No enciende"},
+    {"id":'No calienta', "text":"2-No calienta"},
+    {"id":'Otro', "text":"99-Otro"}
 ]
 
 const article_observations = [
-    {"id":"0", "text":"0-Completo"},
-    {"id":"1", "text":"1-Rayado"},
-    {"id":"2", "text":"2-Presupuestar"},
-    {"id":"3", "text":"3-Teflón Malo"},
-    {"id":"99", "text":"99-Otra"}
+    {"id":"Completo", "text":"0-Completo"},
+    {"id":"Rayado", "text":"1-Rayado"},
+    {"id":"Presupuestar", "text":"2-Presupuestar"},
+    {"id":"Teflón Malo", "text":"3-Teflón Malo"},
+    {"id":"Otra", "text":"99-Otra"}
 ]
 
 const work_order_model = {
@@ -88,11 +88,10 @@ const work_order_model = {
     work_order :  work_order_model,
     fullWidth: false,
     permissions: defaultPermissions,
-    workorders:[],
     article_types: article_types,
     article_brands: article_brands,
     article_colors:article_colors,
-
+    workorders:[],
     article_failures:article_failures,
     article_custom_failure: '',
     failure_input_dropdown: true,
@@ -203,9 +202,17 @@ export default function reducer(state = stateConst, action){
         }
         case 'CLEAR_WORK_ORDER':
         {
+            const clean_order = stateConst
+            clean_order.malfunction_details = []
+            clean_order.observations_list = []
             return {
-                state: stateConst
+                ...state,
+                work_order : clean_order
             }
+        }
+        case 'WORK_ORDER_CREATED':
+        {
+            console.log("Reducer work order created --> " + action.payload)
         }
         case 'CASH_ADVANCE_UPDATED':
         {

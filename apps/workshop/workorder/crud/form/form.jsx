@@ -30,11 +30,17 @@ export default class Form extends React.Component {
 
     //REACT METHODS
     componentWillMount(){
-
+        this.props.dispatch({type:'CLEAR_WORK_ORDER'})
+        this.props.dispatch({type:'CASH_ADVANCE_CLEAR'})
     }
 
     componentWillUpdate(nextProps){
 
+    }
+
+    componentWillUnmount(){
+        this.props.dispatch({type:'CLEAR_WORK_ORDER'})
+        this.props.dispatch({type:'CASH_ADVANCE_CLEAR'}) 
     }
 
     handleOtherInput(event){
@@ -133,9 +139,9 @@ export default class Form extends React.Component {
                     return
                 }else{
                     let new_failures_list = this.props.work_order.malfunction_details
-                    const exists = this.props.work_order.malfunction_details.find(item => item.value === temp_failure)
+                    const exists = this.props.work_order.malfunction_details.find(item => item.value === temp_failure.id)
                     if(exists === undefined){ //only add if not in list
-                        new_failures_list.push({'key':temp_failure.id,'value':temp_failure.text})
+                        new_failures_list.push({'key':temp_failure.id,'value':temp_failure.id})
                     }            
                     work_order["malfunction_details"] = new_failures_list
                 }
@@ -150,9 +156,9 @@ export default class Form extends React.Component {
                     return
                 }else{
                     let new_observations_list = this.props.work_order.observations_list
-                    let exists = this.props.work_order.observations_list.find(item => item.value === temp_observation)
+                    let exists = this.props.work_order.observations_list.find(item => item.value === temp_observation.id)
                     if(exists === undefined){
-                        new_observations_list.push({'key':temp_observation.id, 'value':temp_observation.text})
+                        new_observations_list.push({'key':temp_observation.id, 'value':temp_observation.id})
                     }
                     work_order['observations_list'] = new_observations_list
                 }

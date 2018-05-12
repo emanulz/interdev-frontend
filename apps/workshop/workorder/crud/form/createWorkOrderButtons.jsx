@@ -1,27 +1,42 @@
 import React from 'react'
 import alertify from 'alertifyjs'
 import {connect} from 'react-redux'
-import {checkWorkOrder} from '../../actions'
+import {checkWorkOrder, cleanWorkOrder} from '../../actions'
 import { saveItem } from '../../../../../utils/api'
 import { withRouter } from 'react-router-dom'
 
 @connect((store)=>{
     return {
         work_order : store.workorder.work_order,
-        user: store.user.user
+        user: store.user.user,
+        client: store.clients.clientSelected
+
     }
 })
 class CreateWorkOrderButtons extends React.Component {
 
     saveWorkOrder(redirect){
-        const work_order = this.props.work_order
+        const work_order = cleanWorkOrder(this.props.work_order)
         const user = this.props.user
         const work_order_old = {noPrevious:'Initial creation'}
 
+        this.props.work_order.client_id = this.props.client.id
+
+        this.props.work_order.receiving_employee = user
+        this.props.work_order.client = this.props.client
+        
         //check the work_order object before saving it
         const work_order_ok = checkWorkOrder(work_order)
+
+        //stringify objects
+        this.props.work_order.client = JSON.stringify(this.props.client)
+        this.props.work_order.receiving_employee = JSON.stringify(user)
+        //stringify array objects before saving
         work_order.observations_list = JSON.stringify(work_order.observations_list)
         work_order.malfunction_details = JSON.stringify(work_order.malfunction_details)
+
+
+
         if(work_order_ok){
             const kwargs = {
                 url:'/api/workorders/',
@@ -33,7 +48,8 @@ class CreateWorkOrderButtons extends React.Component {
                 itemOld: work_order_old,
                 successMessage: 'Orden de trabajo creada Correctamente',
                 errorMessage: 'Hubo un error al crear la orden de trabjo, intente de nuevo.',
-                dispatchType: 'CLEAR_WORKORDER'
+                dispatchType: 'CLEAR_WORK_ORDER',
+                isWorkOrder: true
             }
 
             if(redirect){
