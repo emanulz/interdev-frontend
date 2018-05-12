@@ -44,18 +44,18 @@ const article_colors = [
 ]
 
 const article_failures = [
-    {"id":0, "text":"0-Cambiar Pin"},
-    {"id":1, "text": "1-No enciende"},
-    {"id":2, "text":"2-No calienta"},
-    {"id":99, "text":"99-Otro"}
+    {"id":'0', "text":"0-Cambiar Pin"},
+    {"id":'1', "text": "1-No enciende"},
+    {"id":'2', "text":"2-No calienta"},
+    {"id":'99', "text":"99-Otro"}
 ]
 
 const article_observations = [
-    {"id":0, "text":"0-Completo"},
-    {"id":1, "text":"1-Rayado"},
-    {"id":2, "text":"2-Presupuestar"},
-    {"id":3, "text":"3-Teflón Malo"},
-    {"id":99, "text":"99-Otra"}
+    {"id":"0", "text":"0-Completo"},
+    {"id":"1", "text":"1-Rayado"},
+    {"id":"2", "text":"2-Presupuestar"},
+    {"id":"3", "text":"3-Teflón Malo"},
+    {"id":"99", "text":"99-Otra"}
 ]
 
 const work_order_model = {
@@ -74,7 +74,7 @@ const work_order_model = {
     article_data: '',
     malfunction_details: [],
     observations_list:[],
-    observations: '',
+    observations: 'No observations',
     is_warranty:false,
     warranty_number_bd:'',
     warranty_invoice_date:'',
@@ -104,8 +104,6 @@ const work_order_model = {
     is_bd_warranty : false,
 
     cash_advance: 0
-
-
 
 }
 
@@ -201,6 +199,12 @@ export default function reducer(state = stateConst, action){
             return {
                 ...state,
                 work_order: action.payload
+            }
+        }
+        case 'CLEAR_WORK_ORDER':
+        {
+            return {
+                state: stateConst
             }
         }
         case 'CASH_ADVANCE_UPDATED':

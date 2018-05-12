@@ -4,6 +4,7 @@ import { setItem, getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
 import Client from '../../../general/clients/clients.jsx'
 import {checkCashAdvance} from '../../actions.js'
+import CreateWorkOrderButtons from './createWorkOrderButtons.jsx'
 
 @connect((store)=>{
     return {
@@ -126,15 +127,15 @@ export default class Form extends React.Component {
         switch(name){
             case "failures_list":
             {
-                const temp_failure = this.props.article_failures.find(item => {return item.id == target.value})['text']
-                if(temp_failure ==="99-Otro"){//handle particular case where the failure is not listed
+                const temp_failure = this.props.article_failures.find(item => {return item.id == target.value})
+                if(temp_failure['text'] ==="99-Otro"){//handle particular case where the failure is not listed
                     this.props.dispatch({type:'CHANGE_MALFUNCTION_INPUT', payload:'text'})
                     return
                 }else{
                     let new_failures_list = this.props.work_order.malfunction_details
                     const exists = this.props.work_order.malfunction_details.find(item => item.value === temp_failure)
                     if(exists === undefined){ //only add if not in list
-                        new_failures_list.push({'key':temp_failure.id,'value':temp_failure})
+                        new_failures_list.push({'key':temp_failure.id,'value':temp_failure.text})
                     }            
                     work_order["malfunction_details"] = new_failures_list
                 }
@@ -143,15 +144,15 @@ export default class Form extends React.Component {
             case "observations_list":
             {
                 
-                const temp_observation = this.props.article_observations.find(item=>{return item.id == target.value})['text']
-                if(temp_observation ==="99-Otra"){
+                const temp_observation = this.props.article_observations.find(item=>{return item.id == target.value})
+                if(temp_observation['text'] ==="99-Otra"){
                     this.props.dispatch({type:'CHANGE_OBSERVATION_INPUT', payload:'text'})
                     return
                 }else{
                     let new_observations_list = this.props.work_order.observations_list
                     let exists = this.props.work_order.observations_list.find(item => item.value === temp_observation)
                     if(exists === undefined){
-                        new_observations_list.push({'key':temp_observation.id, 'value':temp_observation})
+                        new_observations_list.push({'key':temp_observation.id, 'value':temp_observation.text})
                     }
                     work_order['observations_list'] = new_observations_list
                 }
@@ -399,7 +400,7 @@ export default class Form extends React.Component {
                     </div>
                 </div>
 
-
+                <CreateWorkOrderButtons/>
 
             </div>
 
@@ -461,7 +462,10 @@ export default class Form extends React.Component {
                         onChange={this.handleInputChange.bind(this)} /> 
                     {bd_warranty_body}               
             </div>
+
         }
+
+
         return content
 
     }

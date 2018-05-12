@@ -1,3 +1,7 @@
+export function checkWorkOrder(workorder){
+    return true
+}
+
 export function checkCashAdvance(advance){
     
     let OK = true
@@ -12,3 +16,4 @@ export function checkCashAdvance(advance){
 
 
 }
+
