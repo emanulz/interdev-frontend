@@ -6,7 +6,9 @@ import layout from './layout/reducer.js'
 import workorder from './workorder/reducer.js'
 import clients from './general/clients/reducer.js'
 import messages from './messages/reducer.js'
-
+import workshopview from './workshopView/reducer.js'
+import partsProvider from './workshopView/partsProvider/reducer.js'
+import transactionsList from './workshopView/transactionsList/reducer.js'
 
 export default combineReducers({
     fetching,
@@ -14,6 +16,9 @@ export default combineReducers({
     layout,
     workorder,
     clients,
-    messages
+    messages,
+    workshopview,
+    partsProvider,
+    transactionsList
 
 })

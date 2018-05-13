@@ -84,7 +84,7 @@ const work_order_model = {
 
 }
 
-  const stateConst = {
+const stateConst = {
     work_order :  work_order_model,
     fullWidth: false,
     permissions: defaultPermissions,
