@@ -26,6 +26,17 @@ export default function reducer(state = stateConst, action){
             }
         }
 
+        case 'PART_NOT_FOUND':
+        {
+            alertify.alert('ERROR: CÓDIGO DE PARTE NO ENCONTRADO',
+                'El código de parte no se encuentra en el sistema')
+            return {
+                ...state,
+                messages: true
+            }
+
+        }
+
     }
     return state
 }

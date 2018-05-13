@@ -2,10 +2,11 @@ import alertify from 'alertifyjs'
 
 
 const stateConst = {
-    products:{},
+    parts:{},
     searchKey:''
 }
 
+//
 export default function reducer(state=stateConst, action){
 
 
@@ -14,7 +15,7 @@ export default function reducer(state=stateConst, action){
         {
             return {
                 ...state,
-                products:{}
+                parts:{}
             }
         }
 
@@ -22,7 +23,7 @@ export default function reducer(state=stateConst, action){
         {
             return {
                 ...state,
-                products: action.payload
+                parts: action.payload
             }
         }
 

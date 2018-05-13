@@ -1,3 +1,5 @@
+import alertify from 'alertifyjs'
+
 const stateConst = {
     cashAdvanceList:[],
     partsRequestList:[],
@@ -21,6 +23,37 @@ export default function reducer(state=stateConst, action){
                 cashAdvanceList : [],
                 partsRequestList : [],
                 laborList : []
+            }
+        }
+
+        case 'ADD_TO_LABOR_LIST':
+        {
+            return {
+                ...state,
+                laborList:[
+                    ...state.laborList,
+                    action.payload
+                ]
+            }
+        }
+
+        case 'ADD_TO_PARTS_LIST':
+        {
+            return {
+                ...state,
+                partsRequestList: [
+                    ...state.partsRequestList,
+                    action.payload
+                ]
+            }
+        }
+        case 'UPDATE_PARTS_LIST':
+        {
+            const newPartsList = [...state.partsRequestList]
+            newPartsList[action.payload.index] = action.payload.part
+            return {
+                ...state,
+                partsRequestList : newPartsList
             }
         }
         default:

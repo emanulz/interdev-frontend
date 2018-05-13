@@ -45,3 +45,44 @@
             display: flex
             align-items: center
             width: 7%
+    &-body
+        height: calc(100% - 40px)
+        overflow-x: auto
+        padding-right: 5px
+        &-item
+            padding: 1px 5px 
+            border: 1px solid #cacaca
+            border-radius: 5px
+            margin: 3px 0
+            display: flex
+            flex-flow: row
+            flex-wrap: wrap
+            justify-content: flex-start
+            position: relative
+            & h5
+                font-size: 15px
+                width: 100%
+            &-code
+                width: 20%
+            &-description
+                width: 50%
+            &-qty
+                width: 30%
+                & input
+                    font-size: 13px
+            &-unitPrice
+                width: 20%
+            &-discount
+                width: 25%
+                & input
+                    font-size: 13px
+            &-iva
+                text-align: center
+                width: 25%
+            &-total
+                text-align: center
+                width: 30%
+            & .removeItemIcon
+                position: absolute
+                right: -5px
+                top: -5px

@@ -1,6 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import TransactionItems from './transactionItems.jsx'
+
 @connect((store)=>{
     return{
         showPrices:store.workshopview.showPrices
@@ -31,6 +33,7 @@ export default class TransactionsList extends React.Component {
                 {totalColumnHeader}
 
             </div>
+            <TransactionItems />
         </div>
     }
 

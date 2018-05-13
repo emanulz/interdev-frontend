@@ -2,12 +2,14 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
+import {userPartSearchRequest} from './actions.js'
 
+let inspect = require('util-inspect')
 
 @connect((store)=>{
     return{
         searchKey: store.partsProvider.searchKey,
-        products: store.partsProvider.products,
+        parts: store.partsProvider.parts,
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         partsRequestList: store.transactionsList.partsRequestList,
         laborList: store.transactionsList.laborList
@@ -73,6 +75,7 @@ export default class PartsProvider extends React.Component{
                     this.props.dispatch({type:'CASH_ADVANCE_QUICK_ENTRY',
                     payload:{'cost':cost, 'description':description}})
 
+                    
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
 
@@ -81,6 +84,10 @@ export default class PartsProvider extends React.Component{
                     const code = bits[0]
                     const qty = isNaN(bits[1]) ? 1 : parseInt(bits[1])
 
+                    //process user search request
+                    const next_action = userPartSearchRequest(this.props.parts, code, qty, this.props.partsRequestList)
+                    this.props.dispatch(next_action)
+                    
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
                     //signal the transactionsList with the code of the product
