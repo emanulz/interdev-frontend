@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
 
+
 @connect((store)=>{
     return{
         searchKey: store.partsProvider.searchKey,
@@ -33,9 +34,60 @@ export default class PartsProvider extends React.Component{
 
     inputKeyPress(e){
         if(e.key==='Enter'){
-            console.log('Enter press')
+            if(e.target.value){
+                //look for an accelerator for labor in the form
+                //"mo*4500.00*Description"
+                if(e.target.value.startsWith('mo*')){
+                    let bits = e.target.value.split('*')
+                    //check if the labor cost is not a number, notify
+                    if(isNaN(bits[1])){
+                        this.props.dispatch({type:'INVALID_LABOR_QUICK_ENTRY'})
+                        return
+                    }
+                    const cost = parseFloat(bits[1])
+                    let description = "Reparación"
+                    if(!(bits[2] === undefined) && bits[2].length > 3){
+                        description = bits[2]
+                    }
+
+                    this.props.dispatch({type:'LABOR_QUICK_ENTRY', 
+                        payload: {'cost':cost, 'description':description}})
+
+                    //signal the search field clear
+                    this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
+
+                }else if(e.target.value.startsWith("ad*")){
+                    let bits = e.target.value.split('*')
+                    //check if the cost is not a number, notify
+                    if(isNaN(bits[1])){
+                        this.props.dispatch({type:'INVALID_CASH_ADVANCE_QUICK_ENTRY'})
+                        return
+                    }
+
+                    const cost = parseFloat(bits[1])
+                    let description = 'Adelando Reparación'
+                    if(!(bits[2]===undefined) && bits[2].length > 3){
+                        description = bits[2]
+                    }
+
+                    this.props.dispatch({type:'CASH_ADVANCE_QUICK_ENTRY',
+                    payload:{'cost':cost, 'description':description}})
+
+                    //signal the search field clear
+                    this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
+
+                }else{
+                    let bits = e.target.value.split('*')
+                    const code = bits[0]
+                    const qty = isNaN(bits[1]) ? 1 : parseInt(bits[1])
+
+                    //signal the search field clear
+                    this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
+                    //signal the transactionsList with the code of the product
+                }
+
+            }
         }else{
-            console.log("Other key press")
             this.props.dispatch({type:'UPDATE_SEARCH_KEY', payload:e.target.value})
         }
     }
