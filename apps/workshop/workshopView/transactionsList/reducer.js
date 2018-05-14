@@ -37,6 +37,17 @@ export default function reducer(state=stateConst, action){
             }
         }
 
+        case 'ADD_TO_CASH_ADVANCE_LIST':
+        {
+            return {
+                ...state,
+                cashAdvanceList:[
+                    ...state.cashAdvanceList,
+                    action.payload
+                ]
+            }
+        }
+
         case 'ADD_TO_PARTS_LIST':
         {
             return {

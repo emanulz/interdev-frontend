@@ -14,7 +14,7 @@ export default class TransactionItems extends React.Component {
 
 
     render(){
-        
+
         const partsRequest = this.props.partsRequestList
 
         const removeIconClass = 'removeItemIcon'
@@ -36,14 +36,14 @@ export default class TransactionItems extends React.Component {
                     {item.part.code}
                 </div>
 
-                <div className={itemRowClass + "-description"}>
-                    <h5>Desc</h5>
-                    {item.part.description}
-                </div>
-
                 <div className={itemRowClass + "-qty"}>
                     <h5>Cantidad</h5>
                     {qtyField}
+                </div>
+
+                <div className={itemRowClass + "-description"}>
+                    <h5>Desc</h5>
+                    {item.part.description}
                 </div>
 
                 <div className={itemRowClass + "-type"} >

@@ -22,12 +22,12 @@ export default class WorkshopView extends React.Component {
             <div className="form-container">
                 <div className="row first ">
 
-                    <div className="col-sm-6 first">
+                    <div className="col-sm-10 first">
                         <PartsProvider/>
                         <TransactionsList/>
                     </div>
 
-                    <div className="col-sm-6 second">
+                    <div className="col-sm-2 second">
                         <PartsProvider/>
                     </div>
                     

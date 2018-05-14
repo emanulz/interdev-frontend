@@ -52,7 +52,7 @@ export default class PartsProvider extends React.Component{
                         description = bits[2]
                     }
 
-                    this.props.dispatch({type:'LABOR_QUICK_ENTRY', 
+                    this.props.dispatch({type:'ADD_TO_LABOR_LIST', 
                         payload: {'cost':cost, 'description':description}})
 
                     //signal the search field clear
@@ -72,7 +72,7 @@ export default class PartsProvider extends React.Component{
                         description = bits[2]
                     }
 
-                    this.props.dispatch({type:'CASH_ADVANCE_QUICK_ENTRY',
+                    this.props.dispatch({type:'ADD_TO_CASH_ADVANCE_LIST',
                     payload:{'cost':cost, 'description':description}})
 
                     
