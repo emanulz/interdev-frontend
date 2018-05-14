@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
-import {userPartSearchRequest} from './actions.js'
+import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest} from './actions.js'
 
 let inspect = require('util-inspect')
 
@@ -52,8 +52,7 @@ export default class PartsProvider extends React.Component{
                         description = bits[2]
                     }
 
-                    this.props.dispatch({type:'ADD_TO_LABOR_LIST', 
-                        payload: {'cost':cost, 'description':description}})
+                    this.props.dispatch(buildLaborRequest(cost, description))
 
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
@@ -72,10 +71,8 @@ export default class PartsProvider extends React.Component{
                         description = bits[2]
                     }
 
-                    this.props.dispatch({type:'ADD_TO_CASH_ADVANCE_LIST',
-                    payload:{'cost':cost, 'description':description}})
+                    this.props.dispatch(buildCashAdvanceRequest(cost, description))
 
-                    
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
 

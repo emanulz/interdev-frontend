@@ -1,6 +1,35 @@
 let inspect = require('util-inspect')
 const uuidv1 = require('uuid/v1')
 
+//build a cash advance request
+
+export function buildCashAdvanceRequest(cost, description){
+
+    return{
+        type:'ADD_TO_CASH_ADVANCE_LIST',
+        payload:{
+            uuid: uuidv1(),
+            element:{'cost': cost, 'description':description},
+            qty: 1,
+            type:'CASH_ADVANCE'
+
+        }
+    }
+}
+
+export function buildLaborRequest(cost, description){
+    return{
+        type:'ADD_TO_LABOR_LIST',
+        payload:{
+            uuid: uuidv1(),
+            element:{'cost': cost, 'description':description},
+            qty: 1,
+            type:'LABOR'
+
+        }
+    }
+}
+
 //handles an user search of a part from the search bar
 export function userPartSearchRequest(parts, code, qty, partsRequestList){
 
@@ -21,26 +50,25 @@ export function userPartSearchRequest(parts, code, qty, partsRequestList){
 function partAlreadyInTransactionsList(code, qty, parts, partsRequestList, targetPartIndex){
 
     const indexInPartsRequestList = partsRequestList.findIndex(part => {
-        return part.part.code == code || part.part.barcode == code
+        return part.element.code == code || part.element.barcode == code
 
     })
             
-
-    console.log('index in part --> ' + indexInPartsRequestList)
 
     const next_action = (indexInPartsRequestList == -1)
     ?{
         type: 'ADD_TO_PARTS_LIST',
         payload:{
             uuid: uuidv1(),
-            part:parts[targetPartIndex],
-            qty: qty
+            element:parts[targetPartIndex],
+            qty: qty,
+            type:'PART_REQUEST'
         }
     }
     :{
         type: 'UPDATE_PARTS_LIST',
         payload: {
-            part: updatePartInTransactionList(partsRequestList, indexInPartsRequestList, qty),
+            element: updatePartInTransactionList(partsRequestList, indexInPartsRequestList, qty),
             index: indexInPartsRequestList
         }
     }

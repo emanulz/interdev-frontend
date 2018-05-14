@@ -19,21 +19,43 @@ export default class TransactionItems extends React.Component {
 
         const removeIconClass = 'removeItemIcon'
         const itemRowClass = 'transactions-body-item'
-        const partItems = partsRequest.map((item, index) =>{
+
+        const transactions = this.props.partsRequestList.concat(this.props.cashAdvanceList)
+            .concat(this.props.laborList)
+
+        const transactionsItems = transactions.map((item, index) =>{
 
             const qtyField = <input
-                id={`qty${item.part.code}`}
+                id={`qty${item.qty}`}
                 type='number'
                 className='form-control'
-                //onChange={undefined}
-                //value={item.qty}
             />
+
+            let movementType = ''
+            switch(item.type){
+                case 'PART_REQUEST':
+                {
+                    movementType ='Requisición Repuesto'
+                    break
+                }
+
+                case 'CASH_ADVANCE':
+                {
+                    movementType = 'Adelanto'
+                    break
+                }
+                case 'LABOR':
+                {
+                    movementType = 'Mano de Obra'
+                    break
+                }
+            }
 
             return <div className={itemRowClass} key={item.uuid}>
 
                 <div className={itemRowClass + "-code"}>
                     <h5>Código</h5>
-                    {item.part.code}
+                    {item.element.code? item.element.code: 'N/A'}
                 </div>
 
                 <div className={itemRowClass + "-qty"}>
@@ -43,12 +65,12 @@ export default class TransactionItems extends React.Component {
 
                 <div className={itemRowClass + "-description"}>
                     <h5>Desc</h5>
-                    {item.part.description}
+                    {item.element.description}
                 </div>
 
                 <div className={itemRowClass + "-type"} >
                     <h5>Tipo</h5>
-                    Requisición Parte
+                    {movementType}
                 </div>
 
                 <div className={itemRowClass + "-unitPrice"}>
@@ -66,9 +88,9 @@ export default class TransactionItems extends React.Component {
             </div>
 
         })
-        console.log("Part items size" +  partItems.length)
+
         return <div className='transactions-body'>
-            {partItems}
+            {transactionsItems}
         </div>
     }
 }

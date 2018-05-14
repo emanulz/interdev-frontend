@@ -12,7 +12,6 @@ import TransactionItems from './transactionItems.jsx'
 export default class TransactionsList extends React.Component {
 
     render(){
-        console.log("Show prices --> " + this.props.showPrices)
         const puColumnHeader = this.buildUPHeader()
         const totalColumnHeader = this.buildTotalHeader()
         return <div className="transactions">
