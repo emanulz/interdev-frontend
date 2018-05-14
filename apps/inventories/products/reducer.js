@@ -42,9 +42,14 @@ export default function reducer(state = stateConst, action) {
 
     case 'FETCH_PRODUCTS_FULFILLED':
     {
+      const products = action.payload
+      products.forEach(product => {
+        const inventoryByWarehouse = JSON.parse(product.inventory_by_warehouse)
+        product.inventory_by_warehouse = inventoryByWarehouse
+      })
       return {
         ...state,
-        products: action.payload
+        products: products
       }
     } // case
 

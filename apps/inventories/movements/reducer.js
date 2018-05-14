@@ -1,5 +1,12 @@
 const inventoryMovementModel = {
-
+  movement_type: '',
+  user: '',
+  amount: '',
+  product: '',
+  product_id: '',
+  description: '',
+  warehouse: '',
+  warehouse_id: ''
 }
 
 const stateConst = {

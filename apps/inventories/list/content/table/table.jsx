@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {getAmountWarehouse} from '../../admin/utils/inventory'
 import {filterProducts} from './actions'
 
 @connect((store) => {
@@ -36,33 +35,14 @@ export default class Table extends React.Component {
   render() {
 
     const products = this.props.products
-    const movements = [...this.props.movements]
     const warehouses = this.props.warehouses
-    let warehouseName = ''
 
-    const data = products.length
-      ? products.map(product => {
-        if (product.useInventory) {
-          product.inventory = {}
-          let amount = 0
-          warehouses.map(warehouse => {
-            warehouseName = warehouse.id == this.props.warehouseActive ? warehouse.name : warehouseName
-            const amountWarehouse = getAmountWarehouse(product.id, warehouse.id, movements)
-            product.inventory[warehouse.id] = amountWarehouse
-            amount = amount + amountWarehouse
-          })
-          // product.inventory = getAmount(product.id, movements)
-          product.inventory.total = amount
-        } else {
-          product.inventory = '-'
-        }
-        return product
-      })
-      : []
     // Just use products that use inventory
-    const filteredData = data.filter((el) => el.useInventory)
+    const filteredData = products.filter((el) => el.inventory_enabled)
+    // Then Sort by code
     const sortedData = filteredData.sort((a, b) => a.code - b.code)
-
+    // Get the data of the warehouse selected if any
+    const warehouseSelected = warehouses.find(element => element.id == this.props.warehouseActive)
     // filter by elements on left column
     const filtered = filterProducts(
       sortedData, this.props.filterText,
@@ -70,7 +50,7 @@ export default class Table extends React.Component {
       this.props.subdepartmentActive
     )
 
-    const warehouseText = warehouseName ? `Bodega ${warehouseName}` : 'Existencia'
+    const warehouseText = warehouseSelected ? `${warehouseSelected.name}` : 'Existencia Total'
 
     // HEADER OF THE TABLE BASE OF WHETER IS PHYSICAL TAKE OR NOT
     const header = this.props.isPhysicalTake
@@ -95,8 +75,8 @@ export default class Table extends React.Component {
       </button>
 
       const inventory = this.props.warehouseActive
-        ? product.inventory[this.props.warehouseActive]
-        : product.inventory.total
+        ? product.inventory_by_warehouse[this.props.warehouseActive]
+        : product.inventory
 
       return <tr key={product.id}>
         <td>{product.code}</td>
@@ -107,7 +87,7 @@ export default class Table extends React.Component {
     })
 
     // RETURN BLOCK
-    return <table className='inventories-list-content-table-table table'>
+    return <table className='inventories-products-table table'>
       <thead>
         {header}
       </thead>

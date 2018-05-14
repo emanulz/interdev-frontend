@@ -19,12 +19,10 @@ export default class Main extends React.Component {
 
   // Main Layout
   render() {
-    const contentClass = this.props.fullWidth ? 'inventories-list-content fullWidth' : 'inventories-list-content'
+    const contentClass = this.props.fullWidth ? 'inventories-products fullWidth' : 'inventories-products'
 
     return <div className={contentClass}>
-      <div className='inventories-list-content-table' >
-        <Table />
-      </div>
+      <Table />
     </div>
 
   }

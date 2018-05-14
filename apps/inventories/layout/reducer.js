@@ -7,7 +7,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'SALE_PANEL_MOUNTED':
+    case 'LIST_PANEL_MOUNTED':
     {
       return {
         ...state,

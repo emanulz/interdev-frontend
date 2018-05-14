@@ -5,7 +5,8 @@ import React from 'react'
 // import { checkUserPermissions } from '../../utils/checkPermissions'
 import { getItemDispatch } from '../../../utils/api.js'
 import Content from './content/content.jsx'
-import Aside from './aside/aside.jsx'
+import Filters from './filters/filters.jsx'
+import SidePanel from './sidePanel/sidePanel.jsx'
 
 import {connect} from 'react-redux'
 
@@ -17,6 +18,8 @@ export default class Sale extends React.Component {
 
   componentWillMount() {
 
+    this.props.dispatch({type: 'LIST_PANEL_MOUNTED', payload: ''})
+
     const productKwargs = {
       url: '/api/products',
       successType: 'FETCH_PRODUCTS_FULFILLED',
@@ -25,6 +28,38 @@ export default class Sale extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getItemDispatch(productKwargs))
 
+    const warehouseKwargs = {
+      url: '/api/warehouses',
+      successType: 'FETCH_WAREHOUSES_FULFILLED',
+      errorType: 'FETCH_WAREHOUSES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(warehouseKwargs))
+
+    const inventoryMovementKwargs = {
+      url: '/api/inventorymovements',
+      successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
+      errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(inventoryMovementKwargs))
+
+    const productDepartmentKwargs = {
+      url: '/api/productdepartments',
+      successType: 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED',
+      errorType: 'FETCH_PRODUCT_DEPARTMENTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(productDepartmentKwargs))
+
+    const productSubDepartmentKwargs = {
+      url: '/api/productsubdepartments',
+      successType: 'FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED',
+      errorType: 'FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(productSubDepartmentKwargs))
+
   }
   // *******************************************************************
 
@@ -32,8 +67,9 @@ export default class Sale extends React.Component {
   render() {
 
     return <div className='inventories-list'>
-      <Aside />
+      <Filters />
       <Content />
+      <SidePanel />
 
     </div>
 
