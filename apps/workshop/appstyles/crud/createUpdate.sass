@@ -1,0 +1,104 @@
+.create
+  & h1
+    font-size: 18px
+
+.form-container
+  padding-left: 0
+
+.input-block
+  & .first
+      padding-right: 10px
+  & .second
+      padding-left: 10px
+
+.fields-container
+  padding-top: 15px !important
+  font-family: 'Source Sans Pro', sans-serif !important
+  & input[type='checkbox']
+    margin: 0
+
+  &.first
+      padding-right: 10px
+  &.second
+      padding-left: 10px
+  & span
+      font-size: 20px
+      font-weight: 500
+
+  & hr
+      margin: 5px 0 15px 0
+      border-top: 1px solid $PRIMARY-COLOR
+
+  & label
+      font-size: 14px
+      font-weight: bold
+      margin-bottom: 5px
+
+  & .inline-checkbox
+      display: flex
+      flex-flow: row
+      & input
+          width: 20px
+          height: 18px
+          margin: 0 15px
+
+  &.buttons
+      font-weight: 200
+
+      & .col-xs-6
+
+          padding-right: 10px
+          margin-bottom: 0
+
+      & .col-xs-12
+
+          padding-right: 10px
+          margin-bottom: 10px
+
+.select2
+  font-family: 'Source Sans Pro', sans-serif !important
+  width: 100% !important
+  & span
+    font-size: 13px !important
+
+.select2-results__options
+  & li
+    font-size: 13px !important
+
+.select2-container
+  & .select2-selection--single
+    height: 35px
+    & span
+      line-height: 35px
+
+.select2-selection__placeholder
+  font-size: 13px !important
+
+.select2-selection__rendered
+  line-height: 35px !important
+
+.select2-results__option
+  font-family: 'Source Sans Pro', sans-serif !important
+
+.create-edit-header
+  font-family: 'Source Sans Pro', sans-serif !important
+  display: flex
+  flex-flow: row
+  & h1
+    font-size: 22px
+    font-weight: 800
+  & span
+    line-height: 16px
+    font-size: 28px
+    cursor: pointer
+    color: $PRIMARY-COLOR
+    &:hover
+      color: $PRIMARY-COLOR-ACCENT
+  & .previous
+    margin-left: 20px
+  & .next
+    margin-left: 10px
+  & .list
+    font-size: 25px
+    line-height: 20px
+    margin-left: 20px

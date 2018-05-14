@@ -137,6 +137,7 @@ export function saveItem(kwargs) {
   const logDescription = kwargs.logDescription
   const user = kwargs.user
   const isSale = kwargs.isSale
+  const isWorkOrder = kwargs.isWorkOrder
   return function(dispatch) {
 
     axios({
@@ -157,6 +158,9 @@ export function saveItem(kwargs) {
         if (isSale) {
           dispatch({type: 'SET_SALE', payload: response.data})
           dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+        }else if(isWorkOrder){
+          console.log('API CREATE IS WORK ORDER')
+          dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
         }
       }).catch((err) => {
         console.log(err)

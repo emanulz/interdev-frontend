@@ -12,7 +12,7 @@ export default class Unauthorized extends React.Component {
       <h1>UNAAUTHORIZED</h1>
       <p>No tiene permiso para entar en esta página</p>
     </div>
-
+    
   }
 
 }

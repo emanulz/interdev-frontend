@@ -123,7 +123,7 @@ class Form extends React.Component {
     const product = {
       ...this.props.product
     }
-
+    console.log("Pdoduct value --> " + value)
     product[name] = value
 
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})

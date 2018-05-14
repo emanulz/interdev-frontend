@@ -69,7 +69,8 @@ const stylesConfig = Object.assign({}, config, {
     admin: './apps/admin/appstyles/main.sass',
     sales: './apps/sales/appstyles/main.sass',
     credits: './apps/credits/appstyles/main.sass',
-    inventories: './apps/inventories/appstyles/main.sass'
+    inventories: './apps/inventories/appstyles/main.sass',
+    workshop: './apps/workshop/appstyles/main.sass'
   },
   module: {
     rules: [
