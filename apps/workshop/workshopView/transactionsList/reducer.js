@@ -1,4 +1,5 @@
 import alertify from 'alertifyjs'
+let inspect = require('util-inspect')
 
 const stateConst = {
     cashAdvanceList:[],
@@ -59,12 +60,22 @@ export default function reducer(state=stateConst, action){
             }
         }
         case 'UPDATE_PARTS_LIST':
-        {
+        { 
             const newPartsList = [...state.partsRequestList]
-            newPartsList[action.payload.index] = action.payload.part
+            newPartsList[action.payload.index] = action.payload.item
             return {
                 ...state,
                 partsRequestList : newPartsList
+            }
+        }
+
+        case 'DELETE_PART_FROM_LIST':
+        {
+            const newPartsList = [...state.partsRequestList]
+            newPartsList.splice(action.payload.index,1)
+            return {
+                ...state,
+                partsRequestList: newPartsList
             }
         }
         default:

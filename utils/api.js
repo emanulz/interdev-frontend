@@ -159,7 +159,6 @@ export function saveItem(kwargs) {
           dispatch({type: 'SET_SALE', payload: response.data})
           dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
         }else if(isWorkOrder){
-          console.log('API CREATE IS WORK ORDER')
           dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
         }
       }).catch((err) => {

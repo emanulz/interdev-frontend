@@ -1,4 +1,7 @@
+import { searchClient } from '../general/clients/actions';
+import {createCashAdvance} from '../general/actions'
 
+let inspect = require('util-inspect')
 
 const defaultPermissions = {
     add: 'unfetched',
@@ -22,16 +25,16 @@ const article_types = [
 ]
 
 const article_brands = [
-    {"id": 0, "text" : "0-Proctor Silex"},
-    {"id": 1, "text" :"1-Oster"},
-    {"id": 2, "text" :"2-Samsung"},
-    {"id": 3, "text" :"3-Panasonic"},
-    {"id": 4, "text" :"4-Atlas"},
-    {"id": 5, "text" :"5-LG"},
-    {"id": 6, "text" :"6-GE"},
-    {"id": 7, "text" :"7-Black&Decker"},
-    {"id": 8, "text" :"8-Hamilton Beach"},
-    {"id":99, "text":"99-Otra"}
+    {"id": "Proctor Silex", "text" : "0-Proctor Silex"},
+    {"id": "Oster", "text" :"1-Oster"},
+    {"id": "Samsung", "text" :"2-Samsung"},
+    {"id": "Panasonic", "text" :"3-Panasonic"},
+    {"id": "Atlas", "text" :"4-Atlas"},
+    {"id": "LG", "text" :"5-LG"},
+    {"id": "GE", "text" :"6-GE"},
+    {"id": "Black&Decker", "text" :"7-Black&Decker"},
+    {"id": "Hamilton Beach", "text" :"8-Hamilton Beach"},
+    {"id": "Otra", "text":"99-Otra"}
 ]
 
 const article_colors = [
@@ -207,12 +210,53 @@ export default function reducer(state = stateConst, action){
             clean_order.observations_list = []
             return {
                 ...state,
-                work_order : clean_order
+                
             }
         }
         case 'WORK_ORDER_CREATED':
         {
-            console.log("Reducer work order created --> " + action.payload)
+            //console.log("Reducer work order created --> " + inspect(action.payload))
+ 
+
+            const malfunctions = JSON.parse(action.payload.malfunction_details)
+            const observations = JSON.parse(action.payload.observations_list)
+            const created_by = JSON.parse(action.payload.receiving_employee)
+            const client = JSON.parse(action.payload.client)
+
+            createCashAdvance(action.payload.id, state.cash_advance, action.payload.client, 
+                action.payload.created_by)
+
+            //const technician = JSON.parse(action.payload.technician)
+
+            const saved_wo = {
+                id:action.payload.id,
+                consecutive:action.payload.consecutive,
+                is_closed : action.payload.is_closed,
+                receiving_employee : created_by,
+                technician:action.payload.technician,
+                client:client,
+                client_id: action.payload.client_id,
+                article_type: action.payload.article_type,
+                article_brand: action.payload.article_brand,
+                article_model: action.payload.article_model,
+                article_serial: action.payload.article_serial,
+                article_color : action.payload.article_color,
+                article_data: action.payload.article_data,
+                malfunction_details: malfunctions,
+                observations_list:observations,
+                observations: action.payload.observations,
+                is_warranty:action.payload.is_warranty,
+                warranty_number_bd:action.payload.warranty_number_bd,
+                warranty_invoice_date: action.payload.warranty_invoice_date,
+                warranty_supplier_name:action.payload.warranty_supplier_name,
+                warranty_invoice_number:action.payload.warranty_invoice_number,
+                warranty_repaired_by:action.payload.warranty_repaired_by
+            }
+            
+            return{
+                ...state,
+                work_order: saved_wo
+            }
         }
         case 'CASH_ADVANCE_UPDATED':
         {

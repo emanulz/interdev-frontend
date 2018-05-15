@@ -125,7 +125,10 @@ export default class Form extends React.Component {
         }
 
         const name = temp_name
-        
+        //if the warranty_number_bd is changed, clean the cash advance
+        if(name ==='warranty_number_bd' && this.props.work_order.warranty_number_bd ===''){
+            this.props.dispatch({type:'CASH_ADVANCE_CLEAR'})
+        }
         const work_order = {
             ...this.props.work_order
         }
@@ -223,7 +226,7 @@ export default class Form extends React.Component {
     }
 
     render(){
-
+        console.log("GRR --> " + this.props.work_order.malfunction_details)
         const failures_list = this.props.work_order.malfunction_details.map((malfunction, index)=>
             <li key={malfunction.key} className="workshop-list-damages-item" >
             <span id ={"failure_id-"+index} className="fa fa-minus-square" 
@@ -415,23 +418,25 @@ export default class Form extends React.Component {
 
     buildWarrantyElement(){
         let  content=''
-        if(this.props.work_order.is_warranty){
-            let repaired_by_element = <div>
-                <label>Fecha de Entrega Estimada</label>
-                <input name="warranty_repaired_by" type='date'
-                value={this.props.work_order.warranty_repaired_by}
-                className="form-control" placeholder="Fecha Entrega estimada.."
-                onChange={this.handleInputChange.bind(this)} />
-            </div>
 
-            let bd_warranty_body = ''
-            if(this.props.work_order.warranty_number_bd !== ''){
-                    bd_warranty_body= <div>
+        let repaired_by_element = <div>
+            <label>Fecha de Entrega Estimada</label>
+            <input name="warranty_repaired_by" type='date'
+            value={this.props.work_order.warranty_repaired_by}
+            className="form-control" placeholder="Fecha Entrega estimada.."
+            onChange={this.handleInputChange.bind(this)} />
+        </div>
+
+        let repair_body = ''
+        if(this.props.work_order.is_warranty){
+            const warranty = this.props.work_order.warranty_number_bd
+            if(warranty !== '' && warranty !== undefined){
+                    repair_body = <div>
                     <label>Nombre vendedor</label>
                     <input name="warranty_supplier_name" type='text'
-                    value={this.props.work_order.warranty_supplier_name}
-                    className="form-control" placeholder="Vendedor Producto"
-                    onChange={this.handleInputChange.bind(this)}/>
+                        value={this.props.work_order.warranty_supplier_name}
+                        className="form-control" placeholder="Vendedor Producto"
+                        onChange={this.handleInputChange.bind(this)}/>
 
                     <label>Fecha Factura</label>
                     <input value={this.props.work_order.warranty_invoice_date}
@@ -441,35 +446,45 @@ export default class Form extends React.Component {
 
                     <label>Número de Factura</label>
                     <input name="warranty_invoice_number" type='text'
-                    value={this.props.work_order.warranty_invoice_number}
-                    className="form-control" placeholder="Número factura.."
-                    onChange={this.handleInputChange.bind(this)}/>
+                        value={this.props.work_order.warranty_invoice_number}
+                        className="form-control" placeholder="Número factura.."
+                        onChange={this.handleInputChange.bind(this)}/>
 
                     {repaired_by_element}
 
                 </div>
-            }else{ //internal warranty form
-                bd_warranty_body = <div>
-                    <label>Adelanto</label>
-                    <input name="cash_advance" type='text'
+
+            }
+
+        }else{ //internal warranty form
+            repair_body = <div>
+                <label>Adelanto</label>
+                <input name="cash_advance" type='text'
                     value={this.props.cash_advance} className="form-control"
                     placeholder="Ingrese monto adelanto.." 
                     onChange={this.handleOtherInput.bind(this)} />
-                    {repaired_by_element}
-                </div>
-                
-            }
-            content = <div className="warranty">
-                    <h2>Garantía</h2>
-                    <label>Número de Garantía Black Decker</label>
-                    <input name="warranty_number_bd" type="text" 
-                        value={this.props.work_order.warranty_number_bd}
-                        className="form-control" placeholder="Número de Garantía.." 
-                        onChange={this.handleInputChange.bind(this)} /> 
-                    {bd_warranty_body}               
+                {repaired_by_element}
             </div>
 
         }
+
+        let bd_entry = ''
+
+        if(this.props.work_order.is_warranty){
+            bd_entry =<div>
+                <label>Número de Garantía Black Decker</label>
+                <input name="warranty_number_bd" type="text" 
+                    value={this.props.work_order.warranty_number_bd}
+                    className="form-control" placeholder="Número de Garantía.." 
+                    onChange={this.handleInputChange.bind(this)} /> 
+            </div>
+        }
+
+        content = <div className="warranty">
+            <h2>Detalles</h2>
+            {bd_entry}
+            {repair_body}               
+        </div>
 
 
         return content

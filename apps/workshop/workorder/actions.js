@@ -37,6 +37,7 @@ export function checkWorkOrder(workorder){
         return false
     }
 
+
     return true
 }
 
@@ -53,7 +54,6 @@ export function cleanWorkOrder(workorder){
 export function checkCashAdvance(advance){
     
     let OK = true
-    if(advance ===''){return OK}
     let money_advance_valid = parseFloat(advance) ? true : false
     
     if(money_advance_valid){
@@ -65,7 +65,3 @@ export function checkCashAdvance(advance){
 
 }
 
-//creates a cash advance movement for a given work_order_id
-export function createCashAdvance(work_order_id, advance_amount){
-
-}

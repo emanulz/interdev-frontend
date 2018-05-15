@@ -1,6 +1,7 @@
 let inspect = require('util-inspect')
 import React from 'react'
 import {connect} from 'react-redux'
+import {updateQty} from '../partsProvider/actions'
 
 @connect((store)=>{
     return {
@@ -13,6 +14,16 @@ import {connect} from 'react-redux'
 export default class TransactionItems extends React.Component {
 
 
+    qtyInputChange(item_uuid , e){
+        console.log('qty event on transaction items')
+        const qty = parseFloat(e.target.value)
+        ? e.target.value
+        :0
+        this.props.dispatch(
+            updateQty(qty, this.props.partsRequestList, item_uuid)
+        )
+    }
+
     render(){
 
         const partsRequest = this.props.partsRequestList
@@ -24,11 +35,14 @@ export default class TransactionItems extends React.Component {
             .concat(this.props.laborList)
 
         const transactionsItems = transactions.map((item, index) =>{
-
+            const disable_quantity = item.type === 'PART_REQUEST' ? false : true
             const qtyField = <input
                 id={`qty${item.qty}`}
+                disabled={disable_quantity}
+                onChange={this.qtyInputChange.bind(this, item.uuid)}
                 type='number'
                 className='form-control'
+                value={item.qty}
             />
 
             let movementType = ''
@@ -75,12 +89,13 @@ export default class TransactionItems extends React.Component {
 
                 <div className={itemRowClass + "-unitPrice"}>
                     <h5>P Unit</h5>
-                    ₡ {parseFloat('9999.99')}
+                    ₡ {parseFloat(item.priceToUse)}
                 </div>
 
                 <div className={itemRowClass + "-total"}>
                     <h5>Total</h5>
-                    ₡ {4578.45}
+                    {console.log(item.subTotal)}
+                    ₡ {parseFloat(item.subTotal)}
                 </div>
 
                 <span className={removeIconClass}/>
