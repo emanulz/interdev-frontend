@@ -1,6 +1,8 @@
 import alertify from 'alertifyjs'
 import axios from 'axios'
 
+import {saveLog} from '../../../utils/api'
+
 let inspect = require('util-inspect')
 
 // ------------------------------------------------------------------------------------------
@@ -30,9 +32,8 @@ export function createLaborMovement(work_order_id, labor_amount, description, us
             url:url,
             data:labor_data
         }).then((response)=>{
-            console.log("Cash advance created response --> " + inspect(response.data))
-            saveLog(logCode, logModel, cash_old, advance_data, logDescription, user)
-            resolve(response)   
+            saveLog(logCode, logModel, labor_old, labor_data, logDescription, user)
+            resolve(response.data)   
         }).catch((err)=>{
             console.log(inspect(err))
             if(err.response){
@@ -68,7 +69,7 @@ export function createCashAdvance(work_order_id, advance_amount, client, user){
             data: advance_data
         }).then((response)=>{
             saveLog(logCode, logModel, cash_old, advance_data, logDescription, user)
-            resolve(response)
+            resolve(response.data)
         }).catch((err)=>{
             console.log(inspect(err))
             if(err.response){

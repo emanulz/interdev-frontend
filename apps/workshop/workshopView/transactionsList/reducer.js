@@ -1,11 +1,37 @@
 import alertify from 'alertifyjs'
 let inspect = require('util-inspect')
 
+const work_order_model = {
+    id:'',
+    consecutive:'',
+    is_closed : false,
+    receiving_employee : 'Receiving Employee',
+    technician:'Technician',
+    client:'Client',
+    client_id:'client id',
+    article_type: '',
+    article_brand: '',
+    article_model: '',
+    article_serial: '',
+    article_color : '',
+    article_data: '',
+    malfunction_details: [],
+    observations_list:[],
+    observations: 'No observations',
+    is_warranty:false,
+    warranty_number_bd:'',
+    warranty_invoice_date:'',
+    warranty_supplier_name:'',
+    warranty_invoice_number:'',
+    warranty_repaired_by:''
+
+}
+
 const stateConst = {
-    cashAdvanceList:[],
-    partsRequestList:[],
-    laborList:[],
-    
+    cashAdvanceList: [],
+    partsRequestList: [],
+    laborList: [],
+  
 
 }
 
@@ -13,6 +39,13 @@ const stateConst = {
 export default function reducer(state=stateConst, action){
 
     switch(action.type){
+
+        //loads and uses the work order data only for display purposes
+        case 'LOAD_WORK_ORDER_INFO':
+        {
+            console.log("LOAD WORK ORDER DATA FOR WORKVIEW")
+        }
+
         case 'CLEAR_TRANSACTIONS_LIST':
         {
             
@@ -25,6 +58,40 @@ export default function reducer(state=stateConst, action){
                 partsRequestList : [],
                 laborList : []
             }
+        }
+
+        case 'LABOR_MOVEMENTS_CREATED':
+        {
+            const labor_objects = action.payload.map(item =>{
+                const labor = {
+                    id:item.id,
+                    work_order_id:item.work_order_id,
+                    employee: JSON.parse(item.employee),
+                    cost: item.cost,
+                    description: item.description,
+                    created: item.created,
+                    updated: item.updated
+                }
+                return labor
+            })
+
+            const new_labor_list = labor_objects.map(labor =>{
+                const item = {
+                    element:labor,
+                    priceToUse:labor.cost,
+                    qty:1,
+                    subTotal:labor.cost,
+                    type: 'LABOR',
+                    uuid:labor.id
+                }
+                return item
+            })
+            console.log('Inspect: ')
+            return {
+                ...state,
+                laborList:new_labor_list                 
+            }
+            
         }
 
         case 'ADD_TO_LABOR_LIST':

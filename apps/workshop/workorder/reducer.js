@@ -253,7 +253,7 @@ export default function reducer(state = stateConst, action){
                 warranty_repaired_by:action.payload.warranty_repaired_by
             }
             
-            return{
+            return {
                 ...state,
                 work_order: saved_wo
             }

@@ -226,7 +226,6 @@ export default class Form extends React.Component {
     }
 
     render(){
-        console.log("GRR --> " + this.props.work_order.malfunction_details)
         const failures_list = this.props.work_order.malfunction_details.map((malfunction, index)=>
             <li key={malfunction.key} className="workshop-list-damages-item" >
             <span id ={"failure_id-"+index} className="fa fa-minus-square" 
@@ -450,8 +449,6 @@ export default class Form extends React.Component {
                         className="form-control" placeholder="Número factura.."
                         onChange={this.handleInputChange.bind(this)}/>
 
-                    {repaired_by_element}
-
                 </div>
 
             }
@@ -463,7 +460,6 @@ export default class Form extends React.Component {
                     value={this.props.cash_advance} className="form-control"
                     placeholder="Ingrese monto adelanto.." 
                     onChange={this.handleOtherInput.bind(this)} />
-                {repaired_by_element}
             </div>
 
         }
@@ -477,13 +473,15 @@ export default class Form extends React.Component {
                     value={this.props.work_order.warranty_number_bd}
                     className="form-control" placeholder="Número de Garantía.." 
                     onChange={this.handleInputChange.bind(this)} /> 
+                    
             </div>
         }
 
         content = <div className="warranty">
             <h2>Detalles</h2>
             {bd_entry}
-            {repair_body}               
+            {repair_body}   
+            {repaired_by_element}         
         </div>
 
 
