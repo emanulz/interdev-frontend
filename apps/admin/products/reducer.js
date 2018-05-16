@@ -19,7 +19,7 @@ const productModel = {
   model: '',
   part_number: '',
   brand_code: '',
-  inventory_enabled: false,
+  inventory_enabled: true,
   inventory_minimum: 0,
   inventory_maximum: 0,
   inventory_negative: true,

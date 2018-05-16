@@ -21,14 +21,15 @@ import {filterProducts} from './actions'
 export default class Table extends React.Component {
 
   bntMovementClick(product, event) {
-    this.props.dispatch({type: 'SET_PRODUCT', payload: product})
-    this.props.dispatch({type: 'TOGGLE_PANEL', payload: ''})
-    const movement = {
-      ...this.props.movement
-    }
+    // CLEAR THE MOVEMENT IF ANY
+    this.props.dispatch({type: 'CLEAR_INVENTORY_MOVEMENT', payload: ''})
 
-    movement.productId = product.id
-    this.props.dispatch({type: 'SET_PRODUCT_MOVEMENT', payload: movement})
+    // SETS THE PRODUCT AND ID TO THE INVENTORY MOVEMENT
+    this.props.dispatch({type: 'SET_PRODUCT', payload: product})
+
+    // THEN TOGGLES PANEL
+    this.props.dispatch({type: 'TOGGLE_PANEL', payload: ''})
+
   }
 
   // Main Layout

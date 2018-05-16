@@ -1,6 +1,8 @@
 // ------------------------------------------------------------------------------------------
 // MODULE IMPORTS
 // ------------------------------------------------------------------------------------------
+
+import axios from 'axios'
 import alertify from 'alertifyjs'
 
 export function checkProductMovementData(movement, movements) {
@@ -39,4 +41,31 @@ export function checkProductMovementData(movement, movements) {
   }
 
   return Ok
+}
+
+// ------------------------------------------------------------------------------------------
+// SAVE MOVEMENT FUNCTION
+// ------------------------------------------------------------------------------------------
+export function saveMovement(kwargs, resolve, reject) {
+  const item = kwargs.item
+  delete item['id']
+  delete item['fromWarehouse_id']
+  delete item['toWarehouse_id']
+  const url = kwargs.url
+  return function(dispatch) {
+    axios({
+      method: 'post',
+      url: url,
+      data: item
+    })
+      .then((response) => {
+        resolve()
+      }).catch((err) => {
+        if (err.response) {
+          console.log(err.response.data)
+        }
+        reject()
+      })
+
+  }
 }

@@ -43,7 +43,7 @@ export function savePayment(kwargs, resolve, reject) {
 }
 
 // ------------------------------------------------------------------------------------------
-// SAVE PAYMENT FUNCTION
+// SAVE MOVEMENT FUNCTION
 // ------------------------------------------------------------------------------------------
 export function saveMovement(kwargs, resolve, reject) {
   const item = kwargs.item
