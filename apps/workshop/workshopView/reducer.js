@@ -8,7 +8,7 @@ const defaultPermissions = {
   }
 
 const work_order_model = {
-    id:'',
+    id:'000000',
     consecutive:'',
     is_closed : false,
     receiving_employee : 'Receiving Employee',
@@ -49,12 +49,9 @@ export default function reducer(state=stateConst, action){
 
         case 'SET_WORK_ORDER_VIEW':
         {
-            console.log("SET WORK ORDER VIEW")
             const malfunctions = JSON.parse(action.payload.malfunction_details)
             const observations = JSON.parse(action.payload.observations_list)
             const created_by = JSON.parse(action.payload.receiving_employee)
-            console.log("HERERERERE")
-            console.log(inspect(created_by))
             const loaded_client = JSON.parse(action.payload.client)
 
             const saved_wo = {
@@ -83,7 +80,6 @@ export default function reducer(state=stateConst, action){
                 created: action.payload.created,
                 updated: action.payload.updated
             }
-            
             return {
                 ...state, 
                 work_order: saved_wo
@@ -92,7 +88,6 @@ export default function reducer(state=stateConst, action){
 
         case 'SET_OLD_WORK_ORDER_VIEW':
         {
-            console.log('SET OLD WORK ORDER VIEW')
             const malfunctions = JSON.parse(action.payload.malfunction_details)
             const observations = JSON.parse(action.payload.observations_list)
             const created_by = JSON.parse(action.payload.receiving_employee)

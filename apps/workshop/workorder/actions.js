@@ -43,7 +43,7 @@ export function checkWorkOrder(workorder){
 
 //removes unset bits from the properties so that the backend handles the properties with defaults
 export function cleanWorkOrder(workorder){
-    if(cleanWorkOrder.is_warranty === false){
+    if(workorder.is_warranty === false){
         delete workorder.warranty_invoice_date
         console.log("Is warranty --> " + workorder.is_warranty)
         console.log("CLEANED DATES")

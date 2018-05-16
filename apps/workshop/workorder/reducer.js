@@ -223,8 +223,9 @@ export default function reducer(state = stateConst, action){
             const created_by = JSON.parse(action.payload.receiving_employee)
             const client = JSON.parse(action.payload.client)
 
+            const cash_desc = "Adelanto orden de trabajo en recepción de artículo"
             createCashAdvance(action.payload.id, state.cash_advance, action.payload.client, 
-                action.payload.created_by)
+                                action.payload.receiving_employee, cash_desc, action.payload.id, '')
 
             //const technician = JSON.parse(action.payload.technician)
 

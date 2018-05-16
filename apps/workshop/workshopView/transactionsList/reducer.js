@@ -29,10 +29,14 @@ const work_order_model = {
 
 const stateConst = {
     cashAdvanceList: [],
-    partsRequestList: [],
-    laborList: [],
-  
+    cashAdvanceListOld:[],
 
+    partsRequestList: [],
+    partsRequestListOld: [],
+
+    laborList: [],
+    laborListOld: []
+  
 }
 
 
@@ -58,6 +62,83 @@ export default function reducer(state=stateConst, action){
                 partsRequestList : [],
                 laborList : []
             }
+        }
+
+        case 'LABOR_LOADED':
+        {
+            const labor_objects = action.payload.map(item=>{
+                const labor = {
+                    id:item.id,
+                    work_order_id: item.work_order_id,
+                    employee: JSON.parse(item.employee),
+                    cost:item.cost,
+                    description: item.description,
+                    created: item.created,
+                    updated: item.updated
+                }
+                return labor
+            })
+
+            const new_labor_list = labor_objects.map(labor=>{
+                const labor_item = {
+                    element:labor,
+                    priceToUse: labor.cost,
+                    qty:1,
+                    subTotal: labor.cost,
+                    type: 'LABOR',
+                    uuid:labor.id
+                }
+                return labor_item
+            })
+
+            const new_old_list = new_labor_list
+
+            return {
+                ...state,
+                laborList: new_labor_list,
+                laborListOld: new_old_list
+            }
+        }
+
+        case 'CASH_ADVANCES_LOADED':
+        {
+            console.log('loaded cash advance')
+    
+            const cash_objects = action.payload.map(item=>{
+               
+                const cash = {
+                    id:item.id,
+                    consecutive:item.consecutive,
+                    client: JSON.parse(item.client),
+                    client_id: item.client_id,
+                    user: JSON.parse(item.user),
+                    amount: item.amount,
+                    description: item.description,
+                    created: item.created,
+                    updated: item.updated
+                }
+
+                return cash
+            })
+
+            const new_cash_list = cash_objects.map(cash =>{
+                const cash_item = {
+                    element: cash,
+                    priceToUse: cash.amount,
+                    qty:1,
+                    subTotal: cash.amount,
+                    type: 'CASH_ADVANCE',
+                    uuid:cash.id
+                }
+                return cash_item
+            })
+            const new_old_list = new_cash_list.map(item=>item)
+            return {
+                ...state,
+                cashAdvanceList:new_cash_list,
+                cashAdvanceListOld: new_old_list
+            }
+
         }
 
         case 'LABOR_MOVEMENTS_CREATED':
@@ -86,7 +167,6 @@ export default function reducer(state=stateConst, action){
                 }
                 return item
             })
-            console.log('Inspect: ')
             return {
                 ...state,
                 laborList:new_labor_list                 

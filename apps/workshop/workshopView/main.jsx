@@ -6,6 +6,8 @@ import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
 import {saveLaborTransactions} from './actions'
+import {loadCashAdvances, loadLaborTransactions} from '../general/actions'
+
 let inspect = require('util-inspect')
 
 
@@ -34,16 +36,27 @@ export default class WorkshopView extends React.Component {
         }
 
         this.props.dispatch({type:'FETCHING_STARTED', payload:''})
+        //load work order
         this.props.dispatch(setItem(kwargs))
+
+
 
     }
 
     saveOrderTransactions(){
         console.log("Save Labor")
         saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.user, this.props.dispatch)
+        
     }
 
-    componentWillUpdate(){}
+    componentWillUpdate(nextProps){
+        if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
+            console.log('Fetch advances for ' + nextProps.work_order.id)
+            loadCashAdvances(nextProps.work_order.id, this.props.dispatch)
+            console.log('Fetch labor for ' + nextProps.work_order.id)
+            loadLaborTransactions(nextProps.work_order.id, this.props.dispatch)
+        }
+    }
 
     render(){
         const work_order_info = this.buildWorkOrderHeader()
