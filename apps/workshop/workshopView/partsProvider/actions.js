@@ -1,5 +1,6 @@
 let inspect = require('util-inspect')
 const uuidv1 = require('uuid/v1')
+import alertify from 'alertifyjs'
 
 export function updateQty(qty, itemsList, target_uuid){
     console.log("Target uuid " + target_uuid)
@@ -46,6 +47,45 @@ export function buildLaborRequest(amount, description){
         }
     }
 }
+
+export function updateLaborOrCashAdvanceRow(item, e, list){
+
+    
+        let val = e.target.value
+        console.log(e.target.name)
+        //check if the property is amount, if it is it must parse to float
+        if(e.target.name ==='amount'){
+            const val2 = parseFloat(e.target.value)
+            if(isNaN(val2)){
+                return {type: 'INVALID_NUMERIC_VALUE'}
+            }
+        }
+
+        const index = list.findIndex(a=>a.uuid === item.uuid)
+        switch(item.type)
+        {
+            case 'LABOR':
+            {
+                const newItem = JSON.parse(JSON.stringify(item))
+                newItem.saved = false
+                newItem.element[e.target.name] = val
+                newItem.priceToUse = newItem.element.amount
+                newItem.subTotal = calculateLaborSubTotal(newItem.element.amount)
+                return {type:'LABOR_UPDATED', payload:{'item':newItem, 'index':index}}
+            }
+    
+            case 'CASH_ADVANCE':
+            {
+                const newItem = JSON.parse(JSON.stringify(item))
+                newItem.saved = false
+                newItem.element[e.target.name] = val
+                newItem.priceToUse = newItem.element.amount
+                newItem.subTotal= calculateAdvanceSubTotal(newItem.element.amount)
+                return {type:'CASH_ADVANCE_UPDATED', payload:{'item':newItem, 'index':index}}
+            }
+    
+        }
+    }
 
 //handles an user search of a part from the search bar
 export function userPartSearchRequest(parts, code, qty, partsRequestList){

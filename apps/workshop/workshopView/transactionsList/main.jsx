@@ -28,8 +28,13 @@ export default class TransactionsList extends React.Component {
                 <div className="transactions-header-type">
                     <h5>Tipo</h5>
                 </div>
+
                 {puColumnHeader}
                 {totalColumnHeader}
+                
+                <div className="transactions-header-status">
+                <h5>Estado</h5>
+                </div>
 
             </div>
             <TransactionItems />

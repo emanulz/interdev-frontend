@@ -44,11 +44,6 @@ export default function reducer(state=stateConst, action){
 
     switch(action.type){
 
-        //loads and uses the work order data only for display purposes
-        case 'LOAD_WORK_ORDER_INFO':
-        {
-            console.log("LOAD WORK ORDER DATA FOR WORKVIEW")
-        }
         case 'LABOR_UPDATED':
         {
             const newLaborList = [...state.laborList]
@@ -162,7 +157,9 @@ export default function reducer(state=stateConst, action){
                     amount: item.amount,
                     description: item.description,
                     created: item.created,
-                    updated: item.updated
+                    updated: item.updated,
+                    sale_id: item.sale_id,
+                    work_order_id: item.work_order_id
                 }
 
                 return cash
@@ -209,7 +206,6 @@ export default function reducer(state=stateConst, action){
             })
             
             const new_cash_items = cash_objects.map(cash=>{
-                console.log("crap " + inspect(cash))
                 const item = {
                     element:cash,
                     priceToUse:cash.amount,
@@ -232,8 +228,95 @@ export default function reducer(state=stateConst, action){
             }
         }
 
+        case 'CASH_ADVANCE_MOVEMENTS_PATCHED':
+        {
+            const cash_objects = action.payload.map(item=>{
+                const cash = {
+                    id:item.id,
+                    consecutive:item.consecutive,
+                    client: JSON.parse(item.client),
+                    client_id: item.client_id,
+                    user: JSON.parse(item.user),
+                    amount:item.amount,
+                    description: item.description,
+                    created:item.created,
+                    updated:item.updated,
+                    sale_id: item.sale_id,
+                    work_order_id: item.work_order_id
+                }
+                return cash
+            })
+            
+            const new_cash_items = cash_objects.map(cash=>{
+                const item = {
+                    element:cash,
+                    priceToUse:cash.amount,
+                    qty:1,
+                    subTotal:cash.amount,
+                    type: 'CASH_ADVANCE',
+                    uuid: cash.id,
+                    saved:true
+                }
+                return item
+            })
+
+            const new_cash_list = JSON.parse(JSON.stringify(state.cashAdvanceList))
+            for(let item of new_cash_items){
+                const index = new_cash_list.findIndex(a=>a.uuid === item.uuid)
+                new_cash_list[index] = item
+            }
+
+            return {
+                ...state,
+                cashAdvanceList: new_cash_list
+            }
+        }
+        case 'LABOR_MOVEMENTS_PATCHED':
+        {
+            console.log("Labor Items patched")
+            const labor_objects = action.payload.map(item =>{
+                const labor = {
+                    id:item.id,
+                    work_order_id:item.work_order_id,
+                    employee: JSON.parse(item.employee),
+                    amount: item.amount,
+                    description: item.description,
+                    created: item.created,
+                    updated: item.updated
+                }
+                return labor
+            })
+
+            const new_labor_items = labor_objects.map(labor =>{
+                const item = {
+                    element:labor,
+                    priceToUse:labor.amount,
+                    qty:1,
+                    subTotal:labor.amount,
+                    type: 'LABOR',
+                    uuid:labor.id,
+                    saved: true
+                }
+                return item
+            })
+
+            const new_labor_list = JSON.parse(JSON.stringify(state.laborList))
+            
+            for (let item of new_labor_items){
+                const index = new_labor_list.findIndex(a=>a.uuid===item.uuid)
+                new_labor_list[index] = item
+            }
+
+            return {
+                ...state,
+                laborList:new_labor_list
+            }
+
+        }
+
         case 'LABOR_MOVEMENTS_CREATED':
         {
+
             const labor_objects = action.payload.map(item =>{
                 const labor = {
                     id:item.id,

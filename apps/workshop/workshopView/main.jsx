@@ -5,8 +5,9 @@ import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions, saveCashAdvanceTransactions} from './actions'
+import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder} from './actions'
 import {loadCashAdvances, loadLaborTransactions} from '../general/actions'
+import alertify from 'alertifyjs'
 
 let inspect = require('util-inspect')
 
@@ -14,8 +15,14 @@ let inspect = require('util-inspect')
 @connect((store)=>{
     return{
         work_order: store.workshopview.work_order,
+        work_order_old: store.workshopview.work_order_old,
+
         laborList: store.transactionsList.laborList,
-        cashAdvanceList : store.transactionsList.cashAdvanceList,
+        laborListOld: store.transactionsList.laborListOld,
+
+        cashAdvanceList: store.transactionsList.cashAdvanceList,
+        cashAdvanceListOld: store.transactionsList.cashAdvanceListOld, 
+
         user: store.user,
         client: store.workshopview.work_order.client
     }
@@ -47,10 +54,55 @@ export default class WorkshopView extends React.Component {
 
     saveOrderTransactions(){
         console.log("Save Labor")
-        saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.user, this.props.dispatch)
+        const labor_promises = saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.laborListOld, this.props.user, this.props.dispatch)
+        
         console.log('Save cash advance')
-        saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.user, 
+        const cash_promises = saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.cashAdvanceListOld, this.props.user, 
                                     this.props.client, this.props.dispatch)
+
+        return new Promise((resolve, reject)=>{
+            Promise.all(labor_promises.save).then((values)=>{
+                if(labor_promises.save.length>0){
+                    this.props.dispatch({type:'LABOR_MOVEMENTS_CREATED', payload:values})
+                }
+                Promise.all(labor_promises.patch).then(values=>{
+                    if(labor_promises.patch.length>0){
+                        this.props.dispatch({type: 'LABOR_MOVEMENTS_PATCHED', payload:values})
+                    }
+                    Promise.all(cash_promises.save).then((values)=>{
+                        if(cash_promises.save.length>0){
+                            this.props.dispatch({type:'CASH_ADVANCE_MOVEMENTS_CREATED', payload:values})
+                        }
+                        Promise.all(cash_promises.patch).then((values)=>{
+                            if(cash_promises.patch.length>0){
+                                this.props.dispatch({type:'CASH_ADVANCE_MOVEMENTS_PATCHED', payload:values})
+                            }
+                            resolve()
+                        }).catch(err=>{
+                            reject(err)
+                        })
+                    })
+                })
+            })
+        })
+
+    }
+
+    closeOrder(){
+        this.saveOrderTransactions().then(()=>{
+            const kwargs = {
+                work_order_id: this.props.work_order.id,
+                new_status: true,
+                old_order: this.props.work_order_old,
+                new_order : this.props.work_order,
+                user: this.props.user
+            }
+            openCloseWorkOrder(kwargs).then(b=>{
+                alertify.alert('Completado: Orden de trabajo Guardada y Cerrada!', '')
+            })
+        })
+
+
     }
 
     componentWillUpdate(nextProps){
@@ -105,6 +157,12 @@ export default class WorkshopView extends React.Component {
                 <button className="form-control btn-success workshop-view-footer-buttons-update"
                     onClick={this.saveOrderTransactions.bind(this)}>
                     Guardar Movimientos
+                </button>
+            </div>
+            <div className="workshop-view-footer-buttons">
+                <button className="form-control btn-success workshop-view-footer-buttons-update-close"
+                    onClick={this.closeOrder.bind(this)}>
+                    Guardar y Cerrar Orden
                 </button>
             </div>
             <div className="workshop-view-footer-buttons">

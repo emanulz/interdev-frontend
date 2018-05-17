@@ -26,6 +26,15 @@ export default function reducer(state = stateConst, action){
             }
         }
 
+        case 'INVALID_NUMERIC_VALUE':
+        {
+            alertify.alert('Error', 'Debe ingresar un valor numérico')
+            return {
+                ...state,
+                messages: true
+            }
+        }
+
         case 'PART_NOT_FOUND':
         {
             alertify.alert('ERROR: CÓDIGO DE PARTE NO ENCONTRADO',

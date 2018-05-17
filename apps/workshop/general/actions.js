@@ -58,8 +58,67 @@ export function loadCashAdvances(work_order_id, dispatcher){
 
 }
 
-export function patchLaborMovement(old_labor, new_labor, description, user){
-    
+export function patchCashAdvanceMovement(cash_old, cash_new, user){
+    const url = `/api/cashadvances/${cash_old.element.id}/`
+    const logCode = 'WORK_ORDER_CASH_ADVANCE_PATCH'
+    const logDescription = 'Cash advance patched for work order --> ' + cash_new.work_order_id
+    const logModel = 'CASH ADVANCE'
+    let description = 'Cash advance updated'
+
+    const data = {
+        description:cash_new.element.description,
+        amount:cash_new.element.amount
+    }
+
+    return new Promise((resolve, reject)=>{
+        axios({
+            method: 'patch',
+            url:url,
+            data:data
+        }).then(response=>{
+            saveLog(logCode, logModel, cash_old.element, cash_new.element, logDescription, user)
+            resolve(response.data)
+        }).catch(err=>{
+            console.log(inspect(err))
+            if(err.response){
+                console.log(err.response.data)
+            }
+            alertify.alert('Error',`Error actualizando movimiento de adelanto de dinero para orden de trabajo ${labor_old.element.id}`)
+            reject(err)            
+        })
+    })
+}
+
+export function patchLaborMovement(labor_old, new_labor, user){
+    const url = `/api/labor/${labor_old.element.id}/`
+    const logCode = 'WORK_ORDER_CASH_ADVANCE_PATCH'
+    const logDescription = 'Labor patched for work order --> ' + new_labor.work_order_id
+    const logModel = 'LABOR'
+    let description = 'Labor updated'
+
+    const data = {
+        description:new_labor.element.description,
+        amount:new_labor.element.amount
+    }
+
+    return new Promise((resolve, reject)=>{
+        axios({
+            method: 'patch',
+            url:url,
+            data:data
+        }).then((response)=>{
+            saveLog(logCode, logModel, labor_old.element, new_labor.element, logDescription, user)
+            resolve(response.data)
+        }).catch(err=>{
+            console.log(inspect(err))
+            if(err.response){
+                console.log(err.response.data)
+            }
+            alertify.alert('Error',`Error actualizando movimiento de mano de obra para orden de trabajo ${labor_old.element.id}`)
+            reject(err)
+        })
+    })
+
 }
 
 export function createLaborMovement(work_order_id, labor_amount, description, user){

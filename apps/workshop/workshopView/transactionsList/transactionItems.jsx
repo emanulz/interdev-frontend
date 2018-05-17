@@ -3,7 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {updateQty} from '../partsProvider/actions'
 import {deleteItemDispatch} from '../../../../utils/api'
-import {updateLaborOrCashAdvanceRow} from './actions'
+import {updateLaborOrCashAdvanceRow} from '../partsProvider/actions'
 
 @connect((store)=>{
     return {
@@ -23,7 +23,6 @@ export default class TransactionItems extends React.Component {
 
 
     qtyInputChange(item_uuid , e){
-        console.log('qty event on transaction items')
         const qty = parseFloat(e.target.value)
         ? e.target.value
         :0
@@ -33,14 +32,13 @@ export default class TransactionItems extends React.Component {
     }
 
     descInputChange(item, e){
-        console.log("Change description")
         let list = ''
         if(item.type === 'LABOR'){
             list = this.props.laborList
         }else{
             list = this.props.cashAdvanceList
         }
-                
+               
         this.props.dispatch(
             updateLaborOrCashAdvanceRow(item, e, list)
         )
@@ -95,14 +93,21 @@ export default class TransactionItems extends React.Component {
         const removeIconClass = 'removeItemIcon'
         const itemRowClass = 'transactions-body-item'
 
-        console.log(inspect(this.props.partsRequestList))
+        
 
         const transactions = this.props.partsRequestList.concat(this.props.cashAdvanceList)
             .concat(this.props.laborList)
 
-        console.log('Transactions ' + transactions.length)
-
         const transactionsItems = transactions.map((item, index) =>{
+            //determine wether it is saved, modified or new
+            let status_class = itemRowClass + "-status-new"
+            let status = 'Nuevo'
+            if(item.element.work_order_id!==undefined){
+                status = item.saved?'Guardado':'Modificado'
+                status_class = item.saved?itemRowClass + "-status-saved":itemRowClass + "-status-modified"
+            }
+
+
             const disable_quantity = item.type === 'PART_REQUEST' ? false : true
             const qtyField = <input
                 id={`qty${item.qty}`}
@@ -115,6 +120,7 @@ export default class TransactionItems extends React.Component {
 
             let movementType = ''
             let desc_element = ''
+            let unit_price_element = ''
 
             switch(item.type){
                 case 'PART_REQUEST':
@@ -125,6 +131,12 @@ export default class TransactionItems extends React.Component {
                         <h5>Desc</h5>
                         {item.element.description}
                     </div>
+
+                    unit_price_element = <div className={itemRowClass + "-unitPrice"}>
+                        <h5>P Unit</h5>
+                        ₡ {parseFloat(item.priceToUse)}
+                    </div>
+
                     break
                 }
 
@@ -132,21 +144,37 @@ export default class TransactionItems extends React.Component {
                 {
                     movementType = 'Adelanto'
                     desc_element = <div className={itemRowClass+"-description"}>
-                        <input type='text' 
+                        <input type='text'
+                        name='description' 
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
                         onChange={this.descInputChange.bind(this, item)} />
                     </div>
+
+                    unit_price_element = <div className={itemRowClass+"-unitProce"} >
+                        <input type="text" name='amount'
+                        value={item.priceToUse}
+                        className={itemRowClass+"description-input form-control"}
+                        onChange={this.descInputChange.bind(this, item)}/>
+                    </div>
+
                     break
                 }
                 case 'LABOR':
                 {
                     movementType = 'Mano de Obra'
                     desc_element = <div className={itemRowClass+"-description"}>
-                        <input type='text' 
+                        <input type='text' name='description' 
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
                         onChange={this.descInputChange.bind(this, item)} />
+                    </div>
+
+                    unit_price_element = <div className={itemRowClass+"-unitProce"} >
+                        <input type="text" name='amount'
+                        value={item.priceToUse}
+                        className={itemRowClass+"description-input form-control"}
+                        onChange={this.descInputChange.bind(this, item)}/>
                     </div>
                     break
                 }
@@ -175,16 +203,17 @@ export default class TransactionItems extends React.Component {
                     {movementType}
                 </div>
 
-                <div className={itemRowClass + "-unitPrice"}>
-                    <h5>P Unit</h5>
-                    ₡ {parseFloat(item.priceToUse)}
-                </div>
+                {unit_price_element}
 
                 <div className={itemRowClass + "-total"}>
                     <h5>Total</h5>
                     ₡ {parseFloat(item.subTotal)}
                 </div>
 
+                <div className={status_class} >
+                    <h5>Estado</h5>
+                    {status}
+                </div>
                 <span className={removeIconClass}/>
 
             </div>
