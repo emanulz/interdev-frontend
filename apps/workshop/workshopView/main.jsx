@@ -5,7 +5,7 @@ import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions} from './actions'
+import {saveLaborTransactions, saveCashAdvanceTransactions} from './actions'
 import {loadCashAdvances, loadLaborTransactions} from '../general/actions'
 
 let inspect = require('util-inspect')
@@ -15,7 +15,9 @@ let inspect = require('util-inspect')
     return{
         work_order: store.workshopview.work_order,
         laborList: store.transactionsList.laborList,
-        user: store.user
+        cashAdvanceList : store.transactionsList.cashAdvanceList,
+        user: store.user,
+        client: store.workshopview.work_order.client
     }
 })
 
@@ -46,7 +48,9 @@ export default class WorkshopView extends React.Component {
     saveOrderTransactions(){
         console.log("Save Labor")
         saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.user, this.props.dispatch)
-        
+        console.log('Save cash advance')
+        saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.user, 
+                                    this.props.client, this.props.dispatch)
     }
 
     componentWillUpdate(nextProps){

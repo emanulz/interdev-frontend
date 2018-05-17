@@ -369,6 +369,44 @@ export function deleteItem(kwargs) {
 }
 
 // ------------------------------------------------------------------------------------------
+// DELETE FUNCTION (DELETE)
+// ------------------------------------------------------------------------------------------
+export function deleteItemDispatch(kwargs) {
+
+  const item = kwargs.item
+  const url = kwargs.url
+  const model = kwargs.modelName
+  const logCode = kwargs.logCode
+  const itemOld = kwargs.itemOld
+  const logModel = kwargs.logModel
+  const logDescription = kwargs.logDescription
+  const user = kwargs.user
+  const dispatchType = kwargs.dispatchType
+  return function(dispatch) {
+    console.log("Item " + item.id)
+    axios({
+      method: 'delete',
+      url: url
+    })
+      .then((response) => {
+
+        alertify.alert('Completado', 'Elemento eliminado satifactoriamente')
+          .set('onok', function() {
+            if (kwargs.redirectUrl) {
+              kwargs.history.push(kwargs.redirectUrl)
+            }
+          })
+        saveLog(logCode, logModel, itemOld, item, logDescription, user)
+        dispatch({type:dispatchType, payload:item.id})
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+
+      }).catch((err) => {
+        alertify.alert('Error', `Hubo un error al eliminar el ${model} ERROR: ${err}.`)
+      })
+  }
+}
+
+// ------------------------------------------------------------------------------------------
 // LOAD CONFIG FUNCTION
 // ------------------------------------------------------------------------------------------
 export function loadGlobalConfig(section, name, success, fail) {

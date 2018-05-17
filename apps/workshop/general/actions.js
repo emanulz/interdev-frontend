@@ -72,7 +72,7 @@ export function createLaborMovement(work_order_id, labor_amount, description, us
     const labor_data = {
         work_order_id: work_order_id,
         employee: user,
-        cost:labor_amount,
+        amount:labor_amount,
         description:description
     }
 
@@ -96,7 +96,7 @@ export function createLaborMovement(work_order_id, labor_amount, description, us
 }
 
 //creates a cash advance movement for a given work_order_id
-export function createCashAdvance(work_order_id, advance_amount, client, user, advance_description, id_work_order, sale_id){
+export function createCashAdvance(work_order_id, advance_amount, client, user, advance_description, sale_id){
 
     const url = '/api/cashadvances/'
     const logCode = 'WORKORDER_CASH_ADVANCE_CREATE'
@@ -111,10 +111,10 @@ export function createCashAdvance(work_order_id, advance_amount, client, user, a
         amount: advance_amount,
         description: advance_description,
     }
-    if(id_work_order!=='' && id_work_order!== undefined){
-        advance_data.work_order_id = id_work_order
+    if(work_order_id !=='' && work_order_id !== undefined){
+        advance_data.work_order_id = work_order_id
     }
-    if(sale_id !=='' && id_work_order !== undefined){
+    if(sale_id !=='' && sale_id !== undefined){
         advance_data.sale_id = sale_id
     }
 
@@ -131,7 +131,7 @@ export function createCashAdvance(work_order_id, advance_amount, client, user, a
             if(err.response){
                 console.log(err.response.data)
             }
-            alertify.alert('Error', `Error creando adelanto para orden de trabajo ${id_work_order}`)
+            alertify.alert('Error', `Error creando adelanto para orden de trabajo ${work_order_id}`)
             reject(err)
         })
     })

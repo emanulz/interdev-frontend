@@ -15,32 +15,34 @@ export function updateQty(qty, itemsList, target_uuid){
 }
 
 //build a cash advance request
-export function buildCashAdvanceRequest(cost, description){
-    const subTotal = calculateAdvanceSubTotal(cost)
+export function buildCashAdvanceRequest(amount, description){
+    const subTotal = calculateAdvanceSubTotal(amount)
     return{
         type:'ADD_TO_CASH_ADVANCE_LIST',
         payload:{
             uuid: uuidv1(),
-            element:{'cost': cost, 'description':description, 'subTotal': subTotal},
+            element:{'amount': amount, 'description':description, 'subTotal': subTotal},
             qty: 1,
             type:'CASH_ADVANCE',
-            priceToUse: cost,
-            subTotal: subTotal
+            priceToUse: amount,
+            subTotal: subTotal,
+            saved: false
         }
     }
 }
 
-export function buildLaborRequest(cost, description){
-    const sub = calculateLaborSubTotal(cost)
+export function buildLaborRequest(amount, description){
+    const sub = calculateLaborSubTotal(amount)
     return{
         type:'ADD_TO_LABOR_LIST',
         payload:{
             uuid: uuidv1(),
-            element:{'cost': cost, 'description':description},
+            element:{'amount': amount, 'description':description},
             qty: 1,
             type:'LABOR',
-            priceToUse: cost,
-            subTotal: sub
+            priceToUse: amount,
+            subTotal: sub,
+            saved: false,
         }
     }
 }
@@ -112,7 +114,8 @@ function updatePartInTransactionList(partsRequestList, indexInPartsRequestList, 
         qty: new_qty,
         type:originalItem.type,
         subTotal: calculatePartSubtotal(originalItem.element, new_qty),
-        priceToUse: originalItem.priceToUse
+        priceToUse: originalItem.priceToUse,
+        saved: false
 
     }
 }

@@ -47,13 +47,13 @@ export default class PartsProvider extends React.Component{
                         this.props.dispatch({type:'INVALID_LABOR_QUICK_ENTRY'})
                         return
                     }
-                    const cost = parseFloat(bits[1])
+                    const amount = parseFloat(bits[1])
                     let description = "Reparación"
                     if(!(bits[2] === undefined) && bits[2].length > 3){
                         description = bits[2]
                     }
 
-                    this.props.dispatch(buildLaborRequest(cost, description))
+                    this.props.dispatch(buildLaborRequest(amount, description))
 
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
@@ -66,13 +66,13 @@ export default class PartsProvider extends React.Component{
                         return
                     }
 
-                    const cost = parseFloat(bits[1])
+                    const amount = parseFloat(bits[1])
                     let description = 'Adelando Reparación'
                     if(!(bits[2]===undefined) && bits[2].length > 3){
                         description = bits[2]
                     }
 
-                    this.props.dispatch(buildCashAdvanceRequest(cost, description))
+                    this.props.dispatch(buildCashAdvanceRequest(amount, description))
 
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
