@@ -75,7 +75,7 @@ export default class Table extends React.Component {
         <span className='fa fa-exchange' />
       </button>
 
-      const inventory = this.props.warehouseActive
+      const inventory = this.props.warehouseActive.id != '0000000000'
         ? product.inventory_by_warehouse[this.props.warehouseActive]
         : product.inventory
 

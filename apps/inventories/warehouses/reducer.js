@@ -1,23 +1,62 @@
+const defaultPermissions = {
+  add: 'unfetched',
+  change: 'unfetched',
+  list: 'unfetched',
+  delete: 'unfetched'
+}
+
+const warehouseModel = {
+  id: '0000000000',
+  code: '',
+  name: '',
+  location: '',
+  description: ''
+}
+
 const stateConst = {
-  warehouseActive: '',
-  warehouseInputActive: '',
-  warehouseOutputActive: '',
-  warehouses: []
+  warehouses: [],
+  warehouseActive: warehouseModel,
+  warehouseActiveOld: warehouseModel,
+  nextWarehouse: 0,
+  previousWarehouse: 0,
+  permissions: defaultPermissions
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    // ***********************************
-    // WAREHOUSES
-    // ***********************************
-
-    case 'FETCH_WAREHOUSES_REJECTED':
+    case 'FETCH_USER_WAREHOUSE_PERMISSIONS_FULLFILLED':
     {
       return {
         ...state,
-        warehouses: []
+        permissions: action.payload
+      }
+    } // case
+
+    case 'FETCH_USER_WAREHOUSE_PERMISSIONS_REJECTED':
+    {
+      return {
+        ...state,
+        permissions: defaultPermissions
+      }
+    } // case
+
+    case 'SET_NEXT_PREV_WAREHOUSE':
+    {
+      return {
+        ...state,
+        nextWarehouse: action.payload.next,
+        previousWarehouse: action.payload.previous
+      }
+    } // case
+
+    case 'CLEAR_NEXT_PREV_WAREHOUSE':
+    {
+      return {
+        ...state,
+        nextWarehouse: 0,
+        previousWarehouse: 0
       }
     } // case
 
@@ -27,6 +66,15 @@ export default function reducer(state = stateConst, action) {
         ...state,
         warehouses: action.payload
       }
+
+    } // case
+
+    case 'FETCH_WAREHOUSES_REJECTED':
+    {
+      return {
+        ...state,
+        warehouses: []
+      }
     } // case
 
     case 'SET_WAREHOUSE':
@@ -35,33 +83,24 @@ export default function reducer(state = stateConst, action) {
         ...state,
         warehouseActive: action.payload
       }
-    } // case
+    }
 
-    case 'SET_WAREHOUSE_INPUT':
+    case 'SET_WAREHOUSE_OLD':
     {
       return {
         ...state,
-        warehouseInputActive: action.payload
+        warehouseActiveOld: action.payload
       }
-    } // case
-
-    case 'SET_WAREHOUSE_OUTPUT':
-    {
-      return {
-        ...state,
-        warehouseOutputActive: action.payload
-      }
-    } // case
+    }
 
     case 'CLEAR_WAREHOUSES':
     {
       return {
         ...state,
-        warehouseActive: '',
-        warehouseOutputActive: '',
-        arehouseInputActive: ''
+        warehouseActive: warehouseModel,
+        warehouseActiveOld: warehouseModel
       }
-    } // case
+    }
 
   } // switch
 

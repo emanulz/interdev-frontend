@@ -55,9 +55,14 @@ export default class SideMenu extends React.Component {
               Inicio</Link>
           </li>
           <li>
-            <Link to='/inventories/list'>
-              <span className='fa fa-area-chart' />
-              Lista</Link>
+            <Link to='/inventories/movements'>
+              <span className='fa fa-exchange' />
+              Movimientos Manuales</Link>
+          </li>
+          <li>
+            <Link to='/inventories/tracking'>
+              <span className='fa fa-list-ol' />
+              Histórico por producto</Link>
           </li>
           <li>
             <Link to='/inventories/physical'>
@@ -66,13 +71,8 @@ export default class SideMenu extends React.Component {
           </li>
           <li>
             <Link to='/inventories/warehouses'>
-              <span className='fa fa-user' />
+              <span className='fa fa-building' />
               Bodegas</Link>
-          </li>
-          <li>
-            <Link to='/inventories/movements'>
-              <span className='fa fa-user' />
-              Movimientos</Link>
           </li>
         </ul>
       </div>

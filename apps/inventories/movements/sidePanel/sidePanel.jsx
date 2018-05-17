@@ -64,8 +64,10 @@ export default class Products extends React.Component {
   saveBtn() {
     const movement = {...this.props.movement}
     if (movement.movement_type == 'OUTPUT-INPUT') {
+      // VALIDATIONS FOR DOUBLE COMES HERE
       this.saveDoubleMovement()
     } else {
+      // VALIDATIONS FOR SINGLE COMES HERE
       this.saveSingleMovement()
     }
   }

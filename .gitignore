@@ -36,3 +36,4 @@ pip-log.txt
 *.env
 yarn.lock
 /apps/inventories2/*
+/apps/inventories/warehouses2/*

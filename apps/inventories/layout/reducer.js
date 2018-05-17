@@ -7,7 +7,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'LIST_PANEL_MOUNTED':
+    case 'MOVEMENTS_PANEL_MOUNTED':
     {
       return {
         ...state,
@@ -17,6 +17,24 @@ export default function reducer(state = stateConst, action) {
     } // case
 
     case 'HOME_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: false,
+        sideMenuVisible: true
+      }
+    } // case
+
+    case 'WAREHOUSES_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: false,
+        sideMenuVisible: true
+      }
+    } // case
+
+    case 'TRACKING_PANEL_MOUNTED':
     {
       return {
         ...state,

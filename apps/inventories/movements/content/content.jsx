@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    fullWidth: store.list.fullWidth
+    fullWidth: store.movements.fullWidth
   }
 })
 export default class Main extends React.Component {
