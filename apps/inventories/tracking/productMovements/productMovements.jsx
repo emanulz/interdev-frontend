@@ -5,12 +5,14 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { setItem } from '../../../../utils/api'
 import {getInventoryMovements} from './actions'
+import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
     movements: store.inventoryMovements.inventoryMovements,
     product: store.inventoryMovements.productActive,
     warehouses: store.warehouses.warehouses,
+    warehouseActive: store.warehouses.warehouseActive,
     departments: store.products.departments,
     subdepartments: store.products.subdepartments
   }
@@ -47,30 +49,75 @@ export default class MovementsList extends React.Component {
       const id = nextprops.product.id
       const kwargs = {
         url: '/api/inventorymovements',
-        filterField: 'product_id',
         ordering: '-created',
-        productId: id,
+        filterField: 'product_id',
+        filter: id,
+        filterField2: false,
+        filter2: false,
         successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
         errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
       }
-
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       this.props.dispatch(getInventoryMovements(kwargs))
 
     }
 
   }
 
-  movementItem(movement) {
-    const movClass = movement.movement_type == 'INPUT' ? 'input' : movement.movement_type == 'OUTPUT' ? 'output' : 'adjust'
-    const typeText = movement.movement_type == 'INPUT' ? 'Entrada' : movement.movement_type == 'OUTPUT' ? 'Salida' : 'Toma Física'
-    const date = new Date(movement.created)
+  setWarehouseActive(event) {
+    const target = event.target
+    const value = target.value
 
-    return <tr className={`${movClass}`} key={movement.id}>
-      <td>{movement.consecutive}</td>
-      <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
-      <td>{typeText}</td>
-      <td>₡ {parseFloat(movement.amount).formatMoney(2, ',', '.')}</td>
-      <td>{movement.description}</td>
+    this.props.dispatch({type: 'SET_WAREHOUSE', payload: value})
+
+    const id = this.props.product.id
+    const kwargs = {
+      url: '/api/inventorymovements',
+      ordering: '-created',
+      filterField: 'product_id',
+      filter: id,
+      filterField2: 'warehouse_id',
+      filter2: value,
+      successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
+      errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getInventoryMovements(kwargs))
+
+  }
+
+  unselectWarehouseActive() {
+    this.props.dispatch({type: 'CLEAR_WAREHOUSES', payload: ''})
+
+    const id = this.props.product.id
+    const kwargs = {
+      url: '/api/inventorymovements',
+      ordering: '-created',
+      filterField: 'product_id',
+      filter: id,
+      filterField2: false,
+      filter2: false,
+      successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
+      errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getInventoryMovements(kwargs))
+
+  }
+
+  movementItem(movement) {
+    const movClass = movement.movement_type == 'INPUT' ? 'movements-table-content center input'
+      : movement.movement_type == 'OUTPUT' ? 'movements-table-content center output'
+        : 'movements-table-content center adjust'
+    const typeText = movement.movement_type == 'INPUT' ? 'Entrada' : movement.movement_type == 'OUTPUT' ? 'Salida' : 'T. Física'
+    const date = new Date(movement.created)
+    return <tr key={movement.id}>
+      <td className='center'><div className='movements-table-content'>{movement.consecutive}</div></td>
+      <td><div className='movements-table-content'>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</div></td>
+      <td><div className={`${movClass}`} >{typeText}</div></td>
+      <td><div className='movements-table-content'>{movement.amount}</div></td>
+      <td><div className='movements-table-content'>{movement.warehouse.name}</div></td>
+      <td><div className='movements-table-content'>{movement.description}</div></td>
     </tr>
   }
 
@@ -120,7 +167,11 @@ export default class MovementsList extends React.Component {
           </tr>
           <tr>
             <th>Existencia:</th>
-            <td>{`${product.inventory} ${product.unit}`}</td>
+            <td>{`${product.inventory}`}</td>
+          </tr>
+          <tr>
+            <th>Unidad:</th>
+            <td>{`${product.unit}`}</td>
           </tr>
         </tbody>
       </table>
@@ -130,12 +181,20 @@ export default class MovementsList extends React.Component {
       return product.inventory
         ? <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
-          <td>{product['inventory_by_warehouse'][warehouse.id]} {product.unit}</td>
+          <td>{product['inventory_by_warehouse'][warehouse.id]}</td>
         </tr>
         : <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
           <td>-</td>
         </tr>
+    })
+
+    const warehouses = this.props.warehouses
+    warehouses.sort((a, b) => {
+      return a.code - b.code
+    })
+    const warehousesData = warehouses.map(warehouse => {
+      return {text: `${warehouse.code} - ${warehouse.name}`, id: warehouse.id}
     })
 
     return <div className='list-container'>
@@ -144,7 +203,21 @@ export default class MovementsList extends React.Component {
       <div className='row movements'>
         <div className='totals-sidebar col-xs-12 col-sm-4'>
           {table1}
-          Existencia por Bodegas:
+          <h2>Filtro por bodega:</h2>
+          <Select2
+            name='department'
+            value={this.props.warehouseActive}
+            className='form-control'
+            onSelect={this.setWarehouseActive.bind(this)}
+            onUnselect={this.unselectWarehouseActive.bind(this)}
+            data={warehousesData}
+            options={{
+              placeholder: 'Elija una Bodega...',
+              noResultsText: 'Sin elementos',
+              allowClear: true
+            }}
+          />
+          <h2>Existencia por Bodegas:</h2>
           <table className='table table-bordered'>
             <tbody>
               {table2Content}
@@ -153,14 +226,15 @@ export default class MovementsList extends React.Component {
 
         </div>
         <div className='col-xs-12 col-sm-8'>
-          <table className='table table-bordered'>
+          <table className='table movements-table table-bordered'>
             <thead>
               <tr>
-                <th>Movimiento #</th>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Monto</th>
-                <th>Detalle</th>
+                <th className='center'>Movimiento #</th>
+                <th className='center'>Fecha</th>
+                <th className='center'>Tipo</th>
+                <th className='center'>Monto</th>
+                <th className='center'>Bodega</th>
+                <th className='center'>Detalle</th>
               </tr>
             </thead>
             <tbody>

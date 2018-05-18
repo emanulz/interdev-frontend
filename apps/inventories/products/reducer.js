@@ -50,12 +50,9 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_PRODUCT':
     {
-      const product = action.payload
-      const inventoryByWarehouse = JSON.parse(product.inventory_by_warehouse)
-      product.inventory_by_warehouse = inventoryByWarehouse
       return {
         ...state,
-        productActive: product
+        productActive: action.payload
       }
     } // case
 

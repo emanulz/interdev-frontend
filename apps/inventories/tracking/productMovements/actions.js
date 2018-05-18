@@ -19,12 +19,18 @@ export function getInventoryMovements(kwargs) {
   const url = kwargs.url
   const successType = kwargs.successType
   const errorType = kwargs.errorType
-  const productId = kwargs.productId
+  const filter = kwargs.filter
   const filterField = kwargs.filterField
+  const filter2 = kwargs.filter2
+  const filterField2 = kwargs.filterField2
   const ordering = kwargs.ordering
 
+  const urltoFetch = kwargs.filter2
+    ? `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&ordering=${ordering}`
+    : `${url}/?${filterField}=${filter}&ordering=${ordering}`
+  console.log(urltoFetch)
   return function(dispatch) {
-    axios.get(`${url}/?${filterField}=${productId}&ordering=${ordering}`).then(function(response) {
+    axios.get(urltoFetch).then(function(response) {
       dispatch({type: successType, payload: response.data})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {

@@ -1,22 +1,39 @@
 .movements
   font-family: 'Lato', sans-serif
   padding-top: 20px
+  & h2
+    font-size: 18px
+    padding-bottom: 10px
+    padding-top: 10px
+  &-table
+    &-content
+      display: flex
+      flex-flow: column
+      justify-content: center
+      align-items: center
   & table
     font-size: 13px
     & thead tr
       font-size: 15px
       background-color: $PRIMARY-COLOR
       color: white
+      & .center
+        text-align: center
     & tbody tr
       font-weight: bold
-      // &.credit
-      //   background-color: rgba(249, 93, 93, 0.9)
-      // &.debit
-      //   background-color: rgba(30, 175, 34, 0.9)
+      & .center
+        text-align: center
+  & .table
+    margin-bottom: 0
+  & .select2
+    font-family: 'Lato', sans-serif !important
+  & .select2-selection__clear
+    padding-right: 10px 
+    font-size: 22px !important
 
 .totals-sidebar
   & th
-    width: 30%
+    width: 45%
     height: 35px
     background-color: $PRIMARY-COLOR
     color: white
@@ -26,3 +43,106 @@
   & td
     font-size: 15px
     padding-left: 10px
+
+
+.output
+  color: white
+  min-height: 20px
+  min-width: 80px
+  width: 90%
+  height: 20px
+  position: relative
+  background: #93172a
+  margin: 0 8px
+  
+.output:before 
+  content: ""
+  position: absolute
+  right: -10px
+  bottom: 0
+  width: 0
+  height: 0
+  border-left: 10px solid #93172a
+  border-top: 10px solid transparent
+  border-bottom: 10px solid transparent
+  z-index: -1
+
+// .output:after 
+//   content: ""
+//   position: absolute
+//   left: -10px
+//   bottom: 0
+//   width: 0
+//   height: 0
+//   border-right: 10px solid #93172a
+//   border-top: 10px solid #93172a
+//   border-bottom: 10px solid #93172a
+//   z-index: -1
+
+.input
+  color: white
+  min-height: 20px
+  min-width: 80px
+  width: 90%
+  height: 20px
+  position: relative
+  background: #0b7c42
+  margin: 0 8px
+  
+.input:before 
+  content: ""
+  position: absolute
+  left: -10px
+  bottom: 0
+  width: 0
+  height: 0
+  border-right: 10px solid #0b7c42
+  border-top: 10px solid transparent
+  border-bottom: 10px solid transparent
+  z-index: -1
+  
+// .input:after 
+//   content: ""
+//   position: absolute
+//   right: -10px
+//   bottom: 0
+//   width: 0
+//   height: 0
+//   border-left: 10px solid green
+//   border-top: 10px solid green
+//   border-bottom: 10px solid green
+//   z-index: -1
+  
+.adjust
+  color: white
+  min-height: 20px
+  min-width: 80px
+  width: 90%
+  height: 20px
+  position: relative
+  background: #a8a50d
+  margin: 0 8px
+  
+.adjust:before 
+  content: ""
+  position: absolute
+  left: -10px
+  bottom: 0
+  width: 0
+  height: 0
+  border-right: 10px solid #a8a50d
+  border-top: 10px solid transparent
+  border-bottom: 10px solid transparent
+  z-index: -1
+
+.adjust:after 
+  content: ""
+  position: absolute
+  right: -10px
+  bottom: 0
+  width: 0
+  height: 0
+  border-left: 10px solid #a8a50d
+  border-top: 10px solid transparent
+  border-bottom: 10px solid transparent
+  z-index: -1

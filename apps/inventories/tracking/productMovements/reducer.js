@@ -36,9 +36,11 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_PRODUCT':
     {
+      const product = action.payload
+      product.inventory_by_warehouse = JSON.parse(product.inventory_by_warehouse)
       return {
         ...state,
-        productActive: action.payload
+        productActive: product
       }
     } // case
 
@@ -52,9 +54,14 @@ export default function reducer(state = stateConst, action) {
 
     case 'FETCH_INVENTORY_MOVEMENTS_FULFILLED':
     {
+      const movements = action.payload
+      movements.forEach(movement => {
+        const warehouse = JSON.parse(movement.warehouse)
+        movement.warehouse = warehouse
+      })
       return {
         ...state,
-        inventoryMovements: action.payload
+        inventoryMovements: movements
       }
 
     } // case

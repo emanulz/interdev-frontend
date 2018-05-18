@@ -80,7 +80,7 @@ export default class Products extends React.Component {
     movement.user = user
 
     const warehouse = this.props.warehouses.filter(warehouse => warehouse.id == movement.warehouse_id)
-    movement.warehouse = JSON.stringify(warehouse)
+    movement.warehouse = JSON.stringify(warehouse[0]) || ''
     movement.product = JSON.stringify(movement.product)
 
     // KWARGS USED IN FUNCTION
@@ -138,10 +138,10 @@ export default class Products extends React.Component {
     const warehouseOutput = this.props.warehouses.filter(warehouse => warehouse.id == movementOutput.fromWarehouse_id)
     const warehouseInput = this.props.warehouses.filter(warehouse => warehouse.id == movementInput.toWarehouse_id)
 
-    movementOutput.warehouse = JSON.stringify(warehouseOutput)
+    movementOutput.warehouse = JSON.stringify(warehouseOutput[0]) || ''
     movementOutput.warehouse_id = movementOutput.fromWarehouse_id
 
-    movementInput.warehouse = JSON.stringify(warehouseInput)
+    movementInput.warehouse = JSON.stringify(warehouseInput[0]) || ''
     movementInput.warehouse_id = movementOutput.toWarehouse_id
 
     // PRODUCT
