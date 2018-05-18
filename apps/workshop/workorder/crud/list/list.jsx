@@ -6,7 +6,8 @@ import { getItemDispatch } from '../../../../../utils/api.js'
 @connect((store) => {
     return {
       fething: store.fetching.fetching,
-      workorders: store.workorder.workorders
+      workorders: store.workorder.workorders,
+      table_friendly_orders: store.workorder.table_friendly_orders
     }
   })
 export default class List extends React.Component{
@@ -33,13 +34,35 @@ export default class List extends React.Component{
                 type: 'primary'
             },
             {
-                field: 'malfunction_details',
-                text: 'Falla'
+                field: 'is_closed',
+                text: 'Cerrada?',
+                type: 'bool'
+            },
+            {
+                field: 'paid',
+                text: 'Pagada?',
+                type: 'bool'
+            },
+            {
+                field: 'article_type',
+                text: 'Tipo'
+            },
+            {
+                field: 'article_brand',
+                text: 'Marca'
+            },
+            {
+                field: 'client_name',
+                text: 'Cliente'
+            },
+            {
+                field: 'created',
+                text: 'Recibido'
             }
         ]
 
         const fetching = <div/>
-        const list = <DataTable headerOrder={headerOrder} model='workorders' data={this.props.workorders}
+        const list = <DataTable headerOrder={headerOrder} app="workshop" model='workorders' data={this.props.table_friendly_orders}
             addLink='/workshop/workorder/add' idField='id'/>
 
         const content = this.props.fetching ? fetching : list

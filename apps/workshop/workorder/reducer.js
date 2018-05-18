@@ -1,5 +1,6 @@
 import { searchClient } from '../general/clients/actions';
 import {createCashAdvance} from '../general/actions'
+import {makeOrdersTableFriendly} from './actions'
 
 let inspect = require('util-inspect')
 
@@ -95,6 +96,7 @@ const stateConst = {
     article_brands: article_brands,
     article_colors:article_colors,
     workorders:[],
+    table_friendly_orders:[],
     article_failures:article_failures,
     article_custom_failure: '',
     failure_input_dropdown: true,
@@ -102,7 +104,6 @@ const stateConst = {
     article_observations:article_observations,
     article_custom_observation:'',
     observation_input_dropdown: true,
-
     is_bd_warranty : false,
 
     cash_advance: 0
@@ -138,9 +139,11 @@ export default function reducer(state = stateConst, action){
 
         case 'FETCH_WORKORDERS_FULFILLED':
         {
+            const new_table_friendly = makeOrdersTableFriendly(action.payload)
             return {
                 ...state,
-                workorders: action.payload
+                workorders: action.payload,
+                table_friendly_orders: new_table_friendly
             }
         }
 
@@ -148,7 +151,8 @@ export default function reducer(state = stateConst, action){
         {
             return {
                 ...state,
-                workorders: []
+                workorders: [],
+                table_friendly_orders: []
             }
         }
 

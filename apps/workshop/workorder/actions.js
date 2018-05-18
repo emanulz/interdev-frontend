@@ -1,4 +1,5 @@
 import { saveItem } from '../../../utils/api'
+import {formatDate} from '../../../utils/formatDate'
 
 export function checkWorkOrder(workorder){
 
@@ -66,3 +67,27 @@ export function checkCashAdvance(advance){
 
 }
 
+export function makeOrdersTableFriendly(orders){
+    const cloned_orders = JSON.parse(JSON.stringify(orders))
+    const pretty_orders = cloned_orders.map((order, index)=>{
+        const client = JSON.parse(order.client)
+        const pretty = {
+            id:order.id,
+            consecutive:order.consecutive,
+            is_closed: order.is_closed,
+            paid: order.paid,
+            client_name : `${client.name} ${client.last_name}`,
+            article_brand: order.article_brand,
+            article_type: order.article_type,
+            created: formatDate(order.created),
+            repaired_by: formatDate(order.warranty_repaired_by),
+            is_warranty: order.is_warranty,
+            is_bd_warranty: order.warranty_number_bd ===''?false:true,
+
+        }
+        return pretty
+    })
+
+    return pretty_orders
+    
+}
