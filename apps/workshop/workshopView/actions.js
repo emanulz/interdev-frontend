@@ -1,0 +1,181 @@
+import {createLaborMovement, createCashAdvance, patchLaborMovement, patchCashAdvanceMovement} from '../general/actions'
+import axios from 'axios'
+import {saveLog} from '../../../utils/api'
+let inspect = require('util-inspect')
+
+
+export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_old, 
+                                            user, client, dispatcher){
+    console.log("Cash advance saver method")
+    const url = '/api/cashadvances/'
+    const logCodeCreate = 'CASH_ADVANCE_CREATE'
+    const logCodeUpdate = 'CASH_ADVANCE_UPDATE'
+    const descriptionCreate = 'CASH_ADVANCE_CREATE'
+    const descriptionUpdate = 'CASH_ADVANCE_UPDATE'
+
+    let promises_save = []
+    let promises_patch = []
+
+    for (let advance of cash_list){
+        if(advance.saved === false){
+            if(advance.element.work_order_id !== undefined && advance.element.work_order_id !== ''){
+                console.log('patch advance')
+                const index_old = cash_list_old.findIndex(a=>a.element.id === advance.element.id)
+                promises_patch.push(
+                    patchCashAdvanceMovement(cash_list_old[index_old], advance, user)
+                )
+            }else{
+                const user_string = JSON.stringify(user)
+                promises_save.push(
+                    createCashAdvance(work_order_id, advance.element.amount, JSON.stringify(client),
+                                        JSON.stringify(user), advance.element.description, '' )
+                )
+            }
+        }
+    }
+    /*
+    if(promises_save.length>0){
+        Promise.all(promises_save).then(values=>{
+            dispatcher({type:'CASH_ADVANCE_MOVEMENTS_CREATED', payload:values})
+        })
+    }
+    if(promises_patch.length>0){
+        Promise.all(promises_patch).then(values=>{
+            dispatcher({type:'CASH_ADVANCE_MOVEMENTS_PATCHED', payload:values})
+        })
+    }
+    */
+    return {save: promises_save, patch: promises_patch}
+}
+
+//work_order_id, advance_amount, client, user, advance_description, sale_id
+
+export function saveLaborTransactions(work_order_id, labor_list, labor_list_old, user, dispatcher){
+    const url = '/api/labor/'
+    const logCodeCreate = 'LABOR_CREATE'
+    const logCodeUpdate = 'LABOR_UPDATE'
+    const descriptionCreate = 'Creación nueva entrada mano de obra'
+    const descriptionUpdate = 'Actualización entrada mano de obra'
+
+    let promises_save = []
+    let promises_patch = []
+    //if a labor object already has an id, it already exists on the db and must be patched
+    for (let labor of labor_list){
+        if(labor.saved===false){//only saved if the items has been changed
+            if(labor.element.work_order_id !== undefined && labor.element.work_order_id !== ''){
+                //patch item
+                //find index in labor old
+                const index_old = labor_list_old.findIndex(a=>a.element.id === labor.element.id)
+                promises_patch.push(
+                    patchLaborMovement(labor_list_old[index_old], labor, user)
+                )
+
+            }else{
+                //create new item
+                const user_string = JSON.stringify(user)
+                promises_save.push(
+                    createLaborMovement(work_order_id, labor.element.amount,
+                                        labor.element.description, user_string)
+                )
+            }
+        }
+    }
+    /*
+    if(promises_save.length>0){
+        Promise.all(promises_save).then(values=>{
+            dispatcher({type:'LABOR_MOVEMENTS_CREATED', payload:values})
+        })
+    }
+
+    if(promises_patch.length>0){
+        Promise.all(promises_patch).then(values=>{
+            dispatcher({type: 'LABOR_MOVEMENTS_PATCHED', payload:values})
+        })
+    }*/
+    return {save: promises_save, patch: promises_patch}
+}
+
+export function openCloseWorkOrder(kwargs){
+    const work_order_id = kwargs.work_order_id
+    const new_status = kwargs.new_status
+    const old_order = kwargs.old_order
+    const new_order = kwargs.new_order
+
+    const Kwargs = {
+        work_order_id:work_order_id,
+        new_status:new_status,
+        old_order: old_order,
+        new_order: new_order,
+        user: kwargs.user
+    }
+    return workOrderStatusChanges(Kwargs)
+
+}
+
+export function setPaidWorkOrder(kwargs){
+    const work_order_id = kwargs.work_order_id
+    const paid_status = kwargs.paid_status
+    const old_order = kwargs.old
+    const new_order = kwargs.new
+
+    const Kwargs = {
+        work_order_id:work_order_id,
+        paid_status:paid_status,
+        old_order: old_order,
+        new_order: new_order,
+        user:kwargs.user
+    }
+    return workOrderStatusChanges(Kwargs)
+
+}
+
+function workOrderStatusChanges(kwargs){
+
+    const work_order_id = kwargs.work_order_id
+    const new_status = kwargs.new_status
+    const paid_status = kwargs.paid_status
+    const old_order = kwargs.old_order
+    const new_order = kwargs.new_order
+    const user = kwargs.user
+
+    const url = `/api/workorders/${work_order_id}/`
+    const logModel= 'WORK_ORDER'
+
+    let logCode=''
+    let logDescription = ''
+    let description = ''
+
+    let patch_data = {}
+    if(new_status!==undefined){
+        logCode = 'WORK_ORDER_OPEN_PATCH'
+        logDescription = `Work order status changed to ${new_status?'CERADA':'ABIERTA'}`
+        description = `Work order status changed to ${new_status?'CERADA':'ABIERTA'}`
+        patch_data.is_closed = new_status
+    }else{
+        logCode = 'WORK_ORDER_PAID_PATCH'
+        logDescription = `Work order paid changed to ${paid_status?'PAGADA':'PENDIENTE'}`
+        description = `Work order status changed to ${paid_status?'PAGADA':'PENDIENTE'}`
+        patch_data.paid = paid_status
+    }
+    return new Promise((resolve, reject)=>{
+        axios({
+            method: 'patch',
+            url:url,
+            data:patch_data
+        }).then(response=>{
+            console.log("Saved")
+            saveLog(logCode, logModel, old_order, new_order, logDescription, user)
+            console.log("About to resolve")
+            resolve(response.data)
+        }).catch(err=>{
+            console.log(err)
+            if(err.response){
+                //console.log(err.response.data)
+            }
+            const message = new_status? `Error cerrando orden de trabajo ${work_order_id}`:`Error actualizando estado de pago de orden${work_order_id}`
+            alertify.alert('Error', message)
+            reject(err)   
+        })
+    })
+
+}

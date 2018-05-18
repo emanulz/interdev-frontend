@@ -11,7 +11,7 @@ import WorkshopView from '../workshopView/main.jsx'
 const routes = <div className='heigh100'>
     <Route exact path='/workshop' component={Home}/>
     <Route path='/workshop/workorder' component={WorkOrder}/>
-    <Route path='/workshop/workshopview' component={WorkshopView}/>
+    <Route path='/workshop/workshopview/:work_order' component={WorkshopView}/>
 </div>
 
 export default routes
