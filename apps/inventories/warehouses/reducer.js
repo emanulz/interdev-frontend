@@ -5,18 +5,10 @@ const defaultPermissions = {
   delete: 'unfetched'
 }
 
-const warehouseModel = {
-  id: '0000000000',
-  code: '',
-  name: '',
-  location: '',
-  description: ''
-}
-
 const stateConst = {
   warehouses: [],
-  warehouseActive: warehouseModel,
-  warehouseActiveOld: warehouseModel,
+  warehouseActive: '',
+  warehouseActiveOld: '',
   nextWarehouse: 0,
   previousWarehouse: 0,
   permissions: defaultPermissions
@@ -97,8 +89,8 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        warehouseActive: warehouseModel,
-        warehouseActiveOld: warehouseModel
+        warehouseActive: '',
+        warehouseActiveOld: ''
       }
     }
 

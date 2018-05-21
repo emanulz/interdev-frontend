@@ -34,7 +34,7 @@ class CreateButtons extends React.Component {
         itemOld: warehouseOld,
         sucessMessage: 'Bodega creada Correctamente.',
         errorMessage: 'Hubo un error al crear la Bodega, intente de nuevo.',
-        dispatchType: 'CLEAR_WAREHOUSE'
+        dispatchType: 'CLEAR_WAREHOUSES'
       }
 
       if (redirect) {

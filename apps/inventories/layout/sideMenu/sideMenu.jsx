@@ -74,6 +74,11 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-building' />
               Bodegas</Link>
           </li>
+          <li>
+            <Link to='/inventories/reports'>
+              <span className='fa fa-sheet' />
+              Reportes</Link>
+          </li>
         </ul>
       </div>
 
