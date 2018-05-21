@@ -155,7 +155,8 @@ function partAlreadyInTransactionsList(code, qty, parts, partsRequestList, targe
             qty: qty,
             type:'PART_REQUEST',
             subTotal: subTotal,
-            priceToUse: parts[targetPartIndex].price
+            priceToUse: parts[targetPartIndex].price,
+            saved: false
 
         }
     }

@@ -12,6 +12,7 @@ let inspect = require('util-inspect')
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
+
 export function loadLaborTransactions(work_order_id, dispatcher){
     dispatcher({type: 'FETCHING_STARTED', payload:''})
     const lookUpField = 'work_order_id'
@@ -247,6 +248,10 @@ export function createCashAdvance(work_order_id, advance_amount, client, user, a
     })
 
     
+}
+
+export function createWorkshopInventoryMovement(work_order_id, part_amount){
+
 }
 
 export function createUsedPart(work_order_id, part_amount, description, user){

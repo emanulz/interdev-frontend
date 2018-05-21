@@ -5,7 +5,7 @@ import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions} from './actions'
+import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions} from './actions'
 import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions} from '../general/actions'
 import alertify from 'alertifyjs'
 
@@ -16,6 +16,9 @@ let inspect = require('util-inspect')
     return{
         work_order: store.workshopview.work_order,
         work_order_old: store.workshopview.work_order_old,
+
+        partsRequestList: store.transactionsList.partsRequestList,
+        partsRequestListOld: store.transactionsList.partsRequestListOld,
 
         laborList: store.transactionsList.laborList,
         laborListOld: store.transactionsList.laborListOld,
@@ -65,8 +68,11 @@ export default class WorkshopView extends React.Component {
 
         console.log('Save used parts')
         const used_parts_promises = saveUsedPartTransactions(this.props.work_order.id, this.props.usedPartList, this.props.cashAdvanceListOld, this.props.user, this.props.dispatch)
+        
+        console.log('Create movements for Part requests')
+        const part_request_movements_promises = saveInventoryTransactions(this.props.work_order_id, this.props.partsRequestList, this.props.user)
 
-
+        console.log('Start saving Inventory transactions')
         const all_tasks = labor_promises.concat(cash_promises).concat(used_parts_promises)
 
         let task_done = this.runSequence(all_tasks).then(()=>{
@@ -78,9 +84,7 @@ export default class WorkshopView extends React.Component {
     runSequence(all_tasks){
         let result = Promise.resolve()
         all_tasks.forEach(task=>{
-            console.log('Task --> ' + inspect(task))
             result = result.then(()=>{
-                console.log(inspect('Promise resolved --> ' + inspect(task)))
                 return Promise.all(task.promises).then(result=>{
                     if(task.promises.length>0){
                         this.props.dispatch({type:task.dispatch, payload:result})

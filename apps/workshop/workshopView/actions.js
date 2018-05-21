@@ -4,10 +4,37 @@ import axios from 'axios'
 import {saveLog} from '../../../utils/api'
 let inspect = require('util-inspect')
 
+export function saveInventoryTransactions(work_order_id, parts_request_list, user){
+    console.log('Parts request transactions save')
+    const url_movements = '/api/inventorymovements/'
+    const url_warehouses = '/api/warehouses/'
+    const logCodeCreate = 'WORKSHOP_REQUEST'
+    const descriptionCreate = 'WORKSHOP_CREATE'
+
+    const workshop_warehouse_id = "044273d4-43fb-4dad-87bf-c2c4e3d7b727"
+    const main_warehouse_id = "17f9c37c-bf6a-4d43-acea-7d4b2d0f5116"
+    const warehouse_promises = [axios.get(`${url_warehouses}${main_warehouse_id}`),
+                                axios.get(`${url_warehouses}${workshop_warehouse_id}`)]
+
+    Promise.all(warehouse_promises).then(results=>{
+        let promises_save = []
+        console.log('Results warehouse data --> ' + inspect(results.data))
+        for (part of parts_request_list){
+            if(part.saved === false){
+                //do not allow patch
+                const user_string = JSON.stringify(user)
+                
+            }
+        }
+        return promises_save
+    })
+
+
+}
+
 export function saveUsedPartTransactions(work_order_id, used_list, used_list_old,
                                         user){
 
-        console.log('Used parts saver method')
         const url = '/api/usedparts/'
         const logCodeCreate = 'USED_PART_CREATE'
         const logCodeUpdate = 'USED_PART_UPDATE'
@@ -19,7 +46,6 @@ export function saveUsedPartTransactions(work_order_id, used_list, used_list_old
         for (let part of used_list){
             if(part.saved === false){
                 if(part.element.work_order_id !== undefined && part.element.work_order_id !== ''){
-                    console.log('patch used part')
                     const index_old = used_list_old.findIndex(a=>a.element.id === part.element.id)
                     promises_patch.push(
                         patchUsedPartMovement(used_list_old[index_old], part, user)
