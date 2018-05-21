@@ -37,7 +37,7 @@ class UpdateButtons extends React.Component {
         itemOld: warehouseOld,
         sucessMessage: 'Bodega actualizada Correctamente.',
         errorMessage: 'Hubo un error al actualizar la Bodega, intente de nuevo.',
-        dispatchType: 'CLEAR_WAREHOUSE'
+        dispatchType: 'CLEAR_WAREHOUSES'
       }
 
       if (redirect) {

@@ -43,6 +43,15 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'PHYSICAL_TAKE_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: true,
+        sideMenuVisible: false
+      }
+    } // case
+
   } // switch
 
   return state // default return

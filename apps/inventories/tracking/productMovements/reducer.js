@@ -12,29 +12,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'FETCH_PRODUCTS_FULFILLED':
-    {
-      const products = action.payload
-      products.forEach(product => {
-        const inventoryByWarehouse = JSON.parse(product.inventory_by_warehouse)
-        product.inventory_by_warehouse = inventoryByWarehouse
-      })
-      return {
-        ...state,
-        products: action.products
-      }
-
-    } // case
-
-    case 'FETCH_PRODUCTS_REJECTED':
-    {
-      return {
-        ...state,
-        products: []
-      }
-    } // case
-
-    case 'SET_PRODUCT':
+    case 'SET_PRODUCT_TRACKING':
     {
       const product = action.payload
       product.inventory_by_warehouse = JSON.parse(product.inventory_by_warehouse)
@@ -44,7 +22,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'CLEAR_PRODUCT':
+    case 'CLEAR_PRODUCT_TRACKING':
     {
       return {
         ...state,

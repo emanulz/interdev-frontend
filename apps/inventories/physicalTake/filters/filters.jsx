@@ -13,8 +13,7 @@ import {connect} from 'react-redux'
     subdepartmentActive: store.products.subdepartmentActive,
     filterText: store.products.filterText,
     warehouses: store.warehouses.warehouses,
-    warehouseActive: store.warehouses.warehouseActive,
-    isPhysicalTake: store.products.isPhysicalTake
+    warehouseActive: store.warehouses.warehouseActive
   }
 })
 export default class Filters extends React.Component {
