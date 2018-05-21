@@ -15,6 +15,22 @@ export function updateQty(qty, itemsList, target_uuid){
     return res
 }
 
+export function buildUsedPartRequest(amount, description){
+    const subTotal  = calculateUsedPartSubTotal(amount)
+    return {
+        type:'ADD_TO_USED_PART_LIST',
+        payload:{
+            uuid: uuidv1(),
+            element: {'amount':amount, 'description': description, 'subTotal': subTotal},
+            qty: 1,
+            type: 'USED_PART',
+            priceToUse: amount,
+            subTotal: subTotal,
+            saved: false
+        }
+    }
+}
+
 //build a cash advance request
 export function buildCashAdvanceRequest(amount, description){
     const subTotal = calculateAdvanceSubTotal(amount)
@@ -48,7 +64,7 @@ export function buildLaborRequest(amount, description){
     }
 }
 
-export function updateLaborOrCashAdvanceRow(item, e, list){
+export function updateLaborCashAdvanceUsedPartRow(item, e, list){
 
     
         let val = e.target.value
@@ -82,6 +98,17 @@ export function updateLaborOrCashAdvanceRow(item, e, list){
                 newItem.priceToUse = newItem.element.amount
                 newItem.subTotal= calculateAdvanceSubTotal(newItem.element.amount)
                 return {type:'CASH_ADVANCE_UPDATED', payload:{'item':newItem, 'index':index}}
+            }
+
+            case 'USED_PART':
+            {
+                const newItem = JSON.parse(JSON.stringify(item))
+                newItem.saved = false
+                newItem.element[e.target.name] = val
+                newItem.priceToUse = newItem.element.amount
+                newItem.subTotal = calculateUsedPartSubTotal(newItem.element.amount)
+                return {type:'USED_PART_UPDATED', payload:{'item':newItem, 'index':index}}
+
             }
     
         }
@@ -168,7 +195,11 @@ function calculateLaborSubTotal(cost, qty){
 
 function calculateAdvanceSubTotal(cost, qty){
     const amount = qty ? qty : 1
+    return cost*amount
+}
 
+function calculateUsedPartSubTotal(cost, qty){
+    const amount=qty ? qty : 1
     return cost*amount
 }
 

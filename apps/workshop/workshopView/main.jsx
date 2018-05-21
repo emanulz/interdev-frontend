@@ -5,8 +5,8 @@ import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder} from './actions'
-import {loadCashAdvances, loadLaborTransactions} from '../general/actions'
+import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions} from './actions'
+import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions} from '../general/actions'
 import alertify from 'alertifyjs'
 
 let inspect = require('util-inspect')
@@ -22,6 +22,9 @@ let inspect = require('util-inspect')
 
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         cashAdvanceListOld: store.transactionsList.cashAdvanceListOld, 
+
+        usedPartList: store.transactionsList.usedPartList,
+        usedPartListOld: store.transactionsList.usedPartListOld,
 
         user: store.user,
         client: store.workshopview.work_order.client
@@ -60,31 +63,35 @@ export default class WorkshopView extends React.Component {
         const cash_promises = saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.cashAdvanceListOld, this.props.user, 
                                     this.props.client, this.props.dispatch)
 
-        return new Promise((resolve, reject)=>{
-            Promise.all(labor_promises.save).then((values)=>{
-                if(labor_promises.save.length>0){
-                    this.props.dispatch({type:'LABOR_MOVEMENTS_CREATED', payload:values})
-                }
-                Promise.all(labor_promises.patch).then(values=>{
-                    if(labor_promises.patch.length>0){
-                        this.props.dispatch({type: 'LABOR_MOVEMENTS_PATCHED', payload:values})
+        console.log('Save used parts')
+        const used_parts_promises = saveUsedPartTransactions(this.props.work_order.id, this.props.usedPartList, this.props.cashAdvanceListOld, this.props.user, this.props.dispatch)
+
+
+        const all_tasks = labor_promises.concat(cash_promises).concat(used_parts_promises)
+
+        let task_done = this.runSequence(all_tasks).then(()=>{
+            console.log('done')
+        })
+        
+    }
+
+    runSequence(all_tasks){
+        let result = Promise.resolve()
+        all_tasks.forEach(task=>{
+            console.log('Task --> ' + inspect(task))
+            result = result.then(()=>{
+                console.log(inspect('Promise resolved --> ' + inspect(task)))
+                return Promise.all(task.promises).then(result=>{
+                    if(task.promises.length>0){
+                        this.props.dispatch({type:task.dispatch, payload:result})
                     }
-                    Promise.all(cash_promises.save).then((values)=>{
-                        if(cash_promises.save.length>0){
-                            this.props.dispatch({type:'CASH_ADVANCE_MOVEMENTS_CREATED', payload:values})
-                        }
-                        Promise.all(cash_promises.patch).then((values)=>{
-                            if(cash_promises.patch.length>0){
-                                this.props.dispatch({type:'CASH_ADVANCE_MOVEMENTS_PATCHED', payload:values})
-                            }
-                            resolve()
-                        }).catch(err=>{
-                            reject(err)
-                        })
-                    })
+                    
                 })
             })
+
         })
+
+        return result
 
     }
 
@@ -109,8 +116,10 @@ export default class WorkshopView extends React.Component {
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
             console.log('Fetch advances for ' + nextProps.work_order.id)
             loadCashAdvances(nextProps.work_order.id, this.props.dispatch)
-            console.log('Fetch labor for ' + nextProps.work_order.id)
+
             loadLaborTransactions(nextProps.work_order.id, this.props.dispatch)
+
+            loadUsedPartsTransactions(nextProps.work_order.id, this.props.dispatch)
         }
     }
 

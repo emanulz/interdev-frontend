@@ -3,7 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {updateQty} from '../partsProvider/actions'
 import {deleteItemDispatch} from '../../../../utils/api'
-import {updateLaborOrCashAdvanceRow} from '../partsProvider/actions'
+import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
 
 @connect((store)=>{
     return {
@@ -15,6 +15,10 @@ import {updateLaborOrCashAdvanceRow} from '../partsProvider/actions'
 
         laborList: store.transactionsList.laborList,
         laborListOld : store.transactionsList.laborListOld,
+
+        usedPartList: store.transactionsList.usedPartList,
+        usedPartListOld: store.transactionsList.usedPartListOld,
+
         user: store.user
     }
 })
@@ -31,21 +35,41 @@ export default class TransactionItems extends React.Component {
         )
     }
 
-    descInputChange(item, e){
+    transactionChange(item, e){
         let list = ''
         if(item.type === 'LABOR'){
             list = this.props.laborList
-        }else{
+        }else if(item.type == 'CASH_ADVANCE'){
             list = this.props.cashAdvanceList
+        }else if(item.type == 'USED_PART'){
+            list = this.props.usedPartList
         }
                
         this.props.dispatch(
-            updateLaborOrCashAdvanceRow(item, e, list)
+            updateLaborCashAdvanceUsedPartRow(item, e, list)
         )
     }
 
     transactionDelete(item_uuid, type, e){
         switch(type){
+            case 'USED_PART':
+            {
+                let index = this.props.usedPartList.findIndex(a=>a.uuid === item_uuid)
+                const kwargs = {
+                    item:this.props.usedPartList[index].element,
+                    url: `/api/usedparts/${this.props.usedPartList[index].element.id}`,
+                    modelName: 'USED_PART',
+                    logCode: 'Transación parte usada Borrada',
+                    itemOld: this.props.usedPartList[index],
+                    logModel: 'USED_PART',
+                    user: JSON.stringify(this.props.user),
+                    dispatchType: 'USED_PART_DELETED'
+                }
+                this.props.dispatch({type:'FETCHING_STARTED'})
+                console.log("DELETE!")
+                this.props.dispatch(deleteItemDispatch(kwargs))
+                break
+            }
             case 'LABOR':
             {
                 let index = this.props.laborList.findIndex(a=>a.uuid === item_uuid)
@@ -96,7 +120,7 @@ export default class TransactionItems extends React.Component {
         
 
         const transactions = this.props.partsRequestList.concat(this.props.cashAdvanceList)
-            .concat(this.props.laborList)
+            .concat(this.props.laborList).concat(this.props.usedPartList)
 
         const transactionsItems = transactions.map((item, index) =>{
             //determine wether it is saved, modified or new
@@ -148,14 +172,14 @@ export default class TransactionItems extends React.Component {
                         name='description' 
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
-                        onChange={this.descInputChange.bind(this, item)} />
+                        onChange={this.transactionChange.bind(this, item)} />
                     </div>
 
                     unit_price_element = <div className={itemRowClass+"-unitProce"} >
                         <input type="text" name='amount'
                         value={item.priceToUse}
                         className={itemRowClass+"description-input form-control"}
-                        onChange={this.descInputChange.bind(this, item)}/>
+                        onChange={this.transactionChange.bind(this, item)}/>
                     </div>
 
                     break
@@ -167,14 +191,32 @@ export default class TransactionItems extends React.Component {
                         <input type='text' name='description' 
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
-                        onChange={this.descInputChange.bind(this, item)} />
+                        onChange={this.transactionChange.bind(this, item)} />
                     </div>
 
-                    unit_price_element = <div className={itemRowClass+"-unitProce"} >
+                    unit_price_element = <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name='amount'
                         value={item.priceToUse}
                         className={itemRowClass+"description-input form-control"}
-                        onChange={this.descInputChange.bind(this, item)}/>
+                        onChange={this.transactionChange.bind(this, item)}/>
+                    </div>
+                    break
+                }
+                case 'USED_PART':
+                {
+                    movementType = "Repuesto Usado"
+                    desc_element = <div className={itemRowClass+"-description"} >
+                        <input type='text' name='description'
+                        value={item.element.description}
+                        className={itemRowClass+"-description-input"+ " form-control"}
+                        onChange={this.transactionChange.bind(this, item)} />
+                    </div>
+
+                    unit_price_element =  <div className={itemRowClass+"-unitPrice"} >
+                        <input type="text" name="amount"
+                        value={item.priceToUse}
+                        className={itemRowClass+"description-input form-control"}
+                        onChange={this.transactionChange.bind(this, item)} />
                     </div>
                     break
                 }

@@ -383,7 +383,7 @@ export function deleteItemDispatch(kwargs) {
   const user = kwargs.user
   const dispatchType = kwargs.dispatchType
   return function(dispatch) {
-    console.log("Item " + item.id)
+    console.log("Item " + url)
     axios({
       method: 'delete',
       url: url

@@ -1,8 +1,42 @@
-import {createLaborMovement, createCashAdvance, patchLaborMovement, patchCashAdvanceMovement} from '../general/actions'
+import {createLaborMovement, createCashAdvance, patchLaborMovement, patchCashAdvanceMovement,
+    patchUsedPartMovement, createUsedPart} from '../general/actions'
 import axios from 'axios'
 import {saveLog} from '../../../utils/api'
 let inspect = require('util-inspect')
 
+export function saveUsedPartTransactions(work_order_id, used_list, used_list_old,
+                                        user){
+
+        console.log('Used parts saver method')
+        const url = '/api/usedparts/'
+        const logCodeCreate = 'USED_PART_CREATE'
+        const logCodeUpdate = 'USED_PART_UPDATE'
+        const descriptionCreate = 'USED_PART_CREATE'
+        const descriptionUpdate = 'USED_PART_UPDATE'
+    
+        let promises_save = []
+        let promises_patch = []
+        for (let part of used_list){
+            if(part.saved === false){
+                if(part.element.work_order_id !== undefined && part.element.work_order_id !== ''){
+                    console.log('patch used part')
+                    const index_old = used_list_old.findIndex(a=>a.element.id === part.element.id)
+                    promises_patch.push(
+                        patchUsedPartMovement(used_list_old[index_old], part, user)
+                    )
+                }else{
+                    const user_string = JSON.stringify(user)
+                    promises_save.push(
+                        createUsedPart(work_order_id, part.element.amount, part.element.description, user_string)
+                                                                )
+                }
+            }
+        }
+        return [
+            {promises: promises_save, dispatch:'USED_PART_MOVEMENTS_CREATED'}, 
+            {promises: promises_patch, dispatch: 'USED_PART_MOVEMENTS_PATCHED'}
+        ]
+    }
 
 export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_old, 
                                             user, client, dispatcher){
@@ -33,19 +67,10 @@ export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_
             }
         }
     }
-    /*
-    if(promises_save.length>0){
-        Promise.all(promises_save).then(values=>{
-            dispatcher({type:'CASH_ADVANCE_MOVEMENTS_CREATED', payload:values})
-        })
-    }
-    if(promises_patch.length>0){
-        Promise.all(promises_patch).then(values=>{
-            dispatcher({type:'CASH_ADVANCE_MOVEMENTS_PATCHED', payload:values})
-        })
-    }
-    */
-    return {save: promises_save, patch: promises_patch}
+    return [
+        {promises: promises_save, dispatch:'CASH_ADVANCE_MOVEMENTS_CREATED'}, 
+        {promises: promises_patch, dispatch: 'CASH_ADVANCE_MOVEMENTS_PATCHED'}
+    ]
 }
 
 //work_order_id, advance_amount, client, user, advance_description, sale_id
@@ -80,19 +105,11 @@ export function saveLaborTransactions(work_order_id, labor_list, labor_list_old,
             }
         }
     }
-    /*
-    if(promises_save.length>0){
-        Promise.all(promises_save).then(values=>{
-            dispatcher({type:'LABOR_MOVEMENTS_CREATED', payload:values})
-        })
-    }
 
-    if(promises_patch.length>0){
-        Promise.all(promises_patch).then(values=>{
-            dispatcher({type: 'LABOR_MOVEMENTS_PATCHED', payload:values})
-        })
-    }*/
-    return {save: promises_save, patch: promises_patch}
+    return [
+        {promises: promises_save, dispatch:'LABOR_MOVEMENTS_CREATED'}, 
+        {promises: promises_patch, dispatch:'LABOR_MOVEMENTS_PATCHED'}
+    ]
 }
 
 export function openCloseWorkOrder(kwargs){

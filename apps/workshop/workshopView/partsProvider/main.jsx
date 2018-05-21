@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
-import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest} from './actions.js'
+import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest, buildUsedPartRequest} from './actions.js'
 
 
 let inspect = require('util-inspect')
@@ -74,6 +74,23 @@ export default class PartsProvider extends React.Component{
 
                     this.props.dispatch(buildCashAdvanceRequest(amount, description))
 
+                    //signal the search field clear
+                    this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
+                }else if(e.target.value.startsWith("re*")){
+                    let bits = e.target.value.split("*")
+                    //check if the cost is a number
+                    if(isNaN(bits[1])){
+                        this.props.dispatch({type:'INVALID_USED_PART_QUICK_ENTRY'})
+                        return
+                    }
+
+                    const amount = parseFloat(bits[1])
+                    let description = 'Repuesto usado de taller'
+                    if(!(bits[2]===undefined) && bits[2].length > 3){
+                        description = bits[2]
+                    }
+
+                    this.props.dispatch(buildUsedPartRequest(amount, description))
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
 
