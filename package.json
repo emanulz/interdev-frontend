@@ -8,9 +8,10 @@
     "removeBundles": "rm -rf ../backend/static/bundles/*",
     "dev1": "webpack --watch --display-error-details --config webpack.local.config.js",
     "stage1": "webpack --display-error-details --config webpack.stage.config.js",
+    "prod1": "webpack --display-error-details --config webpack.production.config.js",
     "dev": "npm run removeBundles & npm run dev1",
     "stage": "npm run removeBundles & npm run stage1",
-    "prod": "webpack --config webpack.prod.config.js"
+    "prod": "npm run removeBundles & npm run prod1"
   },
   "author": "Emanuel Zuniga Infante @emanulz",
   "license": "MIT",
