@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {updateQty} from '../partsProvider/actions'
 import {deleteItemDispatch} from '../../../../utils/api'
 import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
+import {deleteInventoryTransactions} from '../actions'
 
 @connect((store)=>{
     return {
@@ -55,6 +56,12 @@ export default class TransactionItems extends React.Component {
             case 'USED_PART':
             {
                 let index = this.props.usedPartList.findIndex(a=>a.uuid === item_uuid)
+                //check if the item was already store in the database
+                const item =  this.props.usedPartList[index]
+                if(item.element.work_order_id === undefined){
+                    this.props.dispatch({type:'USED_PART_DELETED',payload:item.uuid})
+                    return
+                }
                 const kwargs = {
                     item:this.props.usedPartList[index].element,
                     url: `/api/usedparts/${this.props.usedPartList[index].element.id}`,
@@ -66,13 +73,18 @@ export default class TransactionItems extends React.Component {
                     dispatchType: 'USED_PART_DELETED'
                 }
                 this.props.dispatch({type:'FETCHING_STARTED'})
-                console.log("DELETE!")
                 this.props.dispatch(deleteItemDispatch(kwargs))
                 break
             }
             case 'LABOR':
             {
                 let index = this.props.laborList.findIndex(a=>a.uuid === item_uuid)
+                //check if the item was already stored in the database
+                const item = this.props.laborList[index]
+                if(item.element.work_order_id === undefined){ //item its on memory only
+                    this.props.dispatch({type:'LABOR_ITEM_DELETED', payload:item.uuid})
+                    return
+                }
                 const kwargs = {
                     item:this.props.laborList[index].element,
                     url: `/api/labor/${this.props.laborList[index].element.id}`,
@@ -90,6 +102,12 @@ export default class TransactionItems extends React.Component {
             case 'CASH_ADVANCE':
             {
                 let index = this.props.cashAdvanceList.findIndex(a=>a.uuid === item_uuid)
+                //check if the item was already stored in the database
+                const item =this.props.cashAdvanceList[index]
+                if(item.element.work_order_id === undefined){
+                    this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
+                    return
+                }
                 const kwargs = {
                     item:this.props.cashAdvanceList[index].element,
                     url:`/api/cashadvances/${this.props.cashAdvanceList[index].element.id}`,
@@ -105,6 +123,35 @@ export default class TransactionItems extends React.Component {
                 this.props.dispatch(deleteItemDispatch(kwargs))
                 break
             }
+            case 'PART_REQUEST':
+            {
+                let index =  this.props.partsRequestList.findIndex(a=>a.uuid === item_uuid)
+                const item = this.props.partsRequestList[index]
+                if(item.work_order_id === undefined){
+                    this.props.dispatch({type:'PART_REQUEST_DELETED', payload:item.uuid})
+                    return
+                }
+                deleteInventoryTransactions(item, this.props.user).then((part)=>{
+                    const item = {
+                        id:part.id,
+
+                    }
+                    const kwargs = {
+                        item:item,
+                        url:`/api/partrequest/${this.props.partsRequestList[index].uuid}`,
+                        modelName: 'PART_REQUEST',
+                        logCode:'Requisición de parte borrada',
+                        itemOld: item,
+                        logModel: 'PART_REQUEST',
+                        user: JSON.stringify(this.props.user),
+                        dispatchType: 'PART_REQUEST_DELETED'
+                    }
+                    this.props.dispatch({type:'FETCHING_STARTED'})
+                    this.props.dispatch(deleteItemDispatch(kwargs))
+                })
+
+                break
+            }
             default:{
                 console.log('Unsuported type of transaction ' + type)
             }
@@ -117,8 +164,6 @@ export default class TransactionItems extends React.Component {
         const removeIconClass = 'removeItemIcon'
         const itemRowClass = 'transactions-body-item'
 
-        
-
         const transactions = this.props.partsRequestList.concat(this.props.cashAdvanceList)
             .concat(this.props.laborList).concat(this.props.usedPartList)
 
@@ -130,9 +175,14 @@ export default class TransactionItems extends React.Component {
                 status = item.saved?'Guardado':'Modificado'
                 status_class = item.saved?itemRowClass + "-status-saved":itemRowClass + "-status-modified"
             }
+            //the parts request from the main inventory are an special case, the product as defined in the db does not have
+            //a related work_order_id
+            if(item.type === 'PART_REQUEST'){
+                status = item.saved?'Guardado':'Nuevo'
+                status_class = item.saved?itemRowClass + "-status-saved":itemRowClass + "-status-new"
+            }
 
-
-            const disable_quantity = item.type === 'PART_REQUEST' ? false : true
+            const disable_quantity = item.type === 'PART_REQUEST' ? (item.saved?true:false) : true
             const qtyField = <input
                 id={`qty${item.qty}`}
                 disabled={disable_quantity}

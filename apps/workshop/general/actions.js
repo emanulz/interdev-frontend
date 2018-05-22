@@ -1,5 +1,6 @@
 import alertify from 'alertifyjs'
 import axios from 'axios'
+const uuidv1 = require('uuid/v1')
 
 import {saveLog, getItemDispatch} from '../../../utils/api'
 
@@ -74,6 +75,28 @@ export function loadUsedPartsTransactions(work_order_id, dispatcher){
     }).catch(err=>{
         if(err){
             alertify.alert('ERROR', `Error al solicitar partes usadas para la
+            orden de trabajo${work_order_id} :${err}`)
+            dispatcher({type:dispatchErrorType, payload:err})            
+        }
+    })
+}
+
+export function loadPartRequestTransactions(work_order_id, dispatcher){
+    dispatcher({type: 'FETCHING_STARTED', payload:''})
+    const lookUpField = 'work_order_id'
+    const base_url ='/api/partrequest/'
+    const lookUpValue = work_order_id
+    const dispatchOKType = 'PARTS_REQUEST_LOADED'
+    const dispatchErrorType = 'ERROR_LOADING_PARTS_REQUEST'
+
+    const target_url = `${base_url}?${lookUpField}=${lookUpValue}`
+
+    axios.get(target_url).then(response=>{
+        dispatcher({type:dispatchOKType, payload:response.data})
+        dispatcher({type:'FETCHING_DONE'})
+    }).catch(err=>{
+        if(err){
+            alertify.alert('ERROR', `Error al solicitar requisiciones de parte para la
             orden de trabajo${work_order_id} :${err}`)
             dispatcher({type:dispatchErrorType, payload:err})            
         }
@@ -194,6 +217,7 @@ export function createLaborMovement(work_order_id, labor_amount, description, us
             data:labor_data
         }).then((response)=>{
             saveLog(logCode, logModel, labor_old, labor_data, logDescription, user)
+            console.log("NEW LABOR ABOUT TO RESOLVE")
             resolve(response.data)   
         }).catch((err)=>{
             console.log(inspect(err))
@@ -250,7 +274,103 @@ export function createCashAdvance(work_order_id, advance_amount, client, user, a
     
 }
 
-export function createWorkshopInventoryMovement(work_order_id, part_amount){
+export function creationPromise(url, data, work_order_id, stamp, target_warehouse){
+
+    const logCode ='WORK_ORDER_PART_MOVEMENT'
+    const logDescription = 'Part movement added for work order --> ' + work_order_id
+    const logModel = "INVENTORY_MOVEMENT"
+    const old = {noPrevious:'Initial Creation'}
+    let promise = new Promise((resolve, reject)=>{
+        axios({
+            method: 'post',
+            url: url,
+            data:data
+        }).then((response)=>{
+            saveLog(logCode, logModel, old, data, logDescription, data.user)
+            resolve({data:response.data,stamp:stamp, target_warehouse:target_warehouse})
+        }).catch(err=>{
+            console.log(inspect(err))
+            if(err.response){
+                console.log(err.response.data)
+            }
+            alertify.alert('Error', `Error creando movimiento de inventario para orden de trabajo ${work_order_id}`)
+            reject(err)
+        })
+    })
+
+    return promise
+}
+
+export function createWorkshopInventoryMovement(work_order_id, part_amount, direction, part, user,
+                                                main_warehouse, workshop_warehouse){                                       
+    const in_type = "INPUT"
+    const out_type = "OUTPUT"
+    
+    const creator = `wo_${work_order_id}`
+    let promises_array = []
+    const url = '/api/inventorymovements/'
+    const user_string = JSON.stringify(user)
+    const part_string = JSON.stringify(part)
+
+    //console.log(inspect(part))
+
+    const stamp = uuidv1()
+    switch(direction)
+    {
+        case 'IN_WORKSHOP':
+        {
+            //create a promise for the extraction from  the main warehouse
+            const data_in = {
+                movement_type: out_type,
+                user: user_string,
+                amount: part_amount,
+                product_id: part.id,
+                product: part_string,
+                description: 'Movimiento de Taller',
+                warehouse: JSON.stringify(main_warehouse),
+                warehouse_id: main_warehouse.id,
+                id_generator: `wo_${work_order_id}`
+
+            }
+            promises_array.push(creationPromise(url, data_in, work_order_id, stamp, 'MAIN'))
+            //create a promise for the ingress in the workshop warehouse
+            const data_out = JSON.parse(JSON.stringify(data_in))
+            data_out.movement_type = in_type
+            data_out.warehouse = JSON.stringify(workshop_warehouse)
+            data_out.warehouse_id = workshop_warehouse.id
+
+            promises_array.push(creationPromise(url, data_out, work_order_id,stamp,'WORKSHOP'))
+            console.log("CREATION PROMISES --> " + inspect(promises_array.length))
+            return  promises_array
+        }
+        case 'OUT_WORKSHOP':
+        {
+            //create a promise for the extraction from  the main warehouse
+            const data_in = {
+                movement_type: in_type,
+                user: user_string,
+                amount: part_amount,
+                product_id: part.id,
+                product: part_string,
+                description: 'Movimiento de Taller',
+                warehouse: JSON.stringify(main_warehouse),
+                warehouse_id: main_warehouse.id
+            }
+            promises_array.push(creationPromise(url, data_in, work_order_id, stamp, 'MAIN'))
+            //create a promise for the ingress in the workshop warehouse
+            const data_out = JSON.parse(JSON.stringify(data_in))
+            data_out.movement_type = out_type
+            data_out.warehouse = JSON.stringify(workshop_warehouse)
+            data_out.warehouse_id = workshop_warehouse.id
+
+            promises_array.push(creationPromise(url, data_out, work_order_id, stamp, 'WORKSHOP'))
+            return promises_array
+        }
+        default:
+        {
+            console.log("INVALID MOVEMENT")
+        }
+    }
 
 }
 
@@ -286,6 +406,4 @@ export function createUsedPart(work_order_id, part_amount, description, user){
             reject(err)
         })
     })
-
-    
 }

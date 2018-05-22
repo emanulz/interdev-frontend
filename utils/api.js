@@ -397,6 +397,7 @@ export function deleteItemDispatch(kwargs) {
             }
           })
         saveLog(logCode, logModel, itemOld, item, logDescription, user)
+        console.log('RECEIVED ID --> ' + item.id)
         dispatch({type:dispatchType, payload:item.id})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
