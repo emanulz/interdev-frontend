@@ -1,0 +1,44 @@
+import React from 'react'
+import {connect} from 'react-redux'
+import routes from './routes'
+import {fetchProfile} from './actions'
+import {BrowserRouter as Router} from 'react-router-dom'
+
+//components
+import TopBar from '../layout/topBar/topBar.jsx'
+import SideMenu from '../layout/sideMenu/sideMenu.jsx'
+import Fetching from '../../../general/fetching/fetching.jsx'
+
+@connect(store=>{
+    return {
+        fetching: store.fetching.fetching,
+        sideMenuVisible: store.layout.sideMenuVisible
+    }
+})
+export default class Main extends React.Component {
+
+    componentWillMount(){
+        this.props.dispatch(fetchProfile())
+    }
+
+    render () {
+        const fetching = this.props.fetching ? < Fetching/> : ''
+        const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer': 'mainContainer sideHidden'
+        const content = <Router>
+            <div>
+                <SideMenu/>
+                <div id='mainContainer' className={mainContainerClass} >
+                    <TopBar/>
+                    <div className='mainContainer-content' >
+                        {routes}
+                        {fetching}
+                    </div>
+                </div>
+            </div>
+        </Router>
+
+        return <div>
+            {content}
+        </div>
+    }
+}
