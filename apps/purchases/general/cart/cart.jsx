@@ -63,13 +63,6 @@ export default class Cart extends React.Component {
 
   // Main Layout
   render() {
-    // const useLote = this.props.defaultConfig
-    //   ? this.props.defaultConfig.cartItemUseLote
-    //   : false
-
-    // const loteField = useLote
-    //   ? <th>Lote</th>
-    //   : <th />
 
     return <div className='cart'>
       <div className='cart-header'>
@@ -82,17 +75,8 @@ export default class Cart extends React.Component {
         <div className='cart-header-qty'>
           <h5>Cant</h5>
         </div>
-        <div className='cart-header-unitPrice'>
-          <h5>P Unit</h5>
-        </div>
-        <div className='cart-header-discount'>
-          <h5>Desc</h5>
-        </div>
-        <div className='cart-header-iva'>
-          <h5>IV</h5>
-        </div>
         <div className='cart-header-total'>
-          <h5>Total IVI</h5>
+          <h5>Sub Total</h5>
         </div>
       </div>
 

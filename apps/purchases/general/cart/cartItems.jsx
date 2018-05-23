@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateTotals, removeFromCart} from './actions'
-import {updateItemDiscount, updateItemLote, updateQty, addSubOne, updateQtyCode} from '../product/actions'
+import {updateItemLote, updateQty, addSubOne, updateQtyCode} from '../product/actions'
 import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
@@ -31,12 +31,6 @@ export default class CartItems extends React.Component {
     elem.scrollTop = elem.scrollHeight
 
   }
-
-  // componentDidUpdate(nextProps) {
-  //   if (this.props.cartItemActive != nextProps.cartItemActive) {
-  //     console.log(document.getElementById(`qty${nextProps.cartItemActive}`))
-  //   }
-  // }
 
   componentWillMount() {
 
@@ -97,30 +91,6 @@ export default class CartItems extends React.Component {
     })
   }
 
-  discountInputKeyPress(code, ev) {
-
-    if (ev.key == 'Enter') {
-      ev.preventDefault()
-      const discount = (ev.target.value)
-        ? ev.target.value
-        : 0
-      this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-        this.props.client))
-
-    }
-
-  }
-
-  discountInputOnBlur(code, ev) {
-
-    const discount = (ev.target.value)
-      ? ev.target.value
-      : 0
-    this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client))
-
-  }
-
   qtyInputChange(code, ev) {
 
     const qty = parseFloat((ev.target.value))
@@ -132,15 +102,12 @@ export default class CartItems extends React.Component {
 
   qtyInputKeyPress(ev) {
     ev.preventDefault()
-    console.log('called')
     if (ev.key == 'Enter') {
-      console.log('Presssss', ev.key)
       document.getElementById('productCodeInputField').focus()
     }
   }
 
   loteInputKeyPress(code, ev) {
-
     if (ev.key == 'Enter') {
       ev.preventDefault()
       const lote = (ev.target.value)
@@ -149,28 +116,21 @@ export default class CartItems extends React.Component {
       this.props.dispatch(updateItemLote(this.props.inCart, code, lote))
 
     }
-
   }
 
   loteInputOnBlur(code, ev) {
-
     const lote = (ev.target.value)
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemLote(this.props.inCart, code, lote))
-
   }
 
   setCartItemActive(code, ev) {
-
     this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
-
   }
 
   removeItem(code, ev) {
-
     this.props.dispatch(removeFromCart(this.props.inCart, code))
-
   }
 
   fieldFocus(ev) {
@@ -238,33 +198,16 @@ export default class CartItems extends React.Component {
           <h5>Cantidad</h5>
           {qtyField}
         </div>
-        <div className='cart-body-item-unitPrice'>
-          <h5>P Unit</h5>
-          ₡ {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
-        </div>
-        <div className='cart-body-item-discount'>
-          <h5>Desc</h5>
-          {discountField}
-        </div>
-        <div className='cart-body-item-iva'>
-          <h5>IVA</h5>
-          {taxes1}
-        </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>
             ₡ {item.totalWithIv.formatMoney(2, ',', '.')}
         </div>
-
         <span className={removeIconClass}>
           <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />
         </span>
 
       </div>
     })
-
-    // return <tbody className='table-body'>
-    //   {items}
-    // </tbody>
 
     return <div id='cart-body' className='cart-body'>
       {items2}

@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 //components
 import Content from './content/content.jsx'
+import Aside from './aside/aside.jsx'
 
 @connect(store=>{
     return {
@@ -17,6 +18,7 @@ export default class Purchase extends React.Component {
     render() {
         return <div className='purchase' >
             <Content/>
+            <Aside/>
         </div>
     }
 }

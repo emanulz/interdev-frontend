@@ -30,29 +30,6 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 }
 
 // Function to update the inline discount of an item, and reflect it on store
-export function updateItemDiscount(itemsInCart, code, discount, globalDiscount, client) {
-
-  const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
-
-  const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
-    ? {
-      type: 'PRODUCT_IN_CART_NOT_FOUND',
-      payload: -1
-    }
-    : {
-      type: 'UPDATE_CART',
-      payload: {
-        item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, globalDiscount, client,
-          itemsInCart[indexInCart].uuid),
-        index: indexInCart
-      }
-    }
-
-  return res
-
-}
-
-// Function to update the inline discount of an item, and reflect it on store
 export function updateItemLote(itemsInCart, code, lote) {
   const loteNum = !lote ? '-' : lote
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists

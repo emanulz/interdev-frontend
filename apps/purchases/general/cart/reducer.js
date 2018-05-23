@@ -45,7 +45,6 @@ export default function reducer(state = stateConst, action) {
         ...state,
         cartHasItems: true,
         cartItems: [
-          // action.payload,
           ...state.cartItems,
           action.payload
         ]
@@ -60,8 +59,6 @@ export default function reducer(state = stateConst, action) {
       newCart.splice(action.payload, 1)
 
       const itemsLeftInCart = (newCart.length > 0)
-      // ? true
-      // : false
 
       return {
         ...state,
@@ -96,7 +93,6 @@ export default function reducer(state = stateConst, action) {
 
     case 'UPDATE_CART_TOTALS':
     {
-
       return {
         ...state,
         cartSubtotal: action.payload.subtotal,
@@ -104,15 +100,6 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.total,
         discountTotal: action.payload.discountTotal,
         cartSubtotalNoDiscount: action.payload.subTotalNoDiscount
-      }
-    } // case
-
-    case 'SET_GLOBAL_DISCOUNT':
-    {
-
-      return {
-        ...state,
-        globalDiscount: action.payload
       }
     } // case
 
