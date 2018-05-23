@@ -35,8 +35,6 @@ export default class WorkOrder extends React.Component{
         this.props.dispatch({type: 'FETCHING_STARTED', payload:''})
         this.props.dispatch(checkUserPermissions(kwargs))
         
-
-        
     }
 
 

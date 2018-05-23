@@ -5,6 +5,7 @@ import Select2 from 'react-select2-wrapper'
 import Client from '../../../general/clients/clients.jsx'
 import {checkCashAdvance} from '../../actions.js'
 import CreateWorkOrderButtons from './createWorkOrderButtons.jsx'
+import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx'
 
 @connect((store)=>{
     return {
@@ -411,7 +412,7 @@ export default class Form extends React.Component {
                 <CreateWorkOrderButtons/>
 
             </div>
-
+            <ReceiptPanel/>
         </div>
     }
 

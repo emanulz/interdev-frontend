@@ -8,6 +8,8 @@ import {formatDate} from '../../../utils/formatDate'
 import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions, createPartRequest} from './actions'
 import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions, loadPartRequestTransactions} from '../general/actions'
 import alertify from 'alertifyjs'
+import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
+
 
 let inspect = require('util-inspect')
 
@@ -156,6 +158,10 @@ export default class WorkshopView extends React.Component {
             <div className="workshop-view-footer">
                 {footer}
             </div>
+
+            <ReceiptPanel/>
+
+
         </div>
     }
 

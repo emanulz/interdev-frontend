@@ -255,7 +255,9 @@ export default function reducer(state = stateConst, action){
                 warranty_invoice_date: action.payload.warranty_invoice_date,
                 warranty_supplier_name:action.payload.warranty_supplier_name,
                 warranty_invoice_number:action.payload.warranty_invoice_number,
-                warranty_repaired_by:action.payload.warranty_repaired_by
+                warranty_repaired_by:action.payload.warranty_repaired_by,
+                crated:action.payload.created,
+                updated:action.payload.updated
             }
             
             return {
