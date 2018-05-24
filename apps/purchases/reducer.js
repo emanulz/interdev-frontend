@@ -9,6 +9,7 @@ import products from './general/product/reducer.js'
 import cart from './general/cart/reducer.js'
 import clients from './general/clients/reducer.js'
 import suppliers from './general/suppliers/reducer.js'
+import pay from './purchase/pay/reducer.js'
 
 
 export default combineReducers({
@@ -20,5 +21,6 @@ export default combineReducers({
     cart,
     products,
     clients,
-    suppliers
+    suppliers,
+    pay
 })

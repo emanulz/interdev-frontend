@@ -4,19 +4,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateTotals, removeFromCart} from './actions'
-import {updateItemLote, updateQty, addSubOne, updateQtyCode} from '../product/actions'
+import {addSubOne, updateItem} from '../product/actions'
 import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
     inCart: store.cart.cartItems,
-    client: store.clients.clientSelected,
-    globalDiscount: store.cart.globalDiscount,
-    // disabled: store.sales.completed,
-    cartItemActive: store.cart.cartItemActive
-    // defaultConfig: store.config.defaultSales,
-    // userConfig: store.config.userSales
+    cartItemActive: store.cart.cartItemActive,
+    discountTotal: store.cart.discountTotal,
+    cartTaxes: store.cart.cartTaxes,
   }
 })
 export default class CartItems extends React.Component {
@@ -24,7 +21,7 @@ export default class CartItems extends React.Component {
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
 
-    this.props.dispatch(updateTotals(this.props.inCart))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.discountTotal, this.props.cartTaxes))
 
     // Auto Scroll To end of container
     const elem = document.getElementById('cart-body')
@@ -91,13 +88,21 @@ export default class CartItems extends React.Component {
     })
   }
 
-  qtyInputChange(code, ev) {
+  subTotalChange(code, ev){
+    const subTotal = parseFloat((ev.target.value))
+    ? parseFloat(ev.target.value)
+    : -1
+    if(subTotal==-1){return}
+    this.props.dispatch(updateItem(code, true, this.props.inCart, -1, subTotal))
 
-    const qty = parseFloat((ev.target.value))
-      ? ev.target.value
-      : 0
-    this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client))
+  }
 
+  qtyInputChange(code, ev){
+    const qty = parseFloat(ev.target.value)
+    ? parseFloat(ev.target.value)
+    : -1
+    if(qty==-1){return}
+    this.props.dispatch(updateItem(code, true, this.props.inCart, qty, -1))
   }
 
   qtyInputKeyPress(ev) {
@@ -105,24 +110,6 @@ export default class CartItems extends React.Component {
     if (ev.key == 'Enter') {
       document.getElementById('productCodeInputField').focus()
     }
-  }
-
-  loteInputKeyPress(code, ev) {
-    if (ev.key == 'Enter') {
-      ev.preventDefault()
-      const lote = (ev.target.value)
-        ? ev.target.value
-        : 0
-      this.props.dispatch(updateItemLote(this.props.inCart, code, lote))
-
-    }
-  }
-
-  loteInputOnBlur(code, ev) {
-    const lote = (ev.target.value)
-      ? ev.target.value
-      : 0
-    this.props.dispatch(updateItemLote(this.props.inCart, code, lote))
   }
 
   setCartItemActive(code, ev) {
@@ -165,7 +152,14 @@ export default class CartItems extends React.Component {
         value={item.qty}
       />
 
-      const discountField = this.props.client.saleLoaded
+      const subTotalField = <input 
+        id={`sub${item.product.code}`}
+        onChange={this.subTotalChange.bind(this, item.uuid)}
+        className='form-control'
+        value={item.subtotal}
+        type="number"/>
+
+      /*const discountField = this.props.client.saleLoaded
         ? <input
           disabled={this.props.disabled}
           onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
@@ -180,7 +174,7 @@ export default class CartItems extends React.Component {
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
           type='number' className='form-control'
-        />
+        />*/
 
       return <div className={activeClass}
         key={item.uuid}
@@ -200,7 +194,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>
-            ₡ {item.totalWithIv.formatMoney(2, ',', '.')}
+            {subTotalField}
         </div>
         <span className={removeIconClass}>
           <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />

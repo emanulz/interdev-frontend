@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 //components
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
+import PayPanel from './pay/payPanel.jsx'
 
 @connect(store=>{
     return {
@@ -19,6 +20,7 @@ export default class Purchase extends React.Component {
         return <div className='purchase' >
             <Content/>
             <Aside/>
+            <PayPanel/>
         </div>
     }
 }

@@ -3,50 +3,26 @@
 // ------------------------------------------------------------------------------------------
 
 // This function updates totals the cart store item, generates new values according cart item objects, then push the to store
-export function updateTotals(inCart) {
+export function updateTotals(inCart, total_discount, total_taxes) {
 
   let subtotal = 0
-  let subTotalNoDiscount = 0
-  let taxes = 0
   let total = 0
-  let discountTotal = 0
 
   // for Each element adds the values to get totals
   inCart.forEach((item) => {
-
-    subTotalNoDiscount = subTotalNoDiscount + item.subTotalNoDiscount
-
-    subtotal = subtotal + item.subtotal
-
-    const taxesCalc = (item.product.use_taxes)
-      ? item.subtotal * (item.product.taxes / 100)
-      : 0
-
-    const taxesCalc2 = (item.product.use_taxes2)
-      ? item.subtotal * (item.product.taxes2 / 100)
-      : 0
-
-    const taxesCalc3 = (item.product.use_taxes3)
-      ? item.subtotal * (item.product.taxes3 / 100)
-      : 0
-
-    taxes = taxes + taxesCalc + taxesCalc2 + taxesCalc3
-
-    discountTotal = discountTotal + item.discountCurrency // this is the value in currency
-
+    subtotal += item.subtotal
   })
   // TODO Config for round or not
   // total = Math.round(subtotal + taxes)
-  total = subtotal + taxes
+  total = subtotal + total_taxes - total_discount
   // returs a dispatch with a payload of the obtained values
   return {
     type: 'UPDATE_CART_TOTALS',
     payload: {
       subtotal: subtotal,
-      taxes: taxes,
+      taxes: total_taxes,
       total: total,
-      discountTotal: discountTotal,
-      subTotalNoDiscount: subTotalNoDiscount
+      discountTotal: total_discount,
     }
   }
 }

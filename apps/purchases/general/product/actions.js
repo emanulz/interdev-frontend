@@ -29,30 +29,8 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 
 }
 
-// Function to update the inline discount of an item, and reflect it on store
-export function updateItemLote(itemsInCart, code, lote) {
-  const loteNum = !lote ? '-' : lote
-  const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
-
-  const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
-    ? {
-      type: 'PRODUCT_IN_CART_NOT_FOUND',
-      payload: -1
-    }
-    : {
-      type: 'UPDATE_CART_ITEM_LOTE',
-      payload: {
-        lote: loteNum,
-        index: indexInCart
-      }
-    }
-
-  return res
-
-}
-
 // When item is selected in code field
-export function productSelected(code, qty, products, itemsInCart, globalDiscount, client, defaultConfig, userConfig) {
+export function productSelected(code, qty, products, itemsInCart, defaultConfig, userConfig) {
 
   const perLine = false
 
@@ -65,7 +43,7 @@ export function productSelected(code, qty, products, itemsInCart, globalDiscount
       type: 'PRODUCT_NOT_FOUND',
       payload: -1
     }
-    : checkIfInCart(code, qty, products, itemsInCart, globalDiscount, productSelected, client, perLine)
+    : checkIfInCart(code, qty, products, itemsInCart, productSelected, perLine)
 
   return res
 
@@ -73,47 +51,36 @@ export function productSelected(code, qty, products, itemsInCart, globalDiscount
 
 // Updates Amount based on qty input field
 
-export function updateQty (code, qty, itemsInCart, globalDiscount, client) {
+export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal){
 
-  const indexInCart = itemsInCart.findIndex(item => item.uuid == code)
-  const qtyNum = parseFloat(qty)
+  const index = is_search_uuid 
+  ?itemsInCart.findIndex(item=> item.uuid==search_key)
+  :itemsInCart.findIndex(item=> item.product.code == search_key || item.product.barcode == search_key)
+
+  const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
+  const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
+
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, globalDiscount, client,
-        itemsInCart[indexInCart].uuid),
-      index: indexInCart
+      item: updatedCartItem(itemsInCart, index, qtyNum, subtotalNum),
+      index:index
     }
   }
   return res
 }
 
-export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client) {
-
-  const indexInCart = itemsInCart.findIndex(item => item.product.code == code || item.product.barcode == code)
-  const qtyNum = parseFloat(qty)
-  const res = {
-    type: 'UPDATE_CART',
-    payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, globalDiscount, client,
-        itemsInCart[indexInCart].uuid),
-      index: indexInCart
-    }
-  }
-  return res
-}
 
 // Updates Amount based on qty input field
 
-export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client) {
+export function addSubOne (code, subOrAdd, itemsInCart) {
 
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code)
   const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, globalDiscount, client,
-        itemsInCart[indexInCart].uuid),
+      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].uuid),
       index: indexInCart
     }
   }
@@ -125,12 +92,10 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client) 
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, productSelected, client, perLine) {
+function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLine) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
-
-  const dataNewProd = caclSubtotal(products[productSelected], qty, 0, globalDiscount, client)
 
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
@@ -142,21 +107,14 @@ function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, product
           uuid: uuid,
           product: products[productSelected],
           qty: qty,
-          discount: 0,
-          discountCurrency: dataNewProd.discountCurrency,
-          subTotalNoDiscount: dataNewProd.subTotalNoDiscount,
-          subtotal: dataNewProd.subtotal,
-          totalWithIv: dataNewProd.totalWithIv,
-          lote: '-',
-          priceToUse: dataNewProd.priceToUse
+          subtotal: 0,
         }
       }
 
       : {
         type: 'UPDATE_CART',
         payload: {
-          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty,
-            itemsInCart[indexInCart].discount, globalDiscount, client, itemsInCart[indexInCart].uuid),
+          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty, itemsInCart[indexInCart].uuid),
           index: indexInCart
         }
       }
@@ -171,13 +129,7 @@ function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, product
         uuid: uuid,
         product: products[productSelected],
         qty: qty,
-        discount: 0,
-        discountCurrency: dataNewProd.discountCurrency,
-        subTotalNoDiscount: dataNewProd.subTotalNoDiscount,
-        subtotal: dataNewProd.subtotal,
-        totalWithIv: dataNewProd.totalWithIv,
-        lote: '-',
-        priceToUse: dataNewProd.priceToUse
+        subtotal: 0,
       }
     }
     return res
@@ -185,75 +137,15 @@ function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, product
 
 }
 
-// calculates the subtotal by line, also the total with iv included, the discount in currency format
-function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
-
-  const price = priceToUse(product, client)
-
-  const subTotalNoDiscount = price * qty
-
-  const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (globalDiscount / 100))
-
-  const iv1 = (product.use_taxes)
-    ? subTotal * (product.taxes / 100)
-    : 0
-
-  const iv2 = (product.use_taxes2)
-    ? subTotal * (product.taxes2 / 100)
-    : 0
-
-  const iv3 = (product.use_taxes3)
-    ? subTotal * (product.taxes3 / 100)
-    : 0
-
-  const totalWithIv = subTotal + iv1 + iv2 + iv3
-
-  const discountCurrencyInLine = price * qty * (productDiscount / 100)
-  const discountCurrencyGlobal = ((price * qty) - discountCurrencyInLine) * (globalDiscount / 100)
-
-  const discountCurrency = discountCurrencyInLine + discountCurrencyGlobal
-
-  return {
-    subtotal: subTotal,
-    totalWithIv: totalWithIv,
-    discountCurrency: discountCurrency,
-    subTotalNoDiscount: subTotalNoDiscount,
-    priceToUse: price
-  }
-
-}
-
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
-function updatedCartItem(itemsInCart, index, newQty, productDiscount, globalDiscount, client, uuid) {
-
-  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, globalDiscount, client)
-
+function updatedCartItem(itemsInCart, index, newQty, newSubTotal) {
+  //keep the subtotal de the same
+  const uuid = itemsInCart[index].uuid
   return {
     uuid: uuid,
     product: itemsInCart[index].product,
-    discountCurrency: data.discountCurrency,
     qty: newQty,
-    discount: productDiscount,
-    subTotalNoDiscount: data.subTotalNoDiscount,
-    subtotal: data.subtotal,
-    totalWithIv: data.totalWithIv,
-    lote: itemsInCart[index].lote,
-    priceToUse: data.priceToUse
+    subtotal: newSubTotal
   }
 }
 
-// function to determin price to use in calculation
-function priceToUse(product, client) {
-
-  if (client.clientType == 'GENERAL') return product.price
-
-  if (client.clientType == 'DISTRIB' && product.usePrice2) return product.price2
-  if (client.clientType == 'DISTRIB') return product.price
-
-  if (client.clientType == 'WHOLESA' && product.usePrice3) return product.price3
-  if (client.clientType == 'WHOLESA' && product.usePrice2) return product.price2
-  if (client.clientType == 'WHOLESA') return product.price
-
-  return product.price
-
-}

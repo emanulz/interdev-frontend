@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 //components
 import Supplier from '../../general/suppliers/suppliers.jsx'
 import Totals from '../../general/totals/totals.jsx'
+import PurchaseButtons from '../../general/purchaseButtons/purchaseButtons.jsx'
 
 @connect(store=>{
     return{
@@ -24,6 +25,7 @@ export default class Aside extends React.Component {
             <div className={asideContainerClass} >
                 <Supplier/>
                 <Totals/>
+                <PurchaseButtons/>
             </div>
         </div>
     }
