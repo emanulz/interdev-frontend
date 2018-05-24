@@ -217,7 +217,6 @@ export function createLaborMovement(work_order_id, labor_amount, description, us
             data:labor_data
         }).then((response)=>{
             saveLog(logCode, logModel, labor_old, labor_data, logDescription, user)
-            console.log("NEW LABOR ABOUT TO RESOLVE")
             resolve(response.data)   
         }).catch((err)=>{
             console.log(inspect(err))
@@ -311,8 +310,6 @@ export function createWorkshopInventoryMovement(work_order_id, part_amount, dire
     const url = '/api/inventorymovements/'
     const user_string = JSON.stringify(user)
     const part_string = JSON.stringify(part)
-
-    //console.log(inspect(part))
 
     const stamp = uuidv1()
     switch(direction)
