@@ -1,6 +1,19 @@
+const inventoryMovementModel = {
+  movement_type: '',
+  user: '',
+  amount: '',
+  product: '',
+  product_id: '',
+  description: '',
+  warehouse: '',
+  warehouse_id: '',
+  toWarehouse_id: '',
+  fromWarehouse_id: ''
+}
+
 const stateConst = {
-  fullWidth: false,
-  takeObj: {}
+  inventoryMovementActive: inventoryMovementModel,
+  fullWidth: false
 }
 
 export default function reducer(state = stateConst, action) {
