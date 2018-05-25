@@ -9,7 +9,8 @@ const stateConst = {
   cartTaxes: 0, // total amount of taxes in cart in currency
   cartTotal: 0, // cart total after discount and taxes
   discountTotal: 0, // discount in currency
-  cartItemActive: false
+  cartItemActive: false,
+  oldCart:'',
 }
 
 export default function reducer(state = stateConst, action) {
@@ -48,6 +49,44 @@ export default function reducer(state = stateConst, action) {
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
         cartItemActive: false
+      }
+    }
+    case 'CLEAR_PURCHASE':
+    {
+      return{
+        ...state,
+        editable: true,
+        created: '',
+        updated: '',
+        isNull: false,
+        cartHasItems: false, // var to check if cart has items
+        cartItems: [], // the list of items in cart
+        cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
+        cartSubtotal: 0, // the subtotal including discounts without taxes
+        cartTaxes: 0, // total amount of taxes in cart in currency
+        cartTotal: 0, // cart total after discount and taxes
+        globalDiscount: 0, // discount %
+        discountTotal: 0, // discount in currency
+        cartItemActive: false
+      }
+    }
+    case 'LOADED_PURCHASE':
+    {
+      const cart = JSON.parse(action.payload.cart)
+      return {
+        ...state,
+        oldCart: JSON.parse(JSON.stringify(cart)),
+        editable:cart.editable,
+        created:cart.created,
+        updated:cart.updated,
+        isNull: cart.isNull,
+        cartHasItems: cart.cartHasItems,
+        cartItems: cart.cartItems,
+        cartSubtotal: cart.cartSubtotal,
+        cartTaxes: cart.cartTaxes,
+        cartTotal: cart.cartTotal,
+        discountTotal: cart.discountTotal,
+        cartItemActive: cart.cartItemActive       
       }
     }
 

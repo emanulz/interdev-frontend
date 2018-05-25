@@ -1,5 +1,17 @@
 import axios from 'axios'
 
+
+export function fetchGlobalPreferences(){
+  return function(dispatch){
+    axios.get('/api/globalprefs/').then(response=>{
+      dispatch({type: 'FETCH_GLOBAL_PREF_FULFILLED', payload:response.data})
+      dispatch({type: 'FETCHING_DONE'})
+    }).catch(err=>{
+      dispatch({type:'FETCH_GLOBAL_PREF_REJECTED', payload:err})
+    })
+  }
+}
+
 export function fetchProfile() {
 
     return function(dispatch) {

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {updateStoreCardAuth, updateStoreCardDigits} from '../actions'
 
 @connect((store) => {
-  return {cardAuth: store.pay.cardAuth, cardDigits: store.pay.cardDigits}
+  return {cardAuth: store.pay.cardAuth, cardDigits: store.pay.cardDigits, cardAmount: store.pay.cardAmount}
 })
 export default class PayCard extends React.Component {
 
@@ -17,6 +17,12 @@ export default class PayCard extends React.Component {
     this.props.dispatch(updateStoreCardDigits(ev.target.value))
   }
 
+  payCardAmountChanged(e){
+    const amount = parseFloat(e.target.value)?parseFloat(e.target.value):-1
+    if(amount == -1){return}
+    this.props.dispatch({type:'UPDATE_CARD_AMOUNT', payload: amount})
+  }
+
   render() {
 
     return <div className='pay-method-body'>
@@ -26,6 +32,9 @@ export default class PayCard extends React.Component {
       </div>
 
       <div className='pay-method-body-content'>
+
+        <div className='pay-tag left'>MONTO:</div>
+        <input value={this.props.cardAmount} onChange={this.payCardAmountChanged.bind(this)} type='Number' className='form-control' />
 
         <div className='pay-tag left'>4 DIGITOS:</div>
         <input value={this.props.cardDigits} onChange={this.payCardDigitsChanged.bind(this)} type='Number' className='form-control' />

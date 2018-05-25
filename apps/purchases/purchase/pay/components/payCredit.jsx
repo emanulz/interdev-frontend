@@ -2,18 +2,18 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {client: store.clients.clientSelected, debt: store.clients.clientSelectedDebt}
+  return {client: store.clients.clientSelected, debt: store.clients.clientSelectedDebt, creditDays: store.pay.creditDays}
 })
 export default class PayCredit extends React.Component {
 
+  creditDaysChanged(e){
+    const days = parseFloat(e.target.value)? parseFloat(e.target.value):-1
+    if(days==-1){return}
+    this.props.dispatch({type:'UPDATE_CREDIT_DAYS', payload:days})
+  }
+
+
   render() {
-    const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
-    const clientLimit = this.props.client.has_credit
-      ? `₡ ${parseFloat(this.props.client.credit_limit).formatMoney(2, ',', '.')}`
-      : 'SIN CRÉDITO'
-    const clientAvailable = this.props.client.has_credit
-      ? `₡ ${available.formatMoney(2, ',', '.')}`
-      : 'SIN CRÉDITO'
 
     return <div className='pay-method-body'>
 
@@ -23,14 +23,8 @@ export default class PayCredit extends React.Component {
 
       <div className='pay-method-body-content'>
 
-        <div className='pay-tag left'>LÍMITE:</div>
-        <div className='pay-tag right'>
-          {clientLimit}
-        </div>
-
-        <div className='pay-tag left'>DISPONIBLE:</div>
-        <div className='pay-tag right'>
-          {clientAvailable}</div>
+        <div className='pay-tag left'>PLAZO:</div>
+        <input value={this.props.creditDays} onChange={this.creditDaysChanged.bind(this)} type='number' className='form-control' />
 
         <br />
         <br />

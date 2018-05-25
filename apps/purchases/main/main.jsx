@@ -3,11 +3,13 @@ import {connect} from 'react-redux'
 import routes from './routes'
 import {fetchProfile} from './actions'
 import {BrowserRouter as Router} from 'react-router-dom'
+import {fetchGlobalPreferences} from './actions.js'
 
 //components
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
+
 
 @connect(store=>{
     return {
@@ -19,6 +21,7 @@ export default class Main extends React.Component {
 
     componentWillMount(){
         this.props.dispatch(fetchProfile())
+        this.props.dispatch(fetchGlobalPreferences())
     }
 
     render () {

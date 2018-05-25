@@ -1,6 +1,6 @@
 
 const stateConst = {
-    isVisible: true,
+    isVisible: false,
     isFull: false
 }
 

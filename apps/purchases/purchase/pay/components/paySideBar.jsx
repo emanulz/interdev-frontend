@@ -10,14 +10,11 @@ const Mousetrap = require('mousetrap')
     cart: store.cart,
     payMethod: store.pay.payMethod,
     pay: store.pay,
-    client: store.clients.clientSelected,
-    user: store.clients.userSelected,
-    debt: store.clients.clientSelectedDebt
-
   }
 })
 export default class PaySideBar extends React.Component {
 
+ /*
   saveBtn() {
     const user = this.props.user
     const sale = {
@@ -53,6 +50,7 @@ export default class PaySideBar extends React.Component {
     Mousetrap.reset()
 
   }
+ */
 
   render() {
 
@@ -60,38 +58,27 @@ export default class PaySideBar extends React.Component {
     let payButtonClass = 'pay-tag tag-button'
     const total = parseFloat(this.props.cart.cartTotal)
     const cash = parseFloat(this.props.pay.cashAmount)
+    const card = parseFloat(this.props.pay.cardAmount)
 
-    switch (this.props.payMethod) {
+     switch (this.props.payMethod) {
 
       case 'CASH':
       {
         change = cash - total
-        payButtonClass = (total > 0 && change >= 0)
-          ? 'pay-tag tag-button enable'
-          : 'pay-tag tag-button'
         break
       }
 
       case 'CARD':
       {
-        const auth = this.props.pay.cardAuth
-        const digits = this.props.pay.cardDigits
-        change = parseFloat(this.props.pay.cashAmount) - parseFloat(this.props.total)
-        payButtonClass = (total > 0 && auth && digits)
-          ? 'pay-tag tag-button enable'
-          : 'pay-tag tag-button'
+        change = card - total
         break
       }
       case 'CRED':
       {
-        const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
-        payButtonClass = (total > 0 && total <= available && this.props.client.has_credit)
-          ? 'pay-tag tag-button enable'
-          : 'pay-tag tag-button'
         break
       }
 
-    }
+    } 
 
     return <div className='pay-side-bar'>
       <div className='pay-method-body-header'>
@@ -110,8 +97,6 @@ export default class PaySideBar extends React.Component {
           ₡ {change.formatMoney(2, ',', '.')}</div>
 
         <br />
-
-        {/*<SaveBtn payButtonClass={payButtonClass} />*/}
 
       </div>
 

@@ -8,7 +8,10 @@ import formatMoney from '../../../../utils/formatMoney'
         cartSubtotal: store.cart.cartSubtotal,
         cartTaxes: store.cart.cartTaxes,
         discountTotal: store.cart.discountTotal,
-        cartTotal: store.cart.cartTotal
+        cartTotal: store.cart.cartTotal,
+        creditDays: store.pay.creditDays,
+        invoiceDate: store.purchase.invoiceDate,
+        invoiceNumber: store.purchase.invoiceNumber
     }
 })
 export default class Totals extends React.Component {
@@ -23,6 +26,14 @@ export default class Totals extends React.Component {
         const tax = parseFloat(e.target.value)?parseFloat(e.target.value):-1
         if(tax==-1){return}
         this.props.dispatch({type:'SET_TAXES_AMOUNT', payload:tax})
+    }
+
+    invoiceNumberChanged(e){
+        this.props.dispatch({type:'INVOICE_NUMBER_CHANGED', payload:e.target.value})
+    }
+
+    invoiceDateChanged(e){
+        this.props.dispatch({type:'INVOICE_DATE_CHANGED', payload:e.target.value})
     }
 
     render (){
@@ -52,6 +63,19 @@ export default class Totals extends React.Component {
             <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Total:</div>
                 <div className='totals-data-row-value'>₡{total}</div>
+            </div>
+            <hr/>
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Número de Factura:</div>
+                <input className='totals-data-row-input' type="text"
+                onChange={this.invoiceNumberChanged.bind(this)}
+                value={this.props.invoiceNumber}/>
+            </div>
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Fecha Factura:</div>
+                <input className='totals-data-row-input' type="date"
+                onChange={this.invoiceDateChanged.bind(this)}
+                value={this.props.invoiceDate}/>
             </div>
         </div>
     }

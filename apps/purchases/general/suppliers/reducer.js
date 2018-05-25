@@ -43,7 +43,22 @@ export default function reducer(state=stateConst, action){
                 supplierSelected:action.payload
             }
         }
-
+        case 'LOADED_PURCHASE':
+        {
+            const sup = JSON.parse(action.payload.supplier)
+            return {
+                ...state,
+                supplierSelected:sup
+            }
+        }
+        case 'CLEAR_PURCHASE':
+        {
+            return {
+                ...state,
+                suppliers: [],
+                supplierSelected: supplierModel
+            }
+        }
         case 'FETCH_SUPPLIERS_FULFILLED':
         {
             return {

@@ -1,8 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {savePurchase} from './actions.js'
 
 @connect(store=>{
-    return{}
+    return{
+        user: store.user.user,
+        supplier: store.suppliers.supplierSelected,
+        cart:store.cart,
+        pay:store.pay,
+        purchase:store.purchase,
+
+    }
 })
 export default class PurchaseButtons extends React.Component {
 
@@ -11,7 +19,33 @@ export default class PurchaseButtons extends React.Component {
     }
 
     saveInvoice(apply, e){
-        console.log('Apply --> ' + e.target + apply)
+        const kwargs = {
+            user: this.props.user,
+            supplier: this.props.supplier,
+            cart: this.props.cart,
+            pay: this.props.pay,
+            invoice_number: this.props.purchase.invoiceNumber,
+            invoice_date: this.props.purchase.invoiceDate,
+            credit_days: this.props.pay.creditDays,
+            is_closed: apply,
+            payed: this.isPayed()
+
+        }
+
+        savePurchase(kwargs).then(result=>{
+            //dispatch bits of information to all sub reducers
+
+            this.props.dispatch({
+                type:'PURCHASE_SAVED', 
+                payload:{invoiceNumber: result.invoiceNumber, invoiceDate: result.invoiceDate}
+            })
+
+        })
+        
+    }
+
+    isPayed(){
+        return this.props.cart.cartTotal>=(this.props.pay.cardAmount + this.props.pay.cashAmount)
     }
 
     render() {
