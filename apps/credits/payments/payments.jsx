@@ -73,6 +73,7 @@ export default class Update extends React.Component {
   unselectClient() {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
     this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_PAYMENT_ARRAY', payload: ''})
   }
 
   paySaleComplete(sale, event) {
@@ -126,7 +127,7 @@ export default class Update extends React.Component {
     const debt = sale.debt ? sale.debt : 0
     if (debt > 0) {
       return <tr className={`${movClass}`} key={sale.id}>
-        <td>{sale.bill_number}</td>
+        <td>{sale.consecutive}</td>
         <td>{date}</td>
         <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
         <td>₡ {sale.debt ? sale.debt.formatMoney(2, ',', '.') : 0}</td>
@@ -208,7 +209,7 @@ export default class Update extends React.Component {
           client_id: data.client_id,
           movement_type: 'DEBI',
           amount: item.amount,
-          description: `Pago a facturas #${data.payment_number}`
+          description: `Pago a facturas #${data.consecutive}`
         }
 
         const kwargs = {
@@ -231,7 +232,10 @@ export default class Update extends React.Component {
       Promise.all(movementsPromiseArray).then(() => {
 
         this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-        this.props.dispatch({type: 'SHOW_PRINT_PANEL', payload: ''})
+        this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+        this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
+        this.props.dispatch({type: 'CLEAR_PAYMENT_ARRAY', payload: ''})
+        this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
         alertify.alert('COMPLETADO', 'Pago Almacenado correctamente')
 
       }).catch((err) => {
@@ -279,8 +283,6 @@ export default class Update extends React.Component {
     const clientDebt = this.props.client.debt
     let paymentTotal = 0
     const array = this.props.paymentArray
-
-    console.log(array)
 
     array.map(item => {
       paymentTotal = paymentTotal + item.amount

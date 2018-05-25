@@ -65,7 +65,7 @@ export default class InvoicePanel extends React.Component {
 
         <div id='invoice-print' className={'invoice-panel-container' + isFullClass}>
 
-          {/* {componentToMount} */}
+          {componentToMount}
 
         </div>
 
