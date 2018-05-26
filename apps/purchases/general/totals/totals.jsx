@@ -18,12 +18,14 @@ import formatMoney from '../../../../utils/formatMoney'
 export default class Totals extends React.Component {
 
     discountAmountChanged(e){
+        if(e.target.value===''){this.props.dispatch({type:'SET_DISCOUNT_AMOUNT', payload:0})}
         const total = parseFloat(e.target.value)?parseFloat(e.target.value):-1
         if(total==-1){return}
         this.props.dispatch({type:'SET_DISCOUNT_AMOUNT', payload:total})
     }
 
     taxesAmountChanged(e){
+        if(e.target.value===''){this.props.dispatch({type:'SET_TAXES_AMOUNT', payload:0})}
         const tax = parseFloat(e.target.value)?parseFloat(e.target.value):-1
         if(tax==-1){return}
         this.props.dispatch({type:'SET_TAXES_AMOUNT', payload:tax})

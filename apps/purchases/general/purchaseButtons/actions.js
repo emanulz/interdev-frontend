@@ -5,60 +5,6 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 import {saveLog} from '../../../../utils/api.js'
 let inspect = require('util-inspect')
 
-/*export function patchPurchase(kwargs){
-    console.log('Patch purchase')
-    const user_string = JSON.stringify(kwargs.user)
-    const supplier_id = kwargs.supplier.id
-    const supplier_string = JSON.stringify(kwargs.supplier)
-    const cart_string = JSON.stringify(kwargs.cart)
-    const pay_string = JSON.stringify(kwargs.pay)
-    const pay_type = kwargs.pay.payMethod
-    const payed = kwargs.payed
-    const invoice_number = kwargs.invoice_number
-    const invoice_date = kwargs.invoice_date
-    const credit_days = kwargs.credit_days
-    const is_closed = kwargs.is_closed
-    
-    const url = `/api/purchase/${kwargs.old.id}`
-    const logCode = 'PURCHASE_PATCHED'
-    const logDescription = 'Purchase patched'
-    const logModel = 'PURCHASE'
-    const old = JSON.stringify(kwargs.old)
-
-    const dispatchTypeSuccess = 'PURCHASE_SAVED'
-
-    const data = {
-        user: user_string,
-        supplier: supplier_string,
-        cart: cart_string,
-        pay: pay_string,
-        pay_type: pay_type,
-        payed: payed,
-        invoice_number: invoice_number,
-        credit_days: credit_days,
-        is_closed: is_closed,
-        supplier_id : supplier_id,
-        invoice_date: invoice_date,
-    }
-    console.log(inspect(data))
-    return new Promise((resolve, reject)=>{
-        axios({
-            method: 'patch',
-            url: url,
-            data:data
-        }).then(response=>{
-            saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
-            resolve(response.data)
-        }).catch(err=>{
-            console.log(inspect(err))
-            if(err.response){
-                console.log(err.response.data)
-            }
-            alertify.alert('Error', 'Error guardando Compra en el sistema')
-        })
-    })
-
-}*/
 
 export function savePurchase(kwargs){
     console.log('Save purchase method!')
@@ -145,7 +91,6 @@ export function saveInventoryTransaction(kwargs){
     }
 
     const inv_message_desc = `Ingreso a bodega por factura ${kwargs.invoice_number}`
-    console.log("Warehouse kwarg " + inspect(kwargs.user))
     const data = {
         movement_type : 'INPUT',
         user : JSON.stringify(kwargs.user),
@@ -172,7 +117,83 @@ export function saveInventoryTransaction(kwargs){
             if(err.response){
                 console.log(err.response.data)
             }
-            alertify.alert('Error', 'Error guarndando movimiento de inventario')
+            alertify.alert('Error', 'Error guardando movimiento de inventario')
+        })
+    })
+}
+
+export function saveCreditMovement(kwargs){
+    const logCode = 'CREDIT_MOVEMENT_CREATED'
+    const logDescription = `Credit movement created for purchase ${kwargs.purchase_id} and invoice number ${kwargs.invoice_number}`
+    const old = {noPrevious: 'Initial creation'}
+    const method = 'post'
+    const url ='/api/payablescreditmovement/'
+    const logModel = 'PAYABLE_CREDIT_MOVEMENT'
+
+    const cre_mov_desc = kwargs.description?kwargs.description:`Débito a factura ${kwargs.invoice_number}`
+
+    const data = {
+        supplier_id: kwargs.supplier_id,
+        purchase_id: kwargs.purchase_id,
+        credit_note_id: kwargs.credit_note_id?kwargs.credit_note_id:'',
+        debit_note_id: kwargs.debit_note_id?kwargs.debit_note_id:'',
+        payment_id: kwargs.payment_id,
+        movement_type:kwargs.movement_type,
+        amount: kwargs.amount,
+        description: cre_mov_desc,
+        is_null:kwargs.is_null?kwargs.is_null:false
+    }
+    console.log(inspect('Here--> ' + data))
+    return new Promise((resolve, reject)=>{
+        axios({
+            method:method,
+            url:url,
+            data:data
+        }).then(response=>{
+            saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
+            resolve(response.data)
+        }).catch(err=>{
+            console.log(err)
+            if(err.response){
+                console.log(err.response.data)
+            }
+            alertify.alert('Error', 'Error creando Movimiento de Crédito')
+        })
+    })
+}
+
+export function saveCreditPayment(kwargs){
+    const logCode = 'CREDIT_PAYMENT_CREATED'
+    const logDescription = `Credit payment created for purchase ${kwargs.purchase_id} and invoice number ${kwargs.invoice_number}`
+    const old = {noPrevious: 'Initial creation'}
+    const method = 'post'
+    const url ='/api/payablescreditpayment/'
+    const logModel = 'PAYABLE_CREDIT_PAYMENT'
+
+    const cre_mov_desc = kwargs.description?kwargs.description:`Pago a crédito por factura ${kwargs.invoice_number}`
+    const data = {
+        purchase: JSON.stringify(kwargs.purchase),
+        user: kwargs.user,
+        supplier: kwargs.supplier,
+        supplier_id:kwargs.supplier_id,
+        amount: kwargs.amount,
+        description: cre_mov_desc,
+        is_null:kwargs.is_null?kwargs.is_null:false
+    }
+    return new Promise((resolve, reject)=>{
+        axios({
+            method:method,
+            url:url,
+            data:data
+        }).then(response=>{
+            saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
+            resolve(response.data)
+        }).catch(err=>{
+            console.log(err)
+            if(err.response){
+                console.log(err.response.data)
+            }
+            alertify.alert('Error', 'Error creando Pago a Crédito')
         })
     })
 }

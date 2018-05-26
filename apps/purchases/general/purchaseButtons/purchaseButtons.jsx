@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {savePurchase, saveInventoryTransaction} from './actions.js'
+import {savePurchase, saveInventoryTransaction, saveCreditPayment,saveCreditMovement} from './actions.js'
 import { inspect } from 'util';
 
 @connect(store=>{
@@ -42,27 +42,71 @@ export default class PurchaseButtons extends React.Component {
         }
         let purchase_result
         savePurchase(kwargs).then(result=>{
-             purchase_result = result
-            console.log('Apply here ' + apply)
             if(apply){
                 //generate the movements
                 const cart = JSON.parse(result.cart)
+                const pay = JSON.parse(result.pay)
+                const supplier = JSON.parse(result.supplier)
                 const promises = cart.cartItems.map(item=>{
-                    
                     const kwargs = {
-                        user:this.props.user,
-                        item:item,
-                        warehouse:this.props.warehouse,
-                        invoice_number: this.props.purchase.invoiceNumber,
-                        purchase_id: this.props.purchase.purchase_id,
+                        user: this.props.user,
+                        item: item,
+                        warehouse: result.warehouse,
+                        invoice_number: result.invoice_number,
+                        purchase_id: result.id,
                     }
                     return saveInventoryTransaction(kwargs)
                 })
+
+                //create the credit movement if necessary
+
+                const cart_total = cart.cartTotal
+                let payed_amount = 0
+                switch(pay.payMethod){
+                    case 'CASH':
+                    {
+                        payed_amount = pay.cashAmount
+                        break
+                    }
+                    case 'CARD':
+                    {
+                        payed_amount = pay.cardAmount
+                        break
+                    }
+
+                }
+                if(cart_total-payed_amount>0){
+                    //make a credit payment for the full amount of the invoice
+                    const creditKwargs = {
+                        purchase: result,
+                        user: result.user,
+                        supplier: result.supplier,
+                        supplier_id: supplier.id,
+                        amount: cart.cartTotal,
+                        invoice_number: result.invoice_number
+                    }
+                    saveCreditPayment(creditKwargs).then(payment=>{
+                        if(payed_amount>0){
+                            const movementKwargs = {
+                                supplier_id: payment.supplier_id,
+                                purchase_id: JSON.parse(payment.purchase).id,
+                                payment_id: payment.id,
+                                movement_type: 'DEBI',
+                                amount: payed_amount
+                            }
+                            promises.push(saveCreditMovement(movementKwargs))
+                        }
+                        
+                    })
+                }
+
 
                 Promise.all(promises).then(result =>{
                     alertify.alert('Éxito', 'Compra y Movimientos de Inventario Guardados Satisfactoriamente.')
                 })
 
+            }else{
+                alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación')
             }
         })
         
@@ -76,7 +120,7 @@ export default class PurchaseButtons extends React.Component {
 
         const disabled_save_class = this.props.purchase.is_closed 
         ? 'purchase-buttons-normal-disabled'
-        : 'pruchase-buttons-normal'
+        : 'purchase-buttons-normal'
 
         return <div className='purchase-buttons'>
             <div className='purchase-buttons-row' >

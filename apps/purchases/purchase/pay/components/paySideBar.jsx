@@ -54,7 +54,7 @@ export default class PaySideBar extends React.Component {
 
   render() {
 
-    let change = 0
+    let credit = 0
     let payButtonClass = 'pay-tag tag-button'
     const total = parseFloat(this.props.cart.cartTotal)
     const cash = parseFloat(this.props.pay.cashAmount)
@@ -64,17 +64,18 @@ export default class PaySideBar extends React.Component {
 
       case 'CASH':
       {
-        change = cash - total
+        credit = total - cash
         break
       }
 
       case 'CARD':
       {
-        change = card - total
+        credit = total - card
         break
       }
       case 'CRED':
       {
+        credit = total
         break
       }
 
@@ -92,9 +93,9 @@ export default class PaySideBar extends React.Component {
         <div className='pay-tag right'>
           ₡ {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
 
-        <div className='pay-tag left'>VUELTO :</div>
+        <div className='pay-tag left'>CRÉDITO :</div>
         <div className='pay-tag right'>
-          ₡ {change.formatMoney(2, ',', '.')}</div>
+          ₡ {credit.formatMoney(2, ',', '.')}</div>
 
         <br />
 
