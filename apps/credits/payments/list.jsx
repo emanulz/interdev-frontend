@@ -71,7 +71,7 @@ export default class List extends React.Component {
       }
     ]
 
-    const list = <DataTable headerOrder={headerOrder} model='receivable' data={payments} app='credits'
+    const list = <DataTable headerOrder={headerOrder} model='payments' data={payments} app='credits'
       addLink='' idField='id' />
     const fetching = <div />
 

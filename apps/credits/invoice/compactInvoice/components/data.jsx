@@ -27,7 +27,7 @@ export default class Data extends React.Component {
             <td>{date}</td>
           </tr>
           <tr>
-            <th>Factura:</th>
+            <th>Pago:</th>
             <td>{('0000000' + id).slice(-7)}</td>
 
           </tr>

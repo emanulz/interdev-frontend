@@ -49,7 +49,9 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        payment: {}
+        payment: {
+          sales: []
+        }
       }
     }
 
