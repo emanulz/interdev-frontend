@@ -25,7 +25,8 @@ export default class Body extends React.Component {
         </ul>
         <ul className='buttons-container'>
           <li><a className='btn btn-default btn-lg landing-btn' href='/workshop'>Taller</a></li>   
-          <li><a className='btn btn-default btn-lg landing-btn' href='/purchases'>Compras</a></li>        
+          <li><a className='btn btn-default btn-lg landing-btn' href='/purchases'>Compras</a></li>  
+          <li><a className='btn btn-default btn-lg landing-btn' href='/payables'>Por Pagar</a></li>      
         </ul>
 
       </div>

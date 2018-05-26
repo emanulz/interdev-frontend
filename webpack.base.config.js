@@ -23,7 +23,8 @@ const jsConfig = Object.assign({}, config, {
     credits: './apps/credits/app.js',
     workshop: './apps/workshop/app.js',
     inventories: './apps/inventories/app.js',
-    purchases: './apps/purchases/app.js'
+    purchases: './apps/purchases/app.js',
+    payables: './apps/payables/app.js',
   },
   module: {
     rules: [
@@ -73,6 +74,7 @@ const stylesConfig = Object.assign({}, config, {
     inventories: './apps/inventories/appstyles/main.sass',
     workshop: './apps/workshop/appstyles/main.sass',
     purchases: './apps/purchases/appstyles/main.sass',
+    payables: './apps/payables/appstyles/main.sass',
   },
   module: {
     rules: [

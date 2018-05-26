@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
 
-//componetns
+//components
 import Home from '../home/home.jsx'
 import Purchase from '../purchase/main.jsx'
 import ListPurchases from '../purchase/list/main.jsx'
@@ -14,5 +14,3 @@ const routes = <div className='heigh100'>
 </div>
 
 export default routes
-
-//<Route exact path="/details/:id" render={(props) => <DetailsPage globalStore={globalStore} {...props} /> } />
