@@ -4,9 +4,10 @@ import {getItemDispatch} from '../../../../utils/api'
 import {findSupplier} from './actions'
 
 @connect(store=>{
-    return{
+    return {
         suppliers:store.suppliers.suppliers,
-        supplierSelected:store.suppliers.supplierSelected
+        supplierSelected:store.suppliers.supplierSelected,
+        is_closed: store.purchase.is_closed,
     }
 })
 export default class Suppliers extends React.Component {
@@ -52,7 +53,9 @@ export default class Suppliers extends React.Component {
         <div className="supplier-data">
             <div className="supplier-data-row">
                 <h3>Proveedor:</h3>
-                <input onKeyDown={this.inputKeyPress.bind(this)} type="text"/>
+                <input onKeyDown={this.inputKeyPress.bind(this)} type="text"
+                placeholder={this.props.is_closed?'Deshabilitado compra cerrada':'Código Proveedor'}
+                disabled={this.props.is_closed}/>
             </div>
             <div className="supplier-data-row">
                 <h3>Nombre:</h3>
@@ -60,6 +63,7 @@ export default class Suppliers extends React.Component {
             </div>
             {phone_element}
         </div>
+        <hr/>
     </div>
     }
 }

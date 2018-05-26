@@ -11,7 +11,8 @@ import formatMoney from '../../../../utils/formatMoney'
         cartTotal: store.cart.cartTotal,
         creditDays: store.pay.creditDays,
         invoiceDate: store.purchase.invoiceDate,
-        invoiceNumber: store.purchase.invoiceNumber
+        invoiceNumber: store.purchase.invoiceNumber,
+        is_closed: store.purchase.is_closed,
     }
 })
 export default class Totals extends React.Component {
@@ -50,6 +51,7 @@ export default class Totals extends React.Component {
                 <div className='totals-data-row-label' >Descuento ₡:</div>
                 <input className='totals-data-row-input' type='text'
                 onChange={this.discountAmountChanged.bind(this)}
+                disabled={this.props.is_closed}
                 value={this.props.discountTotal}/>
             </div>
             
@@ -57,6 +59,7 @@ export default class Totals extends React.Component {
                 <div className='totals-data-row-label' >Impuesto ₡:</div>
                 <input className='totals-data-row-input' type='text'
                 onChange={this.taxesAmountChanged.bind(this)}
+                disabled={this.props.is_closed}
                 value={this.props.cartTaxes} />
             </div>
 
@@ -69,12 +72,14 @@ export default class Totals extends React.Component {
                 <div className='totals-data-row-label' >Número de Factura:</div>
                 <input className='totals-data-row-input' type="text"
                 onChange={this.invoiceNumberChanged.bind(this)}
+                disabled={this.props.is_closed}
                 value={this.props.invoiceNumber}/>
             </div>
             <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Fecha Factura:</div>
                 <input className='totals-data-row-input' type="date"
                 onChange={this.invoiceDateChanged.bind(this)}
+                disabled={this.props.is_closed}
                 value={this.props.invoiceDate}/>
             </div>
         </div>

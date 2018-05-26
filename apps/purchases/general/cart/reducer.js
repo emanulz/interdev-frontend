@@ -48,7 +48,7 @@ export default function reducer(state = stateConst, action) {
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
-        cartItemActive: false
+        cartItemActive: false,
       }
     }
     case 'CLEAR_PURCHASE':
@@ -67,15 +67,16 @@ export default function reducer(state = stateConst, action) {
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
-        cartItemActive: false
+        cartItemActive: false,
       }
     }
     case 'LOADED_PURCHASE':
     {
       const cart = JSON.parse(action.payload.cart)
+      const oldCart = JSON.parse(JSON.stringify(cart))
       return {
         ...state,
-        oldCart: JSON.parse(JSON.stringify(cart)),
+        oldCart: oldCart,
         editable:cart.editable,
         created:cart.created,
         updated:cart.updated,
@@ -86,7 +87,7 @@ export default function reducer(state = stateConst, action) {
         cartTaxes: cart.cartTaxes,
         cartTotal: cart.cartTotal,
         discountTotal: cart.discountTotal,
-        cartItemActive: cart.cartItemActive       
+        cartItemActive: cart.cartItemActive,
       }
     }
 
@@ -147,17 +148,6 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         cartItems: action.payload
-      }
-    }
-
-    case 'UPDATE_LINE_DISCOUNT':
-    {
-      const newCart = [...state.cartItems]
-      newCart[action.payload.index].discount = action.payload.value
-
-      return {
-        ...state,
-        cartItems: newCart
       }
     }
 

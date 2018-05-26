@@ -14,6 +14,7 @@ const Mousetrap = require('mousetrap')
     cartItemActive: store.cart.cartItemActive,
     discountTotal: store.cart.discountTotal,
     cartTaxes: store.cart.cartTaxes,
+    is_closed: store.purchase.is_closed,
   }
 })
 export default class CartItems extends React.Component {
@@ -143,7 +144,7 @@ export default class CartItems extends React.Component {
 
       const qtyField = <input
         id={`qty${item.product.code}`}
-        disabled={this.props.disabled}
+        disabled={this.props.is_closed}
         onChange={this.qtyInputChange.bind(this, item.uuid)}
         onFocus={this.fieldFocus.bind(this)}
         onKeyUp={this.qtyInputKeyPress.bind(this)}
@@ -154,27 +155,11 @@ export default class CartItems extends React.Component {
 
       const subTotalField = <input 
         id={`sub${item.product.code}`}
+        disabled={this.props.is_closed}
         onChange={this.subTotalChange.bind(this, item.uuid)}
         className='form-control'
         value={item.subtotal}
         type="number"/>
-
-      /*const discountField = this.props.client.saleLoaded
-        ? <input
-          disabled={this.props.disabled}
-          onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
-          onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
-          onFocus={this.fieldFocus.bind(this)}
-          type='number' className='form-control'
-          defaultValue={parseFloat(item.discount)}
-        />
-        : <input
-          disabled={this.props.disabled}
-          onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
-          onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
-          onFocus={this.fieldFocus.bind(this)}
-          type='number' className='form-control'
-        />*/
 
       return <div className={activeClass}
         key={item.uuid}
@@ -197,7 +182,8 @@ export default class CartItems extends React.Component {
             {subTotalField}
         </div>
         <span className={removeIconClass}>
-          <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />
+        {this.props.is_closed?'':<i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />}
+          
         </span>
 
       </div>

@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import Supplier from '../../general/suppliers/suppliers.jsx'
 import Totals from '../../general/totals/totals.jsx'
 import PurchaseButtons from '../../general/purchaseButtons/purchaseButtons.jsx'
+import Warehouses from '../../general/warehouses/warehouse.jsx'
 
 @connect(store=>{
     return{
@@ -23,6 +24,7 @@ export default class Aside extends React.Component {
         const asideContainerClass = this.props.fullWidth ? 'purchase-aside-content collapsed' : 'purchase-aside-content'
         return <div className={asideClass} >
             <div className={asideContainerClass} >
+                <Warehouses/>
                 <Supplier/>
                 <Totals/>
                 <PurchaseButtons/>

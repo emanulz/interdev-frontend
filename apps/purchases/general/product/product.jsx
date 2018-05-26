@@ -12,7 +12,8 @@ import {productSelected} from './actions.js'
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     inputVal: store.products.inputVal,
-    globalDiscount: store.cart.globalDiscount
+    globalDiscount: store.cart.globalDiscount,
+    is_closed: store.purchase.is_closed,
   }
 })
 export default class Product extends React.Component {
@@ -73,22 +74,18 @@ export default class Product extends React.Component {
   render() {
 
     return <div className='product'>
-      {/* <div className='product-title'>
-        <span>
-          <b>Producto:</b>
-        </span>
-      </div> */}
       <div className='product-inputs'>
         <div className='product-inputs-code'>
           <i className='fa fa-barcode' />
           <input id='productCodeInputField' disabled={this.props.disabled}
+            disabled = {this.props.is_closed}
             onKeyDown={this.inputKeyPress.bind(this)}
             value={this.props.inputVal}
             onChange={this.inputKeyPress.bind(this)}
             ref={(input) => {
               this.codeInput = input
             }}
-            type='text' placeholder='Ingrese el Código del Producto'
+            type='text' placeholder={this.props.isEdit?'Deshabilitado en Compras cerradas':'Ingrese el Código del Producto'}
             className='product-inputs-code-input mousetrap form-control input-lg' />
         </div>
         <button disabled={this.props.disabled} onClick={this.searchProductClick.bind(this)}

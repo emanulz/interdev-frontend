@@ -11,6 +11,7 @@ import clients from './general/clients/reducer.js'
 import suppliers from './general/suppliers/reducer.js'
 import pay from './purchase/pay/reducer.js'
 import main from './main/reducer.js'
+import warehouses from './general/warehouses/reducer.js'
 
 
 export default combineReducers({
@@ -24,5 +25,6 @@ export default combineReducers({
     products,
     clients,
     suppliers,
-    pay
+    pay,
+    warehouses,
 })

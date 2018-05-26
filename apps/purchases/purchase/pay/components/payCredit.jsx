@@ -2,7 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {client: store.clients.clientSelected, debt: store.clients.clientSelectedDebt, creditDays: store.pay.creditDays}
+  return {client: store.clients.clientSelected, 
+    debt: store.clients.clientSelectedDebt, 
+    creditDays: store.pay.creditDays,
+    isEdit: store.purchase.is_closed,
+  }
 })
 export default class PayCredit extends React.Component {
 
@@ -24,7 +28,8 @@ export default class PayCredit extends React.Component {
       <div className='pay-method-body-content'>
 
         <div className='pay-tag left'>PLAZO:</div>
-        <input value={this.props.creditDays} onChange={this.creditDaysChanged.bind(this)} type='number' className='form-control' />
+        <input value={this.props.creditDays} onChange={this.creditDaysChanged.bind(this)} 
+        type='number' className='form-control' disabled={this.props.is_closed}/>
 
         <br />
         <br />

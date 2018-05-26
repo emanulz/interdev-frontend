@@ -32,6 +32,7 @@ export default function reducer(state=stateConst, action){
         {
             return {
                 ...state,
+                suppliers:[],
                 supplierSelected: supplierModel
             }
         }

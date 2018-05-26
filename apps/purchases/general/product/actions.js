@@ -108,6 +108,7 @@ function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLi
           product: products[productSelected],
           qty: qty,
           subtotal: 0,
+          saved: 'new',
         }
       }
 
@@ -130,6 +131,7 @@ function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLi
         product: products[productSelected],
         qty: qty,
         subtotal: 0,
+        status:'new',
       }
     }
     return res
@@ -145,7 +147,8 @@ function updatedCartItem(itemsInCart, index, newQty, newSubTotal) {
     uuid: uuid,
     product: itemsInCart[index].product,
     qty: newQty,
-    subtotal: newSubTotal
+    subtotal: newSubTotal,
+    status:'modified'
   }
 }
 

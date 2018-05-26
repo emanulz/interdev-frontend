@@ -24,7 +24,20 @@ export default function reducer(state=stateConst, action) {
       case 'FETCH_WORKORDERS_REJECTED':
       {
         alertify.alert('ERROR: FALLO AL CARGAR COMPRAS',
-            'Ocurrió un error al cargar la lista de compras')
+          'Ocurrió un error al cargar la lista de compras')
+        break
+      }
+      case 'FETCH_WAREHOUSES_REJECTED':
+      {
+        alertify.alert('ERROR: FALLO AL CARGAR LAS BODEGAS',
+          'Ocurrió un error al cargar la lista de bodegas')
+        break
+      }
+
+      case 'CHANGE_METHOD_DISABLED':
+      {
+        alertify.alert('ERROR: DESHABILITADO',
+        'Las ordenes cerradas no se pueden editar')
         break
       }
     }
