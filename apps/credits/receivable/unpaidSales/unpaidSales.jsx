@@ -65,12 +65,12 @@ export default class UnpaidSales extends React.Component {
     const debt = sale.debt ? sale.debt : 0
     if (debt > 0) {
       return <tr className={`${movClass}`} key={sale.id}>
-        <td>{sale.bill_number}</td>
+        <td>{sale.consecutive}</td>
         <td>{date}</td>
         <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
         <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td>
         <td>₡ {sale.debt ? sale.debt.formatMoney(2, ',', '.') : 0}</td>
-        <td><Link to={`/credits/receivable/${client.code}/${sale.bill_number}`}>Ver Movimientos</Link></td>
+        <td><Link to={`/credits/receivable/${client.code}/${sale.consecutive}`}>Ver Movimientos</Link></td>
       </tr>
     }
   }

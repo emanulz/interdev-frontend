@@ -20,7 +20,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'TOGGLE_FULL_WIDTH':
+    case 'TOGGLE_FULL_WIDTH_PHYSICAL':
     {
       const width = !state.fullWidth
       return {

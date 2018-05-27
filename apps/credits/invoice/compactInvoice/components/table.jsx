@@ -2,43 +2,48 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {inCart: store.cart.cartItems, globalDiscount: store.cart.globalDiscount}
+  return {payment: store.payments.paymentActive}
 })
 export default class Table extends React.Component {
 
   // Main Layout
   render() {
 
-    const cartItems = this.props.inCart
-    const items = cartItems.map((item) => {
+    const sales = this.props.payment.sales
+    const items = sales.length
+      ? sales.map((item) => {
 
-      const taxesText = (item.product.useTaxes)
-        ? `G`
-        : `E`
+        const dateObj = item.sale.created ? new Date(item.sale.created) : ''
+        const date = item.sale.created
+          ? `${('0' + dateObj.getDate()).slice(-2)}/
+          ${('0' + (dateObj.getMonth() + 1)).slice(-2)}/
+          ${dateObj.getFullYear()}`
+          : '01/01/1970'
 
-      return <tr key={item.uuid}>
-        <td>
-          {item.qty}
-        </td>
-        <td>
-          {item.product.description}
-        </td>
-        <td className='right-in-table'>
-          {taxesText}
-        </td>
-        <td className='right-in-table'>
-          ₡ {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
-        </td>
+        return <tr key={item.sale.id}>
+          <td>
+            {item.sale.consecutive}
+          </td>
+          <td>
+            {date}
+          </td>
+          <td>
+            ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
+          </td>
+        </tr>
+      })
+      : <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
       </tr>
-    })
 
     return <table className='compact-invoice-table table'>
       <thead>
         <tr>
-          <th>Cant</th>
-          <th className='description-row'>Articulo</th>
-          <th className='right-in-table'>IV</th>
-          <th className='right-in-table'>Total</th>
+          <th>Factura #</th>
+          <th>Fecha Factura</th>
+          <th>Monto</th>
         </tr>
       </thead>
       <tbody className=''>

@@ -53,27 +53,25 @@ export default class Table extends React.Component {
 
     const warehouseText = warehouseSelected ? `${warehouseSelected.name}` : 'Existencia Total'
 
-    // HEADER OF THE TABLE BASE OF WHETER IS PHYSICAL TAKE OR NOT
-    const header = this.props.isPhysicalTake
-      ? <tr>
-        <td className='code-row'>Código</td>
-        <td className='description-row'>Descripción</td>
-        <td className='existence-row center'>Existencia</td>
-        <td className='input-row center'>Cantidad</td>
-        <td className='output-row center'>Registrar</td>
-      </tr>
-      : <tr>
-        <td className='code-row'>Código</td>
-        <td className='description-row'>Descripción</td>
-        <td className='existence-row center'>{warehouseText}</td>
-        <td className='input-row center'>Movimiento</td>
-      </tr>
+    // HEADER OF THE TABLE
+    const header = <tr>
+      <td className='code-row'>Código</td>
+      <td className='description-row'>Descripción</td>
+      <td className='existence-row center'>{warehouseText}</td>
+      <td className='input-row center'>Toma Física</td>
+      <td className='btn-row center'>Registrar</td>
+    </tr>
 
-    // BODY OF THE TABLE BASE OF WHETER IS PHYSICAL TAKE OR NOT
+    // BODY OF THE TABLE BASE
     const body = filtered.map(product => {
       const movementBtn = <button onClick={this.bntMovementClick.bind(this, product)} className='btn btn-success'>
-        <span className='fa fa-exchange' />
+        <span className='fa fa-plus' />
       </button>
+
+      const movementInput = <input
+        className='form-control'
+        type='number'
+      />
 
       const inventory = this.props.warehouseActive
         ? product.inventory_by_warehouse[this.props.warehouseActive]
@@ -83,12 +81,13 @@ export default class Table extends React.Component {
         <td>{product.code}</td>
         <td>{product.description}</td>
         <td className='center'>{inventory}</td>
+        <td className='center cell-input'>{movementInput}</td>
         <td className='center'>{movementBtn}</td>
       </tr>
     })
 
     // RETURN BLOCK
-    return <table className='inventories-products-table table'>
+    return <table className='physicalTake-table table'>
       <thead>
         {header}
       </thead>

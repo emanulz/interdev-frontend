@@ -22,7 +22,7 @@ export default class MovementsList extends React.Component {
     const lookUp = this.props.location.pathname.split('/').pop()
 
     const kwargs = {
-      lookUpField: 'bill_number',
+      lookUpField: 'consecutive',
       url: '/api/sales/',
       lookUpValue: lookUp,
       dispatchType: 'SET_SALE',
@@ -88,7 +88,7 @@ export default class MovementsList extends React.Component {
 
     return <div className='list-container'>
 
-      <h1>Movimientos de factura # {sale.bill_number}</h1>
+      <h1>Movimientos de factura # {sale.consecutive}</h1>
       <div className='row movements'>
         <div className='col-xs-12 col-sm-8'>
           <table className='table table-bordered'>
@@ -111,7 +111,7 @@ export default class MovementsList extends React.Component {
             <table className='table table-bordered'>
               <tbody>
                 <tr>
-                  <th>Céditos</th>
+                  <th>Créditos</th>
                   <td>₡ {credits.formatMoney(2, ',', '.')}</td>
                 </tr>
                 <tr>

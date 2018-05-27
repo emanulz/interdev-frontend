@@ -95,8 +95,6 @@ export function setItem(kwargs) {
     console.log(`${url}?${lookUpField}=${lookUpValue}`)
     axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
 
-      console.log(response.data)
-
       if (response.data.length) {
         // IF THERE IS MORE THAN ONE ELEMENT FILTERED
         if (response.data.length > 1) {
@@ -158,7 +156,7 @@ export function saveItem(kwargs) {
         if (isSale) {
           dispatch({type: 'SET_SALE', payload: response.data})
           dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
-        }else if(isWorkOrder){
+        } else if (isWorkOrder) {
           dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
         }
       }).catch((err) => {
@@ -397,8 +395,7 @@ export function deleteItemDispatch(kwargs) {
             }
           })
         saveLog(logCode, logModel, itemOld, item, logDescription, user)
-        console.log('RECEIVED ID --> ' + item.id)
-        dispatch({type:dispatchType, payload:item.id})
+        dispatch({type: dispatchType, payload: item.id})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       }).catch((err) => {

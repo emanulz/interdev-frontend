@@ -36,7 +36,7 @@ export default class List extends React.Component {
 
     const headerOrder = [
       {
-        field: 'payment_number',
+        field: 'consecutive',
         text: 'Número',
         type: 'primaryNoEdit'
       }, {
@@ -64,14 +64,14 @@ export default class List extends React.Component {
         type: 'bool'
       },
       {
-        field: 'payment_number',
+        field: 'consecutive',
         text: 'Pago',
         textToRender: 'Ver Pago',
         type: 'textLink'
       }
     ]
 
-    const list = <DataTable headerOrder={headerOrder} model='receivable' data={payments} app='credits'
+    const list = <DataTable headerOrder={headerOrder} model='payments' data={payments} app='credits'
       addLink='' idField='id' />
     const fetching = <div />
 

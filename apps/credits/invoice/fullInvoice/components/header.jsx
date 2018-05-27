@@ -3,15 +3,13 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.sales.saleActive,
     company: store.config.company
   }
 })
 export default class Header extends React.Component {
 
   render() {
-    // Credit or cash
-    const headertext = this.props.sale.pay.payMethod == 'CREDIT' ? 'Factura de crédito' : 'Factura de contado'
+
     // LOGO
     const logo = this.props.company.logo || ''
     const logoWidth = this.props.company.logoWidth || '130px'
@@ -51,7 +49,7 @@ export default class Header extends React.Component {
       <div className='full-invoice-separator'>
         <span />
 
-        <h1>{headertext}</h1>
+        <h1>RECIBO POR PAGO A FACTURAS</h1>
         <span />
       </div>
     </div>
