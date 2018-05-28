@@ -8,7 +8,7 @@ import {loadConfig} from '../../admin/config/actions'
 @connect((store) => {
   return {products: store.products.products}
 })
-export default class Config extends React.Component {
+export default class Config2 extends React.Component {
 
   componentWillMount() {
     this.loadConfigs()
@@ -19,6 +19,7 @@ export default class Config extends React.Component {
   }
 
   loadConfigs() {
+    console.log("CRARARARRARARA NOT HERE EVER?")
     // COMPANY CONFIG
     this.fetchConfig('company', 'default')
     this.fetchConfig('company', 'user')

@@ -5,9 +5,11 @@ import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions} from './actions'
-import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions} from '../general/actions'
+import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions, createPartRequest} from './actions'
+import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions, loadPartRequestTransactions} from '../general/actions'
 import alertify from 'alertifyjs'
+import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
+
 
 let inspect = require('util-inspect')
 
@@ -53,35 +55,27 @@ export default class WorkshopView extends React.Component {
         this.props.dispatch({type:'FETCHING_STARTED', payload:''})
         //load work order
         this.props.dispatch(setItem(kwargs))
-
-
-
     }
 
     saveOrderTransactions(){
-        console.log("Save Labor")
+
         const labor_promises = saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.laborListOld, this.props.user, this.props.dispatch)
         
-        console.log('Save cash advance')
         const cash_promises = saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.cashAdvanceListOld, this.props.user, 
                                     this.props.client, this.props.dispatch)
 
-        console.log('Save used parts')
         const used_parts_promises = saveUsedPartTransactions(this.props.work_order.id, this.props.usedPartList, this.props.cashAdvanceListOld, this.props.user, this.props.dispatch)
         
-        console.log('Create movements for Part requests')
-        const part_request_movements_promises = saveInventoryTransactions(this.props.work_order_id, this.props.partsRequestList, this.props.user)
-
-        console.log('Start saving Inventory transactions')
-        const all_tasks = labor_promises.concat(cash_promises).concat(used_parts_promises)
-
-        let task_done = this.runSequence(all_tasks).then(()=>{
-            console.log('done')
+        saveInventoryTransactions(this.props.work_order.id, this.props.partsRequestList, this.props.user).then(results=>{
+            const all_tasks = labor_promises.concat(cash_promises).concat(used_parts_promises).concat(results)
+            let task_done = this.runSequence(all_tasks).then(()=>{
+               alertify.alert('Éxito', 'Todos los movimientos fueron guardados con éxito')
+            })
         })
-        
     }
 
     runSequence(all_tasks){
+        console.log('start sequence')
         let result = Promise.resolve()
         all_tasks.forEach(task=>{
             result = result.then(()=>{
@@ -124,6 +118,9 @@ export default class WorkshopView extends React.Component {
             loadLaborTransactions(nextProps.work_order.id, this.props.dispatch)
 
             loadUsedPartsTransactions(nextProps.work_order.id, this.props.dispatch)
+
+            loadPartRequestTransactions(nextProps.work_order.id, this.props.dispatch)
+            
         }
     }
 
@@ -161,6 +158,10 @@ export default class WorkshopView extends React.Component {
             <div className="workshop-view-footer">
                 {footer}
             </div>
+
+            <ReceiptPanel/>
+
+
         </div>
     }
 

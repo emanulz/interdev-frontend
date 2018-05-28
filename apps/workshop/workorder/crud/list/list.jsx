@@ -62,7 +62,8 @@ export default class List extends React.Component{
         ]
 
         const fetching = <div/>
-        const list = <DataTable headerOrder={headerOrder} app="workshop" model='workorders' data={this.props.table_friendly_orders}
+        const list = <DataTable headerOrder={headerOrder} app="workshop" model='workorders' 
+            data={this.props.table_friendly_orders}
             addLink='/workshop/workorder/add' idField='id'/>
 
         const content = this.props.fetching ? fetching : list

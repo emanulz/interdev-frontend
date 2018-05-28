@@ -3,7 +3,6 @@ const uuidv1 = require('uuid/v1')
 import alertify from 'alertifyjs'
 
 export function updateQty(qty, itemsList, target_uuid){
-    console.log("Target uuid " + target_uuid)
     const index = itemsList.findIndex(item=>item.uuid == target_uuid)
 
     const qtyNumber = parseFloat(qty)
@@ -146,7 +145,7 @@ function partAlreadyInTransactionsList(code, qty, parts, partsRequestList, targe
     }
     const subTotal = calculatePartSubtotal(parts[targetPartIndex], qty)
     
-    const next_action = (indexInPartsRequestList == -1)
+    /*const next_action = (indexInPartsRequestList == -1)
     ?{
         type: 'ADD_TO_PARTS_LIST',
         payload:{
@@ -166,16 +165,27 @@ function partAlreadyInTransactionsList(code, qty, parts, partsRequestList, targe
             item: updatePartInTransactionList(partsRequestList, indexInPartsRequestList, qty),
             index: indexInPartsRequestList
         }
-    }
+    }*/
+    const next_action = {type: 'ADD_TO_PARTS_LIST',
+                        payload:{
+                            uuid: uuidv1(),
+                            element:parts[targetPartIndex],
+                            qty: qty,
+                            type:'PART_REQUEST',
+                            subTotal: subTotal,
+                            priceToUse: parts[targetPartIndex].price,
+                            saved: false
 
-return next_action
+                        }
+                        }
+
+    return next_action
 }
 
 function updatePartInTransactionList(partsRequestList, indexInPartsRequestList, new_qty){
     //console.log(inspect(partsRequestList))
     //for now, this function will only calculate the new quantity required
     const originalItem = partsRequestList[indexInPartsRequestList]
-    console.log(inspect(originalItem))
     return {
         uuid: originalItem.uuid,
         element: originalItem.element,

@@ -9,6 +9,9 @@ import messages from './messages/reducer.js'
 import workshopview from './workshopView/reducer.js'
 import partsProvider from './workshopView/partsProvider/reducer.js'
 import transactionsList from './workshopView/transactionsList/reducer.js'
+import workshopReceipt from './general/receipt/reducer.js'
+import config from './config/reducer.js'
+
 
 export default combineReducers({
     fetching,
@@ -19,6 +22,8 @@ export default combineReducers({
     messages,
     workshopview,
     partsProvider,
-    transactionsList
+    transactionsList,
+    workshopReceipt,
+    config
 
 })
