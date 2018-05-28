@@ -40,7 +40,6 @@ export default class PurchaseButtons extends React.Component {
             //this should be a patch
             kwargs.old = this.props.purchase.old
         }
-        let purchase_result
         savePurchase(kwargs).then(result=>{
             if(apply){
                 //generate the movements
@@ -76,28 +75,44 @@ export default class PurchaseButtons extends React.Component {
 
                 }
                 if(cart_total-payed_amount>0){
-                    //make a credit payment for the full amount of the invoice
-                    const creditKwargs = {
-                        purchase: result,
-                        user: result.user,
-                        supplier: result.supplier,
+
+                    //make a credit movement for the full amount
+                    const fullKwargs = {
                         supplier_id: supplier.id,
-                        amount: cart.cartTotal,
-                        invoice_number: result.invoice_number
+                        purchase_id: result.id,
+                        payment_id: '',
+                        movement_type: 'CRED',
+                        amount: cart_total
                     }
-                    saveCreditPayment(creditKwargs).then(payment=>{
+                    saveCreditMovement(fullKwargs).then(cred_mov=>{
+
                         if(payed_amount>0){
-                            const movementKwargs = {
-                                supplier_id: payment.supplier_id,
-                                purchase_id: JSON.parse(payment.purchase).id,
-                                payment_id: payment.id,
-                                movement_type: 'DEBI',
-                                amount: payed_amount
-                            }
-                            promises.push(saveCreditMovement(movementKwargs))
+                            //make another credit movement for the money paid at purchase time
+                            const creditKwargs = {
+                                purchase: result,
+                                user: result.user,
+                                supplier: result.supplier,
+                                supplier_id: supplier.id,
+                                amount: payed_amount,
+                                invoice_number: result.invoice_number
+                            }     
+                            saveCreditPayment(creditKwargs).then(payment=>{
+                                //make a credit movement type debit for the money paid at purchase time
+                                
+                                const movementKwargs = {
+                                    supplier_id: payment.supplier_id,
+                                    purchase_id: JSON.parse(payment.purchase).id,
+                                    payment_id: payment.id,
+                                    movement_type: 'DEBI',
+                                    amount: payed_amount
+                                }
+                                promises.push(saveCreditMovement(movementKwargs))
+                                
+                            })
                         }
-                        
+
                     })
+
                 }
 
 

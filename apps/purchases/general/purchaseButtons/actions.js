@@ -7,7 +7,6 @@ let inspect = require('util-inspect')
 
 
 export function savePurchase(kwargs){
-    console.log('Save purchase method!')
 
     const user_string = JSON.stringify(kwargs.user)
     const supplier_id = kwargs.supplier.id
@@ -55,6 +54,7 @@ export function savePurchase(kwargs){
         credit_days: credit_days,
         is_closed: is_closed,
     }
+    console.log("Really --> " + inspect(data.supplier_id))
     return new Promise((resolve, reject)=>{
         axios({
             method: method,

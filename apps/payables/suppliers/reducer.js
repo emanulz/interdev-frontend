@@ -1,5 +1,3 @@
-import alertify from 'alertifyjs'
-
 const supplierModel = {
     id: '00000000-0000-0000-0000-000000000000',
     code: '00',
@@ -22,62 +20,60 @@ const supplierModel = {
 }
 
 const stateConst = {
-    suppliers: [],
-    supplierSelected: supplierModel
+    suppliers: [], 
+    activeSupplier: supplierModel,
+    activeSupplierOld: supplierModel,
 }
 
-export default function reducer(state=stateConst, action){
-    switch(action.type){
+export default function reducer(state=stateConst, action) {
+    switch(action.type) {
         case 'CLEAR_SUPPLIERS_ALL':
         {
             return {
                 ...state,
                 suppliers:[],
-                supplierSelected: supplierModel
+            }
+        }
+        case 'SET_SUPPLIER':
+        {
+            return {
+                ...state,
+                activeSupplier: action.payload
+            }
+        }
+        case 'SET_SUPPLIER_OLD':
+        {
+            return {
+                ...state,
+                activeSupplierOld: action.payload
+            }
+        }
+        case 'CLEAR_ACTIVE_SUPPLIER':
+        {
+            return {
+                ...state,
+                activeSupplier:supplierModel,
+                activeSupplierOld: supplierModel,
+
             }
         }
 
-        case 'SUPPLIER_SELECTED':
-        {
-            return {
-                ...state,
-                supplierSelected:action.payload
-            }
-        }
-        case 'LOADED_PURCHASE':
-        {
-            const sup = JSON.parse(action.payload.supplier)
-            return {
-                ...state,
-                supplierSelected:sup
-            }
-        }
-        case 'CLEAR_PURCHASE':
-        {
-            return {
-                ...state,
-                suppliers: [],
-                supplierSelected: supplierModel
-            }
-        }
         case 'FETCH_SUPPLIERS_FULFILLED':
         {
             return {
                 ...state,
-                suppliers:action.payload
+                suppliers:action.payload,
             }
         }
-
         case 'FETCH_SUPPLIERS_REJECTED':
         {
             return {
                 ...state,
                 suppliers:[],
-                supplierSelected: supplierModel
+
             }
         }
-
-        
     }
+
     return state
 }
