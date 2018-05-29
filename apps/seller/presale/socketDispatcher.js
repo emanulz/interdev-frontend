@@ -2,12 +2,11 @@
 // MODULE IMPORTS
 // ------------------------------------------------------------------------------------------
 import {getItemDispatch} from '../../../utils/api'
-import alertify from 'alertifyjs'
 
 // ------------------------------------------------------------------------------------------
 // HANDLE WEB SOCKET EVETS
 // ------------------------------------------------------------------------------------------
-export function socketDispatcher(message, item, dispatch) {
+export function socketDispatcher(message, dispatch) {
   switch (message) {
 
     // IN CASE THERE IS A MESSAGE FOR PRODUCT UPDATED REFETCH PRODUCTS
@@ -32,12 +31,6 @@ export function socketDispatcher(message, item, dispatch) {
       }
       dispatch({type: 'FETCHING_STARTED', payload: ''})
       dispatch(getItemDispatch(clientKwargs))
-      break
-    } // case
-
-    case 'PRESALE_UPDATED':
-    {
-      alertify.alert('NUEVA PREVENTA', 'Se ha creado una nueva preventa con consecutivo ' + item)
       break
     } // case
 
