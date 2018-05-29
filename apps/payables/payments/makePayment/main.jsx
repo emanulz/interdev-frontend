@@ -1,27 +1,99 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
+let inspect = require('util-inspect')
 import Select2 from 'react-select2-wrapper'
+
+import {getProviderDuePayments} from '../../general/actions.js'
 
 
 @connect(store=>{
     return {
+        suppliers: store.suppliers.suppliers,
         activeSupplier: store.suppliers.activeSupplier,
-        supplierActivePurchasesWithDebt: store.unpaidPurchases.supplierActivePurchasesWithDebt
+        supplierActivePurchasesWithDebt: store.unpaidPurchases.supplierActivePurchasesWithDebt,
+        paymentArray: store.makePayment.paymentArray,
     }
 })
 export default class MakePayment extends React.Component {
     componentWillMount() {
         //clear the selected supplier
         this.props.dispatch({type:'CLEAR_ACTIVE_SUPPLIER'})
+        this.props.dispatch({type:'CLEAR_SUPPLIER_PURCHASES_WITH_DEBT'})
     }
 
-    buildTableContent() {
+    componentWillReceiveProps(nextprops){
+        if(nextprops.activeSupplier.id != '00000000-0000-0000-0000-000000000000' && 
+            nextprops.activeSupplier.id != this.props.activeSupplier.id){
+            
+            const id = nextprops.activeSupplier.id
+            const kwargs = {
+                supplier_id: id,
+                successType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_FULFILLED',
+                errorType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_REJECTED',
+            }
+            this.props.dispatch(getProviderDuePayments(kwargs))
+        }
+
+        //check if the supplier purchases with debt were received
+        if(this.props.supplierActivePurchasesWithDebt.length == 0
+             && nextprops.supplierActivePurchasesWithDebt.length>0 ){
+
+            const payload_data = nextprops.supplierActivePurchasesWithDebt.map(item=>{
+                return {
+                    id:item.id,
+                    value: item.debt_data.debt,
+                    is_complete:true,
+                }
+            })
+            this.props.dispatch({type:'SET_PAYMENTS', payload: payload_data})
+        }
+    }
+
+    selectSupplier(e){
+        const target = e.target
+        const value = target.value
+        const activeClient = this.props.suppliers.findIndex(a=>a.index = value)
+        this.props.dispatch({type:'SET_SUPPLIER', payload:this.props.suppliers[activeClient]})
+    }
+
+    handlePayAmount(pur, e){
+        //if the amount changed, clear the complete, of the check box if it is smaller
+        const full_debt =  pur.debt_data.debt
+        const raw_payment = parseFloat(e.target.value)?parseFloat(e.target.value):0
+        if(raw_payment===undefined || raw_payment<0){return}
+        const is_complete = Math.abs(raw_payment - full_debt)<0.000001 || raw_payment> full_debt?true:false
+        let new_payment_val=0
+        if(is_complete){
+            new_payment_val = full_debt
+        }else{
+            new_payment_val = raw_payment>full_debt?full_debt:raw_payment
+        }
+        
+        this.props.dispatch({
+            type:'SET_PAYMENT_AMOUNT', 
+            payload:{id:pur.id, value:new_payment_val, is_complete: is_complete}
+        })
+    }
+
+    handlePayComplete(pur, e){
+       const amount = e.target.value
+       ? pur.debt_data.debt
+       : paymentArray.find(a=>a.id === pur.id).value
+
+       this.props.dispatch({
+           type:'SET_PAYMENT_AMOUNT',
+           payload:{id:pur.id, value:amount, is_complete: e.target.value}
+       })
+    
+    }
+
+    buildTableContent(payments_array) {
+
         let key_val = 0
         const h_c = 'makePayment-grid-content-header'
         const b_c = 'makePayment-grid-content-body'
 
-        const header_labels = ['Fact #', 'Fecha', 'Total', 'Deuda', 'Completa', 'Otro', 'Monto']
+        const header_labels = ['Fact #', 'Fecha', 'Total', 'Deuda', 'Completa', 'Monto']
 
         const header = header_labels.map(item=>{
             let a = <div className={h_c} key={key_val} >{item}</div>
@@ -29,13 +101,61 @@ export default class MakePayment extends React.Component {
             return a
         })
 
-        return header
+        let mkDiv = (val)=>{
+            let a = <div className={b_c} key={key_val}>{val}</div>
+            key_val +=1
+            return a
+        }
+        const body = this.props.supplierActivePurchasesWithDebt.map(pur=>{
+            const row = []
+            row.push(mkDiv(pur.consecutive))
+            row.push(mkDiv(pur.invoice_date))
+            row.push(mkDiv(pur.cart.cartTotal))
+            row.push(mkDiv(pur.debt_data.debt))
+
+            if(payments_array.length>0){
+                const index = payments_array.findIndex(a=>a.id === pur.id)
+
+                row.push(<div className='makePayment-grid-content-body' key={key_val}>
+                    <input type='checkbox' checked={payments_array[index].is_complete} onChange={this.handlePayComplete.bind(this, pur)}></input>
+                    </div>)
+                key_val +=1
+                row.push(<div className='makePayment-grid-content-body' key={key_val}>
+                    <input onChange={this.handlePayAmount.bind(this, pur)} 
+                    value={payments_array[index].value} placeholder='Ingrese el monto..' type='text'
+                    className='form-control'/>
+                    </div>)
+                key_val +=1
+            }else{
+                row.push(<div key={key_val} />)
+                key_val +=1
+                row.push(<div key={key_val} />)
+                key_val +=1
+            }
+
+            return row
+        })
+
+        let all_rows = header
+        body.forEach(element => {
+            all_rows = all_rows.concat(element)
+        })
+        return all_rows
     }
 
     render(){
-        const old_debt = 5000
-        const payment = 2000
-        const new_debt = 3000
+        const payments_array = this.props.paymentArray ? this.props.paymentArray:[]
+
+        //show only suppliers to whom there is a debt due payment
+        const suppliersDuePayment =  this.props.suppliers.filter(sup=>{return sup.debt_to > 0 }) 
+        //build the data for the select2 element
+        const suppliersSelect = suppliersDuePayment.map(sup=>{
+            return {text: `${sup.code} - ${sup.name}`, id:sup.id}
+        })
+             
+        let old_debt = this.props.activeSupplier.debt_to?this.props.activeSupplier.debt_to:0
+        let payment = 0
+        let new_debt = 0
 
         return <div className='makePayment' >
                 <div className='makePayment-grid'>
@@ -45,9 +165,9 @@ export default class MakePayment extends React.Component {
 
                     <div className="makePayment-grid-sup">
                         <Select2
-                            //data={clientsSelect}
-                            //onSelect={this.selectClient.bind(this)}
-                            //value={this.props.client.id}
+                            data={suppliersSelect}
+                            onSelect={this.selectSupplier.bind(this)}
+                            value={this.props.activeSupplier.id}
                             className='form-control'
                             //onUnselect={this.unselectClient.bind(this)}
                             options={{
@@ -80,7 +200,7 @@ export default class MakePayment extends React.Component {
 
                     <div className="makePayment-grid-content">
                     
-                        {this.buildTableContent()}
+                        {this.buildTableContent(payments_array)}
 
                     </div>
                 </div>
