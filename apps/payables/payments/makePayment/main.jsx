@@ -2,9 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 let inspect = require('util-inspect')
 import Select2 from 'react-select2-wrapper'
-
+import {savePayableCreditMovementPromise, savePayableCreditPaymentPromise} from '../../../../utils/api.js'
 import {getProviderDuePayments} from '../../general/actions.js'
-
+import {getItemDispatch} from '../../../../utils/api.js'
 
 @connect(store=>{
     return {
@@ -12,6 +12,7 @@ import {getProviderDuePayments} from '../../general/actions.js'
         activeSupplier: store.suppliers.activeSupplier,
         supplierActivePurchasesWithDebt: store.unpaidPurchases.supplierActivePurchasesWithDebt,
         paymentArray: store.makePayment.paymentArray,
+        user: store.user.user,
     }
 })
 export default class MakePayment extends React.Component {
@@ -87,6 +88,68 @@ export default class MakePayment extends React.Component {
     
     }
 
+    reFetchSuppliers(){
+        const providersKwargs = {
+            url:'/api/suppliers',
+            successType: 'FETCH_SUPPLIERS_FULFILLED',
+            errorType: 'FETCH_SUPPLIERS_REJECTED'
+        }
+
+        //load the providers data, which will include the due debt
+        this.props.dispatch({type: 'FETCHING_STARTED'})
+        this.props.dispatch(getItemDispatch(providersKwargs))
+    }
+
+    savePayments(){
+        console.log('Save me')
+        const user_string = JSON.stringify(this.props.user)
+        const supplier_string = JSON.stringify(this.props.activeSupplier)
+        const supplier_id = this.props.activeSupplier.id
+        //create a save promise for each payment
+        const payments_promise = this.props.paymentArray.map(item=>{
+            const pur = this.props.supplierActivePurchasesWithDebt.find(a=>a.id===item.id)
+            const amount = item.value
+            const description = `Pago a factura ${pur.consecutive}`
+
+            let kwargs = {
+                purchase: pur,
+                user: user_string,
+                supplier: supplier_string,
+                supplier_id: supplier_id,
+                amount: amount,
+                description: description,
+            }
+            return savePayableCreditPaymentPromise(kwargs)
+        })
+
+        Promise.all(payments_promise).then(payments=>{
+            const credits_promises =  payments.map(payment=>{
+                const purchase_id = JSON.parse(payment.purchase).id
+                let kwargs = {
+                    supplier_id: payment.supplier_id,
+                    purchase_id: purchase_id,
+                    payment_id: payment.id,
+                    movement_type: 'DEBI',
+                    amount: payment.amount,
+                    description: payment.description
+                }
+                return savePayableCreditMovementPromise(kwargs)
+            })
+
+            Promise.all(credits_promises).then(results=>{
+                this.props.dispatch({type:'FETCHING_STARTED'})
+                this.props.dispatch({type:'CLEAR_ACTIVE_SUPPLIER'})
+                this.props.dispatch({type:'CLEAR_SUPPLIER_PURCHASES_WITH_DEBT'})
+                this.props.dispatch({type:'CLEAR_SUPPLIERS_ALL'})
+                this.reFetchSuppliers()
+                this.props.dispatch({type:'PAYMENTS_CREDITS_SAVED_CORRECTLY'})
+            })
+        })
+
+
+    }
+
+
     buildTableContent(payments_array) {
 
         let key_val = 0
@@ -153,9 +216,14 @@ export default class MakePayment extends React.Component {
             return {text: `${sup.code} - ${sup.name}`, id:sup.id}
         })
              
-        let old_debt = this.props.activeSupplier.debt_to?this.props.activeSupplier.debt_to:0
-        let payment = 0
-        let new_debt = 0
+        let old_debt = this.props.activeSupplier.debt_to ? this.props.activeSupplier.debt_to : 0
+        const sum_this = (acu, cur)=> {return acu + cur} 
+        let payment_total = 0
+        this.props.paymentArray.forEach(item => {
+            payment_total += item.value
+        })
+
+        let new_debt = old_debt - payment_total
 
         return <div className='makePayment' >
                 <div className='makePayment-grid'>
@@ -186,12 +254,12 @@ export default class MakePayment extends React.Component {
 
                         <div className="makePayment-grid-summary-middle">
                             <div>{`₡ ${old_debt.formatMoney(2, ',', '.')}`}</div>
-                            <div>{`₡ ${payment.formatMoney(2, ',', '.')}`}</div>
+                            <div>{`₡ ${payment_total.formatMoney(2, ',', '.')}`}</div>
                             <div>{`₡ ${new_debt.formatMoney(2, ',', '.')}`}</div>
                         </div>
 
                         <div className="makePayment-grid-summary-right">
-                            <button className='form-control'>
+                            <button className='form-control' onClick={this.savePayments.bind(this)}>
                                 Registrar
                             </button>
                         </div>

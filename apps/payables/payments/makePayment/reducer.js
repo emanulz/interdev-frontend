@@ -14,7 +14,13 @@ export default function reducer(state=stateConst, action) {
                 paymentArray: action.payload
             }
         }
-
+        case 'CLEAR_PAYMENTS':
+        {
+            return {
+                ...state,
+                paymentArray: []
+            }
+        }
         case 'SET_PAYMENT_AMOUNT':
         {
             const new_payment = JSON.parse(JSON.stringify(state.paymentArray))
