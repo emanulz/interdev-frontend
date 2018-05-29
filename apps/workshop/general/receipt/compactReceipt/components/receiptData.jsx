@@ -4,7 +4,8 @@ import {formatDate} from '../../../../../../utils/formatDate'
 
 @connect(store=>{
     return {
-        work_order: store.workshopview.work_order
+        work_order: store.workshopview.work_order,
+        transactions: store.transactionsList,
     }
 })
 export default class ReceiptData extends React.Component {
@@ -59,8 +60,19 @@ export default class ReceiptData extends React.Component {
                 <span/>
                     <h2>Adelanto</h2>
                 <span/>
+                {this.buildArticleCashAdvances()}
             </div>
         </div>
+    }
+
+    buildArticleCashAdvances(){
+        const base_class = 'compact-receipt-data-field'
+        const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
+            return <div className={base_class} key={index} >
+                {`${a.element.description} ₡ ${a.element.amount.formatMoney(2, ',', '.')}`}
+            </div>
+        })
+        return cash_advances
     }
 
     buildObservations(order){

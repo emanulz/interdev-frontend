@@ -18,6 +18,14 @@ export default class ReceiptPanel extends React.Component {
         this.props.dispatch(loadGlobalConfig('company', false, 'FETCH_CONFIG_FULFILLED', 'FETCH_CONFIG_REJECTED'))
     }
 
+    hidePanel(){
+        this.props.dispatch({type:'HIDE_RECEIPT_PANEL'})
+    }
+
+    printPanel(){
+        window.printDiv('receipt-print', ['/static/bundles/css/workshop.css'])
+    }
+
     render() {
 
         const isVisibleClass = this.props.isVisible
@@ -37,9 +45,8 @@ export default class ReceiptPanel extends React.Component {
                         Recepción Orden de Trabajo
                     </div>
                     <div>
-                        <i className='fa fa-times'/>
-                        <i className='fa fa-file-text-o'/>
-                        <i className='fa fa-print'/>
+                        <i onClick={this.hidePanel.bind(this)} className='fa fa-times'/>
+                        <i onClick={this.printPanel.bind(this)} className='fa fa-print'/>
                     </div>
                 </div>
 

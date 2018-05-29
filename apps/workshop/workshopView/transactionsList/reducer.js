@@ -661,10 +661,7 @@ export default function reducer(state=stateConst, action){
                 partsRequestList: newPartsList
             }
         }
-        default:
-        {
 
-        }
     }
 
     return state

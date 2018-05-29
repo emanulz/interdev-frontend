@@ -167,6 +167,10 @@ export default class WorkshopView extends React.Component {
         </div>
     }
 
+    printReceipt(e){
+        this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+    }
+
     buildFooter(){
         const footer = <div className="workshop-view-footer-buttons">
             <div className="workshop-view-footer-buttons">
@@ -182,8 +186,9 @@ export default class WorkshopView extends React.Component {
                 </button>
             </div>
             <div className="workshop-view-footer-buttons">
-                <button className="form-control btn-danger workshop-view-footer-buttons-cancel">
-                    Cancelar Movimientos Nuevos
+                <button className="form-control btn-success workshop-view-footer-buttons-cancel"
+                onClick={this.printReceipt.bind(this)}>
+                    Imprimir Recibo
                 </button>
             </div>
         </div>

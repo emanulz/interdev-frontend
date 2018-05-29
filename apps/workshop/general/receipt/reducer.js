@@ -6,9 +6,20 @@ const stateConst = {
 
 export default function reducer(state=stateConst, action) {
     switch (action.type) {
-        default:
+        case 'SHOW_RECEIPT_PANEL':
         {
-            console.log('Not implemented action --> ' + action.type)
+            return {
+                ...state,
+                isVisible: true
+            }
+        }
+
+        case 'HIDE_RECEIPT_PANEL':
+        {
+            return {
+                ...state,
+                isVisible: false
+            }
         }
     }
 
