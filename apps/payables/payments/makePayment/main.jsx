@@ -100,6 +100,12 @@ export default class MakePayment extends React.Component {
         this.props.dispatch(getItemDispatch(providersKwargs))
     }
 
+    clearSelectedPaymentsWithDebt(){
+        this.props.dispatch({type:'CLEAR_SUPPLIER_PURCHASES_WITH_DEBT'})
+        this.props.dispatch({type:'CLEAR_PAYMENTS'})
+        this.props.dispatch({type:'CLEAR_ACTIVE_SUPPLIER'})
+    }
+
     savePayments(){
         console.log('Save me')
         const user_string = JSON.stringify(this.props.user)
@@ -138,6 +144,7 @@ export default class MakePayment extends React.Component {
 
             Promise.all(credits_promises).then(results=>{
                 this.props.dispatch({type:'FETCHING_STARTED'})
+                this.props.dispatch({type:'CLEAR_PAYMENTS'})
                 this.props.dispatch({type:'CLEAR_ACTIVE_SUPPLIER'})
                 this.props.dispatch({type:'CLEAR_SUPPLIER_PURCHASES_WITH_DEBT'})
                 this.props.dispatch({type:'CLEAR_SUPPLIERS_ALL'})
@@ -217,7 +224,7 @@ export default class MakePayment extends React.Component {
         })
              
         let old_debt = this.props.activeSupplier.debt_to ? this.props.activeSupplier.debt_to : 0
-        const sum_this = (acu, cur)=> {return acu + cur} 
+
         let payment_total = 0
         this.props.paymentArray.forEach(item => {
             payment_total += item.value
@@ -237,7 +244,7 @@ export default class MakePayment extends React.Component {
                             onSelect={this.selectSupplier.bind(this)}
                             value={this.props.activeSupplier.id}
                             className='form-control'
-                            //onUnselect={this.unselectClient.bind(this)}
+                            onUnselect={this.clearSelectedPaymentsWithDebt.bind(this)}
                             options={{
                             placeholder: 'Elija un proveedor...',
                             allowClear: true
