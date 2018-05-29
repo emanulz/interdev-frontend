@@ -19,6 +19,14 @@ export default function reducer(state=stateConst, action){
             }
         }
 
+        case 'SET_PRODUCT_FIELD_VALUE':
+        {
+            return {
+                ...state,
+                searchKey: action.payload
+            }   
+        }
+
         case 'FETCH_PRODUCTS_FULFILLED':
         {
             return {

@@ -11,17 +11,21 @@ import partsProvider from './workshopView/partsProvider/reducer.js'
 import transactionsList from './workshopView/transactionsList/reducer.js'
 import workshopReceipt from './general/receipt/reducer.js'
 import config from './config/reducer.js'
+import searchClients from './general/search/clients/reducer.js'
+import searchProducts from './general/search/products/reducer.js'
 
 
 export default combineReducers({
     fetching,
     user,
     layout,
+    searchClients,
     workorder,
     clients,
     messages,
     workshopview,
     partsProvider,
+    searchProducts,
     transactionsList,
     workshopReceipt,
     config
