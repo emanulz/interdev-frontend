@@ -3,6 +3,7 @@
 // ------------------------------------------------------------------------------------------
 import {getItemDispatch} from '../../../utils/api'
 import alertify from 'alertifyjs'
+import {getPendingPresales} from './presales/actions.js'
 
 // ------------------------------------------------------------------------------------------
 // HANDLE WEB SOCKET EVETS
@@ -37,7 +38,23 @@ export function socketDispatcher(message, item, dispatch) {
 
     case 'PRESALE_UPDATED':
     {
-      alertify.alert('NUEVA PREVENTA', 'Se ha creado una nueva preventa con consecutivo ' + item)
+      const kwargs = {
+        url: '/api/presales',
+        ordering: '-consecutive',
+        filterField: 'closed',
+        filter: true,
+        filterField2: 'billed',
+        filter2: false,
+        filterField3: 'is_null',
+        filter3: false,
+        successType: 'FETCH_PRESALES_FULFILLED',
+        errorType: 'FETCH_PRESALES_REJECTED'
+      }
+      dispatch(getPendingPresales(kwargs))
+      const sound = new Audio('/media/sounds/newPresale.mp3')
+      alertify.set('notifier', 'position', 'top-right')
+      alertify.notify('NUEVA PREVENTA #' + item, 'warning', 7)
+      sound.play()
       break
     } // case
 
