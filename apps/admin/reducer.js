@@ -13,6 +13,7 @@ import permissions from './permissions/reducer.js'
 import fetching from '../../general/fetching/reducer.js'
 import addresses from './addresses/reducer.js'
 import warehouses from './warehouses/reducer.js'
+import productImporter from './products/prodImporter/reducer.js'
 
 export default combineReducers({
   users,
@@ -27,5 +28,6 @@ export default combineReducers({
   fetching,
   permissions,
   addresses,
-  warehouses
+  warehouses,
+  productImporter
 })

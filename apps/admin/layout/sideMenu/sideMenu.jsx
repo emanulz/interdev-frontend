@@ -54,6 +54,10 @@ export default class SideMenu extends React.Component {
         text: 'Sub-Familias',
         class: 'fa-outdent',
         href: '/admin/productsubdepartments'
+      }, {
+        text: 'Importar',
+        class: 'fa-indent',
+        href: '/admin/products/importproducts'
       }
     ]
 
