@@ -102,7 +102,7 @@ export function getItemDispatch(kwargs) {
 
   return function(dispatch) {
     axios.get(url).then(function(response) {
-      dispatch({type: successType, payload: response.data})
+      dispatch({type: successType, payload: response.data.results})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       console.log(error.response.status)
@@ -456,7 +456,7 @@ export function deleteItemDispatch(kwargs) {
   const user = kwargs.user
   const dispatchType = kwargs.dispatchType
   return function(dispatch) {
-    console.log("Item " + url)
+    console.log('Item ' + url)
     axios({
       method: 'delete',
       url: url

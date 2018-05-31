@@ -52,7 +52,7 @@ export default class List extends React.Component {
     const content = this.props.fetching ? fetching : list
 
     return <div className='list list-container'>
-      <h1>Listado de Clientes:</h1>
+      <h1>Listado de Usuarios:</h1>
       {content}
     </div>
 

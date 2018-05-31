@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {searchProduct} from './actions'
+import {searchProductBakend} from './actions'
 
 @connect((store) => {
   return {
@@ -32,7 +32,16 @@ export default class searchForm extends React.Component {
   }
 
   searchProductAction() {
-    this.props.dispatch(searchProduct(this.props.searchValue, this.props.products))
+    // this.props.dispatch(searchProduct(this.props.searchValue, this.props.products))
+    const kwargs = {
+      lookUpField: 'description',
+      url: '/api/products/',
+      lookUpValue: this.props.searchValue,
+      lookUpName: 'descripción',
+      modelName: 'Productos'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(searchProductBakend(kwargs))
   }
 
   render() {

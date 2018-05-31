@@ -10,6 +10,7 @@ import SearchProduct from '../general/search/products/searchPanel.jsx'
 import SearchClient from '../general/search/clients/searchPanel.jsx'
 import PayPanel from './pay/payPanel.jsx'
 import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
+import Presales from './presales/presalesList.jsx'
 import { socketDispatcher } from './socketDispatcher.js'
 
 import {connect} from 'react-redux'
@@ -30,7 +31,8 @@ export default class Sale extends React.Component {
     chatSocket.onmessage = function(e) {
       const data = JSON.parse(e.data)
       const message = data['message']
-      socketDispatcher(message, _this.props.dispatch)
+      const item = data['item']
+      socketDispatcher(message, item, _this.props.dispatch)
     }
 
   }
@@ -47,6 +49,7 @@ export default class Sale extends React.Component {
       <SearchClient />
       <PayPanel />
       <InvoicePanel />
+      <Presales />
 
     </div>
 

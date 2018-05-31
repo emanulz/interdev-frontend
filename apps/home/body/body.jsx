@@ -16,7 +16,7 @@ export default class Body extends React.Component {
         <ul className='buttons-container'>
           <li><a className='btn btn-default btn-lg landing-btn' href='/admin'>Administración</a></li>
           <li><a className='btn btn-default btn-lg landing-btn' href='/sales'>Ventas</a></li>
-          <li><a className='btn btn-default btn-lg landing-btn' href='/buys'>Compras</a></li>
+          <li><a className='btn btn-default btn-lg landing-btn' href='/seller'>Vendedor</a></li>
         </ul>
         <ul className='buttons-container'>
           <li><a className='btn btn-default btn-lg landing-btn' href='/inventories'>Inventarios</a></li>
@@ -24,9 +24,9 @@ export default class Body extends React.Component {
           <li><a className='btn btn-default btn-lg landing-btn' href='/credits'>Crédito y cobro</a></li>
         </ul>
         <ul className='buttons-container'>
-          <li><a className='btn btn-default btn-lg landing-btn' href='/workshop'>Taller</a></li>   
-          <li><a className='btn btn-default btn-lg landing-btn' href='/purchases'>Compras</a></li>  
-          <li><a className='btn btn-default btn-lg landing-btn' href='/payables'>Por Pagar</a></li>      
+          <li><a className='btn btn-default btn-lg landing-btn' href='/workshop'>Taller</a></li>
+          <li><a className='btn btn-default btn-lg landing-btn' href='/purchases'>Compras</a></li>
+          <li><a className='btn btn-default btn-lg landing-btn' href='/payables'>Por Pagar</a></li>
         </ul>
 
       </div>

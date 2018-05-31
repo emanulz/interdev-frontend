@@ -1,7 +1,21 @@
 // ------------------------------------------------------------------------------------------
 // MODULE IMPORTS
 // ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+// MODULE IMPORTS
+// ------------------------------------------------------------------------------------------
+import alertify from 'alertifyjs'
+import axios from 'axios'
+
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 const uuidv1 = require('uuid/v1')
+
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
@@ -75,20 +89,11 @@ export function updateItemLote(itemsInCart, code, lote) {
 }
 
 // When item is selected in code field
-export function productSelected(code, qty, products, itemsInCart, globalDiscount, client, defaultConfig, userConfig) {
+export function productSelected(code, qty, product, itemsInCart, globalDiscount, client, defaultConfig, userConfig) {
 
   const perLine = false
 
-  const productSelected = products.findIndex(product => {
-    return product.code == code || product.barcode == code
-  }) // checks if product exists
-
-  const res = (productSelected == -1) // if not exists dispatch Not Found, if exists check if already in cart
-    ? {
-      type: 'PRODUCT_NOT_FOUND',
-      payload: -1
-    }
-    : checkIfInCart(code, qty, products, itemsInCart, globalDiscount, productSelected, client, perLine)
+  const res = checkIfInCart(code, qty, product, itemsInCart, globalDiscount, productSelected, client, perLine)
 
   return res
 
@@ -148,12 +153,12 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client) 
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, productSelected, client, perLine) {
+function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, productSelected, client, perLine) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
-  const dataNewProd = caclSubtotal(products[productSelected], qty, 0, globalDiscount, client)
+  const dataNewProd = caclSubtotal(product, qty, 0, globalDiscount, client)
 
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
@@ -163,7 +168,7 @@ function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, product
         type: 'ADD_TO_CART',
         payload: {
           uuid: uuid,
-          product: products[productSelected],
+          product: product,
           qty: qty,
           discount: 0,
           discountCurrency: dataNewProd.discountCurrency,
@@ -192,7 +197,7 @@ function checkIfInCart(code, qty, products, itemsInCart, globalDiscount, product
       type: 'ADD_TO_CART',
       payload: {
         uuid: uuid,
-        product: products[productSelected],
+        product: product,
         qty: qty,
         discount: 0,
         discountCurrency: dataNewProd.discountCurrency,
@@ -279,4 +284,33 @@ function priceToUse(product, client) {
 
   return product.price
 
+}
+
+export function setProduct(kwargs, resolve, reject) {
+  const lookUpValue = kwargs.lookUpValue
+  const lookUpField = kwargs.lookUpField
+  const url = kwargs.url
+
+  axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
+    if (response.data.count) {
+      // IF THERE IS MORE THAN ONE ELEMENT FILTERED
+      if (response.data.count > 1) {
+        alertify.alert('ATENCIÓN', `Existe mas de un ${kwargs.modelName} con el ${kwargs.lookUpName}:
+        ${kwargs.lookUpValue}, se utilizará el primero en lista, por lo que puede no ser el mismo que ud desea
+        actualizar, esto puede deberse a un error, por favor revise los
+        datos o contacte con el administrador del sistema.`)
+      }
+
+      resolve(response.data)
+
+    } else {
+      alertify.alert('Error', `No hay ${kwargs.modelName} con el valor de ${kwargs.lookUpName}: ${kwargs.lookUpValue}`)
+      reject()
+    }
+
+  }).catch(function(error) {
+    alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+    administrador del sistema con el siguiete error: ${error}`)
+    reject()
+  })
 }
