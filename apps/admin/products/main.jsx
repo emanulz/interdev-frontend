@@ -41,7 +41,7 @@ export default class List extends React.Component {
       errorType: 'FETCH_PRODUCTS_REJECTED'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(productKwargs))
+    //this.props.dispatch(getItemDispatch(productKwargs))
     // *******************************************************************
 
     // Then fetch the elements of the taxes model and dispatch to reducer

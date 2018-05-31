@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api.js'
 let inspect = require('util-inspect')
 import CSVReader from 'react-csv-reader'
-import {joinINV_CAT, saveImportedProduct, importTestProducts} from './actions.js'
+import {joinINV_CAT, saveImportedProduct, importTestProducts, importFakeSuppliers, generateProductInvMovs} from './actions.js'
 
 import alertify from 'alertifyjs'
 
@@ -86,6 +86,14 @@ export default class ImportProducts extends React.Component {
         
     }
 
+    handleJunkSuppliers(){
+        importFakeSuppliers(26, 15000)
+    }
+
+    handleJunkInvMovs(){
+        generateProductInvMovs(50000)
+    }
+
     handleJunkImport(){
         console.log('IMPORT START')
 
@@ -125,6 +133,9 @@ export default class ImportProducts extends React.Component {
             <button onClick={this.handleImport.bind(this)} >Importar productos</button>
 
             <button onClick={this.handleJunkImport.bind(this)} >Importar productos prueba</button>
+
+            <button onClick={this.handleJunkSuppliers.bind(this)} >Importar proveedores</button>
+            <button onClick={this.handleJunkInvMovs.bind(this)} >Generar Movimientos</button>
 
         </div>
 
