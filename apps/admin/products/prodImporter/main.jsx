@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api.js'
 let inspect = require('util-inspect')
 import CSVReader from 'react-csv-reader'
-import {joinINV_CAT, saveImportedProduct} from './actions.js'
+import {joinINV_CAT, saveImportedProduct, importTestProducts} from './actions.js'
 
 import alertify from 'alertifyjs'
 
@@ -32,7 +32,7 @@ export default class ImportProducts extends React.Component {
             errorType: 'FETCH_PRODUCTS_REJECTED'
         }
 
-        this.props.dispatch(getItemDispatch(kwargs))
+        //this.props.dispatch(getItemDispatch(kwargs))
     }
 
 
@@ -86,6 +86,21 @@ export default class ImportProducts extends React.Component {
         
     }
 
+    handleJunkImport(){
+        console.log('IMPORT START')
+
+        //2399950
+        let start = 3300000
+        let end = 3400000
+        let promises = importTestProducts(start, end)
+        let initialPromise = Promise.resolve([])
+        promises.reduce((promiseChain, currentPromise)=>{
+            return promiseChain.then(currentPromise)
+        },
+        initialPromise
+        )
+    }
+
     errorReadingFile(err){
         console.log('ERR --> ' + err)
     }
@@ -108,6 +123,8 @@ export default class ImportProducts extends React.Component {
             />
 
             <button onClick={this.handleImport.bind(this)} >Importar productos</button>
+
+            <button onClick={this.handleJunkImport.bind(this)} >Importar productos prueba</button>
 
         </div>
 
