@@ -12,7 +12,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    users: store.users.users
+    users: store.users.users,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -23,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_USER', payload: ''})
 
     const userKwargs = {
-      url: '/api/users',
+      url: `/api/users/?limit=${this.props.pageSize}`,
       successType: 'FETCH_USERS_FULFILLED',
       errorType: 'FETCH_USERS_REJECTED'
     }

@@ -12,7 +12,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    senders: store.senders.senders
+    senders: store.senders.senders,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -23,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_SENDER', payload: ''})
 
     const senderKwargs = {
-      url: '/api/senders',
+      url: `/api/senders/?limit=${this.props.pageSize}`,
       successType: 'FETCH_SENDERS_FULFILLED',
       errorType: 'FETCH_SENDERS_REJECTED'
     }

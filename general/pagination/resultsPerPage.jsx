@@ -22,6 +22,7 @@ export default class ResultsPerPage extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getPaginationItemDispatch(kwargs))
     this.props.dispatch({type: 'SET_PAGE_SIZE', payload: size})
+    this.props.dispatch({type: 'SET_CURRENT_PAGE', payload: 1})
   }
 
   render() {

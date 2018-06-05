@@ -24,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
 
     const clientKwargs = {
-      url: '/api/clients',
+      url: `/api/clients/?limit=${this.props.pageSize}`,
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }

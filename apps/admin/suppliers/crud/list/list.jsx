@@ -12,7 +12,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    suppliers: store.suppliers.suppliers
+    suppliers: store.suppliers.suppliers,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -23,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_SUPPLIER', payload: ''})
 
     const supplierKwargs = {
-      url: '/api/suppliers',
+      url: `/api/suppliers/?limit=${this.props.pageSize}`,
       successType: 'FETCH_SUPPLIERS_FULFILLED',
       errorType: 'FETCH_SUPPLIERS_REJECTED'
     }

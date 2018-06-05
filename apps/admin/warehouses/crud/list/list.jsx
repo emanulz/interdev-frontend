@@ -12,7 +12,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    warehouses: store.warehouses.warehouses
+    warehouses: store.warehouses.warehouses,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -23,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_WAREHOUSE', payload: ''})
 
     const warehouseKwargs = {
-      url: '/api/warehouses',
+      url: `/api/warehouses/?limit=${this.props.pageSize}`,
       successType: 'FETCH_WAREHOUSES_FULFILLED',
       errorType: 'FETCH_WAREHOUSES_REJECTED'
     }

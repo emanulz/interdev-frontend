@@ -12,7 +12,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    productDepartments: store.productDepartments.productDepartments
+    productDepartments: store.productDepartments.productDepartments,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -23,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_PRODUCT_DEPARTMENT', payload: ''})
 
     const productDepartmentKwargs = {
-      url: '/api/productdepartments',
+      url: `/api/productdepartments/?limit=${this.props.pageSize}`,
       successType: 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED',
       errorType: 'FETCH_PRODUCT_DEPARTMENTS_REJECTED'
     }
