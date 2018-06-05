@@ -30,6 +30,6 @@ export default combineReducers({
   permissions,
   addresses,
   warehouses,
-  pagination
+  pagination,
   productImporter
 })
