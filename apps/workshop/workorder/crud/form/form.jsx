@@ -35,10 +35,6 @@ export default class Form extends React.Component {
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'})
     }
 
-    componentWillUpdate(nextProps){
-
-    }
-
     componentWillUnmount(){
         this.props.dispatch({type:'CLEAR_WORK_ORDER'})
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'}) 

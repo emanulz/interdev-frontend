@@ -64,7 +64,7 @@ export default class Product extends React.Component {
         const setProductPromise = new Promise((resolve, reject) => {
           const kwargs = {
             lookUpField: 'code',
-            url: '/api/products/',
+            url: '/api/productslist/',
             lookUpValue: code,
             lookUpName: 'código',
             modelName: 'Productos',

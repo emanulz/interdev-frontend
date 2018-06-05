@@ -143,7 +143,6 @@ export function saveCreditMovement(kwargs){
         description: cre_mov_desc,
         is_null:kwargs.is_null?kwargs.is_null:false
     }
-    console.log(inspect('Here--> ' + data))
     return new Promise((resolve, reject)=>{
         axios({
             method:method,

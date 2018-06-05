@@ -22,7 +22,13 @@ export default function reducer(state = stateConst, action) {
             }
         }
 
-
+        case 'CLEAR_SUPPLIER_PURCHASES_WITH_DEBT':
+        {
+            return {
+                ...state,
+                supplierActivePurchasesWithDebt: []
+            }
+        }
     }
 
     return state

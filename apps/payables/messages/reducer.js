@@ -17,6 +17,12 @@ export default function reducer(state=stateConst, action) {
             alertify.alert('ERROR', 'No se pudieron cargar los datos de los movimientos de crédito')
             break
         }
+
+        case 'PAYMENTS_CREDITS_SAVED_CORRECTLY':
+        {
+            alertify.alert('Éxito', 'Todos los Pagos fueron aplicados correctamente')
+            break           
+        }
     }
 
     return state

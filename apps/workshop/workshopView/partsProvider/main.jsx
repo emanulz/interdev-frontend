@@ -114,6 +114,10 @@ export default class PartsProvider extends React.Component{
         }
     }
 
+    searchProductClick(e){
+        this.props.dispatch({type:'PRODUCT_SHOW_PANEL'})
+    }
+
     render(){
 
         return <div className="parts">
@@ -121,11 +125,18 @@ export default class PartsProvider extends React.Component{
                 <div className="parts-inputs-code">
                     <span className="fa fa-barcode"></span>
                     <input className="parts-inputs-code-input form-control input-lg"
+                    id='parts-input-code-input'
                     placeholder="Ingrese el código del producto" type="text" 
                     value={this.props.searchKey} 
                     onKeyDown={this.inputKeyPress.bind(this)} 
                     onChange={this.inputKeyPress.bind(this)} />
                 </div>
+                <button disabled={this.props.disabled} onClick={this.searchProductClick.bind(this)}
+                className='parts-inputs-search'>
+                    <span>
+                        <i className='fa fa-search' />
+                    </span>
+                </button>
             </div>
         </div>
     }

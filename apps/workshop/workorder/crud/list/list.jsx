@@ -31,7 +31,7 @@ export default class List extends React.Component{
             {
                 field: 'consecutive',
                 text: 'Consecutivo',
-                type: 'primary'
+                type: 'primaryNoEdit'
             },
             {
                 field: 'is_closed',
@@ -62,7 +62,7 @@ export default class List extends React.Component{
         ]
 
         const fetching = <div/>
-        const list = <DataTable headerOrder={headerOrder} app="workshop" model='workorders' 
+        const list = <DataTable headerOrder={headerOrder} app="workshop" model='workshopview' 
             data={this.props.table_friendly_orders}
             addLink='/workshop/workorder/add' idField='id'/>
 
