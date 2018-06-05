@@ -3,8 +3,11 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DataTable from '../../../../../general/dataTable/dataTable.jsx'
-import { getItemDispatch } from '../../../../../utils/api'
+import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
+import { getPaginationItemDispatch } from '../../../../../utils/api.js'
+import {Link} from 'react-router-dom'
+import Pagination from '../../../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
@@ -25,7 +28,7 @@ export default class List extends React.Component {
       errorType: 'FETCH_USERS_REJECTED'
     }
 
-    this.props.dispatch(getItemDispatch(userKwargs))
+    this.props.dispatch(getPaginationItemDispatch(userKwargs))
 
   }
 
@@ -46,13 +49,31 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <DataTable headerOrder={headerOrder} model='users' data={this.props.users}
+    const list = <AdminTable headerOrder={headerOrder} model='users' data={this.props.users}
       addLink='/admin/users/add' idField='id' />
 
     const content = this.props.fetching ? fetching : list
 
+    const addLink = <Link className='addBtn' to={'/admin/clients/add'}>
+      <span className='fa fa-plus' />
+      Agregar
+    </Link>
+
     return <div className='list list-container'>
-      <h1>Listado de Usuarios:</h1>
+      <div className='admin-list-header'>
+        <h1>Mantenimiento de Usuarios:</h1>
+        {addLink}
+      </div>
+      <div className='admin-list-search'>
+        <input
+          type='text'
+          placeholder='Ingrese un texto para buscar...'
+        />
+      </div>
+      <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/users/' successType='FETCH_USERS_FULFILLED' errorType='FETCH_USERS_REJECTED' />
+        <Pagination url='/api/users/' successType='FETCH_USERS_FULFILLED' errorType='FETCH_USERS_REJECTED' />
+      </div>
       {content}
     </div>
 

@@ -4,7 +4,7 @@
 import React from 'react'
 import routes from './routes.js'
 import { checkUserPermissions } from '../../../utils/checkPermissions'
-import { getItemDispatch } from '../../../utils/api.js'
+// import { getItemDispatch } from '../../../utils/api.js'
 import {connect} from 'react-redux'
 
 @connect((store) => {
@@ -35,13 +35,13 @@ export default class List extends React.Component {
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
-    const supplierKwargs = {
-      url: '/api/suppliers',
-      successType: 'FETCH_SUPPLIERS_FULFILLED',
-      errorType: 'FETCH_SUPPLIERS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(supplierKwargs))
+    // const supplierKwargs = {
+    //   url: '/api/suppliers',
+    //   successType: 'FETCH_SUPPLIERS_FULFILLED',
+    //   errorType: 'FETCH_SUPPLIERS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(supplierKwargs))
     // *******************************************************************
 
   }

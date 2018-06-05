@@ -42,6 +42,34 @@ export function getItemDispatch(kwargs) {
 
 }
 
+export function getPaginationItemDispatch(kwargs) {
+
+  const url = kwargs.url
+  const successType = kwargs.successType
+  const errorType = kwargs.errorType
+
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      dispatch({type: successType, payload: response.data.results})
+      console.log(response.data)
+      const paginationPayload = {
+        total: response.data.count,
+        next: response.data.next,
+        previous: response.data.previous
+      }
+      dispatch({type: 'PAGINATION_DATA', payload: paginationPayload})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    }).catch(function(error) {
+      // console.log(error.response.status)
+      // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+      alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+      administrador del sistema con el siguiete error: ${error}`)
+      dispatch({type: errorType, payload: error})
+    })
+  }
+
+}
+
 export function getItemDoubleDispatch(kwargs) {
 
   const url = kwargs.url
@@ -51,7 +79,7 @@ export function getItemDoubleDispatch(kwargs) {
 
   return function(dispatch) {
     axios.get(url).then(function(response) {
-      dispatch({type: successType, payload: response.data})
+      dispatch({type: successType, payload: response.data.results})
       dispatch({type: successType2, payload: ''})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
@@ -71,7 +99,7 @@ export function getItemReturn(kwargs) {
   const url = kwargs.url
 
   axios.get(url).then(function(response) {
-    return response.data
+    return response.data.results
   }).catch(function(error) {
     alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
     administrador del sistema con el siguiete error: ${error}`)
@@ -92,20 +120,20 @@ export function setItem(kwargs) {
   const url = kwargs.url
 
   return function(dispatch) {
-    console.log(`${url}?${lookUpField}=${lookUpValue}`)
+
     axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
 
-      if (response.data.length) {
+      if (response.data.count > 0) {
         // IF THERE IS MORE THAN ONE ELEMENT FILTERED
-        if (response.data.length > 1) {
+        if (response.data.count > 1) {
           alertify.alert('ATENCIÓN', `Existe mas de un ${kwargs.modelName} con el ${kwargs.lookUpName}:
           ${kwargs.lookUpValue}, se utilizará el primero en lista, por lo que puede no ser el mismo que ud desea
           actualizar, esto puede deberse a un error, por favor revise los
           datos o contacte con el administrador del sistema.`)
         }
 
-        dispatch({type: kwargs.dispatchType, payload: response.data[0]})
-        dispatch({type: kwargs.dispatchType2, payload: response.data[0]})
+        dispatch({type: kwargs.dispatchType, payload: response.data.results[0]})
+        dispatch({type: kwargs.dispatchType2, payload: response.data.results[0]})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       } else {

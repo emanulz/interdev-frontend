@@ -35,13 +35,13 @@ export default class List extends React.Component {
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
-    const productKwargs = {
-      url: '/api/products',
-      successType: 'FETCH_PRODUCTS_FULFILLED',
-      errorType: 'FETCH_PRODUCTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(productKwargs))
+    // const productKwargs = {
+    //   url: '/api/products',
+    //   successType: 'FETCH_PRODUCTS_FULFILLED',
+    //   errorType: 'FETCH_PRODUCTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(productKwargs))
     // *******************************************************************
 
     // Then fetch the elements of the taxes model and dispatch to reducer
