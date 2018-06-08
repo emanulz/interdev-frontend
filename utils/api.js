@@ -280,16 +280,16 @@ export function saveItem(kwargs) {
 export function updateItem(kwargs) {
   const item = kwargs.item
   const url = kwargs.url
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
-  const user = kwargs.user
+  // const logCode = kwargs.logCode
+  // const itemOld = kwargs.itemOld
+  // const logModel = kwargs.logModel
+  // const logDescription = kwargs.logDescription
+  // const user = kwargs.user
 
   return function(dispatch) {
 
     axios({
-      method: 'put',
+      method: 'patch',
       url: url,
       data: item
     })
@@ -301,7 +301,7 @@ export function updateItem(kwargs) {
             }
           })
         dispatch({type: kwargs.dispatchType, payload: ''})
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
+        // saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {
         console.log(err)

@@ -10,9 +10,9 @@ const Mousetrap = require('mousetrap')
     payMethod: store.pay.payMethod,
     payObject: store.pay.payObject,
     client: store.clients.clientSelected,
-    user: store.clients.userSelected,
+    user: store.user.user,
     debt: store.clients.clientSelectedDebt,
-    warehouse_id: store.config.sales_warehouse
+    warehouse_id: store.config.salesWarehouse
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -34,11 +34,7 @@ export default class SaveBtn extends React.Component {
       warehouse_id: this.props.warehouse_id
     }
 
-    const creditMovement = {
-      client_id: this.props.client.id,
-      movement_type: 'CRED',
-      amount: this.props.cart.cartTotal
-    }
+    console.log('SALEEEEE SENT', sale)
 
     const kwargs = {
       url: '/api/sales/',
@@ -49,8 +45,7 @@ export default class SaveBtn extends React.Component {
       user: user,
       itemOld: '',
       sucessMessage: 'Venta creada Correctamente.',
-      errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.',
-      creditMovement: creditMovement
+      errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.'
     }
 
     const _this = this

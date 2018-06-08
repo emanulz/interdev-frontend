@@ -133,7 +133,7 @@ export default class PaySideBar extends React.Component {
 
         <br />
 
-        <SaveBtn payButtonClass={payButtonClass} />
+        <SaveBtn payButtonClass='pay-tag tag-button enable' />
 
       </div>
 

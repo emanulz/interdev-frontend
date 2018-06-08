@@ -76,8 +76,8 @@ export default class Table extends React.Component {
       </button>
 
       const inventory = this.props.warehouseActive
-        ? product.inventory_by_warehouse[this.props.warehouseActive]
-        : product.inventory
+        ? product.inventory_existent[this.props.warehouseActive]
+        : product.inventory_existent.total
 
       return <tr key={product.id}>
         <td>{product.code}</td>
