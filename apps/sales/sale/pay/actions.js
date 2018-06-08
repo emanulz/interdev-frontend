@@ -49,6 +49,80 @@ export function updateStoreCardDigits(number) {
   return res
 }
 
+export function updateStoreCardAmount(amount) {
+
+  const res = (amount) // if its a value
+    ? {
+      type: 'UPDATE_CARD_AMOUNT',
+      payload: parseFloat(amount)
+    }
+    : {
+      type: 'UPDATE_CARD_AMOUNT',
+      payload: 0
+    }
+
+  return res
+}
+
+export function updateStoreCreditAmount(amount) {
+
+  const res = (amount) // if its a value
+    ? {
+      type: 'UPDATE_CREDIT_AMOUNT',
+      payload: parseFloat(amount)
+    }
+    : {
+      type: 'UPDATE_CREDIT_AMOUNT',
+      payload: 0
+    }
+
+  return res
+}
+
+export function updateStoreTransferAmount(amount) {
+
+  const res = (amount) // if its a value
+    ? {
+      type: 'UPDATE_TRANSFER_AMOUNT',
+      payload: parseFloat(amount)
+    }
+    : {
+      type: 'UPDATE_TRANSFER_AMOUNT',
+      payload: 0
+    }
+
+  return res
+}
+
+export function updateStoreTransferBank(number) {
+
+  const res = (number) // if its a value
+    ? {
+      type: 'UPDATE_TRANSFER_BANK',
+      payload: number
+    }
+    : {
+      type: 'UPDATE_TRANSFER_BANK',
+      payload: ''
+    }
+
+  return res
+}
+
+export function updateStoreTransferNumber(number) {
+
+  const res = (number) // if its a value
+    ? {
+      type: 'UPDATE_TRANSFER_NUMBER',
+      payload: number
+    }
+    : {
+      type: 'UPDATE_TRANSFER_NUMBER',
+      payload: ''
+    }
+
+  return res
+}
 // export function loadSale(id, sales) {
 //   const filteredSales = sales.filter(sale => {
 //     return sale.id == id

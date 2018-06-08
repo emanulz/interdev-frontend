@@ -513,9 +513,9 @@ export function deleteItemDispatch(kwargs) {
 export function loadGlobalConfig(section, name, success, fail) {
   return function(dispatch) {
     if (name) {
-
-      axios.get(`/api/globalconf/${section}__${name}`).then(function(response) {
-        // TODO Single config fetch
+      // IF ITS SINGLE RETURNS ONLY ITS VALUE
+      axios.get(`/api/globalprefs/${section}__${name}`).then(function(response) {
+        dispatch({type: success, payload: response.data.value})
       }).catch(function(error) {
         dispatch({type: fail, payload: error})
       })

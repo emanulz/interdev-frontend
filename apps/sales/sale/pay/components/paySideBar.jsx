@@ -8,8 +8,9 @@ const Mousetrap = require('mousetrap')
 @connect((store) => {
   return {
     cart: store.cart,
-    payMethod: store.pay.payMethod,
+    payMethod: store.pay.payMethodActive,
     pay: store.pay,
+    payObject: store.pay.payObject,
     client: store.clients.clientSelected,
     user: store.clients.userSelected,
     debt: store.clients.clientSelectedDebt
@@ -20,6 +21,18 @@ const Mousetrap = require('mousetrap')
   }
 })
 export default class PaySideBar extends React.Component {
+  calcTotalInPay () {
+    const payObject = this.props.payObject
+    let total = 0
+    for (const item in payObject) {
+      let innerAmount = 0
+      for (const innerItem in payObject[item]) {
+        innerAmount += payObject[item][innerItem].amount
+      }
+      total += innerAmount
+    }
+    return total
+  }
 
   saveBtn() {
     // const sales = this.props.sales
@@ -61,9 +74,10 @@ export default class PaySideBar extends React.Component {
   render() {
 
     let change = 0
-    let payButtonClass = 'pay-tag tag-button'
+    let payButtonClass = 'pay-tag tag-button enable'
     const total = parseFloat(this.props.cart.cartTotal)
     const cash = parseFloat(this.props.pay.cashAmount)
+    const totalInPay = this.calcTotalInPay()
 
     switch (this.props.payMethod) {
 
@@ -112,6 +126,10 @@ export default class PaySideBar extends React.Component {
         <div className='pay-tag left'>VUELTO :</div>
         <div className='pay-tag right'>
           ₡ {change.formatMoney(2, ',', '.')}</div>
+
+        <div className='pay-tag left'>TOTAL PAGO :</div>
+        <div className='pay-tag right'>
+          ₡ {totalInPay.formatMoney(2, ',', '.')}</div>
 
         <br />
 

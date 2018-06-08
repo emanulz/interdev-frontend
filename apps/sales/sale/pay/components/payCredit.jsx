@@ -1,10 +1,19 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {updateStoreCreditAmount} from '../actions.js'
 
 @connect((store) => {
-  return {client: store.clients.clientSelected, debt: store.clients.clientSelectedDebt}
+  return {
+    client: store.clients.clientSelected,
+    debt: store.clients.clientSelectedDebt,
+    creditAmount: store.pay.payObject.cred[0].amount}
 })
 export default class PayCredit extends React.Component {
+
+  cardAmountChanged(ev) {
+
+    this.props.dispatch(updateStoreCreditAmount(ev.target.value))
+  }
 
   render() {
     const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
@@ -31,6 +40,9 @@ export default class PayCredit extends React.Component {
         <div className='pay-tag left'>DISPONIBLE:</div>
         <div className='pay-tag right'>
           {clientAvailable}</div>
+
+        <div className='pay-tag left'>MONTO:</div>
+        <input value={this.props.creditAmount} onChange={this.cardAmountChanged.bind(this)} type='Number' className='form-control' />
 
         <br />
         <br />

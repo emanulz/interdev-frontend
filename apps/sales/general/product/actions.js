@@ -216,8 +216,8 @@ function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, productS
 // calculates the subtotal by line, also the total with iv included, the discount in currency format
 function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
 
-  const price = priceToUse(product, client)
-
+  // const price = priceToUse(product, client)
+  const price = product.price
   const subTotalNoDiscount = price * qty
 
   const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (globalDiscount / 100))
@@ -271,20 +271,20 @@ function updatedCartItem(itemsInCart, index, newQty, productDiscount, globalDisc
 }
 
 // function to determin price to use in calculation
-function priceToUse(product, client) {
+// function priceToUse(product, client) {
 
-  if (client.clientType == 'GENERAL') return product.price
+//   if (client.clientType == 'GENERAL') return product.price
 
-  if (client.clientType == 'DISTRIB' && product.usePrice2) return product.price2
-  if (client.clientType == 'DISTRIB') return product.price
+//   if (client.clientType == 'DISTRIB' && product.usePrice2) return product.price2
+//   if (client.clientType == 'DISTRIB') return product.price
 
-  if (client.clientType == 'WHOLESA' && product.usePrice3) return product.price3
-  if (client.clientType == 'WHOLESA' && product.usePrice2) return product.price2
-  if (client.clientType == 'WHOLESA') return product.price
+//   if (client.clientType == 'WHOLESA' && product.usePrice3) return product.price3
+//   if (client.clientType == 'WHOLESA' && product.usePrice2) return product.price2
+//   if (client.clientType == 'WHOLESA') return product.price
 
-  return product.price
+//   return product.price
 
-}
+// }
 
 export function setProduct(kwargs, resolve, reject) {
   const lookUpValue = kwargs.lookUpValue

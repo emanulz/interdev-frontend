@@ -63,40 +63,6 @@ class Form3 extends React.Component {
         <span>Inventarios y Observaciones</span>
         <hr />
 
-        <div className='form-group row input-block'>
-
-          <div className='col-xs-6 second'>
-            <label>Usa Inventario?</label>
-            <input checked={this.props.product.inventory_enabled} name='inventory_enabled'
-              onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
-
-          <div className='col-xs-6 second'>
-            <label>Puede Facturar en Negativo?</label>
-            <input checked={this.props.product.inventory_negative} name='inventory_negative'
-              onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
-
-        </div>
-
-        <div className='form-group row input-block'>
-          <div className='col-xs-6 first'>
-            <label>Mínimo Inventario</label>
-            <input value={this.props.product.inventory_minimum} name='inventory_minimum'
-              onChange={this.handleInputChange.bind(this)}
-              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-
-          <div className='col-xs-6 first'>
-            <label>Máximo Inventario</label>
-            <input value={this.props.product.inventory_maximum} name='inventory_maximum'
-              onChange={this.handleInputChange.bind(this)}
-              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-        </div>
-
         <div className='form-group'>
           <label>Observaciones</label>
           <textarea value={this.props.product.observations} name='observations'

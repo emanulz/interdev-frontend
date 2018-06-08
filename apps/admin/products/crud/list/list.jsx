@@ -24,7 +24,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})
 
     const productKwargs = {
-      url: `/api/products/?limit=${this.props.pageSize}`,
+      url: `/api/productslist/?limit=${this.props.pageSize}`,
       successType: 'FETCH_PRODUCTS_FULFILLED',
       errorType: 'FETCH_PRODUCTS_REJECTED'
     }
@@ -70,8 +70,8 @@ export default class List extends React.Component {
         />
       </div>
       <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/products/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-        <Pagination url='/api/products/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+        <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+        <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
       </div>
       {content}
     </div>

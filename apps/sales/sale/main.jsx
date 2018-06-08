@@ -11,6 +11,7 @@ import SearchClient from '../general/search/clients/searchPanel.jsx'
 import PayPanel from './pay/payPanel.jsx'
 import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import Presales from './presales/presalesList.jsx'
+import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
 
 import {connect} from 'react-redux'
@@ -22,6 +23,8 @@ import {connect} from 'react-redux'
 export default class Sale extends React.Component {
 
   componentWillMount() {
+
+    this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
 
     this.props.dispatch({type: 'SALE_PANEL_MOUNTED', payload: ''})
 
@@ -37,7 +40,6 @@ export default class Sale extends React.Component {
 
   }
   // *******************************************************************
-
   // Main Layout
   render() {
 

@@ -43,7 +43,6 @@
             &:hover
                 font-size: 25px
 
-
 .pay-area-container
     position: relative
     top: 200px
@@ -52,7 +51,6 @@
     height: calc(100% - 220px)
     min-height: 280px
     display: inline-block
-
 
 .pay-method-body
     display: inline-block
@@ -77,8 +75,8 @@
         position: relative
         display: block
         top: 50px
-        left: 15px
         width: 100%
+        padding: 0 10px
         & input
             position: relative
             width: 50%
@@ -88,7 +86,6 @@
             &.form-control
                 display: inline-block
 
-
 .pay-side-bar
     position: absolute
     top: 0
@@ -97,7 +94,6 @@
     width: 49%
     height: 100%
     border: 1px solid gray
-
 
 .pay-tag
     display: inline-block
@@ -134,20 +130,21 @@
         & i
             margin-left: 10px
 
-
 .pay-method-select
         position: absolute
         top: 60px
-        left: 5%
-        width: 90%
+        width: 100%
+        display: flex
+        flex-flow: row
+        justify-content: space-between
+        padding: 0 6% 0 5%
         &-item
             display: inline-block
-            width: 18%
+            width: 15%
             height: 120px
             font-size: 60px
             line-height: 80px
             text-align: center
-            margin-left: 5.5%
             border-radius: 5px
             background-color: rgb(214, 214, 230)
             cursor: pointer
@@ -166,3 +163,51 @@
                 background-color: #2B3647
                 color: white
                 border-radius: 5px 5px 0 0
+
+.pay-method-fileds
+    display: grid
+    grid-template-columns: auto auto auto;
+
+.pay-field 
+  width: 100%
+  display: flex
+  flex-flow: column-reverse
+  margin-bottom: 1em
+  padding: 0 10px
+  & label, input 
+    transition: all 0.2s
+    touch-action: manipulation
+  & input 
+    width: 100%
+    font-size: 1.5em
+    border: 0
+    border-bottom: 1px solid #ccc
+    font-family: inherit
+    -webkit-appearance: none
+    border-radius: 0
+    padding: 0
+    cursor: text
+    margin-left: 0
+    padding-left: 10px
+    &:focus 
+      outline: 0
+      border-bottom: 1px solid #666
+  & ::-webkit-input-placeholder 
+    opacity: 0
+    transition: inherit
+  & input:focus::-webkit-input-placeholder 
+    opacity: 1
+  & label 
+    letter-spacing: 0.05em
+input:placeholder-shown + label
+  cursor: text
+  max-width: 66.66%
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  transform-origin: left bottom
+  transform: translate(10px, 2.125rem) scale(1.5)
+input:not(:placeholder-shown) + label,
+input:focus + label 
+  transform: translate(0, 0) scale(1)
+  cursor: pointer

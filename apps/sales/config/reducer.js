@@ -1,5 +1,6 @@
 const stateConst = {
-  company: {}
+  company: {},
+  salesWarehouse: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -29,6 +30,24 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         [action.payload.section]: action.payload.data
+      }
+
+    } // case
+
+    case 'FETCH_SALES_WAREHOUSE_FULFILLED':
+    {
+      return {
+        ...state,
+        salesWarehouse: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_SALES_WAREHOUSE_REJECTED':
+    {
+      return {
+        ...state,
+        salesWarehouse: {}
       }
 
     } // case

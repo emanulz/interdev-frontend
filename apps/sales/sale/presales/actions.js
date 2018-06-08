@@ -44,12 +44,12 @@ export function getPendingPresales(kwargs) {
   const filterField3 = kwargs.filterField3
   const ordering = kwargs.ordering
 
-  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&ordering=${ordering}`
+  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&ordering=${ordering}&limit=200`
 
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {
-      dispatch({type: successType, payload: response.data})
+      dispatch({type: successType, payload: response.data.results})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE

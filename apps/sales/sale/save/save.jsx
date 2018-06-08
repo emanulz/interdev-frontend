@@ -8,10 +8,11 @@ const Mousetrap = require('mousetrap')
   return {
     cart: store.cart,
     payMethod: store.pay.payMethod,
-    pay: store.pay,
+    payObject: store.pay.payObject,
     client: store.clients.clientSelected,
     user: store.clients.userSelected,
-    debt: store.clients.clientSelectedDebt
+    debt: store.clients.clientSelectedDebt,
+    warehouse_id: store.config.sales_warehouse
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -23,16 +24,14 @@ export default class SaveBtn extends React.Component {
   saveBtn() {
     // const sales = this.props.sales
     const user = this.props.user
-    const payed = !(this.props.pay.payMethod == 'CRED')
 
     const sale = {
       cart: JSON.stringify(this.props.cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
-      pay: JSON.stringify(this.props.pay),
-      pay_type: this.props.pay.payMethod,
-      payed: payed,
-      client_id: this.props.client.id
+      pay: JSON.stringify(this.props.payObject),
+      client_id: this.props.client.id,
+      warehouse_id: this.props.warehouse_id
     }
 
     const creditMovement = {
