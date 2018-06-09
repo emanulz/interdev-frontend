@@ -2,6 +2,9 @@
 // MODULE IMPORTS
 // ------------------------------------------------------------------------------------------
 const uuidv1 = require('uuid/v1')
+import axios from 'axios'
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
@@ -30,20 +33,11 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 }
 
 // When item is selected in code field
-export function productSelected(code, qty, products, itemsInCart, defaultConfig, userConfig) {
+export function productSelected(code, qty, product, itemsInCart) {
 
-  const perLine = false
+  const perLine = true
 
-  const productSelected = products.findIndex(product => {
-    return product.code == code || product.barcode == code
-  }) // checks if product exists
-
-  const res = (productSelected == -1) // if not exists dispatch Not Found, if exists check if already in cart
-    ? {
-      type: 'PRODUCT_NOT_FOUND',
-      payload: -1
-    }
-    : checkIfInCart(code, qty, products, itemsInCart, productSelected, perLine)
+  const res = checkIfInCart(code, qty, itemsInCart, product, perLine)
 
   return res
 
@@ -92,7 +86,7 @@ export function addSubOne (code, subOrAdd, itemsInCart) {
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLine) {
+function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
@@ -105,7 +99,7 @@ function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLi
         type: 'ADD_TO_CART',
         payload: {
           uuid: uuid,
-          product: products[productSelected],
+          product: product,
           qty: qty,
           subtotal: 0,
           saved: 'new',
@@ -115,7 +109,7 @@ function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLi
       : {
         type: 'UPDATE_CART',
         payload: {
-          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty, itemsInCart[indexInCart].uuid),
+          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty, (itemsInCart[indexInCart].qty + qty)*product.sell_price),
           index: indexInCart
         }
       }
@@ -128,7 +122,7 @@ function checkIfInCart(code, qty, products, itemsInCart,  productSelected, perLi
       type: 'ADD_TO_CART',
       payload: {
         uuid: uuid,
-        product: products[productSelected],
+        product: product,
         qty: qty,
         subtotal: 0,
         status:'new',
@@ -158,9 +152,10 @@ export function setProduct(kwargs, resolve, reject){
   const url = kwargs.url
 
   axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
-    if (response.data.count) {
+
+    if (response.data.results.length>0) {
       // IF THERE IS MORE THAN ONE ELEMENT FILTERED
-      if (response.data.count > 1) {
+      if (response.data.results.length > 1) {
         alertify.alert('ATENCIÓN', `Existe mas de un ${kwargs.modelName} con el ${kwargs.lookUpName}:
         ${kwargs.lookUpValue}, se utilizará el primero en lista, por lo que puede no ser el mismo que ud desea
         actualizar, esto puede deberse a un error, por favor revise los

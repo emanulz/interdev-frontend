@@ -16,7 +16,7 @@ export default class ListPurchases  extends React.Component {
         this.props.dispatch({type: 'FETCHING_STARTED'})
 
         const purchasesKwargs = {
-            url : '/api/purchase/',
+            url : '/api/purchaselist/',
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED'
         }
