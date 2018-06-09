@@ -8,7 +8,6 @@ const stateConst = {
     invoiceNumber:'',
     invoiceDate:'',
     isEdit: false,
-    payed: false,
     is_closed: false,
     purchase_id: '',
     old: '',
@@ -41,22 +40,18 @@ const stateConst = {
                 invoiceNumber:'',
                 invoiceDate:'',
                 isEdit: false,
-                payed: false,
                 is_closed: false,
                 purchase_id:'',
             }
           }
           case 'LOADED_PURCHASE':
           {
-              const old = JSON.stringify(action.payload)
               return {
                 ...state,
                 invoiceNumber:action.payload.invoice_number,
                 invoiceDate:action.payload.invoice_date,
-                payed: action.payload.payed,
                 is_closed: action.payload.is_closed,
                 purchase_id: action.payload.id,
-                old:old,
               }
           }
           case 'INVOICE_DATE_CHANGED':
@@ -77,6 +72,8 @@ const stateConst = {
 
           case 'FETCH_PURCHASES_FULFILLED':
           {
+              console.log('Purchases fulfiled payload')
+              console.log(action.payload)
               const tF = makeTableFriendly(action.payload)
               return {
                   ...state,

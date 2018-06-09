@@ -25,15 +25,14 @@ export default class PurchaseButtons extends React.Component {
 
         const kwargs = {
             id:this.props.purchase.purchase_id,
-            user: this.props.user,
-            supplier: this.props.supplier,
-            warehouse: this.props.warehouse,
+            supplier_id: this.props.supplier.id,
+            warehouse_id: this.props.warehouse.id,
             cart: this.props.cart,
             pay: this.props.pay,
             invoice_number: this.props.purchase.invoiceNumber,
             invoice_date: this.props.purchase.invoiceDate,
             credit_days: this.props.pay.creditDays,
-            is_closed: apply,
+            apply: apply,
             payed: this.isPayed()
         }
         if(this.props.purchase.purchase_id !== ''){

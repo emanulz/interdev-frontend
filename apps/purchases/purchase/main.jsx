@@ -24,7 +24,7 @@ export default class Purchase extends React.Component {
             //load the instance from the db
             const kwargs = {
                 lookUpField: 'consecutive',
-                url: '/api/purchase/',
+                url: '/api/purchaselist/',
                 lookUpValue: purchase_consecutive,
                 dispatchType: 'LOADED_PURCHASE',
                 dispatchType2: 'SET_OLD_PURCHASE',
