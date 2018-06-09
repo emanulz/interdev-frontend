@@ -25,7 +25,7 @@ export function savePurchase(kwargs){
     let method = 'post'
     let url = '/api/purchase/'
     
-    if(kwargs.old !== undefined){
+    if(kwargs.update_purchase === true){
         method = 'patch'
         url = `/api/purchase/${kwargs.id}/`
     }

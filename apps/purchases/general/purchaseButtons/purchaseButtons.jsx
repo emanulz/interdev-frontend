@@ -33,11 +33,12 @@ export default class PurchaseButtons extends React.Component {
             invoice_date: this.props.purchase.invoiceDate,
             credit_days: this.props.pay.creditDays,
             apply: apply,
-            payed: this.isPayed()
+            payed: this.isPayed(),
+            update_purchase: false
         }
         if(this.props.purchase.purchase_id !== ''){
             //this should be a patch
-            kwargs.old = this.props.purchase.old
+            kwargs.update_purchase = true
         }
         savePurchase(kwargs).then(result=>{
             if(apply){
