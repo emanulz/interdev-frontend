@@ -10,7 +10,7 @@ const productModel = {
   code: '',
   description: '',
   unit: 'uni',
-  fractioned: false,
+  fractioned: true,
   department: '0000000000',
   subdepartment: '0000000000',
   barcode: '',

@@ -4,10 +4,9 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {clientSelected, searchClient, userSelected, setClient} from './actions'
-import {getItemDispatch} from '../../../../utils/api'
-import {getClientDebt} from '../../../../utils/getClientDebt'
+import {searchClient, userSelected, setClient} from './actions'
 import {recalcCart} from '../../general/product/actions'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -24,6 +23,34 @@ import {recalcCart} from '../../general/product/actions'
   }
 })
 export default class Clients extends React.Component {
+
+  componentWillMount () {
+
+    const _this = this
+    // LOAD THE DEFAULT CLIENT
+    const setClientPromise = new Promise((resolve, reject) => {
+      const kwargs = {
+        lookUpField: 'code',
+        url: '/api/clients/',
+        lookUpValue: '00',
+        lookUpName: 'código',
+        modelName: 'Clientes'
+      }
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      setClient(kwargs, resolve, reject)
+    })
+
+    setClientPromise.then((data) => {
+      console.log(data)
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      const client = data.results[0]
+      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('ERROR', 'No existe un cliente general, por favor cree uno con el código "00" para las ventas sin cliente.')
+      console.log(err)
+    })
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.clientSelected != this.props.clientSelected) {
@@ -99,6 +126,10 @@ export default class Clients extends React.Component {
 
   }
 
+  showClientPanel() {
+    this.props.dispatch({type: 'SHOW_CREATE_CLIENT_PANEL', payload: -1})
+  }
+
   // Main Layout
   render() {
 
@@ -129,6 +160,7 @@ export default class Clients extends React.Component {
           <input disabled={this.props.disabled} onKeyUp={this.inputKeyPress.bind(this)}
             type='text'
           />
+          <i className='fa fa-plus-circle' onClick={this.showClientPanel.bind(this)} />
         </div>
 
         <div className='client-data-row'>

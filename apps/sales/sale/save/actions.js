@@ -29,11 +29,11 @@ export function saveItem(kwargs, resolve, reject) {
 
       }).catch((err) => {
         console.log(err)
-        reject()
-        if (err.response) {
-          console.log(err.response.data)
-        }
-        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        reject(err)
+        // if (err.response) {
+        //   console.log(err.response.data)
+        // }
+        // alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
       })
 
   }

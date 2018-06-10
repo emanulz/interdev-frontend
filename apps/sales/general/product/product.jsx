@@ -12,7 +12,8 @@ import {productSelected, setProduct} from './actions.js'
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     inputVal: store.products.inputVal,
-    globalDiscount: store.cart.globalDiscount
+    globalDiscount: store.cart.globalDiscount,
+    warehouse_id: store.config.salesWarehouse
     // disabled: store.sales.completed,
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
@@ -79,7 +80,7 @@ export default class Product extends React.Component {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
           const product = data.results[0]
           this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart,
-            this.props.globalDiscount, this.props.client, this.props.defaultConfig, this.props.userConfig))
+            this.props.globalDiscount, this.props.client, this.props.warehouse_id))
           _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
           _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
         }).catch((err) => {

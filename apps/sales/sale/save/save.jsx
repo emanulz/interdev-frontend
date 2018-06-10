@@ -2,6 +2,7 @@ import React from 'react'
 // import {saveItem, loadSale} from '../actions'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
+import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -54,14 +55,20 @@ export default class SaveBtn extends React.Component {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       _this.props.dispatch(saveItem(kwargs, resolve, reject))
     })
-
+    // SAVE PROCESS
     updatePromise.then(() => {
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
       Mousetrap.reset()
     }).catch((err) => {
-      console.log(err)
+      console.log(err.response.data)
+      if (err.response) {
+        alertify.alert('ERROR', `${err.response.data[Object.keys(err.response.data)[0]]}`)
+      } else {
+        alertify.alert('ERROR', `Hubo un error al guardar la venta, error: ${err}`)
+      }
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
 
   }
