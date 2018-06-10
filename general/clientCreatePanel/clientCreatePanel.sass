@@ -1,0 +1,94 @@
+.clientCreatePanel
+    width: 100%
+    height: 100%
+    position: absolute
+    top: -100%
+    left: 0
+    z-index: 15
+    background-color: rgba(145, 145, 145, 0.67)
+    background-size: 100% 100%
+    transition: all 0.2s ease-in-out
+    &.is-visible
+        position: absolute
+        top: 0
+        z-index: 15
+    &-container
+        position: absolute
+        width: 80%
+        left: 10%
+        background-color: rgb(214, 214, 214)
+        bottom: 0
+        top: 0
+        height: 100%
+        overflow-y: auto
+        overflow-x: hidden
+        min-width: 80%
+        display: flex
+        flex-flow: column
+        justify-content: flex-start
+    &-header
+        width: 100%
+        height: 50px
+        font-size: 20px
+        text-align: center
+        font-family: inherit
+        font-weight: bold
+        color: white
+        background-color: #6F7E95
+        line-height: 50px
+        & i
+            position: absolute
+            right: 5px
+            top: 2px
+            cursor: pointer
+            &:hover
+                font-size: 25px
+    &-content
+        flex-grow: 1
+        padding: 30px 50px
+        &-form
+            &-inline
+                display: flex
+                flex-flow: row
+                justify-content: space-between
+            & .form-group
+                width: 50%
+                padding-right: 20px
+                & .insideIcon
+                    display: flex
+                    flex-flow: row-reverse
+                    position: relative
+                    & i
+                        position: absolute
+                        left: 0
+                        margin-top: 11px
+                        height: calc(100% - 11px)
+                        background-color: $PRIMARY-COLOR
+                        color: white
+                        padding-top: 8px
+                        text-align: center
+                        width: 40px
+                & input
+                    margin-top: 10px
+                    padding-left: 50px
+        &-save
+            margin-top: 10px
+            display: flex
+            flex-flow: row
+            justify-content: flex-end
+            padding-right: 20px
+            & div
+                width: 150px
+                height: 60px
+                background-color: $SECONDARY-COLOR
+                color: white
+                text-align: center
+                padding-top: 22px
+                cursor: pointer
+                & i
+                    margin-left: 10px
+
+
+
+        
+

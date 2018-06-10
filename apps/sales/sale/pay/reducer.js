@@ -1,5 +1,5 @@
 const stateConst = {
-  isVisible: true,
+  isVisible: false,
   payMethodActive: 'CASH',
   payObject: {
     cash: [{'type': 'CASH', 'amount': 0}],

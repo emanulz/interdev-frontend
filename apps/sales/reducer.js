@@ -15,6 +15,7 @@ import invoice from './general/invoice/reducer.js'
 import sales from './general/sales/reducer.js'
 import config from './config/reducer.js'
 import presales from './sale/presales/reducer.js'
+import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -31,5 +32,6 @@ export default combineReducers({
   invoice,
   sales,
   config,
-  presales
+  presales,
+  clientCreatePanel
 })

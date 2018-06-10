@@ -89,14 +89,35 @@ export function updateItemLote(itemsInCart, code, lote) {
 }
 
 // When item is selected in code field
-export function productSelected(code, qty, product, itemsInCart, globalDiscount, client, defaultConfig, userConfig) {
+export function productSelected(code, qty, product, itemsInCart, globalDiscount, client, warehouseId) {
 
-  const perLine = false
+  // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
+  if (!product.fractioned && !Number.isInteger(qty)) {
+    alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
+    return {type: 'NOT', payload: -1}
+  }
 
-  const res = checkIfInCart(code, qty, product, itemsInCart, globalDiscount, productSelected, client, perLine)
-
-  return res
-
+  const perLine = true
+  // FILTER CART LOOKING FOR SAME ITEMS
+  const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
+  // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
+  let qtyToCheck = qty
+  // IF THERE ARE ITEMS ALREADY IN CART
+  if (sameInCart.length > 0) {
+    // LOOP ADDING QTY OF ITEMS ALREADY IN CART
+    for (let i = 0; i < sameInCart.length; i++) {
+      qtyToCheck = qtyToCheck + sameInCart[i].qty
+    }
+  }
+  const inventory = JSON.parse(product.inventory_existent)
+  // CHECK THE INVENTORY OF PRODUCT, IF INVENTORY NOT ENABLE OR INVENTORY IS ENOUGHT OR CAN BE NEGATIVE
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+    const res = checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, perLine)
+    return res
+  }
+  // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
+                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
 }
 
 // Updates Amount based on qty input field
@@ -153,7 +174,7 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client) 
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, productSelected, client, perLine) {
+function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, perLine) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)

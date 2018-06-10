@@ -523,8 +523,8 @@ export function loadGlobalConfig(section, name, success, fail) {
     } else {
       axios.get(`/api/globalprefs`).then(function(response) {
         // The property to modify in reducer
-        const config = response.data
-          ? response.data.filter(item => {
+        const config = response.data.results
+          ? response.data.results.filter(item => {
             return item.section == section
           })
           : {}
