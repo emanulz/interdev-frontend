@@ -5,6 +5,7 @@ const uuidv1 = require('uuid/v1')
 import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+import { inspect } from 'util'
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
@@ -45,7 +46,7 @@ export function productSelected(code, qty, product, itemsInCart) {
 
 // Updates Amount based on qty input field
 
-export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal){
+export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility){
 
   const index = is_search_uuid 
   ?itemsInCart.findIndex(item=> item.uuid==search_key)
@@ -53,6 +54,12 @@ export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtota
 
   const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
   const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
+  const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
+  if(tUtility!=-1){
+    //calculate new real utility and wanted price
+    const cost = itemsInCart[index].subtotal/itemsInCart[index].qty
+    calculateRealUtility(cost, newTu, 'sell_based', itemsInCart[index].product)
+  }      
 
   const res = {
     type: 'UPDATE_CART',
@@ -64,6 +71,58 @@ export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtota
   return res
 }
 
+function calculateRealUtility(cost, target_utility, utility_method, product, round_to_coin = 5){
+  console.log('Calculate needed utility so that the price is whole')
+  console.log("RAW COST --> " + cost)
+  //determine all taxes to be applied to the product, if any
+  let total_tax_fraction = 0
+
+  if(product.use_taxes){
+    total_tax_fraction += product.taxes
+  }
+  if(product.use_taxes2){
+    total_tax_fraction += product.taxes2
+  }
+  const total_tax_factor = 1 + total_tax_fraction / 100.0
+
+  let target_price_no_tax = 0
+  if(utility_method === 'cost_based'){
+    target_price_no_tax = cost * (1+target_utility/100.0)
+  }else{
+    target_price_no_tax = cost / (1-(target_utility/100.0))
+  }
+  console.log(total_tax_factor)
+  //include a default discount on the product
+
+  console.log(product.pred_discount)
+  const default_discount = 1 - parseFloat(product.pred_discount)/100.0
+  
+  console.log('PRICE_NO_TAX --> ' + target_price_no_tax)
+  let target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
+  console.log('TARGET_PRICE_NO_IVI --> ' + target_price_ivi)
+  //trim decimals from the price
+  let int_ivi_price = Math.round(target_price_ivi)
+  console.log('INT_IVI_PRICE --> ' + int_ivi_price )
+  //round to the nearest usable coin
+  let coin_round_modulus = int_ivi_price % round_to_coin
+  console.log('COIN_ROUND_MODULUS --> ' + coin_round_modulus)
+  let wanted_price = int_ivi_price - coin_round_modulus
+  console.log('WANTED_PRICE --> ' + wanted_price)
+  //back calculate new utility
+
+  let real_utility = 0
+  if(utility_method === 'cost_based'){
+    real_utility = (wanted_price/(total_tax_factor*default_discount))/cost - 1
+  }else{
+    real_utility = 1- cost/(wanted_price/(total_tax_factor*default_discount))
+  }
+
+  console.log('REAL_UTILITY --> ' + real_utility)
+  return {'real_utility': real_utility, 'new_price': wanted_price}
+
+
+
+}
 
 // Updates Amount based on qty input field
 
@@ -103,6 +162,8 @@ function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
           qty: qty,
           subtotal: 0,
           saved: 'new',
+          target_utility: product.utility,
+          real_utility: 0
         }
       }
 
@@ -134,7 +195,7 @@ function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
 }
 
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
-function updatedCartItem(itemsInCart, index, newQty, newSubTotal) {
+function updatedCartItem(itemsInCart, index, newQty, newSubTotal, newTUtility) {
   //keep the subtotal de the same
   const uuid = itemsInCart[index].uuid
   return {
@@ -142,6 +203,7 @@ function updatedCartItem(itemsInCart, index, newQty, newSubTotal) {
     product: itemsInCart[index].product,
     qty: newQty,
     subtotal: newSubTotal,
+    target_utility: newTUtility,
     status:'modified'
   }
 }

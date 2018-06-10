@@ -94,7 +94,7 @@ export default class CartItems extends React.Component {
     ? parseFloat(ev.target.value)
     : -1
     if(subTotal==-1){return}
-    this.props.dispatch(updateItem(code, true, this.props.inCart, -1, subTotal))
+    this.props.dispatch(updateItem(code, true, this.props.inCart, -1, subTotal, -1))
 
   }
 
@@ -103,7 +103,7 @@ export default class CartItems extends React.Component {
     ? parseFloat(ev.target.value)
     : -1
     if(qty==-1){return}
-    this.props.dispatch(updateItem(code, true, this.props.inCart, qty, -1))
+    this.props.dispatch(updateItem(code, true, this.props.inCart, qty, -1, -1))
   }
 
   qtyInputKeyPress(ev) {
@@ -112,6 +112,18 @@ export default class CartItems extends React.Component {
       document.getElementById('productCodeInputField').focus()
     }
   }
+
+
+  target_utility_change(id, e){
+    const tUtility = parseFloat(e.target.value)
+    ? parseFloat(e.target.value)
+    : -1
+
+    if(tUtility == -1){return}
+
+    this.props.dispatch(updateItem(id, true, this.props.inCart, -1, -1, tUtility))
+  }
+  
 
   setCartItemActive(code, ev) {
     this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
@@ -161,10 +173,20 @@ export default class CartItems extends React.Component {
         value={item.subtotal}
         type="number"/>
 
+      const targetUtilityField = <input
+        id={`tu${item.product.code}`}
+        disabled={this.props.is_closed}
+        onChange={this.target_utility_change.bind(this, item.uuid)}
+        type='number'
+        className='form-control'
+        value={item.target_utility}
+      />
+
       return <div className={activeClass}
         key={item.uuid}
         onClick={this.setCartItemActive.bind(this, item.product.code)}>
-
+        {console.log('WHATS INSIDE ITEM')}
+        {console.log(item)}
         <div className='cart-body-item-code'>
           <h5>Código</h5>
           {item.product.code}
@@ -176,6 +198,18 @@ export default class CartItems extends React.Component {
         <div className='cart-body-item-qty'>
           <h5>Cantidad</h5>
           {qtyField}
+        </div>
+        <div className="cart-body-item-cost">
+          <h5>Costo</h5>
+          {(item.subtotal/item.qty).toFixed(2)}
+        </div>
+        <div className="cart-body-item-targetutility">
+          <h5>Utilidad Deseada</h5>
+          {targetUtilityField}
+        </div>
+        <div className="cart-body-item-realutility">
+          <h5>Utilidad Real</h5>
+          {item.real_utility}
         </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>
