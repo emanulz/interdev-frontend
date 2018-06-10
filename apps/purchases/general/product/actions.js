@@ -55,16 +55,16 @@ export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtota
   const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
   const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
   const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
-  if(tUtility!=-1){
+  //if(tUtility!=-1){
     //calculate new real utility and wanted price
-    const cost = itemsInCart[index].subtotal/itemsInCart[index].qty
-    calculateRealUtility(cost, newTu, 'sell_based', itemsInCart[index].product)
-  }      
+    //const cost = itemsInCart[index].subtotal/itemsInCart[index].qty
+    //calculateRealUtility(cost, newTu, 'sell_based', itemsInCart[index].product)
+  //}      
 
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, index, qtyNum, subtotalNum),
+      item: updatedCartItem(itemsInCart, index, qtyNum, subtotalNum, newTu),
       index:index
     }
   }
@@ -76,7 +76,7 @@ function calculateRealUtility(cost, target_utility, utility_method, product, rou
   console.log("RAW COST --> " + cost)
   //determine all taxes to be applied to the product, if any
   let total_tax_fraction = 0
-
+  console.log('Product --> ' + product.description)
   if(product.use_taxes){
     total_tax_fraction += product.taxes
   }
@@ -85,17 +85,23 @@ function calculateRealUtility(cost, target_utility, utility_method, product, rou
   }
   const total_tax_factor = 1 + total_tax_fraction / 100.0
 
+  console.log('Target_utility' + target_utility)
   let target_price_no_tax = 0
   if(utility_method === 'cost_based'){
     target_price_no_tax = cost * (1+target_utility/100.0)
   }else{
     target_price_no_tax = cost / (1-(target_utility/100.0))
   }
+
+
+  console.log('Total tax factor')
   console.log(total_tax_factor)
   //include a default discount on the product
 
+  console.log('Pred discount')
   console.log(product.pred_discount)
   const default_discount = 1 - parseFloat(product.pred_discount)/100.0
+  console.log(default_discount)
   
   console.log('PRICE_NO_TAX --> ' + target_price_no_tax)
   let target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
@@ -153,25 +159,30 @@ function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
     const uuid = uuidv1()
-    const res = (indexInCart == -1) // if not exists in cart Dispats ADD_TO_TABLE, if exists dispatch cart updated
-      ? {
-        type: 'ADD_TO_CART',
-        payload: {
-          uuid: uuid,
-          product: product,
-          qty: qty,
-          subtotal: 0,
-          saved: 'new',
-          target_utility: product.utility,
-          real_utility: 0
+    let res = null // if not exists in cart Dispats ADD_TO_TABLE, if exists dispatch cart updated
+    if(indexInCart == -1){
+      res ={
+          type: 'ADD_TO_CART',
+          payload: {
+            uuid: uuid,
+            product: product,
+            qty: qty,
+            subtotal: 0,
+            saved: 'new',
+            target_utility: product.utility*100,
+            real_utility: 0,
+            wanted_price_ivi: 0
+          }
         }
-      }
-
-      : {
-        type: 'UPDATE_CART',
-        payload: {
-          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty, (itemsInCart[indexInCart].qty + qty)*product.sell_price),
-          index: indexInCart
+      }else{
+        line = itemsInCart[index]
+        res = {
+          type: 'UPDATE_CART',
+          payload: {
+            item: updatedCartItem(itemsInCart, indexInCart, line.product.qty + qty, 
+              line.subtotal, prod.utility*100),
+            index: indexInCart
+          }
         }
       }
     return res
@@ -187,6 +198,9 @@ function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
         qty: qty,
         subtotal: 0,
         status:'new',
+        target_utility: product.utility*100,
+        real_utility: 0,
+        wanted_price_ivi: 0
       }
     }
     return res
@@ -196,6 +210,10 @@ function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
 
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
 function updatedCartItem(itemsInCart, index, newQty, newSubTotal, newTUtility) {
+
+  //calculate the price data as needed
+  const price_data = calculateRealUtility(newSubTotal/newQty, newTUtility, 'price_based',
+                  itemsInCart[index].product)
   //keep the subtotal de the same
   const uuid = itemsInCart[index].uuid
   return {
@@ -204,6 +222,8 @@ function updatedCartItem(itemsInCart, index, newQty, newSubTotal, newTUtility) {
     qty: newQty,
     subtotal: newSubTotal,
     target_utility: newTUtility,
+    real_utility: (price_data['real_utility']*100).toFixed(3),
+    wanted_price_ivi: price_data['new_price'].toFixed(3),
     status:'modified'
   }
 }
