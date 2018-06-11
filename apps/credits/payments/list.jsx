@@ -3,10 +3,12 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {getPaymentDispatch} from './actions.js'
 
 // components
-import DataTable from '../../../general/dataTable/dataTable.jsx'
+import AdminTable from '../../../general/adminTable/adminTable.jsx'
+import { getPaginationItemDispatch } from '../../../utils/api.js'
+import Pagination from '../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
@@ -21,12 +23,12 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_PAYMENTS', payload: ''})
 
     const paymentKwargs = {
-      url: '/api/creditpayments',
+      url: '/api/creditpaymentslist',
       successType: 'FETCH_PAYMENTS_FULFILLED',
       errorType: 'FETCH_PAYMENTS_REJECTED'
     }
 
-    this.props.dispatch(getPaymentDispatch(paymentKwargs))
+    this.props.dispatch(getPaginationItemDispatch(paymentKwargs))
 
   }
 
@@ -71,14 +73,26 @@ export default class List extends React.Component {
       }
     ]
 
-    const list = <DataTable headerOrder={headerOrder} model='payments' data={payments} app='credits'
-      addLink='' idField='id' />
     const fetching = <div />
+    const list = <AdminTable headerOrder={headerOrder} model='payments' data={payments}
+      idField='id' app='credits' />
 
     const content = this.props.fetching ? fetching : list
 
     return <div className='list list-container'>
-      <h1>Listado de Pagos de crédito:</h1>
+      <div className='admin-list-header'>
+        <h1>Listado de pagos a facturas:</h1>
+      </div>
+      <div className='admin-list-search'>
+        <input
+          type='text'
+          placeholder='Ingrese un texto para buscar...'
+        />
+      </div>
+      <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/creditpaymentslist/' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
+        <Pagination url='/api/creditpaymentslist/' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
+      </div>
       {content}
     </div>
 

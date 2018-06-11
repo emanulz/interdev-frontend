@@ -27,7 +27,7 @@ export default class Update extends React.Component {
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
     const clientsKwargs = {
-      url: '/api/clients',
+      url: '/api/clients/?limit=400',
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }
@@ -42,14 +42,13 @@ export default class Update extends React.Component {
 
       const id = nextprops.client.id
       const kwargs = {
-        url: '/api/sales',
+        url: '/api/saleslist',
         clientId: id,
         successType: 'FETCH_CLIENT_SALES_WITH_DEBT_FULFILLED',
         errorType: 'FETCH_CLIENT_SALES_WITH_DEBT_REJECTED'
       }
       this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       this.props.dispatch(getClientPendingSales(kwargs))
-
     }
 
   }
@@ -85,7 +84,7 @@ export default class Update extends React.Component {
     if (event.target.checked) {
       const item = {
         sale: sale,
-        amount: sale.debt,
+        amount: Math.abs(parseFloat(sale.balance)),
         complete: true
       }
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
@@ -124,13 +123,13 @@ export default class Update extends React.Component {
 
     const movClass = sale.type == 'CREDIT' ? 'credit' : 'debit'
     const date = formatDate(sale.created)
-    const debt = sale.debt ? sale.debt : 0
-    if (debt > 0) {
+    const balance = Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)) : 0
+    if (balance > 0) {
       return <tr className={`${movClass}`} key={sale.id}>
         <td>{sale.consecutive}</td>
         <td>{date}</td>
         <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
-        <td>₡ {sale.debt ? sale.debt.formatMoney(2, ',', '.') : 0}</td>
+        <td>₡ {Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)).formatMoney(2, ',', '.') : 0}</td>
         <td>
           <input
             id={`${sale.id}-checkbox-complete`}
@@ -280,7 +279,7 @@ export default class Update extends React.Component {
           <td>SELECCIONE UN CLIENTE</td>
         </tr>
 
-    const clientDebt = this.props.client.debt
+    const clientDebt = Math.abs(parseFloat(this.props.client.balance))
     let paymentTotal = 0
     const array = this.props.paymentArray
 

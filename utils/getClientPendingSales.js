@@ -22,21 +22,21 @@ export function getClientPendingSales(kwargs) {
   const clientId = kwargs.clientId
 
   return function(dispatch) {
-    axios.get(`${url}/?client_id=${clientId}`).then(function(response) {
-      const responseData = response.data.filter(item => {
-        return item.debt > 0
+    axios.get(`${url}/?client_id=${clientId}&limit=400`).then(function(response) {
+      const responseData = response.data.results.filter(item => {
+        return item.balance > 0
       })
       // parse the items in JSON objects stored as strings
       const responseData2 = responseData.map(item => {
         const cart = JSON.parse(item.cart)
-        const user = JSON.parse(item.user)
+        const balance = parseFloat(item.balance)
         const client = JSON.parse(item.client)
         const pay = JSON.parse(item.pay)
         return {...item,
           cart: cart,
-          user: user,
           client,
-          pay: pay
+          pay: pay,
+          balance: balance
         }
       })
       // Then Dispatch
@@ -44,11 +44,9 @@ export function getClientPendingSales(kwargs) {
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
-      if (error.response.status != 403) {
-        alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
-        administrador del sistema con el siguiete error: ${error}`)
-        dispatch({type: errorType, payload: error})
-      }
+      alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+      administrador del sistema con el siguiete error: ${error}`)
+      dispatch({type: errorType, payload: error})
     })
   }
 
