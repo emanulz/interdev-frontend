@@ -6,6 +6,7 @@ import Supplier from '../../general/suppliers/suppliers.jsx'
 import Totals from '../../general/totals/totals.jsx'
 import PurchaseButtons from '../../general/purchaseButtons/purchaseButtons.jsx'
 import Warehouses from '../../general/warehouses/warehouse.jsx'
+import ProductDetail from '../../general/productDetail/productDetail.jsx'
 
 @connect(store=>{
     return{
@@ -27,7 +28,9 @@ export default class Aside extends React.Component {
                 <Warehouses/>
                 <Supplier/>
                 <Totals/>
+                <ProductDetail/>
                 <PurchaseButtons/>
+                
             </div>
         </div>
     }
