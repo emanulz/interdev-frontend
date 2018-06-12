@@ -1,23 +1,33 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
-import DataTable from '../../../../general/dataTable/dataTable.jsx'
+import {getPaginationItemDispatch} from '../../../../utils/api.js'
+import AdminTable from '../../../../general/adminTable/adminTable.jsx'
+import Pagination from '../../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 
 @connect(store=>{
     return {
-        suppliers: store.suppliers.suppliers
+        suppliers: store.suppliers.suppliers,
+        pageSize: store.pagination.pageSize,
+        
     }
 })
 export default class DuePayList extends React.Component {
 
     componentWillMount() {
-
+        this.props.dispatch({type: 'FETCHING_STARTED'})
+        const suppliersKwargs = {
+            url : `/api/suppliers/?limit=${this.props.pageSize}`,
+            successType: 'FETCH_SUPPLIERS_FULFILLED',
+            errorType: 'FETCH_SUPPLIERS_REJECTED'
+        }
+        this.props.dispatch(getPaginationItemDispatch(suppliersKwargs))
     }
 
     render() {
 
         const suppliers = this.props.suppliers
-        const filtered_suppliers = suppliers.filter(item=>item.debt_to>0)
+        const filtered_suppliers = suppliers.filter(item=>item.balance < 0)
 
         const headerOrder = [
             {
@@ -31,7 +41,7 @@ export default class DuePayList extends React.Component {
                 type: 'text'
             },
             {
-                field: 'debt_to',
+                field: 'balance',
                 text: 'Saldo',
                 type: 'price'
             },
@@ -43,13 +53,19 @@ export default class DuePayList extends React.Component {
             }
         ]
 
-        const list = <DataTable headerOrder={headerOrder} model='duepay'
+        const list = <AdminTable headerOrder={headerOrder} model='duepay'
         data={filtered_suppliers} app='payables' addLink='' idField='id' />
         const fetching = <div />
         const content = this.props.fetching ? fetching : list
 
         return <div className='list  list-container'>
-            <h1>Listado de Cuentas por Pagar:</h1>
+            <div className="admin-list-header" >
+                <h1>Listado de Cuentas por Pagar</h1>
+            </div>
+            <div className="admin-list-results-pagination">
+                <ResultsPerPage url='/api/suppliers/' successType='FETCH_SUPPLIERS_FULFILLED' errorType='FETCH_SUPPLIERS_REJECTED' />
+                <Pagination url='/api/suppliers/' successType='FETCH_SUPPLIERS_FULFILLED' errorType='FETCH_SUPPLIERS_REJECTED' />
+            </div>
             {content}
         </div>
     }

@@ -10,6 +10,7 @@ import purchaseMovements from './payables/purchaseMovements/reducer.js'
 import payments from './payments/reducer.js'
 import makePayment from  './payments/makePayment/reducer.js'
 import messages from './messages/reducer.js'
+import pagination from '../../general/pagination/reducer.js'
 
 
 
@@ -24,4 +25,5 @@ export default combineReducers({
     purchaseMovements,
     payments,
     makePayment,
+    pagination,
 })

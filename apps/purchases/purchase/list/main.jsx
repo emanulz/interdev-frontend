@@ -4,7 +4,6 @@ import {getPaginationItemDispatch} from '../../../../utils/api.js'
 import AdminTable from '../../../../general/adminTable/adminTable.jsx'
 import Pagination from '../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
-import { inspect } from 'util';
 
 @connect(store=>{
     return {
