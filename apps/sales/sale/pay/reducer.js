@@ -5,7 +5,7 @@ const stateConst = {
     cash: [{'type': 'CASH', 'amount': 0}],
     card: [{'type': 'CARD', 'amount': 0, 'digits': '', 'auth': ''}],
     cred: [{'type': 'CRED', 'amount': 0}],
-    vouc: [{'type': 'VOUC', 'amount': 0, 'voucherNumber': '123484'}],
+    vouc: [],
     tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}]
   }
 }

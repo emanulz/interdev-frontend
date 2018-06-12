@@ -13,7 +13,8 @@ const Mousetrap = require('mousetrap')
     client: store.clients.clientSelected,
     user: store.user.user,
     debt: store.clients.clientSelectedDebt,
-    warehouse_id: store.config.salesWarehouse
+    warehouse_id: store.config.salesWarehouse,
+    presaleId: store.presales.presaleId
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -24,7 +25,7 @@ export default class SaveBtn extends React.Component {
 
   saveBtn() {
     // const sales = this.props.sales
-    const user = this.props.user
+    // const user = this.props.user
 
     const sale = {
       cart: JSON.stringify(this.props.cart),
@@ -32,21 +33,13 @@ export default class SaveBtn extends React.Component {
       user: JSON.stringify(this.props.user),
       pay: JSON.stringify(this.props.payObject),
       client_id: this.props.client.id,
-      warehouse_id: this.props.warehouse_id
+      warehouse_id: this.props.warehouse_id,
+      presale_id: this.props.presaleId
     }
-
-    console.log('SALEEEEE SENT', sale)
 
     const kwargs = {
       url: '/api/sales/',
-      item: sale,
-      logCode: 'SALE_CREATE',
-      logDescription: 'Creación de nueva Venta',
-      logModel: 'SALE',
-      user: user,
-      itemOld: '',
-      sucessMessage: 'Venta creada Correctamente.',
-      errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.'
+      item: sale
     }
 
     const _this = this

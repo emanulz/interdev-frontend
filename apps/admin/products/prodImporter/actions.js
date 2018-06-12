@@ -266,7 +266,7 @@ export function saveImportedProduct(data){
         code:data.code,
         description: data.description,
         unit: data.unit,
-        fractioned:true,
+        fractioned: true,
         department:'',
         subdepartment:'',
         barcode:'',

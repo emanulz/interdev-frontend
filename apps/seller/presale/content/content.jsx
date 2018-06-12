@@ -3,8 +3,8 @@
  */
 import React from 'react'
 
-import Product from '../../general/product/product.jsx'
-import Cart from '../../general/cart/cart.jsx'
+import Product from '../../../sales/general/product/product.jsx'
+import Cart from '../../../sales/general/cart/cart.jsx'
 import {connect} from 'react-redux'
 
 @connect((store) => {

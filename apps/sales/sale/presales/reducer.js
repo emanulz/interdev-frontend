@@ -1,12 +1,28 @@
 
 const stateConst = {
   presales: [],
-  isVisible: false
+  isVisible: false,
+  presaleId: ''
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+    case 'SET_PRESALE_ID':
+    {
+      return {
+        ...state,
+        presaleId: action.payload
+      }
+    } // case
+
+    case 'CLEAR_PRESALE_ID':
+    {
+      return {
+        ...state,
+        presaleId: ''
+      }
+    } // case
 
     case 'SHOW_PRESALES_PANEL':
     {

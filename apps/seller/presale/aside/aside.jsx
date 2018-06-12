@@ -3,8 +3,8 @@
  */
 import React from 'react'
 
-import Client from '../../general/clients/clients.jsx'
-import Totals from '../../general/totals/totals.jsx'
+import Client from '../../../sales/general/clients/clients.jsx'
+import Totals from '../../../sales/general/totals/totals.jsx'
 import Buttons from '../buttons/buttons.jsx'
 import {connect} from 'react-redux'
 

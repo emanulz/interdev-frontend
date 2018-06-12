@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadPresale, getPendingPresales} from './actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {presales: store.presales.presales, isVisible: store.presales.isVisible}
@@ -13,11 +14,11 @@ export default class PresalesPanel extends React.Component {
       url: '/api/presales',
       ordering: '-consecutive',
       filterField: 'closed',
-      filter: true,
+      filter: 'True',
       filterField2: 'billed',
-      filter2: false,
+      filter2: 'False',
       filterField3: 'is_null',
-      filter3: false,
+      filter3: 'False',
       successType: 'FETCH_PRESALES_FULFILLED',
       errorType: 'FETCH_PRESALES_REJECTED'
     }
@@ -30,11 +31,29 @@ export default class PresalesPanel extends React.Component {
   }
 
   loadPresaleItem(id, ev) {
-    this.props.dispatch(loadPresale(id, this.props.presales))
-    this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+
     const _this = this
-    setTimeout(function() { _this.props.dispatch({type: 'LOADED_FALSE', payload: ''}) }, 500)
-    // dispatch({type: 'LOADED_FALSE', payload: ''})
+    const url = `/api/presales/${id}`
+    const loadPromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(loadPresale(url, resolve, reject))
+    })
+    loadPromise.then((data) => {
+      this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      data.cart = JSON.parse(data.cart)
+      data.client = JSON.parse(data.client)
+      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
+      _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
+      _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
+    }).catch((err) => {
+      if (err.response) {
+        alertify.alert('ERROR', `${err.response.data}`)
+      } else {
+        alertify.alert('ERROR', `Hubo un error al cargar la preventa, error: ${err}`)
+      }
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
   }
 
   render() {
