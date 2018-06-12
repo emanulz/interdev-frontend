@@ -31,7 +31,7 @@ export default class PayMethod extends React.Component {
 
       </div>
 
-      <div onClick={this.clickChangePayMethod.bind(this, 'CARD')} className={(this.props.payMethod == 'CARD'
+      {/* <div onClick={this.clickChangePayMethod.bind(this, 'CARD')} className={(this.props.payMethod == 'CARD'
         ? 'pay-method-select-item selected'
         : 'pay-method-select-item')}>
 
@@ -41,7 +41,7 @@ export default class PayMethod extends React.Component {
 
         <i className='fa fa-credit-card' aria-hidden='true' />
 
-      </div>
+      </div> */}
 
       <div onClick={this.clickChangePayMethod.bind(this, 'CRED')} className={(this.props.payMethod == 'CRED'
         ? 'pay-method-select-item selected'

@@ -33,7 +33,6 @@ export default class PurchaseButtons extends React.Component {
             invoice_date: this.props.purchase.invoiceDate,
             credit_days: this.props.pay.creditDays,
             apply: apply,
-            payed: this.isPayed(),
             update_purchase: false
         }
         if(this.props.purchase.purchase_id !== ''){
@@ -41,13 +40,11 @@ export default class PurchaseButtons extends React.Component {
             kwargs.update_purchase = true
         }
         savePurchase(kwargs).then(result=>{
+            this.props.dispatch({type: 'PURCHASE_SAVED', 
+            payload:{ id: result.id, consecutive: result.consecutive , is_closed: result.is_closed}})
             alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación')
         })
         
-    }
-
-    isPayed(){
-        return this.props.cart.cartTotal>=(this.props.pay.cardAmount + this.props.pay.cashAmount)
     }
 
     render() {

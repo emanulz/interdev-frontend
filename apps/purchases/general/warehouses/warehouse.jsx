@@ -9,6 +9,7 @@ import { inspect } from 'util';
         warehouses: store.warehouses.warehouses,
         warehouses_options: store.warehouses.warehouses_options,
         selectedWarehouse: store.warehouses.selectedWarehouse,
+        is_closed: store.purchase.is_closed,
     }
 })
 export default class Warehouses extends React.Component {
@@ -42,8 +43,9 @@ export default class Warehouses extends React.Component {
                         className='form-control'
                         onSelect={this.warehouseSelected.bind(this)}
                         data={this.props.warehouses_options}
+                        disabled={this.props.is_closed}
                         options={{
-                            placeholder: 'Elija la bodega de destino..',
+                            placeholder: this.props.is_closed?'Deshabilitado compra cerrada':'Elija la bodega de destino..',
                             noResultsText: 'Sin elementos'
                     }} /> 
 

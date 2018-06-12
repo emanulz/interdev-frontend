@@ -5,12 +5,44 @@ const stateConst = {
   cardAmount: 0,
   cardDigits: '',
   cardAuth: '',
+
+  bank: '',
+  transfer_reference: '',
+  
   creditDays:0,
+  payMethodOptions: [{'id':0, 'text': 'Efectivo'}, {'id':1, 'text': 'Transferencia'}],
+  payMethodOptionSelected: 0
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'BANK_REFERENCE_CHANGED':
+    {
+      return {
+        ...state,
+        transfer_reference: action.payload
+      }
+    }
+
+
+
+    case 'BANK_INPUT_CHANGED':
+    {
+      return {
+        ...state,
+        bank: action.payload
+      }
+    }
+
+    case 'PAY_METHOD_OPTION_CHANGED':
+    {
+      return {
+        ...state,
+        payMethodOptionSelected: action.payload
+      }
+    }
 
     case 'SHOW_PAY_PANEL':
     {
@@ -108,7 +140,13 @@ export default function reducer(state = stateConst, action) {
         cardAuth: '',
       }
     }
-
+    case 'FETCH_SUPPLIERS_FULFILLED':
+    {
+      return {
+        ...state,
+        creditDays: action.payload[0].credit_days
+      }
+    }
     case 'UPDATE_CREDIT_DAYS':
     {
       return {

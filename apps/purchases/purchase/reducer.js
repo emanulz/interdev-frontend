@@ -23,6 +23,14 @@ const stateConst = {
                   fullWidth: width
               }
           }
+          case 'PURCHASE_SAVED':
+          {
+              return {
+                  ...state,
+                  purchase_id: action.payload.id,
+                  is_closed: action.payload.is_closed
+              }
+          }
           case 'IS_PURCHASE_EDIT':
           {
               return {
@@ -72,8 +80,6 @@ const stateConst = {
 
           case 'FETCH_PURCHASES_FULFILLED':
           {
-              console.log('Purchases fulfiled payload')
-              console.log(action.payload)
               const tF = makeTableFriendly(action.payload)
               return {
                   ...state,
