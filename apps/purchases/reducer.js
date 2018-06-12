@@ -12,7 +12,7 @@ import suppliers from './general/suppliers/reducer.js'
 import pay from './purchase/pay/reducer.js'
 import main from './main/reducer.js'
 import warehouses from './general/warehouses/reducer.js'
-
+import pagination from '../../general/pagination/reducer.js'
 
 export default combineReducers({
     main,
@@ -27,4 +27,5 @@ export default combineReducers({
     suppliers,
     pay,
     warehouses,
+    pagination,
 })

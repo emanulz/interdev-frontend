@@ -1,13 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getItemDispatch} from '../../../../utils/api.js'
-import DataTable from '../../../../general/dataTable/dataTable.jsx'
+import {getPaginationItemDispatch} from '../../../../utils/api.js'
+import AdminTable from '../../../../general/adminTable/adminTable.jsx'
+import Pagination from '../../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 import { inspect } from 'util';
 
 @connect(store=>{
     return {
         purchases: store.purchase.purchasesTableFriendly,
         fetching: store.fetching.fetching,
+        pageSize: store.pagination.pageSize,
     }
 })
 export default class ListPurchases  extends React.Component {
@@ -16,12 +19,12 @@ export default class ListPurchases  extends React.Component {
         this.props.dispatch({type: 'FETCHING_STARTED'})
 
         const purchasesKwargs = {
-            url : '/api/purchaselist/',
+            url : `/api/purchaselist/?limit=${this.props.pageSize}`,
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED'
         }
 
-        this.props.dispatch(getItemDispatch(purchasesKwargs))
+        this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
     }
 
     render(){
@@ -60,14 +63,20 @@ export default class ListPurchases  extends React.Component {
 
         
         const fetching = <div/>
-        const list = <DataTable headerOrder={header} app="purchases" model="purchase"
-            data={this.props.purchases} 
-            addLink="purchases/add" idField="consecutive" />
+        const list = <AdminTable headerOrder={header} app="purchases" model="purchase" 
+            data={this.props.purchases} />
 
         const content = this.props.purchases.length > 0 ? list : fetching
 
         return <div className='list list-container' >
-            <h1>Listado de Compras: </h1>
+            <div className='admin-list-header'>
+                <h1>Listado de Compras: </h1>
+            </div>
+            <div className='admin-list-results-pagination' >
+                <ResultsPerPage url='/api/purchaseslist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <Pagination url='/api/purchaseslist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+            </div>
+            
             {content}
         </div>
     
