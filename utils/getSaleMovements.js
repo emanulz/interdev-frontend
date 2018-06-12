@@ -22,8 +22,9 @@ export function getSaleMovements(kwargs) {
   const saleId = kwargs.saleId
 
   return function(dispatch) {
-    axios.get(`${url}/?bill_id=${saleId}`).then(function(response) {
-      dispatch({type: successType, payload: response.data})
+    axios.get(`${url}/?bill_id=${saleId}&limit=200`).then(function(response) {
+      console.log(`${url}/?bill_id=${saleId}&limit=200`)
+      dispatch({type: successType, payload: response.data.results})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE

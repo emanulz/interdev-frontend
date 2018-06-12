@@ -31,10 +31,10 @@ export default class Table extends React.Component {
             ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
           </td>
           <td>
-            ₡ {parseFloat(item.sale.debt).formatMoney(2, ',', '.')}
+            ₡ {Math.abs(parseFloat(item.sale.balance)).formatMoney(2, ',', '.')}
           </td>
           <td>
-            ₡ {(parseFloat(item.sale.debt) - parseFloat(item.amount)).formatMoney(2, ',', '.')}
+            ₡ {(Math.abs(parseFloat(item.sale.balance)) - parseFloat(item.amount)).formatMoney(2, ',', '.')}
           </td>
         </tr>
       })

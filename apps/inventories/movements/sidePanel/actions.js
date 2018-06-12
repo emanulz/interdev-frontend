@@ -48,10 +48,9 @@ export function checkProductMovementData(movement, movements) {
 // ------------------------------------------------------------------------------------------
 export function saveMovement(kwargs, resolve, reject) {
   const item = kwargs.item
-  delete item['id']
-  delete item['fromWarehouse_id']
-  delete item['toWarehouse_id']
   const url = kwargs.url
+  delete item['product_id']
+  delete item['product']
   return function(dispatch) {
     axios({
       method: 'post',
@@ -59,12 +58,12 @@ export function saveMovement(kwargs, resolve, reject) {
       data: item
     })
       .then((response) => {
-        resolve()
+        resolve(response.data)
       }).catch((err) => {
         if (err.response) {
           console.log(err.response.data)
         }
-        reject()
+        reject(err)
       })
 
   }

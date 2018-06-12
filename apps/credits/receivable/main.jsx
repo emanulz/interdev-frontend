@@ -4,7 +4,7 @@
 import React from 'react'
 import routes from './routes.js'
 // import { checkUserPermissions } from '../../../utils/checkPermissions'
-import { getItemDispatch } from '../../../utils/api.js'
+// import { getItemDispatch } from '../../../utils/api.js'
 import {connect} from 'react-redux'
 
 @connect((store) => {
@@ -36,24 +36,24 @@ export default class List extends React.Component {
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
-    const clientsKwargs = {
-      url: '/api/clients',
-      successType: 'FETCH_CLIENTS_FULFILLED',
-      errorType: 'FETCH_CLIENTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(clientsKwargs))
+    // const clientsKwargs = {
+    //   url: '/api/clients',
+    //   successType: 'FETCH_CLIENTS_FULFILLED',
+    //   errorType: 'FETCH_CLIENTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(clientsKwargs))
     // *******************************************************************
 
     // Then fetch the elements of the taxes model and dispatch to reducer
     // *******************************************************************
-    const creditMovementsKwargs = {
-      url: '/api/creditmovements',
-      successType: 'FETCH_CREDIT_MOVEMENTS_FULFILLED',
-      errorType: 'FETCH_CREDIT_MOVEMENTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(creditMovementsKwargs))
+    // const creditMovementsKwargs = {
+    //   url: '/api/creditmovements',
+    //   successType: 'FETCH_CREDIT_MOVEMENTS_FULFILLED',
+    //   errorType: 'FETCH_CREDIT_MOVEMENTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(creditMovementsKwargs))
     // *******************************************************************
 
   }

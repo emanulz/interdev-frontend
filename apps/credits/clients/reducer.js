@@ -22,7 +22,7 @@ const clientModel = {
   pays_taxes: true,
   phone_number: '',
   pred_discount: 0,
-  debt: 0
+  balance: 0
 }
 
 const stateConst = {

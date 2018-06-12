@@ -23,15 +23,13 @@ export default class MovementsList extends React.Component {
 
     const kwargs = {
       lookUpField: 'consecutive',
-      url: '/api/sales/',
+      url: '/api/saleslist/',
       lookUpValue: lookUp,
       dispatchType: 'SET_SALE',
       dispatchType2: 'SET_SALE_OLD',
       dispatchErrorType: 'SALE_NOT_FOUND',
       lookUpName: 'Numéro de factura',
-      modelName: 'Clientes',
-      redirectUrl: '/credits/receivable',
-      history: this.props.history
+      modelName: 'Ventas'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(setItem(kwargs))
@@ -43,7 +41,7 @@ export default class MovementsList extends React.Component {
 
       const id = nextprops.sale.id
       const kwargs = {
-        url: '/api/creditmovements',
+        url: '/api/creditmovementslist',
         saleId: id,
         successType: 'FETCH_SALE_MOVEMENTS_FULFILLED',
         errorType: 'FETCH_SALE_MOVEMENTS_REJECTED'
@@ -64,7 +62,7 @@ export default class MovementsList extends React.Component {
       <td>{movement.consecutive}</td>
       <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
       <td>{typeText}</td>
-      <td>₡ {parseFloat(movement.amount).formatMoney(2, ',', '.')}</td>
+      <td>₡ {Math.abs(parseFloat(movement.amount)).formatMoney(2, ',', '.')}</td>
       <td>{movement.description}</td>
     </tr>
   }
@@ -74,12 +72,18 @@ export default class MovementsList extends React.Component {
     const movements = this.props.movements
 
     const sale = this.props.sale
-    const debits = sale.debits || 0
-    const credits = sale.credits || 0
-    const debt = sale.debt || 0
+    let debits = 0
+    let credits = 0
+    const balance = Math.abs(parseFloat(sale.balance)) || 0
 
     const rows = movements.length
       ? movements.map(movement => {
+        if (movement.movement_type == 'CRED') {
+          credits += Math.abs(parseFloat(movement.amount))
+        }
+        if (movement.movement_type == 'DEBI') {
+          debits += Math.abs(parseFloat(movement.amount))
+        }
         return this.movementItem(movement)
       })
       : <tr>
@@ -120,7 +124,7 @@ export default class MovementsList extends React.Component {
                 </tr>
                 <tr>
                   <th>Saldo:</th>
-                  <td>₡ {debt.formatMoney(2, ',', '.')}</td>
+                  <td>₡ {balance.formatMoney(2, ',', '.')}</td>
                 </tr>
               </tbody>
             </table>

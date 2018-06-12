@@ -20,7 +20,7 @@ export default class MovementsList extends React.Component {
 
     const kwargs = {
       lookUpField: 'consecutive',
-      url: '/api/creditpayments/',
+      url: '/api/creditpaymentslist/',
       lookUpValue: lookUp,
       dispatchType: 'SET_PAYMENT',
       dispatchType2: 'SET_PAYMENT_OLD',
@@ -47,8 +47,8 @@ export default class MovementsList extends React.Component {
       <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
       <td>₡ {parseFloat(sale.sale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
       <td>₡ {parseFloat(sale.amount).formatMoney(2, ',', '.')}</td>
-      <td>₡ {parseFloat(sale.sale.debt).formatMoney(2, ',', '.')}</td>
-      <td>₡ {(parseFloat(sale.sale.debt) - parseFloat(sale.amount)).formatMoney(2, ',', '.')}</td>
+      <td>₡ {Math.abs(parseFloat(sale.sale.balance)).formatMoney(2, ',', '.')}</td>
+      <td>₡ {(Math.abs(parseFloat(sale.sale.balance)) - parseFloat(sale.amount)).formatMoney(2, ',', '.')}</td>
     </tr>
   }
 
@@ -67,7 +67,7 @@ export default class MovementsList extends React.Component {
       </tr>
 
     const amount = this.props.payment.amount ? parseFloat(this.props.payment.amount) : 0
-
+    const statusText = this.props.payment.is_null ? 'Anulado' : 'Aplicado'
     return <div className='list-container'>
 
       <h1>Pago a facturas #{payment.consecutive}</h1>
@@ -94,6 +94,10 @@ export default class MovementsList extends React.Component {
             <table className='table table-bordered'>
               <tbody>
                 <tr>
+                  <th>Estado del pago</th>
+                  <td>{statusText}</td>
+                </tr>
+                <tr>
                   <th>Monto del pago</th>
                   <td>₡ {amount.formatMoney(2, ',', '.')}</td>
                 </tr>
@@ -102,6 +106,10 @@ export default class MovementsList extends React.Component {
             <button className='form-control btn btn-success' onClick={this.showInvoice.bind(this)} >
               Mostar recibo
               <i className='fa fa-credit-card' />
+            </button>
+            <button className='btnPaymentNull form-control btn btn-danger' >
+              Anular Pago
+              <i className='fa fa-minus-circle' />
             </button>
           </div>
         </div>
