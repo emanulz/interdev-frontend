@@ -90,7 +90,7 @@ export default class UnpaidPurchases extends React.Component {
     render() {
         const sup = this.props.activeSupplier
         const supplier_data = `${sup.code} - ${sup.name} - Tel: ${sup.phone_number}`
-        const total_debt = sup.debt_to?sup.debt_to.formatMoney(2,',','.'):0
+        const total_debt = sup.balance?parseFloat(sup.balance).formatMoney(2,',','.'):0
         return <div className="unpaidPur" >
             <div className='unpaidPur-grid'>
                 <div className="unpaidPur-grid-title">

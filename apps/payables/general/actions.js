@@ -34,14 +34,14 @@ export function getProviderDuePayments(kwargs) {
     const successType = kwargs.successType
     const errorType = kwargs.errorType
     const supplier_id = kwargs.supplier_id
-    const url = `/api/purchase/?supplier_id=${supplier_id}`
+    const url = `/api/purchaselist/?supplier_id=${supplier_id}`
     console.log('Target url --> ' + url)
 
     return function(dispatch){
         axios.get(url)
         .then(response=>{
             //filter to only objects with debt
-            const filtered = response.data.filter(item=>{return item.debt_data['debt']>0})
+            const filtered = response.data.filter(item=>{return item.balance<0})
             //parse string objects into objects
             const parsedItems = filtered.map(item=>{
                 const cart = JSON.parse(item.cart)
