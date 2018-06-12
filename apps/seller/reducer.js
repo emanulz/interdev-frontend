@@ -1,19 +1,20 @@
 import { combineReducers } from 'redux'
 
-import fetching from '../../general/fetching/reducer.js'
 import layout from './layout/reducer.js'
-import user from './user/reducer.js'
-import cart from './general/cart/reducer.js'
-import clients from './general/clients/reducer.js'
-import products from './general/product/reducer.js'
 import presale from './presale/reducer.js'
-import messages from './messages/reducer.js'
-import searchClients from './general/search/clients/reducer.js'
-import searchProducts from './general/search/products/reducer.js'
 import send from './presale/send/reducer.js'
-import invoice from './general/invoice/reducer.js'
 import sales from './general/sales/reducer.js'
-import config from './config/reducer.js'
+
+import config from '../sales/config/reducer.js'
+import fetching from '../../general/fetching/reducer.js'
+import user from '../sales/user/reducer.js'
+import cart from '../sales/general/cart/reducer.js'
+import clients from '../sales/general/clients/reducer.js'
+import products from '../sales/general/product/reducer.js'
+import messages from '../sales/messages/reducer.js'
+import searchClients from '../sales/general/search/clients/reducer.js'
+import searchProducts from '../sales/general/search/products/reducer.js'
+import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -27,7 +28,7 @@ export default combineReducers({
   searchClients,
   searchProducts,
   send,
-  invoice,
   sales,
-  config
+  config,
+  clientCreatePanel
 })

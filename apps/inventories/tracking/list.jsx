@@ -25,7 +25,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})
 
     const productKwargs = {
-      url: '/api/productslist',
+      url: `/api/productslist/?limit=${this.props.pageSize}`,
       successType: 'FETCH_PRODUCTS_FULFILLED',
       errorType: 'FETCH_PRODUCTS_REJECTED'
     }

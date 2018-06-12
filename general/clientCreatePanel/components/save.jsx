@@ -43,6 +43,7 @@ export default class ClientCreateSave extends React.Component {
       let newClient
       try {
         newClient = JSON.parse(data.data)
+        console.log(newClient)
         _this.props.dispatch({type: 'CLIENT_SELECTED', payload: newClient})
         alertify.alert('COMPLETADO', `Nuevo Cliente creado correctamente con el código: ${newClient.code}`)
       } catch (err) {

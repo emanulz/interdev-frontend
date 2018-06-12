@@ -10,22 +10,13 @@ import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
-export function loadPresale(id, sales) {
-  const filteredSales = sales.filter(sale => {
-    return sale._id == id
-  })
-  return function(dispatch) {
-    if (filteredSales.length) {
-      filteredSales[0]['created'] = new Date(filteredSales[0]['created'])
-      // filteredSales[0]['globalDiscount'] = parseFloat(filteredSales[0]['globalDiscount'])
-      document.getElementById('discountField').value = parseFloat(filteredSales[0]['cart']['globalDiscount'])
-      filteredSales[0]['client']['saleLoaded'] = true
-
-      dispatch({type: 'LOADED_PRESALE', payload: filteredSales[0]})
-      // dispatch({type: 'LOADED_FALSE', payload: ''})
-    } else {
-      dispatch({type: 'NOT_FOUND_SALE', payload: id})
-    }
+export function loadPresale(url, resolve, reject) {
+  return function() {
+    axios.get(url).then(function(response) {
+      resolve(response.data)
+    }).catch(function(error) {
+      reject(error)
+    })
   }
 }
 // ------------------------------------------------------------------------------------------
@@ -45,7 +36,6 @@ export function getPendingPresales(kwargs) {
   const ordering = kwargs.ordering
 
   const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&ordering=${ordering}&limit=200`
-
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {

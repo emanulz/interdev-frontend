@@ -194,6 +194,23 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'LOAD_CART':
+    {
+      return {
+        ...state,
+        isNull: action.payload.isNull,
+        cartHasItems: action.payload.cartHasItems, // var to check if cart has items
+        cartItems: action.payload.cartItems, // the list of items in cart
+        cartSubtotalNoDiscount: action.payload.cartSubtotalNoDiscount, // subtotal without discount and taxes
+        cartSubtotal: action.payload.cartSubtotal, // the subtotal including discounts without taxes
+        cartTaxes: action.payload.cartTaxes, // total amount of taxes in cart in currency
+        cartTotal: action.payload.cartTotal, // cart total after discount and taxes
+        globalDiscount: action.payload.globalDiscount, // discount %
+        discountTotal: action.payload.discountTotal // discount in currency
+
+      }
+    }
+
     case 'SET_PRODUCT_ACTIVE_IN_CART':
     {
       return {

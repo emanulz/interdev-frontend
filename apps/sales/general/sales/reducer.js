@@ -119,13 +119,13 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_PRESALE_ID':
-    {
-      return {
-        ...state,
-        completed: true
-      }
-    } // case
+    // case 'SET_PRESALE_ID':
+    // {
+    //   return {
+    //     ...state,
+    //     completed: true
+    //   }
+    // } // case
 
     case 'SET_PROFORMA_ID':
     {
