@@ -15,16 +15,16 @@ export default class List extends React.Component {
 
   componentWillMount() {
 
-    // Then fetch the elements of the model and dispatch to reducer
-    // *******************************************************************
-    const productsKwargs = {
-      url: '/api/products',
-      successType: 'FETCH_PRODUCTS_FULFILLED',
-      errorType: 'FETCH_PRODUCTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(productsKwargs))
-    // *******************************************************************
+    // // Then fetch the elements of the model and dispatch to reducer
+    // // *******************************************************************
+    // const productsKwargs = {
+    //   url: '/api/products',
+    //   successType: 'FETCH_PRODUCTS_FULFILLED',
+    //   errorType: 'FETCH_PRODUCTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(productsKwargs))
+    // // *******************************************************************
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
@@ -37,23 +37,23 @@ export default class List extends React.Component {
     this.props.dispatch(getItemDispatch(warehousesKwargs))
     // *******************************************************************
 
-    const productDepartmentKwargs = {
-      url: '/api/productdepartments',
-      successType: 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED',
-      errorType: 'FETCH_PRODUCT_DEPARTMENTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(productDepartmentKwargs))
+    // const productDepartmentKwargs = {
+    //   url: '/api/productdepartments',
+    //   successType: 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED',
+    //   errorType: 'FETCH_PRODUCT_DEPARTMENTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(productDepartmentKwargs))
 
-    // *******************************************************************
+    // // *******************************************************************
 
-    const productSubDepartmentKwargs = {
-      url: '/api/productsubdepartments',
-      successType: 'FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED',
-      errorType: 'FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(productSubDepartmentKwargs))
+    // const productSubDepartmentKwargs = {
+    //   url: '/api/productsubdepartments',
+    //   successType: 'FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED',
+    //   errorType: 'FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(productSubDepartmentKwargs))
 
   }
 

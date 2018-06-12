@@ -8,6 +8,7 @@ import movements from './movements/reducer.js'
 import warehouses from './warehouses/reducer.js'
 import sidePanel from './movements/sidePanel/reducer.js'
 import inventoryMovements from './tracking/productMovements/reducer.js'
+import pagination from '../../general/pagination/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -17,5 +18,6 @@ export default combineReducers({
   movements,
   warehouses,
   sidePanel,
-  inventoryMovements
+  inventoryMovements,
+  pagination
 })

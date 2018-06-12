@@ -1,5 +1,6 @@
 const productModel = {
-  id: '0000000000'
+  id: '0000000000',
+  inventory_existent: {}
 }
 
 const stateConst = {
@@ -15,7 +16,7 @@ export default function reducer(state = stateConst, action) {
     case 'SET_PRODUCT_TRACKING':
     {
       const product = action.payload
-      product.inventory_by_warehouse = JSON.parse(product.inventory_by_warehouse)
+      product.inventory_existent = JSON.parse(product.inventory_existent)
       return {
         ...state,
         productActive: product
@@ -34,8 +35,12 @@ export default function reducer(state = stateConst, action) {
     {
       const movements = action.payload
       movements.forEach(movement => {
-        const warehouse = JSON.parse(movement.warehouse)
-        movement.warehouse = warehouse
+        try {
+          const warehouse = JSON.parse(movement.warehouse)
+          movement.warehouse = warehouse
+        } catch (err) {
+          console.log(err)
+        }
       })
       return {
         ...state,

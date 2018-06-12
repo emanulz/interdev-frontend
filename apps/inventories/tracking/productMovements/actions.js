@@ -31,7 +31,7 @@ export function getInventoryMovements(kwargs) {
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {
-      dispatch({type: successType, payload: response.data})
+      dispatch({type: successType, payload: response.data.results})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE

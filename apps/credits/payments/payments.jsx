@@ -6,7 +6,7 @@ import alertify from 'alertifyjs'
 import {getItemDispatch} from '../../../utils/api'
 import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
-import {savePayment, saveMovement} from './actions.js'
+import {savePayment} from './actions.js'
 
 @connect((store) => {
   return {
@@ -83,6 +83,7 @@ export default class Update extends React.Component {
 
     if (event.target.checked) {
       const item = {
+        bill_: sale.id,
         sale: sale,
         amount: Math.abs(parseFloat(sale.balance)),
         complete: true
@@ -102,6 +103,7 @@ export default class Update extends React.Component {
 
     if (event.target.checked) {
       const item = {
+        bill_id: sale.id,
         sale: sale,
         amount: 0,
         complete: false
@@ -158,10 +160,18 @@ export default class Update extends React.Component {
   saveMovements() {
     // ITEMS USED BY PAYMENT OBJECT
     const array = [...this.props.paymentArray]
-    const user = JSON.stringify(this.props.user)
-    const client = JSON.stringify(this.props.client)
+    // const user = JSON.stringify(this.props.user)
+    // const client = JSON.stringify(this.props.client)
     const sales = JSON.stringify(this.props.paymentArray)
     const clientId = this.props.client.id
+
+    // const newSales = array.map(sale => {
+    //   return {
+    //     amount: sale.amount,
+    //     bill_id: sale.bill_id,
+    //     sale
+    //   }
+    // })
 
     let amount = 0
 
@@ -171,20 +181,14 @@ export default class Update extends React.Component {
     })
 
     const payment = {
-      user: user,
-      client: client,
       sales: sales,
       client_id: clientId,
       amount: amount
     }
 
     const kwargs = {
-      url: '/api/creditpayments/',
-      item: payment,
-      logCode: 'CREDIT_PAYMENT_CREATE',
-      logDescription: 'Creación de nuevo pago de crédito',
-      logModel: 'CREDIT_PAYMENT',
-      user: this.props.user
+      url: '/api/creditpaymentscreate/',
+      item: payment
     }
 
     // MAKE "THIS" AVAILABLE FOR SUB-FUNCTIONS
@@ -196,53 +200,18 @@ export default class Update extends React.Component {
     })
 
     savePaymentPromise.then((data) => {
-
-      const movementsPromiseArray = []
-
-      // CREATE A PROMISE FOR EACH OBJECT IN PAYMENT ARRAY USING PAYMENT ID and Data
-      array.map(item => {
-
-        const movement = {
-          payment_id: data.id,
-          bill_id: item.sale.id,
-          client_id: data.client_id,
-          movement_type: 'DEBI',
-          amount: item.amount,
-          description: `Pago a facturas #${data.consecutive}`
-        }
-
-        const kwargs = {
-          url: '/api/creditmovements/',
-          item: movement,
-          logCode: 'CREDIT_MOVEMENT_CREATE',
-          logDescription: 'Creación de nuevo movimiento de crédito',
-          logModel: 'CREDIT_MOVEMENT',
-          user: this.props.user
-        }
-
-        const promise = new Promise((resolve, reject) => {
-          _this.props.dispatch(saveMovement(kwargs, resolve, reject))
-        })
-
-        movementsPromiseArray.push(promise)
-      })
-
-      // RESOLVE ALL PROMISES, SAVING THE MOVEMENTS ITEMS
-      Promise.all(movementsPromiseArray).then(() => {
-
-        this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-        this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
-        this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
-        this.props.dispatch({type: 'CLEAR_PAYMENT_ARRAY', payload: ''})
-        this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
-        alertify.alert('COMPLETADO', 'Pago Almacenado correctamente')
-
-      }).catch((err) => {
-        console.log(err)
-      }) // CATCH OF PROMISE ALL
+      console.log(data)
+      this.props.dispatch({type: 'SET_PAYMENT', payload: data})
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+      this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
+      this.props.dispatch({type: 'CLEAR_PAYMENT_ARRAY', payload: ''})
+      this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
+      alertify.alert('COMPLETADO', 'Pago Almacenado correctamente')
 
     }).catch((err) => {
       console.log(err)
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     }) // CATCH OF PAYMENT SAVE
 
   }

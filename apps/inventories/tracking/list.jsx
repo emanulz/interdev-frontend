@@ -3,14 +3,17 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {getItemDispatch} from '../../../utils/api'
 
 // components
-import DataTable from '../../../general/dataTable/dataTable.jsx'
+import AdminTable from '../../../general/adminTable/adminTable.jsx'
+import { getPaginationItemDispatch } from '../../../utils/api.js'
+import Pagination from '../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
-    products: store.products.products
+    products: store.products.products,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -22,12 +25,12 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})
 
     const productKwargs = {
-      url: '/api/products',
+      url: '/api/productslist',
       successType: 'FETCH_PRODUCTS_FULFILLED',
       errorType: 'FETCH_PRODUCTS_REJECTED'
     }
 
-    this.props.dispatch(getItemDispatch(productKwargs))
+    this.props.dispatch(getPaginationItemDispatch(productKwargs))
 
   }
 
@@ -45,7 +48,8 @@ export default class List extends React.Component {
       }, {
         field: 'description',
         text: 'Descripción',
-        type: 'text'
+        type: 'text',
+        width: '50%'
       }, {
         field: 'inventory',
         text: 'Existencia Total',
@@ -59,14 +63,26 @@ export default class List extends React.Component {
       }
     ]
 
-    const list = <DataTable headerOrder={headerOrder} model='tracking' data={dataFiltered} app='inventories'
-      addLink='' idField='id' />
     const fetching = <div />
+    const list = <AdminTable headerOrder={headerOrder} model='tracking' data={dataFiltered}
+      idField='id' app='inventories' />
 
     const content = this.props.fetching ? fetching : list
 
     return <div className='list list-container'>
-      <h1>Listado de Productos:</h1>
+      <div className='admin-list-header'>
+        <h1>Listado de Productos:</h1>
+      </div>
+      <div className='admin-list-search'>
+        <input
+          type='text'
+          placeholder='Ingrese un texto para buscar...'
+        />
+      </div>
+      <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+        <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+      </div>
       {content}
     </div>
 

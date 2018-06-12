@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import { setItem } from '../../../../utils/api'
 import {getInventoryMovements} from './actions'
 import Select2 from 'react-select2-wrapper'
+// import Pagination from '../../../../general/pagination/pagination.jsx'
+// import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
@@ -28,7 +30,7 @@ export default class MovementsList extends React.Component {
 
     const kwargs = {
       lookUpField: 'code',
-      url: '/api/products/',
+      url: '/api/productslist',
       lookUpValue: lookUp,
       dispatchType: 'SET_PRODUCT_TRACKING',
       dispatchType2: 'SET_PRODUCT_TRACKING_OLD',
@@ -48,7 +50,7 @@ export default class MovementsList extends React.Component {
 
       const id = nextprops.product.id
       const kwargs = {
-        url: '/api/inventorymovements',
+        url: '/api/inventorymovementslist',
         ordering: '-created',
         filterField: 'product_id',
         filter: id,
@@ -72,7 +74,7 @@ export default class MovementsList extends React.Component {
 
     const id = this.props.product.id
     const kwargs = {
-      url: '/api/inventorymovements',
+      url: '/api/inventorymovementslist',
       ordering: '-created',
       filterField: 'product_id',
       filter: id,
@@ -91,7 +93,7 @@ export default class MovementsList extends React.Component {
 
     const id = this.props.product.id
     const kwargs = {
-      url: '/api/inventorymovements',
+      url: '/api/inventorymovementslist',
       ordering: '-created',
       filterField: 'product_id',
       filter: id,
@@ -126,7 +128,7 @@ export default class MovementsList extends React.Component {
     const movements = this.props.movements
 
     const product = this.props.product
-
+    console.log(product)
     const rows = movements.length
       ? movements.map(movement => {
         return this.movementItem(movement)
@@ -167,7 +169,7 @@ export default class MovementsList extends React.Component {
           </tr>
           <tr>
             <th>Existencia:</th>
-            <td>{`${product.inventory}`}</td>
+            <td>{`${product.inventory_existent.total}`}</td>
           </tr>
           <tr>
             <th>Unidad:</th>
@@ -178,14 +180,14 @@ export default class MovementsList extends React.Component {
       : <div />
 
     const table2Content = this.props.warehouses.map(warehouse => {
-      return product.inventory
+      return product.inventory_existent[warehouse.id]
         ? <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
-          <td>{product['inventory_by_warehouse'][warehouse.id]}</td>
+          <td>{product.inventory_existent[warehouse.id]}</td>
         </tr>
         : <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
-          <td>-</td>
+          <td>0</td>
         </tr>
     })
 
@@ -226,6 +228,10 @@ export default class MovementsList extends React.Component {
 
         </div>
         <div className='col-xs-12 col-sm-8'>
+          {/* <div className='admin-list-results-pagination' >
+            <ResultsPerPage url='/api/inventorymovementslist/' successType='FETCH_INVENTORY_MOVEMENTS_FULFILLED' errorType='FETCH_INVENTORY_MOVEMENTS_REJECTED' />
+            <Pagination url='/api/inventorymovementslist/' successType='FETCH_INVENTORY_MOVEMENTS_FULFILLED' errorType='FETCH_INVENTORY_MOVEMENTS_REJECTED' />
+          </div> */}
           <table className='table movements-table table-bordered'>
             <thead>
               <tr>

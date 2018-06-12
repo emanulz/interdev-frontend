@@ -12,7 +12,8 @@ import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
-    payments: store.payments.payments
+    payments: store.payments.payments,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
