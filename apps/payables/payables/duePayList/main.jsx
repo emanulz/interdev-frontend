@@ -17,7 +17,7 @@ export default class DuePayList extends React.Component {
     componentWillMount() {
         this.props.dispatch({type: 'FETCHING_STARTED'})
         const suppliersKwargs = {
-            url : `/api/suppliers/?limit=${this.props.pageSize}`,
+            url : `/api/supplierscustom/?limit=${this.props.pageSize}`,
             successType: 'FETCH_SUPPLIERS_FULFILLED',
             errorType: 'FETCH_SUPPLIERS_REJECTED'
         }
@@ -27,7 +27,7 @@ export default class DuePayList extends React.Component {
     render() {
 
         const suppliers = this.props.suppliers
-        const filtered_suppliers = suppliers.filter(item=>item.balance < 0)
+        // const filtered_suppliers = suppliers.filter(item=>item.balance < 0)
 
         const headerOrder = [
             {
@@ -54,7 +54,7 @@ export default class DuePayList extends React.Component {
         ]
 
         const list = <AdminTable headerOrder={headerOrder} model='duepay'
-        data={filtered_suppliers} app='payables' addLink='' idField='id' />
+        data={ suppliers } app='payables' addLink='' idField='id' />
         const fetching = <div />
         const content = this.props.fetching ? fetching : list
 
