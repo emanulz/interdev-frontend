@@ -12,6 +12,7 @@ import PayPanel from './pay/payPanel.jsx'
 import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
+import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
 
@@ -50,6 +51,8 @@ export default class Sale extends React.Component {
 
       <SearchProduct />
       <SearchClient />
+      <Search modelText='Producto' model='product' namespace='productSearch' />
+      <Search modelText='Cliente' model='client' namespace='clientSearch' />
       <PayPanel />
       <InvoicePanel />
       <Presales />

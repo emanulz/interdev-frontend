@@ -1,0 +1,77 @@
+.search-panel
+    width: 100%
+    height: 100%
+    position: absolute
+    top: -100%
+    left: 0
+    z-index: 15
+    background-color: rgba(145, 145, 145, 0.67)
+    background-size: 100% 100%
+    transition: all 0.2s ease-in-out
+    &.is-visible
+        position: absolute
+        top: 0
+        z-index: 15
+    &-main
+        position: absolute
+        width: 90%
+        left: 5%
+        background-color: rgb(214, 214, 214)
+        bottom: 0
+        top: 0
+        height: 100%
+        overflow-y: auto
+        overflow-x: hidden
+        display: flex
+        flex-flow: column
+    &-header
+        width: 100%
+        height: 50px
+        font-size: 20px
+        text-align: center
+        font-family: inherit
+        font-weight: bold
+        color: white
+        background-color: $SECONDARY-COLOR-ACCENT
+        line-height: 50px
+        & i
+            position: absolute
+            right: 5px
+            top: 2px
+            cursor: pointer
+            &:hover
+                font-size: 25px
+    &-input
+      padding: 0 20px
+      margin-top: 20px
+      width: 100%
+      display: flex
+      flex-flow: row-reverse
+      position: relative
+      & i
+        position: absolute
+        right: 20px
+        margin-top: 1px
+        height: 48px
+        background-color: $PRIMARY-COLOR
+        color: white
+        padding-top: 14px
+        text-align: center
+        width: 50px
+        cursor: pointer
+        &:hover
+          background-color: $SECONDARY-COLOR-ACCENT
+      & input
+        height: 50px
+        width: 100%
+        padding-left: 20px
+    &-results
+      & h1
+        font-size: 18px
+        font-weight: bold
+      flex-grow: 1
+      padding: 20px
+      
+        
+    
+

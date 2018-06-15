@@ -122,7 +122,8 @@ export default class Clients extends React.Component {
 
   searchClientClick() {
 
-    this.props.dispatch(searchClient())
+    // this.props.dispatch(searchClient())
+    this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
 
   }
 
