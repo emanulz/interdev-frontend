@@ -27,9 +27,6 @@ export default class ResultsTable extends React.Component {
     const content = this.props.fetching ? fetching : list
 
     return <div className='search-results'>
-      <div className='search-results-header'>
-        <h1>Resultados de la Búsqueda:</h1>
-      </div>
       <div className='search-results-table'>
         {content}
       </div>

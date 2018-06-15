@@ -2,8 +2,7 @@ export function getHeaderOrder(model) {
   const clientHeader = [
     {
       field: 'code',
-      text: 'Código',
-      type: 'primary'
+      text: 'Código'
     }, {
       field: 'name',
       text: 'Nombre'
@@ -31,11 +30,17 @@ export function getHeaderOrder(model) {
     {
       field: 'code',
       text: 'Código',
-      type: 'primary',
       width: '150px'
     }, {
       field: 'description',
       text: 'Descripción'
+    }, {
+      field: 'supplier_code',
+      text: 'Cod Prov'
+    }, {
+      field: 'sell_price',
+      text: 'Precio IVI',
+      type: 'price'
     }
   ]
   // Return the header switching model cases

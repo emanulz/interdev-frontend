@@ -7,14 +7,14 @@ import axios from 'axios'
 export function searchItem(text, model, namespace) {
   const data = {
     model: model,
-    max_results: 50,
+    max_results: 10,
     search_key: text
   }
   return function(dispatch) {
     console.log(data)
     axios({
       method: 'post',
-      url: 'http://192.168.9.107/api/search/search/',
+      url: '/api/search/search/',
       data: data
     })
       .then((response) => {
@@ -28,6 +28,7 @@ export function searchItem(text, model, namespace) {
         if (err.response) {
           console.log(err.response.data)
         }
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
   }
