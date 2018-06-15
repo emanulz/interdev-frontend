@@ -66,19 +66,18 @@ export default class Buttons extends React.Component {
       {/* <span>
         <b>Pago:<br /></b>
       </span> */}
-
       <button
         disabled={this.props.disabled}
-        onClick={this.showPayPanel.bind(this)}
+        onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
           'marginTop': '10px'
         }}
         className='btn btn-default buttons-payButton'>
-        Cobrar
+        Pre-Ventas
         <span>
-          <i className='fa fa-credit-card' />
+          <i className='fa fa-list' />
         </span>
       </button>
 
@@ -99,16 +98,16 @@ export default class Buttons extends React.Component {
 
       <button
         disabled={this.props.disabled}
-        onClick={this.showPresalesPanel.bind(this)}
+        onClick={this.showPayPanel.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
           'marginTop': '10px'
         }}
         className='btn btn-default buttons-payButton'>
-        Pre-Ventas
+        Cobrar
         <span>
-          <i className='fa fa-list' />
+          <i className='fa fa-credit-card' />
         </span>
       </button>
 

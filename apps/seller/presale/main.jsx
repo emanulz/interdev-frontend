@@ -6,12 +6,11 @@ import React from 'react'
 // import { getItemDispatch } from '../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
-import SearchProduct from '../../sales/general/search/products/searchPanel.jsx'
-import SearchClient from '../../sales/general/search/clients/searchPanel.jsx'
 import Send from './send/sendPanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
+import Search from '../../../general/search/search.jsx'
 
 @connect((store) => {
   return {
@@ -33,8 +32,8 @@ export default class Sale extends React.Component {
       <Content />
       <Aside />
 
-      <SearchProduct />
-      <SearchClient />
+      <Search modelText='Producto' model='product' namespace='productSearch' />
+      <Search modelText='Cliente' model='client' namespace='clientSearch' />
       <Send />
       <ClientPanel />
 
