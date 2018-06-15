@@ -70,11 +70,10 @@ export default class Product extends React.Component {
           setProduct(kwargs, resolve, reject)
         })
         setProductPromise.then((data)=> {
-          console.log(data)
           this.props.dispatch({type:'FETCHING_DONE', payload: ''})
           const product = data.results[0]
-          this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart,
-            ))
+          this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart))
+          this.props.dispatch({type:'CLEAR_PRODUCT_FIELD_VALUE'})
         })
 
       }

@@ -19,22 +19,37 @@
       padding-left: 5px
       display: flex
       align-items: center
-      width: 20%
+      width: 10%
     &-description
       display: flex
       align-items: center
-      width: 40%
+      width: 20%
     &-qty
       display: flex
       align-items: center
       justify-content: flex-start
-      width: 20%
+      width: 10%
+    &-cost
+      display: flex
+      align-items: center
+      justify-content: flex-start
+      width: 15%
+    &-targetutility
+      display: flex
+      align-items: center
+      justify-content: flex-start
+      width: 15%
+    &-realutility
+      display: flex
+      align-items: center
+      justify-content: flex-start
+      width: 15%
     &-total
       display: flex
       align-items: center
       justify-content: flex-end
       padding-right: 30px
-      width: 20%
+      width: 15%
     @media screen and (max-width: 800px)
       display: none
   &-body
@@ -55,13 +70,19 @@
         font-size: 15px
         width: 100%
       &-code
-        width: 20%
+        width: 10%
       &-description
-        width: 40%
-      &-qty
         width: 20%
+      &-qty
+        width: 10%
         & input
           font-size: 13px
+      &-cost
+        width: 15%
+      &-targetutility
+        width: 15%
+      &-realutility
+        width: 15%
       &-total
         text-align: center
         width: 20%
@@ -96,19 +117,31 @@
           padding-left: 5px
           display: flex
           align-items: center
-          width: 20%
+          width: 10%
         &-description
           display: flex
           align-items: center
-          width: 40%
+          width: 20%
         &-qty
           display: flex
           align-items: center
           justify-content: flex-start
-          width: 20%
+          width: 10%
+        &-cost
+          width: 15%
+          display: flex
+          align-items: center
+        &-targetutility
+          width: 15%
+          display: flex
+          align-items: center
+        &-realutility
+          width: 15%
+          display: flex
+          align-items: center
         &-total
           display: flex
           align-items: center
           justify-content: flex-end
           padding-right: 10px
-          width: 20%
+          width: 15%

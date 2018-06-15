@@ -94,6 +94,62 @@ export function savePayableCreditPaymentPromise(kwargs){
   })
 }
 
+export function getSingleItemDispatch(kwargs) {
+
+  const url = kwargs.url
+  const successType = kwargs.successType
+  const errorType = kwargs.errorType
+
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      console.log('Dispatch success')
+      dispatch({type: successType, payload: response.data})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    }).catch(function(error) {
+      console.log(error.response.status)
+      // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+      if (error.response.status != 403) {
+        alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+        administrador del sistema con el siguiete error: ${error}`)
+        dispatch({type: errorType, payload: error})
+      }
+    })
+  }
+
+}
+
+export function getSearchDispatch(kwargs){
+  const url = kwargs.url
+  const singleResultDispatch = kwargs.singleResultDispatch
+  const multiResultDispatch = kwargs.multiResultDispatch
+  const noResultsDispatch = kwargs.noResultsDispatch
+  const errDispatch = kwargs.errorType
+  console.log('HERE')
+  return function(dispatch){
+    axios.get(url).then(function(response){
+      const results = response.data.results
+      if(results.length==1){
+        dispatch({type: singleResultDispatch, payload: results[0]})
+      }else if(results.length == 0){
+        dispatch({type: noResultsDispatch})
+      }else{
+        dispatch({type: multiResultDispatch, payload: results})
+      }
+    }).catch(err=>{
+      console.log(err)
+      if(err.response){
+        console.log(err.response.status)
+        if (error.response.status != 403) {
+          alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+          administrador del sistema con el siguiete error: ${error}`)
+          dispatch({type: errDispatch, payload: error})
+        }
+      }
+
+    })
+  }
+}
+
 export function getItemDispatch(kwargs) {
 
   const url = kwargs.url

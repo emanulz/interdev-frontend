@@ -6,6 +6,21 @@ const stateConst = {
 
 export default function reducer(state = stateConst, action) {
     switch(action.type) {
+        case 'SET_SUPPLIER_AND_PURCHASES':
+        {
+            return {
+                ...state,
+                supplierActivePurchasesWithDebt: action.payload.purchases
+            }
+        }
+        case 'SUPPLIER_NOT_FOUND':
+        {
+            return {
+                ...state,
+                supplierActivePurchasesWithDebt: stateConst.supplierActivePurchasesWithDebt
+            }
+        }
+
         case 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_FULFILLED':
         {
             return {

@@ -41,6 +41,13 @@ export default function reducer(state=stateConst, action) {
                 activeSupplier: action.payload
             }
         }
+        case 'SET_SUPPLIER_AND_PURCHASES':
+        {
+            return {
+                ...state,
+                activeSupplier: action.payload.supplier
+            }
+        }
         case 'SET_SUPPLIER_OLD':
         {
             return {

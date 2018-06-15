@@ -34,7 +34,9 @@ export default function reducer(state=stateConst, action){
         }
         case 'LOADED_PURCHASE':
         {
-            const warehouse = JSON.parse(action.payload.warehouse)
+            const warehouse =  action.payload.warehouse != ''
+            ? JSON.parse(action.payload.warehouse)
+            : warehouseModel
             return {
                 ...state,
                 selectedWarehouse: warehouse

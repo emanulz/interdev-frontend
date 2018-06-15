@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getProviderDuePayments} from '../../general/actions.js'
-import {setItem} from '../../../../utils/api.js'
+//import {getProviderDuePayments} from '../../general/actions.js'
+import { getSingleItemDispatch } from '../../../../utils/api.js'
 import {Link} from 'react-router-dom'
 let inspect = require('util-inspect')
 
@@ -18,34 +18,27 @@ export default class UnpaidPurchases extends React.Component {
         const lookUp = this.props.location.pathname.split('/').pop()
 
         const kwargs = {
-            lookUpField: 'code',
-            url:'/api/suppliers/',
-            lookUpValue: lookUp,
-            dispatchType: 'SET_SUPPLIER',
-            dispatchType2: 'SET_SUPPLIER_OLD',
-            dispatchErrorType: 'SUPPLIER_NOT_FOUND',
-            lookUpName: 'código',
-            modelName: 'Proveedores',
-            redirectUrl: '/admin/suppliers',
-            history: this.props.history
+            url:`/api/supplierscustom/${lookUp}`,
+            successType: 'SET_SUPPLIER_AND_PURCHASES',
+            errorType: 'SUPPLIER_NOT_FOUND',
         }
 
         this.props.dispatch({type: 'FETCHING_STARTED'})
-        this.props.dispatch(setItem(kwargs))
+        this.props.dispatch(getSingleItemDispatch(kwargs))
     }
 
     componentWillReceiveProps(nextprops) {
-        if(nextprops.activeSupplier.id != '00000000-0000-0000-0000-000000000000' && 
-            nextprops.activeSupplier.id != this.props.activeSupplier.id){
-                console.log('Getting supplier due debt data')
-                const id = nextprops.activeSupplier.id
-                const kwargs = {
-                    supplier_id: id,
-                    successType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_FULFILLED',
-                    errorType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_REJECTED',
-                }
-                this.props.dispatch(getProviderDuePayments(kwargs))
-        }
+        // if(nextprops.activeSupplier.id != '00000000-0000-0000-0000-000000000000' && 
+        //     nextprops.activeSupplier.id != this.props.activeSupplier.id){
+        //         console.log('Getting supplier due debt data')
+        //         const id = nextprops.activeSupplier.id
+        //         const kwargs = {
+        //             supplier_id: id,
+        //             successType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_FULFILLED',
+        //             errorType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_REJECTED',
+        //         }
+        //         this.props.dispatch(getProviderDuePayments(kwargs))
+        // }
     }
     
     buildTableBody(){
@@ -63,17 +56,18 @@ export default class UnpaidPurchases extends React.Component {
         let makeBodyDiv = (value, key) =>{return <div className={t_b_class} key={key}>{value}</div>}
 
         const body_rows = this.props.supplierActivePurchasesWithDebt.map((pur)=>{
-            
+            const debits = parseFloat(pur.purchase_total) - parseFloat(pur.balance)
             const row = []
+            div_index+=1
             row.push(makeBodyDiv(pur.consecutive, div_index)) 
             div_index+=1
             row.push(makeBodyDiv(pur.invoice_date, div_index)) //Fecha en factura ingresada
             div_index+=1
-            row.push(makeBodyDiv(pur.cart.cartTotal.formatMoney(2, ',', '.'), div_index)) //total venta
+            row.push(makeBodyDiv(parseFloat(pur.purchase_total).formatMoney(2, ',', '.'), div_index)) //total venta
             div_index+=1
-            row.push(makeBodyDiv(pur.debt_data.debits.formatMoney(2, ',', '.'), div_index)) //abonos a la factura
+            row.push(makeBodyDiv(debits.formatMoney(2, ',', '.'), div_index)) //abonos a la factura
             div_index+=1
-            row.push(makeBodyDiv(pur.debt_data.debt.formatMoney(2, ',', '.'),div_index)) //saldo
+            row.push(makeBodyDiv(parseFloat(pur.balance).formatMoney(2, ',', '.'),div_index)) //saldo
             div_index+=1
             row.push(<div className={t_b_class} key={div_index}> <Link to={`/payables/duepay/${supplier_code}/${pur.consecutive}`}>Ver Movimientos</Link> </div>)
             return row
@@ -89,8 +83,9 @@ export default class UnpaidPurchases extends React.Component {
 
     render() {
         const sup = this.props.activeSupplier
-        const supplier_data = `${sup.code} - ${sup.name} - Tel: ${sup.phone_number}`
-        const total_debt = sup.debt_to?sup.debt_to.formatMoney(2,',','.'):0
+        const supplier_data = `${sup.code} - ${sup.name}` + (sup.phone_number != '' ?  ` - Tel: ${sup.phone_number}`:'')
+
+        const total_debt = sup.balance?parseFloat(sup.balance).formatMoney(2,',','.'):0
         return <div className="unpaidPur" >
             <div className='unpaidPur-grid'>
                 <div className="unpaidPur-grid-title">

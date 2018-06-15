@@ -29,24 +29,18 @@ export default class PayPanel extends React.Component {
 
       case 'CASH':
       {
-        this.props.dispatch({type:'CLEAR_CREDIT'})
-        this.props.dispatch({type:'CLEAR_CARD'})
         payMethod = <PayCash />
         break
       } // case
 
       case 'CARD':
       {
-        this.props.dispatch({type:'CLEAR_CREDIT'})
-        this.props.dispatch({type:'CLEAR_CASH'})
         payMethod = <PayCard />
         break
       } // case
 
       case 'CRED':
       {
-        this.props.dispatch({type:'CLEAR_CARD'})
-        this.props.dispatch({type:'CLEAR_CASH'})
         payMethod = <PayCredit />
         break
       } //  case

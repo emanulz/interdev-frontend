@@ -8,7 +8,6 @@ const stateConst = {
     invoiceNumber:'',
     invoiceDate:'',
     isEdit: false,
-    payed: false,
     is_closed: false,
     purchase_id: '',
     old: '',
@@ -22,6 +21,14 @@ const stateConst = {
               return{
                   ...state,
                   fullWidth: width
+              }
+          }
+          case 'PURCHASE_SAVED':
+          {
+              return {
+                  ...state,
+                  purchase_id: action.payload.id,
+                  is_closed: action.payload.is_closed
               }
           }
           case 'IS_PURCHASE_EDIT':
@@ -41,22 +48,18 @@ const stateConst = {
                 invoiceNumber:'',
                 invoiceDate:'',
                 isEdit: false,
-                payed: false,
                 is_closed: false,
                 purchase_id:'',
             }
           }
           case 'LOADED_PURCHASE':
           {
-              const old = JSON.stringify(action.payload)
               return {
                 ...state,
                 invoiceNumber:action.payload.invoice_number,
                 invoiceDate:action.payload.invoice_date,
-                payed: action.payload.payed,
                 is_closed: action.payload.is_closed,
                 purchase_id: action.payload.id,
-                old:old,
               }
           }
           case 'INVOICE_DATE_CHANGED':

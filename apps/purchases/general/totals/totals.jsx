@@ -42,7 +42,6 @@ export default class Totals extends React.Component {
     render (){
         const total = this.props.cartTotal.formatMoney(2, ',', '.')
         const subtotal = this.props.cartSubtotal.formatMoney(2, ',', '.')
-        console.log('Total --> ' + total)
         return <div className='totals'>
             <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Subtotal:</div>

@@ -10,7 +10,6 @@ const stateConst = {
   cartTotal: 0, // cart total after discount and taxes
   discountTotal: 0, // discount in currency
   cartItemActive: false,
-  oldCart:'',
 }
 
 export default function reducer(state = stateConst, action) {
