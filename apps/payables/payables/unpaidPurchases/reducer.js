@@ -8,8 +8,6 @@ export default function reducer(state = stateConst, action) {
     switch(action.type) {
         case 'SET_SUPPLIER_AND_PURCHASES':
         {
-            console.log('unpaid reducer set supplier')
-            console.log(action.payload)
             return {
                 ...state,
                 supplierActivePurchasesWithDebt: action.payload.purchases

@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 //import {getProviderDuePayments} from '../../general/actions.js'
-import {setItem, getSingleItemDispatch} from '../../../../utils/api.js'
+import { getSingleItemDispatch } from '../../../../utils/api.js'
 import {Link} from 'react-router-dom'
 let inspect = require('util-inspect')
 

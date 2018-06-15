@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 let inspect = require('util-inspect')
-import Select2 from 'react-select2-wrapper'
+import SupplierProvider from '../../../../general/supplierProvider/main.jsx'
 import {savePayableCreditMovementPromise, savePayableCreditPaymentPromise} from '../../../../utils/api.js'
 import {getProviderDuePayments} from '../../general/actions.js'
 import {getItemDispatch} from '../../../../utils/api.js'
@@ -23,31 +23,31 @@ export default class MakePayment extends React.Component {
     }
 
     componentWillReceiveProps(nextprops){
-        if(nextprops.activeSupplier.id != '00000000-0000-0000-0000-000000000000' && 
-            nextprops.activeSupplier.id != this.props.activeSupplier.id){
+        // if(nextprops.activeSupplier.id != '00000000-0000-0000-0000-000000000000' && 
+        //     nextprops.activeSupplier.id != this.props.activeSupplier.id){
             
-            const id = nextprops.activeSupplier.id
-            const kwargs = {
-                supplier_id: id,
-                successType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_FULFILLED',
-                errorType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_REJECTED',
-            }
-            this.props.dispatch(getProviderDuePayments(kwargs))
-        }
+        //     const id = nextprops.activeSupplier.id
+        //     const kwargs = {
+        //         supplier_id: id,
+        //         successType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_FULFILLED',
+        //         errorType: 'FETCH_SUPPLIER_PURCHASES_WITH_DEBT_REJECTED',
+        //     }
+        //     this.props.dispatch(getProviderDuePayments(kwargs))
+        // }
 
-        //check if the supplier purchases with debt were received
-        if(this.props.supplierActivePurchasesWithDebt.length == 0
-             && nextprops.supplierActivePurchasesWithDebt.length>0 ){
+        // //check if the supplier purchases with debt were received
+        // if(this.props.supplierActivePurchasesWithDebt.length == 0
+        //      && nextprops.supplierActivePurchasesWithDebt.length>0 ){
 
-            const payload_data = nextprops.supplierActivePurchasesWithDebt.map(item=>{
-                return {
-                    id:item.id,
-                    value: item.debt_data.debt,
-                    is_complete:true,
-                }
-            })
-            this.props.dispatch({type:'SET_PAYMENTS', payload: payload_data})
-        }
+        //     const payload_data = nextprops.supplierActivePurchasesWithDebt.map(item=>{
+        //         return {
+        //             id:item.id,
+        //             value: item.debt_data.debt,
+        //             is_complete:true,
+        //         }
+        //     })
+        //     this.props.dispatch({type:'SET_PAYMENTS', payload: payload_data})
+        // }
     }
 
     selectSupplier(e){
@@ -216,12 +216,6 @@ export default class MakePayment extends React.Component {
     render(){
         const payments_array = this.props.paymentArray ? this.props.paymentArray:[]
 
-        //show only suppliers to whom there is a debt due payment
-        const suppliersDuePayment =  this.props.suppliers.filter(sup=>{return sup.debt_to > 0 }) 
-        //build the data for the select2 element
-        const suppliersSelect = suppliersDuePayment.map(sup=>{
-            return {text: `${sup.code} - ${sup.name}`, id:sup.id}
-        })
              
         let old_debt = this.props.activeSupplier.debt_to ? this.props.activeSupplier.debt_to : 0
 
@@ -238,19 +232,7 @@ export default class MakePayment extends React.Component {
                         <h1>Registrar Pago a Compras</h1>
                     </div>
 
-                    <div className="makePayment-grid-sup">
-                        <Select2
-                            data={suppliersSelect}
-                            onSelect={this.selectSupplier.bind(this)}
-                            value={this.props.activeSupplier.id}
-                            className='form-control'
-                            onUnselect={this.clearSelectedPaymentsWithDebt.bind(this)}
-                            options={{
-                            placeholder: 'Elija un proveedor...',
-                            allowClear: true
-                            }}
-                        />
-                    </div>
+                    <SupplierProvider />
 
                     <div className="makePayment-grid-summary">
                         <div className="makePayment-grid-summary-left">
@@ -260,9 +242,9 @@ export default class MakePayment extends React.Component {
                         </div>
 
                         <div className="makePayment-grid-summary-middle">
-                            <div>{`₡ ${old_debt.formatMoney(2, ',', '.')}`}</div>
+                            <div>{`₡ ${parseFloat('99').formatMoney(2, ',', '.')}`}</div>
                             <div>{`₡ ${payment_total.formatMoney(2, ',', '.')}`}</div>
-                            <div>{`₡ ${new_debt.formatMoney(2, ',', '.')}`}</div>
+                            <div>{`₡ ${parseFloat('88').formatMoney(2, ',', '.')}`}</div>
                         </div>
 
                         <div className="makePayment-grid-summary-right">

@@ -118,6 +118,38 @@ export function getSingleItemDispatch(kwargs) {
 
 }
 
+export function getSearchDispatch(kwargs){
+  const url = kwargs.url
+  const singleResultDispatch = kwargs.singleResultDispatch
+  const multiResultDispatch = kwargs.multiResultDispatch
+  const noResultsDispatch = kwargs.noResultsDispatch
+  const errDispatch = kwargs.errorType
+  console.log('HERE')
+  return function(dispatch){
+    axios.get(url).then(function(response){
+      const results = response.data.results
+      if(results.length==1){
+        dispatch({type: singleResultDispatch, payload: results[0]})
+      }else if(results.length == 0){
+        dispatch({type: noResultsDispatch})
+      }else{
+        dispatch({type: multiResultDispatch, payload: results})
+      }
+    }).catch(err=>{
+      console.log(err)
+      if(err.response){
+        console.log(err.response.status)
+        if (error.response.status != 403) {
+          alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+          administrador del sistema con el siguiete error: ${error}`)
+          dispatch({type: errDispatch, payload: error})
+        }
+      }
+
+    })
+  }
+}
+
 export function getItemDispatch(kwargs) {
 
   const url = kwargs.url
