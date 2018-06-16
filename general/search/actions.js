@@ -7,7 +7,7 @@ import axios from 'axios'
 export function searchItem(text, model, namespace) {
   const data = {
     model: model,
-    max_results: 10,
+    max_results: 15,
     search_key: text
   }
   return function(dispatch) {
@@ -18,7 +18,6 @@ export function searchItem(text, model, namespace) {
       data: data
     })
       .then((response) => {
-        console.log(response)
         dispatch({type: `${namespace}_SET_SEARCH_RESULTS`, payload: response.data})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 

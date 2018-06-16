@@ -122,10 +122,28 @@ export function productSelected(code, qty, product, itemsInCart, globalDiscount,
 
 // Updates Amount based on qty input field
 
-export function updateQty (code, qty, itemsInCart, globalDiscount, client) {
-
-  const indexInCart = itemsInCart.findIndex(item => item.uuid == code)
+export function updateQty (code, qty, itemsInCart, globalDiscount, client, warehouseId) {
   const qtyNum = parseFloat(qty)
+  const indexInCart = itemsInCart.findIndex(item => item.uuid == code)
+
+  const product = itemsInCart[indexInCart].product
+
+  if (!product.fractioned && !Number.isInteger(qtyNum)) {
+    alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
+    return {type: 'NOT', payload: -1}
+  }
+
+  const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
+  // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
+  let qtyToCheck = qtyNum
+  // IF THERE ARE ITEMS ALREADY IN CART
+  if (sameInCart.length > 0) {
+    // LOOP ADDING QTY OF ITEMS ALREADY IN CART
+    for (let i = 0; i < sameInCart.length; i++) {
+      qtyToCheck = qtyToCheck + sameInCart[i].qty
+    }
+  }
+
   const res = {
     type: 'UPDATE_CART',
     payload: {
@@ -134,13 +152,38 @@ export function updateQty (code, qty, itemsInCart, globalDiscount, client) {
       index: indexInCart
     }
   }
-  return res
+  const inventory = JSON.parse(product.inventory_existent)
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+    return res
+  }
+  // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
+                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
 }
 
-export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client) {
+export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client, warehouseId) {
 
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code || item.product.barcode == code)
   const qtyNum = parseFloat(qty)
+
+  const product = itemsInCart[indexInCart].product
+
+  if (!product.fractioned && !Number.isInteger(qtyNum)) {
+    alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
+    return {type: 'NOT', payload: -1}
+  }
+
+  // const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
+  // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
+  const qtyToCheck = qtyNum
+  // IF THERE ARE ITEMS ALREADY IN CART
+  // if (sameInCart.length > 0) {
+  //   // LOOP ADDING QTY OF ITEMS ALREADY IN CART
+  //   for (let i = 0; i < sameInCart.length; i++) {
+  //     qtyToCheck = qtyToCheck + sameInCart[i].qty
+  //   }
+  // }
+
   const res = {
     type: 'UPDATE_CART',
     payload: {
@@ -149,15 +192,29 @@ export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client) {
       index: indexInCart
     }
   }
-  return res
+  const inventory = JSON.parse(product.inventory_existent)
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+    return res
+  }
+  // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
+                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
 }
 
 // Updates Amount based on qty input field
 
-export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client) {
+export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client, warehouseId) {
 
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code)
   const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
+
+  const product = itemsInCart[indexInCart].product
+
+  // const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
+  // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
+  const qtyToCheck = qtyNum
+  // IF THERE ARE ITEMS ALREADY IN CART
+
   const res = {
     type: 'UPDATE_CART',
     payload: {
@@ -166,7 +223,15 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client) 
       index: indexInCart
     }
   }
-  return res
+  const inventory = JSON.parse(product.inventory_existent)
+  console.log(inventory)
+  console.log(qtyToCheck)
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+    return res
+  }
+  // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
+                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
 }
 
 // ------------------------------------------------------------------------------------------

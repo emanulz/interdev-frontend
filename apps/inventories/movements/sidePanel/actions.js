@@ -51,6 +51,7 @@ export function saveMovement(kwargs, resolve, reject) {
   const url = kwargs.url
   delete item['product_id']
   delete item['product']
+  console.log(item)
   return function(dispatch) {
     axios({
       method: 'post',

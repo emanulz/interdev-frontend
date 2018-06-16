@@ -51,24 +51,24 @@ export default class SideMenu extends React.Component {
         <ul className='sideMenu-items'>
           <li>
             <Link to='/sales'>
-              <span className='fa fa-area-chart' />
-              Inicio</Link>
+              <span className='fa fa-money' />
+              Caja</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/sales/sale'>
               <span className='fa fa-area-chart' />
               Nueva Venta</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/sales/proforma'>
-              <span className='fa fa-user' />
-              Nueva Cotización</Link>
+              <span className='fa fa-file-text' />
+              Cotización</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/sales/presale'>
               <span className='fa fa-user' />
               Nueva Preventa</Link>
-          </li>
+          </li> */}
 
         </ul>
       </div>

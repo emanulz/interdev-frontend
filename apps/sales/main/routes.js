@@ -3,13 +3,13 @@ import {Route} from 'react-router-dom'
 
 // Routes Components
 
-import Home from '../home/home.jsx'
+// import Home from '../home/home.jsx'
 import Sale from '../sale/main.jsx'
 
 const routes = <div className='heigh100'>
 
-  <Route exact path='/sales' component={Home} />
-  <Route path='/sales/sale' component={Sale} />
+  <Route exact path='/sales' component={Sale} />
+  {/* <Route path='/sales/sale' component={Sale} /> */}
 
 </div>
 

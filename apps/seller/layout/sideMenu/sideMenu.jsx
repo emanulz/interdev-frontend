@@ -51,17 +51,12 @@ export default class SideMenu extends React.Component {
           <li>
             <Link to='/seller'>
               <span className='fa fa-area-chart' />
-              Inicio</Link>
-          </li>
-          <li>
-            <Link to='/seller/presale'>
-              <span className='fa fa-area-chart' />
-              Nueva Preventa</Link>
+              Preventa</Link>
           </li>
           <li>
             <Link to='/seller/proforma'>
               <span className='fa fa-user' />
-              Nueva Cotización</Link>
+              Cotización</Link>
           </li>
           {/* <li>
             <Link to='/seller/proforma'>
@@ -71,7 +66,7 @@ export default class SideMenu extends React.Component {
           <li>
             <Link to='/seller/workshop'>
               <span className='fa fa-user' />
-             Ingreso de taller</Link>
+             Taller</Link>
           </li>
           <li>
             <Link to='/seller/workshoplist'>

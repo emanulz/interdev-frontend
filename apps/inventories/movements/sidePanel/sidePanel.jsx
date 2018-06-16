@@ -88,7 +88,6 @@ export default class Products extends React.Component {
     delete movement['fromWarehouse_id']
     delete movement['toWarehouse_id']
     delete movement['user']
-
     // KWARGS USED IN FUNCTION
     const kwargs = {
       url: `/api/products/${this.props.movement.product.id}/inventory_movement/`,
