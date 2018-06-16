@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api.js'
 let inspect = require('util-inspect')
 import CSVReader from 'react-csv-reader'
-import {joinINV_CAT, saveImportedProduct, importTestProducts, importFakeSuppliers, generateProductInvMovs} from './actions.js'
+import {joinINV_CAT, saveProdInBatches, saveImportedProduct, importTestProducts, importFakeSuppliers, generateProductInvMovs} from './actions.js'
 
 import alertify from 'alertifyjs'
 
@@ -37,7 +37,6 @@ export default class ImportProducts extends React.Component {
 
 
     readCatalogue(data, file) {
-        console.log(data[7])
         let start_flag = true
         const clean_data = data.map(i=>{
             return {
@@ -60,6 +59,7 @@ export default class ImportProducts extends React.Component {
         const clean_data = data.map(i=>{
             return {
                 code:i[0].startsWith('0')?i[0].slice(1):i[0],
+                qty:parseFloat(i[2]),
                 cost:i[3]
             }
         })
@@ -71,20 +71,32 @@ export default class ImportProducts extends React.Component {
 
 
     handleImport(){
-
+        const warehouse = "9d85cecc-feb1-4710-9a19-0a187580e15e"
         const patched_data = joinINV_CAT(this.props.cat_data, this.props.inv_data)
-        this.props.dispatch({type: 'SET_JOINT_DATA', payload: patched_data})
+        const prods_data = patched_data.map(prod=>{
+            return saveImportedProduct(prod, warehouse)
+        })
+        this.props.dispatch({type: 'SET_JOINT_DATA', payload: prods_data})
+
+        //do batch imports for the products instead of mass imports all prods
+        let start = 0
+        let temp_end =  start + 10
+        const total = prods_data.length - 1
+
+        saveProdInBatches(start, temp_end, total, prods_data, warehouse)
 
         //saveImportedProduct(patched_data[0])
-        const prod_promises = patched_data.map(data=>{
-            return saveImportedProduct(data)
-        })
+        // const prod_promises = patched_data.map(data=>{
+        //     return saveImportedProduct(data)
+        // })
 
-        Promise.all(prod_promises).then(results=>{
-            alertify.alert('Éxito', 'Éxito importando los productos')
-        })
+        // Promise.all(prod_promises).then(results=>{
+        //     alertify.alert('Éxito', 'Éxito importando los productos')
+        // })
         
     }
+
+
 
     handleJunkSuppliers(){
         importFakeSuppliers(26, 15000)
