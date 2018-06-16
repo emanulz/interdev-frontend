@@ -126,8 +126,6 @@ function calculateRealUtility(cost, target_utility, utility_method, product, rou
   console.log('REAL_UTILITY --> ' + real_utility)
   return {'real_utility': real_utility, 'new_price': wanted_price}
 
-
-
 }
 
 // Updates Amount based on qty input field

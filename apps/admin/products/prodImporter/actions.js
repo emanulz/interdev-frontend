@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-
+let util = require('util')
 
 export function generateProductInvMovs(movs){
     console.log("Creating inventory movements")
@@ -18,6 +18,63 @@ export function generateProductInvMovs(movs){
         id_generator: 'id_generator',
     }
     saveInvMoveBatch(0, 10, movs, move_data)
+}
+
+export function saveProdInBatches(start, temp_end, total, prods, warehouse){
+    let current = start
+    let promise_set = []
+
+    while(current <= temp_end){
+        promise_set.push(
+            new Promise((resolve, reject)=>{
+                
+                axios({
+                    method: 'post',
+                    url: '/api/products/',
+                    data:prods[current]
+                }).then((prod)=>{
+                    resolve(prod.data)
+                }).catch(err=>{
+                    console.log(err)
+                    resolve(err)
+                })
+            })
+        )
+
+        current += 1
+
+    }
+    Promise.all(promise_set).then((products)=>{
+
+        //create the promise for the inventory movement
+        let product_inv_load = []
+        for(let prod of products){
+            const index = prods.findIndex(a=>a.code == prod.code)
+            let inv_payload = {
+                'warehouse_id': warehouse,
+                'mov_type': 'INPUT',
+                'amount': prods[index].inv_load_amount,
+                'description': 'Carga de Inventario por importación'
+            }
+
+            product_inv_load.push(
+                new Promise((resolve, reject)=>{
+                    axios({
+                        method: 'post',
+                        url: `/api/products/${prod.id}/inventory_movement/`,
+                        data: inv_payload
+                    })
+                })
+            )
+        }
+        if(current<=total){
+            let next_end = current+10<total?current+10:total
+            saveProdInBatches(current, next_end, total, prods, warehouse)
+        }else{
+            console.log('All Products imported')
+            return
+        }
+    })
 }
 
 function  saveInvMoveBatch(start, temp_end, total, data){
@@ -261,7 +318,7 @@ export function importTestProducts(start_code, end_code){
 }
 
 export function saveImportedProduct(data){
-
+    const qty = data.qty? data.qty : 0
     const prodData = {
         code:data.code,
         description: data.description,
@@ -278,17 +335,11 @@ export function saveImportedProduct(data){
         inventory_minimum:0,
         inventory_maximum: 500,
         inventory_negative: true,
-        cost: data.cost,
+        cost: data.cost.toFixed(5),
         cost_based: false,
         utility: data.utility,
-        utility2: 0,
-        utility3: 0,
-        price: data.price,
-        price2: 0,
-        price3: 0,
-        sell_price: data.price_ivi,
-        sell_price2: 0,
-        sell_price3: 0,
+        price: data.price.toFixed(5),
+        sell_price: data.price_ivi.toFixed(5),
         ask_price: false,
         use_taxes: true,
         taxes: 13.0,
@@ -308,22 +359,25 @@ export function saveImportedProduct(data){
         //image: `media/products/${data.code}.jpg`,
         observations: '',
         short_description: data.short_description,
-        brand_code:''
-    }
+        brand_code:'',
+        inventory_existent: '{"total":"0"}',
+        inv_load_amount: qty
 
-    return new Promise((resolve, reject)=>{
-        axios({
-            method:'post',
-            url:'/api/products/',
-            data: prodData
-        }).then(response=>{
-            resolve(response.data)
-        }).catch(err=>{
-            err.is_err= true
-            console.log(err)
-            reject(err) //Rather deal with the failures than abort the saving process
-        })
-    })
+    }
+    return prodData
+    // return new Promise((resolve, reject)=>{
+    //     axios({
+    //         method:'post',
+    //         url:'/api/products/',
+    //         data: prodData
+    //     }).then(response=>{
+    //         resolve(response.data)
+    //     }).catch(err=>{
+    //         err.is_err= true
+    //         console.log(err)
+    //         reject(err) //Rather deal with the failures than abort the saving process
+    //     })
+    // })
 }
 
 export function joinINV_CAT(cat_data, inv_data){
@@ -336,28 +390,52 @@ export function joinINV_CAT(cat_data, inv_data){
 }
 
 function parseElement(item){
+    let price_ivi = parseFloat(item.price_ivi)
+    if (!isFinite(price_ivi)){
+        price_ivi = 0
+    }
     return {
         code: item.code,
         description: item.description,
         short_description: item.short_description,
-        price_ivi: parseFloat(item.price_ivi),
+        price_ivi: price_ivi,
         supplier_code: item.supplier_code,
         unit: item.unit,
         cost: 0,
         utility:40,
         price: 0,
         is_active: false,
+        qty: 0
 
     }
 }
 
-function adjustPrice(cat_ele, inv_data){
-    
-    const cost = parseFloat(inv_data.cost)
-    const final_price = parseFloat(cat_ele.price_ivi)
-    const price = final_price/1.13
-    const utility = ((price / cost) - 1)*100
 
+function adjustPrice(cat_ele, inv_data){
+
+    let cost = parseFloat(inv_data.cost)
+    if (!isFinite(cost)){
+        cost = 0
+    }
+    const qty = inv_data.qty
+    //round the decimals and coins out of the final price
+    let no_decimal_price = parseInt(cat_ele.price_ivi)
+    if (!isFinite(no_decimal_price)){
+        no_decimal_price = 0
+    }
+    const coin_round = no_decimal_price % 5
+    let final_price = no_decimal_price - coin_round
+    if (!isFinite(final_price)){
+        final_price = 0
+    }
+    let price = final_price/1.13
+    if (!isFinite(price)){
+        price = 0
+    }
+    let utility = (1-cost/price).toFixed(5)
+    if (!isFinite(utility)){
+        utility = 0
+    }
     return {
         code: cat_ele.code,
         description: cat_ele.description,
@@ -369,6 +447,64 @@ function adjustPrice(cat_ele, inv_data){
         cost:cost,
         utility:utility,
         is_active: true,
+        qty: qty
 
     }
 }
+
+function calculateRealUtility(cost, target_utility, utility_method, product, round_to_coin = 5){
+    console.log('Calculate needed utility so that the price is whole')
+    console.log("RAW COST --> " + cost)
+    //determine all taxes to be applied to the product, if any
+    let total_tax_fraction = 0
+    console.log('Product --> ' + product.description)
+    if(product.use_taxes){
+      total_tax_fraction += product.taxes
+    }
+    if(product.use_taxes2){
+      total_tax_fraction += product.taxes2
+    }
+    const total_tax_factor = 1 + total_tax_fraction / 100.0
+  
+    console.log('Target_utility' + target_utility)
+    let target_price_no_tax = 0
+    if(utility_method === 'cost_based'){
+      target_price_no_tax = cost * (1+target_utility/100.0)
+    }else{
+      target_price_no_tax = cost / (1-(target_utility/100.0))
+    }
+  
+  
+    console.log('Total tax factor')
+    console.log(total_tax_factor)
+    //include a default discount on the product
+  
+    console.log('Pred discount')
+    console.log(product.pred_discount)
+    const default_discount = 1 - parseFloat(product.pred_discount)/100.0
+    console.log(default_discount)
+    
+    console.log('PRICE_NO_TAX --> ' + target_price_no_tax)
+    let target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
+    console.log('TARGET_PRICE_NO_IVI --> ' + target_price_ivi)
+    //trim decimals from the price
+    let int_ivi_price = Math.round(target_price_ivi)
+    console.log('INT_IVI_PRICE --> ' + int_ivi_price )
+    //round to the nearest usable coin
+    let coin_round_modulus = int_ivi_price % round_to_coin
+    console.log('COIN_ROUND_MODULUS --> ' + coin_round_modulus)
+    let wanted_price = int_ivi_price - coin_round_modulus
+    console.log('WANTED_PRICE --> ' + wanted_price)
+    //back calculate new utility
+  
+    let real_utility = 0
+    if(utility_method === 'cost_based'){
+      real_utility = (wanted_price/(total_tax_factor*default_discount))/cost - 1
+    }else{
+      real_utility = 1- cost/(wanted_price/(total_tax_factor*default_discount))
+    }
+  
+    console.log('REAL_UTILITY --> ' + real_utility)
+    return {'real_utility': real_utility, 'new_price': wanted_price}
+  
+  }
