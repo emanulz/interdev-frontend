@@ -46,7 +46,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'FETCH_CLIENTS_REJECTED':
+    case 'FETCH_CLIENT_REJECTED':
     {
       return {
         ...state,
@@ -54,22 +54,18 @@ export default function reducer(state = stateConst, action) {
         clientsFetchError: action.payload
       }
     } // case
-
-    case 'FETCH_CLIENTS_FULFILLED':
-    {
-      return {
-        ...state,
-        clientsFetching: false,
-        clientsFected: true,
-        clients: action.payload
-      }
-    } // case
-
     case 'CLIENT_SELECTED':
     {
       return {
         ...state,
-        clientSelected: action.payload.client
+        clientSelected: action.payload
+      }
+    }
+    case 'CLIENT_SELECTED_LIST':
+    {
+      return {
+        ...state,
+        clientSelected: action.payload[0]
       }
     } // case
 

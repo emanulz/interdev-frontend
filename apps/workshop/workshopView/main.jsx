@@ -1,11 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Client from '../general/clients/clients.jsx'
+
 import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
 import {setItem} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions, createPartRequest} from './actions'
+import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions} from './actions'
 import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions, loadPartRequestTransactions} from '../general/actions'
 import alertify from 'alertifyjs'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'

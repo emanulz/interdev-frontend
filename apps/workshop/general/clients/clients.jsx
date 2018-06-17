@@ -4,7 +4,7 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {clientSelected, searchClient, userSelected} from './actions'
+import {searchClient} from './actions'
 import {getItemDispatch} from '../../../../utils/api'
 
 @connect((store) => {
@@ -24,13 +24,12 @@ export default class Clients extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch({type: 'CLEAR_CLIENTS', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
 
     const clientKwargs = {
-      url: '/api/clients',
-      successType: 'FETCH_CLIENTS_FULFILLED',
-      errorType: 'FETCH_CLIENTS_REJECTED'
+      url: '/api/clients/?code=00',
+      successType: 'CLIENT_SELECTED_LIST',
+      errorType: 'FETCH_CLIENT_REJECTED'
     }
 
     this.props.dispatch(getItemDispatch(clientKwargs))
@@ -44,17 +43,18 @@ export default class Clients extends React.Component {
   inputKeyPress(ev) {
     // if Key pressed id Enter
     if (ev.key == 'Enter') {
-
-      const code = ev.target.value
-      this.props.dispatch(clientSelected(code, this.props.clients)) // dispatchs action according to result
+      const search_text = ev.target.value
+      this.props.dispatch(searchClient(search_text, 'client', 'clientSearch')) // dispatchs action according to result
     }
 
   }
 
   searchClientClick() {
+    this.props.dispatch({type:'clientSearch_TOGGLE_SEARCH_PANEL'})
+  }
 
-    this.props.dispatch(searchClient())
-
+  showClientCreatePanel(){
+    this.props.dispatch({type: 'SHOW_CREATE_CLIENT_PANEL'})
   }
 
   // Main Layout
@@ -93,6 +93,7 @@ export default class Clients extends React.Component {
       <div className='client-img'>
         <img disabled={this.props.disabled} onClick={this.searchClientClick.bind(this)}
           src='/media/default/profile.jpg'/>
+        <div className="fa fa-plus" onClick={this.showClientCreatePanel.bind(this)} ></div>
       </div>
 
       <div className='client-data'>

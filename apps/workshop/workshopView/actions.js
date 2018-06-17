@@ -2,7 +2,6 @@ import {createLaborMovement, createCashAdvance, patchLaborMovement, patchCashAdv
     patchUsedPartMovement, createUsedPart, createWorkshopInventoryMovement} from '../general/actions'
 import axios from 'axios'
 import {saveLog} from '../../../utils/api'
-import { request } from 'http';
 let inspect = require('util-inspect')
 
 export function createPartRequest(work_order_id, employee, amount, product, id_move_workshop, id_move_origin){
@@ -126,11 +125,7 @@ export function saveInventoryTransactions(work_order_id, parts_request_list, use
 }
 
 
-//createPartRequest(work_order_id, employee, amount, product, id_move_workshop, id_move_origin)
-
-export function saveUsedPartTransactions(work_order_id, used_list, used_list_old,
-                                        user){
-
+export function saveUsedPartTransactions(work_order_id, used_list, used_list_old, user){
         const url = '/api/usedparts/'
         const logCodeCreate = 'USED_PART_CREATE'
         const logCodeUpdate = 'USED_PART_UPDATE'
@@ -160,14 +155,8 @@ export function saveUsedPartTransactions(work_order_id, used_list, used_list_old
         ]
     }
 
-export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_old, 
-                                            user, client, dispatcher){
+export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_old, user, client){
     console.log("Cash advance saver method")
-    const url = '/api/cashadvances/'
-    const logCodeCreate = 'CASH_ADVANCE_CREATE'
-    const logCodeUpdate = 'CASH_ADVANCE_UPDATE'
-    const descriptionCreate = 'CASH_ADVANCE_CREATE'
-    const descriptionUpdate = 'CASH_ADVANCE_UPDATE'
 
     let promises_save = []
     let promises_patch = []
@@ -198,12 +187,6 @@ export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_
 //work_order_id, advance_amount, client, user, advance_description, sale_id
 
 export function saveLaborTransactions(work_order_id, labor_list, labor_list_old, user, dispatcher){
-    const url = '/api/labor/'
-    const logCodeCreate = 'LABOR_CREATE'
-    const logCodeUpdate = 'LABOR_UPDATE'
-    const descriptionCreate = 'Creación nueva entrada mano de obra'
-    const descriptionUpdate = 'Actualización entrada mano de obra'
-
     let promises_save = []
     let promises_patch = []
     //if a labor object already has an id, it already exists on the db and must be patched
@@ -282,7 +265,6 @@ function workOrderStatusChanges(kwargs){
 
     let logCode=''
     let logDescription = ''
-    let description = ''
 
     let patch_data = {}
     if(new_status!==undefined){

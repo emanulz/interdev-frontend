@@ -3,9 +3,6 @@
  */
 import React from 'react'
 
-//import subcomponents
-import Content from './content/content.jsx'
-
 import routes from './routes.js'
 import {connect} from 'react-redux'
 import { checkUserPermissions } from '../../../utils/checkPermissions';
