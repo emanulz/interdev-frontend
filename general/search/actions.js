@@ -5,6 +5,13 @@ import alertify from 'alertifyjs'
 import axios from 'axios'
 
 export function searchItem(text, model, namespace) {
+  if (!text.length) {
+    alertify.alert('ERROR', `Debe digitar una búsqueda válida.`)
+    return function(dispatch) {
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+      dispatch({type: `${namespace}_CLEAR_SEARCH_RESULTS`, payload: ''})
+    }
+  }
   const data = {
     model: model,
     max_results: 15,
@@ -18,6 +25,9 @@ export function searchItem(text, model, namespace) {
       data: data
     })
       .then((response) => {
+        if (!response.data.length) {
+          alertify.alert('SIN RESULTADOS', `No se obtuvieron resultados de la búsqueda`)
+        }
         dispatch({type: `${namespace}_SET_SEARCH_RESULTS`, payload: response.data})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 

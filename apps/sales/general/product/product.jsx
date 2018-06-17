@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 // import {getItemDispatch} from '../../../../utils/api'
 import {productSelected, setProduct} from './actions.js'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -31,7 +32,7 @@ export default class Product extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch({type: 'CLEAR_PRODUCTS', payload: ''})
 
     // const productKwargs = {
@@ -47,6 +48,16 @@ export default class Product extends React.Component {
   searchProductClick() {
 
     this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+    document.getElementById('productSearch-input-field').focus()
+    document.getElementById('productSearch-input-field').value = ''
+    const _this = this
+
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
 
   }
 

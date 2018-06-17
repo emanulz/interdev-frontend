@@ -4,9 +4,10 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {searchClient, userSelected, setClient} from './actions'
+import {userSelected, setClient} from './actions'
 import {recalcCart} from '../../general/product/actions'
 import alertify from 'alertifyjs'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -124,6 +125,17 @@ export default class Clients extends React.Component {
 
     // this.props.dispatch(searchClient())
     this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+    document.getElementById('clientSearch-input-field').focus()
+    document.getElementById('clientSearch-input-field').value = ''
+
+    const _this = this
+
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
 
   }
 
@@ -159,7 +171,7 @@ export default class Clients extends React.Component {
         <div className='client-data-row'>
           <h3>Cliente :</h3>
           <input disabled={this.props.disabled} onKeyUp={this.inputKeyPress.bind(this)}
-            type='text'
+            type='text' className='mousetrap'
           />
           <i className='fa fa-plus-circle' onClick={this.showClientPanel.bind(this)} />
         </div>

@@ -6,8 +6,6 @@ import React from 'react'
 // import { getItemDispatch } from '../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
-import SearchProduct from '../general/search/products/searchPanel.jsx'
-import SearchClient from '../general/search/clients/searchPanel.jsx'
 import PayPanel from './pay/payPanel.jsx'
 import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
@@ -49,8 +47,6 @@ export default class Sale extends React.Component {
       <Content />
       <Aside />
 
-      <SearchProduct />
-      <SearchClient />
       <Search modelText='Producto' model='product' namespace='productSearch' />
       <Search modelText='Cliente' model='client' namespace='clientSearch' />
       <PayPanel />

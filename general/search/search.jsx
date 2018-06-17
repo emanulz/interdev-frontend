@@ -47,6 +47,8 @@ export default class SearchPanel extends React.Component {
 
         <div className='search-panel-input insideIcon'>
           <input
+            id={`${this.props.namespace}-input-field`}
+            className='mousetrap'
             type='text'
             placeholder='Ingrese un texto para buscar...'
             onChange={this.inputKeyPress.bind(this)}
