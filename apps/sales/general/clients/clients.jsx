@@ -4,7 +4,7 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {searchClient, userSelected, setClient} from './actions'
+import {userSelected, setClient} from './actions'
 import {recalcCart} from '../../general/product/actions'
 import alertify from 'alertifyjs'
 
