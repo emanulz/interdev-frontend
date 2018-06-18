@@ -24,6 +24,7 @@ let inspect = require('util-inspect')
         laborList: store.transactionsList.laborList,
 
         cashAdvanceList: store.transactionsList.cashAdvanceList,
+        cashAdvancesToDelete: store.transactionsList.cashAdvancesToDelete,
 
         usedPartList: store.transactionsList.usedPartList,
 
@@ -55,7 +56,8 @@ export default class WorkshopView extends React.Component {
     saveOrderTransactions(){
         let data = {
             client_id: this.props.client.id,
-            cash_advance_list: JSON.stringify(this.props.cashAdvanceList)
+            cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
+            cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
         }
         console.log("Cash advances data --> ")
         console.log(data)

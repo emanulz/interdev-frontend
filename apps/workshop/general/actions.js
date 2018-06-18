@@ -21,8 +21,8 @@ export function patchWorkView(kwargs){
         url: `/api/workorders/${kwargs.work_order_id}/patch_workview/`,
         data: kwargs.data
     }).then(response=>{
-        dispatcher({type:'SET_WORK_ORDER_VIEW', payload: response.data})
-        resolve()
+        dispatcher({type: 'SET_WORK_ORDER_VIEW', payload: response.data})
+        dispatcher({type: 'FETCHING_DONE'})
     }).catch(err=>{
         console.log(err)
         if(err.response){

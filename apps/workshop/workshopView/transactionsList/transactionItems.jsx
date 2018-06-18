@@ -62,6 +62,7 @@ export default class TransactionItems extends React.Component {
                     this.props.dispatch({type:'USED_PART_DELETED',payload:item.uuid})
                     return
                 }
+                
                 const kwargs = {
                     item:this.props.usedPartList[index].element,
                     url: `/api/usedparts/${this.props.usedPartList[index].element.id}`,
@@ -104,10 +105,12 @@ export default class TransactionItems extends React.Component {
                 let index = this.props.cashAdvanceList.findIndex(a=>a.uuid === item_uuid)
                 //check if the item was already stored in the database
                 const item =this.props.cashAdvanceList[index]
-                if(item.element.work_order_id === undefined){
-                    this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
-                    return
-                }
+                this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
+                // if(item.element.work_order_id === undefined){
+                //     this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
+                //     return
+                // }
+                /*
                 const kwargs = {
                     item:this.props.cashAdvanceList[index].element,
                     url:`/api/cashadvances/${this.props.cashAdvanceList[index].element.id}`,
@@ -121,6 +124,7 @@ export default class TransactionItems extends React.Component {
 
                 this.props.dispatch({type:'FETCHING_STARTED'})
                 this.props.dispatch(deleteItemDispatch(kwargs))
+                */
                 break
             }
             case 'PART_REQUEST':
