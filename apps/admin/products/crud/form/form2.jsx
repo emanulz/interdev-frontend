@@ -173,17 +173,17 @@ class Form2 extends React.Component {
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>
 
-            <label>Desc Predeterminado %</label>
-            <input value={this.props.product.pred_discount} name='pred_discount'
+            <label>Desc max regular %</label>
+            <input value={this.props.product.max_regular_discount} name='max_regular_discount'
               onChange={this.handleInputChange.bind(this)}
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 
-          <div className='col-xs-6 second'>
-            <label>Pide Precio al facturar?</label>
-            <input checked={this.props.product.ask_price} name='ask_price'
+          <div className='col-xs-6 first'>
+            <label>Desc Predeterminado %</label>
+            <input value={this.props.product.pred_discount} name='pred_discount'
               onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
+              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 
         </div>
@@ -205,7 +205,14 @@ class Form2 extends React.Component {
               type='checkbox' className='form-control' />
           </div>
         </div>
-
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+            <label>Pide Precio al facturar?</label>
+            <input checked={this.props.product.ask_price} name='ask_price'
+              onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control' />
+          </div>
+        </div>
       </div>
 
       <div className='col-xs-12 col-sm-4 fields-container second'>

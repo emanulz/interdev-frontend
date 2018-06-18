@@ -71,7 +71,7 @@ export default class Buttons extends React.Component {
       </span> */}
 
       <button
-        disabled={this.props.disabled}
+        disabled
         onClick={this.showPayPanel.bind(this)}
         style={{
           'height': '48px',
@@ -86,7 +86,7 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled={this.props.disabled}
+        disabled
         onClick={this.showSalePanel.bind(this)}
         style={{
           'height': '48px',

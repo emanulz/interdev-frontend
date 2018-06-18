@@ -51,7 +51,8 @@ const productModel = {
   image: null,
   observations: '',
   on_sale: false,
-  max_sale_discount: 0
+  max_sale_discount: 0,
+  max_regular_discount: 5
 }
 
 const stateConst = {

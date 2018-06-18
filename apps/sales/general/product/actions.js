@@ -47,22 +47,27 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 export function updateItemDiscount(itemsInCart, code, discount, globalDiscount, client) {
 
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
-
-  const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
-    ? {
-      type: 'PRODUCT_IN_CART_NOT_FOUND',
-      payload: -1
-    }
-    : {
-      type: 'UPDATE_CART',
-      payload: {
-        item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, globalDiscount, client,
-          itemsInCart[indexInCart].uuid),
-        index: indexInCart
+  const product = itemsInCart[indexInCart].product
+  if (product.max_regular_discount >= discount) {
+    const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
+      ? {
+        type: 'PRODUCT_IN_CART_NOT_FOUND',
+        payload: -1
       }
-    }
+      : {
+        type: 'UPDATE_CART',
+        payload: {
+          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, globalDiscount, client,
+            itemsInCart[indexInCart].uuid),
+          index: indexInCart
+        }
+      }
 
-  return res
+    return res
+  }
+
+  alertify.alert('DESCUENTO NO PERMITIDO', `El descuento máximo permitido para el artículo es ${product.max_regular_discount}%.`)
+  return {type: 'NO_ACTION', payload: ''}
 
 }
 
@@ -310,8 +315,8 @@ function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
   const price = product.price
   const subTotalNoDiscount = price * qty
 
-  const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (globalDiscount / 100))
-
+  // const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (globalDiscount / 100))
+  const subTotal = price * qty * (1 - (productDiscount / 100))
   const iv1 = (product.use_taxes)
     ? subTotal * (product.taxes / 100)
     : 0
@@ -327,9 +332,10 @@ function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
   const totalWithIv = subTotal + iv1 + iv2 + iv3
 
   const discountCurrencyInLine = price * qty * (productDiscount / 100)
-  const discountCurrencyGlobal = ((price * qty) - discountCurrencyInLine) * (globalDiscount / 100)
+  // const discountCurrencyGlobal = ((price * qty) - discountCurrencyInLine) * (globalDiscount / 100)
 
-  const discountCurrency = discountCurrencyInLine + discountCurrencyGlobal
+  // const discountCurrency = discountCurrencyInLine + discountCurrencyGlobal
+  const discountCurrency = discountCurrencyInLine
 
   return {
     subtotal: subTotal,
