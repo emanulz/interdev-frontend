@@ -4,13 +4,25 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {formatDateTimeAmPm} from '../../utils/formatDate.js'
+import {connect} from 'react-redux'
 
+@connect((store) => {
+  return {
+  }
+})
 export default class AdminTable extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       sortedBy: props.sortedBy,
       ascending: true
+    }
+  }
+
+  rowDoubleClick(item, ev) {
+    if (this.props.onRowDoubleClick) {
+      this.props.onRowDoubleClick(item, this.props.dispatch)
+      return true
     }
   }
 
@@ -88,7 +100,7 @@ export default class AdminTable extends React.Component {
     const idField = this.props.idField
     const bodyRows = data.map(el => {
 
-      return <tr key={el[idField]}>
+      return <tr key={el[idField]} onDoubleClick={this.rowDoubleClick.bind(this, el[idField])} >
         {headerOrder.map(header => {
 
           // const fieldName = header.field

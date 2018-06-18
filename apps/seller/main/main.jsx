@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import routes from './routes'
+import SingleProduct from '../../sales/general/product/singleProduct.jsx'
 
 // COMPONENTS
 
@@ -40,6 +41,7 @@ export default class Main extends React.Component {
           <div className='mainContainer-content'>
             {routes}
             {fetching}
+            <SingleProduct />
           </div>
         </div>
       </div>

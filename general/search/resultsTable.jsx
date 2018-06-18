@@ -22,7 +22,7 @@ export default class ResultsTable extends React.Component {
 
     const fetching = <Fecthing />
     const list = <AdminTable headerOrder={headerOrder} model={this.props.model} data={this.props.searchResults}
-      idField={idField} />
+      idField={idField} onRowDoubleClick={this.props.onRowDoubleClick} />
 
     const content = this.props.fetching ? fetching : list
 

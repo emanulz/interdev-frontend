@@ -118,6 +118,7 @@ export function productSelected(code, qty, product, itemsInCart, globalDiscount,
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
   alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
                  ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  return {type: 'NO_ACTION', payload: ''}
 }
 
 // Updates Amount based on qty input field
@@ -159,6 +160,7 @@ export function updateQty (code, qty, itemsInCart, globalDiscount, client, wareh
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
   alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
                  ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  return {type: 'NO_ACTION', payload: ''}
 }
 
 export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client, warehouseId) {
@@ -199,6 +201,7 @@ export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client, w
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
   alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
                  ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  return {type: 'NO_ACTION', payload: ''}
 }
 
 // Updates Amount based on qty input field
@@ -232,6 +235,7 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client, 
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
   alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
                  ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  return {type: 'NO_ACTION', payload: ''}
 }
 
 // ------------------------------------------------------------------------------------------

@@ -15,6 +15,14 @@ const reducer = (namespace) => (state = stateConst, action) => {
       }
     } // case
 
+    case `${namespace}_HIDE_SEARCH_PANEL`:
+    {
+      return {
+        ...state,
+        isVisible: false
+      }
+    } // case
+
     case `${namespace}_SET_SEARCH_TEXT`:
     {
       return {

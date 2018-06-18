@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import ResultsTable from './resultsTable.jsx'
 import {searchItem} from './actions.js'
+const Mousetrap = require('mousetrap')
 @connect((store, ownProps) => {
   return {
     isVisible: store[ownProps.namespace].isVisible,
@@ -11,6 +12,7 @@ import {searchItem} from './actions.js'
 export default class SearchPanel extends React.Component {
 
   hidePanel() {
+    Mousetrap.unbind('esc')
     this.props.dispatch({type: `${this.props.namespace}_TOGGLE_SEARCH_PANEL`, payload: -1})
   }
 
@@ -59,7 +61,7 @@ export default class SearchPanel extends React.Component {
 
         <div className='search-panel-results'>
 
-          <ResultsTable model={this.props.model} namespace={this.props.namespace} />
+          <ResultsTable model={this.props.model} namespace={this.props.namespace} onRowDoubleClick={this.props.onRowDoubleClick} />
 
         </div>
 

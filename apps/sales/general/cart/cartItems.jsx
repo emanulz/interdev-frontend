@@ -178,6 +178,11 @@ export default class CartItems extends React.Component {
     ev.target.select()
   }
 
+  showProductPanel(product, ev) {
+    this.props.dispatch({type: 'SET_SINGLE_PRODUCT_ACTIVE', payload: product})
+    this.props.dispatch({type: 'TOGGLE_SINGLE_PRODUCT_PANEL', payload: product})
+  }
+
   // Render the items in cart using table rows
 
   render() {
@@ -227,11 +232,11 @@ export default class CartItems extends React.Component {
         key={item.uuid}
         onClick={this.setCartItemActive.bind(this, item.product.code)}>
 
-        <div className='cart-body-item-code'>
+        <div className='cart-body-item-code' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
           <h5>Código</h5>
           {item.product.code}
         </div>
-        <div className='cart-body-item-description'>
+        <div className='cart-body-item-description' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
           <h5>Desc</h5>
           {item.product.description}
         </div>
