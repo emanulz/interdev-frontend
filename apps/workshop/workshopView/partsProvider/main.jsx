@@ -24,14 +24,14 @@ export default class PartsProvider extends React.Component{
         this.fetchUserPermissions()
         //get the products data
         this.props.dispatch({type: 'FETCHING_STARTED', payload:''})
-        this.props.dispatch({type:'CLEAR_PRODUCTS', payload:''})
 
-        const productKwargs = {
-            url: '/api/products',
-            successType: 'FETCH_PRODUCTS_FULFILLED',
-            errorType: 'FETCH_PRODUCTS_REJECTED'
-        }
-        this.props.dispatch(getItemDispatch(productKwargs))
+
+        // const productKwargs = {
+        //     url: '/api/products',
+        //     successType: 'FETCH_PRODUCTS_FULFILLED',
+        //     errorType: 'FETCH_PRODUCTS_REJECTED'
+        // }
+        // this.props.dispatch(getItemDispatch(productKwargs))
 
     }
 

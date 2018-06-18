@@ -29,16 +29,12 @@ const work_order_model = {
 
 const stateConst = {
     cashAdvanceList: [],
-    cashAdvanceListOld:[],
 
     partsRequestList: [],
-    partsRequestListOld: [],
 
     laborList: [],
-    laborListOld: [],
 
     usedPartList: [],
-    usedPartListOld: [],
   
 }
 

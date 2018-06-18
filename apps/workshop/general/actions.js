@@ -13,6 +13,27 @@ let inspect = require('util-inspect')
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
+export function patchWorkView(kwargs){
+    let dispatcher = kwargs.dispatcher
+    dispatcher({type: 'FETCHING_STARTED'})
+    axios({
+        method: 'post',
+        url: `/api/workorders/${kwargs.work_order_id}/patch_workview/`,
+        data: kwargs.data
+    }).then(response=>{
+        dispatcher({type:'SET_WORK_ORDER_VIEW', payload: response.data})
+        resolve()
+    }).catch(err=>{
+        console.log(err)
+        if(err.response){
+            console.log(err.response.data)
+        }
+        dispatcher({type:'FETCHING_DONE'})
+        alertify.alert('Error',`Error actualizando orden de tratamiento ${kwargs.work_order_id}`)
+        
+    })
+    
+}
 
 export function loadLaborTransactions(work_order_id, dispatcher){
     dispatcher({type: 'FETCHING_STARTED', payload:''})

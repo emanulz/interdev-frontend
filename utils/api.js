@@ -102,7 +102,6 @@ export function getSingleItemDispatch(kwargs) {
 
   return function(dispatch) {
     axios.get(url).then(function(response) {
-      console.log('Dispatch success')
       dispatch({type: successType, payload: response.data})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
@@ -124,7 +123,6 @@ export function getSearchDispatch(kwargs){
   const multiResultDispatch = kwargs.multiResultDispatch
   const noResultsDispatch = kwargs.noResultsDispatch
   const errDispatch = kwargs.errorType
-  console.log('HERE')
   return function(dispatch){
     axios.get(url).then(function(response){
       const results = response.data.results
@@ -163,6 +161,7 @@ export function getItemDispatch(kwargs) {
     }).catch(function(error) {
       console.log(error.response.status)
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+      dispatch({type:'FETCHING_DONE'})
       if (error.response.status != 403) {
         alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
         administrador del sistema con el siguiete error: ${error}`)
@@ -264,7 +263,10 @@ export function setItem(kwargs) {
         }
 
         dispatch({type: kwargs.dispatchType, payload: response.data.results[0]})
-        dispatch({type: kwargs.dispatchType2, payload: response.data.results[0]})
+        if(kwargs.dispatchType2 !== undefined && kwargs.dispatchType2 !== ''){
+          dispatch({type: kwargs.dispatchType2, payload: response.data.results[0]})
+        }
+        
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       } else {
