@@ -82,22 +82,7 @@ export default class TransactionItems extends React.Component {
                 let index = this.props.laborList.findIndex(a=>a.uuid === item_uuid)
                 //check if the item was already stored in the database
                 const item = this.props.laborList[index]
-                if(item.element.work_order_id === undefined){ //item its on memory only
-                    this.props.dispatch({type:'LABOR_ITEM_DELETED', payload:item.uuid})
-                    return
-                }
-                const kwargs = {
-                    item:this.props.laborList[index].element,
-                    url: `/api/labor/${this.props.laborList[index].element.id}`,
-                    modelName: 'LABOR',
-                    logCode: 'Mano de obra Borrada',
-                    itemOld: this.props.laborList[index],
-                    logModel: 'LABOR',
-                    user: JSON.stringify(this.props.user),
-                    dispatchType: 'LABOR_ITEM_DELETED'
-                }
-                this.props.dispatch({type:'FETCHING_STARTED'})
-                this.props.dispatch(deleteItemDispatch(kwargs))
+                this.props.dispatch({type:'LABOR_ITEM_DELETED', payload:item.uuid})
                 break
             }
             case 'CASH_ADVANCE':
@@ -106,25 +91,6 @@ export default class TransactionItems extends React.Component {
                 //check if the item was already stored in the database
                 const item =this.props.cashAdvanceList[index]
                 this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
-                // if(item.element.work_order_id === undefined){
-                //     this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
-                //     return
-                // }
-                /*
-                const kwargs = {
-                    item:this.props.cashAdvanceList[index].element,
-                    url:`/api/cashadvances/${this.props.cashAdvanceList[index].element.id}`,
-                    modelName: 'CASH_ADVANCE',
-                    logCode: 'Adelanto de dinero borrado',
-                    itemOld: this.props.cashAdvanceList[index],
-                    logModel: 'CASH_ADVANCE',
-                    user: JSON.stringify(this.props.user),
-                    dispatchType: 'CASH_ADVANCE_DELETED'
-                }
-
-                this.props.dispatch({type:'FETCHING_STARTED'})
-                this.props.dispatch(deleteItemDispatch(kwargs))
-                */
                 break
             }
             case 'PART_REQUEST':

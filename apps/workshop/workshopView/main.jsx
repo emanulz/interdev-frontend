@@ -22,6 +22,7 @@ let inspect = require('util-inspect')
         partsRequestList: store.transactionsList.partsRequestList,
 
         laborList: store.transactionsList.laborList,
+        laborsToDelete: store.transactionsList.laborsToDelete,
 
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         cashAdvancesToDelete: store.transactionsList.cashAdvancesToDelete,
@@ -54,18 +55,26 @@ export default class WorkshopView extends React.Component {
     }
 
     saveOrderTransactions(){
+
+
+
         let data = {
             client_id: this.props.client.id,
             cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
             cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
+            
+            labor_list: JSON.stringify(this.props.laborList),
+            labor_list_to_delete: JSON.stringify(this.props.laborsToDelete),
         }
-        console.log("Cash advances data --> ")
-        console.log(data)
+
         const saveKwargs = {
             work_order_id: this.props.work_order.id,
             data: data,
             dispatcher: this.props.dispatch
         }
+
+
+
         patchWorkView(saveKwargs)
         /*
         const labor_promises = saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.laborListOld, this.props.user, this.props.dispatch)
