@@ -65,9 +65,9 @@ class Form2 extends React.Component {
     // ********************************************************************
     return <div className='col-xs-12 row form-container'>
 
-      <div className='col-xs-12 col-sm-7 fields-container first'>
+      <div className='col-xs-12 col-sm-8 fields-container first'>
 
-        <span>Precios</span>
+        <span>Precio y Desuentos</span>
         <hr />
         <div className='form-group row input-block'>
           <div className='col-xs-8 first'>
@@ -118,7 +118,7 @@ class Form2 extends React.Component {
           </div>
         </div>
 
-        <div className='form-group row input-block'>
+        {/* <div className='form-group row input-block'>
           <div className='col-xs-4 first'>
 
             <label>Utilidad 2 %</label>
@@ -142,9 +142,9 @@ class Form2 extends React.Component {
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
 
           </div>
-        </div>
+        </div> */}
 
-        <div className='form-group row input-block'>
+        {/* <div className='form-group row input-block'>
           <div className='col-xs-4 first'>
 
             <label>Utilidad 3 %</label>
@@ -168,22 +168,56 @@ class Form2 extends React.Component {
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
 
           </div>
+        </div> */}
+
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+
+            <label>Desc max regular %</label>
+            <input value={this.props.product.max_regular_discount} name='max_regular_discount'
+              onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+          </div>
+
+          <div className='col-xs-6 first'>
+            <label>Desc Predeterminado %</label>
+            <input value={this.props.product.pred_discount} name='pred_discount'
+              onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+          </div>
+
         </div>
 
         <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+
+            <label>Desc max en promoción %</label>
+            <input value={this.props.product.max_sale_discount} name='max_sale_discount'
+              onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+          </div>
+
           <div className='col-xs-6 second'>
+
+            <label>En promoción?</label>
+            <input checked={this.props.product.on_sale} name='on_sale'
+              onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control' />
+          </div>
+        </div>
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
             <label>Pide Precio al facturar?</label>
             <input checked={this.props.product.ask_price} name='ask_price'
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
         </div>
-
       </div>
 
-      <div className='col-xs-12 col-sm-5 fields-container second'>
+      <div className='col-xs-12 col-sm-4 fields-container second'>
 
-        <span>Impuestos y Descuentos</span>
+        <span>Impuestos e Inventarios</span>
         <hr />
 
         <div className='form-group row input-block'>
@@ -250,7 +284,7 @@ class Form2 extends React.Component {
           </div>
         </div>
 
-        <div className='form-group row input-block'>
+        {/* <div className='form-group row input-block'>
           <div className='col-xs-6 first'>
             <label>Impuesto 3</label>
             <Select2
@@ -278,34 +312,39 @@ class Form2 extends React.Component {
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
-        </div>
+        </div> */}
 
         <div className='form-group row input-block'>
-          <div className='col-xs-6 first'>
 
-            <label>Desc Predeterminado %</label>
-            <input value={this.props.product.pred_discount} name='pred_discount'
+          <div className='col-xs-6 second'>
+            <label>Usa Inventario?</label>
+            <input checked={this.props.product.inventory_enabled} name='inventory_enabled'
               onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-
-        </div>
-
-        <div className='form-group row input-block'>
-          <div className='col-xs-6 first'>
-
-            <label>Desc max en promoción %</label>
-            <input value={this.props.product.max_sale_discount} name='max_sale_discount'
-              onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              type='checkbox' className='form-control' />
           </div>
 
           <div className='col-xs-6 second'>
-
-            <label>En promoción?</label>
-            <input checked={this.props.product.on_sale} name='on_sale'
+            <label>Puede Facturar en Negativo?</label>
+            <input checked={this.props.product.inventory_negative} name='inventory_negative'
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
+          </div>
+
+        </div>
+
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+            <label>Mínimo Inventario</label>
+            <input value={this.props.product.inventory_minimum} name='inventory_minimum'
+              onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+          </div>
+
+          <div className='col-xs-6 first'>
+            <label>Máximo Inventario</label>
+            <input value={this.props.product.inventory_maximum} name='inventory_maximum'
+              onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
         </div>
 

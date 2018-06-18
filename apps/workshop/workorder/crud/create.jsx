@@ -6,8 +6,11 @@ import React from 'react'
 
 import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
-
 import Form from './form/form.jsx'
+import SearchClient from '../../general/search/clients/searchPanel.jsx'
+import Search from '../../../../general/search/search.jsx'
+import ClientCreatePanel from '../../../../general/clientCreatePanel/clientCreatePanel.jsx'
+
 
 @connect((store) => {
     return {
@@ -24,7 +27,12 @@ import Form from './form/form.jsx'
         switch (this.props.permissions.add){
             case true:
             {
-                content = <Form />
+                content = <div>
+                    <Search modelText='Cliente' model='client' namespace='clientSearch' />
+                    <Form />
+                    <SearchClient/>
+                    <ClientCreatePanel/>
+                </div> 
                 break
             }
             case false:

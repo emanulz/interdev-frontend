@@ -65,7 +65,7 @@ export default class Products extends React.Component {
     const movement = {...this.props.movement}
     if (movement.movement_type == 'OUTPUT-INPUT') {
       // VALIDATIONS FOR DOUBLE COMES HERE
-      this.saveDoubleMovement()
+      this.saveTransferMovement()
     } else {
       // VALIDATIONS FOR SINGLE COMES HERE
       this.saveSingleMovement()
@@ -82,14 +82,16 @@ export default class Products extends React.Component {
     const warehouse = this.props.warehouses.filter(warehouse => warehouse.id == movement.warehouse_id)
     movement.warehouse = JSON.stringify(warehouse[0]) || ''
     movement.product = JSON.stringify(movement.product)
+    movement.mov_type = movement.movement_type
 
+    delete movement['id']
+    delete movement['fromWarehouse_id']
+    delete movement['toWarehouse_id']
+    delete movement['user']
     // KWARGS USED IN FUNCTION
     const kwargs = {
-      url: '/api/inventorymovements/',
+      url: `/api/products/${this.props.movement.product.id}/inventory_movement/`,
       item: movement,
-      logCode: 'CREDIT_PAYMENT_CREATE',
-      logDescription: 'Creación de nuevo pago de crédito',
-      logModel: 'CREDIT_PAYMENT',
       user: this.props.user
     }
 
@@ -109,7 +111,7 @@ export default class Products extends React.Component {
 
       // THEN REFECTH PRODUCTS
       const productKwargs = {
-        url: '/api/products',
+        url: '/api/productslist',
         successType: 'FETCH_PRODUCTS_FULFILLED',
         errorType: 'FETCH_PRODUCTS_REJECTED'
       }
@@ -125,6 +127,68 @@ export default class Products extends React.Component {
     })
 
   }
+
+  saveTransferMovement() {
+
+    const movement = {...this.props.movement}
+    // ITEMS USED BY MOVEMENT OBJECT AND SERIALIZE SOME OF THEM
+    const user = JSON.stringify(this.props.user)
+    movement.user = user
+
+    const warehouse = this.props.warehouses.filter(warehouse => warehouse.id == movement.warehouse_id)
+    movement.warehouse = JSON.stringify(warehouse[0]) || ''
+    movement.product = JSON.stringify(movement.product)
+    movement.mov_type = movement.movement_type
+    movement.origin_warehouse_id = movement.fromWarehouse_id
+    movement.destination_warehouse_id = movement.toWarehouse_id
+
+    delete movement['id']
+    delete movement['fromWarehouse_id']
+    delete movement['toWarehouse_id']
+    delete movement['user']
+
+    console.log(movement)
+
+    // KWARGS USED IN FUNCTION
+    const kwargs = {
+      url: `/api/products/${this.props.movement.product.id}/inventory_transfer/`,
+      item: movement,
+      user: this.props.user
+    }
+
+    // MAKE "THIS" AVAILABLE FOR SUB-FUNCTIONS
+    const _this = this
+
+    const saveMovementPromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch(saveMovement(kwargs, resolve, reject))
+      console.log('MOVIMIENTOOO', kwargs.item)
+    })
+    // SAVE MOVEMENT
+    saveMovementPromise.then(data => {
+
+      // THEN CLEAR THE MOVEMENT ACTIVE
+      _this.props.dispatch({type: 'CLEAR_INVENTORY_MOVEMENT', payload: ''})
+
+      // THEN REFECTH PRODUCTS
+      const productKwargs = {
+        url: '/api/productslist',
+        successType: 'FETCH_PRODUCTS_FULFILLED',
+        errorType: 'FETCH_PRODUCTS_REJECTED'
+      }
+      _this.props.dispatch(getItemDispatch(productKwargs))
+      // ALERT OF COMPLETED
+      alertify.alert('COMPLETADO', 'Movimiento de invetario guardado correctamente')
+      // TOGGLE THE PANEL
+      _this.props.dispatch({type: 'TOGGLE_PANEL', payload: ''})
+
+    }).catch(err => {
+      alertify.alert('ERROR', `Hubo un Error al guardar el movimiento, por favor intente de nuevo, ERROR: ${err}`)
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+
+  }
+
   saveDoubleMovement() {
 
     const movementOutput = {...this.props.movement}

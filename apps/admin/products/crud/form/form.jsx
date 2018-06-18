@@ -48,7 +48,7 @@ class Form extends React.Component {
 
       const kwargs = {
         lookUpField: 'code',
-        url: '/api/products/',
+        url: '/api/productslist/',
         lookUpValue: lookUp,
         dispatchType: 'SET_PRODUCT',
         dispatchType2: 'SET_PRODUCT_OLD',
@@ -76,7 +76,7 @@ class Form extends React.Component {
 
         const kwargs = {
           lookUpField: 'code',
-          url: '/api/products/',
+          url: '/api/productslist/',
           lookUpValue: lookUp,
           dispatchType: 'SET_PRODUCT',
           dispatchType2: 'SET_PRODUCT_OLD',
@@ -123,7 +123,7 @@ class Form extends React.Component {
     const product = {
       ...this.props.product
     }
-    console.log("Pdoduct value --> " + value)
+    console.log('Pdoduct value --> ' + value)
     product[name] = value
 
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
@@ -249,7 +249,7 @@ class Form extends React.Component {
 
       <div className='col-xs-12 col-sm-6 fields-container second'>
 
-        <span>Familias y Extras</span>
+        <span>Familias y Datos</span>
         <hr />
 
         <div className='form-group row input-block'>

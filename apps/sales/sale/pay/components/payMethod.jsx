@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {payMethod: store.pay.payMethod}
+  return {payMethod: store.pay.payMethodActive}
 })
 export default class PayMethod extends React.Component {
 
@@ -54,15 +54,27 @@ export default class PayMethod extends React.Component {
       </div>
 
       {/* onClick={this.clickChangePayMethod.bind(this, 'OTHER')} */}
-      <div className={(this.props.payMethod == 'OTHE'
+      <div onClick={this.clickChangePayMethod.bind(this, 'VOUC')} className={(this.props.payMethod == 'VOUC'
         ? 'pay-method-select-item selected'
         : 'pay-method-select-item')}>
 
         <div className='pay-method-select-item-header'>
-          <span>Otro</span>
+          <span>Vale</span>
         </div>
 
-        <i className='fa fa-share' aria-hidden='true' />
+        <i className='fa fa-file-text-o' aria-hidden='true' />
+
+      </div>
+
+      <div onClick={this.clickChangePayMethod.bind(this, 'TRAN')} className={(this.props.payMethod == 'TRAN'
+        ? 'pay-method-select-item selected'
+        : 'pay-method-select-item')}>
+
+        <div className='pay-method-select-item-header'>
+          <span>Transfer</span>
+        </div>
+
+        <i className='fa fa-exchange' aria-hidden='true' />
 
       </div>
 

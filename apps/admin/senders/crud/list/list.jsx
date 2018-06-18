@@ -3,13 +3,17 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DataTable from '../../../../../general/dataTable/dataTable.jsx'
-import { getItemDispatch } from '../../../../../utils/api.js'
+import {Link} from 'react-router-dom'
+import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
+import { getPaginationItemDispatch } from '../../../../../utils/api.js'
+import Pagination from '../../../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    senders: store.senders.senders
+    senders: store.senders.senders,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -20,12 +24,12 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_SENDER', payload: ''})
 
     const senderKwargs = {
-      url: '/api/senders',
+      url: `/api/senders/?limit=${this.props.pageSize}`,
       successType: 'FETCH_SENDERS_FULFILLED',
       errorType: 'FETCH_SENDERS_REJECTED'
     }
 
-    this.props.dispatch(getItemDispatch(senderKwargs))
+    this.props.dispatch(getPaginationItemDispatch(senderKwargs))
 
   }
 
@@ -49,13 +53,31 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <DataTable headerOrder={headerOrder} model='senders' data={this.props.senders}
+    const list = <AdminTable headerOrder={headerOrder} model='senders' data={this.props.senders}
       addLink='/admin/senders/add' idField='id' />
 
     const content = this.props.fetching ? fetching : list
 
+    const addLink = <Link className='addBtn' to={'/admin/senders/add'}>
+      <span className='fa fa-plus' />
+      Agregar
+    </Link>
+
     return <div className='list list-container'>
-      <h1>Listado de Emisores:</h1>
+      <div className='admin-list-header'>
+        <h1>Mantenimiento de Emisores de Factura:</h1>
+        {addLink}
+      </div>
+      <div className='admin-list-search'>
+        <input
+          type='text'
+          placeholder='Ingrese un texto para buscar...'
+        />
+      </div>
+      <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/senders/' successType='FETCH_SENDERS_FULFILLED' errorType='FETCH_SENDERS_REJECTED' />
+        <Pagination url='/api/senders/' successType='FETCH_SENDERS_FULFILLED' errorType='FETCH_SENDERS_REJECTED' />
+      </div>
       {content}
     </div>
 

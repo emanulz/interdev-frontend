@@ -30,7 +30,6 @@ export function savePayment(kwargs, resolve, reject) {
       data: item
     })
       .then((response) => {
-        dispatch({type: 'SET_PAYMENT', payload: response.data})
         resolve(response.data)
       }).catch((err) => {
         if (err.response) {

@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.sales.saleActive,
     company: store.config.company
   }
 })
@@ -11,12 +10,10 @@ export default class Header extends React.Component {
 
   render() {
 
-    const headertext = this.props.sale.pay.payMethod == 'CREDIT' ? 'Factura de crédito' : 'Factura de contado'
-
     // BILL DATA
-    const headerName = this.props.company.comercialName || ''
+    const headerName = this.props.company.comercial_name || ''
 
-    const headerName2 = this.props.company.legalName || ''
+    const headerName2 = this.props.company.legal_name || ''
 
     const tels = this.props.company.telephones || ''
     const telsText = tels.split('/').length > 1 ? `Tels: ${tels}` : `Tel: ${tels}`
@@ -44,7 +41,7 @@ export default class Header extends React.Component {
       <div className='compact-invoice-separator'>
         <span />
 
-        <h1>{headertext}</h1>
+        <h1>RECIBO POR PAGO A FACTURAS</h1>
 
         <span />
       </div>

@@ -2,16 +2,19 @@ import React from 'react'
 // import {saveItem, loadSale} from '../actions'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
+import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
     cart: store.cart,
     payMethod: store.pay.payMethod,
-    pay: store.pay,
+    payObject: store.pay.payObject,
     client: store.clients.clientSelected,
-    user: store.clients.userSelected,
-    debt: store.clients.clientSelectedDebt
+    user: store.user.user,
+    debt: store.clients.clientSelectedDebt,
+    warehouse_id: store.config.salesWarehouse,
+    presaleId: store.presales.presaleId
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -22,36 +25,21 @@ export default class SaveBtn extends React.Component {
 
   saveBtn() {
     // const sales = this.props.sales
-    const user = this.props.user
-    const payed = !(this.props.pay.payMethod == 'CRED')
+    // const user = this.props.user
 
     const sale = {
       cart: JSON.stringify(this.props.cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
-      pay: JSON.stringify(this.props.pay),
-      pay_type: this.props.pay.payMethod,
-      payed: payed,
-      client_id: this.props.client.id
-    }
-
-    const creditMovement = {
+      pay: JSON.stringify(this.props.payObject),
       client_id: this.props.client.id,
-      movement_type: 'CRED',
-      amount: this.props.cart.cartTotal
+      warehouse_id: this.props.warehouse_id,
+      presale_id: this.props.presaleId
     }
 
     const kwargs = {
       url: '/api/sales/',
-      item: sale,
-      logCode: 'SALE_CREATE',
-      logDescription: 'Creación de nueva Venta',
-      logModel: 'SALE',
-      user: user,
-      itemOld: '',
-      sucessMessage: 'Venta creada Correctamente.',
-      errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.',
-      creditMovement: creditMovement
+      item: sale
     }
 
     const _this = this
@@ -60,14 +48,20 @@ export default class SaveBtn extends React.Component {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       _this.props.dispatch(saveItem(kwargs, resolve, reject))
     })
-
+    // SAVE PROCESS
     updatePromise.then(() => {
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
       Mousetrap.reset()
     }).catch((err) => {
-      console.log(err)
+      console.log(err.response.data)
+      if (err.response) {
+        alertify.alert('ERROR', `${err.response.data[Object.keys(err.response.data)[0]]}`)
+      } else {
+        alertify.alert('ERROR', `Hubo un error al guardar la venta, error: ${err}`)
+      }
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
 
   }

@@ -14,6 +14,9 @@ import pay from './sale/pay/reducer.js'
 import invoice from './general/invoice/reducer.js'
 import sales from './general/sales/reducer.js'
 import config from './config/reducer.js'
+import presales from './sale/presales/reducer.js'
+import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
+import search from '../../general/search/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -29,5 +32,9 @@ export default combineReducers({
   pay,
   invoice,
   sales,
-  config
+  config,
+  presales,
+  clientCreatePanel,
+  productSearch: search('productSearch'),
+  clientSearch: search('clientSearch')
 })

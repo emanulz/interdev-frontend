@@ -67,10 +67,9 @@ export default class Update extends React.Component {
         content = <div>
           <Tabs>
             <TabList>
-              <Tab className='oneFour' tabFor='one'>General</Tab>
-              <Tab className='oneFour' tabFor='two'>Precios</Tab>
-              <Tab className='oneFour' tabFor='three'>Inventarios y Extras</Tab>
-              <Tab className='oneFour' tabFor='four'>Imagen</Tab>
+              <Tab className='oneThree' tabFor='one'>General</Tab>
+              <Tab className='oneThree' tabFor='two'>Precios</Tab>
+              <Tab className='oneThree' tabFor='three'>Extras</Tab>
             </TabList>
 
             <TabPanel tabId='one'>

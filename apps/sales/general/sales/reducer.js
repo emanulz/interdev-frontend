@@ -89,7 +89,7 @@ export default function reducer(state = stateConst, action) {
     {
       const cart = JSON.parse(action.payload.cart)
       const client = JSON.parse(action.payload.client)
-      const user = JSON.parse(action.payload.user)
+      const user = action.payload.user
       const pay = JSON.parse(action.payload.pay)
 
       const sale = {
@@ -119,13 +119,13 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_PRESALE_ID':
-    {
-      return {
-        ...state,
-        completed: true
-      }
-    } // case
+    // case 'SET_PRESALE_ID':
+    // {
+    //   return {
+    //     ...state,
+    //     completed: true
+    //   }
+    // } // case
 
     case 'SET_PROFORMA_ID':
     {

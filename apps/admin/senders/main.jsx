@@ -35,13 +35,13 @@ export default class List extends React.Component {
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
-    const senderKwargs = {
-      url: '/api/senders',
-      successType: 'FETCH_SENDERS_FULFILLED',
-      errorType: 'FETCH_SENDERS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(senderKwargs))
+    // const senderKwargs = {
+    //   url: '/api/senders',
+    //   successType: 'FETCH_SENDERS_FULFILLED',
+    //   errorType: 'FETCH_SENDERS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(senderKwargs))
     // *******************************************************************
 
     // Then fetch provinces of the model and dispatch to reducer

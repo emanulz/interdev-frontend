@@ -1,0 +1,44 @@
+.pagination
+  display: flex
+  flex-flow: row
+  &-item
+    padding: 0 15px
+    font-size: 13px
+    height: 30px
+    color: $PRIMARY-COLOR
+    border: 1px solid #cacaca
+    border-right: none
+    cursor: pointer
+    display: flex
+    flex-flow: column
+    justify-content: center
+    text-align: center
+    &:last-of-type
+      border-right: 1px solid #cacaca
+    &.paginationActive
+      background-color: $PRIMARY-COLOR
+      color: white
+      pointer-events: none
+    &.notPointer
+      cursor: default
+    &.itemDisabled
+      cursor: default
+      color: #cacaca
+
+.resultsPerPage
+  display: flex
+  flex-flow: row
+  align-items: center
+  & select
+    margin-left: 10px
+    width: 60px
+    height: 35px
+
+.pagination-container
+  margin-top: 20px
+  display: flex
+  flex-flow: row
+  justify-content: space-between
+  align-items: center
+  & h1
+    font-size: 18px

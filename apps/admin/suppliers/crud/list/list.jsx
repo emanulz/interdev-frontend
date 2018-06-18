@@ -3,13 +3,17 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DataTable from '../../../../../general/dataTable/dataTable.jsx'
-import { getItemDispatch } from '../../../../../utils/api.js'
+import {Link} from 'react-router-dom'
+import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
+import { getPaginationItemDispatch } from '../../../../../utils/api.js'
+import Pagination from '../../../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    suppliers: store.suppliers.suppliers
+    suppliers: store.suppliers.suppliers,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -20,12 +24,12 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_SUPPLIER', payload: ''})
 
     const supplierKwargs = {
-      url: '/api/suppliers',
+      url: `/api/suppliers/?limit=${this.props.pageSize}`,
       successType: 'FETCH_SUPPLIERS_FULFILLED',
       errorType: 'FETCH_SUPPLIERS_REJECTED'
     }
 
-    this.props.dispatch(getItemDispatch(supplierKwargs))
+    this.props.dispatch(getPaginationItemDispatch(supplierKwargs))
 
   }
 
@@ -55,13 +59,31 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <DataTable headerOrder={headerOrder} model='suppliers' data={this.props.suppliers}
+    const list = <AdminTable headerOrder={headerOrder} model='suppliers' data={this.props.suppliers}
       addLink='/admin/suppliers/add' idField='id' />
 
     const content = this.props.fetching ? fetching : list
 
+    const addLink = <Link className='addBtn' to={'/admin/suppliers/add'}>
+      <span className='fa fa-plus' />
+      Agregar
+    </Link>
+
     return <div className='list list-container'>
-      <h1>Listado de Proveedores:</h1>
+      <div className='admin-list-header'>
+        <h1>Mantenimiento de Proveedores:</h1>
+        {addLink}
+      </div>
+      <div className='admin-list-search'>
+        <input
+          type='text'
+          placeholder='Ingrese un texto para buscar...'
+        />
+      </div>
+      <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/suppliers/' successType='FETCH_SUPPLIERS_FULFILLED' errorType='FETCH_SUPPLIERS_REJECTED' />
+        <Pagination url='/api/suppliers/' successType='FETCH_SUPPLIERS_FULFILLED' errorType='FETCH_SUPPLIERS_REJECTED' />
+      </div>
       {content}
     </div>
 

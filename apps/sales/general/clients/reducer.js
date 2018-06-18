@@ -10,8 +10,7 @@ const clientSelectedModel = {
   last_name: 'Contado',
   name: 'Cliente',
   updated: '',
-  saleLoaded: false,
-  _id: 0
+  saleLoaded: false
 }
 
 const userSelectedModel = {
@@ -77,7 +76,7 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        clientSelected: action.payload.client
+        clientSelected: action.payload
       }
     } // case
 
@@ -120,7 +119,7 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        clientSelectedDebt: parseFloat(action.payload.debt)
+        clientSelectedDebt: Math.abs(parseFloat(action.payload))
       }
     }
 

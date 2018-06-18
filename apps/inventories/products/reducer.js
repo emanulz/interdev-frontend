@@ -44,8 +44,8 @@ export default function reducer(state = stateConst, action) {
     {
       const products = action.payload
       products.forEach(product => {
-        const inventoryByWarehouse = JSON.parse(product.inventory_by_warehouse)
-        product.inventory_by_warehouse = inventoryByWarehouse
+        const inventoryByWarehouse = JSON.parse(product.inventory_existent)
+        product.inventory_existent = inventoryByWarehouse
       })
       return {
         ...state,

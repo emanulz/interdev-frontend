@@ -19,7 +19,82 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // ------------------------------------------------------------------------------------------
 // GET FUNCTIONS (RETRIEVE ALL)
 // ------------------------------------------------------------------------------------------
-export function getItemDispatch(kwargs) {
+export function savePayableCreditMovementPromise(kwargs){
+  const logCode = 'CREDIT_MOVEMENT_CREATED'
+  const logDescription = `Credit movement created for purchase ${kwargs.purchase_id} and invoice number ${kwargs.invoice_number}`
+  const old = {noPrevious: 'Initial creation'}
+  const method = 'post'
+  const url ='/api/payablescreditmovement/'
+  const logModel = 'PAYABLE_CREDIT_MOVEMENT'
+
+  const cre_mov_desc = kwargs.description?kwargs.description:`Débito a factura ${kwargs.invoice_number}`
+
+  const data = {
+      supplier_id: kwargs.supplier_id,
+      purchase_id: kwargs.purchase_id,
+      credit_note_id: kwargs.credit_note_id?kwargs.credit_note_id:'',
+      debit_note_id: kwargs.debit_note_id?kwargs.debit_note_id:'',
+      payment_id: kwargs.payment_id,
+      movement_type:kwargs.movement_type,
+      amount: kwargs.amount,
+      description: cre_mov_desc,
+      is_null:kwargs.is_null?kwargs.is_null:false
+  }
+  return new Promise((resolve, reject)=>{
+      axios({
+          method:method,
+          url:url,
+          data:data
+      }).then(response=>{
+          saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
+          resolve(response.data)
+      }).catch(err=>{
+          console.log(err)
+          if(err.response){
+              console.log(err.response.data)
+          }
+          alertify.alert('Error', 'Error creando Movimiento de Crédito')
+      })
+  })
+}
+
+export function savePayableCreditPaymentPromise(kwargs){
+  const logCode = 'CREDIT_PAYMENT_CREATED'
+  const logDescription = `Credit payment created for purchase ${kwargs.purchase_id} and invoice number ${kwargs.invoice_number}`
+  const old = {noPrevious: 'Initial creation'}
+  const method = 'post'
+  const url ='/api/payablescreditpayment/'
+  const logModel = 'PAYABLE_CREDIT_PAYMENT'
+
+  const cre_mov_desc = kwargs.description?kwargs.description:`Pago a crédito por factura ${kwargs.invoice_number}`
+  const data = {
+      purchase: JSON.stringify(kwargs.purchase),
+      user: kwargs.user,
+      supplier: kwargs.supplier,
+      supplier_id:kwargs.supplier_id,
+      amount: kwargs.amount,
+      description: cre_mov_desc,
+      is_null:kwargs.is_null?kwargs.is_null:false
+  }
+  return new Promise((resolve, reject)=>{
+      axios({
+          method:method,
+          url:url,
+          data:data
+      }).then(response=>{
+          saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
+          resolve(response.data)
+      }).catch(err=>{
+          console.log(err)
+          if(err.response){
+              console.log(err.response.data)
+          }
+          alertify.alert('Error', 'Error creando Pago a Crédito')
+      })
+  })
+}
+
+export function getSingleItemDispatch(kwargs) {
 
   const url = kwargs.url
   const successType = kwargs.successType
@@ -42,6 +117,89 @@ export function getItemDispatch(kwargs) {
 
 }
 
+export function getSearchDispatch(kwargs){
+  const url = kwargs.url
+  const singleResultDispatch = kwargs.singleResultDispatch
+  const multiResultDispatch = kwargs.multiResultDispatch
+  const noResultsDispatch = kwargs.noResultsDispatch
+  const errDispatch = kwargs.errorType
+  return function(dispatch){
+    axios.get(url).then(function(response){
+      const results = response.data.results
+      if(results.length==1){
+        dispatch({type: singleResultDispatch, payload: results[0]})
+      }else if(results.length == 0){
+        dispatch({type: noResultsDispatch})
+      }else{
+        dispatch({type: multiResultDispatch, payload: results})
+      }
+    }).catch(err=>{
+      console.log(err)
+      if(err.response){
+        console.log(err.response.status)
+        if (error.response.status != 403) {
+          alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+          administrador del sistema con el siguiete error: ${error}`)
+          dispatch({type: errDispatch, payload: error})
+        }
+      }
+
+    })
+  }
+}
+
+export function getItemDispatch(kwargs) {
+
+  const url = kwargs.url
+  const successType = kwargs.successType
+  const errorType = kwargs.errorType
+
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      dispatch({type: successType, payload: response.data.results})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    }).catch(function(error) {
+      console.log(error.response.status)
+      // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+      dispatch({type:'FETCHING_DONE'})
+      if (error.response.status != 403) {
+        alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+        administrador del sistema con el siguiete error: ${error}`)
+        dispatch({type: errorType, payload: error})
+      }
+    })
+  }
+
+}
+
+export function getPaginationItemDispatch(kwargs) {
+
+  const url = kwargs.url
+  const successType = kwargs.successType
+  const errorType = kwargs.errorType
+
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      dispatch({type: successType, payload: response.data.results})
+      console.log(response.data)
+      const paginationPayload = {
+        total: response.data.count,
+        next: response.data.next,
+        previous: response.data.previous
+      }
+      dispatch({type: 'PAGINATION_DATA', payload: paginationPayload})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    }).catch(function(error) {
+      // console.log(error.response.status)
+      // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+      alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+      administrador del sistema con el siguiete error: ${error}`)
+      dispatch({type: errorType, payload: error})
+    })
+  }
+
+}
+
 export function getItemDoubleDispatch(kwargs) {
 
   const url = kwargs.url
@@ -51,7 +209,7 @@ export function getItemDoubleDispatch(kwargs) {
 
   return function(dispatch) {
     axios.get(url).then(function(response) {
-      dispatch({type: successType, payload: response.data})
+      dispatch({type: successType, payload: response.data.results})
       dispatch({type: successType2, payload: ''})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
@@ -71,7 +229,7 @@ export function getItemReturn(kwargs) {
   const url = kwargs.url
 
   axios.get(url).then(function(response) {
-    return response.data
+    return response.data.results
   }).catch(function(error) {
     alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
     administrador del sistema con el siguiete error: ${error}`)
@@ -92,22 +250,23 @@ export function setItem(kwargs) {
   const url = kwargs.url
 
   return function(dispatch) {
-    console.log(`${url}?${lookUpField}=${lookUpValue}`)
+
     axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
 
-      console.log(response.data)
-
-      if (response.data.length) {
+      if (response.data.count > 0) {
         // IF THERE IS MORE THAN ONE ELEMENT FILTERED
-        if (response.data.length > 1) {
+        if (response.data.count > 1) {
           alertify.alert('ATENCIÓN', `Existe mas de un ${kwargs.modelName} con el ${kwargs.lookUpName}:
           ${kwargs.lookUpValue}, se utilizará el primero en lista, por lo que puede no ser el mismo que ud desea
           actualizar, esto puede deberse a un error, por favor revise los
           datos o contacte con el administrador del sistema.`)
         }
 
-        dispatch({type: kwargs.dispatchType, payload: response.data[0]})
-        dispatch({type: kwargs.dispatchType2, payload: response.data[0]})
+        dispatch({type: kwargs.dispatchType, payload: response.data.results[0]})
+        if(kwargs.dispatchType2 !== undefined && kwargs.dispatchType2 !== ''){
+          dispatch({type: kwargs.dispatchType2, payload: response.data.results[0]})
+        }
+        
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       } else {
@@ -158,7 +317,7 @@ export function saveItem(kwargs) {
         if (isSale) {
           dispatch({type: 'SET_SALE', payload: response.data})
           dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
-        }else if(isWorkOrder){
+        } else if (isWorkOrder) {
           dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
         }
       }).catch((err) => {
@@ -179,16 +338,16 @@ export function saveItem(kwargs) {
 export function updateItem(kwargs) {
   const item = kwargs.item
   const url = kwargs.url
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
-  const user = kwargs.user
+  // const logCode = kwargs.logCode
+  // const itemOld = kwargs.itemOld
+  // const logModel = kwargs.logModel
+  // const logDescription = kwargs.logDescription
+  // const user = kwargs.user
 
   return function(dispatch) {
 
     axios({
-      method: 'put',
+      method: 'patch',
       url: url,
       data: item
     })
@@ -200,7 +359,7 @@ export function updateItem(kwargs) {
             }
           })
         dispatch({type: kwargs.dispatchType, payload: ''})
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
+        // saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {
         console.log(err)
@@ -383,7 +542,7 @@ export function deleteItemDispatch(kwargs) {
   const user = kwargs.user
   const dispatchType = kwargs.dispatchType
   return function(dispatch) {
-    console.log("Item " + url)
+    console.log('Item ' + url)
     axios({
       method: 'delete',
       url: url
@@ -397,7 +556,7 @@ export function deleteItemDispatch(kwargs) {
             }
           })
         saveLog(logCode, logModel, itemOld, item, logDescription, user)
-        dispatch({type:dispatchType, payload:item.id})
+        dispatch({type: dispatchType, payload: item.id})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       }).catch((err) => {
@@ -412,9 +571,9 @@ export function deleteItemDispatch(kwargs) {
 export function loadGlobalConfig(section, name, success, fail) {
   return function(dispatch) {
     if (name) {
-
-      axios.get(`/api/globalconf/${section}__${name}`).then(function(response) {
-        // TODO Single config fetch
+      // IF ITS SINGLE RETURNS ONLY ITS VALUE
+      axios.get(`/api/globalprefs/${section}__${name}`).then(function(response) {
+        dispatch({type: success, payload: response.data.value})
       }).catch(function(error) {
         dispatch({type: fail, payload: error})
       })
@@ -422,8 +581,8 @@ export function loadGlobalConfig(section, name, success, fail) {
     } else {
       axios.get(`/api/globalprefs`).then(function(response) {
         // The property to modify in reducer
-        const config = response.data
-          ? response.data.filter(item => {
+        const config = response.data.results
+          ? response.data.results.filter(item => {
             return item.section == section
           })
           : {}

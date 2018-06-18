@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {updateStoreCashAmount} from '../actions.js'
 
 @connect((store) => {
-  return {cashAmount: store.pay.cashAmount}
+  return {cashAmount: store.pay.payObject.cash[0].amount}
 })
 export default class PayCash extends React.Component {
 

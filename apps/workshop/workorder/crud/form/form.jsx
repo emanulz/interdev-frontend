@@ -1,10 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { setItem, getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
 import Client from '../../../general/clients/clients.jsx'
+
 import {checkCashAdvance} from '../../actions.js'
 import CreateWorkOrderButtons from './createWorkOrderButtons.jsx'
+import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx'
 
 @connect((store)=>{
     return {
@@ -32,10 +33,6 @@ export default class Form extends React.Component {
     componentWillMount(){
         this.props.dispatch({type:'CLEAR_WORK_ORDER'})
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'})
-    }
-
-    componentWillUpdate(nextProps){
-
     }
 
     componentWillUnmount(){
@@ -411,20 +408,20 @@ export default class Form extends React.Component {
                 <CreateWorkOrderButtons/>
 
             </div>
-
+            <ReceiptPanel/>
         </div>
     }
 
     buildWarrantyElement(){
         let  content=''
 
-        let repaired_by_element = <div>
+        let repaired_by_element = ''
+        if(this.props.work_order.is_closed){
+            repaired_by_element = <div>
             <label>Fecha de Entrega Estimada</label>
-            <input name="warranty_repaired_by" type='date'
-            value={this.props.work_order.warranty_repaired_by}
-            className="form-control" placeholder="Fecha Entrega estimada.."
-            onChange={this.handleInputChange.bind(this)} />
+            <div>{this.props.work_order.warranty_repaired_by}</div>
         </div>
+        }
 
         let repair_body = ''
         if(this.props.work_order.is_warranty){

@@ -17,6 +17,15 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'PAYMENT_NOT_FOUND':
+    {
+      alertify.alert('ERROR: NO EXISTE PAGO!', 'El número de pago consultado no existe en el sistema, intente de nuevo.')
+      return {
+        ...state,
+        messages: true
+      }
+    } // case
+
     case 'NOT_FOUND_SALE':
     {
       alertify.alert('ERROR: NO EXISTE LA VENTA!', `La venta #${action.payload} no existe, o hay un problema para cargarla, por favor intente de nuevo.`)

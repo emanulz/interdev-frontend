@@ -4,10 +4,10 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {clientSelected, searchClient, userSelected} from './actions'
-import {getItemDispatch} from '../../../../utils/api'
-import {getClientDebt} from '../../../../utils/getClientDebt'
+import {userSelected, setClient} from './actions'
 import {recalcCart} from '../../general/product/actions'
+import alertify from 'alertifyjs'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -25,58 +25,89 @@ import {recalcCart} from '../../general/product/actions'
 })
 export default class Clients extends React.Component {
 
+  componentWillMount () {
+
+    const _this = this
+    // LOAD THE DEFAULT CLIENT
+    const setClientPromise = new Promise((resolve, reject) => {
+      const kwargs = {
+        lookUpField: 'code',
+        url: '/api/clients/',
+        lookUpValue: '00',
+        lookUpName: 'código',
+        modelName: 'Clientes'
+      }
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      setClient(kwargs, resolve, reject)
+    })
+
+    setClientPromise.then((data) => {
+      console.log(data)
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      const client = data.results[0]
+      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('ERROR', 'No existe un cliente general, por favor cree uno con el código "00" para las ventas sin cliente.')
+      console.log(err)
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.clientSelected != this.props.clientSelected) {
       // set the discount: default value or 0
 
-      if (!nextProps.clientSelected.saleLoaded) {
+      // const discount = nextProps.client.pred_discount ? nextProps.client.pred_discount : 0
 
-        const kwargs = {
-          client_id: nextProps.clientSelected.id,
-          success: 'SET_CLIENT_DEBT',
-          fail: 'SET_CLIENT_DEBT_FAILED'
-        }
+      // this.props.dispatch(recalcCart(nextProps.cart, discount, nextProps.client))
+      // this.props.dispatch({type: 'SET_GLOBAL_DISCOUNT', payload: discount})
+      this.props.dispatch({type: 'SET_CLIENT_DEBT', payload: nextProps.client.balance})
 
-        const discount = nextProps.client.defaultDiscount ? nextProps.client.defaultDiscount : 0
+      // SETS VALUE OF DEFAULT DISCOUNT TO FIELD OR 0
+      // if (nextProps.client.pred_discount) {
+      //   document.getElementById('discountField').value = discount
+      //   document.getElementById('discountField').disabled = true
+      // } else {
+      //   document.getElementById('discountField').value = ''
+      //   document.getElementById('discountField').disabled = false
+      // }
 
-        this.props.dispatch(recalcCart(nextProps.cart, discount, nextProps.client))
-        this.props.dispatch({type: 'SET_GLOBAL_DISCOUNT', payload: discount})
-
-        this.props.dispatch(getClientDebt(kwargs))
-
-        // SETS VALUE OF DEFAULT DISCOUNT TO FIELD OR 0
-        if (nextProps.client.defaultDiscount) {
-          document.getElementById('discountField').value = discount
-          document.getElementById('discountField').disabled = true
-        } else {
-          document.getElementById('discountField').value = ''
-          document.getElementById('discountField').disabled = false
-        }
-      }
     }
-  }
-
-  componentWillMount() {
-
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch({type: 'CLEAR_CLIENTS', payload: ''})
-
-    const clientKwargs = {
-      url: '/api/clients',
-      successType: 'FETCH_CLIENTS_FULFILLED',
-      errorType: 'FETCH_CLIENTS_REJECTED'
-    }
-
-    this.props.dispatch(getItemDispatch(clientKwargs))
-
   }
 
   inputKeyPress(ev) {
     // if Key pressed id Enter
+    const _this = this
     if (ev.key == 'Enter') {
+      if (ev.target.value) {
+        const code = ev.target.value
 
-      const code = ev.target.value // Split val [0] is code [1] is qty
-      this.props.dispatch(clientSelected(code, this.props.clients)) // dispatchs action according to result
+        const setClientPromise = new Promise((resolve, reject) => {
+          const kwargs = {
+            lookUpField: 'code',
+            url: '/api/clients/',
+            lookUpValue: code,
+            lookUpName: 'código',
+            modelName: 'Clientes'
+          }
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          setClient(kwargs, resolve, reject)
+        })
+
+        setClientPromise.then((data) => {
+          console.log(data)
+          _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+          const client = data.results[0]
+          _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
+        }).catch((err) => {
+          _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+          _this.props.dispatch({type: 'CLIENT_NOT_FOUND', payload: -1})
+          console.log(err)
+        })
+
+      }
+    } else {
+      this.props.dispatch({type: 'SET_CLIENT_FIELD_VALUE', payload: ev.target.value})
     }
 
   }
@@ -92,8 +123,24 @@ export default class Clients extends React.Component {
 
   searchClientClick() {
 
-    this.props.dispatch(searchClient())
+    // this.props.dispatch(searchClient())
+    this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+    document.getElementById('clientSearch-input-field').focus()
+    document.getElementById('clientSearch-input-field').value = ''
 
+    const _this = this
+
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
+
+  }
+
+  showClientPanel() {
+    this.props.dispatch({type: 'SHOW_CREATE_CLIENT_PANEL', payload: -1})
   }
 
   // Main Layout
@@ -123,9 +170,10 @@ export default class Clients extends React.Component {
 
         <div className='client-data-row'>
           <h3>Cliente :</h3>
-          <input disabled={this.props.disabled} onKeyDown={this.inputKeyPress.bind(this)}
-            type='text'
+          <input disabled={this.props.disabled} onKeyUp={this.inputKeyPress.bind(this)}
+            type='text' className='mousetrap'
           />
+          <i className='fa fa-plus-circle' onClick={this.showClientPanel.bind(this)} />
         </div>
 
         <div className='client-data-row'>

@@ -5,11 +5,12 @@ import PayMethod from './components/payMethod.jsx'
 import PayCash from './components/payCahs.jsx'
 import PayCard from './components/payCard.jsx'
 import PayCredit from './components/payCredit.jsx'
-import PayOther from './components/payOther.jsx'
+import PayVoucher from './components/payVoucher.jsx'
 import PaySideBar from './components/paySideBar.jsx'
+import PayTransfer from './components/payTransfer.jsx'
 
 @connect((store) => {
-  return {panelVisible: store.pay.isVisible, payMethod: store.pay.payMethod}
+  return {panelVisible: store.pay.isVisible, payMethod: store.pay.payMethodActive}
 })
 export default class PayPanel extends React.Component {
 
@@ -45,9 +46,15 @@ export default class PayPanel extends React.Component {
         break
       } //  case
 
-      case 'OTHE':
+      case 'VOUC':
       {
-        payMethod = <PayOther />
+        payMethod = <PayVoucher />
+        break
+      } // case
+
+      case 'TRAN':
+      {
+        payMethod = <PayTransfer />
         break
       } // case
 

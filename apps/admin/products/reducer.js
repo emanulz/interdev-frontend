@@ -10,7 +10,7 @@ const productModel = {
   code: '',
   description: '',
   unit: 'uni',
-  fractioned: false,
+  fractioned: true,
   department: '0000000000',
   subdepartment: '0000000000',
   barcode: '',
@@ -22,7 +22,7 @@ const productModel = {
   inventory_enabled: true,
   inventory_minimum: 0,
   inventory_maximum: 0,
-  inventory_negative: true,
+  inventory_negative: false,
   cost: 0,
   cost_based: true,
   utility: 0,
@@ -45,13 +45,14 @@ const productModel = {
   taxes3: 0,
   taxes_code3: '00',
   pred_discount: 0,
-  is_active: false,
+  is_active: true,
   consignment: false,
   generic: false,
   image: null,
   observations: '',
   on_sale: false,
-  max_sale_discount: 0
+  max_sale_discount: 0,
+  max_regular_discount: 5
 }
 
 const stateConst = {

@@ -97,11 +97,11 @@ export default class Filters extends React.Component {
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
-    return <div className='inventories-filters'>
-      <div className='inventories-filters-header'>
+    return <div className='physicalTake-filters'>
+      <div className='physicalTake-filters-header'>
         Filtros
       </div>
-      <div className='inventories-filters-container'>
+      <div className='physicalTake-filters-container'>
 
         <input value={this.props.filterText} onChange={this.setFilterText.bind(this)} type='text'
           placeholder='Filtrar...' className='form-control' />

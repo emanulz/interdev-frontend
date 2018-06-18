@@ -8,6 +8,8 @@ import unpaidSales from './receivable/unpaidSales/reducer.js'
 import saleMovements from './receivable/saleMovements/reducer.js'
 import payments from './payments/reducer.js'
 import invoice from './invoice/reducer.js'
+import config from './config/reducer'
+import pagination from '../../general/pagination/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -17,5 +19,7 @@ export default combineReducers({
   unpaidSales,
   saleMovements,
   payments,
-  invoice
+  invoice,
+  config,
+  pagination
 })

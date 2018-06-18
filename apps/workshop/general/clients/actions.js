@@ -1,21 +1,68 @@
+// ------------------------------------------------------------------------------------------
+// MODULE IMPORTS
+// ------------------------------------------------------------------------------------------
+import alertify from 'alertifyjs'
 
-export function clientSelected(code, clients) {
+import axios from 'axios'
 
-  const clientSelected = clients.findIndex(client => client.code == code) // checks if client exists
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
 
-  const res = (clientSelected == -1) // if not exists dispatch Not Found
-    ? {
-      type: 'CLIENT_NOT_FOUND',
-      payload: -1
-    }
-    : {
-      type: 'CLIENT_SELECTED',
-      payload: {
-        client: clients[clientSelected]
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+// export function clientSelected(code, clients) {
+
+//   const clientSelected = clients.findIndex(client => client.code == code) // checks if client exists
+
+//   const res = (clientSelected == -1) // if not exists dispatch Not Found
+//     ? {
+//       type: 'CLIENT_NOT_FOUND',
+//       payload: -1
+//     }
+//     : {
+//       type: 'CLIENT_SELECTED',
+//       payload: {
+//         client: clients[clientSelected]
+//       }
+//     }
+
+//   return res
+
+// }
+
+export function searchClient(search_key, model, namespace){
+
+  const data = {
+    model: model,
+    max_results: 15,
+    search_key: `!${search_key}`
+  }
+
+  return function(dispatch){
+    axios({
+      method: 'post',
+      url: '/api/search/search/',
+      data: data
+    }).then(response=>{
+      if(response.data.length == 1){
+        dispatch({type: 'CLIENT_SELECTED', payload:response.data[0]})
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+      }else if(response.data.length>1){
+        dispatch({type: `${namespace}_SET_SEARCH_RESULTS`, payload:response.data})
+        dispatch({type: `${namespace}_TOGGLE_SEARCH_PANEL`})
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       }
-    }
 
-  return res
+    }).catch(err=>{
+      alertify.alert('ERROR', `Ocurrió un error en la búsqueda, Error: ${err}`)
+      console.log(err)
+      if (err.response) {
+        console.log(err.response.data)
+      }
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
 
 }
 
@@ -37,9 +84,4 @@ export function userSelected(_id, users) {
 
   return res
 
-}
-
-export function searchClient() {
-
-  return {type: 'CLIENT_SHOW_PANEL', payload: -1}
 }

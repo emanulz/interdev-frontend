@@ -35,13 +35,13 @@ export default class List extends React.Component {
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
-    const clientKwargs = {
-      url: '/api/clients',
-      successType: 'FETCH_CLIENTS_FULFILLED',
-      errorType: 'FETCH_CLIENTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(clientKwargs))
+    // const clientKwargs = {
+    //   url: '/api/clients',
+    //   successType: 'FETCH_CLIENTS_FULFILLED',
+    //   errorType: 'FETCH_CLIENTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(clientKwargs))
     // *******************************************************************
 
     // Then fetch provinces of the model and dispatch to reducer
@@ -69,7 +69,7 @@ export default class List extends React.Component {
     // Then fetch districts of the model and dispatch to reducer
     // *******************************************************************
     const districtKwargs = {
-      url: '/api/districts',
+      url: '/api/districts/?limit=5000',
       successType: 'FETCH_DISTRICTS_FULFILLED',
       errorType: 'FETCH_DISTRICTS_REJECTED'
     }
@@ -80,7 +80,7 @@ export default class List extends React.Component {
     // Then fetch towns of the model and dispatch to reducer
     // *******************************************************************
     const townKwargs = {
-      url: '/api/towns',
+      url: '/api/towns/?limit=6000',
       successType: 'FETCH_TOWNS_FULFILLED',
       errorType: 'FETCH_TOWNS_REJECTED'
     }

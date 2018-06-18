@@ -20,7 +20,7 @@ export default class Movements extends React.Component {
     this.props.dispatch({type: 'PHYSICAL_TAKE_PANEL_MOUNTED', payload: ''})
 
     const productKwargs = {
-      url: '/api/products',
+      url: '/api/productslist',
       successType: 'FETCH_PRODUCTS_FULFILLED',
       errorType: 'FETCH_PRODUCTS_REJECTED'
     }

@@ -45,7 +45,7 @@ export default class UnpaidSales extends React.Component {
 
       const id = nextprops.client.id
       const kwargs = {
-        url: '/api/sales',
+        url: '/api/saleslist',
         clientId: id,
         successType: 'FETCH_CLIENT_SALES_WITH_DEBT_FULFILLED',
         errorType: 'FETCH_CLIENT_SALES_WITH_DEBT_REJECTED'
@@ -62,15 +62,15 @@ export default class UnpaidSales extends React.Component {
     const movClass = sale.type == 'CRED' ? 'credit' : 'debit'
     // const date = moment(sale.created).format('DD/MM/YYYY')
     const date = formatDate(sale.created)
-    const debt = sale.debt ? sale.debt : 0
-    if (debt > 0) {
+    const balance = sale.balance ? sale.balance : 0
+    if (balance > 0) {
       return <tr className={`${movClass}`} key={sale.id}>
-        <td>{sale.bill_number}</td>
+        <td>{sale.consecutive}</td>
         <td>{date}</td>
         <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
-        <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td>
-        <td>₡ {sale.debt ? sale.debt.formatMoney(2, ',', '.') : 0}</td>
-        <td><Link to={`/credits/receivable/${client.code}/${sale.bill_number}`}>Ver Movimientos</Link></td>
+        {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}
+        <td>₡ {sale.balance ? sale.balance.formatMoney(2, ',', '.') : 0}</td>
+        <td><Link to={`/credits/receivable/${client.code}/${sale.consecutive}`}>Ver Movimientos</Link></td>
       </tr>
     }
   }
@@ -110,7 +110,7 @@ export default class UnpaidSales extends React.Component {
             {`${this.props.client.code} - ${this.props.client.name} ${this.props.client.last_name}`}
           </div>
           <div>
-            ₡ {this.props.client.debt.formatMoney(2, ',', '.')}
+            ₡ {Math.abs(parseFloat(this.props.client.balance)).formatMoney(2, ',', '.')}
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default class UnpaidSales extends React.Component {
               <th>Factura #</th>
               <th>Fecha</th>
               <th>Monto</th>
-              <th>Abonos</th>
+              {/* <th>Abonos</th> */}
               <th>Deuda</th>
               <th>Movimientos</th>
             </tr>

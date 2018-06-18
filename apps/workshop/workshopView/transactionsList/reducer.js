@@ -29,16 +29,16 @@ const work_order_model = {
 
 const stateConst = {
     cashAdvanceList: [],
-    cashAdvanceListOld:[],
+    cashAdvancesToDelete: [],
 
     partsRequestList: [],
-    partsRequestListOld: [],
+    partsRequestToDelete: [],
 
     laborList: [],
-    laborListOld: [],
+    laborsToDelete: [],
 
     usedPartList: [],
-    usedPartListOld: [],
+    usedPartsToDelete: [],
   
 }
 
@@ -62,10 +62,9 @@ export default function reducer(state=stateConst, action){
             newCashList[action.payload.index] = action.payload.item
             return {
                 ...state,
-                cashAdvanceList : newCashList
+                cashAdvanceList: newCashList
             }
         }
-
         case 'USED_PART_UPDATED':
         {
             const newUsedPartList = [...state.usedPartList]
@@ -77,10 +76,7 @@ export default function reducer(state=stateConst, action){
         }
         case 'CLEAR_TRANSACTIONS_LIST':
         {
-            
-            //newCashAdvanceList = []
-            //newPartsRequestList = []
-            //newLaborList = []
+
             return{
                 ...state,
                 cashAdvanceList : [],
@@ -99,15 +95,18 @@ export default function reducer(state=stateConst, action){
         case 'CASH_ADVANCE_DELETED':
         {
             const index_in_cash = state.cashAdvanceList.findIndex(a=>a.uuid === action.payload)
-            const index_in_cash_old = state.cashAdvanceListOld.findIndex(a=>a.uuid === action.payload)
+            
+
+            const newCashToDelete = [...state.cashAdvancesToDelete]
+            newCashToDelete.push(state.cashAdvanceList[index_in_cash].element.id)
+
             const new_list = [...state.cashAdvanceList]
             new_list.splice(index_in_cash,1)
-            const new_old = [...state.cashAdvanceListOld]
-            new_old.splice(index_in_cash_old, 1)
+
             return {
                 ...state, 
                 cashAdvanceList:new_list,
-                cashAdvanceListOld:new_old
+                cashAdvancesToDelete: newCashToDelete
             }
         }
         case 'LABOR_ITEM_DELETED':
@@ -129,8 +128,8 @@ export default function reducer(state=stateConst, action){
         }
         case 'USED_PART_DELETED':
         {
-            const index_in_used = state.laborList.findIndex(a=>a.uuid === action.payload)
-            const index_in_used_old = state.laborListOld.findIndex(a=>a.uuid === action.payload)
+            const index_in_used = state.usedPartList.findIndex(a=>a.uuid === action.payload)
+            const index_in_used_old = state.usedPartListOld.findIndex(a=>a.uuid === action.payload)
             
             const new_list = [...state.usedPartList]
             new_list.splice(index_in_used, 1)
@@ -143,6 +142,23 @@ export default function reducer(state=stateConst, action){
                 usedPartListOld:new_old
             }
 
+        }
+        case 'PART_REQUEST_DELETED':
+        {
+            const index_part_request =  state.partsRequestList.findIndex(a=>a.uuid === action.payload)
+            const index_part_request_old = state.partsRequestListOld.findIndex(a=>a.uuid===action.payload)
+
+            const new_list = [...state.partsRequestList]
+            new_list.splice(index_part_request, 1)
+
+            const new_old = [...state.partsRequestListOld]
+            new_old.splice(index_part_request_old, 1)
+
+            return {
+                ...state,
+                partsRequestList: new_list,
+                partsRequestListOld: new_old
+            }
         }
         case 'LABOR_LOADED':
         {
@@ -216,10 +232,11 @@ export default function reducer(state=stateConst, action){
                 usedPartListOld: new_old_list
             }
         }
-        case 'CASH_ADVANCES_LOADED':
+        //case 'CASH_ADVANCES_LOADED':
+        case 'SET_WORK_ORDER_VIEW':
         {
-            const cash_objects = action.payload.map(item=>{
-               
+            console.log("SET_WORK_ORDER AT TRANSACTION LIST")
+            const cash_objects = action.payload.cash_advances.map(item=>{
                 const cash = {
                     id:item.id,
                     consecutive:item.consecutive,
@@ -247,17 +264,96 @@ export default function reducer(state=stateConst, action){
                     uuid:cash.id,
                     saved : true
                 }
+                
                 return cash_item
             })
-            const new_old_list = new_cash_list.map(item=>item)
             return {
                 ...state,
                 cashAdvanceList:new_cash_list,
-                cashAdvanceListOld: new_old_list
             }
 
         }
+        case 'PARTS_REQUEST_LOADED':
+        {
+            console.log('PARTS REQUEST LOADED')
+            const parts_objects = action.payload.map(item=>{
+                //console.log(item)
+                const part = {
+                    id:item.id,
+                    work_order_id:item.work_order_id,
+                    employee:JSON.parse(item.employee),
+                    amount:item.amount,
+                    product:JSON.parse(item.product),
+                    id_movement_workshop: item.id_movement_workshop,
+                    id_movement_origin: item.id_movement_origin,
+                    created:item.created,
+                    updated:item.updated
+                }
+                return part
+            })
 
+            const new_part_objects = parts_objects.map(part=>{
+                const new_item = {
+                    element: part.product,
+                    priceToUse: part.product.price,
+                    qty:part.amount,
+                    subTotal: part.product.cost*part.amount,
+                    type: 'PART_REQUEST',
+                    uuid: part.id,
+                    work_order_id: part.work_order_id,
+                    id:part.id,
+                    saved:true
+                }
+                return new_item
+            })
+
+            return {
+                ...state,
+                partsRequestList: new_part_objects
+            }
+        }
+        case 'PARTS_REQUEST_CREATED':
+        {
+            console.log('Parts request created')
+            const parts_objects = action.payload.map(item=>{
+                const part = {
+                    id:item.id,
+                    work_order_id:item.work_order_id,
+                    employee:JSON.parse(item.employee),
+                    amount:item.amount,
+                    product:JSON.parse(item.product),
+                    id_movement_workshop: item.id_movement_workshop,
+                    id_movement_origin: item.id_movement_origin,
+                    created:item.created,
+                    updated:item.updated
+                }
+                return part
+            })
+
+            const new_part_objects = parts_objects.map(part=>{
+                const new_item = {
+                    element: part.product,
+                    priceToUse: part.product.price,
+                    qty:part.amount,
+                    subTotal: part.product.cost*part.amount,
+                    type: 'PART_REQUEST',
+                    uuid: part.id,
+                    work_order_id: part.work_order_id,
+                    id:part.id,
+                    saved:true
+                }
+                return new_item
+            })
+            
+ 
+            const new_parts_list = (state.partsRequestList.concat(new_part_objects)).filter(a=>{
+                return a.saved === true
+            })
+            return {
+                ...state,
+                partsRequestList: new_parts_list
+            }
+        }
         case 'CASH_ADVANCE_MOVEMENTS_CREATED':
         {
             const cash_objects = action.payload.map(item=>{
@@ -463,7 +559,6 @@ export default function reducer(state=stateConst, action){
             }
 
         }
-
         case 'LABOR_MOVEMENTS_CREATED':
         {
 
@@ -503,7 +598,6 @@ export default function reducer(state=stateConst, action){
             }
             
         }
-
         case 'ADD_TO_LABOR_LIST':
         {
             return {
@@ -514,7 +608,6 @@ export default function reducer(state=stateConst, action){
                 ]
             }
         }
-
         case 'ADD_TO_CASH_ADVANCE_LIST':
         {
             return {
@@ -537,6 +630,7 @@ export default function reducer(state=stateConst, action){
         }
         case 'ADD_TO_PARTS_LIST':
         {
+            console.log('Payload ' + inspect(action.payload))
             return {
                 ...state,
                 partsRequestList: [
@@ -547,6 +641,10 @@ export default function reducer(state=stateConst, action){
         }
         case 'UPDATE_PARTS_LIST':
         { 
+            if(action.payload.item.saved){ //disallow updating an already saved item
+                console.log('upate not allowed, already saved')
+                return 
+            }
             const newPartsList = [...state.partsRequestList]
             newPartsList[action.payload.index] = action.payload.item
             return {
@@ -554,7 +652,6 @@ export default function reducer(state=stateConst, action){
                 partsRequestList : newPartsList
             }
         }
-
         case 'DELETE_PART_FROM_LIST':
         {
             const newPartsList = [...state.partsRequestList]
@@ -564,10 +661,7 @@ export default function reducer(state=stateConst, action){
                 partsRequestList: newPartsList
             }
         }
-        default:
-        {
 
-        }
     }
 
     return state

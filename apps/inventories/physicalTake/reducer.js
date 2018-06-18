@@ -1,13 +1,26 @@
+const inventoryMovementModel = {
+  movement_type: '',
+  user: '',
+  amount: '',
+  product: '',
+  product_id: '',
+  description: '',
+  warehouse: '',
+  warehouse_id: '',
+  toWarehouse_id: '',
+  fromWarehouse_id: ''
+}
+
 const stateConst = {
-  fullWidth: false,
-  takeObj: {}
+  inventoryMovementActive: inventoryMovementModel,
+  fullWidth: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'TOGGLE_FULL_WIDTH':
+    case 'TOGGLE_FULL_WIDTH_PHYSICAL':
     {
       const width = !state.fullWidth
       return {

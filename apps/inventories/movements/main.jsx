@@ -21,7 +21,7 @@ export default class Movements extends React.Component {
     this.props.dispatch({type: 'MOVEMENTS_PANEL_MOUNTED', payload: ''})
 
     const productKwargs = {
-      url: '/api/products',
+      url: '/api/productslist',
       successType: 'FETCH_PRODUCTS_FULFILLED',
       errorType: 'FETCH_PRODUCTS_REJECTED'
     }
@@ -36,13 +36,13 @@ export default class Movements extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getItemDispatch(warehouseKwargs))
 
-    const inventoryMovementKwargs = {
-      url: '/api/inventorymovements',
-      successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
-      errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(inventoryMovementKwargs))
+    // const inventoryMovementKwargs = {
+    //   url: '/api/inventorymovements',
+    //   successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
+    //   errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getItemDispatch(inventoryMovementKwargs))
 
     const productDepartmentKwargs = {
       url: '/api/productdepartments',

@@ -3,13 +3,17 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import DataTable from '../../../../../general/dataTable/dataTable.jsx'
-import { getItemDispatch } from '../../../../../utils/api.js'
+import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
+import { getPaginationItemDispatch } from '../../../../../utils/api.js'
+import {Link} from 'react-router-dom'
+import Pagination from '../../../../../general/pagination/pagination.jsx'
+import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
 
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    clients: store.clients.clients
+    clients: store.clients.clients,
+    pageSize: store.pagination.pageSize
   }
 })
 export default class List extends React.Component {
@@ -20,13 +24,12 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
 
     const clientKwargs = {
-      url: '/api/clients',
+      url: `/api/clients/?limit=${this.props.pageSize}`,
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }
 
-    this.props.dispatch(getItemDispatch(clientKwargs))
-
+    this.props.dispatch(getPaginationItemDispatch(clientKwargs))
   }
 
   render() {
@@ -60,13 +63,31 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <DataTable headerOrder={headerOrder} model='clients' data={this.props.clients}
-      addLink='/admin/clients/add' idField='id' />
+    const list = <AdminTable headerOrder={headerOrder} model='clients' data={this.props.clients}
+      idField='id' />
 
     const content = this.props.fetching ? fetching : list
 
+    const addLink = <Link className='addBtn' to={'/admin/clients/add'}>
+      <span className='fa fa-plus' />
+      Agregar
+    </Link>
+
     return <div className='list list-container'>
-      <h1>Listado de Clientes:</h1>
+      <div className='admin-list-header'>
+        <h1>Mantenimiento de Clientes:</h1>
+        {addLink}
+      </div>
+      <div className='admin-list-search'>
+        <input
+          type='text'
+          placeholder='Ingrese un texto para buscar...'
+        />
+      </div>
+      <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+        <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+      </div>
       {content}
     </div>
 

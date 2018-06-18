@@ -2,51 +2,43 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {inCart: store.cart.cartItems, globalDiscount: store.cart.globalDiscount}
+  return {payment: store.payments.paymentActive}
 })
 export default class Table extends React.Component {
 
   // Main Layout
   render() {
 
-    const cartItems = this.props.inCart
-    const globalDiscount = (this.props.globalDiscount)
-      ? <td className='right-in-table'>{this.props.globalDiscount}</td>
-      : <td style={{'display': 'none'}} >-</td>
-    const items = cartItems.length
-      ? cartItems.map((item) => {
-        const taxesText = (item.product.use_taxes)
-          ? `G`
-          : `E`
+    const sales = this.props.payment.sales
+    const items = sales.length
+      ? sales.map((item) => {
 
-        return <tr key={item.uuid}>
+        const dateObj = item.sale.created ? new Date(item.sale.created) : ''
+        const date = item.sale.created
+          ? `${('0' + dateObj.getDate()).slice(-2)}/
+          ${('0' + (dateObj.getMonth() + 1)).slice(-2)}/
+          ${dateObj.getFullYear()}`
+          : '01/01/1970'
+
+        return <tr key={item.sale.id}>
           <td>
-            {item.product.code}
+            {item.sale.consecutive}
           </td>
           <td>
-            {item.product.description}
+            {date}
           </td>
-          <td className='right-in-table'>
-            {item.qty}
+          <td>
+            ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
           </td>
-          <td className='right-in-table'>
-            ₡ {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
+          <td>
+            ₡ {Math.abs(parseFloat(item.sale.balance)).formatMoney(2, ',', '.')}
           </td>
-          <td className='right-in-table'>
-            {item.discount}
-          </td>
-          {globalDiscount}
-          <td className='right-in-table'>
-            {taxesText}
-          </td>
-          <td className='right-in-table'>
-            ₡ {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
+          <td>
+            ₡ {(Math.abs(parseFloat(item.sale.balance)) - parseFloat(item.amount)).formatMoney(2, ',', '.')}
           </td>
         </tr>
       })
       : <tr>
-        <td>--</td>
-        <td>-</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
@@ -54,20 +46,14 @@ export default class Table extends React.Component {
         <td>-</td>
       </tr>
 
-    const globalDiscountRow = this.props.globalDiscount ? <th className='right-in-table'>Des2 %</th>
-      : <th style={{'display': 'none'}} >-</th>
-
     return <table className='full-invoice-table table'>
       <thead>
         <tr>
-          <th>Código</th>
-          <th className='description-row'>Descripción</th>
-          <th className='right-in-table'>Cantidad</th>
-          <th className='right-in-table'>P.U</th>
-          <th className='right-in-table'>Des%</th>
-          {globalDiscountRow}
-          <th className='right-in-table'>IV</th>
-          <th className='right-in-table'>Precio</th>
+          <th>Factura #</th>
+          <th className='description-row'>Fecha Factura</th>
+          <th>Monto</th>
+          <th>Saldo Anterior</th>
+          <th>Nuevo Saldo</th>
         </tr>
       </thead>
       <tbody>{items}</tbody>

@@ -3,9 +3,6 @@
  */
 import React from 'react'
 
-//import subcomponents
-import Content from './content/content.jsx'
-
 import routes from './routes.js'
 import {connect} from 'react-redux'
 import { checkUserPermissions } from '../../../utils/checkPermissions';
@@ -34,8 +31,6 @@ export default class WorkOrder extends React.Component{
 
         this.props.dispatch({type: 'FETCHING_STARTED', payload:''})
         this.props.dispatch(checkUserPermissions(kwargs))
-        
-
         
     }
 

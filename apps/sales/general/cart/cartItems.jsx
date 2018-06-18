@@ -14,7 +14,8 @@ const Mousetrap = require('mousetrap')
     client: store.clients.clientSelected,
     globalDiscount: store.cart.globalDiscount,
     // disabled: store.sales.completed,
-    cartItemActive: store.cart.cartItemActive
+    cartItemActive: store.cart.cartItemActive,
+    warehouse_id: store.config.salesWarehouse
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -51,7 +52,7 @@ export default class CartItems extends React.Component {
       }
 
       _this.props.dispatch(addSubOne(_this.props.cartItemActive, true, _this.props.inCart, _this.props.globalDiscount,
-        _this.props.client))
+        _this.props.client, _this.props.warehouse_id))
     })
 
     Mousetrap.bind('mod+f', function(e) {
@@ -90,7 +91,7 @@ export default class CartItems extends React.Component {
       alertify.prompt(`Nueva cantidad para el producto seleccionado`, 'Ingrese la nueva cantidad para el producto seleccionado', ''
         , function(evt, value) {
           __this.props.dispatch(updateQtyCode(__this.props.cartItemActive, value, __this.props.inCart,
-            __this.props.globalDiscount, __this.props.client))
+            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id))
         }
         , function() {})
         .set('labels', {ok: 'Ok', cancel: 'Cancelar'})
@@ -126,7 +127,7 @@ export default class CartItems extends React.Component {
     const qty = parseFloat((ev.target.value))
       ? ev.target.value
       : 0
-    this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client))
+    this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client, this.props.warehouse_id))
 
   }
 
@@ -175,6 +176,11 @@ export default class CartItems extends React.Component {
 
   fieldFocus(ev) {
     ev.target.select()
+  }
+
+  showProductPanel(product, ev) {
+    this.props.dispatch({type: 'SET_SINGLE_PRODUCT_ACTIVE', payload: product})
+    this.props.dispatch({type: 'TOGGLE_SINGLE_PRODUCT_PANEL', payload: product})
   }
 
   // Render the items in cart using table rows
@@ -226,11 +232,11 @@ export default class CartItems extends React.Component {
         key={item.uuid}
         onClick={this.setCartItemActive.bind(this, item.product.code)}>
 
-        <div className='cart-body-item-code'>
+        <div className='cart-body-item-code' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
           <h5>Código</h5>
           {item.product.code}
         </div>
-        <div className='cart-body-item-description'>
+        <div className='cart-body-item-description' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
           <h5>Desc</h5>
           {item.product.description}
         </div>

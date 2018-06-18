@@ -1,8 +1,7 @@
 import React from 'react'
 import alertify from 'alertifyjs'
 import {connect} from 'react-redux'
-import {checkWorkOrder, cleanWorkOrder} from '../../actions'
-import { saveItem } from '../../../../../utils/api'
+import {checkWorkOrder, cleanWorkOrder, createWorkOrder} from '../../actions'
 import { withRouter } from 'react-router-dom'
 
 @connect((store)=>{
@@ -16,40 +15,23 @@ import { withRouter } from 'react-router-dom'
 class CreateWorkOrderButtons extends React.Component {
 
     saveWorkOrder(redirect){
-        const work_order = cleanWorkOrder(this.props.work_order)
-        const user = this.props.user
-        const work_order_old = {noPrevious:'Initial creation'}
-
+        const work_order = JSON.parse(JSON.stringify(cleanWorkOrder(this.props.work_order)))
         this.props.work_order.client_id = this.props.client.id
-
-        this.props.work_order.receiving_employee = user
-        this.props.work_order.client = this.props.client
-        
+ 
         //check the work_order object before saving it
         const work_order_ok = checkWorkOrder(work_order)
-
-        //stringify objects
-        this.props.work_order.client = JSON.stringify(this.props.client)
-        this.props.work_order.receiving_employee = JSON.stringify(user)
         //stringify array objects before saving
         work_order.observations_list = JSON.stringify(work_order.observations_list)
         work_order.malfunction_details = JSON.stringify(work_order.malfunction_details)
 
-
-
         if(work_order_ok){
+            console.log('OK, create request')
             const kwargs = {
                 url:'/api/workorders/',
                 item : work_order,
-                logCode: 'WORKORDER_CREATE',
-                logDescription: 'Creación de nueva orden de trabajo',
-                logModel: 'WORK_ORDER',
-                user: user,
-                itemOld: work_order_old,
                 successMessage: 'Orden de trabajo creada Correctamente',
                 errorMessage: 'Hubo un error al crear la orden de trabjo, intente de nuevo.',
                 dispatchType: 'CLEAR_WORK_ORDER',
-                isWorkOrder: true
             }
 
             if(redirect){
@@ -57,7 +39,7 @@ class CreateWorkOrderButtons extends React.Component {
                 kwargs.history = this.props.history
             }
             this.props.dispatch({type:'FETCHING_STARTED'})
-            this.props.dispatch(saveItem(kwargs))
+            this.props.dispatch(createWorkOrder(kwargs))
         }
     }
 

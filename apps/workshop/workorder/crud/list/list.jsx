@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import DataTable from '../../../../../general/dataTable/dataTable.jsx'
+import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
 import { getItemDispatch } from '../../../../../utils/api.js'
 
 @connect((store) => {
@@ -18,7 +19,7 @@ export default class List extends React.Component{
         //truly displays the updated items
 
         const workordersKwargs = {
-            url: '/api/workorders',
+            url: '/api/listworkorders',
             successType: 'FETCH_WORKORDERS_FULFILLED',
             errorType: 'FETCH_WORKORDERS_REJECTED'
         }
@@ -31,7 +32,7 @@ export default class List extends React.Component{
             {
                 field: 'consecutive',
                 text: 'Consecutivo',
-                type: 'primary'
+                type: 'primaryNoEdit'
             },
             {
                 field: 'is_closed',
@@ -62,13 +63,21 @@ export default class List extends React.Component{
         ]
 
         const fetching = <div/>
-        const list = <DataTable headerOrder={headerOrder} app="workshop" model='workorders' data={this.props.table_friendly_orders}
+
+        const list = <AdminTable headerOrder={headerOrder} app="workshop" model='workshopview' 
+            data={this.props.table_friendly_orders}
             addLink='/workshop/workorder/add' idField='id'/>
 
         const content = this.props.fetching ? fetching : list
 
         return <div className='list list-container'>
             <h1>Listado Órdenes de Trabajo: </h1>
+            <div className='admin-list-search'>
+                <input
+                type='text'
+                placeholder='Ingrese un texto para buscar...'
+                />
+            </div>
             {content}
         </div>
     }
