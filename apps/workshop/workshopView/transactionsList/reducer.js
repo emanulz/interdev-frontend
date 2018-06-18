@@ -95,8 +95,6 @@ export default function reducer(state=stateConst, action){
         case 'CASH_ADVANCE_DELETED':
         {
             const index_in_cash = state.cashAdvanceList.findIndex(a=>a.uuid === action.payload)
-            
-
             const newCashToDelete = [...state.cashAdvancesToDelete]
             newCashToDelete.push(state.cashAdvanceList[index_in_cash].element.id)
 
@@ -112,34 +110,32 @@ export default function reducer(state=stateConst, action){
         case 'LABOR_ITEM_DELETED':
         {
             const index_in_labor = state.laborList.findIndex(a=>a.uuid === action.payload)
-            const index_in_labor_old = state.laborListOld.findIndex(a=>a.uuid === action.payload)
+            const newLaborToDelete = [...state.laborsToDelete]
+            newLaborToDelete.push(state.laborList[index_in_labor].element.id)
             
             const new_list = [...state.laborList]
             new_list.splice(index_in_labor, 1)
 
-            const new_old = [...state.laborListOld]
-            new_old.splice(index_in_labor_old, 1)
             return {
                 ...state,
                 laborList:new_list,
-                laborListOld:new_old
+                laborsToDelete: newLaborToDelete
             }
 
         }
         case 'USED_PART_DELETED':
         {
             const index_in_used = state.usedPartList.findIndex(a=>a.uuid === action.payload)
-            const index_in_used_old = state.usedPartListOld.findIndex(a=>a.uuid === action.payload)
+            const newUsedToDelete = [...state.usedPartsToDelete]
+            newUsedToDelete.push(state.usedPartList[index_in_used].element.id)
             
             const new_list = [...state.usedPartList]
             new_list.splice(index_in_used, 1)
 
-            const new_old = [...state.usedPartListOld]
-            new_old.splice(index_in_used_old, 1)
             return {
                 ...state,
-                usedPartList:new_list,
-                usedPartListOld:new_old
+                usedPartList: new_list,
+                usedPartsToDelete: newUsedToDelete
             }
 
         }
@@ -232,10 +228,9 @@ export default function reducer(state=stateConst, action){
                 usedPartListOld: new_old_list
             }
         }
-        //case 'CASH_ADVANCES_LOADED':
         case 'SET_WORK_ORDER_VIEW':
         {
-            console.log("SET_WORK_ORDER AT TRANSACTION LIST")
+            console.log("SETTING CASH AT TRANSACTION LIST")
             const cash_objects = action.payload.cash_advances.map(item=>{
                 const cash = {
                     id:item.id,
@@ -253,7 +248,7 @@ export default function reducer(state=stateConst, action){
 
                 return cash
             })
-
+            
             const new_cash_list = cash_objects.map(cash =>{
                 const cash_item = {
                     element: cash,
@@ -267,9 +262,53 @@ export default function reducer(state=stateConst, action){
                 
                 return cash_item
             })
+
+            console.log("SETTING_LABOR AT TRANSACTION_LIST")
+
+            const labor_objects = action.payload.labor_objects.map(item=>{
+                const labor = JSON.parse(JSON.stringify(item))
+                labor.employee = JSON.parse(labor.employee)
+                return labor
+            })
+            const new_labor_list = labor_objects.map(labor=>{
+                const labor_object = {
+                    element: labor,
+                    priceToUse: labor.amount,
+                    qty: 1,
+                    subTotal: labor.amount,
+                    type: 'LABOR',
+                    uuid: labor.id,
+                    saved: true
+                }
+                return labor_object
+            })
+
+            console.log("SETTING_USED AT TRANSACTION_LIST")
+            const used_objects = action.payload.used_objects.map(item=>{
+                const used = JSON.parse(JSON.stringify(item))
+                used.employee = JSON.parse(used.employee)
+                return used
+            })
+
+            const new_used_list = used_objects.map(used=>{
+                const used_object = {
+                    element: used,
+                    priceToUse: used.amount,
+                    qty: 1,
+                    subTotal: used.amount,
+                    type: 'USED_PART',
+                    uuid: used.id,
+                    saved: true
+                }
+                return used_object
+            })
+
+
             return {
                 ...state,
-                cashAdvanceList:new_cash_list,
+                cashAdvanceList: new_cash_list,
+                laborList: new_labor_list,
+                usedPartList: new_used_list
             }
 
         }
