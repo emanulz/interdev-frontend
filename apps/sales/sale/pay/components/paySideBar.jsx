@@ -76,14 +76,14 @@ export default class PaySideBar extends React.Component {
     let change = 0
     let payButtonClass = 'pay-tag tag-button enable'
     const total = parseFloat(this.props.cart.cartTotal)
-    const cash = parseFloat(this.props.pay.cashAmount)
+    const cash = parseFloat(this.props.pay.payObject.cash[0].amount)
     const totalInPay = this.calcTotalInPay()
 
     switch (this.props.payMethod) {
 
       case 'CASH':
       {
-        change = cash - total
+        change = totalInPay - total
         payButtonClass = (total > 0 && change >= 0)
           ? 'pay-tag tag-button enable'
           : 'pay-tag tag-button'
@@ -94,7 +94,7 @@ export default class PaySideBar extends React.Component {
       {
         const auth = this.props.pay.cardAuth
         const digits = this.props.pay.cardDigits
-        change = parseFloat(this.props.pay.cashAmount) - parseFloat(this.props.total)
+        change = totalInPay - total
         payButtonClass = (total > 0 && auth && digits)
           ? 'pay-tag tag-button enable'
           : 'pay-tag tag-button'
@@ -102,6 +102,7 @@ export default class PaySideBar extends React.Component {
       }
       case 'CRED':
       {
+        change = totalInPay - total
         const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
         payButtonClass = (total > 0 && total <= available && this.props.client.has_credit)
           ? 'pay-tag tag-button enable'
