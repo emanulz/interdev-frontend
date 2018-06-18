@@ -55,7 +55,7 @@ class UpdateButtons extends React.Component {
 
       updatePromise.then(() => {
         const productKwargs = {
-          url: '/api/products',
+          url: '/api/productslist',
           successType: 'FETCH_PRODUCT_FULFILLED',
           successType2: 'CLEAR_PRODUCT',
           errorType: 'FETCH_PRODUCTS_REJECTED'

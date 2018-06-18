@@ -176,14 +176,14 @@ class Form2 extends React.Component {
             <label>Desc max regular %</label>
             <input value={this.props.product.max_regular_discount} name='max_regular_discount'
               onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 
           <div className='col-xs-6 first'>
             <label>Desc Predeterminado %</label>
             <input value={this.props.product.pred_discount} name='pred_discount'
               onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 
         </div>
@@ -194,7 +194,7 @@ class Form2 extends React.Component {
             <label>Desc max en promoción %</label>
             <input value={this.props.product.max_sale_discount} name='max_sale_discount'
               onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 
           <div className='col-xs-6 second'>
