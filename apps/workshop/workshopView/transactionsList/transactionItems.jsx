@@ -58,23 +58,7 @@ export default class TransactionItems extends React.Component {
                 let index = this.props.usedPartList.findIndex(a=>a.uuid === item_uuid)
                 //check if the item was already store in the database
                 const item =  this.props.usedPartList[index]
-                if(item.element.work_order_id === undefined){
-                    this.props.dispatch({type:'USED_PART_DELETED',payload:item.uuid})
-                    return
-                }
-                
-                const kwargs = {
-                    item:this.props.usedPartList[index].element,
-                    url: `/api/usedparts/${this.props.usedPartList[index].element.id}`,
-                    modelName: 'USED_PART',
-                    logCode: 'Transación parte usada Borrada',
-                    itemOld: this.props.usedPartList[index],
-                    logModel: 'USED_PART',
-                    user: JSON.stringify(this.props.user),
-                    dispatchType: 'USED_PART_DELETED'
-                }
-                this.props.dispatch({type:'FETCHING_STARTED'})
-                this.props.dispatch(deleteItemDispatch(kwargs))
+                this.props.dispatch({type:'USED_PART_DELETED', payload:item.uuid})
                 break
             }
             case 'LABOR':
