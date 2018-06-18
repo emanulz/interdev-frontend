@@ -29,16 +29,16 @@ const work_order_model = {
 
 const stateConst = {
     cashAdvanceList: [],
-    cashAdvanceListOld:[],
+    cashAdvancesToDelete: [],
 
     partsRequestList: [],
-    partsRequestListOld: [],
+    partsRequestToDelete: [],
 
     laborList: [],
-    laborListOld: [],
+    laborsToDelete: [],
 
     usedPartList: [],
-    usedPartListOld: [],
+    usedPartsToDelete: [],
   
 }
 
@@ -62,7 +62,7 @@ export default function reducer(state=stateConst, action){
             newCashList[action.payload.index] = action.payload.item
             return {
                 ...state,
-                cashAdvanceList : newCashList
+                cashAdvanceList: newCashList
             }
         }
         case 'USED_PART_UPDATED':
@@ -76,10 +76,7 @@ export default function reducer(state=stateConst, action){
         }
         case 'CLEAR_TRANSACTIONS_LIST':
         {
-            
-            //newCashAdvanceList = []
-            //newPartsRequestList = []
-            //newLaborList = []
+
             return{
                 ...state,
                 cashAdvanceList : [],
@@ -98,15 +95,18 @@ export default function reducer(state=stateConst, action){
         case 'CASH_ADVANCE_DELETED':
         {
             const index_in_cash = state.cashAdvanceList.findIndex(a=>a.uuid === action.payload)
-            const index_in_cash_old = state.cashAdvanceListOld.findIndex(a=>a.uuid === action.payload)
+            
+
+            const newCashToDelete = [...state.cashAdvancesToDelete]
+            newCashToDelete.push(state.cashAdvanceList[index_in_cash].element.id)
+
             const new_list = [...state.cashAdvanceList]
             new_list.splice(index_in_cash,1)
-            const new_old = [...state.cashAdvanceListOld]
-            new_old.splice(index_in_cash_old, 1)
+
             return {
                 ...state, 
                 cashAdvanceList:new_list,
-                cashAdvanceListOld:new_old
+                cashAdvancesToDelete: newCashToDelete
             }
         }
         case 'LABOR_ITEM_DELETED':
@@ -232,10 +232,11 @@ export default function reducer(state=stateConst, action){
                 usedPartListOld: new_old_list
             }
         }
-        case 'CASH_ADVANCES_LOADED':
+        //case 'CASH_ADVANCES_LOADED':
+        case 'SET_WORK_ORDER_VIEW':
         {
-            const cash_objects = action.payload.map(item=>{
-               
+            console.log("SET_WORK_ORDER AT TRANSACTION LIST")
+            const cash_objects = action.payload.cash_advances.map(item=>{
                 const cash = {
                     id:item.id,
                     consecutive:item.consecutive,
@@ -263,13 +264,12 @@ export default function reducer(state=stateConst, action){
                     uuid:cash.id,
                     saved : true
                 }
+                
                 return cash_item
             })
-            const new_old_list = new_cash_list.map(item=>item)
             return {
                 ...state,
                 cashAdvanceList:new_cash_list,
-                cashAdvanceListOld: new_old_list
             }
 
         }

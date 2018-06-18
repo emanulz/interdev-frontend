@@ -1,12 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Client from '../general/clients/clients.jsx'
+
 import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
-import {setItem} from '../../../utils/api'
+import {setItem, getSingleItemDispatch} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {saveLaborTransactions, saveCashAdvanceTransactions, openCloseWorkOrder, saveUsedPartTransactions, saveInventoryTransactions, createPartRequest} from './actions'
-import {loadCashAdvances, loadLaborTransactions,loadUsedPartsTransactions, loadPartRequestTransactions} from '../general/actions'
+import {openCloseWorkOrder} from './actions'
+import {patchWorkView} from '../general/actions'
 import alertify from 'alertifyjs'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import SearchProduct from '../general/search/products/searchPanel.jsx'
@@ -18,19 +18,15 @@ let inspect = require('util-inspect')
 @connect((store)=>{
     return{
         work_order: store.workshopview.work_order,
-        work_order_old: store.workshopview.work_order_old,
 
         partsRequestList: store.transactionsList.partsRequestList,
-        partsRequestListOld: store.transactionsList.partsRequestListOld,
 
         laborList: store.transactionsList.laborList,
-        laborListOld: store.transactionsList.laborListOld,
 
         cashAdvanceList: store.transactionsList.cashAdvanceList,
-        cashAdvanceListOld: store.transactionsList.cashAdvanceListOld, 
+        cashAdvancesToDelete: store.transactionsList.cashAdvancesToDelete,
 
         usedPartList: store.transactionsList.usedPartList,
-        usedPartListOld: store.transactionsList.usedPartListOld,
 
         user: store.user,
         client: store.workshopview.work_order.client
@@ -44,10 +40,9 @@ export default class WorkshopView extends React.Component {
 
         const kwargs = {
             lookUpField: 'consecutive',
-            url: '/api/workorders/',
+            url: '/api/listworkorders/',
             lookUpValue: work_order_consecutive,
-            dispatchType: 'SET_WORK_ORDER_VIEW',
-            dispatchType2: 'SET_OLD_WORK_ORDER_VIEW',
+            dispatchType: 'SET_WORK_ORDER_VIEW_SIMPLE',
             dispatchErrorType: 'WORK_ORDER_NOT_FOUND',
             lookUpName: 'consecutivo orden',
             modelName: 'Orden de trabajo'
@@ -59,7 +54,20 @@ export default class WorkshopView extends React.Component {
     }
 
     saveOrderTransactions(){
-
+        let data = {
+            client_id: this.props.client.id,
+            cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
+            cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
+        }
+        console.log("Cash advances data --> ")
+        console.log(data)
+        const saveKwargs = {
+            work_order_id: this.props.work_order.id,
+            data: data,
+            dispatcher: this.props.dispatch
+        }
+        patchWorkView(saveKwargs)
+        /*
         const labor_promises = saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.laborListOld, this.props.user, this.props.dispatch)
         
         const cash_promises = saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.cashAdvanceListOld, this.props.user, 
@@ -73,6 +81,7 @@ export default class WorkshopView extends React.Component {
                alertify.alert('Éxito', 'Todos los movimientos fueron guardados con éxito')
             })
         })
+        */
     }
 
     runSequence(all_tasks){
@@ -114,13 +123,25 @@ export default class WorkshopView extends React.Component {
     componentWillUpdate(nextProps){
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
             console.log('Fetch advances for ' + nextProps.work_order.id)
-            loadCashAdvances(nextProps.work_order.id, this.props.dispatch)
 
-            loadLaborTransactions(nextProps.work_order.id, this.props.dispatch)
+            const kwargs = {
+                url: `/api/listworkorders/${nextProps.work_order.id}/`,
+                successType: 'SET_WORK_ORDER_VIEW',
+                errorType: 'WORK_ORDER_NOT_FOUND',
+                lookUpName: 'consecutivo orden',
+                modelName: 'Orden de trabajo'
+            }
+    
+            this.props.dispatch({type:'FETCHING_STARTED', payload:''})
+            //load work order
+            this.props.dispatch(getSingleItemDispatch(kwargs))
+            // loadCashAdvances(nextProps.work_order.id, this.props.dispatch)
 
-            loadUsedPartsTransactions(nextProps.work_order.id, this.props.dispatch)
+            // loadLaborTransactions(nextProps.work_order.id, this.props.dispatch)
 
-            loadPartRequestTransactions(nextProps.work_order.id, this.props.dispatch)
+            // loadUsedPartsTransactions(nextProps.work_order.id, this.props.dispatch)
+
+            // loadPartRequestTransactions(nextProps.work_order.id, this.props.dispatch)
             
         }
     }

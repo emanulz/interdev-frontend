@@ -69,7 +69,7 @@ export default class ReceiptData extends React.Component {
         const base_class = 'compact-receipt-data-field'
         const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
             return <div className={base_class} key={index} >
-                {`${a.element.description} ₡ ${a.element.amount.formatMoney(2, ',', '.')}`}
+                {`${a.element.description} ₡ ${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
             </div>
         })
         return cash_advances

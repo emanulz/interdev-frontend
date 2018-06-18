@@ -1,5 +1,41 @@
-import { saveItem } from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
+import alertify from 'alertifyjs'
+
+import axios from 'axios'
+
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
+
+
+export function createWorkOrder(kwargs){
+
+    return function(dispatch){
+        axios({
+            method: 'post',
+            url: '/api/workorders/',
+            data: kwargs['item'],
+        }).then(response=>{
+            alertify.alert('Completo', 'Orden creada correctamente.')
+            .set('onok', function(){
+
+            })
+            dispatch({type: 'FETCHING_DONE'})
+            dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
+        }).catch(err=>{
+            console.log(err)
+            if(err.response){
+                console.log(err.response.data)
+            }
+            dispatch({type: 'FETCHING_DONE'})
+            alertify.alert('Error', 'Hubo un error creando la orden de trabajo')
+        })
+    }
+}
 
 export function checkWorkOrder(workorder){
 
