@@ -14,7 +14,9 @@ import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
 
         usedPartList: store.transactionsList.usedPartList,
 
-        user: store.user
+        user: store.user,
+
+        is_closed: store.workshopview.work_order.is_closed
     }
 })
 
@@ -46,6 +48,10 @@ export default class TransactionItems extends React.Component {
     }
 
     transactionDelete(item_uuid, type, e){
+        if(this.props.is_closed){
+            this.props.dispatch({type:'CANT_DELETE_FROM_CLOSED_ORDER'})
+            return
+        }
         switch(type){
             case 'USED_PART':
             {
@@ -111,7 +117,7 @@ export default class TransactionItems extends React.Component {
             const disable_quantity = item.type === 'PART_REQUEST' ? (item.saved?true:false) : true
             const qtyField = <input
                 id={`qty${item.qty}`}
-                disabled={disable_quantity}
+                disabled={disable_quantity || this.props.is_closed}
                 onChange={this.qtyInputChange.bind(this, item.uuid)}
                 type='number'
                 className='form-control'
@@ -145,6 +151,7 @@ export default class TransactionItems extends React.Component {
                     movementType = 'Adelanto'
                     desc_element = <div className={itemRowClass+"-description"}>
                         <input type='text'
+                        disabled={this.props.is_closed}
                         name='description' 
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
@@ -153,6 +160,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass+"-unitProce"} >
                         <input type="text" name='amount'
+                        disabled={this.props.is_closed}
                         value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)}/>
@@ -165,6 +173,7 @@ export default class TransactionItems extends React.Component {
                     movementType = 'Mano de Obra'
                     desc_element = <div className={itemRowClass+"-description"}>
                         <input type='text' name='description' 
+                        disabled={this.props.is_closed}
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
@@ -172,6 +181,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name='amount'
+                        disabled={this.props.is_closed}
                         value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)}/>
@@ -183,6 +193,7 @@ export default class TransactionItems extends React.Component {
                     movementType = "Repuesto Usado"
                     desc_element = <div className={itemRowClass+"-description"} >
                         <input type='text' name='description'
+                        disabled={this.props.is_closed}
                         value={item.element.description}
                         className={itemRowClass+"-description-input"+ " form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
@@ -190,6 +201,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element =  <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name="amount"
+                        disabled={this.props.is_closed}
                         value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)} />

@@ -6,6 +6,15 @@ const stateConst = {
 
 export default function reducer(state = stateConst, action){
     switch (action.type){
+
+        case 'CANT_DELETE_FROM_CLOSED_ORDER':
+        {
+            alertify.alert('AVISO: ORDEN CERRADA!', 'No se pueden eliminar líneas de una orden cerrada.')
+            return {
+              ...state,
+              messages: true
+            }            
+        }
         
         case 'ORDER_ALREADY_CREATED':
         {

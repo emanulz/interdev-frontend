@@ -33,7 +33,8 @@ let inspect = require('util-inspect')
         usedPartsToDelete: store.transactionsList.usedPartsToDelete,
 
         user: store.user,
-        client: store.workshopview.work_order.client
+        client: store.workshopview.work_order.client,
+        is_closed: store.workshopview.work_order.is_closed,
     }
 })
 
@@ -58,8 +59,6 @@ export default class WorkshopView extends React.Component {
     }
 
     saveOrderTransactions(close_order, e){
-
-
 
         let data = {
             client_id: this.props.client.id,
@@ -195,13 +194,15 @@ export default class WorkshopView extends React.Component {
         const footer = <div className="workshop-view-footer-buttons">
             <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update"
-                    onClick={this.saveOrderTransactions.bind(this, false)}>
+                    onClick={this.saveOrderTransactions.bind(this, false)}
+                    disabled={this.props.is_closed}>
                     Guardar Movimientos
                 </button>
             </div>
             <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update-close"
-                    onClick={this.saveOrderTransactions.bind(this, true)}>
+                    onClick={this.saveOrderTransactions.bind(this, true)}
+                    disabled={this.props.is_closed}>
                     Guardar y Cerrar Orden
                 </button>
             </div>

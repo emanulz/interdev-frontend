@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
-import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest, 
+import {buildCashAdvanceRequest, buildLaborRequest, 
     buildUsedPartRequest, searchProduct} from './actions.js'
 
 
@@ -14,6 +14,7 @@ let inspect = require('util-inspect')
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         partsRequestList: store.transactionsList.partsRequestList,
         laborList: store.transactionsList.laborList,
+        is_closed: store.workshopview.work_order.is_closed,
     }
 })
 
@@ -115,6 +116,7 @@ export default class PartsProvider extends React.Component{
                     <input className="parts-inputs-code-input form-control input-lg"
                     id='parts-input-code-input'
                     placeholder="Ingrese el código del producto" type="text" 
+                    disabled={this.props.is_closed}
                     value={this.props.searchKey} 
                     onKeyDown={this.inputKeyPress.bind(this)} 
                     onChange={this.inputKeyPress.bind(this)} />
