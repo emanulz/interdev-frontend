@@ -12,6 +12,7 @@ import {getItemDispatch} from '../../../../utils/api'
     clients: store.clients.clients,
     clientSelected: store.clients.clientSelected,
     client: store.clients.clientSelected,
+    disabled: store.clients.disabled,
     users: store.clients.users,
     user: store.clients.userSelected,
 

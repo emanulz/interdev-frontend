@@ -22,12 +22,23 @@ const stateConst = {
   clients: [],
   users: [],
   clientSelected: clientSelectedModel,
-  userSelected: userSelectedModel
+  userSelected: userSelectedModel,
+  client_disabled: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'WORK_ORDER_CREATED':
+    {
+      const client = JSON.parse(action.payload.work_order.client)
+      return {
+        ...state,
+        clientSelected: client,
+        disabled: true,
+      }
+    }
 
     case 'CLEAR_ALL':
     {

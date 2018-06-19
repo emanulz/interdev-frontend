@@ -6,7 +6,25 @@ const stateConst = {
 
 export default function reducer(state = stateConst, action){
     switch (action.type){
- 
+        
+        case 'ORDER_ALREADY_CREATED':
+        {
+            alertify.alert('AVISO: ORDEN YA EXISTE!', 'La orden ya habia sido creada, no puede crear un duplicado')
+            return {
+              ...state,
+              messages: true
+            }  
+        }
+
+        case 'CANT_PRINT_UNSAVED':
+        {
+            alertify.alert('AVISO: ORDEN SIN CREAR!', 'La orden orden debe crearse antes de que se pueda imprimir el comprobante de recepción')
+            return {
+              ...state,
+              messages: true
+            }       
+        }
+
         case 'CLIENT_NOT_FOUND':
         {
           alertify.alert('ERROR: NO EXISTE CLIENTE!', 'El cliente con el código ingresado no existe en el sistema, ingrese un código válido')

@@ -23,7 +23,8 @@ import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx
         work_order: store.workorder.work_order,
 
         cash_advance : store.workorder.cash_advance,
-        request_show_receipt: store.workorder.request_show_receipt
+        request_show_receipt: store.workorder.request_show_receipt,
+        request_saved: store.workorder.request_saved,
         
     }
 })
@@ -234,6 +235,7 @@ export default class Form extends React.Component {
         const failures_list = this.props.work_order.malfunction_details.map((malfunction, index)=>
             <li key={malfunction.key} className="workshop-list-damages-item" >
             <span id ={"failure_id-"+index} className="fa fa-minus-square" 
+            disabled={this.props.request_saved}
             onClick={this.handleInputChange.bind(this)}/> {malfunction.value}
             </li>
         )
@@ -244,6 +246,7 @@ export default class Form extends React.Component {
             className='form-control'
             onSelect={this.handleInputChange.bind(this)}
             data={this.props.article_failures}
+            disabled={this.props.request_saved}
             options={{
                 placeholder: 'Elija fallas de la lista..',
                 noResultsText: 'Sin elementos'
@@ -253,6 +256,7 @@ export default class Form extends React.Component {
             failure_input_object = <div className="col-xs-6 second">
             <input type="text" value={this.props.article_custom_failure} 
                 name="custom_malfunction_input" 
+                disabled={this.props.request_saved}
                 onBlur={this.handleInputChange.bind(this)} 
                 onChange={this.handleInputChange.bind(this)}
                 className='form-control' placeholder="Falla.."/>
@@ -262,6 +266,7 @@ export default class Form extends React.Component {
         const observations_list = this.props.work_order.observations_list.map((observation, index)=>
             <li key={observation.key} className="workshop-list-observation-item">
             <span id={"observation_id-"+index} className="fa fa-minus-square" 
+            disabled={this.props.request_saved}
             onClick={this.handleInputChange.bind(this)}/> {observation.value}
             </li>
         )
@@ -271,6 +276,7 @@ export default class Form extends React.Component {
             observations_input_object = <Select2
             name='observations_list'
             className='form-control'
+            disabled={this.props.request_saved}
             onSelect={this.handleInputChange.bind(this)}
             data={this.props.article_observations}
             options={{
@@ -282,6 +288,7 @@ export default class Form extends React.Component {
             observations_input_object = <div className="col-xs-6 second">
             <input type="text" value={this.props.article_custom_observation} 
                 name="custom_observation_input" 
+                disabled={this.props.request_saved}
                 onBlur={this.handleInputChange.bind(this)} 
                 onChange={this.handleInputChange.bind(this)}
                 className='form-control' placeholder="Observación.."/>
@@ -302,6 +309,7 @@ export default class Form extends React.Component {
                             name='article_type'
                             value={this.props.work_order.article_type}
                             onSelect={this.handleInputChange.bind(this)}
+                            disabled={this.props.request_saved}
                             options={{
                                 placeholder: 'Elija el tipo de artículo...',
                                 noResultsText: 'Sin elementos'
@@ -316,6 +324,7 @@ export default class Form extends React.Component {
                         name='article_brand'
                         value={this.props.work_order.article_brand}
                         onSelect={this.handleInputChange.bind(this)}
+                        disabled={this.props.request_saved}
                         options={{
                             placeholder: 'Elija la marca del artículo...',
                             noResultsText: 'Sin elementos'
@@ -332,6 +341,7 @@ export default class Form extends React.Component {
                         name='article_color'
                         value={this.props.work_order.article_color}
                         onSelect={this.handleInputChange.bind(this)}
+                        disabled={this.props.request_saved}
                         options={{
                             placeholder: 'Elija el color del artículo...',
                             noResultsText: 'Sin elementos'
@@ -343,6 +353,7 @@ export default class Form extends React.Component {
                 <div className="col-xs-6 second">
                         <label>Modelo</label>
                         <input type="text" value={this.props.work_order.article_model} 
+                            disabled={this.props.request_saved}
                             name="article_model" onChange={this.handleInputChange.bind(this)} 
                             className='form-control' placeholder="Modelo.."/>
                 </div>
@@ -352,12 +363,14 @@ export default class Form extends React.Component {
                 <div className="col-xs-6 first">
                     <label>Número de Serie</label>
                     <input name="article_serial" type="text" value={this.props.work_order.article_serial}
+                        disabled={this.props.request_saved}
                         className="form-control" placeholder="Número de Serie.." onChange={this.handleInputChange.bind(this)}/>
                 </div>
 
                 <div className="col-xs-6 first">
                     <label>Es garantía?</label>
                     <input checked={this.props.work_order.is_warranty} name='is_warranty'
+                        disabled={this.props.request_saved}
                         onChange={this.handleInputChange.bind(this)}
                         type='checkbox' className='form-control' />
                 </div>
@@ -439,18 +452,21 @@ export default class Form extends React.Component {
                     <label>Nombre vendedor</label>
                     <input name="warranty_supplier_name" type='text'
                         value={this.props.work_order.warranty_supplier_name}
+                        disabled={this.props.request_saved}
                         className="form-control" placeholder="Vendedor Producto"
                         onChange={this.handleInputChange.bind(this)}/>
 
                     <label>Fecha Factura</label>
                     <input value={this.props.work_order.warranty_invoice_date}
                         name='warranty_invoice_date' 
+                        disabled={this.props.request_saved}
                         onChange={this.handleInputChange.bind(this)} 
                         type='date' className='form-control'/>
 
                     <label>Número de Factura</label>
                     <input name="warranty_invoice_number" type='text'
                         value={this.props.work_order.warranty_invoice_number}
+                        disabled={this.props.request_saved}
                         className="form-control" placeholder="Número factura.."
                         onChange={this.handleInputChange.bind(this)}/>
 
@@ -464,6 +480,7 @@ export default class Form extends React.Component {
                 <input name="cash_advance" type='text'
                     value={this.props.cash_advance} className="form-control"
                     placeholder="Ingrese monto adelanto.." 
+                    disabled={this.props.request_saved}
                     onChange={this.handleOtherInput.bind(this)} />
             </div>
 
@@ -475,6 +492,7 @@ export default class Form extends React.Component {
             bd_entry =<div>
                 <label>Número de Garantía Black Decker</label>
                 <input name="warranty_number_bd" type="text" 
+                    disabled={this.props.request_saved}
                     value={this.props.work_order.warranty_number_bd}
                     className="form-control" placeholder="Número de Garantía.." 
                     onChange={this.handleInputChange.bind(this)} /> 

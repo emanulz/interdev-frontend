@@ -10,16 +10,25 @@ import { withRouter } from 'react-router-dom'
         user: store.user.user,
         client: store.clients.clientSelected,
         cashadvance: store.workorder.cash_advance,
+        request_saved: store.workorder.request_saved
 
     }
 })
 class CreateWorkOrderButtons extends React.Component {
 
     showReceipt(){
+        if(!this.props.request_saved){
+            this.props.dispatch({type: 'CANT_PRINT_UNSAVED'})
+            return
+        }
         this.props.dispatch({type: 'SHOW_RECEIPT_PANEL'})
     }
 
     saveWorkOrder(redirect){
+        if(this.props.request_saved){
+            this.props.dispatch({type: 'ORDER_ALREADY_CREATED'})
+            return
+        }
         let work_order = JSON.parse(JSON.stringify(cleanWorkOrder(this.props.work_order)))
         work_order.client_id = this.props.client.id
         work_order.cash_advance = this.props.cashadvance
