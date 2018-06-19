@@ -139,7 +139,7 @@ export default function reducer(state=stateConst, action){
         {
             const index_part_request =  state.partsRequestList.findIndex(a=>a.uuid === action.payload)
             const newPartsRequestToDelete = [...state.partsRequestToDelete]
-            newPartsRequestToDelete.push(state.partsRequestList[index_part_request].element.id)
+            newPartsRequestToDelete.push(state.partsRequestList[index_part_request].uuid)
 
             const new_list = [...state.partsRequestList]
             new_list.splice(index_part_request, 1)
@@ -224,7 +224,6 @@ export default function reducer(state=stateConst, action){
         }
         case 'SET_WORK_ORDER_VIEW':
         {
-            console.log("SETTING CASH AT TRANSACTION LIST")
             const cash_objects = action.payload.cash_advances.map(item=>{
                 const cash = {
                     id:item.id,
@@ -257,8 +256,6 @@ export default function reducer(state=stateConst, action){
                 return cash_item
             })
 
-            console.log("SETTING_LABOR AT TRANSACTION_LIST")
-
             const labor_objects = action.payload.labor_objects.map(item=>{
                 const labor = JSON.parse(JSON.stringify(item))
                 labor.employee = JSON.parse(labor.employee)
@@ -277,7 +274,6 @@ export default function reducer(state=stateConst, action){
                 return labor_object
             })
 
-            console.log("SETTING_USED AT TRANSACTION_LIST")
             const used_objects = action.payload.used_objects.map(item=>{
                 const used = JSON.parse(JSON.stringify(item))
                 used.employee = JSON.parse(used.employee)
@@ -297,15 +293,12 @@ export default function reducer(state=stateConst, action){
                 return used_object
             })
 
-            console.log("SETTING PARTS REQUEST")
-            console.log(action.payload.part_requests)
             const parts_request_objects = action.payload.part_requests.map(item=>{
                 const req = JSON.parse(JSON.stringify(item))
                 req.employee = JSON.parse(req.employee)
                 req.product = JSON.parse(req.product)
                 return req
             })
-            console.log("HERE --> ")
 
             const new_parts_request_list = parts_request_objects.map(req=>{
                 const req_object = {
