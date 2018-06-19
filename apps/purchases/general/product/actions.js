@@ -182,7 +182,7 @@ export function addSubOne (code, subOrAdd, itemsInCart) {
 function checkIfInCart(qty, itemsInCart,  product, perLine) {
 
   // check if product in cart
-  const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
+  //const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
