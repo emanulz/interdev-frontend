@@ -57,7 +57,7 @@ export default class WorkshopView extends React.Component {
         this.props.dispatch(setItem(kwargs))
     }
 
-    saveOrderTransactions(){
+    saveOrderTransactions(close_order, e){
 
 
 
@@ -77,6 +77,8 @@ export default class WorkshopView extends React.Component {
 
             main_warehouse_id: '9d85cecc-feb1-4710-9a19-0a187580e15e',
             workshop_warehouse_id: '4a25f16d-0f1a-4e9e-95b0-a464c085a20c',
+
+            close_order: close_order,
         }
 
         const saveKwargs = {
@@ -193,13 +195,13 @@ export default class WorkshopView extends React.Component {
         const footer = <div className="workshop-view-footer-buttons">
             <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update"
-                    onClick={this.saveOrderTransactions.bind(this)}>
+                    onClick={this.saveOrderTransactions.bind(this, false)}>
                     Guardar Movimientos
                 </button>
             </div>
             <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update-close"
-                    onClick={this.closeOrder.bind(this)}>
+                    onClick={this.saveOrderTransactions.bind(this, true)}>
                     Guardar y Cerrar Orden
                 </button>
             </div>
