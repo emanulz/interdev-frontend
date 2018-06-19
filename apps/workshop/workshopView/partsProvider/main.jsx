@@ -103,7 +103,6 @@ export default class PartsProvider extends React.Component{
     }
 
     searchProductClick(e){
-        //this.props.dispatch({type:'PRODUCT_SHOW_PANEL'})
         this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL'})
     }
 

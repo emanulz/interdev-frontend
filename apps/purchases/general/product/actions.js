@@ -11,6 +11,46 @@ import { inspect } from 'util'
 // ------------------------------------------------------------------------------------------
 
 // Function to update the globa; discount of complete storage of items, and reflect it on store, then updating DOME
+export function productSearchDoubleClick(){
+
+}
+
+export function searchProduct(search_key, model, namespace, amount_requested, itemsInCart){
+  console.log("Search key")
+  console.log(search_key)
+  const data = {
+      model: model,
+      max_results: 15,
+      search_key: `!${search_key}`
+  }
+
+  return function(dispatch){
+      axios({
+          method: 'post',
+          url: '/api/search/search/',
+          data: data
+      }).then(response=>{
+          if(response.data.length == 1){
+              dispatch(checkIfInCart(amount_requested, itemsInCart, response.data[0], false))
+              dispatch({type:"FETCHING_DONE"})
+          }else if(response.data.length>1){
+              dispatch({type:`${namespace}_TOGGLE_SEARCH_PANEL`})
+              dispatch({type:"FETCHING_DONE"})
+          }else{
+              alertify.alert('AVISO', `No se encontrarón productos con ese código`)
+              console.log("No results")
+          }
+      }).catch(err=>{
+          alertify.alert('ERROR', `Ocurrió un error en la búsqueda, Error: ${err}`)
+          console.log(err)
+          if (err.response) {
+            console.log(err.response.data)
+          }
+          dispatch({type: 'FETCHING_DONE', payload: ''})
+      })
+  }
+}
+
 export function recalcCart(itemsInCart, globalDiscount, client) {
 
   const newCart = itemsInCart.map(item => {
@@ -33,16 +73,6 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 
 }
 
-// When item is selected in code field
-export function productSelected(code, qty, product, itemsInCart) {
-
-  const perLine = true
-
-  const res = checkIfInCart(code, qty, itemsInCart, product, perLine)
-
-  return res
-
-}
 
 // Updates Amount based on qty input field
 
@@ -149,7 +179,7 @@ export function addSubOne (code, subOrAdd, itemsInCart) {
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, itemsInCart,  product, perLine) {
+function checkIfInCart(qty, itemsInCart,  product, perLine) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)

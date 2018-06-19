@@ -9,6 +9,7 @@ import {fetchGlobalPreferences} from './actions.js'
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
+import Search from '../../../general/search/search.jsx'
 
 
 @connect(store=>{
@@ -29,6 +30,7 @@ export default class Main extends React.Component {
         const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer': 'mainContainer sideHidden'
         const content = <Router>
             <div>
+                <Search modelText='Productos' model='product' namespace='productSearch' />
                 <SideMenu/>
                 <div id='mainContainer' className={mainContainerClass} >
                     <TopBar/>
