@@ -136,7 +136,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass + "-unitPrice"}>
                         <h5>P Unit</h5>
-                        ₡ {parseFloat(item.priceToUse)}
+                        ₡ {parseFloat(item.priceToUse).toFixed(2)}
                     </div>
 
                     break
@@ -155,7 +155,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass+"-unitProce"} >
                         <input type="text" name='amount'
-                        value={item.priceToUse}
+                        value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)}/>
                     </div>
@@ -174,7 +174,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name='amount'
-                        value={item.priceToUse}
+                        value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)}/>
                     </div>
@@ -192,7 +192,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element =  <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name="amount"
-                        value={item.priceToUse}
+                        value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
                     </div>
@@ -227,7 +227,7 @@ export default class TransactionItems extends React.Component {
 
                 <div className={itemRowClass + "-total"}>
                     <h5>Total</h5>
-                    ₡ {parseFloat(item.subTotal)}
+                    ₡ {parseFloat(item.subTotal).toFixed(2)}
                 </div>
 
                 <div className={status_class} >

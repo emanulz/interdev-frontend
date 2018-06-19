@@ -22,7 +22,8 @@ import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx
         
         work_order: store.workorder.work_order,
 
-        cash_advance : store.workorder.cash_advance
+        cash_advance : store.workorder.cash_advance,
+        request_show_receipt: store.workorder.request_show_receipt
         
     }
 })
@@ -38,6 +39,13 @@ export default class Form extends React.Component {
     componentWillUnmount(){
         this.props.dispatch({type:'CLEAR_WORK_ORDER'})
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'}) 
+    }
+
+    componentWillUpdate(){
+        if(this.props.request_show_receipt){
+            this.props.dispatch({type: 'DISABLE_RECEIPT_REQUEST'})
+            this.props.dispatch({type: 'SHOW_RECEIPT_PANEL'})
+        }
     }
 
     handleOtherInput(event){

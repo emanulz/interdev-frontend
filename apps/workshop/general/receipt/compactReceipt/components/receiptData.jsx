@@ -5,13 +5,15 @@ import {formatDate} from '../../../../../../utils/formatDate'
 @connect(store=>{
     return {
         work_order: store.workshopview.work_order,
+        work_order_creation: store.workorder.work_order,
         transactions: store.transactionsList,
     }
 })
 export default class ReceiptData extends React.Component {
 
     render(){
-        const order = this.props.work_order
+        const use_create_work_order = this.props.work_order.id === "000000" ? true : false
+        const order = use_create_work_order? this.props.work_order_creation: this.props.work_order
         const date =  formatDate(order.created)
 
         const client = order.client ? `${order.client.code} - ${order.client.name} ${order.client.last_name}`
@@ -58,21 +60,29 @@ export default class ReceiptData extends React.Component {
             {this.buildArticleMalfunctions(order)}
             <div className='compact-receipt-separator'>
                 <span/>
-                    <h2>Adelanto</h2>
+                    <h2>Adelantos </h2>
                 <span/>
-                {this.buildArticleCashAdvances()}
+                
             </div>
+            {this.buildArticleCashAdvances(use_create_work_order, order)}
         </div>
     }
 
-    buildArticleCashAdvances(){
+    buildArticleCashAdvances(use_create_work_order, work_order){
         const base_class = 'compact-receipt-data-field'
-        const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
-            return <div className={base_class} key={index} >
-                {`${a.element.description} ₡ ${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
-            </div>
-        })
-        return cash_advances
+        if(use_create_work_order){
+            return <div className={base_class+"-cashadvance"} key={'-1'} >
+            {`${"Adelanto en recepción"} ₡ ${parseFloat(work_order.cash_advance).formatMoney(2, ',', '.')}`}
+        </div>
+        }else{
+            const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
+                return <div className={base_class+"-cashadvance"} key={index} >
+                    {`${a.element.description} ₡ ${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
+                </div>
+            })
+            return cash_advances
+        }
+
     }
 
     buildObservations(order){

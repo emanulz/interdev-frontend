@@ -106,13 +106,22 @@ const stateConst = {
     observation_input_dropdown: true,
     is_bd_warranty : false,
 
-    cash_advance: 0
+    cash_advance: 0,
+    request_show_receipt: false
 
 }
 
 export default function reducer(state = stateConst, action){
 
     switch (action.type){
+        case 'DISABLE_RECEIPT_REQUEST':
+        {
+            return{
+                ...state,
+                request_show_receipt: false
+            }
+        }
+
         case 'TOGGLE_FULL_WIDTH':
         {
             const width = !state.fullWidth
@@ -219,50 +228,45 @@ export default function reducer(state = stateConst, action){
         }
         case 'WORK_ORDER_CREATED':
         {
-            //console.log("Reducer work order created --> " + inspect(action.payload))
- 
-
-            const malfunctions = JSON.parse(action.payload.malfunction_details)
-            const observations = JSON.parse(action.payload.observations_list)
-            const created_by = JSON.parse(action.payload.receiving_employee)
-            const client = JSON.parse(action.payload.client)
-
-            const cash_desc = "Adelanto orden de trabajo en recepción de artículo"
-            createCashAdvance(action.payload.id, state.cash_advance, action.payload.client, 
-                                action.payload.receiving_employee, cash_desc, action.payload.id, '')
+            let saved_wo = JSON.parse(JSON.stringify(action.payload.work_order))
+            saved_wo.malfunction_details = JSON.parse(action.payload.work_order.malfunction_details)
+            saved_wo.observations_list = JSON.parse(action.payload.work_order.observations_list)
+            saved_wo.receiving_employee = JSON.parse(action.payload.work_order.receiving_employee)
+            saved_wo.client = JSON.parse(action.payload.work_order.client)
 
             //const technician = JSON.parse(action.payload.technician)
 
-            const saved_wo = {
-                id:action.payload.id,
-                consecutive:action.payload.consecutive,
-                is_closed : action.payload.is_closed,
-                receiving_employee : created_by,
-                technician:action.payload.technician,
-                client:client,
-                client_id: action.payload.client_id,
-                article_type: action.payload.article_type,
-                article_brand: action.payload.article_brand,
-                article_model: action.payload.article_model,
-                article_serial: action.payload.article_serial,
-                article_color : action.payload.article_color,
-                article_data: action.payload.article_data,
-                malfunction_details: malfunctions,
-                observations_list:observations,
-                observations: action.payload.observations,
-                is_warranty:action.payload.is_warranty,
-                warranty_number_bd:action.payload.warranty_number_bd,
-                warranty_invoice_date: action.payload.warranty_invoice_date,
-                warranty_supplier_name:action.payload.warranty_supplier_name,
-                warranty_invoice_number:action.payload.warranty_invoice_number,
-                warranty_repaired_by:action.payload.warranty_repaired_by,
-                crated:action.payload.created,
-                updated:action.payload.updated
-            }
+            // const saved_wo = {
+            //     id:action.payload.id,
+            //     consecutive:action.payload.consecutive,
+            //     is_closed : action.payload.is_closed,
+            //     receiving_employee : created_by,
+            //     technician:action.payload.technician,
+            //     client:client,
+            //     client_id: action.payload.client_id,
+            //     article_type: action.payload.article_type,
+            //     article_brand: action.payload.article_brand,
+            //     article_model: action.payload.article_model,
+            //     article_serial: action.payload.article_serial,
+            //     article_color : action.payload.article_color,
+            //     article_data: action.payload.article_data,
+            //     malfunction_details: malfunctions,
+            //     observations_list:observations,
+            //     observations: action.payload.observations,
+            //     is_warranty:action.payload.is_warranty,
+            //     warranty_number_bd:action.payload.warranty_number_bd,
+            //     warranty_invoice_date: action.payload.warranty_invoice_date,
+            //     warranty_supplier_name:action.payload.warranty_supplier_name,
+            //     warranty_invoice_number:action.payload.warranty_invoice_number,
+            //     warranty_repaired_by:action.payload.warranty_repaired_by,
+            //     crated:action.payload.created,
+            //     updated:action.payload.updated
+            // }
             
             return {
                 ...state,
-                work_order: saved_wo
+                work_order: saved_wo,
+                request_show_receipt: true,
             }
         }
         case 'CASH_ADVANCE_UPDATED':
