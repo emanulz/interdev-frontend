@@ -9,7 +9,8 @@ import {openCloseWorkOrder} from './actions'
 import {patchWorkView} from '../general/actions'
 import alertify from 'alertifyjs'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
-import SearchProduct from '../general/search/products/searchPanel.jsx'
+import Search from '../../../general/search/search.jsx'
+
 
 
 let inspect = require('util-inspect')
@@ -20,6 +21,7 @@ let inspect = require('util-inspect')
         work_order: store.workshopview.work_order,
 
         partsRequestList: store.transactionsList.partsRequestList,
+        partsRequestToDelete: store.transactionsList.partsRequestToDelete,
 
         laborList: store.transactionsList.laborList,
         laborsToDelete: store.transactionsList.laborsToDelete,
@@ -69,6 +71,12 @@ export default class WorkshopView extends React.Component {
 
             used_list: JSON.stringify(this.props.usedPartList),
             used_list_to_delete: JSON.stringify(this.props.usedPartsToDelete),
+
+            parts_request_list: JSON.stringify(this.props.partsRequestList),
+            parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
+
+            main_warehouse_id: '9d85cecc-feb1-4710-9a19-0a187580e15e',
+            workshop_warehouse_id: '4a25f16d-0f1a-4e9e-95b0-a464c085a20c',
         }
 
         const saveKwargs = {
@@ -77,24 +85,8 @@ export default class WorkshopView extends React.Component {
             dispatcher: this.props.dispatch
         }
 
-
-
         patchWorkView(saveKwargs)
-        /*
-        const labor_promises = saveLaborTransactions(this.props.work_order.id, this.props.laborList, this.props.laborListOld, this.props.user, this.props.dispatch)
-        
-        const cash_promises = saveCashAdvanceTransactions(this.props.work_order.id, this.props.cashAdvanceList, this.props.cashAdvanceListOld, this.props.user, 
-                                    this.props.client, this.props.dispatch)
 
-        const used_parts_promises = saveUsedPartTransactions(this.props.work_order.id, this.props.usedPartList, this.props.cashAdvanceListOld, this.props.user, this.props.dispatch)
-        
-        saveInventoryTransactions(this.props.work_order.id, this.props.partsRequestList, this.props.user).then(results=>{
-            const all_tasks = labor_promises.concat(cash_promises).concat(used_parts_promises).concat(results)
-            let task_done = this.runSequence(all_tasks).then(()=>{
-               alertify.alert('Éxito', 'Todos los movimientos fueron guardados con éxito')
-            })
-        })
-        */
     }
 
     runSequence(all_tasks){
@@ -135,7 +127,6 @@ export default class WorkshopView extends React.Component {
 
     componentWillUpdate(nextProps){
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
-            console.log('Fetch advances for ' + nextProps.work_order.id)
 
             const kwargs = {
                 url: `/api/listworkorders/${nextProps.work_order.id}/`,
@@ -148,14 +139,7 @@ export default class WorkshopView extends React.Component {
             this.props.dispatch({type:'FETCHING_STARTED', payload:''})
             //load work order
             this.props.dispatch(getSingleItemDispatch(kwargs))
-            // loadCashAdvances(nextProps.work_order.id, this.props.dispatch)
 
-            // loadLaborTransactions(nextProps.work_order.id, this.props.dispatch)
-
-            // loadUsedPartsTransactions(nextProps.work_order.id, this.props.dispatch)
-
-            // loadPartRequestTransactions(nextProps.work_order.id, this.props.dispatch)
-            
         }
     }
 
@@ -168,7 +152,7 @@ export default class WorkshopView extends React.Component {
         const footer =  this.buildFooter()
 
         return <div className="workshop-view" >
-            <SearchProduct/>
+            <Search modelText='Productos' model='product' namespace='productSearch' />
             <div className="workshop-view-left" >
                 <div className="workshop-view-left-header" >
                     <div className="workshop-view-left-header-partsProvider">

@@ -47,11 +47,11 @@ export function searchClient(search_key, model, namespace){
     }).then(response=>{
       if(response.data.length == 1){
         dispatch({type: 'CLIENT_SELECTED', payload:response.data[0]})
-        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'FETCHING_DONE'})
       }else if(response.data.length>1){
         dispatch({type: `${namespace}_SET_SEARCH_RESULTS`, payload:response.data})
         dispatch({type: `${namespace}_TOGGLE_SEARCH_PANEL`})
-        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'FETCHING_DONE'})
       }
 
     }).catch(err=>{

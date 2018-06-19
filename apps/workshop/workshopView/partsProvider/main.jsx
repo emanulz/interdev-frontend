@@ -1,8 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { getItemDispatch } from '../../../../utils/api'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
-import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest, buildUsedPartRequest} from './actions.js'
+import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest, 
+    buildUsedPartRequest, searchProduct} from './actions.js'
 
 
 let inspect = require('util-inspect')
@@ -13,7 +13,7 @@ let inspect = require('util-inspect')
         parts: store.partsProvider.parts,
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         partsRequestList: store.transactionsList.partsRequestList,
-        laborList: store.transactionsList.laborList
+        laborList: store.transactionsList.laborList,
     }
 })
 
@@ -24,14 +24,6 @@ export default class PartsProvider extends React.Component{
         this.fetchUserPermissions()
         //get the products data
         this.props.dispatch({type: 'FETCHING_STARTED', payload:''})
-
-
-        // const productKwargs = {
-        //     url: '/api/products',
-        //     successType: 'FETCH_PRODUCTS_FULFILLED',
-        //     errorType: 'FETCH_PRODUCTS_REJECTED'
-        // }
-        // this.props.dispatch(getItemDispatch(productKwargs))
 
     }
 
@@ -98,14 +90,9 @@ export default class PartsProvider extends React.Component{
                     let bits = e.target.value.split('*')
                     const code = bits[0]
                     const qty = isNaN(bits[1]) ? 1 : parseInt(bits[1])
-
-                    //process user search request
-                    const next_action = userPartSearchRequest(this.props.parts, code, qty, this.props.partsRequestList)
-                    this.props.dispatch(next_action)
-                    
-                    //signal the search field clear
+                    this.props.dispatch(searchProduct(code, 'product', 'productSearch', qty, this.props.partsRequestList))
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
-                    //signal the transactionsList with the code of the product
+
                 }
 
             }
@@ -115,7 +102,8 @@ export default class PartsProvider extends React.Component{
     }
 
     searchProductClick(e){
-        this.props.dispatch({type:'PRODUCT_SHOW_PANEL'})
+        //this.props.dispatch({type:'PRODUCT_SHOW_PANEL'})
+        this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL'})
     }
 
     render(){

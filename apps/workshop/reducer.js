@@ -33,5 +33,6 @@ export default combineReducers({
     workshopReceipt,
     config,
     clientSearch: search('clientSearch'),
+    productSearch: search('productSearch',)
 
 })

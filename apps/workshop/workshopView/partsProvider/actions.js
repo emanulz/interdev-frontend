@@ -1,6 +1,52 @@
+// ------------------------------------------------------------------------------------------
+// MODULE IMPORTS
+// ------------------------------------------------------------------------------------------
+import axios from 'axios'
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 let inspect = require('util-inspect')
 const uuidv1 = require('uuid/v1')
 import alertify from 'alertifyjs'
+
+export function searchProduct(search_key, model, namespace, amount_requested, partsRequestList){
+    console.log("Search call")
+    const data = {
+        model: model,
+        max_results: 15,
+        search_key: `!${search_key}`
+    }
+
+    return function(dispatch){
+        axios({
+            method: 'post',
+            url: '/api/search/search/',
+            data: data
+        }).then(response=>{
+            if(response.data.length == 1){
+                dispatch(partAlreadyInTransactionsList(amount_requested, response.data[0], partsRequestList))
+                dispatch({type:"FETCHING_DONE"})
+            }else if(response.data.length>1){
+                dispatch({type:`${namespace}_TOGGLE_SEARCH_PANEL`})
+                dispatch({type:"FETCHING_DONE"})
+            }else{
+                alertify.alert('AVISO', `No se encontrarón productos con ese código`)
+                console.log("No results")
+            }
+        }).catch(err=>{
+            alertify.alert('ERROR', `Ocurrió un error en la búsqueda, Error: ${err}`)
+            console.log(err)
+            if (err.response) {
+              console.log(err.response.data)
+            }
+            dispatch({type: 'FETCHING_DONE', payload: ''})
+        })
+    }
+}
 
 export function updateQty(qty, itemsList, target_uuid){
     const index = itemsList.findIndex(item=>item.uuid == target_uuid)
@@ -130,55 +176,34 @@ export function userPartSearchRequest(parts, code, qty, partsRequestList){
     return next_action
 }
 
-function partAlreadyInTransactionsList(code, qty, parts, partsRequestList, targetPartIndex){
+function partAlreadyInTransactionsList(qty, part, partsRequestList){
 
-    const indexInPartsRequestList = partsRequestList.findIndex(part => {
-        return part.element.code == code || part.element.barcode == code
+    // const indexInPartsRequestList = partsRequestList.findIndex(part => {
+    //     return part.element.code == code || part.element.barcode == code
 
-    })
+    // })
 
-    if(indexInPartsRequestList !== -1 && qty == 0){
-        return {
-            type: 'DELETE_PART_FROM_LIST',
-            payload:{index:indexInPartsRequestList}
-        }
-    }
-    const subTotal = calculatePartSubtotal(parts[targetPartIndex], qty)
+    // if(indexInPartsRequestList !== -1 && qty == 0){
+    //     return {
+    //         type: 'DELETE_PART_FROM_LIST',
+    //         payload:{index:indexInPartsRequestList}
+    //     }
+    // }
+
+    const subTotal = calculatePartSubtotal(part, qty)
     
-    /*const next_action = (indexInPartsRequestList == -1)
-    ?{
-        type: 'ADD_TO_PARTS_LIST',
-        payload:{
-            uuid: uuidv1(),
-            element:parts[targetPartIndex],
-            qty: qty,
-            type:'PART_REQUEST',
-            subTotal: subTotal,
-            priceToUse: parts[targetPartIndex].price,
-            saved: false
-
-        }
-    }
-    :{
-        type: 'UPDATE_PARTS_LIST',
-        payload: {
-            item: updatePartInTransactionList(partsRequestList, indexInPartsRequestList, qty),
-            index: indexInPartsRequestList
-        }
-    }*/
     const next_action = {type: 'ADD_TO_PARTS_LIST',
                         payload:{
                             uuid: uuidv1(),
-                            element:parts[targetPartIndex],
+                            element:part,
                             qty: qty,
                             type:'PART_REQUEST',
                             subTotal: subTotal,
-                            priceToUse: parts[targetPartIndex].price,
+                            priceToUse: part.price,
                             saved: false
 
+                            }
                         }
-                        }
-
     return next_action
 }
 

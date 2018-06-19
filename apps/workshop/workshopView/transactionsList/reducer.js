@@ -80,16 +80,12 @@ export default function reducer(state=stateConst, action){
             return{
                 ...state,
                 cashAdvanceList : [],
-                cashAdvanceListOld: [],
 
                 partsRequestList : [],
-                partsRequestListOld: [],
 
                 laborList: [],
-                laborListOld: [],
 
                 usedPartList: [],
-                usedPartListOld: [],
             }
         }
         case 'CASH_ADVANCE_DELETED':
@@ -142,18 +138,16 @@ export default function reducer(state=stateConst, action){
         case 'PART_REQUEST_DELETED':
         {
             const index_part_request =  state.partsRequestList.findIndex(a=>a.uuid === action.payload)
-            const index_part_request_old = state.partsRequestListOld.findIndex(a=>a.uuid===action.payload)
+            const newPartsRequestToDelete = [...state.partsRequestToDelete]
+            newPartsRequestToDelete.push(state.partsRequestList[index_part_request].element.id)
 
             const new_list = [...state.partsRequestList]
             new_list.splice(index_part_request, 1)
 
-            const new_old = [...state.partsRequestListOld]
-            new_old.splice(index_part_request_old, 1)
-
             return {
                 ...state,
                 partsRequestList: new_list,
-                partsRequestListOld: new_old
+                partsRequestToDelete: newPartsRequestToDelete,
             }
         }
         case 'LABOR_LOADED':
@@ -303,18 +297,41 @@ export default function reducer(state=stateConst, action){
                 return used_object
             })
 
+            console.log("SETTING PARTS REQUEST")
+            console.log(action.payload.part_requests)
+            const parts_request_objects = action.payload.part_requests.map(item=>{
+                const req = JSON.parse(JSON.stringify(item))
+                req.employee = JSON.parse(req.employee)
+                req.product = JSON.parse(req.product)
+                return req
+            })
+            console.log("HERE --> ")
+
+            const new_parts_request_list = parts_request_objects.map(req=>{
+                const req_object = {
+                    element: req.product,
+                    priceToUse: (parseFloat(req.amount)*parseFloat(req.product.sell_price)).toFixed(2),
+                    qty: req.amount,
+                    subTotal: (parseFloat(req.amount)*parseFloat(req.product.sell_price)).toFixed(2),
+                    type: 'PART_REQUEST',
+                    uuid: req.id,
+                    saved: true
+                }
+                return req_object
+            })
+
 
             return {
                 ...state,
                 cashAdvanceList: new_cash_list,
                 laborList: new_labor_list,
-                usedPartList: new_used_list
+                usedPartList: new_used_list,
+                partsRequestList: new_parts_request_list
             }
 
         }
         case 'PARTS_REQUEST_LOADED':
         {
-            console.log('PARTS REQUEST LOADED')
             const parts_objects = action.payload.map(item=>{
                 //console.log(item)
                 const part = {
@@ -558,7 +575,6 @@ export default function reducer(state=stateConst, action){
         }
         case 'LABOR_MOVEMENTS_PATCHED':
         {
-            console.log("Labor Items patched")
             const labor_objects = action.payload.map(item =>{
                 const labor = {
                     id:item.id,

@@ -9,16 +9,12 @@ import {deleteInventoryTransactions} from '../actions'
 @connect((store)=>{
     return {
         cashAdvanceList: store.transactionsList.cashAdvanceList,
-        cashAdvanceListOld: store.transactionsList.cashAdvanceListOld,
 
         partsRequestList: store.transactionsList.partsRequestList,
-        partsRequestListOld: store.transactionsList.partsRequestListOld,
 
         laborList: store.transactionsList.laborList,
-        laborListOld : store.transactionsList.laborListOld,
 
         usedPartList: store.transactionsList.usedPartList,
-        usedPartListOld: store.transactionsList.usedPartListOld,
 
         user: store.user
     }
@@ -81,29 +77,7 @@ export default class TransactionItems extends React.Component {
             {
                 let index =  this.props.partsRequestList.findIndex(a=>a.uuid === item_uuid)
                 const item = this.props.partsRequestList[index]
-                if(item.work_order_id === undefined){
-                    this.props.dispatch({type:'PART_REQUEST_DELETED', payload:item.uuid})
-                    return
-                }
-                deleteInventoryTransactions(item, this.props.user).then((part)=>{
-                    const item = {
-                        id:part.id,
-
-                    }
-                    const kwargs = {
-                        item:item,
-                        url:`/api/partrequest/${this.props.partsRequestList[index].uuid}`,
-                        modelName: 'PART_REQUEST',
-                        logCode:'Requisición de parte borrada',
-                        itemOld: item,
-                        logModel: 'PART_REQUEST',
-                        user: JSON.stringify(this.props.user),
-                        dispatchType: 'PART_REQUEST_DELETED'
-                    }
-                    this.props.dispatch({type:'FETCHING_STARTED'})
-                    this.props.dispatch(deleteItemDispatch(kwargs))
-                })
-
+                this.props.dispatch({type:'PART_REQUEST_DELETED', payload:item.uuid})
                 break
             }
             default:{
