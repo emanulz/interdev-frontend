@@ -15,7 +15,8 @@ export default class Table extends React.Component {
       : <td style={{'display': 'none'}} >-</td>
     const items = cartItems.length
       ? cartItems.map((item) => {
-        const taxesText = (item.product.use_taxes)
+
+        const taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
           ? `G`
           : `E`
 

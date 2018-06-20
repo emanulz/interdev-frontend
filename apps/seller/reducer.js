@@ -16,6 +16,7 @@ import searchClients from '../sales/general/search/clients/reducer.js'
 import searchProducts from '../sales/general/search/products/reducer.js'
 import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 import search from '../../general/search/reducer.js'
+import completed from '../sales/general/completed/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -33,5 +34,6 @@ export default combineReducers({
   config,
   clientCreatePanel,
   productSearch: search('productSearch'),
-  clientSearch: search('clientSearch')
+  clientSearch: search('clientSearch'),
+  completed
 })

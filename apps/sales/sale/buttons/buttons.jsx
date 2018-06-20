@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {disabled: store.sales.completed}
+  return {disabled: store.completed.completed}
 })
 export default class Buttons extends React.Component {
 
@@ -23,7 +23,7 @@ export default class Buttons extends React.Component {
   }
   newSale() {
     // window.location.reload()
-    window.location.href = '/sales/sale'
+    window.location.href = '/sales'
     // this.props.dispatch({type: 'NEW_SALE', payload: -1})
   }
 
@@ -82,7 +82,7 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled={this.props.disabled}
+        disabled
         onClick={this.showSalePanel.bind(this)}
         style={{
           'height': '48px',

@@ -55,7 +55,7 @@ export default class List extends React.Component {
 
     const content = this.props.fetching ? fetching : list
 
-    const addLink = <Link className='addBtn' to={'/admin/clients/add'}>
+    const addLink = <Link className='addBtn' to={'/admin/users/add'}>
       <span className='fa fa-plus' />
       Agregar
     </Link>

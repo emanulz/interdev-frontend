@@ -39,7 +39,8 @@ export default class SaveBtn extends React.Component {
 
     const kwargs = {
       url: '/api/sales/',
-      item: sale
+      item: sale,
+      sucessMessage: 'Venta creada correctamente'
     }
 
     const _this = this
@@ -53,6 +54,7 @@ export default class SaveBtn extends React.Component {
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+      this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       Mousetrap.reset()
     }).catch((err) => {
       console.log(err.response.data)

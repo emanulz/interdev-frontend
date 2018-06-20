@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
+import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
 import { getPaginationItemDispatch } from '../../../../../utils/api.js'
 import {Link} from 'react-router-dom'
 import Pagination from '../../../../../general/pagination/pagination.jsx'
@@ -13,7 +14,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
   return {
     fething: store.fetching.fetching,
     clients: store.clients.clients,
-    pageSize: store.pagination.pageSize
+    pageSize: store.pagination.pageSize,
+    searchResults: store.adminSearch.searchResults
   }
 })
 export default class List extends React.Component {
@@ -22,6 +24,7 @@ export default class List extends React.Component {
 
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
+    this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const clientKwargs = {
       url: `/api/clients/?limit=${this.props.pageSize}`,
@@ -63,7 +66,8 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <AdminTable headerOrder={headerOrder} model='clients' data={this.props.clients}
+    const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.clients
+    const list = <AdminTable headerOrder={headerOrder} model='clients' data={tableData}
       idField='id' />
 
     const content = this.props.fetching ? fetching : list
@@ -73,21 +77,30 @@ export default class List extends React.Component {
       Agregar
     </Link>
 
+    const paginationDiv = !this.props.searchResults.length
+      ? <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+        <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+      </div>
+      : <div />
+
     return <div className='list list-container'>
       <div className='admin-list-header'>
         <h1>Mantenimiento de Clientes:</h1>
         {addLink}
       </div>
-      <div className='admin-list-search'>
+      {/* <div className='admin-list-search'>
         <input
           type='text'
           placeholder='Ingrese un texto para buscar...'
         />
-      </div>
-      <div className='admin-list-results-pagination' >
+      </div> */}
+      <SearchAdmin model='client' namespace='adminSearch' />
+      {paginationDiv}
+      {/* <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
         <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
-      </div>
+      </div> */}
       {content}
     </div>
 

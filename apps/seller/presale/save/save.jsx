@@ -53,6 +53,7 @@ export default class SaveBtn extends React.Component {
     updatePromise.then(() => {
       this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
     }).catch((err) => {
       console.log(err)
     })
