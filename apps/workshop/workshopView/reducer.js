@@ -40,11 +40,44 @@ const stateConst = {
     showLaborTransactions: true,
     showCashAdvanceTransactions: true,
     work_order: work_order_model,
+    workshop_warehouse: '',
+    sales_warehouse:'',
 }
 
 export default function reducer(state=stateConst, action){
 
     switch (action.type){
+
+        case 'SET_WORKSHOP_WAREHOUSE':
+        {
+            return {
+                ...state,
+                workshop_warehouse: action.payload
+            }
+        }
+
+        case 'CLEAR_WORKSHOP_WAREHOUSE':
+        {
+            return {
+                ...state,
+                workshop_warehouse: ''
+            }
+        }
+
+        case 'SET_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: action.payload
+            }
+        }
+        case 'CLEAR_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: ''
+            }
+        }
 
         case 'SET_WORK_ORDER_VIEW_SIMPLE':
         {

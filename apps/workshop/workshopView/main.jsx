@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
-import {setItem, getSingleItemDispatch} from '../../../utils/api'
+import {setItem, getSingleItemDispatch, loadGlobalConfig} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
 import {openCloseWorkOrder} from './actions'
 import {patchWorkView} from '../general/actions'
@@ -35,6 +35,9 @@ let inspect = require('util-inspect')
         user: store.user,
         client: store.workshopview.work_order.client,
         is_closed: store.workshopview.work_order.is_closed,
+
+        workshop_warehouse_id: store.workshopview.workshop_warehouse,
+        sales_warehouse_id: store.workshopview.sales_warehouse,
     }
 })
 
@@ -42,7 +45,7 @@ export default class WorkshopView extends React.Component {
 
     componentWillMount(){
         const work_order_consecutive = this.props.location.pathname.split('/').pop()
-
+        this.props.dispatch({type: 'CLEAR_GLOBAL_CONFIG'})
         const kwargs = {
             lookUpField: 'consecutive',
             url: '/api/listworkorders/',
@@ -56,6 +59,13 @@ export default class WorkshopView extends React.Component {
         this.props.dispatch({type:'FETCHING_STARTED', payload:''})
         //load work order
         this.props.dispatch(setItem(kwargs))
+        //load preferences
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 
+            'SET_WORKSHOP_WAREHOUSE', 'CLEAR_WORKSHOP_WAREHOUSE'))
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 
+            'SET_SALES_WAREHOUSE', 'CLEAR_SALES_WAREHOUSE'))
+
     }
 
     saveOrderTransactions(close_order, e){
@@ -74,8 +84,8 @@ export default class WorkshopView extends React.Component {
             parts_request_list: JSON.stringify(this.props.partsRequestList),
             parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
 
-            main_warehouse_id: '9d85cecc-feb1-4710-9a19-0a187580e15e',
-            workshop_warehouse_id: '4a25f16d-0f1a-4e9e-95b0-a464c085a20c',
+            main_warehouse_id: this.props.sales_warehouse_id,
+            workshop_warehouse_id: this.props.workshop_warehouse_id,
 
             close_order: close_order,
         }
