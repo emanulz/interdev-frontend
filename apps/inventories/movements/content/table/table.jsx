@@ -8,6 +8,7 @@ import {filterProducts} from './actions'
 @connect((store) => {
   return {
     products: store.products.products,
+    searchResults: store.inventorySearch.searchResults,
     warehouses: store.warehouses.warehouses,
     warehouseActive: store.warehouses.warehouseActive,
     departmentActive: store.products.departmentActive,
@@ -36,10 +37,21 @@ export default class Table extends React.Component {
   render() {
 
     const products = this.props.products
+    const results = this.props.searchResults
+    try {
+      results.forEach(product => {
+        const inventoryByWarehouse = JSON.parse(product.inventory_existent)
+        product.inventory_existent = inventoryByWarehouse
+      })
+    } catch(err){
+      console.log(err)
+    }
+
+    const tableData = results.length ? results : products
     const warehouses = this.props.warehouses
 
     // Just use products that use inventory
-    const filteredData = products.filter((el) => el.inventory_enabled)
+    const filteredData = tableData.filter((el) => el.inventory_enabled)
     // Then Sort by code
     const sortedData = filteredData.sort((a, b) => a.code - b.code)
     // Get the data of the warehouse selected if any
