@@ -2,7 +2,7 @@ import alertify from 'alertifyjs'
 import axios from 'axios'
 const uuidv1 = require('uuid/v1')
 
-import {saveLog, getItemDispatch} from '../../../utils/api'
+import {saveLog} from '../../../utils/api'
 
 let inspect = require('util-inspect')
 
@@ -128,7 +128,6 @@ export function patchCashAdvanceMovement(cash_old, cash_new, user){
     const logCode = 'WORK_ORDER_CASH_ADVANCE_PATCH'
     const logDescription = 'Cash advance patched for work order --> ' + cash_new.work_order_id
     const logModel = 'CASH ADVANCE'
-    let description = 'Cash advance updated'
 
     const data = {
         description:cash_new.element.description,
@@ -159,7 +158,6 @@ export function patchUsedPartMovement(part_old, part_new, user){
     const logCode = 'WORK_ORDER_USED_PART_PATCH'
     const logDescription = 'Used part patched for work order --> ' + cash_new.work_order_id
     const logModel = 'USED PART'
-    let description = 'Used part updated'
 
     const data = {
         description:part_new.element.description,
@@ -190,8 +188,6 @@ export function patchLaborMovement(labor_old, new_labor, user){
     const logCode = 'WORK_ORDER_LABOR_PATCH'
     const logDescription = 'Labor patched for work order --> ' + new_labor.work_order_id
     const logModel = 'LABOR'
-    let description = 'Labor updated'
-
     const data = {
         description:new_labor.element.description,
         amount:new_labor.element.amount
@@ -325,8 +321,7 @@ export function createWorkshopInventoryMovement(work_order_id, part_amount, dire
                                                 main_warehouse, workshop_warehouse){                                       
     const in_type = "INPUT"
     const out_type = "OUTPUT"
-    
-    const creator = `wo_${work_order_id}`
+
     let promises_array = []
     const url = '/api/inventorymovements/'
     const user_string = JSON.stringify(user)

@@ -317,7 +317,7 @@ export function importTestProducts(start_code, end_code){
 
 }
 
-export function saveImportedProduct(data){
+export function saveImportedProduct(data, warehouse, allow_negatives){
     const qty = data.qty? data.qty : 0
     const prodData = {
         code:data.code,
@@ -334,7 +334,7 @@ export function saveImportedProduct(data){
         inventory_enabled: true,
         inventory_minimum:0,
         inventory_maximum: 500,
-        inventory_negative: true,
+        inventory_negative: allow_negatives,
         cost: data.cost.toFixed(5),
         cost_based: false,
         utility: data.utility,
@@ -365,19 +365,7 @@ export function saveImportedProduct(data){
 
     }
     return prodData
-    // return new Promise((resolve, reject)=>{
-    //     axios({
-    //         method:'post',
-    //         url:'/api/products/',
-    //         data: prodData
-    //     }).then(response=>{
-    //         resolve(response.data)
-    //     }).catch(err=>{
-    //         err.is_err= true
-    //         console.log(err)
-    //         reject(err) //Rather deal with the failures than abort the saving process
-    //     })
-    // })
+
 }
 
 export function joinINV_CAT(cat_data, inv_data){

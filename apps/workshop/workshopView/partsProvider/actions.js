@@ -13,8 +13,17 @@ let inspect = require('util-inspect')
 const uuidv1 = require('uuid/v1')
 import alertify from 'alertifyjs'
 
+export function productSearchDoubleClick(item, dispatch) {
+    axios.get(`/api/products/${item}`).then(function(response) {
+        dispatch(partAlreadyInTransactionsList(1, response.data, null))
+        dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
+    }).catch(function(error) {
+        alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+        administrador del sistema con el siguiete error: ${error}`)
+    })
+  }
+
 export function searchProduct(search_key, model, namespace, amount_requested, partsRequestList){
-    console.log("Search call")
     const data = {
         model: model,
         max_results: 15,
@@ -177,19 +186,7 @@ export function userPartSearchRequest(parts, code, qty, partsRequestList){
 }
 
 function partAlreadyInTransactionsList(qty, part, partsRequestList){
-
-    // const indexInPartsRequestList = partsRequestList.findIndex(part => {
-    //     return part.element.code == code || part.element.barcode == code
-
-    // })
-
-    // if(indexInPartsRequestList !== -1 && qty == 0){
-    //     return {
-    //         type: 'DELETE_PART_FROM_LIST',
-    //         payload:{index:indexInPartsRequestList}
-    //     }
-    // }
-
+    //check if there is enough inventory
     const subTotal = calculatePartSubtotal(part, qty)
     
     const next_action = {type: 'ADD_TO_PARTS_LIST',

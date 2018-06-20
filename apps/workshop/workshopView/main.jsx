@@ -10,6 +10,7 @@ import {patchWorkView} from '../general/actions'
 import alertify from 'alertifyjs'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import Search from '../../../general/search/search.jsx'
+import {productSearchDoubleClick} from './partsProvider/actions.js'
 
 
 
@@ -101,7 +102,6 @@ export default class WorkshopView extends React.Component {
     }
 
     runSequence(all_tasks){
-        console.log('start sequence')
         let result = Promise.resolve()
         all_tasks.forEach(task=>{
             result = result.then(()=>{
@@ -163,7 +163,7 @@ export default class WorkshopView extends React.Component {
         const footer =  this.buildFooter()
 
         return <div className="workshop-view" >
-            <Search modelText='Productos' model='product' namespace='productSearch' />
+            <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}/>
             <div className="workshop-view-left" >
                 <div className="workshop-view-left-header" >
                     <div className="workshop-view-left-header-partsProvider">

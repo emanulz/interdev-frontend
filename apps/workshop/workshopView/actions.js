@@ -5,7 +5,6 @@ import {saveLog} from '../../../utils/api'
 let inspect = require('util-inspect')
 
 export function createPartRequest(work_order_id, employee, amount, product, id_move_workshop, id_move_origin){
-    console.log("Creating part request")
     const url = '/api/partrequest/'
     const logCode = 'WORKORDER_PART_REQUEST_CREATED'
     const logDescription = 'Part request for work order --> ' +work_order_id
@@ -40,11 +39,7 @@ export function createPartRequest(work_order_id, employee, amount, product, id_m
 }
 
 export function deleteInventoryTransactions(part_request, user){
-    console.log('Delete part request')
-    const url_movements = '/api/inventorymovements/'
     const url_warehouses = '/api/warehouses/'
-    const logCodeCreate = 'WORKSHOP_PART_REQUEST'
-    const descriptionCreate = 'WORKSHOP_CREATE_PART_REQUEST'
     
     const workshop_warehouse_id = "4a25f16d-0f1a-4e9e-95b0-a464c085a20c"
     const main_warehouse_id = "9d85cecc-feb1-4710-9a19-0a187580e15e"

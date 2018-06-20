@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
+import { loadGlobalConfig} from '../../../../utils/api.js'
 import TransactionItems from './transactionItems.jsx'
 
 @connect((store)=>{
@@ -10,6 +10,11 @@ import TransactionItems from './transactionItems.jsx'
 })
 
 export default class TransactionsList extends React.Component {
+
+    componentWillMount(){
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 
+            'SET_SALES_WAREHOUSE', 'CLEAR_SALES_WAREHOUSE'))
+    }
 
     render(){
         const puColumnHeader = this.buildUPHeader()

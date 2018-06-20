@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
 import Form from './form/form.jsx'
 import Search from '../../../../general/search/search.jsx'
 import ClientCreatePanel from '../../../../general/clientCreatePanel/clientCreatePanel.jsx'
+import {clientSearchDoubleClick} from '../../general/clients/actions'
 
 
 @connect((store) => {
@@ -27,7 +28,7 @@ import ClientCreatePanel from '../../../../general/clientCreatePanel/clientCreat
             case true:
             {
                 content = <div>
-                    <Search modelText='Cliente' model='client' namespace='clientSearch' />
+                    <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick}/>
                     <Form />
                     <ClientCreatePanel/>
                 </div> 

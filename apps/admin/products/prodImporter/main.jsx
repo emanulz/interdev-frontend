@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-
-import { getItemDispatch } from '../../../../utils/api.js'
+import { loadGlobalConfig } from '../../../../utils/api.js'
 let inspect = require('util-inspect')
 import CSVReader from 'react-csv-reader'
 import {joinINV_CAT, saveProdInBatches, saveImportedProduct, importTestProducts, importFakeSuppliers, generateProductInvMovs} from './actions.js'
@@ -14,6 +13,8 @@ import alertify from 'alertifyjs'
         cat_data: store.productImporter.cat_data,
         inv_data: store.productImporter.inv_data,
         joint_data: store.productImporter.joint_data,
+        allow_negatives: store.productImporter.allow_negatives,
+        sales_warehouse: store.productImporter.sales_warehouse,
     }
 })
 export default class ImportProducts extends React.Component {
@@ -26,13 +27,11 @@ export default class ImportProducts extends React.Component {
         this.props.dispatch({type:'CLEAR_INV_DATA'})
         this.props.dispatch({type:'CLEAR_JOINT_DATA'})
 
-        const kwargs = {
-            url: '/api/products',
-            successType: 'PRODUCTS_FETCH_FULFILLED_IMPORT',
-            errorType: 'FETCH_PRODUCTS_REJECTED'
-        }
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 
+            'SET_WORKSHOP_WAREHOUSE', 'CLEAR_WORKSHOP_WAREHOUSE'))
 
-        //this.props.dispatch(getItemDispatch(kwargs))
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 
+            'SET_SALES_WAREHOUSE', 'CLEAR_SALES_WAREHOUSE'))
     }
 
 
@@ -71,10 +70,10 @@ export default class ImportProducts extends React.Component {
 
 
     handleImport(){
-        const warehouse = "9d85cecc-feb1-4710-9a19-0a187580e15e"
+        const warehouse = this.props.sales_warehouse
         const patched_data = joinINV_CAT(this.props.cat_data, this.props.inv_data)
         const prods_data = patched_data.map(prod=>{
-            return saveImportedProduct(prod, warehouse)
+            return saveImportedProduct(prod, warehouse, this.props.allow_negatives)
         })
         this.props.dispatch({type: 'SET_JOINT_DATA', payload: prods_data})
 
@@ -84,15 +83,6 @@ export default class ImportProducts extends React.Component {
         const total = prods_data.length - 1
 
         saveProdInBatches(start, temp_end, total, prods_data, warehouse)
-
-        //saveImportedProduct(patched_data[0])
-        // const prod_promises = patched_data.map(data=>{
-        //     return saveImportedProduct(data)
-        // })
-
-        // Promise.all(prod_promises).then(results=>{
-        //     alertify.alert('Éxito', 'Éxito importando los productos')
-        // })
         
     }
 
@@ -141,7 +131,11 @@ export default class ImportProducts extends React.Component {
                 onFileLoaded={this.readInventory.bind(this)}
                 onError={this.errorReadingFile}
             />
-
+            <div>
+                <div>Allow negatives?</div>
+                <input type="checkbox" value={this.props.allow_negatives} />
+            </div>
+            
             <button onClick={this.handleImport.bind(this)} >Importar productos</button>
 
             <button onClick={this.handleJunkImport.bind(this)} >Importar productos prueba</button>

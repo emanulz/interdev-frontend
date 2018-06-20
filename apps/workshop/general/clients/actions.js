@@ -31,6 +31,18 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 // }
 
+export function clientSearchDoubleClick(item, dispatch){
+  console.log("HERE --> " + item)
+  axios.get(`/api/clients/${item}`).then(function(response) {
+      dispatch({type: 'CLIENT_SELECTED', payload: response.data.client})
+      dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
+  }).catch(function(error) {
+      alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+      administrador del sistema con el siguiete error: ${error}`)
+  })
+
+}
+
 export function searchClient(search_key, model, namespace){
 
   const data = {

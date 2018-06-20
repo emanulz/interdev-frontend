@@ -3,11 +3,45 @@ const stateConst = {
     products_old: [],
     cat_data: [],
     inv_data: [],
-    joint_data: []
+    joint_data: [],
+    workshop_warehouse: '',
+    sales_warehouse:'',
+    allow_negatives: false,
 }
 
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
+
+        case 'SET_WORKSHOP_WAREHOUSE':
+        {
+            return {
+                ...state,
+                workshop_warehouse: action.payload
+            }
+        }
+
+        case 'CLEAR_WORKSHOP_WAREHOUSE':
+        {
+            return {
+                ...state,
+                workshop_warehouse: ''
+            }
+        }
+
+        case 'SET_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: action.payload
+            }
+        }
+        case 'CLEAR_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: ''
+            }
+        }
 
         case 'CLEAR_PRODUCTS_IMPORT':
         {

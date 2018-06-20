@@ -1,4 +1,4 @@
-import alertify from 'alertifyjs'
+import {validateInventory} from './actions.js'
 let inspect = require('util-inspect')
 
 const work_order_model = {
@@ -39,6 +39,8 @@ const stateConst = {
 
     usedPartList: [],
     usedPartsToDelete: [],
+
+    sales_warehouse: '',
   
 }
 
@@ -47,6 +49,20 @@ export default function reducer(state=stateConst, action){
 
     switch(action.type){
 
+        case 'SET_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: action.payload
+            }
+        }
+        case 'CLEAR_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: ''
+            }
+        }
         case 'LABOR_UPDATED':
         {
             const newLaborList = [...state.laborList]
@@ -678,7 +694,10 @@ export default function reducer(state=stateConst, action){
         }
         case 'ADD_TO_PARTS_LIST':
         {
-            console.log('Payload ' + inspect(action.payload))
+            //console.log('Payload ' + inspect(action.payload))
+            let is_valid = validateInventory(action.payload.element, action.payload.qty, 
+                                                state.sales_warehouse)
+            
             return {
                 ...state,
                 partsRequestList: [
@@ -690,7 +709,6 @@ export default function reducer(state=stateConst, action){
         case 'UPDATE_PARTS_LIST':
         { 
             if(action.payload.item.saved){ //disallow updating an already saved item
-                console.log('upate not allowed, already saved')
                 return 
             }
             const newPartsList = [...state.partsRequestList]
