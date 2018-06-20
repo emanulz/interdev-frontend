@@ -73,6 +73,11 @@ export default class SideMenu extends React.Component {
               Clientes</Link>
           </li>
           <li>
+            <Link to='/admin/clientcategories'>
+              <span className='fa fa-users' />
+              Categorías de clientes</Link>
+          </li>
+          <li>
             <Link to='/admin/senders'>
               <span className='fa fa-user' />
               Emisores</Link>
