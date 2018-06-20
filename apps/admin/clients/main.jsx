@@ -88,6 +88,16 @@ export default class List extends React.Component {
     this.props.dispatch(getItemDispatch(townKwargs))
     // *******************************************************************
 
+    // Then fetch provinces of the model and dispatch to reducer
+    // *******************************************************************
+    const clientCategoryKwargs = {
+      url: '/api/clientcategories',
+      successType: 'FETCH_CLIENT_CATEGORIES_FULFILLED',
+      errorType: 'FETCH_CLIENT_CATEGORIES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(clientCategoryKwargs))
+
   }
 
   // Main Layout

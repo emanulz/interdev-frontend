@@ -16,6 +16,7 @@ import warehouses from './warehouses/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
 import productImporter from './products/prodImporter/reducer.js'
 import search from '../../general/search/reducer.js'
+import clientCategories from './clientCategories/reducer.js'
 
 export default combineReducers({
   users,
@@ -33,5 +34,6 @@ export default combineReducers({
   warehouses,
   pagination,
   productImporter,
-  adminSearch: search('adminSearch')
+  adminSearch: search('adminSearch'),
+  clientCategories
 })
