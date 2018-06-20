@@ -95,7 +95,7 @@ export default class PaySideBar extends React.Component {
         const auth = this.props.pay.cardAuth
         const digits = this.props.pay.cardDigits
         change = totalInPay - total
-        payButtonClass = (total > 0 && auth && digits)
+        payButtonClass = (total > 0 && change >= 0)
           ? 'pay-tag tag-button enable'
           : 'pay-tag tag-button'
         break
@@ -134,7 +134,7 @@ export default class PaySideBar extends React.Component {
 
         <br />
 
-        <SaveBtn payButtonClass='pay-tag tag-button enable' />
+        <SaveBtn payButtonClass={payButtonClass} />
 
       </div>
 

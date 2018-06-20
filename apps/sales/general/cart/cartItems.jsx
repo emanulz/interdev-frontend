@@ -13,7 +13,7 @@ const Mousetrap = require('mousetrap')
     inCart: store.cart.cartItems,
     client: store.clients.clientSelected,
     globalDiscount: store.cart.globalDiscount,
-    // disabled: store.sales.completed,
+    disabled: store.completed.completed,
     cartItemActive: store.cart.cartItemActive,
     warehouse_id: store.config.salesWarehouse
     // defaultConfig: store.config.defaultSales,

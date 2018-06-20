@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {disabled: store.sales.completed}
+  return {disabled: store.completed.completed}
 })
 export default class Buttons extends React.Component {
 
@@ -26,7 +26,7 @@ export default class Buttons extends React.Component {
   }
   newSale() {
     // window.location.reload()
-    window.location.href = '/sales/sale'
+    window.location.href = '/seller'
     // this.props.dispatch({type: 'NEW_SALE', payload: -1})
   }
 
@@ -36,19 +36,6 @@ export default class Buttons extends React.Component {
     const buttons = this.props.disabled
       ? <div>
         <button
-          onClick={this.showInoicePanel.bind(this)}
-          style={{
-            'height': '48px',
-            'width': '49%',
-            'marginTop': '10px'
-          }}
-          className='btn btn-default buttons-payButton'>
-          Factura
-          <span>
-            <i className='fa fa-money' />
-          </span>
-        </button>
-        <button
           onClick={this.newSale.bind(this)}
           style={{
             'height': '48px',
@@ -56,7 +43,7 @@ export default class Buttons extends React.Component {
             'marginTop': '10px'
           }}
           className='btn btn-default buttons-payButton'>
-          Nueva Venta
+          Nueva Pre-Venta
           <span>
             <i className='fa fa-refresh' />
           </span>

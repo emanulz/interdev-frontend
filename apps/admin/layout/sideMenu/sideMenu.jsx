@@ -59,42 +59,42 @@ export default class SideMenu extends React.Component {
           </li>
           <li>
             <Link to='/admin/users'>
-              <span className='fa fa-user' />
+              <span className='fa fa-user-circle' />
               Usuarios</Link>
           </li>
           <li>
             <Link to='/admin/permissions'>
-              <span className='fa fa-user' />
+              <span className='fa fa-sitemap' />
               Permisos</Link>
           </li>
           <li>
+            <Link to='/admin/products'>
+              <span className='fa fa-database' />
+              Productos</Link>
+          </li>
+          <li>
             <Link to='/admin/clients'>
-              <span className='fa fa-users' />
+              <span className='fa fa-street-view' />
               Clientes</Link>
           </li>
           <li>
             <Link to='/admin/clientcategories'>
-              <span className='fa fa-users' />
+              <span className='fa fa-tasks' />
               Categorías de clientes</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/senders'>
               <span className='fa fa-user' />
               Emisores</Link>
-          </li>
-          <li>
-            <Link to='/admin/products'>
-              <span className='fa fa-gift' />
-              Productos</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/admin/productdepartments'>
-              <span className='fa fa-list' />
+              <span className='fa fa-tag' />
               Familias de Productos</Link>
           </li>
           <li>
             <Link to='/admin/productsubdepartments'>
-              <span className='fa fa-outdent' />
+              <span className='fa fa-tags' />
               Sub-Familias de Productos</Link>
           </li>
           <li>

@@ -15,7 +15,9 @@ const userModel = {
   password2: '',
   groups: [],
   user_permissions: [],
-  is_active: true
+  is_active: true,
+  code: '',
+  pin: ''
 }
 
 const profileModel = {

@@ -42,11 +42,11 @@ export function socketDispatcher(message, item, dispatch) {
         url: '/api/presales',
         ordering: '-consecutive',
         filterField: 'closed',
-        filter: true,
+        filter: 'True',
         filterField2: 'billed',
-        filter2: false,
+        filter2: 'False',
         filterField3: 'is_null',
-        filter3: false,
+        filter3: 'False',
         successType: 'FETCH_PRESALES_FULFILLED',
         errorType: 'FETCH_PRESALES_REJECTED'
       }
