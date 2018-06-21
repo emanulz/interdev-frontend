@@ -1,5 +1,3 @@
-import { searchClient } from '../general/clients/actions';
-import {createCashAdvance} from '../general/actions'
 import {makeOrdersTableFriendly} from './actions'
 
 let inspect = require('util-inspect')
@@ -29,73 +27,69 @@ const article_types = [
     {"id": "Aspiradora", "text" :"14-Aspiradora"},
     {"id": "Bascula Elec", "text" :"15-Bascula Elec"},
     {"id": "Base Pichel", "text" :"16-Base Pichel"},
-    {"id": "Batidora", "text" :"17-Batidora"},
-    {"id": "Bomba", "text" :"18-Bomba"},
-    {"id": "Cafetera", "text" :"19-Cafetera"},
-    {"id": "Coladora", "text" :"20-Coladora"},
-    {"id": "Calentador", "text" :"21-Calentador"},
-    {"id": "Calentador Cera", "text" :"22-Calentador Cera"},
-    {"id": "Calen. Chupon", "text" :"23-Calen. Chupon"},
-    {"id": "Cámara Enfr.", "text" :"24-Cámara Enfr."},
-    {"id": "Carga. Batería", "text" :"25-Carga. Batería"},
-    {"id": "Centro. Cocina", "text" :"26-Centro Cocina"},
-    {"id": "Centro Lavado", "text" :"27-Centro Lavado"},
-    {"id": "Cepilladora", "text" :"28-Cepilladora"},
-    {"id": "Cocina gas", "text" :"29-Cocina gas"},
-    {"id": "Cocina Elec.", "text" :"30-Cocina Elec."},
-    {"id": "Coffee Maker", "text" :"31-Coffe Maker"},
-    {"id": "Compresor", "text" :"32-Compresor"},
-    {"id": "Desatornillador", "text" :"33-Desatornillador"},
-    {"id": "Deshumidificador", "text" :"34-Deshumidificador"},
-    {"id": "Dispensador Agua", "text" :"35-Dispensador Agua"},
-    {"id": "Dremel", "text" :"36-Dremel"},
-    {"id": "Ducha", "text" :"37-Ducha"},
-    {"id": "Empacadora", "text" :"38-Empacadora"},
-    {"id": "Enfriador", "text" :"39-Enfriador"},
-    {"id": "Engrapadora", "text" :"40-Engrapadora"},
-    {"id": "Ext. Grasa", "text" :"41-Ext. Grasa"},
-    {"id": "Extensión Eléc", "text" :"42-Extensión Eléc"},
-    {"id": "Extrac. Jugos", "text" :"43-Extrac. Jugos"},
-    {"id": "Freídora", "text" :"44-Freídora"},
-    {"id": "Fuente Poder", "text" :"45-Fuente Poder"},
-    {"id": "Granizadora", "text" :"46-Granizadora"},
-    {"id": "Hidrolavadora", "text" :"47-Hidrolavadora"},
-    {"id": "Horno Microondas", "text" :"48-Horno Microondas"},
-    {"id": "Horno Convencional", "text" :"49-Horno Convencional"},
-    {"id": "Horno Tostador", "text" :"50-Horno Tostador"},
-    {"id": "Lámpara", "text" :"51-Lámpara"},
-    {"id": "Lavaplatos", "text" :"52-Lavaplatos"},
-    {"id": "Lijadora", "text" :"53-Lijadora"},
-    {"id": "Máquina hielo", "text" :"54-Máquina hielo"},
-    {"id": "Máquina coser", "text" :"55-Máquina coser"},
-    {"id": "Moledor café", "text" :"56-Moledor café"},
-    {"id": "Olla C/Lento", "text" :"57-Olla C/Lento"},
-    {"id": "Olla Vapor", "text" :"58-Olla Vapor"},
-    {"id": "Olla Presión", "text" :"59-Olla Presión"},
-    {"id": "Pichel", "text" :"60-Pichel"},
-    {"id": "Plancha", "text" :"61-Plancha"},
-    {"id": "Plancha Pelo", "text" :"62-Plancha Pelo"},
-    {"id": "Plancha Vapor", "text" :"63-Plancha Vapor"},
-    {"id": "Plantilla Eléc", "text" :"64-Plantilla Eléc"},
-    {"id": "Extensión Gas", "text" :"65-Extensión Gas"},
-    {"id": "Extensión Eléc", "text" :"66-Extensión Eléc"},
-    {"id": "Puerta Rerfigerador", "text" :"67-Puerta Refrigerador"},
-    {"id": "Refrigeradora", "text" :"68-Refrigeradora"},
-    {"id": "Reparar Tarjeta", "text" :"69-Reparar Tarjeta"},
-    {"id": "Refresquera", "text" :"70-Refresquera"},
-    {"id": "Resistencia", "text" :"71-Resistencia"},
-    {"id": "Revisar Tazón", "text" :"72-Revisar Tazón"},
-    {"id": "Lámpara Electrica", "text" :"73-Lámpara Electrica"},
-    {"id": "Sandwichera", "text" :"74-Sandwichera"},
-    {"id": "Sartén", "text" :"75-Sartén"},
-    {"id": "Secadora Pelo", "text" :"76-Secadora Pelo"},
-    {"id": "Taladro", "text" :"77-Taladro"},
-    {"id": "Tapa Olla", "text" :"78-Tapa Olla"},
-    {"id": "Teléfono", "text" :"79-Teléfono"},
-    {"id": "Tijera Eléc", "text" :"80-Tijera Eléc"},
-    {"id": "Waflera", "text" :"81-Waflera"},
-    {"id": "Ventilador", "text" :"82-Ventilador"},
-    {"id": "Otro", "text" :"10-Otro"},
+    {"id": "Bomba", "text" :"17-Bomba"},
+    {"id": "Cafetera", "text" :"18-Cafetera"},
+    {"id": "Coladora", "text" :"19-Coladora"},
+    {"id": "Calentador", "text" :"20-Calentador"},
+    {"id": "Calentador Cera", "text" :"21-Calentador Cera"},
+    {"id": "Calen. Chupon", "text" :"22-Calen. Chupon"},
+    {"id": "Cámara Enfr.", "text" :"23-Cámara Enfr."},
+    {"id": "Carga. Batería", "text" :"24-Carga. Batería"},
+    {"id": "Centro. Cocina", "text" :"25-Centro Cocina"},
+    {"id": "Centro Lavado", "text" :"26-Centro Lavado"},
+    {"id": "Cepilladora", "text" :"27-Cepilladora"},
+    {"id": "Cocina gas", "text" :"28-Cocina gas"},
+    {"id": "Cocina Elec.", "text" :"29-Cocina Elec."},
+    {"id": "Coffee Maker", "text" :"30-Coffe Maker"},
+    {"id": "Compresor", "text" :"31-Compresor"},
+    {"id": "Desatornillador", "text" :"32-Desatornillador"},
+    {"id": "Deshumidificador", "text" :"33-Deshumidificador"},
+    {"id": "Dispensador Agua", "text" :"34-Dispensador Agua"},
+    {"id": "Dremel", "text" :"35-Dremel"},
+    {"id": "Ducha", "text" :"36-Ducha"},
+    {"id": "Empacadora", "text" :"37-Empacadora"},
+    {"id": "Enfriador", "text" :"38-Enfriador"},
+    {"id": "Engrapadora", "text" :"39-Engrapadora"},
+    {"id": "Ext. Grasa", "text" :"40-Ext. Grasa"},
+    {"id": "Extensión Eléc", "text" :"41-Extensión Eléc"},
+    {"id": "Extrac. Jugos", "text" :"42-Extrac. Jugos"},
+    {"id": "Freídora", "text" :"43-Freídora"},
+    {"id": "Fuente Poder", "text" :"44-Fuente Poder"},
+    {"id": "Granizadora", "text" :"45-Granizadora"},
+    {"id": "Hidrolavadora", "text" :"46-Hidrolavadora"},
+    {"id": "Horno Microondas", "text" :"47-Horno Microondas"},
+    {"id": "Horno Convencional", "text" :"48-Horno Convencional"},
+    {"id": "Horno Tostador", "text" :"49-Horno Tostador"},
+    {"id": "Lámpara", "text" :"50-Lámpara"},
+    {"id": "Lavaplatos", "text" :"51-Lavaplatos"},
+    {"id": "Lijadora", "text" :"52-Lijadora"},
+    {"id": "Máquina hielo", "text" :"53-Máquina hielo"},
+    {"id": "Máquina coser", "text" :"54-Máquina coser"},
+    {"id": "Moledor café", "text" :"55-Moledor café"},
+    {"id": "Olla C/Lento", "text" :"56-Olla C/Lento"},
+    {"id": "Olla Vapor", "text" :"57-Olla Vapor"},
+    {"id": "Olla Presión", "text" :"58-Olla Presión"},
+    {"id": "Pichel", "text" :"59-Pichel"},
+    {"id": "Plancha Pelo", "text" :"60-Plancha Pelo"},
+    {"id": "Plancha Vapor", "text" :"61-Plancha Vapor"},
+    {"id": "Plantilla Eléc", "text" :"62-Plantilla Eléc"},
+    {"id": "Extensión Gas", "text" :"63-Extensión Gas"},
+    {"id": "Puerta Rerfigerador", "text" :"64-Puerta Refrigerador"},
+    {"id": "Reparar Tarjeta", "text" :"65-Reparar Tarjeta"},
+    {"id": "Refresquera", "text" :"66-Refresquera"},
+    {"id": "Resistencia", "text" :"67-Resistencia"},
+    {"id": "Revisar Tazón", "text" :"68-Revisar Tazón"},
+    {"id": "Lámpara Electrica", "text" :"69-Lámpara Electrica"},
+    {"id": "Sandwichera", "text" :"70-Sandwichera"},
+    {"id": "Sartén", "text" :"71-Sartén"},
+    {"id": "Secadora Pelo", "text" :"72-Secadora Pelo"},
+    {"id": "Taladro", "text" :"73-Taladro"},
+    {"id": "Tapa Olla", "text" :"74-Tapa Olla"},
+    {"id": "Teléfono", "text" :"75-Teléfono"},
+    {"id": "Tijera Eléc", "text" :"76-Tijera Eléc"},
+    {"id": "Waflera", "text" :"77-Waflera"},
+    {"id": "Ventilador", "text" :"78-Ventilador"},
+    {"id": "Otro", "text" :"99-Otro"},
 
     
 
@@ -197,6 +191,7 @@ const stateConst = {
     cash_advance: 0,
     request_show_receipt: false,
     request_saved: false,
+    is_edit: false
 
 }
 
@@ -307,11 +302,21 @@ export default function reducer(state = stateConst, action){
         }
         case 'CLEAR_WORK_ORDER':
         {
-            const clean_order = stateConst
-            clean_order.malfunction_details = []
-            clean_order.observations_list = []
+
             return {
                 ...state,
+                work_order :  work_order_model,
+                fullWidth: false,
+                workorders:[],
+                table_friendly_orders:[],
+                failure_input_dropdown: true,
+                article_custom_observation:'',
+                observation_input_dropdown: true,
+                is_bd_warranty : false,
+                cash_advance: 0,
+                request_show_receipt: false,
+                request_saved: false,
+                is_edit: false               
                 
             }
         }
@@ -329,6 +334,22 @@ export default function reducer(state = stateConst, action){
                 request_show_receipt: true,
                 request_saved: true
             }
+        }
+
+        case 'WORK_ORDER_EDIT_LOADED':
+        {
+            let saved_wo = JSON.parse(JSON.stringify(action.payload))
+            saved_wo.malfunction_details = JSON.parse(action.payload.malfunction_details)
+            saved_wo.observations_list = JSON.parse(action.payload.observations_list)
+            saved_wo.receiving_employee = JSON.parse(action.payload.receiving_employee)
+            saved_wo.client = JSON.parse(action.payload.client)  
+            
+            return {
+                ...state,
+                work_order: saved_wo,
+                is_edit: true
+
+            }  
         }
         case 'CASH_ADVANCE_UPDATED':
         {

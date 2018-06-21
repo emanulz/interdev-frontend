@@ -39,6 +39,7 @@ let inspect = require('util-inspect')
 
         workshop_warehouse_id: store.workshopview.workshop_warehouse,
         sales_warehouse_id: store.workshopview.sales_warehouse,
+        blackdecker_warehouse_id: store.workshopview.blackdecker_warehouse,
     }
 })
 
@@ -57,7 +58,7 @@ export default class WorkshopView extends React.Component {
             modelName: 'Orden de trabajo'
         }
 
-        this.props.dispatch({type:'FETCHING_STARTED', payload:''})
+        this.props.dispatch({type:'FETCHING_STARTED'})
         //load work order
         this.props.dispatch(setItem(kwargs))
         //load preferences
@@ -66,6 +67,9 @@ export default class WorkshopView extends React.Component {
 
         this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 
             'SET_SALES_WAREHOUSE', 'CLEAR_SALES_WAREHOUSE'))
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'blackdecker_warehouse', 
+            'SET_BLACKDECKER_WAREHOUSE', 'CLEAR_BLACKDECKER_WAREHOUSE'))
 
     }
 
@@ -87,6 +91,7 @@ export default class WorkshopView extends React.Component {
 
             main_warehouse_id: this.props.sales_warehouse_id,
             workshop_warehouse_id: this.props.workshop_warehouse_id,
+            black_decker_warehouse: this.props.blackdecker_warehouse_id,
 
             close_order: close_order,
         }

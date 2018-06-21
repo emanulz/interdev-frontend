@@ -23,7 +23,7 @@ const stateConst = {
   users: [],
   clientSelected: clientSelectedModel,
   userSelected: userSelectedModel,
-  client_disabled: false
+  client_disabled: false,
 }
 
 export default function reducer(state = stateConst, action) {
@@ -40,6 +40,22 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'WORK_ORDER_EDIT_LOADED':
+    {
+      const client = JSON.parse(action.payload.client)
+      return {
+        ...state,
+        clientSelected: client,
+      }
+    }
+    case 'CLEAR_WORK_ORDER':
+    {
+      return {
+        ...state,
+        clientSelected: clientSelectedModel,
+        userSelected: userSelectedModel
+      }
+    }
     case 'CLEAR_ALL':
     {
       return {
@@ -48,14 +64,6 @@ export default function reducer(state = stateConst, action) {
         userSelected: userSelectedModel
       }
     }
-
-    case 'FETCH_CLIENTS':
-    {
-      return {
-        ...state,
-        clientsFetching: true
-      }
-    } // case
 
     case 'FETCH_CLIENT_REJECTED':
     {
@@ -67,6 +75,10 @@ export default function reducer(state = stateConst, action) {
     } // case
     case 'CLIENT_SELECTED':
     {
+      if(action.payload.code ==="00"){
+        alertify.alert('CLIENTE GENERAL EN GARANTÍA NO PERMITIDO!', 'Una garantía no puede estar asociada con un cliente general')
+        break
+      }
       return {
         ...state,
         clientSelected: action.payload
@@ -128,40 +140,6 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         clientSelectedDebt: parseFloat(action.payload.debt)
-      }
-    }
-
-    case 'NEW_SALE':
-    {
-      const clients = state.clients
-      state = stateConst
-      return {
-        ...state, clients: clients
-      }
-    } // case
-
-    case 'LOADED_SALE':
-    {
-      return {
-        ...state,
-        clientSelected: action.payload.client,
-        userSelected: action.payload.user
-      }
-    }
-
-    case 'LOADED_PRESALE':
-    {
-      return {
-        ...state,
-        clientSelected: action.payload.client
-      }
-    }
-
-    case 'LOADED_PROFORMA':
-    {
-      return {
-        ...state,
-        clientSelected: action.payload.client
       }
     }
 

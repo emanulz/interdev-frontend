@@ -15,6 +15,7 @@ import {getItemDispatch} from '../../../../utils/api'
     disabled: store.clients.disabled,
     users: store.clients.users,
     user: store.clients.userSelected,
+    is_edit: store.workorder.is_edit,
 
   }
 })
@@ -24,16 +25,18 @@ export default class Clients extends React.Component {
   }
 
   componentWillMount() {
+    // if(!this.props.is_edit){
+    //   this.props.dispatch({type: 'FETCHING_STARTED'})
 
-    this.props.dispatch({type: 'FETCHING_STARTED'})
+    //   const clientKwargs = {
+    //     url: '/api/clients/?code=00',
+    //     successType: 'CLIENT_SELECTED_LIST',
+    //     errorType: 'FETCH_CLIENT_REJECTED'
+    //   }
+  
+    //   this.props.dispatch(getItemDispatch(clientKwargs))
+    // }
 
-    const clientKwargs = {
-      url: '/api/clients/?code=00',
-      successType: 'CLIENT_SELECTED_LIST',
-      errorType: 'FETCH_CLIENT_REJECTED'
-    }
-
-    this.props.dispatch(getItemDispatch(clientKwargs))
 
   }
 
