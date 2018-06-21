@@ -7,23 +7,23 @@ import {assingUserPermission, checkSingleUserPermissions} from '../../../../../u
 
 @connect((store) => {
   return {
-    permissions: store.permissions.permissionsActive.sales,
+    permissions: store.permissions.permissionsActive.access,
     user: store.users.userActive
   }
 })
-export default class Clients extends React.Component {
+export default class Access extends React.Component {
 
   componentWillMount () {
 
     const permissions = {
-      add: 'sales.add_sale',
-      change: 'sales.change_sale',
-      list: 'sales.list_sale',
-      delete: 'sales.delete_sale'
+      access_administration: 'administration.access_administration',
+      access_sales: 'administration.access_sales',
+      access_presales: 'administration.access_presales',
+      access_inventories: 'administration.access_inventories'
     }
     const kwargs = {
       userId: this.props.user.id,
-      model: 'sales',
+      model: 'access',
       permissions: permissions,
       success: 'SET_PERMISSIONS',
       fail: 'CLEAR_PERMISSIONS'
@@ -41,7 +41,7 @@ export default class Clients extends React.Component {
     // add is the variable to see if is checked or not
     const kwargs = {
       userId: this.props.user.id,
-      model: 'sales',
+      model: 'access',
       add: value,
       permission: permission
     }
@@ -55,14 +55,14 @@ export default class Clients extends React.Component {
 
     updatePromise.then(() => {
       const permissions = {
-        add: 'sales.add_sale',
-        change: 'sales.change_sale',
-        list: 'sales.list_sale',
-        delete: 'sales.delete_sale'
+        access_administration: 'administration.access_administration',
+        access_sales: 'administration.access_sales',
+        access_presales: 'administration.access_presales',
+        access_inventories: 'administration.access_inventories'
       }
       const kwargs2 = {
         userId: this.props.user.id,
-        model: 'sales',
+        model: 'access',
         permissions: permissions,
         success: 'SET_PERMISSIONS',
         fail: 'CLEAR_PERMISSIONS'
@@ -82,34 +82,31 @@ export default class Clients extends React.Component {
     return <div className='permissions-container-permissions-tab'>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Listar Ventas</div>
+        <div className='permissionName'>Accesar el sitio administrador</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.list}
-            onChange={this.handleInputChange.bind(this, 'list_sale')} />
+          <input type='checkbox' checked={this.props.permissions.access_administration}
+            onChange={this.handleInputChange.bind(this, 'access_administration')} />
         </div>
       </div>
-
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Crear Venta</div>
+        <div className='permissionName'>Accesar app de Cajero</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.add}
-            onChange={this.handleInputChange.bind(this, 'add_sale')} />
+          <input type='checkbox' checked={this.props.permissions.access_sales}
+            onChange={this.handleInputChange.bind(this, 'access_sales')} />
         </div>
       </div>
-
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Modificar Venta</div>
+        <div className='permissionName'>Accesar app de Preventa</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.change}
-            onChange={this.handleInputChange.bind(this, 'change_sale')} />
+          <input type='checkbox' checked={this.props.permissions.access_presales}
+            onChange={this.handleInputChange.bind(this, 'access_presales')} />
         </div>
       </div>
-
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Eliminar Venta</div>
+        <div className='permissionName'>Accesar app de Inventarios</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.delete}
-            onChange={this.handleInputChange.bind(this, 'delete_sale')} />
+          <input type='checkbox' checked={this.props.permissions.access_inventories}
+            onChange={this.handleInputChange.bind(this, 'access_inventories')} />
         </div>
       </div>
 

@@ -7,7 +7,7 @@ import {assingUserPermission, checkSingleUserPermissions} from '../../../../../u
 
 @connect((store) => {
   return {
-    permissions: store.permissions.permissionsActive.sales,
+    permissions: store.permissions.permissionsActive.presales,
     user: store.users.userActive
   }
 })
@@ -16,14 +16,14 @@ export default class Clients extends React.Component {
   componentWillMount () {
 
     const permissions = {
-      add: 'sales.add_sale',
-      change: 'sales.change_sale',
-      list: 'sales.list_sale',
-      delete: 'sales.delete_sale'
+      add: 'presales.add_presale',
+      change: 'presales.change_presale',
+      list: 'presales.list_presale',
+      delete: 'presales.delete_presale'
     }
     const kwargs = {
       userId: this.props.user.id,
-      model: 'sales',
+      model: 'presales',
       permissions: permissions,
       success: 'SET_PERMISSIONS',
       fail: 'CLEAR_PERMISSIONS'
@@ -41,7 +41,7 @@ export default class Clients extends React.Component {
     // add is the variable to see if is checked or not
     const kwargs = {
       userId: this.props.user.id,
-      model: 'sales',
+      model: 'presales',
       add: value,
       permission: permission
     }
@@ -55,14 +55,14 @@ export default class Clients extends React.Component {
 
     updatePromise.then(() => {
       const permissions = {
-        add: 'sales.add_sale',
-        change: 'sales.change_sale',
-        list: 'sales.list_sale',
-        delete: 'sales.delete_sale'
+        add: 'presales.add_presale',
+        change: 'presales.change_presale',
+        list: 'presales.list_presale',
+        delete: 'presales.delete_presale'
       }
       const kwargs2 = {
         userId: this.props.user.id,
-        model: 'sales',
+        model: 'presales',
         permissions: permissions,
         success: 'SET_PERMISSIONS',
         fail: 'CLEAR_PERMISSIONS'
@@ -82,34 +82,34 @@ export default class Clients extends React.Component {
     return <div className='permissions-container-permissions-tab'>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Listar Ventas</div>
+        <div className='permissionName'>Listar Preventas</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.list}
-            onChange={this.handleInputChange.bind(this, 'list_sale')} />
+            onChange={this.handleInputChange.bind(this, 'list_presale')} />
         </div>
       </div>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Crear Venta</div>
+        <div className='permissionName'>Crear Preventa</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.add}
-            onChange={this.handleInputChange.bind(this, 'add_sale')} />
+            onChange={this.handleInputChange.bind(this, 'add_presale')} />
         </div>
       </div>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Modificar Venta</div>
+        <div className='permissionName'>Modificar Preventa</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.change}
-            onChange={this.handleInputChange.bind(this, 'change_sale')} />
+            onChange={this.handleInputChange.bind(this, 'change_presale')} />
         </div>
       </div>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Eliminar Venta</div>
+        <div className='permissionName'>Eliminar Preventa</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.delete}
-            onChange={this.handleInputChange.bind(this, 'delete_sale')} />
+            onChange={this.handleInputChange.bind(this, 'delete_presale')} />
         </div>
       </div>
 

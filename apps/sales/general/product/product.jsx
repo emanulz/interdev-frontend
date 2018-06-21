@@ -135,7 +135,7 @@ export default class Product extends React.Component {
             type='text' placeholder='Ingrese el Código del Producto'
             className='product-inputs-code-input mousetrap form-control input-lg' />
         </div>
-        <button disabled={this.props.disabled} onClick={this.searchProductClick.bind(this)}
+        <button disabled={this.props.disabled || this.props.presaleLoaded} onClick={this.searchProductClick.bind(this)}
           className='product-inputs-search'>
           <span>
             <i className='fa fa-search' />
