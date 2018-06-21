@@ -43,7 +43,20 @@ const permissionsModel = {
     access_administration: false,
     access_sales: false,
     access_presales: false,
-    access_inventoeies: false
+    access_inventories: false,
+    access_workshop: false
+  },
+  work_orders: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
+  },
+  cash_advances: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
   }
 }
 

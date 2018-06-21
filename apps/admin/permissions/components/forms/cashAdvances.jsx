@@ -7,24 +7,23 @@ import {assingUserPermission, checkSingleUserPermissions} from '../../../../../u
 
 @connect((store) => {
   return {
-    permissions: store.permissions.permissionsActive.access,
+    permissions: store.permissions.permissionsActive.cash_advances,
     user: store.users.userActive
   }
 })
-export default class Access extends React.Component {
+export default class CashAdvances extends React.Component {
 
   componentWillMount () {
 
     const permissions = {
-      access_administration: 'administration.access_administration',
-      access_sales: 'administration.access_sales',
-      access_presales: 'administration.access_presales',
-      access_inventories: 'administration.access_inventories',
-      access_workshop: 'administration.access_workshop'
+      add: 'sales.add_cash_advance',
+      change: 'sales.change_cash_advance',
+      list: 'sales.list_cash_advance',
+      delete: 'sales.delete_cash_advance'
     }
     const kwargs = {
       userId: this.props.user.id,
-      model: 'access',
+      model: 'cash_advances',
       permissions: permissions,
       success: 'SET_PERMISSIONS',
       fail: 'CLEAR_PERMISSIONS'
@@ -42,7 +41,7 @@ export default class Access extends React.Component {
     // add is the variable to see if is checked or not
     const kwargs = {
       userId: this.props.user.id,
-      model: 'access',
+      model: 'cash_advances',
       add: value,
       permission: permission
     }
@@ -56,15 +55,14 @@ export default class Access extends React.Component {
 
     updatePromise.then(() => {
       const permissions = {
-        access_administration: 'administration.access_administration',
-        access_sales: 'administration.access_sales',
-        access_presales: 'administration.access_presales',
-        access_inventories: 'administration.access_inventories',
-        access_workshop: 'administration.access_workshop'
+        add: 'sales.add_cash_advance',
+        change: 'sales.change_cash_advance',
+        list: 'sales.list_cash_advance',
+        delete: 'sales.delete_cash_advance'
       }
       const kwargs2 = {
         userId: this.props.user.id,
-        model: 'access',
+        model: 'cash_advances',
         permissions: permissions,
         success: 'SET_PERMISSIONS',
         fail: 'CLEAR_PERMISSIONS'
@@ -84,38 +82,34 @@ export default class Access extends React.Component {
     return <div className='permissions-container-permissions-tab'>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Accesar el sitio administrador</div>
+        <div className='permissionName'>Listar Adelantos de Efectivo</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.access_administration}
-            onChange={this.handleInputChange.bind(this, 'access_administration')} />
+          <input type='checkbox' checked={this.props.permissions.list}
+            onChange={this.handleInputChange.bind(this, 'list_cash_advance')} />
         </div>
       </div>
+
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Accesar app de Cajero</div>
+        <div className='permissionName'>Crear Adelanto de Efectivo</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.access_sales}
-            onChange={this.handleInputChange.bind(this, 'access_sales')} />
+          <input type='checkbox' checked={this.props.permissions.add}
+            onChange={this.handleInputChange.bind(this, 'add_cash_advance')} />
         </div>
       </div>
+
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Accesar app de Preventa</div>
+        <div className='permissionName'>Modificar Adelanto de Efectivo</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.access_presales}
-            onChange={this.handleInputChange.bind(this, 'access_presales')} />
+          <input type='checkbox' checked={this.props.permissions.change}
+            onChange={this.handleInputChange.bind(this, 'change_cash_advance')} />
         </div>
       </div>
+
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Accesar app de Inventarios</div>
+        <div className='permissionName'>Eliminar Adelanto de Efectivo</div>
         <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.access_inventories}
-            onChange={this.handleInputChange.bind(this, 'access_inventories')} />
-        </div>
-      </div>
-      <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Accesar app de Taller</div>
-        <div className='permissionInput'>
-          <input type='checkbox' checked={this.props.permissions.access_workshop}
-            onChange={this.handleInputChange.bind(this, 'access_workshop')} />
+          <input type='checkbox' checked={this.props.permissions.delete}
+            onChange={this.handleInputChange.bind(this, 'delete_cash_advance')} />
         </div>
       </div>
 
