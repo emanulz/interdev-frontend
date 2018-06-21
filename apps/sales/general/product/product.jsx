@@ -16,6 +16,7 @@ const Mousetrap = require('mousetrap')
     globalDiscount: store.cart.globalDiscount,
     warehouse_id: store.config.salesWarehouse,
     disabled: store.completed.completed,
+    presaleLoaded: store.completed.isPresaleLoaded
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -124,7 +125,7 @@ export default class Product extends React.Component {
       <div className='product-inputs'>
         <div className='product-inputs-code'>
           <i className='fa fa-barcode' />
-          <input id='productCodeInputField' disabled={this.props.disabled}
+          <input id='productCodeInputField' disabled={this.props.disabled || this.props.presaleLoaded}
             onKeyDown={this.inputKeyPress.bind(this)}
             value={this.props.inputVal}
             onChange={this.inputKeyPress.bind(this)}

@@ -1,26 +1,28 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {formatDateTimeAmPm} from '../../../../../../utils/formatDate.js'
 
 @connect((store) => {
-  return {sale: store.sales.saleActive}
+  return {sale: store.sales.saleActive, presaleUser: store.presales.presaleUser, user: store.user.user}
 })
 export default class Data extends React.Component {
 
   render() {
     const sale = this.props.sale
     const date = sale.created
-      ? `${('0' + sale.created.getDate()).slice(-2)}/
-      ${('0' + (sale.created.getMonth() + 1)).slice(-2)}/
-      ${sale.created.getFullYear()}`
+      ? `${formatDateTimeAmPm(sale.created)}`
       : '01/01/1970'
+    const cashierName = this.props.user.first_name
+      ? `${this.props.user.first_name} ${this.props.user.last_name}`
+      : `${this.props.user.username}`
+    const presellerName = this.props.presaleUser.first_name
+      ? `${this.props.presaleUser.first_name} ${this.props.presaleUser.last_name}`
+      : `${this.props.presaleUser.username}`
     const client = sale.client ? `${sale.client.code} - ${sale.client.name} ${sale.client.last_name}` : '00 - Cliente de Contado'
     const id = sale.consecutive ? sale.consecutive : '0001'
-    const clientAdress = sale.client.adress
-      ? <tr>
-        <th>Direc:</th>
-        <td>{sale.client.adress}</td>
-      </tr>
-      : <tr />
+    const seller = Object.keys(this.props.presaleUser).length !== 0
+      ? presellerName
+      : cashierName
 
     return <div className='compact-invoice-data'>
 
@@ -32,7 +34,7 @@ export default class Data extends React.Component {
           </tr>
           <tr>
             <th>Factura:</th>
-            <td>{('00000' + id).slice(-5)}</td>
+            <td>{id}</td>
 
           </tr>
           <tr>
@@ -40,7 +42,10 @@ export default class Data extends React.Component {
             <td>{client}</td>
           </tr>
 
-          {clientAdress}
+          <tr>
+            <th>Vendedor:</th>
+            <td>{seller}</td>
+          </tr>
 
         </tbody>
 

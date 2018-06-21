@@ -23,9 +23,7 @@ export function saveItem(kwargs, resolve, reject) {
     })
       .then((response) => {
         dispatch({type: 'CLEAR_SALE', payload: ''})
-        dispatch({type: 'SET_SALE', payload: response.data})
-        alertify.alert('Completado', kwargs.sucessMessage)
-        resolve()
+        resolve(response.data)
 
       }).catch((err) => {
         console.log(err)

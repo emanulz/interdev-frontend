@@ -39,13 +39,17 @@ export default class PresalesPanel extends React.Component {
       this.props.dispatch(loadPresale(url, resolve, reject))
     })
     loadPromise.then((data) => {
+      console.log(data)
       this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       data.cart = JSON.parse(data.cart)
       data.client = JSON.parse(data.client)
+      data.user = JSON.parse(data.user)
       _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
       _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
+      _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
+      _this.props.dispatch({type: 'PRESALE_LOADED', payload: data.user})
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
@@ -68,11 +72,15 @@ export default class PresalesPanel extends React.Component {
     const presales = this.props.presales
 
     const itemsToRender = presales.map(presale => {
+      const presellerName = presale.user.first_name
+        ? `${presale.user.first_name} ${presale.user.last_name}`
+        : `${presale.user.username}`
       return <tr key={presale.id}>
         <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, presale.id)} className='fa fa-download' /></td>
         <td>{presale.consecutive}</td>
         <td>{`${formatDateTimeAmPm(presale.created)}`}</td>
         <td>{`${presale.client.name} ${presale.client.last_name}`}</td>
+        <td>{presellerName}</td>
         <td>₡ {parseFloat(presale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
       </tr>
     })
@@ -91,6 +99,7 @@ export default class PresalesPanel extends React.Component {
                 <td>#</td>
                 <td>Fecha</td>
                 <td>Cliente</td>
+                <td>Vendedor</td>
                 <td>Monto</td>
               </tr>
             </thead>

@@ -9,6 +9,7 @@ const productModel = {
   id: '0000000000',
   code: '',
   description: '',
+  short_description: '',
   unit: 'uni',
   fractioned: true,
   department: '0000000000',

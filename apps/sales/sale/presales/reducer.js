@@ -2,7 +2,8 @@
 const stateConst = {
   presales: [],
   isVisible: false,
-  presaleId: ''
+  presaleId: '',
+  presaleUser: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -21,6 +22,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         presaleId: ''
+      }
+    } // case
+
+    case 'SET_PRESALE_USER':
+    {
+      return {
+        ...state,
+        presaleUser: action.payload
+      }
+    } // case
+
+    case 'CLEAR_PRESALE_USER':
+    {
+      return {
+        ...state,
+        presaleUser: {}
       }
     } // case
 
@@ -54,7 +71,8 @@ export default function reducer(state = stateConst, action) {
         return {
           ...presale,
           cart: JSON.parse(presale.cart),
-          client: JSON.parse(presale.client)
+          client: JSON.parse(presale.client),
+          user: JSON.parse(presale.user)
         }
       })
       return {

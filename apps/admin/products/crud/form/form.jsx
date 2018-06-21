@@ -170,7 +170,7 @@ class Form extends React.Component {
         <hr />
 
         <div className='form-group row input-block'>
-          <div className='col-xs-12'>
+          <div className='col-xs-6 first'>
 
             <label>Código</label>
             <input value={this.props.product.code} name='code' onChange={this.handleInputChange.bind(this)}
@@ -178,13 +178,13 @@ class Form extends React.Component {
 
           </div>
 
-          {/* <div className='col-xs-6 second'>
+          <div className='col-xs-6 second'>
 
-            <label>Código Base</label>
-            <input value={this.props.product.base_code} name='base_code' onChange={this.handleInputChange.bind(this)}
+            <label>Descripción Corta</label>
+            <input value={this.props.product.short_description} name='short_description' onChange={this.handleInputChange.bind(this)}
               type='text' className='form-control' />
 
-          </div> */}
+          </div>
         </div>
 
         <div className='form-group'>

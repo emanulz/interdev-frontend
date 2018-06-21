@@ -15,7 +15,8 @@ const Mousetrap = require('mousetrap')
     globalDiscount: store.cart.globalDiscount,
     disabled: store.completed.completed,
     cartItemActive: store.cart.cartItemActive,
-    warehouse_id: store.config.salesWarehouse
+    warehouse_id: store.config.salesWarehouse,
+    presaleLoaded: store.completed.isPresaleLoaded
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -194,7 +195,7 @@ export default class CartItems extends React.Component {
         ? 'cart-activeRow cart-body-item'
         : 'cart-body-item'
 
-      const removeIconClass = this.props.disabled ? 'removeItemIcon disabled' : 'removeItemIcon'
+      const removeIconClass = this.props.disabled || this.props.presaleLoaded ? 'removeItemIcon disabled' : 'removeItemIcon'
 
       const taxes1 = (item.product.use_taxes)
         ? item.product.taxes
@@ -202,7 +203,7 @@ export default class CartItems extends React.Component {
 
       const qtyField = <input
         id={`qty${item.product.code}`}
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.presaleLoaded}
         onChange={this.qtyInputChange.bind(this, item.uuid)}
         onFocus={this.fieldFocus.bind(this)}
         onKeyUp={this.qtyInputKeyPress.bind(this)}
@@ -213,7 +214,7 @@ export default class CartItems extends React.Component {
 
       const discountField = this.props.client.saleLoaded
         ? <input
-          disabled={this.props.disabled}
+          disabled={this.props.disabled || this.props.presaleLoaded}
           onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
@@ -221,7 +222,7 @@ export default class CartItems extends React.Component {
           defaultValue={parseFloat(item.discount)}
         />
         : <input
-          disabled={this.props.disabled}
+          disabled={this.props.disabled || this.props.presaleLoaded}
           onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}

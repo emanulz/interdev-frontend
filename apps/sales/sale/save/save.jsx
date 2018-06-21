@@ -50,10 +50,11 @@ export default class SaveBtn extends React.Component {
       _this.props.dispatch(saveItem(kwargs, resolve, reject))
     })
     // SAVE PROCESS
-    updatePromise.then(() => {
+    updatePromise.then((data) => {
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+      this.props.dispatch({type: 'SET_SALE', payload: data})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       Mousetrap.reset()
     }).catch((err) => {

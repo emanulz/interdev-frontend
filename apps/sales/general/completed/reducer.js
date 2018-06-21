@@ -1,5 +1,6 @@
 const stateConst = {
-  completed: false
+  completed: false,
+  isPresaleLoaded: false
 }
 
 export default function reducer(state = stateConst, action) {
@@ -11,6 +12,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         completed: true
+      }
+    } // case
+
+    case 'PRESALE_LOADED':
+    {
+      return {
+        ...state,
+        isPresaleLoaded: true
       }
     } // case
 
