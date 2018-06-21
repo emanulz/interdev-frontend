@@ -46,6 +46,9 @@ let inspect = require('util-inspect')
 export default class WorkshopView extends React.Component {
 
     componentWillMount(){
+        
+        this.props.dispatch({type:'CLEAR_WORKSHOPVIEW'})
+
         const work_order_consecutive = this.props.location.pathname.split('/').pop()
         this.props.dispatch({type: 'CLEAR_GLOBAL_CONFIG'})
         const kwargs = {
@@ -158,6 +161,7 @@ export default class WorkshopView extends React.Component {
 
         }
     }
+
 
     render(){
         const work_order_info = this.buildWorkOrderHeader()

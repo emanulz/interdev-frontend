@@ -48,6 +48,15 @@ const stateConst = {
 export default function reducer(state=stateConst, action){
 
     switch (action.type){
+
+        case 'CLEAR_WORKSHOPVIEW':
+        {
+            return {
+                ...state,
+                work_order: work_order_model
+            }
+        }
+
         case 'SET_BLACKDECKER_WAREHOUSE':
         {
             return {
@@ -130,32 +139,6 @@ export default function reducer(state=stateConst, action){
                 ...state, 
                 work_order: saved_wo
             }
-            // const saved_wo = {
-            //     id:action.payload.id,
-            //     consecutive:action.payload.consecutive,
-            //     is_closed : action.payload.is_closed,
-            //     receiving_employee : created_by,
-            //     technician:action.payload.technician,
-            //     client:loaded_client,
-            //     client_id: action.payload.client_id,
-            //     article_type: action.payload.article_type,
-            //     article_brand: action.payload.article_brand,
-            //     article_model: action.payload.article_model,
-            //     article_serial: action.payload.article_serial,
-            //     article_color : action.payload.article_color,
-            //     article_data: action.payload.article_data,
-            //     malfunction_details: malfunctions,
-            //     observations_list:observations,
-            //     observations: action.payload.observations,
-            //     is_warranty:action.payload.is_warranty,
-            //     warranty_number_bd:action.payload.warranty_number_bd,
-            //     warranty_invoice_date: action.payload.warranty_invoice_date,
-            //     warranty_supplier_name:action.payload.warranty_supplier_name,
-            //     warranty_invoice_number:action.payload.warranty_invoice_number,
-            //     warranty_repaired_by:action.payload.warranty_repaired_by,
-            //     created: action.payload.created,
-            //     updated: action.payload.updated
-            // }
 
         }
 

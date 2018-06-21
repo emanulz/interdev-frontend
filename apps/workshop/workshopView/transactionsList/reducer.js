@@ -49,6 +49,17 @@ export default function reducer(state=stateConst, action){
 
     switch(action.type){
 
+        case 'CLEAR_WORKSHOPVIEW':
+        {
+            return {
+                ...state,
+                cashAdvancesToDelete: [],
+                partsRequestToDelete: [],
+                laborsToDelete: [],
+                usedPartsToDelete: [],
+            }
+        }
+
         case 'SET_SALES_WAREHOUSE':
         {
             return {
