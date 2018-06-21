@@ -4,6 +4,7 @@
 import React from 'react'
 import Form from './form/form.jsx'
 import Form2 from './form/form2.jsx'
+import Inventories from './form/inventories.jsx'
 import Form3 from './form/form3.jsx'
 
 import Unauthorized from '../../../../general/unauthorized.jsx'
@@ -67,9 +68,10 @@ export default class Update extends React.Component {
         content = <div>
           <Tabs>
             <TabList>
-              <Tab className='oneThree' tabFor='one'>General</Tab>
-              <Tab className='oneThree' tabFor='two'>Precios</Tab>
-              <Tab className='oneThree' tabFor='three'>Extras</Tab>
+              <Tab className='oneFour' tabFor='one'>General</Tab>
+              <Tab className='oneFour' tabFor='two'>Precios</Tab>
+              <Tab className='oneFour' tabFor='three'>Existencias</Tab>
+              <Tab className='oneFour' tabFor='four'>Extras</Tab>
             </TabList>
 
             <TabPanel tabId='one'>
@@ -81,10 +83,12 @@ export default class Update extends React.Component {
             </TabPanel>
 
             <TabPanel tabId='three'>
-              <Form3 key={`${code}3`} update />
+              <Inventories key={`${code}3`} update />
             </TabPanel>
 
-            <TabPanel tabId='four' />
+            <TabPanel tabId='four'>
+              <Form3 key={`${code}4`} update />
+            </TabPanel>
 
           </Tabs>
           <UpdateButtons />
@@ -107,13 +111,17 @@ export default class Update extends React.Component {
     return <div className='create heigh100'>
       <div className='create-edit-header'>
         <h1>EDITAR PRODUCTO</h1>
-        <Link to={`/admin/products/edit/${this.props.previousProduct}`}>
+        {/* <Link to={`/admin/products/edit/${this.props.previousProduct}`}>
           <span className={`previous fa fa-chevron-circle-left`} />
         </Link>
         <Link to={`/admin/products/edit/${this.props.nextProduct}`}>
           <span className='next fa fa-chevron-circle-right' />
-        </Link>
+        </Link> */}
         <span onClick={this.toggleBar.bind(this)} className='list fa fa-list' />
+      </div>
+      <br />
+      <div className='create-edit-header'>
+        <h1>{`${this.props.product.code} - ${this.props.product.description}`}</h1>
       </div>
 
       {content}
