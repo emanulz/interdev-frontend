@@ -49,7 +49,7 @@ export default function reducer(state=stateConst, action){
 
     switch (action.type){
 
-        case 'CLEAR_WORKSHOPVIEW_WORKORDER':
+        case 'CLEAR_WORKSHOPVIEW':
         {
             return {
                 ...state,

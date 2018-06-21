@@ -1,8 +1,8 @@
 const clientSelectedModel = {
   code: '0000',
   id: '000000000',
-  last_name: 'Contado',
-  name: 'Cliente',
+  last_name: 'Seleccionar',
+  name: 'Sin',
   phone_number : '',
   cellphone_number: '',
   email: ''

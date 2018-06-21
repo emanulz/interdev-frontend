@@ -47,7 +47,7 @@ export default class WorkshopView extends React.Component {
 
     componentWillMount(){
         
-        this.props.dispatch({type:'CLEAR_WORKSHOPVIEW_WORKORDER'})
+        this.props.dispatch({type:'CLEAR_WORKSHOPVIEW'})
 
         const work_order_consecutive = this.props.location.pathname.split('/').pop()
         this.props.dispatch({type: 'CLEAR_GLOBAL_CONFIG'})
