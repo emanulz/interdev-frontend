@@ -42,11 +42,27 @@ const stateConst = {
     work_order: work_order_model,
     workshop_warehouse: '',
     sales_warehouse:'',
+    blackdecker_warehouse: '',
 }
 
 export default function reducer(state=stateConst, action){
 
     switch (action.type){
+        case 'SET_BLACKDECKER_WAREHOUSE':
+        {
+            return {
+                ...state,
+                blackdecker_warehouse: action.payload
+            }
+        }
+
+        case 'CLEAR_BLACKDECKER_WAREHOUSE':
+        {
+            return {
+                ...state,
+                blackdecker_warehouse: ''
+            }
+        }
 
         case 'SET_WORKSHOP_WAREHOUSE':
         {

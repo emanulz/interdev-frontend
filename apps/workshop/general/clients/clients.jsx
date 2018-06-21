@@ -25,17 +25,17 @@ export default class Clients extends React.Component {
   }
 
   componentWillMount() {
-    if(!this.props.is_edit){
-      this.props.dispatch({type: 'FETCHING_STARTED'})
+    // if(!this.props.is_edit){
+    //   this.props.dispatch({type: 'FETCHING_STARTED'})
 
-      const clientKwargs = {
-        url: '/api/clients/?code=00',
-        successType: 'CLIENT_SELECTED_LIST',
-        errorType: 'FETCH_CLIENT_REJECTED'
-      }
+    //   const clientKwargs = {
+    //     url: '/api/clients/?code=00',
+    //     successType: 'CLIENT_SELECTED_LIST',
+    //     errorType: 'FETCH_CLIENT_REJECTED'
+    //   }
   
-      this.props.dispatch(getItemDispatch(clientKwargs))
-    }
+    //   this.props.dispatch(getItemDispatch(clientKwargs))
+    // }
 
 
   }

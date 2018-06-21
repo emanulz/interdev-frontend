@@ -32,7 +32,6 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // }
 
 export function clientSearchDoubleClick(item, dispatch){
-  console.log("HERE --> " + item)
   axios.get(`/api/clients/${item}`).then(function(response) {
       dispatch({type: 'CLIENT_SELECTED', payload: response.data.client})
       dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
@@ -78,22 +77,22 @@ export function searchClient(search_key, model, namespace){
 
 }
 
-export function userSelected(_id, users) {
+// export function userSelected(_id, users) {
 
-  const userSelected = users.findIndex(user => user._id == _id) // checks if user exists
+//   const userSelected = users.findIndex(user => user._id == _id) // checks if user exists
 
-  const res = (userSelected == -1) // if not exists dispatch Not Found
-    ? {
-      type: 'USER_NOT_FOUND',
-      payload: -1
-    }
-    : {
-      type: 'USER_SELECTED',
-      payload: {
-        user: users[userSelected]
-      }
-    }
+//   const res = (userSelected == -1) // if not exists dispatch Not Found
+//     ? {
+//       type: 'USER_NOT_FOUND',
+//       payload: -1
+//     }
+//     : {
+//       type: 'USER_SELECTED',
+//       payload: {
+//         user: users[userSelected]
+//       }
+//     }
 
-  return res
+//   return res
 
-}
+// }

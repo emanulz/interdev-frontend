@@ -105,14 +105,18 @@ class CreateWorkOrderButtons extends React.Component {
                     Crear Orden de Trabajo
                 </button>
             </div>
-        const buttons = <div className="col-xs-12 row form-buttons-container-row">
-            {optional_button}
+        const receipt_button = this.props.is_edit
+        ? ''
+        :
             <div className='col-xs-12 col-sm-4'>
                 <button onClick={this.showReceipt.bind(this)}
                 className='form-buttons-container-save form-control btn-success'>
                     Mostrar Recibo
                 </button>
             </div>
+        const buttons = <div className="col-xs-12 row form-buttons-container-row">
+            {optional_button}
+            {receipt_button}
 
         </div>
 

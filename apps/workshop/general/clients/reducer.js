@@ -23,7 +23,7 @@ const stateConst = {
   users: [],
   clientSelected: clientSelectedModel,
   userSelected: userSelectedModel,
-  client_disabled: false
+  client_disabled: false,
 }
 
 export default function reducer(state = stateConst, action) {
@@ -42,15 +42,20 @@ export default function reducer(state = stateConst, action) {
 
     case 'WORK_ORDER_EDIT_LOADED':
     {
-      console.log("HERE")
-      console.log(action.payload)
       const client = JSON.parse(action.payload.client)
       return {
         ...state,
         clientSelected: client,
       }
     }
-
+    case 'CLEAR_WORK_ORDER':
+    {
+      return {
+        ...state,
+        clientSelected: clientSelectedModel,
+        userSelected: userSelectedModel
+      }
+    }
     case 'CLEAR_ALL':
     {
       return {
@@ -59,14 +64,6 @@ export default function reducer(state = stateConst, action) {
         userSelected: userSelectedModel
       }
     }
-
-    case 'FETCH_CLIENTS':
-    {
-      return {
-        ...state,
-        clientsFetching: true
-      }
-    } // case
 
     case 'FETCH_CLIENT_REJECTED':
     {
@@ -78,6 +75,10 @@ export default function reducer(state = stateConst, action) {
     } // case
     case 'CLIENT_SELECTED':
     {
+      if(action.payload.code ==="00"){
+        alertify.alert('CLIENTE GENERAL EN GARANTÍA NO PERMITIDO!', 'Una garantía no puede estar asociada con un cliente general')
+        break
+      }
       return {
         ...state,
         clientSelected: action.payload

@@ -25,6 +25,7 @@ import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx
         cash_advance : store.workorder.cash_advance,
         request_show_receipt: store.workorder.request_show_receipt,
         request_saved: store.workorder.request_saved,
+        is_edit: store.workorder.is_edit,
         
     }
 })
@@ -475,7 +476,8 @@ export default class Form extends React.Component {
             }
 
         }else{ //internal warranty form
-            repair_body = <div>
+            if(!this.props.is_edit){
+                repair_body = <div>
                 <label>Adelanto</label>
                 <input name="cash_advance" type='text'
                     value={this.props.cash_advance} className="form-control"
@@ -483,6 +485,10 @@ export default class Form extends React.Component {
                     disabled={this.props.request_saved}
                     onChange={this.handleOtherInput.bind(this)} />
             </div>
+            }else{
+                repair_body = ''
+            }
+
 
         }
 

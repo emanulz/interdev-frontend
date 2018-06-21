@@ -23,6 +23,8 @@ import {clientSearchDoubleClick} from '../../general/clients/actions'
     
 
     componentWillMount(){
+
+        this.props.dispatch({type: 'CLEAR_WORK_ORDER'})
         const work_order_consecutive = this.props.location.pathname.split('/').pop()
         if(isFinite(work_order_consecutive)){
             console.log("Is a number, edit the crap out of it")

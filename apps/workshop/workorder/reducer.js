@@ -302,11 +302,21 @@ export default function reducer(state = stateConst, action){
         }
         case 'CLEAR_WORK_ORDER':
         {
-            const clean_order = stateConst
-            clean_order.malfunction_details = []
-            clean_order.observations_list = []
+
             return {
                 ...state,
+                work_order :  work_order_model,
+                fullWidth: false,
+                workorders:[],
+                table_friendly_orders:[],
+                failure_input_dropdown: true,
+                article_custom_observation:'',
+                observation_input_dropdown: true,
+                is_bd_warranty : false,
+                cash_advance: 0,
+                request_show_receipt: false,
+                request_saved: false,
+                is_edit: false               
                 
             }
         }
