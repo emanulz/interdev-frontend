@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 import PartsProvider from './partsProvider/main.jsx'
 import TransactionsList from './transactionsList/main.jsx'
+import PartsRequestPanel  from '../general/requestsPanel/requestsList.jsx'
 import {setItem, getSingleItemDispatch, loadGlobalConfig} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
 import {openCloseWorkOrder} from './actions'
@@ -162,7 +163,9 @@ export default class WorkshopView extends React.Component {
         }
     }
 
-
+    showRequestPanel(){
+        this.props.dispatch({type: 'SHOW_REQUESTS_PANEL'})
+    }
     render(){
         const work_order_info = this.buildWorkOrderHeader()
         const bd_warranty_data = this.buildBDWarrantyData()
@@ -172,6 +175,7 @@ export default class WorkshopView extends React.Component {
         const footer =  this.buildFooter()
 
         return <div className="workshop-view" >
+            <PartsRequestPanel/>
             <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}/>
             <div className="workshop-view-left" >
                 <div className="workshop-view-left-header" >
@@ -206,6 +210,7 @@ export default class WorkshopView extends React.Component {
     }
 
     printReceipt(e){
+        this.props.dispatch({type:'SET_RECEPTION_RECEIPT'})
         this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
     }
 
@@ -229,6 +234,12 @@ export default class WorkshopView extends React.Component {
                 <button className="form-control btn-success workshop-view-footer-buttons-cancel"
                 onClick={this.printReceipt.bind(this)}>
                     Imprimir Recibo
+                </button>
+            </div>
+            <div className="workshop-view-footer-buttons">
+                <button className="form-control btn-success workshop-view-footer-buttons-cancel"
+                onClick={this.showRequestPanel.bind(this)}>
+                    Mostrar Requisiciones
                 </button>
             </div>
         </div>

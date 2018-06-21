@@ -4,12 +4,14 @@ import {loadGlobalConfig} from '../../../../../utils/api.js'
 
 import FullReceipt from '../fullReceipt/main.jsx'
 import CompactReceipt from '../compactReceipt/main.jsx'
+import PartRequestReceipt from '../partRequest/main.jsx'
 
 
 @connect((store)=>{
     return {
         isVisible: store.workshopReceipt.isVisible,
-        isFull: store.workshopReceipt.isFull
+        isFull: store.workshopReceipt.isFull,
+        isPartRequestReceipt: store.workshopReceipt.isPartRequestReceipt,
     }
 })
 export default class ReceiptPanel extends React.Component {
@@ -35,14 +37,20 @@ export default class ReceiptPanel extends React.Component {
             ? ''
             : ' compact-receipt-on'
         
-            const componentToMount = this.props.isFull
+            let componentToMount = ''
+            if(!this.props.isPartRequestReceipt){
+                componentToMount = this.props.isFull
                 ? <FullReceipt/>
                 : <CompactReceipt/>
+            }else{
+                componentToMount = <PartRequestReceipt/>
+            }
+
         return <div className={isVisibleClass}>
             <div className={'receipt-panel-main' + isFullClass} >
                 <div className="receipt-panel-header">
                     <div>
-                        Recepción Orden de Trabajo
+                        {this.props.isPartRequestReceipt ? 'Impresión Requisisción' :'Impresión Recpción'}
                     </div>
                     <div>
                         <i onClick={this.hidePanel.bind(this)} className='fa fa-times'/>
