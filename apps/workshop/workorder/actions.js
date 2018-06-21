@@ -16,23 +16,23 @@ export function createWorkOrder(kwargs){
 
     return function(dispatch){
         axios({
-            method: 'post',
-            url: '/api/workorders/',
+            method: kwargs.method,
+            url: kwargs.url,
             data: kwargs['item'],
         }).then(response=>{
-            alertify.alert('Completo', 'Orden creada correctamente.')
+            alertify.alert('Completo', kwargs.successMessage)
             .set('onok', function(){
 
             })
             dispatch({type: 'FETCHING_DONE'})
-            dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
+            dispatch({type: kwargs.dispatchType, payload: response.data})
         }).catch(err=>{
             console.log(err)
             if(err.response){
                 console.log(err.response.data)
             }
             dispatch({type: 'FETCHING_DONE'})
-            alertify.alert('Error', 'Hubo un error creando la orden de trabajo')
+            alertify.alert('Error', kwargs.errorMessage)
         })
     }
 }
@@ -69,11 +69,10 @@ export function checkWorkOrder(workorder){
         alertify.alert('Error', 'Se debe seleccionar un cliente')
         return false
     }
-    if(!(client.phone_number !== '' || client.cellphone_number !=='')){
-        alertify.alert('Error', 'El cliente debe poseer al menos un número de teléfono')
-        return false
-    }
-
+    // if(!(client.phone_number !== '' || client.cellphone_number !=='')){
+    //     alertify.alert('Error', 'El cliente debe poseer al menos un número de teléfono')
+    //     return false
+    // }
 
     return true
 }
@@ -82,8 +81,6 @@ export function checkWorkOrder(workorder){
 export function cleanWorkOrder(workorder){
     if(workorder.is_warranty === false){
         delete workorder.warranty_invoice_date
-        console.log("Is warranty --> " + workorder.is_warranty)
-        console.log("CLEANED DATES")
     }
     
     return workorder
@@ -110,6 +107,7 @@ export function makeOrdersTableFriendly(orders){
         const pretty = {
             id:order.id,
             consecutive:order.consecutive,
+            editIngress: order.consecutive,
             is_closed: order.is_closed,
             paid: order.paid,
             client_name : `${client.name} ${client.last_name}`,

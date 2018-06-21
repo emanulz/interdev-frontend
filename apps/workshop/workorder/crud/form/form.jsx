@@ -437,19 +437,19 @@ export default class Form extends React.Component {
         let  content=''
 
         let repaired_by_element = ''
-        if(this.props.work_order.is_closed){
-            repaired_by_element = <div>
-            <label>Fecha de Entrega Estimada</label>
-            <div>{this.props.work_order.warranty_repaired_by}</div>
-        </div>
-        }
+        // if(this.props.work_order.is_closed){
+        //     repaired_by_element = <div>
+        //     <label>Fecha de Entrega Estimada</label>
+        //     <div>{this.props.work_order.warranty_repaired_by}</div>
+        // </div>
+        // }
 
         let repair_body = ''
         if(this.props.work_order.is_warranty){
             const warranty = this.props.work_order.warranty_number_bd
             if(warranty !== '' && warranty !== undefined){
                     repair_body = <div>
-                    <label>Nombre vendedor</label>
+                    <label>Nombre Distribuidor</label>
                     <input name="warranty_supplier_name" type='text'
                         value={this.props.work_order.warranty_supplier_name}
                         disabled={this.props.request_saved}

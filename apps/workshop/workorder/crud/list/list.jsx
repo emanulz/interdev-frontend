@@ -35,6 +35,14 @@ export default class List extends React.Component{
                 type: 'primaryNoEdit'
             },
             {
+                field: 'editIngress',
+                text: 'Editar Ingreso',
+                type: 'link_mask',
+                target: 'workorder/edit',
+                baseLink: 'edit',
+                textToRender: 'Editar'               
+            },
+            {
                 field: 'is_closed',
                 text: 'Cerrada?',
                 type: 'bool'

@@ -57,7 +57,7 @@ export default class WorkshopView extends React.Component {
             modelName: 'Orden de trabajo'
         }
 
-        this.props.dispatch({type:'FETCHING_STARTED', payload:''})
+        this.props.dispatch({type:'FETCHING_STARTED'})
         //load work order
         this.props.dispatch(setItem(kwargs))
         //load preferences

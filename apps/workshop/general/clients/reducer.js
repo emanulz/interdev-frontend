@@ -40,6 +40,17 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'WORK_ORDER_EDIT_LOADED':
+    {
+      console.log("HERE")
+      console.log(action.payload)
+      const client = JSON.parse(action.payload.client)
+      return {
+        ...state,
+        clientSelected: client,
+      }
+    }
+
     case 'CLEAR_ALL':
     {
       return {
@@ -128,40 +139,6 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         clientSelectedDebt: parseFloat(action.payload.debt)
-      }
-    }
-
-    case 'NEW_SALE':
-    {
-      const clients = state.clients
-      state = stateConst
-      return {
-        ...state, clients: clients
-      }
-    } // case
-
-    case 'LOADED_SALE':
-    {
-      return {
-        ...state,
-        clientSelected: action.payload.client,
-        userSelected: action.payload.user
-      }
-    }
-
-    case 'LOADED_PRESALE':
-    {
-      return {
-        ...state,
-        clientSelected: action.payload.client
-      }
-    }
-
-    case 'LOADED_PROFORMA':
-    {
-      return {
-        ...state,
-        clientSelected: action.payload.client
       }
     }
 
