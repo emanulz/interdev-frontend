@@ -6,13 +6,15 @@ import {formatDate} from '../../../../../../utils/formatDate'
     return {
         work_order: store.workshopview.work_order,
         work_order_creation: store.workorder.work_order,
+        cash_advance_create: store.workorder.cash_advance,
         transactions: store.transactionsList,
+        use_create_work_order: store.workorder.request_saved,
     }
 })
 export default class ReceiptData extends React.Component {
 
     render(){
-        const use_create_work_order = this.props.work_order.id === "000000" ? true : false
+        const use_create_work_order = this.props.use_create_work_order
         const order = use_create_work_order? this.props.work_order_creation: this.props.work_order
         const date =  formatDate(order.created)
 
@@ -64,15 +66,15 @@ export default class ReceiptData extends React.Component {
                 <span/>
                 
             </div>
-            {this.buildArticleCashAdvances(use_create_work_order, order)}
+            {this.buildArticleCashAdvances(use_create_work_order)}
         </div>
     }
 
-    buildArticleCashAdvances(use_create_work_order, work_order){
+    buildArticleCashAdvances(use_create_work_order){
         const base_class = 'compact-receipt-data-field'
         if(use_create_work_order){
             return <div className={base_class+"-cashadvance"} key={'-1'} >
-            {`${"Adelanto en recepción"} ₡ ${parseFloat(work_order.cash_advance).formatMoney(2, ',', '.')}`}
+            {`${"Adelanto en recepción"} ₡ ${parseFloat(this.props.cash_advance_create).formatMoney(2, ',', '.')}`}
         </div>
         }else{
             const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
