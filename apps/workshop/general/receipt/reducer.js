@@ -1,7 +1,8 @@
 
 const stateConst = {
     isVisible: false,
-    isFull: false
+    isFull: false,
+    isPartRequestReceipt: false,
 }
 
 export default function reducer(state=stateConst, action) {
@@ -19,6 +20,22 @@ export default function reducer(state=stateConst, action) {
             return {
                 ...state,
                 isVisible: false
+            }
+        }
+
+        case 'SET_REQUEST_RECEIPT':
+        {
+            return {
+                ...state,
+                isPartRequestReceipt: true
+            }
+        }
+
+        case 'SET_RECEPTION_RECEIPT':
+        {
+            return {
+                ...state,
+                isPartRequestReceipt: false
             }
         }
     }

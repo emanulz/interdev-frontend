@@ -1,0 +1,113 @@
+.compact-partRequest
+    font-family: 'Source Sans Pro', sans-serif
+    position: relative
+    height: 100%
+    width: 100%
+
+.compact-receipt-header
+    display: flex
+    flex-direction: row
+    justify-content: center
+    font-size: 13px
+    &-info
+        flex-grow: 1
+        text-align: center
+        & h2
+            font-size: 14px
+            margin: 0 0 2px 0
+            font-weight: bold
+        & h3
+            font-size: 14px
+            margin: 0 0 1px 0
+            font-weight: normal
+
+.compact-receipt-separator
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    height: 40px
+    line-height: 40px
+    text-transform: uppercase
+    & h1
+        font-size: 14px
+        margin: 0 5px
+        line-height: 40px
+    & h2
+        font-size: 12px
+    & span 
+        flex-grow: 1
+        margin-top: 20px
+        height: 1px
+        border-top: 1px solid #ccc
+        vertical-align: middle
+
+.compact-receipt-data-field
+    display: flex
+    font-size: 12px
+    &-label
+        font-weight: bold
+    &-value
+        padding-left: 4px
+    &-observation
+        font-size: 12px
+    &-malfunction
+        font-size: 12px
+    &-cashadvance
+        display: flex
+        font-size: 12px
+        
+.compact-invoice-table
+    margin-top: 10px
+    border: none
+
+    &-header
+        font-size: 13px
+        width: 100%
+        display: flex
+        flex-flow: row
+        font-weight: bold
+        &-qty
+            width: 20%
+        &-code
+            width: 25%
+            text-align: center
+        &-iv
+            width: 20%
+            text-align: center
+        &-total
+            width: 35%
+            text-align: right
+    &-body
+        border-top: 1px solid #ccc
+        margin-top: 5px
+        font-size: 11px
+        &-item
+            width: 100%
+            padding: 5px 0
+            border-bottom: 1px solid #ccc
+            &-description
+                width: 100%
+                display: flex
+                flex-flow: column
+                justify-content: center
+                overflow: hidden
+            &-data
+                width: 100%
+                display: flex
+                flex-flow: row
+                margin-top: 5px
+                &-qty
+                    width: 20%
+                &-code
+                    width: 25%
+                    text-align: center
+                &-iv
+                    width: 25%
+                    text-align: center
+                &-total
+                    width: 30%
+                    text-align: right
+
+
+
+            
