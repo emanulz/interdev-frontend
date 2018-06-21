@@ -54,8 +54,6 @@ export default class Warehouses extends React.Component {
                 <h3>Bodega de Destino:</h3>
                 <span>{this.props.selectedWarehouse.name}</span>
             </div>
-
-            <hr/>
         </div>
     }
 }

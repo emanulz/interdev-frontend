@@ -41,7 +41,7 @@ export default class ProductDetail extends React.Component {
 
         
         return <div className='productDetail'>
-            <h1>Detalle actualizacón de Precio</h1>
+            <h1>Detalle actualización de Precio</h1>
 
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Código:</div>

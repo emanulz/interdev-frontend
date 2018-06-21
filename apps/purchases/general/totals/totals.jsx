@@ -44,6 +44,20 @@ export default class Totals extends React.Component {
         const subtotal = this.props.cartSubtotal.formatMoney(2, ',', '.')
         return <div className='totals'>
             <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Número de Factura:</div>
+                <input className='totals-data-row-input' type="text"
+                onChange={this.invoiceNumberChanged.bind(this)}
+                disabled={this.props.is_closed}
+                value={this.props.invoiceNumber}/>
+            </div>
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Fecha Factura:</div>
+                <input className='totals-data-row-input' type="date"
+                onChange={this.invoiceDateChanged.bind(this)}
+                disabled={this.props.is_closed}
+                value={this.props.invoiceDate}/>
+            </div>
+            <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Subtotal:</div>
                 <div className='totals-data-row-value'>₡{subtotal}</div>
             </div>
@@ -68,21 +82,7 @@ export default class Totals extends React.Component {
                 <div className='totals-data-row-label' >Total:</div>
                 <div className='totals-data-row-value'>₡{total}</div>
             </div>
-            <hr/>
-            <div className='totals-data-row'>
-                <div className='totals-data-row-label' >Número de Factura:</div>
-                <input className='totals-data-row-input' type="text"
-                onChange={this.invoiceNumberChanged.bind(this)}
-                disabled={this.props.is_closed}
-                value={this.props.invoiceNumber}/>
-            </div>
-            <div className='totals-data-row'>
-                <div className='totals-data-row-label' >Fecha Factura:</div>
-                <input className='totals-data-row-input' type="date"
-                onChange={this.invoiceDateChanged.bind(this)}
-                disabled={this.props.is_closed}
-                value={this.props.invoiceDate}/>
-            </div>
+
         </div>
     }
 }

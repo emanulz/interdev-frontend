@@ -184,9 +184,8 @@ export default class CartItems extends React.Component {
 
       return <div className={activeClass}
         key={item.uuid}
-        onClick={this.setCartItemActive.bind(this, item.product.code)}>
-        {console.log('WHATS INSIDE ITEM')}
-        {console.log(item)}
+        onClick={this.setCartItemActive.bind(this, item.product.code)}
+      >
         <div className='cart-body-item-code'>
           <h5>Código</h5>
           {item.product.code}
@@ -217,7 +216,7 @@ export default class CartItems extends React.Component {
         </div>
         <span className={removeIconClass}>
         {this.props.is_closed?'':<i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />}
-          
+
         </span>
 
       </div>

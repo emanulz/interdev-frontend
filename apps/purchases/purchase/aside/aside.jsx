@@ -25,8 +25,8 @@ export default class Aside extends React.Component {
         const asideContainerClass = this.props.fullWidth ? 'purchase-aside-content collapsed' : 'purchase-aside-content'
         return <div className={asideClass} >
             <div className={asideContainerClass} >
-                <Warehouses/>
                 <Supplier/>
+                <Warehouses/>
                 <Totals/>
                 <ProductDetail/>
                 <PurchaseButtons/>
