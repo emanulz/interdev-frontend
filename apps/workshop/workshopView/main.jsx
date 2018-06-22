@@ -174,9 +174,11 @@ export default class WorkshopView extends React.Component {
 
         const footer =  this.buildFooter()
 
+        const data_to_bind = {sales_warehouse: this.props.sales_warehouse_id, parts_requests: this.props.partsRequestList}
+
         return <div className="workshop-view" >
             <PartsRequestPanel/>
-            <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}/>
+            <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind(data_to_bind)}/>
             <div className="workshop-view-left" >
                 <div className="workshop-view-left-header" >
                     <div className="workshop-view-left-header-partsProvider">

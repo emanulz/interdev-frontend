@@ -15,6 +15,7 @@ let inspect = require('util-inspect')
         partsRequestList: store.transactionsList.partsRequestList,
         laborList: store.transactionsList.laborList,
         is_closed: store.workshopview.work_order.is_closed,
+        sales_warehouse: store.transactionsList.sales_warehouse
     }
 })
 
@@ -91,7 +92,7 @@ export default class PartsProvider extends React.Component{
                     let bits = e.target.value.split('*')
                     const code = bits[0]
                     const qty = isNaN(bits[1]) ? 1 : parseInt(bits[1])
-                    this.props.dispatch(searchProduct(code, 'product', 'productSearch', qty, this.props.partsRequestList))
+                    this.props.dispatch(searchProduct(code, 'product', 'productSearch', qty, this.props.partsRequestList, this.props.sales_warehouse))
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
 
                 }

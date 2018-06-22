@@ -13,17 +13,60 @@ let inspect = require('util-inspect')
 const uuidv1 = require('uuid/v1')
 import alertify from 'alertifyjs'
 
-export function productSearchDoubleClick(item, dispatch) {
+function validateProductInventory(warehouse, item, amount, parts_in_cart){
+    //validate if a fractioned amount was request on a product that does not allow it
+    console.log(item)
+    const isInteger = amount % 1 == 0 ? true: false
+    const errors = {OK:true, message:''}
+
+    if(!isInteger){ //if the number is a float, check if the product allows for fractioned
+        if(!item.fractioned){
+            errors.OK = false
+            errors.message= 'El producto no permite candtidades fracionadas.\n'
+        }
+    }
+
+    //check product inventory
+    const inventory = JSON.parse(item.inventory_existent)
+    const inventory_sales_warehouse = parseFloat(inventory[warehouse])
+
+    //check if there are any other single lines in the cart of the same item, if the item
+    //is not saved, it is not reflected on the product inventory yet
+    let temp_in_cart = 0
+    for(let part of parts_in_cart){
+        //console.log("PART --> " + inspect(part))
+        if(part.element.id === item.id && part.saved != true){
+            temp_in_cart += parseFloat(part.qty)
+        }
+    }
+    console.log("IN cart --> " + temp_in_cart)
+    if(item.inventory_enabled && inventory_sales_warehouse - temp_in_cart < amount){
+        errors.OK = false
+        errors.message += `No hay suficiente producto en bodega, Existencias = ${inventory_sales_warehouse} menos ${temp_in_cart} en el carrito\n`
+    }
+ 
+    return errors
+}
+
+export function productSearchDoubleClick(item, dispatch, warehouse) {
+    const sales_warehouse = this.sales_warehouse
+    const parts_request =  this.parts_requests
     axios.get(`/api/products/${item}`).then(function(response) {
-        dispatch(partAlreadyInTransactionsList(1, response.data, null))
-        dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
+        const validation = validateProductInventory(sales_warehouse, response.data, 1, parts_request)
+        if(validation.OK){
+            dispatch(partAlreadyInTransactionsList(1, response.data, null))
+            dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
+        }else{
+            dispatch({type: 'PRODUCT_CART_ADD_VALIDATION', payload:validation.message})
+        }
+
     }).catch(function(error) {
         alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
         administrador del sistema con el siguiete error: ${error}`)
     })
   }
 
-export function searchProduct(search_key, model, namespace, amount_requested, partsRequestList){
+export function searchProduct(search_key, model, namespace, amount_requested, partsRequestList, sales_warehouse){
     const data = {
         model: model,
         max_results: 15,
@@ -37,8 +80,13 @@ export function searchProduct(search_key, model, namespace, amount_requested, pa
             data: data
         }).then(response=>{
             if(response.data.length == 1){
-                dispatch(partAlreadyInTransactionsList(amount_requested, response.data[0], partsRequestList))
-                dispatch({type:"FETCHING_DONE"})
+                const validation = validateProductInventory(sales_warehouse, response.data[0], amount_requested, partsRequestList)
+                if(validation.OK){
+                    dispatch(partAlreadyInTransactionsList(amount_requested, response.data[0], partsRequestList))
+                    dispatch({type:"FETCHING_DONE"})
+                }else{
+                    dispatch({type: 'PRODUCT_CART_ADD_VALIDATION', payload:validation.message})
+                }
             }else if(response.data.length>1){
                 dispatch({type:`${namespace}_TOGGLE_SEARCH_PANEL`})
                 dispatch({type:"FETCHING_DONE"})
@@ -57,9 +105,15 @@ export function searchProduct(search_key, model, namespace, amount_requested, pa
     }
 }
 
-export function updateQty(qty, itemsList, target_uuid){
+export function updateQty(qty, itemsList, target_uuid, sales_warehouse){
     const index = itemsList.findIndex(item=>item.uuid == target_uuid)
-
+    //validate there is enough inventory in the warehouse
+    console.log("Current on line --> " + itemsList[index].qty)
+    const validation = validateProductInventory(sales_warehouse, itemsList[index].element, qty-itemsList[index].qty, itemsList)
+    if(!validation.OK){ //abort on invalid amount
+        return {type: 'PRODUCT_CART_ADD_VALIDATION', payload:validation.message}
+    }
+    
     const qtyNumber = parseFloat(qty)
      const res = {
          type: 'UPDATE_PARTS_LIST',

@@ -16,7 +16,8 @@ import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
 
         user: store.user,
 
-        is_closed: store.workshopview.work_order.is_closed
+        is_closed: store.workshopview.work_order.is_closed,
+        sales_warehouse: store.transactionsList.sales_warehouse,
     }
 })
 
@@ -28,7 +29,7 @@ export default class TransactionItems extends React.Component {
         ? e.target.value
         :0
         this.props.dispatch(
-            updateQty(qty, this.props.partsRequestList, item_uuid)
+            updateQty(qty, this.props.partsRequestList, item_uuid, this.props.sales_warehouse)
         )
     }
 
