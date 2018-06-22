@@ -3,7 +3,6 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {getItemDispatch} from '../../../../utils/api'
 import {searchProduct} from './actions.js'
 
 @connect((store) => {
@@ -29,15 +28,6 @@ export default class Product extends React.Component {
   componentWillMount() {
 
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    // this.props.dispatch({type: 'CLEAR_PRODUCTS', payload: ''})
-
-    // const productKwargs = {
-    //   url: '/api/productslist',
-    //   successType: 'FETCH_PRODUCTS_FULFILLED',
-    //   errorType: 'FETCH_PRODUCTS_REJECTED'
-    // }
-
-    // this.props.dispatch(getItemDispatch(productKwargs))
 
   }
 
@@ -54,23 +44,6 @@ export default class Product extends React.Component {
         const qty = isNaN(bits[1]) ? 1 : parseInt(bits[1])
         this.props.dispatch(searchProduct(code, 'product', 'productSearch', qty, this.props.itemsInCart))
         this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE'})
-        // const setProductPromise = new Promise((resolve, reject)=>{
-        //   const kwargs = {
-        //     lookUpField: 'code',
-        //     url: '/api/productslist/',
-        //     lookUpValue: code,
-        //     lookUpName: 'código',
-        //     modelName: 'Productos',
-        //     qty: qty
-        //   }
-        //   setProduct(kwargs, resolve, reject)
-        // })
-        // setProductPromise.then((data)=> {
-        //   this.props.dispatch({type:'FETCHING_DONE', payload: ''})
-        //   const product = data.results[0]
-        //   this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart))
-        //   this.props.dispatch({type:'CLEAR_PRODUCT_FIELD_VALUE'})
-        // })
 
       }
     } else {

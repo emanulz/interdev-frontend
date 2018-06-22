@@ -39,7 +39,6 @@ function validateProductInventory(warehouse, item, amount, parts_in_cart){
             temp_in_cart += parseFloat(part.qty)
         }
     }
-    console.log("IN cart --> " + temp_in_cart)
     if(item.inventory_enabled && inventory_sales_warehouse - temp_in_cart < amount){
         errors.OK = false
         errors.message += `No hay suficiente producto en bodega, Existencias = ${inventory_sales_warehouse} menos ${temp_in_cart} en el carrito\n`

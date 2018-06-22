@@ -31,6 +31,10 @@ export default class Suppliers extends React.Component {
         }
     }
 
+    displaySearch(){
+        this.props.dispatch({type:'supplierSearch_TOGGLE_SEARCH_PANEL'})
+    }
+
     render() {
         
         return this.buildSupplierData()
@@ -46,7 +50,7 @@ export default class Suppliers extends React.Component {
         :''
 
         return <div className='supplier' >
-        <div className='supplier-img'>
+        <div className='supplier-img' onClick={this.displaySearch.bind(this)}>
             <img src="/media/default/profile.jpg"/>
         </div>
 

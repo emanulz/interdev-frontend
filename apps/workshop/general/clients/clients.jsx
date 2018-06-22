@@ -5,7 +5,6 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {searchClient} from './actions'
-import {getItemDispatch} from '../../../../utils/api'
 
 @connect((store) => {
   return {
@@ -25,19 +24,6 @@ export default class Clients extends React.Component {
   }
 
   componentWillMount() {
-    // if(!this.props.is_edit){
-    //   this.props.dispatch({type: 'FETCHING_STARTED'})
-
-    //   const clientKwargs = {
-    //     url: '/api/clients/?code=00',
-    //     successType: 'CLIENT_SELECTED_LIST',
-    //     errorType: 'FETCH_CLIENT_REJECTED'
-    //   }
-  
-    //   this.props.dispatch(getItemDispatch(clientKwargs))
-    // }
-
-
   }
 
   componentWillUnmount(){

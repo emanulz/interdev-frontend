@@ -1,12 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {setItem} from '../../../utils/api'
+import {supplierSearchDoubleClick} from '../general/suppliers/actions.js'
+
 let inspect = require('util-inspect')
 
 //components
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import PayPanel from './pay/payPanel.jsx'
+import Search from '../../../general/search/search.jsx'
 
 @connect(store=>{
     return {
@@ -39,6 +42,7 @@ export default class Purchase extends React.Component {
 
     render() {
         return <div className='purchase' >
+            <Search modelText='Proveedor' model='supplier' namespace='supplierSearch' onRowDoubleClick = {supplierSearchDoubleClick}/>
             <Content/>
             <Aside/>
             <PayPanel/>
