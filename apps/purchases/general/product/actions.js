@@ -6,6 +6,7 @@ import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 import { inspect } from 'util'
+import { doesNotReject } from 'assert';
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
@@ -77,27 +78,26 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 }
 
 
-// Updates Amount based on qty input field
-
-export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility){
-
-  const index = is_search_uuid 
-  ?itemsInCart.findIndex(item=> item.uuid==search_key)
-  :itemsInCart.findIndex(item=> item.product.code == search_key || item.product.barcode == search_key)
-
-  const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
-  const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
-  const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
-  //if(tUtility!=-1){
-    //calculate new real utility and wanted price
-    //const cost = itemsInCart[index].subtotal/itemsInCart[index].qty
-    //calculateRealUtility(cost, newTu, 'sell_based', itemsInCart[index].product)
-  //}      
+// export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility, targetPrice,){
+export function updateItem(kwargs){
+  //const cartItems = 
+  let itemsInCart = kwargs.itemsInCart
+  const index = kwargs.is_search_uuid
+  ?itemsInCart.findIndex(item=> item.uuid==kwargs.search_key)
+  :itemsInCart.findIndex(item=> item.product.code == kwargs.search_key || item.product.barcode == kwargs.search_key)
+  const ele = itemsInCart[index]
+  const qtyNum = kwargs.qty==undefined?ele.qty:kwargs.qty //if -1 was received, keep the current qty
+  const subtotalNum = kwargs.subTotal==undefined?ele.subtotal:kwargs.subtotal
+  const newTu = kwargs.target_utility==undefined?ele.target_utility:kwargs.target_utility
+  
+  // const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
+  // const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
+  // const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
 
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, index, qtyNum, subtotalNum, newTu),
+      item: updatedCartItem(cartItems, index, qtyNum, subtotalNum, newTu),
       index:index
     }
   }

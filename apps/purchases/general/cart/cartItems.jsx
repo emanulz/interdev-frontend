@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {updateTotals, removeFromCart} from './actions'
 import {addSubOne, updateItem} from '../product/actions'
 import alertify from 'alertifyjs'
+import { inspect } from 'util';
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -94,7 +95,15 @@ export default class CartItems extends React.Component {
     ? parseFloat(ev.target.value)
     : -1
     if(subTotal==-1){return}
-    this.props.dispatch(updateItem(code, true, this.props.inCart, -1, subTotal, -1))
+    const kwargs = {
+      id: code, 
+      is_search_uuid: false, 
+      itemsInCart: this.props.inCart,
+      subTotal: subTotal,
+    }
+    console.log("Subtotal update kwargs")
+    console.log(inspect(kwargs))
+    this.props.dispatch(updateItem(kwargs))
 
   }
 
@@ -121,7 +130,19 @@ export default class CartItems extends React.Component {
 
     if (tUtility == -1) { return }
 
-    this.props.dispatch(updateItem(id, true, this.props.inCart, -1, -1, tUtility))
+    const kwargs = {
+      id: id, 
+      is_search_uuid: true, 
+      itemsInCart: this.props.inCart,
+      qty: -1,
+      subTotal: -1,
+      target_utility: tUtility,
+      targetPrice: -1,
+      transport: -1,
+      discount: -1,
+      reflectDiscount: -1
+    }
+    this.props.dispatch(updateItem(kwargs))
   }
 
   // HERE UPDATE COST BASED ON DISCOUNT
