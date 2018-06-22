@@ -197,6 +197,8 @@ function checkIfInCart(qty, itemsInCart,  product, perLine) {
             qty: qty,
             subtotal: 0,
             saved: 'new',
+            discount: 0,
+            applyToClient: false,
             target_utility: product.utility*100,
             real_utility: 0,
             wanted_price_ivi: 0
@@ -225,8 +227,10 @@ function checkIfInCart(qty, itemsInCart,  product, perLine) {
         product: product,
         qty: qty,
         subtotal: 0,
-        status:'new',
-        target_utility: product.utility*100,
+        status: 'new',
+        discount: 0,
+        applyToClient: false,
+        target_utility: product.utility * 100,
         real_utility: 0,
         wanted_price_ivi: 0
       }
