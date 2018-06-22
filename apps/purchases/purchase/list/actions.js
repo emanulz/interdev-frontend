@@ -26,7 +26,5 @@ export function makeTableFriendly(purchases){
         }
         return pretty
     })
-    console.log('Pretty purchases')
-    console.log(prettyPurchases)
     return prettyPurchases
 }

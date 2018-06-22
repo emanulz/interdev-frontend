@@ -177,7 +177,6 @@ export function getPaginationItemDispatch(kwargs) {
   const url = kwargs.url
   const successType = kwargs.successType
   const errorType = kwargs.errorType
-
   return function(dispatch) {
     axios.get(url).then(function(response) {
       dispatch({type: successType, payload: response.data.results})
