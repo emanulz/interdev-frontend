@@ -107,7 +107,6 @@ export function searchProduct(search_key, model, namespace, amount_requested, pa
 export function updateQty(qty, itemsList, target_uuid, sales_warehouse){
     const index = itemsList.findIndex(item=>item.uuid == target_uuid)
     //validate there is enough inventory in the warehouse
-    console.log("Current on line --> " + itemsList[index].qty)
     const validation = validateProductInventory(sales_warehouse, itemsList[index].element, qty-itemsList[index].qty, itemsList)
     if(!validation.OK){ //abort on invalid amount
         return {type: 'PRODUCT_CART_ADD_VALIDATION', payload:validation.message}

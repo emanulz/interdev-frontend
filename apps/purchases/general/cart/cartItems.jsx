@@ -16,6 +16,7 @@ const Mousetrap = require('mousetrap')
     discountTotal: store.cart.discountTotal,
     cartTaxes: store.cart.cartTaxes,
     is_closed: store.purchase.is_closed,
+    orderTransport: store.cart.orderTransport,
   }
 })
 export default class CartItems extends React.Component {
@@ -97,12 +98,13 @@ export default class CartItems extends React.Component {
     if(subTotal==-1){return}
     const kwargs = {
       id: code, 
-      is_search_uuid: false, 
+      is_search_uuid: true, 
       itemsInCart: this.props.inCart,
-      subTotal: subTotal,
+      orderTransport: this.props.orderTransport,
+      //what changed
+      subtotal: subTotal,
+      
     }
-    console.log("Subtotal update kwargs")
-    console.log(inspect(kwargs))
     this.props.dispatch(updateItem(kwargs))
 
   }
@@ -112,7 +114,15 @@ export default class CartItems extends React.Component {
     ? parseFloat(ev.target.value)
     : -1
     if(qty==-1){return}
-    this.props.dispatch(updateItem(code, true, this.props.inCart, qty, -1, -1))
+    const kwargs = {
+      id: code, 
+      is_search_uuid: true, 
+      itemsInCart: this.props.inCart,
+      orderTransport: this.props.orderTransport,
+      //what changed
+      qty: qty,
+    }
+    this.props.dispatch(updateItem(kwargs))
   }
 
   qtyInputKeyPress(ev) {
@@ -134,13 +144,9 @@ export default class CartItems extends React.Component {
       id: id, 
       is_search_uuid: true, 
       itemsInCart: this.props.inCart,
-      qty: -1,
-      subTotal: -1,
+      orderTransport: this.props.orderTransport,
+      //what changed
       target_utility: tUtility,
-      targetPrice: -1,
-      transport: -1,
-      discount: -1,
-      reflectDiscount: -1
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -148,14 +154,34 @@ export default class CartItems extends React.Component {
   // HERE UPDATE COST BASED ON DISCOUNT
   discountFieldChange(id, e) {
     // DISCOUNT
-    console.log(id)
-    console.log(e.target.value)
+    const discount= parseFloat(e.target.value)
+    ? parseFloat(e.target.value)
+    : -1
+    if(discount==-1){return}
+    const kwargs = {
+      id: id, 
+      is_search_uuid: true, 
+      itemsInCart: this.props.inCart,
+      orderTransport: this.props.orderTransport,
+      //what changed
+      discount: discount,
+    }
+    this.props.dispatch(updateItem(kwargs))
   }
   // HERE UPDATE COST BASED ON DISCOUNT AND APPLY TO CLIENT
   applyToClientFieldChange(id, e) {
     // TO CLIENT
-    console.log(id)
-    console.log(e.target.checked)
+    const apply = e.target.checked
+    const kwargs = {
+      id: id, 
+      is_search_uuid: true, 
+      itemsInCart: this.props.inCart,
+      orderTransport: this.props.orderTransport,
+      //what changed
+      applyToClient: apply,
+    }
+    this.props.dispatch(updateItem(kwargs))
+  
   }
 
   setCartItemActive(code, ev) {
@@ -205,15 +231,6 @@ export default class CartItems extends React.Component {
         className='form-control'
         value={item.subtotal}
         type="number"/>
-
-      const targetUtilityField = <input
-        id={`tu${item.product.code}`}
-        disabled={this.props.is_closed}
-        onChange={this.target_utility_change.bind(this, item.uuid)}
-        type='number'
-        className='form-control'
-        value={item.target_utility}
-      />
 
       const discountField = <input
         id={`tu${item.product.code}`}

@@ -26,8 +26,6 @@ export default class SideMenu extends React.Component {
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const sideMenuClass = this.props.sideMenuVisible ? 'sideMenu' : 'sideMenu hiddenByApp'
     return <div id='sideMenu' className={sideMenuClass}>
-
-      {/* <h3 className='sideMenu-header'>{title.toUpperCase()}</h3> */}
       <User />
 
       <Search />
