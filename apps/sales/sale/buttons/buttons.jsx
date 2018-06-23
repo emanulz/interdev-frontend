@@ -111,6 +111,21 @@ export default class Buttons extends React.Component {
         </span>
       </button>
 
+      {/* <button
+        disabled={this.props.disabled}
+        onClick={this.showInoicePanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Factura
+        <span>
+          <i className='fa fa-credit-card' />
+        </span>
+      </button> */}
+
       {buttons}
 
     </div>

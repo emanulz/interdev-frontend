@@ -133,6 +133,12 @@ class Form extends React.Component {
         </div>
 
         <div className='form-group'>
+          <label>Identificador</label>
+          <input value={this.props.productDepartment.identifier} name='identifier' onChange={this.handleInputChange.bind(this)} type='text'
+            className='form-control' />
+        </div>
+
+        <div className='form-group'>
           <label>Observaciones</label>
           <textarea value={this.props.productDepartment.observations} name='observations'
             style={{resize: 'none'}}

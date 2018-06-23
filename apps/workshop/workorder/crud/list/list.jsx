@@ -66,7 +66,7 @@ export default class List extends React.Component{
             },
             {
                 field: 'created',
-                text: 'Recibido'
+                text: 'Recibido',
             }
         ]
 

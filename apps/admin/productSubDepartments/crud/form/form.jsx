@@ -159,6 +159,12 @@ class Form extends React.Component {
         </div>
 
         <div className='form-group'>
+          <label>Identificador</label>
+          <input value={this.props.productSubDepartment.identifier} name='identifier' onChange={this.handleInputChange.bind(this)} type='text'
+            className='form-control' />
+        </div>
+
+        <div className='form-group'>
           <label>Departamento</label>
 
           <Select2

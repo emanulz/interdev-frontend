@@ -4,7 +4,7 @@ export function formatDate (date) {
     date = new Date(date)
   }
   let day = date.getDate()
-  let month = date.getMonth()
+  let month = date.getMonth() + 1
   const year = date.getFullYear()
 
   day = ('00' + day).slice(-2)
@@ -20,7 +20,7 @@ export function formatDateTime (date) {
     date = new Date(date)
   }
   let day = date.getDate()
-  let month = date.getMonth()
+  let month = date.getMonth() + 1
   const year = date.getFullYear()
 
   let hours = date.getHours()
@@ -44,7 +44,7 @@ export function formatDateTimeAmPm(date) {
     date = new Date(date)
   }
   let day = date.getDate()
-  let month = date.getMonth()
+  let month = date.getMonth() + 1
   const year = date.getFullYear()
 
   let hours = date.getHours()

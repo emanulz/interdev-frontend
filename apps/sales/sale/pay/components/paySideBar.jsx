@@ -13,7 +13,8 @@ const Mousetrap = require('mousetrap')
     payObject: store.pay.payObject,
     client: store.clients.clientSelected,
     user: store.clients.userSelected,
-    debt: store.clients.clientSelectedDebt
+    debt: store.clients.clientSelectedDebt,
+    isCredit: store.pay.isCredit
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -71,46 +72,108 @@ export default class PaySideBar extends React.Component {
 
   }
 
+  getCashTag() {
+    const cash = parseFloat(this.props.pay.payObject.cash[0].amount)
+    if (cash > 0) {
+      return <div>
+        <div className='pay-tag left'>EFECTIVO :</div>
+        <div className='pay-tag right'>
+          ₡ {cash.formatMoney(2, ',', '.')}
+        </div>
+      </div>
+    }
+    return <div />
+  }
+
+  getCardTag() {
+    const card = parseFloat(this.props.pay.payObject.card[0].amount)
+    if (card > 0) {
+      return <div>
+        <div className='pay-tag left'>TARJETA :</div>
+        <div className='pay-tag right'>
+          ₡ {card.formatMoney(2, ',', '.')}
+        </div>
+      </div>
+    }
+    return <div />
+  }
+
+  getTransferTag() {
+    const tran = parseFloat(this.props.pay.payObject.tran[0].amount)
+    if (tran > 0) {
+      return <div>
+        <div className='pay-tag left'>TRANSFER :</div>
+        <div className='pay-tag right'>
+          ₡ {tran.formatMoney(2, ',', '.')}
+        </div>
+      </div>
+    }
+    return <div />
+  }
+
+  getCreditTag() {
+    const credit = parseFloat(this.props.pay.payObject.cred[0].amount)
+    if (credit > 0) {
+      return <div>
+        <div className='pay-tag left'>CRÉDITO :</div>
+        <div className='pay-tag right'>
+          ₡ {credit.formatMoney(2, ',', '.')}
+        </div>
+      </div>
+    }
+    return <div />
+  }
+
   render() {
 
     let change = 0
     let payButtonClass = 'pay-tag tag-button enable'
     const total = parseFloat(this.props.cart.cartTotal)
-    const cash = parseFloat(this.props.pay.payObject.cash[0].amount)
+
+    const cashTag = this.getCashTag()
+    const creditTag = this.getCreditTag()
+    const cardTag = this.getCardTag()
+    const transferTag = this.getTransferTag()
+
     const totalInPay = this.calcTotalInPay()
 
-    switch (this.props.payMethod) {
+    change = totalInPay - total
+    payButtonClass = (total > 0 && change >= -0.1)
+      ? 'pay-tag tag-button enable'
+      : 'pay-tag tag-button'
 
-      case 'CASH':
-      {
-        change = totalInPay - total
-        payButtonClass = (total > 0 && change >= -0.1)
-          ? 'pay-tag tag-button enable'
-          : 'pay-tag tag-button'
-        break
-      }
+    // switch (this.props.payMethod) {
 
-      case 'CARD':
-      {
-        const auth = this.props.pay.cardAuth
-        const digits = this.props.pay.cardDigits
-        change = totalInPay - total
-        payButtonClass = (total > 0 && change >= -0.1)
-          ? 'pay-tag tag-button enable'
-          : 'pay-tag tag-button'
-        break
-      }
-      case 'CRED':
-      {
-        change = totalInPay - total
-        const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
-        payButtonClass = (total > 0 && total <= available && this.props.client.has_credit)
-          ? 'pay-tag tag-button enable'
-          : 'pay-tag tag-button'
-        break
-      }
+    //   case 'CASH':
+    //   {
+    //     change = totalInPay - total
+    //     payButtonClass = (total > 0 && change >= -0.1)
+    //       ? 'pay-tag tag-button enable'
+    //       : 'pay-tag tag-button'
+    //     break
+    //   }
 
-    }
+    //   case 'CARD':
+    //   {
+    //     const auth = this.props.pay.cardAuth
+    //     const digits = this.props.pay.cardDigits
+    //     change = totalInPay - total
+    //     payButtonClass = (total > 0 && change >= -0.1)
+    //       ? 'pay-tag tag-button enable'
+    //       : 'pay-tag tag-button'
+    //     break
+    //   }
+    //   case 'CRED':
+    //   {
+    //     change = totalInPay - total
+    //     const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
+    //     payButtonClass = (total > 0 && total <= available && this.props.client.has_credit)
+    //       ? 'pay-tag tag-button enable'
+    //       : 'pay-tag tag-button'
+    //     break
+    //   }
+
+    // }
 
     return <div className='pay-side-bar'>
       <div className='pay-method-body-header'>
@@ -120,17 +183,22 @@ export default class PaySideBar extends React.Component {
       <div className='pay-method-body-content'>
 
         <div className='pay-tag left'>
-          TOTAL :</div>
+          TOTAL VENTA :</div>
         <div className='pay-tag right'>
           ₡ {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
 
-        <div className='pay-tag left'>VUELTO :</div>
-        <div className='pay-tag right'>
-          ₡ {change.formatMoney(2, ',', '.')}</div>
+        {cashTag}
+        {cardTag}
+        {transferTag}
+        {creditTag}
 
         <div className='pay-tag left'>TOTAL PAGO :</div>
         <div className='pay-tag right'>
           ₡ {totalInPay.formatMoney(2, ',', '.')}</div>
+
+        <div className='pay-tag left'>VUELTO :</div>
+        <div className='pay-tag right'>
+          ₡ {change.formatMoney(2, ',', '.')}</div>
 
         <br />
 

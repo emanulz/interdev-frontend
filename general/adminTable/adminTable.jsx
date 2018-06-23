@@ -132,6 +132,14 @@ export default class AdminTable extends React.Component {
               break
             }
 
+            case 'priceAbs':
+            {
+              item = <td key={`${el[idField]}_${header.field}`}>
+                ₡ {Math.abs(parseFloat(itemToRender)).formatMoney(2, ',', '.')}
+              </td>
+              break
+            }
+
             case 'date':
             {
               // const date = moment(itemToRender).format('DD-MM-YYYY HH:mm:ss')

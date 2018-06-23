@@ -3,13 +3,26 @@ import {connect} from 'react-redux'
 import {updateStoreCashAmount} from '../actions.js'
 
 @connect((store) => {
-  return {cashAmount: store.pay.payObject.cash[0].amount}
+  return {
+    cashAmount: store.pay.payObject.cash[0].amount,
+    cartTotal: store.cart.cartTotal,
+    client: store.clients.clientSelected,
+    payObject: store.pay.payObject,
+    isCredit: store.pay.isCredit
+  }
 })
 export default class PayCash extends React.Component {
 
   payAmountChanged(ev) {
-
-    this.props.dispatch(updateStoreCashAmount(ev.target.value))
+    // THIS FUNCTION WILL UPDATE THE CASH AMOUNT AND AUTOUPDATE THE CREDIT AMOUNT
+    this.props.dispatch(updateStoreCashAmount(
+      ev.target.value,
+      this.props.cartTotal,
+      this.props.client,
+      this.props.payObject,
+      this.props.dispatch,
+      this.props.isCredit
+    ))
   }
 
   render() {

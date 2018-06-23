@@ -6,14 +6,25 @@ import {updateStoreTransferAmount, updateStoreTransferBank, updateStoreTransferN
   return {
     tranferAmount: store.pay.payObject.tran[0].amount,
     tranferBank: store.pay.payObject.tran[0].bank,
-    transferNumber: store.pay.payObject.tran[0].transferNumber
+    transferNumber: store.pay.payObject.tran[0].transferNumber,
+    cartTotal: store.cart.cartTotal,
+    client: store.clients.clientSelected,
+    payObject: store.pay.payObject,
+    isCredit: store.pay.isCredit
   }
 })
 export default class PayTransfer extends React.Component {
 
   transferAmountChanged(ev) {
 
-    this.props.dispatch(updateStoreTransferAmount(ev.target.value))
+    this.props.dispatch(updateStoreTransferAmount(
+      ev.target.value,
+      this.props.cartTotal,
+      this.props.client,
+      this.props.payObject,
+      this.props.dispatch,
+      this.props.isCredit
+    ))
   }
 
   transferBankChanged(ev) {
