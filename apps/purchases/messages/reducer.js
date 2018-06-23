@@ -6,6 +6,12 @@ const stateConst = {
 
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
+
+      case 'PRODUCT_ALREADY_IN_CART':
+      {
+        alertify.alert('No permitido', `El código ${action.payload} ya se incluyo en el ingreso de compra`)
+        break
+      }
       case 'FETCH_SUPPLIERS_REJECTED':
       {
         alertify.alert('Error', 'Error al cargar los datos de los proveedores')

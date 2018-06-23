@@ -10,9 +10,10 @@ import { inspect } from 'util'
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
 
-export function productSearchDoubleClick(item, dispatch){
+export function productSearchDoubleClick(item, dispatch, data){
+  const cartItems = this.cartItems
   axios.get(`/api/products/${item}`).then(function(response) {
-    dispatch(checkIfInCart(1, response.data))
+    dispatch(checkIfInCart(1, response.data, cartItems))
     dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
 }).catch(function(error) {
     alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
@@ -20,7 +21,7 @@ export function productSearchDoubleClick(item, dispatch){
 })
 }
 
-export function searchProduct(search_key, model, namespace, amount_requested){
+export function searchProduct(search_key, model, namespace, amount_requested, cartItems){
   const data = {
       model: model,
       max_results: 15,
@@ -34,7 +35,7 @@ export function searchProduct(search_key, model, namespace, amount_requested){
           data: data
       }).then(response=>{
           if(response.data.length == 1){
-              dispatch(checkIfInCart(amount_requested, response.data[0]))
+              dispatch(checkIfInCart(amount_requested, response.data[0], cartItems))
               dispatch({type:"FETCHING_DONE"})
           }else if(response.data.length>1){
               dispatch({type:`${namespace}_TOGGLE_SEARCH_PANEL`})
@@ -79,21 +80,18 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 
 // export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility, targetPrice,){
 export function updateItem(kwargs){
+
   //const cartItems = cons
-  console.log("update kwargs --> " +  inspect(kwargs))
+  //console.log("update kwargs --> " +  inspect(kwargs))
   let itemsInCart = kwargs.itemsInCart
-  console.log("IS UUID --> " + kwargs.is_search_uuid)
   const index = kwargs.is_search_uuid
   ?itemsInCart.findIndex(item=> item.uuid==kwargs.id)
   :itemsInCart.findIndex(item=> item.product.code == kwargs.id || item.product.barcode == kwargs.id)
-  console.log("Index " + index)
   const ele = itemsInCart[index]
-  console.log("ELEM --> " +  ele)
   const qtyNum = kwargs.qty==undefined?ele.qty:kwargs.qty //if -1 was received, keep the current qty
 
-  console.log("Subtotal kwarg --> " + kwargs.subtotal)
-  const subtotalNum = kwargs.subTotal==undefined?ele.subtotal:kwargs.subtotal
-  
+  const subtotalNum = kwargs.subtotal==undefined?ele.subtotal:kwargs.subtotal
+  console.log("subtotalNum --> " + subtotalNum)
   //const newTu = kwargs.target_utility==undefined?ele.target_utility:kwargs.target_utility
   const  newTu = kwargs.target_utility
   const newTp = kwargs.target_price==undefined?ele.wanted_price_ivi:kwargs.target_price
@@ -106,18 +104,20 @@ export function updateItem(kwargs){
   const reflectOnCost = kwargs.applyToClient == undefined?ele.applyToClient:kwargs.applyToClient
   let unit_cost = subtotalNum/qtyNum
 
+  //calculate the amount of the transport that this line shuld assume
+  console.log("Will update call order transport --> " + kwargs.orderTransport)
+  const total_line_transport =  subtotalNum / kwargs.cartSubtotal * kwargs.orderTransport
+  const transport_per_line_item =  total_line_transport / qtyNum
   if(isNaN(unit_cost)){
     unit_cost = 0
   }
+
+  //add the per unit transport cost to the unit_cost
+  unit_cost += transport_per_line_item
   if(reflectOnCost){
-    console.log("Reflect --> " +  reflectOnCost)
     unit_cost -= newDiscount
-  }else{
-    console.log("Do not reflect")
   }
-  // const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
-  // const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
-  // const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
+
   const updateKwargs = {
     itemsInCart: itemsInCart,
     index: index,
@@ -128,7 +128,8 @@ export function updateItem(kwargs){
     unit_cost: unit_cost,
     updatePattern: updatePattern,
     discount: newDiscount,
-    applyToClient: reflectOnCost
+    applyToClient: reflectOnCost,
+    transport_cost: transport_per_line_item
   }
 
   const res = {
@@ -143,11 +144,8 @@ export function updateItem(kwargs){
 
 function calculateRealUtility(cost, target_utility, target_price, 
   product, updatePattern,  utility_method, round_to_coin = 5){
-  console.log('Calculate needed utility so that the price is whole')
-  console.log("RAW COST --> " + cost)
   let wanted_price = 0
 
-  console.log("UPDATE PATTERN --> " +  updatePattern)
   //determine all taxes to be applied to the product, if any
   let total_tax_fraction = 0
   console.log('Product --> ' + product.description)
@@ -210,33 +208,19 @@ function calculateRealUtility(cost, target_utility, target_price,
 
 }
 
-// Updates Amount based on qty input field
-
-export function addSubOne (code, subOrAdd, itemsInCart) {
-
-  const indexInCart = itemsInCart.findIndex(item => item.product.code == code)
-  const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
-  const res = {
-    type: 'UPDATE_CART',
-    payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].uuid),
-      index: indexInCart
-    }
-  }
-  return res
-}
-
 // ------------------------------------------------------------------------------------------
 // LOCAL AUX FUNCTIONS
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(qty, product) {
-
+function checkIfInCart(qty, product, cartItems) {
+  let index = cartItems.findIndex(a=>a.product.code == product.code)
+  if(index !==-1){
+    return {type:'PRODUCT_ALREADY_IN_CART', payload: product.code}
+  }
   // check if product in cart
   //const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
-  
     const uuid = uuidv1()
     const res = {
       type: 'ADD_TO_CART',
@@ -247,8 +231,10 @@ function checkIfInCart(qty, product) {
         subtotal: parseFloat(product.cost),
         status: 'new',
         discount: 0,
+        cost:0,
         applyToClient: false,
         target_utility: product.utility * 100,
+        transport_cost: 0,
         real_utility: 0,
         wanted_price_ivi: parseFloat(product.sell_price)
       }
@@ -264,13 +250,15 @@ function updatedCartItem(kwargs) {
   //calculate the price data as needed
   const price_data = calculateRealUtility(kwargs.unit_cost, kwargs.newTUtility, kwargs.newTPrice, 
     kwargs.itemsInCart[kwargs.index].product, kwargs.updatePattern, 'price_based')
-  //keep the subtotal de the same
+  //keep the subtotal the same
   const uuid = kwargs.itemsInCart[kwargs.index].uuid
   let prod = kwargs.itemsInCart[kwargs.index].product
-  prod.cost = kwargs.unit_cost
+  //prod.cost = kwargs.unit_cost
+
   return {
     uuid: uuid,
     product: prod,
+    cost: kwargs.unit_cost,
     qty: kwargs.newQty,
     subtotal: kwargs.newSubTotal,
     discount: kwargs.discount,
@@ -278,6 +266,7 @@ function updatedCartItem(kwargs) {
     target_utility: (price_data['real_utility']*100).toFixed(3),
     real_utility: (price_data['real_utility']*100).toFixed(3),
     wanted_price_ivi: price_data['new_price'].toFixed(3),
+    transport_cost: kwargs.transport_cost,
     status:'modified'
   }
 }

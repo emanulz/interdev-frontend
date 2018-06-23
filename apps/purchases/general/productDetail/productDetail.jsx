@@ -1,15 +1,30 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateItem} from '../product/actions.js'
+import { inspect } from 'util';
 
 @connect(store=>{
     return {
         cartItemActive: store.cart.cartItemActive,
         cartItems: store.cart.cartItems,
         orderTransport: store.cart.orderTransport,
+        cartSubtotal: store.cart.cartSubtotal,
     }
 })
 export default class ProductDetail extends React.Component {
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.orderTransport !== nextProps.orderTransport){
+            let e ={}
+            e.target={}
+            for(let line of this.props.cartItems){
+                e.target.value = line.wanted_price_ivi
+                e.target.orderTransport = nextProps.orderTransport
+                this.updateWantedPrice(line.product.code, e)
+            }
+        }
+
+    }
 
     updateSelectedUtility(id, e){
         if(this.props.cartItemActive){
@@ -26,6 +41,7 @@ export default class ProductDetail extends React.Component {
                 is_search_uuid: true,
                 itemsInCart: this.props.cartItems,
                 orderTransport: this.props.orderTransport,
+                cartSubtotal: this.props.cartSubtotal,
                 target_utility: new_utility
             }
             this.props.dispatch(updateItem(kwargs))
@@ -50,7 +66,8 @@ export default class ProductDetail extends React.Component {
                 id: line.uuid,
                 is_search_uuid: true,
                 itemsInCart: this.props.cartItems,
-                orderTransport: this.props.orderTransport,
+                orderTransport: e.target.orderTransport==undefined?this.props.orderTransport:e.target.orderTransport,
+                cartSubtotal: this.props.cartSubtotal,
                 target_price: newWantedPrice
             }
             this.props.dispatch(updateItem(kwargs))
@@ -59,7 +76,6 @@ export default class ProductDetail extends React.Component {
 
     updateWantedPriceOnEnter(id, e){
         if(e.key =="Enter"){
-            console.log("Key --> " +  e.key)
             this.updateWantedPrice(id, e)
         }
 
@@ -67,7 +83,6 @@ export default class ProductDetail extends React.Component {
 
     updateWantedUtilityOnEnter(id, e){
         if(e.key =="Enter"){
-            console.log("Key --> " +  e.key)
             this.updateSelectedUtility(id, e)
         }
 
@@ -89,13 +104,14 @@ export default class ProductDetail extends React.Component {
         let new_price_ivi = ''
         let new_cost = ''
         let new_utility = ''
+        let transport_cost = ''
         if(index != -1){
             description = cart_line.product.description
             current_price_tax = (cart_line.product.sell_price)
             current_cost = cart_line.product.cost.toFixed(2)
             current_utility = (cart_line.product.utility*100).toFixed(2)
-
-            new_cost = (cart_line.subtotal / cart_line.qty).toFixed(2)
+            transport_cost = (cart_line.transport_cost).toFixed(2)
+            new_cost = (cart_line.cost).toFixed(2)
             new_utility = cart_line.real_utility
             new_price_ivi = cart_line.wanted_price_ivi
         }
@@ -121,33 +137,35 @@ export default class ProductDetail extends React.Component {
 
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Utilidad Actual</div>
-                <div className="productDetail-data-row-value"> {current_utility} </div>
-                
-                
+                <div className="productDetail-data-row-value"> {current_utility} </div>   
             </div>
 
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Precio Actual:</div>
                 <div className="productDetail-data-row-value"> {current_price_tax} </div>
             </div>
+            <hr/>
 
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Nuevo Costo</div>
                 <div className="productDetail-data-row-value"> {new_cost} </div>
+            </div>
+            
+            <div className='productDetail-data-row'>
+                <div className="productDetail-data-row-label">Fracción Transporte</div>
+                <div className="productDetail-data-row-value"> {transport_cost} </div>
             </div>
 
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Utilidad Deseada</div>
                 <input name="utility_input" type="number" onChange={this.updateSelectedUtility.bind(this, this.props.cartItemActive)}
                 onKeyPress={this.updateWantedUtilityOnEnter.bind(this, this.props.cartItemActive)}/>
-                {/*<div className="productDetail-data-row-value"> {new_utility} </div>*/}
                 
             </div>
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Precio Deseado</div>
                 <input name="utility_input" type="number"  onChange={this.updateWantedPrice.bind(this, this.props.cartItemActive)}
                 onKeyPress={this.updateWantedPriceOnEnter.bind(this, this.props.cartItemActive)}/>
-                {/*<div className="productDetail-data-row-value"> {new_utility} </div>*/}
             </div>
 
             <div className='productDetail-data-row'>

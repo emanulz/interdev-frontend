@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {savePurchase, saveInventoryTransaction, saveCreditPayment,saveCreditMovement} from './actions.js'
+import {savePurchase} from './actions.js'
 import { inspect } from 'util'
 
 @connect(store=>{

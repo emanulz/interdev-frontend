@@ -17,6 +17,13 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    case 'SET_TRANSPORT_AMOUNT':
+    {
+      return {
+        ...state,
+        orderTransport: action.payload
+      }
+    }
     case 'SET_DISCOUNT_AMOUNT':
     {
       return {

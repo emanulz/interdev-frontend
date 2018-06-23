@@ -16,7 +16,8 @@ import Search from '../../../general/search/search.jsx'
 @connect(store=>{
     return {
         fetching: store.fetching.fetching,
-        sideMenuVisible: store.layout.sideMenuVisible
+        sideMenuVisible: store.layout.sideMenuVisible,
+        cartItems: store.cart.cartItems,
     }
 })
 export default class Main extends React.Component {
@@ -31,7 +32,7 @@ export default class Main extends React.Component {
         const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer': 'mainContainer sideHidden'
         const content = <Router>
             <div>
-                <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick} />
+                <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind({cartItems: this.props.cartItems})} />
                 <SideMenu/>
                 <div id='mainContainer' className={mainContainerClass} >
                     <TopBar/>

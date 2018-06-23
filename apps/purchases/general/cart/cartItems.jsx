@@ -17,6 +17,7 @@ const Mousetrap = require('mousetrap')
     cartTaxes: store.cart.cartTaxes,
     is_closed: store.purchase.is_closed,
     orderTransport: store.cart.orderTransport,
+    cartSubtotal: store.cart.cartSubtotal,
   }
 })
 export default class CartItems extends React.Component {
@@ -24,7 +25,7 @@ export default class CartItems extends React.Component {
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
 
-    this.props.dispatch(updateTotals(this.props.inCart, this.props.discountTotal, this.props.cartTaxes))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.cartTaxes, this.props.orderTransport))
 
     // Auto Scroll To end of container
     const elem = document.getElementById('cart-body')
@@ -101,6 +102,7 @@ export default class CartItems extends React.Component {
       is_search_uuid: true, 
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
+      cartSubtotal: this.props.cartSubtotal,
       //what changed
       subtotal: subTotal,
       
@@ -119,6 +121,7 @@ export default class CartItems extends React.Component {
       is_search_uuid: true, 
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
+      cartSubtotal: this.props.cartSubtotal,
       //what changed
       qty: qty,
     }
@@ -145,6 +148,7 @@ export default class CartItems extends React.Component {
       is_search_uuid: true, 
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
+      cartSubtotal: this.props.cartSubtotal,
       //what changed
       target_utility: tUtility,
     }
@@ -154,6 +158,7 @@ export default class CartItems extends React.Component {
   // HERE UPDATE COST BASED ON DISCOUNT
   discountFieldChange(id, e) {
     // DISCOUNT
+    console.log("Subtotal --> " +  this.props.cartSubtotal)
     const discount= parseFloat(e.target.value)
     ? parseFloat(e.target.value)
     : -1
@@ -163,6 +168,7 @@ export default class CartItems extends React.Component {
       is_search_uuid: true, 
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
+      cartSubtotal: this.props.cartSubtotal,
       //what changed
       discount: discount,
     }
@@ -177,6 +183,7 @@ export default class CartItems extends React.Component {
       is_search_uuid: true, 
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
+      cartSubtotal: this.props.cartSubtotal,
       //what changed
       applyToClient: apply,
     }
@@ -208,10 +215,6 @@ export default class CartItems extends React.Component {
         : 'cart-body-item'
 
       const removeIconClass = this.props.disabled ? 'removeItemIcon disabled' : 'removeItemIcon'
-
-      const taxes1 = (item.product.use_taxes)
-        ? item.product.taxes
-        : 0
 
       const qtyField = <input
         id={`qty${item.product.code}`}
@@ -268,7 +271,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className="cart-body-item-cost">
           <h5>Costo</h5>
-          {(item.subtotal / item.qty).toFixed(2)}
+          {(item.cost).toFixed(2)}
         </div>
         <div className='cart-body-item-discount'>
           <h5>Descuento</h5>
