@@ -12,29 +12,27 @@ import partsProvider from './workshopView/partsProvider/reducer.js'
 import transactionsList from './workshopView/transactionsList/reducer.js'
 import workshopReceipt from './general/receipt/reducer.js'
 import config from './config/reducer.js'
-//import searchClients from './general/search/clients/reducer.js'
-//import searchProducts from './general/search/products/reducer.js'
 import search from '../../general/search/reducer.js'
 import requestPanel from './general/requestsPanel/reducer.js'
-
+import pagination from '../../general/pagination/reducer.js'
 
 export default combineReducers({
     fetching,
     user,
     layout,
-    //searchClients,
     workorder,
     clients,
     clientCreatePanel,
     messages,
     workshopview,
     partsProvider,
-    //searchProducts,
     transactionsList,
     workshopReceipt,
     config,
     requestPanel,
     clientSearch: search('clientSearch'),
-    productSearch: search('productSearch',)
+    productSearch: search('productSearch',),
+    workorderSearch: search('workorderSearch'),
+    pagination,
 
 })

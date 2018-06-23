@@ -4,6 +4,7 @@ import routes from './routes'
 import {fetchProfile} from './actions'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fetchGlobalPreferences} from './actions.js'
+import {productSearchDoubleClick} from '../general/product/actions.js'
 
 //components
 import TopBar from '../layout/topBar/topBar.jsx'
@@ -30,7 +31,7 @@ export default class Main extends React.Component {
         const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer': 'mainContainer sideHidden'
         const content = <Router>
             <div>
-                <Search modelText='Productos' model='product' namespace='productSearch' />
+                <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick} />
                 <SideMenu/>
                 <div id='mainContainer' className={mainContainerClass} >
                     <TopBar/>

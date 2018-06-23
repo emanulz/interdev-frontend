@@ -104,6 +104,10 @@ export function makeOrdersTableFriendly(orders){
     const cloned_orders = JSON.parse(JSON.stringify(orders))
     const pretty_orders = cloned_orders.map((order, index)=>{
         const client = JSON.parse(order.client)
+        console.log("Pre date --> " + order.created)
+        console.log("Post date --> ")
+        console.log(formatDate(order.created))
+        
         const pretty = {
             id:order.id,
             consecutive:order.consecutive,

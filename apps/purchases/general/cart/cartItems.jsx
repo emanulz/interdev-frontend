@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {updateTotals, removeFromCart} from './actions'
 import {addSubOne, updateItem} from '../product/actions'
 import alertify from 'alertifyjs'
+import { inspect } from 'util';
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -94,7 +95,15 @@ export default class CartItems extends React.Component {
     ? parseFloat(ev.target.value)
     : -1
     if(subTotal==-1){return}
-    this.props.dispatch(updateItem(code, true, this.props.inCart, -1, subTotal, -1))
+    const kwargs = {
+      id: code, 
+      is_search_uuid: false, 
+      itemsInCart: this.props.inCart,
+      subTotal: subTotal,
+    }
+    console.log("Subtotal update kwargs")
+    console.log(inspect(kwargs))
+    this.props.dispatch(updateItem(kwargs))
 
   }
 
@@ -113,17 +122,41 @@ export default class CartItems extends React.Component {
     }
   }
 
+  target_utility_change(id, e) {
 
-  target_utility_change(id, e){
     const tUtility = parseFloat(e.target.value)
-    ? parseFloat(e.target.value)
-    : -1
+      ? parseFloat(e.target.value)
+      : -1
 
-    if(tUtility == -1){return}
+    if (tUtility == -1) { return }
 
-    this.props.dispatch(updateItem(id, true, this.props.inCart, -1, -1, tUtility))
+    const kwargs = {
+      id: id, 
+      is_search_uuid: true, 
+      itemsInCart: this.props.inCart,
+      qty: -1,
+      subTotal: -1,
+      target_utility: tUtility,
+      targetPrice: -1,
+      transport: -1,
+      discount: -1,
+      reflectDiscount: -1
+    }
+    this.props.dispatch(updateItem(kwargs))
   }
-  
+
+  // HERE UPDATE COST BASED ON DISCOUNT
+  discountFieldChange(id, e) {
+    // DISCOUNT
+    console.log(id)
+    console.log(e.target.value)
+  }
+  // HERE UPDATE COST BASED ON DISCOUNT AND APPLY TO CLIENT
+  applyToClientFieldChange(id, e) {
+    // TO CLIENT
+    console.log(id)
+    console.log(e.target.checked)
+  }
 
   setCartItemActive(code, ev) {
     this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
@@ -182,6 +215,24 @@ export default class CartItems extends React.Component {
         value={item.target_utility}
       />
 
+      const discountField = <input
+        id={`tu${item.product.code}`}
+        disabled={this.props.is_closed}
+        onChange={this.discountFieldChange.bind(this, item.uuid)}
+        type='number'
+        className='form-control'
+        value={item.discount}
+      />
+
+      const discountToClientCheckbox = <input
+        id={`tu${item.product.code}`}
+        disabled={this.props.is_closed}
+        onChange={this.applyToClientFieldChange.bind(this, item.uuid)}
+        type='checkbox'
+        className='form-control'
+        value={item.applyToClient}
+      />
+
       return <div className={activeClass}
         key={item.uuid}
         onClick={this.setCartItemActive.bind(this, item.product.code)}
@@ -200,22 +251,23 @@ export default class CartItems extends React.Component {
         </div>
         <div className="cart-body-item-cost">
           <h5>Costo</h5>
-          {(item.subtotal/item.qty).toFixed(2)}
+          {(item.subtotal / item.qty).toFixed(2)}
         </div>
-        <div className="cart-body-item-targetutility">
-          <h5>Utilidad Deseada</h5>
-          {targetUtilityField}
+        <div className='cart-body-item-discount'>
+          <h5>Descuento</h5>
+          {discountField}
         </div>
-        <div className="cart-body-item-realutility">
-          <h5>Utilidad Real</h5>
-          {item.real_utility}
+        <div className='cart-body-item-discountToClient'>
+          <h5>A Cliente</h5>
+          {discountToClientCheckbox}
         </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>
-            {subTotalField}
+          {subTotalField}
         </div>
         <span className={removeIconClass}>
-        {this.props.is_closed?'':<i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />}
+
+          {this.props.is_closed ? '' : <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />}
 
         </span>
 

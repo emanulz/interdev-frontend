@@ -11,25 +11,6 @@ import axios from 'axios'
 
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-// export function clientSelected(code, clients) {
-
-//   const clientSelected = clients.findIndex(client => client.code == code) // checks if client exists
-
-//   const res = (clientSelected == -1) // if not exists dispatch Not Found
-//     ? {
-//       type: 'CLIENT_NOT_FOUND',
-//       payload: -1
-//     }
-//     : {
-//       type: 'CLIENT_SELECTED',
-//       payload: {
-//         client: clients[clientSelected]
-//       }
-//     }
-
-//   return res
-
-// }
 
 export function clientSearchDoubleClick(item, dispatch){
   axios.get(`/api/clients/${item}`).then(function(response) {

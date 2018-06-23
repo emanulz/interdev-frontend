@@ -43,6 +43,29 @@ export function getHeaderOrder(model) {
       type: 'price'
     }
   ]
+
+  const supplierHeader = [
+    {
+      field: 'code',
+      text: 'Código',
+      width: '150px',
+    }, {
+      field: 'name',
+      text: 'Nombre',
+    }, {
+      field: 'phone_number',
+      text: 'Tel.',
+    }, {
+      field: 'agent_name',
+      text: 'Nombre Agente'
+    }, {
+      field: 'agent_last_name',
+      text: 'Apellido Agente'
+    }, {
+      field: 'agent_phone_number',
+      text: 'Tel. Agente'
+    }
+  ]
   // Return the header switching model cases
   switch (model) {
 
@@ -51,6 +74,9 @@ export function getHeaderOrder(model) {
     }
     case 'client': {
       return clientHeader
+    }
+    case 'supplier': {
+      return supplierHeader
     }
   }
 

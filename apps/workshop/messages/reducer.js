@@ -7,6 +7,15 @@ const stateConst = {
 export default function reducer(state = stateConst, action){
     switch (action.type){
 
+        case 'PRODUCT_CART_ADD_VALIDATION':
+        {
+            alertify.alert('ERROR: NO SE PUEDE AGREGAR PRODUCTO!', action.payload)
+            return {
+              ...state,
+              messages: true
+            }
+        }
+
         case 'CANT_DELETE_FROM_CLOSED_ORDER':
         {
             alertify.alert('AVISO: ORDEN CERRADA!', 'No se pueden eliminar líneas de una orden cerrada.')

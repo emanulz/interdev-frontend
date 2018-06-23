@@ -6,18 +6,22 @@ import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 import { inspect } from 'util'
+import { doesNotReject } from 'assert';
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
 
-// Function to update the globa; discount of complete storage of items, and reflect it on store, then updating DOME
-export function productSearchDoubleClick(){
-
+export function productSearchDoubleClick(item, dispatch){
+  axios.get(`/api/products/${item}`).then(function(response) {
+    dispatch(checkIfInCart(1, response.data))
+    dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: response.data})
+}).catch(function(error) {
+    alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+    administrador del sistema con el siguiete error: ${error}`)
+})
 }
 
-export function searchProduct(search_key, model, namespace, amount_requested, itemsInCart){
-  console.log("Search key")
-  console.log(search_key)
+export function searchProduct(search_key, model, namespace, amount_requested){
   const data = {
       model: model,
       max_results: 15,
@@ -31,7 +35,7 @@ export function searchProduct(search_key, model, namespace, amount_requested, it
           data: data
       }).then(response=>{
           if(response.data.length == 1){
-              dispatch(checkIfInCart(amount_requested, itemsInCart, response.data[0], false))
+              dispatch(checkIfInCart(amount_requested, response.data[0]))
               dispatch({type:"FETCHING_DONE"})
           }else if(response.data.length>1){
               dispatch({type:`${namespace}_TOGGLE_SEARCH_PANEL`})
@@ -74,27 +78,26 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 }
 
 
-// Updates Amount based on qty input field
-
-export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility){
-
-  const index = is_search_uuid 
-  ?itemsInCart.findIndex(item=> item.uuid==search_key)
-  :itemsInCart.findIndex(item=> item.product.code == search_key || item.product.barcode == search_key)
-
-  const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
-  const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
-  const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
-  //if(tUtility!=-1){
-    //calculate new real utility and wanted price
-    //const cost = itemsInCart[index].subtotal/itemsInCart[index].qty
-    //calculateRealUtility(cost, newTu, 'sell_based', itemsInCart[index].product)
-  //}      
+// export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility, targetPrice,){
+export function updateItem(kwargs){
+  //const cartItems = 
+  let itemsInCart = kwargs.itemsInCart
+  const index = kwargs.is_search_uuid
+  ?itemsInCart.findIndex(item=> item.uuid==kwargs.search_key)
+  :itemsInCart.findIndex(item=> item.product.code == kwargs.search_key || item.product.barcode == kwargs.search_key)
+  const ele = itemsInCart[index]
+  const qtyNum = kwargs.qty==undefined?ele.qty:kwargs.qty //if -1 was received, keep the current qty
+  const subtotalNum = kwargs.subTotal==undefined?ele.subtotal:kwargs.subtotal
+  const newTu = kwargs.target_utility==undefined?ele.target_utility:kwargs.target_utility
+  
+  // const qtyNum = qty==-1?itemsInCart[index].qty:qty //if -1 was received, keep the current qty
+  // const subtotalNum = subtotal==-1?itemsInCart[index].subtotal:subtotal//if -1 was received, keep the current subtotal
+  // const newTu = tUtility==-1?itemsInCart[index].target_utility:tUtility
 
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, index, qtyNum, subtotalNum, newTu),
+      item: updatedCartItem(cartItems, index, qtyNum, subtotalNum, newTu),
       index:index
     }
   }
@@ -179,44 +182,12 @@ export function addSubOne (code, subOrAdd, itemsInCart) {
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(qty, itemsInCart,  product, perLine) {
+function checkIfInCart(qty, product) {
 
   // check if product in cart
   //const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
-  // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
-  if (perLine) {
-    const uuid = uuidv1()
-    let res = null // if not exists in cart Dispats ADD_TO_TABLE, if exists dispatch cart updated
-    if(indexInCart == -1){
-      res ={
-          type: 'ADD_TO_CART',
-          payload: {
-            uuid: uuid,
-            product: product,
-            qty: qty,
-            subtotal: 0,
-            saved: 'new',
-            target_utility: product.utility*100,
-            real_utility: 0,
-            wanted_price_ivi: 0
-          }
-        }
-      }else{
-        line = itemsInCart[index]
-        res = {
-          type: 'UPDATE_CART',
-          payload: {
-            item: updatedCartItem(itemsInCart, indexInCart, line.product.qty + qty, 
-              line.subtotal, prod.utility*100),
-            index: indexInCart
-          }
-        }
-      }
-    return res
-
-  // IGNORE IF ALREADY IN CART IF CONFIG SAYS THAT
-  } else {
+  
     const uuid = uuidv1()
     const res = {
       type: 'ADD_TO_CART',
@@ -225,14 +196,16 @@ function checkIfInCart(qty, itemsInCart,  product, perLine) {
         product: product,
         qty: qty,
         subtotal: 0,
-        status:'new',
-        target_utility: product.utility*100,
+        status: 'new',
+        discount: 0,
+        applyToClient: false,
+        target_utility: product.utility * 100,
         real_utility: 0,
         wanted_price_ivi: 0
       }
     }
     return res
-  }
+  
 
 }
 

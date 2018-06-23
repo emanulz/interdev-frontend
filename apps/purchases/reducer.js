@@ -30,4 +30,5 @@ export default combineReducers({
     warehouses,
     pagination,
     productSearch: search('productSearch'),
+    supplierSearch: search('supplierSearch'),
 })

@@ -78,11 +78,11 @@ export default class Cart extends React.Component {
         <div className="cart-header-cost">
           <h5>Costo Und</h5>
         </div>
-        <div className="cart-header-targetutility">
-          <h5>Utilidad Deseada</h5>
+        <div className="cart-header-discount">
+          <h5>Descuento</h5>
         </div>
-        <div className="cart-header-realutility">
-          <h5>Utilidad Real</h5>
+        <div className="cart-header-discountToClient">
+          <h5>A Cliente</h5>
         </div>
         <div className='cart-header-total'>
           <h5>Sub Total</h5>
