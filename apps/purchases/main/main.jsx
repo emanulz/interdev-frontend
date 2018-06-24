@@ -11,6 +11,7 @@ import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 import Search from '../../../general/search/search.jsx'
+import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 
 
 @connect(store=>{
@@ -34,6 +35,7 @@ export default class Main extends React.Component {
             <div>
                 <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind({cartItems: this.props.cartItems})} />
                 <SideMenu/>
+
                 <div id='mainContainer' className={mainContainerClass} >
                     <TopBar/>
                     <div className='mainContainer-content' >
@@ -41,6 +43,7 @@ export default class Main extends React.Component {
                         {fetching}
                     </div>
                 </div>
+                <ReceiptPanel/>
             </div>
         </Router>
 

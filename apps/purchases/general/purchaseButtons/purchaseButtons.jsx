@@ -47,6 +47,11 @@ export default class PurchaseButtons extends React.Component {
         
     }
 
+
+    printReport(){
+        this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+    }
+
     render() {
 
         const disabled_save_class = this.props.purchase.is_closed 
@@ -77,9 +82,10 @@ export default class PurchaseButtons extends React.Component {
                     <span> <i className='fa fa-check' /> </span>
                 </button>
 
-                <button className='purchase-buttons-normal' >
-                    Facturas Incompletas
-                    <span> <i className='fa fa-exclamation' /> </span>
+                <button className='purchase-buttons-normal' 
+                onClick={this.printReport.bind(this, true)}>
+                    Imprimir Ingreso
+                    <span> <i className='fa fa-print' /> </span>
                 </button>
             </div>
         </div>

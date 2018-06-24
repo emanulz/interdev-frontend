@@ -37,14 +37,14 @@ export default class ReceiptPanel extends React.Component {
             ? ''
             : ' compact-receipt-on'
         
-            let componentToMount = ''
-            if(!this.props.isPartRequestReceipt){
-                componentToMount = this.props.isFull
-                ? <FullReceipt/>
-                : <CompactReceipt/>
-            }else{
-                componentToMount = <PartRequestReceipt/>
-            }
+        let componentToMount = ''
+        if(!this.props.isPartRequestReceipt){
+            componentToMount = this.props.isFull
+            ? <FullReceipt/>
+            : <CompactReceipt/>
+        }else{
+            componentToMount = <PartRequestReceipt/>
+        }
 
         return <div className={isVisibleClass}>
             <div className={'receipt-panel-main' + isFullClass} >
