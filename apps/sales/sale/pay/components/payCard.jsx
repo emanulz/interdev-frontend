@@ -6,14 +6,25 @@ import {updateStoreCardAuth, updateStoreCardDigits, updateStoreCardAmount} from 
   return {
     cardAuth: store.pay.payObject.card[0].auth,
     cardDigits: store.pay.payObject.card[0].digits,
-    cardAmount: store.pay.payObject.card[0].amount
+    cardAmount: store.pay.payObject.card[0].amount,
+    cartTotal: store.cart.cartTotal,
+    client: store.clients.clientSelected,
+    payObject: store.pay.payObject,
+    isCredit: store.pay.isCredit
   }
 })
 export default class PayCard extends React.Component {
 
   payCardAmountChanged(ev) {
 
-    this.props.dispatch(updateStoreCardAmount(ev.target.value))
+    this.props.dispatch(updateStoreCardAmount(
+      ev.target.value,
+      this.props.cartTotal,
+      this.props.client,
+      this.props.payObject,
+      this.props.dispatch,
+      this.props.isCredit
+    ))
   }
 
   payCardAuthChanged(ev) {

@@ -11,7 +11,7 @@ export default class Data extends React.Component {
     const sale = this.props.sale
     const date = sale.created
       ? `${formatDateTimeAmPm(sale.created)}`
-      : '01/01/1970'
+      : `${formatDateTimeAmPm(new Date())}`
     const cashierName = this.props.user.first_name
       ? `${this.props.user.first_name} ${this.props.user.last_name}`
       : `${this.props.user.username}`

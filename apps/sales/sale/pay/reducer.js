@@ -7,12 +7,20 @@ const stateConst = {
     cred: [{'type': 'CRED', 'amount': 0}],
     vouc: [],
     tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}]
-  }
+  },
+  isCredit: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+    case 'CHANGE_IS_CREDIT':
+    {
+      return {
+        ...state,
+        isCredit: action.payload
+      }
+    } // case
 
     case 'SHOW_PAY_PANEL':
     {

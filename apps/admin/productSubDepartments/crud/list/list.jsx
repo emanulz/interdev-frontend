@@ -43,6 +43,9 @@ export default class List extends React.Component {
       }, {
         field: 'name',
         text: 'Nombre'
+      }, {
+        field: 'identifier',
+        text: 'Identificador'
       }
     ]
 
@@ -52,7 +55,7 @@ export default class List extends React.Component {
 
     const content = this.props.fetching ? fetching : list
 
-    const addLink = <Link className='addBtn' to={'/admin/productdepartments/add'}>
+    const addLink = <Link className='addBtn' to={'/admin/productsubdepartments/add'}>
       <span className='fa fa-plus' />
       Agregar
     </Link>
@@ -69,8 +72,8 @@ export default class List extends React.Component {
         />
       </div>
       <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/productsubdepartments/' successType='FETCH_PRODUCT_DEPARTMENTS_FULFILLED' errorType='FETCH_PRODUCT_DEPARTMENTS_REJECTED' />
-        <Pagination url='/api/productsubdepartments/' successType='FETCH_PRODUCT_DEPARTMENTS_FULFILLED' errorType='FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED' />
+        <ResultsPerPage url='/api/productsubdepartments/' successType='FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED' errorType='FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED' />
+        <Pagination url='/api/productsubdepartments/' successType='FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED' errorType='FETCH_PRODUCT_SUBSUBDEPARTMENTS_REJECTED' />
       </div>
       {content}
     </div>

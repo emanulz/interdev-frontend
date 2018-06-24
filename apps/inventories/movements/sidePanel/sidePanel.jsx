@@ -284,7 +284,7 @@ export default class Products extends React.Component {
     try {
       const inventoryByWarehouse = JSON.parse(product.inventory_existent)
       product.inventory_existent = inventoryByWarehouse
-    } catch(err){
+    } catch (err) {
       console.log(err)
     }
 

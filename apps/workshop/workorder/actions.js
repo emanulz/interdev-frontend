@@ -1,4 +1,4 @@
-import {formatDate} from '../../../utils/formatDate'
+import {formatDateTimeAmPm} from '../../../utils/formatDate'
 import alertify from 'alertifyjs'
 
 import axios from 'axios'
@@ -104,9 +104,6 @@ export function makeOrdersTableFriendly(orders){
     const cloned_orders = JSON.parse(JSON.stringify(orders))
     const pretty_orders = cloned_orders.map((order, index)=>{
         const client = JSON.parse(order.client)
-        console.log("Pre date --> " + order.created)
-        console.log("Post date --> ")
-        console.log(formatDate(order.created))
         
         const pretty = {
             id:order.id,
@@ -117,8 +114,8 @@ export function makeOrdersTableFriendly(orders){
             client_name : `${client.name} ${client.last_name}`,
             article_brand: order.article_brand,
             article_type: order.article_type,
-            created: formatDate(order.created),
-            repaired_by: formatDate(order.warranty_repaired_by),
+            created: formatDateTimeAmPm(order.created),
+            repaired_by: order.warranty_repaired_by,
             is_warranty: order.is_warranty,
             is_bd_warranty: order.warranty_number_bd ===''?false:true,
 

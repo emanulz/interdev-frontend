@@ -9,11 +9,13 @@ import AdminTable from '../../../general/adminTable/adminTable.jsx'
 import { getPaginationItemDispatch } from '../../../utils/api.js'
 import Pagination from '../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
+import SearchAdmin from '../../../general/search/searchAdmin.jsx'
 
 @connect((store) => {
   return {
     products: store.products.products,
-    pageSize: store.pagination.pageSize
+    pageSize: store.pagination.pageSize,
+    searchResults: store.inventorySearch.searchResults
   }
 })
 export default class List extends React.Component {
@@ -64,25 +66,31 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <AdminTable headerOrder={headerOrder} model='tracking' data={dataFiltered}
+    const tableData = this.props.searchResults.length ? this.props.searchResults : dataFiltered
+    const list = <AdminTable headerOrder={headerOrder} model='tracking' data={tableData}
       idField='id' app='inventories' />
 
     const content = this.props.fetching ? fetching : list
 
+    const paginationDiv = !this.props.searchResults.length
+      ? <div className='admin-list-results-pagination' >
+        <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+        <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+      </div>
+      : <div />
+
     return <div className='list list-container'>
       <div className='admin-list-header'>
-        <h1>Listado de Productos:</h1>
+        <h1>Listado de Productos e Histórico:</h1>
       </div>
-      <div className='admin-list-search'>
+      <SearchAdmin model='product' namespace='inventorySearch' />
+      {/* <div className='admin-list-search'>
         <input
           type='text'
           placeholder='Ingrese un texto para buscar...'
         />
-      </div>
-      <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-        <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-      </div>
+      </div> */}
+      {paginationDiv}
       {content}
     </div>
 

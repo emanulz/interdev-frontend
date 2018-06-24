@@ -55,9 +55,9 @@ export default class List extends React.Component {
         type: 'text'
       },
       {
-        field: 'debt',
+        field: 'balance',
         text: 'Saldo',
-        type: 'price'
+        type: 'priceAbs'
       },
       {
         field: 'code',
@@ -77,12 +77,12 @@ export default class List extends React.Component {
       <div className='admin-list-header'>
         <h1>Listado de Cuentas por cobrar:</h1>
       </div>
-      <div className='admin-list-search'>
+      {/* <div className='admin-list-search'>
         <input
           type='text'
           placeholder='Ingrese un texto para buscar...'
         />
-      </div>
+      </div> */}
       <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
         <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />

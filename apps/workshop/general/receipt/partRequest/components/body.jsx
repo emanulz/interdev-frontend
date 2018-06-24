@@ -24,6 +24,9 @@ export default class PartRequestData extends React.Component {
                 <div className='compact-invoice-table-body-item-data-code'>
                   {item.element.code}
                 </div>
+                <div className='compact-invoice-table-body-item-data-total'>
+                  ₡ {parseFloat(item.element.sell_price).formatMoney(2, ',', '.')}
+                </div>
               </div>
             </div>
           })
@@ -32,6 +35,7 @@ export default class PartRequestData extends React.Component {
           <div className='compact-invoice-table-header'>
             <div className='compact-invoice-table-header-qty'>Cant</div>
             <div className='compact-invoice-table-header-code'>Código</div>
+            <div className='compact-invoice-table-header-total'>Precio IVI</div>
           </div>
           <div className='compact-invoice-table-body'>
             {items}
