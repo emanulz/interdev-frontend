@@ -250,7 +250,7 @@ export default class CartItems extends React.Component {
         onChange={this.applyToClientFieldChange.bind(this, item.uuid)}
         type='checkbox'
         className='form-control'
-        value={item.applyToClient}
+        checked={item.applyToClient}
       />
 
       return <div className={activeClass}

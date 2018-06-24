@@ -80,10 +80,8 @@ export default function reducer(state = stateConst, action) {
     case 'LOADED_PURCHASE':
     {
       const cart = JSON.parse(action.payload.cart)
-      const oldCart = JSON.parse(JSON.stringify(cart))
       return {
         ...state,
-        oldCart: oldCart,
         editable:cart.editable,
         created:cart.created,
         updated:cart.updated,
@@ -95,6 +93,7 @@ export default function reducer(state = stateConst, action) {
         cartTotal: cart.cartTotal,
         discountTotal: cart.discountTotal,
         cartItemActive: cart.cartItemActive,
+        orderTransport:cart.orderTransport,
       }
     }
 

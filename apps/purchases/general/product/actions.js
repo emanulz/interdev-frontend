@@ -91,7 +91,6 @@ export function updateItem(kwargs){
   const qtyNum = kwargs.qty==undefined?ele.qty:kwargs.qty //if -1 was received, keep the current qty
 
   const subtotalNum = kwargs.subtotal==undefined?ele.subtotal:kwargs.subtotal
-  console.log("subtotalNum --> " + subtotalNum)
   //const newTu = kwargs.target_utility==undefined?ele.target_utility:kwargs.target_utility
   const  newTu = kwargs.target_utility
   const newTp = kwargs.target_price==undefined?ele.wanted_price_ivi:kwargs.target_price
@@ -105,9 +104,9 @@ export function updateItem(kwargs){
   let unit_cost = subtotalNum/qtyNum
 
   //calculate the amount of the transport that this line shuld assume
-  console.log("Will update call order transport --> " + kwargs.orderTransport)
   const total_line_transport =  subtotalNum / kwargs.cartSubtotal * kwargs.orderTransport
   const transport_per_line_item =  total_line_transport / qtyNum
+
   if(isNaN(unit_cost)){
     unit_cost = 0
   }
@@ -115,7 +114,7 @@ export function updateItem(kwargs){
   //add the per unit transport cost to the unit_cost
   unit_cost += transport_per_line_item
   if(reflectOnCost){
-    unit_cost -= newDiscount
+    unit_cost -= newDiscount/qtyNum
   }
 
   const updateKwargs = {
@@ -148,7 +147,6 @@ function calculateRealUtility(cost, target_utility, target_price,
 
   //determine all taxes to be applied to the product, if any
   let total_tax_fraction = 0
-  console.log('Product --> ' + product.description)
   if(product.use_taxes){
     total_tax_fraction += product.taxes
   }
@@ -161,7 +159,6 @@ function calculateRealUtility(cost, target_utility, target_price,
   switch(updatePattern){
     case 'byUtility':
     {
-      console.log('Target_utility' + target_utility)
       let target_price_no_tax = 0
       if(utility_method === 'cost_based'){
         target_price_no_tax = cost * (1+target_utility/100.0)
@@ -169,17 +166,15 @@ function calculateRealUtility(cost, target_utility, target_price,
         target_price_no_tax = cost / (1-(target_utility/100.0))
       }
 
-      console.log('PRICE_NO_TAX --> ' + target_price_no_tax)
       let target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
-      console.log('TARGET_PRICE_NO_IVI --> ' + target_price_ivi)
       //trim decimals from the price
       let int_ivi_price = Math.round(target_price_ivi)
-      console.log('INT_IVI_PRICE --> ' + int_ivi_price )
+
       //round to the nearest usable coin
       let coin_round_modulus = int_ivi_price % round_to_coin
-      console.log('COIN_ROUND_MODULUS --> ' + coin_round_modulus)
+
       wanted_price = int_ivi_price - coin_round_modulus
-      console.log('WANTED_PRICE --> ' + wanted_price)
+
       break
     }
 
@@ -189,7 +184,6 @@ function calculateRealUtility(cost, target_utility, target_price,
       let int_target_price = Math.round(target_price)
       let coin_round_modulus = int_target_price  % round_to_coin
       wanted_price = int_target_price - coin_round_modulus
-      console.log("By Price --> " + wanted_price)
       break
     }
   }
@@ -203,7 +197,6 @@ function calculateRealUtility(cost, target_utility, target_price,
     real_utility = 1- cost/(wanted_price/(total_tax_factor*default_discount))
   }
 
-  console.log('REAL_UTILITY --> ' + real_utility)
   return {'real_utility': real_utility, 'new_price': wanted_price}
 
 }

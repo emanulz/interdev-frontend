@@ -38,6 +38,7 @@ export function savePurchase(kwargs){
         invoice_number: invoice_number,
         invoice_date: invoice_date,
         credit_days: credit_days,
+        update_pattern: 'byPrice',
         apply: apply,
     }
     return new Promise((resolve, reject)=>{

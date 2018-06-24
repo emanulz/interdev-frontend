@@ -11,6 +11,7 @@ const stateConst = {
     is_closed: false,
     purchase_id: '',
     old: '',
+
   }
 
   export default function reducer(state=stateConst, action){
