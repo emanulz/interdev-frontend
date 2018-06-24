@@ -93,7 +93,7 @@ export default function reducer(state = stateConst, action) {
         cartTotal: cart.cartTotal,
         discountTotal: cart.discountTotal,
         cartItemActive: cart.cartItemActive,
-        orderTransport:cart.orderTransport,
+        orderTransport:cart.orderTransport?cart.orderTransport:0,
       }
     }
 

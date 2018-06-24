@@ -271,7 +271,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className="cart-body-item-cost">
           <h5>Costo</h5>
-          {(item.cost).toFixed(2)}
+          {(item.cost?item.cost:item.subtotal/item.qty).toFixed(2)}
         </div>
         <div className='cart-body-item-discount'>
           <h5>Descuento</h5>
