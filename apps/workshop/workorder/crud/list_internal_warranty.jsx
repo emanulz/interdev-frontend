@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ListComponent from './list/list.jsx'
+import List_Warranty from './list_warranty/list.jsx'
 import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 
@@ -9,7 +9,7 @@ import {connect} from 'react-redux'
         permissions: store.workorder.permissions
     }
   })
-  export default class List extends React.Component{
+  export default class List_Internal_Warranty extends React.Component{
  
     //Main layout
     render(){
@@ -19,7 +19,7 @@ import {connect} from 'react-redux'
         switch (this.props.permissions.list){
             case true:
             {
-                content = <ListComponent />
+                content = <List_Warranty />
                 break
             }
             case false:

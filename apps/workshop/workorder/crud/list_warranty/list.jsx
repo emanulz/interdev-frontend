@@ -1,28 +1,29 @@
 import React from 'react'
 import {connect} from 'react-redux'
+
 import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
 import Pagination from '../../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
 import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
 import {getPaginationItemDispatch} from '../../../../../utils/api.js'
-import {makeOrdersTableFriendly}  from '../../actions.js'
 
-@connect((store) => {
+
+@connect(store=>{
     return {
-    fetching: store.fetching.fetching,
-      workorders: store.workorder.workorders,
-      table_friendly_orders: store.workorder.table_friendly_orders,
-      pageSize: store.pagination.pageSize,
-      searchResults: store.workorderSearch.searchResults,
+        fetching: store.fetching.fetching,
+        workorders: store.workorder.workorders,
+        table_friendly_orders: store.workorder.table_friendly_orders,
+        pageSize: store.pagination.pageSize,
+        searchResults: store.workorderSearch.searchResults,    
     }
-  })
-export default class List extends React.Component{
-    
+})
+export default class List_Warranty extends React.Component {
+
     componentWillMount(){
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch({type: 'FETCH_WORKORDERS_REJECTED'})
         const workordersKwargs = {
-            url: `/api/listworkorders/?limit=${this.props.pageSize}`,
+            url: `/api/listwarrantyworkorders/?limit=${this.props.pageSize}`,
             successType: 'FETCH_WORKORDERS_FULFILLED',
             errorType: 'FETCH_WORKORDERS_REJECTED'
         }
@@ -85,14 +86,17 @@ export default class List extends React.Component{
         const content = this.props.fetching ? fetching : list
 
         return <div className='list list-container'>
-            <h1>Listado Órdenes de Trabajo: </h1>
+            <h1>Listado de Garantías Internas</h1>
             <SearchAdmin model='workorder' namespace='workorderSearch'/>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/listworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
-                <Pagination url='/api/listworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <ResultsPerPage url='/api/listwarrantyworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <Pagination url='/api/listwarrantyworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
             </div>
 
             {content}
         </div>
+
     }
+
+
 }
