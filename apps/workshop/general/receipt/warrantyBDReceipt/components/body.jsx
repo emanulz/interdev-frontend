@@ -1,32 +1,29 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {formatDate} from '../../../../../../utils/formatDate'
+import {formatDateTime } from '../../../../../../utils/formatDate'
 
-@connect(store=>{
-    return {
+@connect(store =>{
+    return{
+        requestList: store.transactionsList.partsRequestList,  
+        laborList: store.transactionsList.laborList,
         work_order: store.workshopview.work_order,
-        work_order_creation: store.workorder.work_order,
-        cash_advance_create: store.workorder.cash_advance,
-        transactions: store.transactionsList,
-        use_create_work_order: store.workorder.request_saved,
     }
 })
-export default class ReceiptData extends React.Component {
+
+export default class WarrantyBodyBD extends React.Component{
 
     render(){
-        const use_create_work_order = this.props.use_create_work_order
-        const order = use_create_work_order? this.props.work_order_creation: this.props.work_order
-        const date =  formatDate(order.created)
-
-        const client = order.client ? `${order.client.code} - ${order.client.name} ${order.client.last_name}`
+        const wo = this.props.work_order
+        const date = formatDateTime(new Date())
+        const client = wo.client ? `${wo.client.code} - ${wo.client.name} ${wo.client.last_name}`
         :'00-Cliente Contado'
 
-        const id = order.consecutive ? order.consecutive : '0001'
-        const base_class = 'compact-receipt-data-field'
+        const id = wo.consecutive ? wo.consecutive : '0001'
+        const base_class = 'compact-warrantyBD-data-field'
 
-        let order_elements = this.buildOrderTypeData(order)
+        let order_elements =  this.buildOrderTypeData(wo)
 
-        return <div className='compact-receipt-data'>
+        return <div className ='compact-warrantyBD'>
             <div className={base_class}>
                 <span className={base_class + "-label"}>Fecha:</span>
                 <span className={base_class + "-value"}>{date}</span>
@@ -40,51 +37,50 @@ export default class ReceiptData extends React.Component {
                 <span className={base_class + "-value"}>{client}</span>
             </div>
             {order_elements}
+
             <div className='compact-receipt-separator'>
                 <span/>
                     <h2>Artículo</h2>
                 <span/>
             </div>
-
-            {this.buildArticleInfo(order)}
+            {this.buildArticleInfo(wo)}
 
             <div className='compact-receipt-separator'>
                 <span/>
                     <h2>Observaciones</h2>
                 <span/>
             </div>
-            {this.buildObservations(order)}
+
+            {this.buildObservations(wo)}
             <div className='compact-receipt-separator'>
                 <span/>
                     <h2>Fallas</h2>
                 <span/>
             </div>
-            {this.buildArticleMalfunctions(order)}
+            {this.buildArticleMalfunctions(wo)}
+
             <div className='compact-receipt-separator'>
                 <span/>
-                    <h2>Adelantos </h2>
+                    <h2>Requisiciones</h2>
                 <span/>
-                
             </div>
-            {this.buildArticleCashAdvances(use_create_work_order)}
-        </div>
-    }
+            {this.buildPartRequestInfo()}
 
-    buildArticleCashAdvances(use_create_work_order){
-        const base_class = 'compact-receipt-data-field'
-        if(use_create_work_order){
-            return <div className={base_class+"-cashadvance"} key={'-1'} >
-            {`${"Adelanto en recepción"} ₡ ${parseFloat(this.props.cash_advance_create).formatMoney(2, ',', '.')}`}
-        </div>
-        }else{
-            const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
-                return <div className={base_class+"-cashadvance"} key={index} >
-                    {`${a.element.description} ₡ ${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
-                </div>
-            })
-            return cash_advances
-        }
+            <div className='compact-receipt-separator'>
+                <span/>
+                    <h2>Mano de Obra</h2>
+                <span/>
+            </div>
 
+            {this.buildLaborInfo()}
+
+            <div className='compact-receipt-separator'>
+                <span/>
+                    <h2>Final de Boleta</h2>
+                <span/>
+            </div>
+
+        </div>
     }
 
     buildObservations(order){
@@ -99,7 +95,47 @@ export default class ReceiptData extends React.Component {
         </div>
     }
 
+    buildLaborInfo(){
+        const base_class='compact-receipt-data-field'
+        const labor_items = this.props.laborList.map(a=>{
+            return this.buildSimpleDataRow(base_class, '', a.element.description)
+        })
+        return <div>
+            {labor_items}
+        </div>
+    }
 
+    buildPartRequestInfo(){
+
+        const items = this.props.requestList.map((item) => {
+      
+            return <div className='compact-invoice-table-body-item' key={item.id}>
+              <div className='compact-invoice-table-body-item-description'>
+                {item.element.description}
+              </div>
+              <div className='compact-invoice-table-body-item-data'>
+                <div className='compact-invoice-table-body-item-data-qty'>
+                  {item.qty}
+                </div>
+                <div className='compact-invoice-table-body-item-data-code'>
+                  {item.element.code}
+                </div>
+              </div>
+            </div>
+          })
+
+          return <div className='compact-invoice-table'>
+          <div className='compact-invoice-table-header'>
+            <div className='compact-invoice-table-header-qty'>Cant</div>
+            <div className='compact-invoice-table-header-code'>Código</div>
+          </div>
+          <div className='compact-invoice-table-body'>
+            {items}
+          </div>
+    
+        </div>
+
+    }
 
     buildArticleInfo(order){
 
@@ -115,8 +151,9 @@ export default class ReceiptData extends React.Component {
 
     buildSimpleDataRow(base_class, label, value){
         if(value === undefined || value == ''){return ''}
+        const join_char = label==''?'':':'
         return <div className={base_class} >
-                <span className={base_class + "-label"}>{label+':'}</span>
+                <span className={base_class + "-label"}>{label+join_char}</span>
                 <span className={base_class + "-value"}>{value}</span>
             </div>
     }
@@ -133,8 +170,9 @@ export default class ReceiptData extends React.Component {
         </div>
     }
 
+
     buildOrderTypeData(order){
-        const base_class='compact-receipt-data-field'
+        const base_class='compact-warrantyBD-data-field'
         const type ='Tipo Reparación:'
         if(order.is_warranty){
             if(order.warranty_number_bd !== undefined && order.warranty_number_bd !== ''){
@@ -147,6 +185,19 @@ export default class ReceiptData extends React.Component {
                         <span className={base_class + "-label"}>{'# Garantía B&D'}</span>
                         <span className={base_class + "-value"}>{order.warranty_number_bd}</span>
                     </div>
+                    <div className={base_class} >
+                        <span className={base_class + "-label"}>{'Distribuidor'}</span>
+                        <span className={base_class + "-value"}>{order.warranty_supplier_name}</span>
+                    </div>
+                    <div className={base_class} >
+                        <span className={base_class + "-label"}>{'Fecha Factura'}</span>
+                        <span className={base_class + "-value"}>{order.warranty_invoice_date}</span>
+                    </div>
+                    <div className={base_class} >
+                        <span className={base_class + "-label"}>{'# Factura Venta'}</span>
+                        <span className={base_class + "-value"}>{order.warranty_invoice_number}</span>
+                    </div>
+
                 </div>
             }else{
                 return <div className={base_class} >
@@ -160,4 +211,5 @@ export default class ReceiptData extends React.Component {
             <span className={base_class + "-value"}>Ordinaria</span>
         </div>
     }
+
 }

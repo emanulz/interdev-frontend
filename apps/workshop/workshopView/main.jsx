@@ -6,9 +6,7 @@ import TransactionsList from './transactionsList/main.jsx'
 import PartsRequestPanel  from '../general/requestsPanel/requestsList.jsx'
 import {setItem, getSingleItemDispatch, loadGlobalConfig} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {openCloseWorkOrder} from './actions'
 import {patchWorkView} from '../general/actions'
-import alertify from 'alertifyjs'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {productSearchDoubleClick} from './partsProvider/actions.js'
@@ -77,36 +75,55 @@ export default class WorkshopView extends React.Component {
 
     }
 
-    saveOrderTransactions(close_order, e){
-
-        let data = {
-            client_id: this.props.client.id,
-            cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
-            cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
-            
-            labor_list: JSON.stringify(this.props.laborList),
-            labor_list_to_delete: JSON.stringify(this.props.laborsToDelete),
-
-            used_list: JSON.stringify(this.props.usedPartList),
-            used_list_to_delete: JSON.stringify(this.props.usedPartsToDelete),
-
-            parts_request_list: JSON.stringify(this.props.partsRequestList),
-            parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
-
-            main_warehouse_id: this.props.sales_warehouse_id,
-            workshop_warehouse_id: this.props.workshop_warehouse_id,
-            black_decker_warehouse: this.props.blackdecker_warehouse_id,
-
-            close_order: close_order,
+    saveOrderTransactionsOrPrint(close_order, no_repair, e){
+        const wo = this.props.work_order
+        //check if the order is already closed, if so, print
+        if(!wo.is_closed){
+            let data = {
+                client_id: this.props.client.id,
+                cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
+                cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
+                
+                labor_list: JSON.stringify(this.props.laborList),
+                labor_list_to_delete: JSON.stringify(this.props.laborsToDelete),
+    
+                used_list: JSON.stringify(this.props.usedPartList),
+                used_list_to_delete: JSON.stringify(this.props.usedPartsToDelete),
+    
+                parts_request_list: JSON.stringify(this.props.partsRequestList),
+                parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
+    
+                main_warehouse_id: this.props.sales_warehouse_id,
+                workshop_warehouse_id: this.props.workshop_warehouse_id,
+                black_decker_warehouse: this.props.blackdecker_warehouse_id,
+    
+                close_order: close_order,
+                no_repair: no_repair,
+            }
+    
+            const saveKwargs = {
+                work_order_id: this.props.work_order.id,
+                data: data,
+                dispatcher: this.props.dispatch
+            }
+    
+            patchWorkView(saveKwargs)
+            return
+    
         }
 
-        const saveKwargs = {
-            work_order_id: this.props.work_order.id,
-            data: data,
-            dispatcher: this.props.dispatch
+        //print the order closed receipt
+        const is_bd_warranty = wo.warranty_number_bd.length > 0?true:false
+        if(wo.is_warranty && !wo.close_no_repair){
+            if(is_bd_warranty){
+                this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'bd_warranty'})
+                this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+            }else{
+                this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'internal_warranty'})
+                this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+            }
         }
 
-        patchWorkView(saveKwargs)
 
     }
 
@@ -125,23 +142,6 @@ export default class WorkshopView extends React.Component {
         })
 
         return result
-
-    }
-
-    closeOrder(){
-        this.saveOrderTransactions().then(()=>{
-            const kwargs = {
-                work_order_id: this.props.work_order.id,
-                new_status: true,
-                old_order: this.props.work_order_old,
-                new_order : this.props.work_order,
-                user: this.props.user
-            }
-            openCloseWorkOrder(kwargs).then(b=>{
-                alertify.alert('Completado: Orden de trabajo Guardada y Cerrada!', '')
-            })
-        })
-
 
     }
 
@@ -212,30 +212,91 @@ export default class WorkshopView extends React.Component {
     }
 
     printReceipt(e){
-        this.props.dispatch({type:'SET_RECEPTION_RECEIPT'})
+        this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'reception_receipt'})
         this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
     }
 
+    closeNoRepairReceiptOrPrint(){
+        console.log("Printing no repair receipt")
+        if(!this.props.work_order.closed_no_repair && !this.props.work_order.is_closed){
+            if(this.props.partsRequestList.length>0 || this.props.partsRequestToDelete.length>0){
+                this.props.dispatch({type: 'CANT_CLOSE_NO_REPAIR_WITH_PARTS_REQUEST'})
+                return
+            }
+            this.saveOrderTransactionsOrPrint(true, true, null)
+            //do the closing process
+
+        }else{
+            this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'no_reapair'})
+            this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+
+        }
+    }
+
     buildFooter(){
-        const footer = <div className="workshop-view-footer-buttons">
-            <div className="workshop-view-footer-buttons">
-                <button className="form-control btn-success workshop-view-footer-buttons-update"
-                    onClick={this.saveOrderTransactions.bind(this, false)}
-                    disabled={this.props.is_closed}>
-                    Guardar Movimientos
-                </button>
-            </div>
-            <div className="workshop-view-footer-buttons">
+        //show the save movements button only for open orders
+        const wo = this.props.work_order
+
+
+        const save_movements_button = this.props.work_order.is_closed 
+        ?''
+        :<div className="workshop-view-footer-buttons">
+            <button className="form-control btn-success workshop-view-footer-buttons-update"
+                onClick={this.saveOrderTransactionsOrPrint.bind(this, false, false)}
+                disabled={this.props.is_closed}>
+                Guardar Movimientos
+            </button>
+        </div>
+        //handle save, close and print of order
+        let save_close_print_text = ''
+        let save_close_print_visible = true
+        if(!wo.is_closed){
+            save_close_print_text = 'Guardar y Cerrar Orden'
+        }else if(!wo.closed_no_repair && wo.is_warranty){
+            save_close_print_text = 'Imprimir Cierre'
+        }else{
+            save_close_print_visible = false
+        }
+        let save_close_print  = ''
+        if(save_close_print_visible){
+            save_close_print = <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update-close"
-                    onClick={this.saveOrderTransactions.bind(this, true)}
-                    disabled={this.props.is_closed}>
-                    Guardar y Cerrar Orden
+                    onClick={this.saveOrderTransactionsOrPrint.bind(this, true, false)}>
+                    {save_close_print_text}
+                </button>
+                </div>
+        }
+
+        //handle close no repair button
+        let close_no_repair_text = ''
+        let close_no_repair_visible = true
+        if(!wo.is_closed){
+            close_no_repair_text = 'Cerrar Sin Reparación'
+        }else if(wo.closed_no_repair){
+            close_no_repair_text = 'Imprimir Cierre sin Reparación'
+        }else{
+            close_no_repair_visible = false
+        }
+
+        let close_no_repair = ''
+        if(close_no_repair_visible){
+            close_no_repair = <div className="workshop-view-footer-buttons">
+                <button className="form-control btn-success workshop-view-footer-buttons-cancel"
+                onClick={this.closeNoRepairReceiptOrPrint.bind(this)}>
+                    {close_no_repair_text}
                 </button>
             </div>
+        }
+
+        const footer = <div className="workshop-view-footer-buttons">
+            {save_movements_button}
+            {save_close_print}
+            {close_no_repair}
+
             <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-cancel"
                 onClick={this.printReceipt.bind(this)}>
-                    Imprimir Recibo
+                    Recibo de Ingreso
                 </button>
             </div>
             <div className="workshop-view-footer-buttons">

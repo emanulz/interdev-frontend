@@ -43,7 +43,5 @@ export default class PartRequestData extends React.Component {
     
         </div>          
 
-
-        return <div></div>
     }
 }

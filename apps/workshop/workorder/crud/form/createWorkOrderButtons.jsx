@@ -22,6 +22,7 @@ class CreateWorkOrderButtons extends React.Component {
             this.props.dispatch({type: 'CANT_PRINT_UNSAVED'})
             return
         }
+        this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'reception_receipt'})
         this.props.dispatch({type: 'SHOW_RECEIPT_PANEL'})
     }
 
