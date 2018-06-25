@@ -7,6 +7,25 @@ const stateConst = {
 export default function reducer(state = stateConst, action){
     switch (action.type){
 
+        case 'CANT_CLOSE_NO_REPAIR_WITH_PARTS_REQUEST':
+        {
+            alertify.alert('ERROR: NO SE PUEDE CERRAR ORDEN!', 'Para cerrar una orden como  "SIN REPARACIÓN" es necesario eliminar sus requisiciones de parte. ' + 
+                'Borre las requisiciones, guarde la orden y trate de cerrarla "SIN REPARACIÓN nuevamente.')
+            return {
+              ...state,
+              messages: true
+            }
+        }
+
+        case 'CANT_PRINT_NO_REPAIR_RECEIPT':
+        {
+            alertify.alert('ERROR: NO SE PUEDE IMPRIMIR RECIBO', 'Para imprimir un recibo de "SIN REPARACIÓN" la orden debe cerrarse primero de esa forma.')
+            return {
+              ...state,
+              messages: true
+            }
+        }
+
         case 'PRODUCT_CART_ADD_VALIDATION':
         {
             alertify.alert('ERROR: NO SE PUEDE AGREGAR PRODUCTO!', action.payload)

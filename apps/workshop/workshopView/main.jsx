@@ -77,7 +77,10 @@ export default class WorkshopView extends React.Component {
 
     }
 
-    saveOrderTransactions(close_order, e){
+    saveOrderTransactionsOrPrint(close_order, no_repair, e){
+
+        console.log("Close order --> " + close_order)
+        console.log("No repair --> " +  no_repair)
 
         let data = {
             client_id: this.props.client.id,
@@ -98,6 +101,7 @@ export default class WorkshopView extends React.Component {
             black_decker_warehouse: this.props.blackdecker_warehouse_id,
 
             close_order: close_order,
+            no_repair: no_repair,
         }
 
         const saveKwargs = {
@@ -128,22 +132,22 @@ export default class WorkshopView extends React.Component {
 
     }
 
-    closeOrder(){
-        this.saveOrderTransactions().then(()=>{
-            const kwargs = {
-                work_order_id: this.props.work_order.id,
-                new_status: true,
-                old_order: this.props.work_order_old,
-                new_order : this.props.work_order,
-                user: this.props.user
-            }
-            openCloseWorkOrder(kwargs).then(b=>{
-                alertify.alert('Completado: Orden de trabajo Guardada y Cerrada!', '')
-            })
-        })
+    // closeOrder(){
+    //     this.saveOrderTransactions().then(()=>{
+    //         const kwargs = {
+    //             work_order_id: this.props.work_order.id,
+    //             new_status: true,
+    //             old_order: this.props.work_order_old,
+    //             new_order : this.props.work_order,
+    //             user: this.props.user
+    //         }
+    //         openCloseWorkOrder(kwargs).then(b=>{
+    //             alertify.alert('Completado: Orden de trabajo Guardada y Cerrada!', '')
+    //         })
+    //     })
 
 
-    }
+    // }
 
     componentWillUpdate(nextProps){
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
@@ -216,26 +220,86 @@ export default class WorkshopView extends React.Component {
         this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
     }
 
+    closeNoRepairReceiptOrPrint(){
+        console.log("Printing no repair receipt")
+        if(!this.props.work_order.closed_no_repair && !this.props.work_order.is_closed){
+            if(this.props.partsRequestList.length>0 || this.props.partsRequestToDelete.length>0){
+                this.props.dispatch({type: 'CANT_CLOSE_NO_REPAIR_WITH_PARTS_REQUEST'})
+                return
+            }
+            this.saveOrderTransactionsOrPrint(true, true, null)
+            //do the closing process
+
+        }else{
+            console.log("Imprimir recibo de cierre")
+
+        }
+    }
+
     buildFooter(){
-        const footer = <div className="workshop-view-footer-buttons">
-            <div className="workshop-view-footer-buttons">
-                <button className="form-control btn-success workshop-view-footer-buttons-update"
-                    onClick={this.saveOrderTransactions.bind(this, false)}
-                    disabled={this.props.is_closed}>
-                    Guardar Movimientos
-                </button>
-            </div>
-            <div className="workshop-view-footer-buttons">
+        //show the save movements button only for open orders
+        const wo = this.props.work_order
+
+
+        const save_movements_button = this.props.work_order.is_closed 
+        ?''
+        :<div className="workshop-view-footer-buttons">
+            <button className="form-control btn-success workshop-view-footer-buttons-update"
+                onClick={this.saveOrderTransactionsOrPrint.bind(this, false, false)}
+                disabled={this.props.is_closed}>
+                Guardar Movimientos
+            </button>
+        </div>
+        //handle save, close and print of order
+        let save_close_print_text = ''
+        let save_close_print_visible = true
+        if(!wo.is_closed){
+            save_close_print_text = 'Guardar y Cerrar Orden'
+        }else if(!wo.closed_no_repair && wo.is_warranty){
+            save_close_print_text = 'Imprimir Cierre'
+        }else{
+            save_close_print_visible = false
+        }
+        let save_close_print  = ''
+        if(save_close_print_visible){
+            save_close_print = <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update-close"
-                    onClick={this.saveOrderTransactions.bind(this, true)}
-                    disabled={this.props.is_closed}>
-                    Guardar y Cerrar Orden
+                    onClick={this.saveOrderTransactionsOrPrint.bind(this, true, false)}>
+                    {save_close_print_text}
+                </button>
+                </div>
+        }
+
+        //handle close no repair button
+        let close_no_repair_text = ''
+        let close_no_repair_visible = true
+        if(!wo.is_closed){
+            close_no_repair_text = 'Cerrar Sin Reparación'
+        }else if(wo.closed_no_repair){
+            close_no_repair_text = 'Imprimir Cierre sin Reparación'
+        }else{
+            close_no_repair_visible = false
+        }
+
+        let close_no_repair = ''
+        if(close_no_repair_visible){
+            close_no_repair = <div className="workshop-view-footer-buttons">
+                <button className="form-control btn-success workshop-view-footer-buttons-cancel"
+                onClick={this.closeNoRepairReceiptOrPrint.bind(this)}>
+                    {close_no_repair_text}
                 </button>
             </div>
+        }
+
+        const footer = <div className="workshop-view-footer-buttons">
+            {save_movements_button}
+            {save_close_print}
+            {close_no_repair}
+
             <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-cancel"
                 onClick={this.printReceipt.bind(this)}>
-                    Imprimir Recibo
+                    Recibo de Ingreso
                 </button>
             </div>
             <div className="workshop-view-footer-buttons">
