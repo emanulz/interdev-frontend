@@ -76,6 +76,7 @@ export default class WorkOrdersPanel extends React.Component {
     const laborList = workOrder.labor_objects
     const usedObjects = workOrder.used_objects
     const partRequest = workOrder.part_requests
+    // const cashAdvances = workOrder.cash_advances
 
     this.loadPartRequests(partRequest)
     this.loadUsedParts(usedObjects)
@@ -196,6 +197,11 @@ export default class WorkOrdersPanel extends React.Component {
     })
 
   }
+
+  // loadCashAdvances(cashAdvances) {
+
+  // }
+
   render() {
 
     const isVisible = (this.props.isVisible)

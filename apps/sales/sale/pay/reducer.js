@@ -57,6 +57,17 @@ export default function reducer(state = stateConst, action) {
       return newState
     }
     // ************************************
+    // ***** CASH ADVANCE *************************
+    // ************************************
+
+    case 'ADD_CASH_ADVANCE':
+    {
+      const newState = {...state}
+      newState.payObject.csha.push(action.payload)
+      return newState
+    }
+
+    // ************************************
     // ***** CREDIT *************************
     // ************************************
 

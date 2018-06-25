@@ -13,7 +13,7 @@ export default class PartRequestData extends React.Component {
         const filtered_requests = this.props.requestList.filter(a=>a.part_request_group == this.props.selectedGroup)
         const items = filtered_requests.map((item) => {
       
-            return <div className='compact-invoice-table-body-item' key={item.id}>
+            return <div className='compact-invoice-table-body-item' key={item.element.id}>
               <div className='compact-invoice-table-body-item-description'>
                 {item.element.description}
               </div>
