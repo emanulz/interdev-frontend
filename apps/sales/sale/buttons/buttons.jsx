@@ -85,7 +85,8 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled={this.props.disabled}
+        // disabled={this.props.disabled}
+        disabled
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
