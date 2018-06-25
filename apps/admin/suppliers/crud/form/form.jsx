@@ -121,6 +121,7 @@ class Form extends React.Component {
         <div className='form-group'>
           <label>Código</label>
           <input value={this.props.supplier.code} name='code' onChange={this.handleInputChange.bind(this)} type='text'
+            placeholder='Dejar en blanco para código automático..'
             className='form-control' />
         </div>
 

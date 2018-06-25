@@ -6,10 +6,10 @@ import alertify from 'alertifyjs'
 export function checkSupplierData(supplier, suppliers) {
   let Ok = true
 
-  if (supplier.code == '') {
-    alertify.alert('Error', 'Debe especificar el código del Proveedor')
-    return false
-  }
+  // if (supplier.code == '') {
+  //   alertify.alert('Error', 'Debe especificar el código del Proveedor')
+  //   return false
+  // }
 
   if (supplier.name == '') {
     alertify.alert('Error', 'Debe especificar el nombre del Proveedor')
