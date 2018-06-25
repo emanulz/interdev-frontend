@@ -26,7 +26,7 @@ export default class RequestsGroupPanel extends React.Component {
 
     printPartRequestGroup(consecutive, e){
         this.props.dispatch({type:'SET_SELECTED_GROUP', payload:consecutive})
-        this.props.dispatch({type: 'SET_REQUEST_RECEIPT'})
+        this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'part_request_receipt'})
         this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
 
     }

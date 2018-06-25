@@ -348,7 +348,11 @@ export default function reducer(state=stateConst, action){
                 cashAdvanceList: new_cash_list,
                 laborList: new_labor_list,
                 usedPartList: new_used_list,
-                partsRequestList: new_parts_request_list
+                partsRequestList: new_parts_request_list,
+                cashAdvancesToDelete: [],
+                partsRequestToDelete: [],
+                laborsToDelete: [],
+                usedPartsToDelete: [],
             }
 
         }
