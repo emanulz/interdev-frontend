@@ -6,9 +6,7 @@ import TransactionsList from './transactionsList/main.jsx'
 import PartsRequestPanel  from '../general/requestsPanel/requestsList.jsx'
 import {setItem, getSingleItemDispatch, loadGlobalConfig} from '../../../utils/api'
 import {formatDate} from '../../../utils/formatDate'
-import {openCloseWorkOrder} from './actions'
 import {patchWorkView} from '../general/actions'
-import alertify from 'alertifyjs'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {productSearchDoubleClick} from './partsProvider/actions.js'
@@ -78,39 +76,54 @@ export default class WorkshopView extends React.Component {
     }
 
     saveOrderTransactionsOrPrint(close_order, no_repair, e){
-
-        console.log("Close order --> " + close_order)
-        console.log("No repair --> " +  no_repair)
-
-        let data = {
-            client_id: this.props.client.id,
-            cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
-            cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
-            
-            labor_list: JSON.stringify(this.props.laborList),
-            labor_list_to_delete: JSON.stringify(this.props.laborsToDelete),
-
-            used_list: JSON.stringify(this.props.usedPartList),
-            used_list_to_delete: JSON.stringify(this.props.usedPartsToDelete),
-
-            parts_request_list: JSON.stringify(this.props.partsRequestList),
-            parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
-
-            main_warehouse_id: this.props.sales_warehouse_id,
-            workshop_warehouse_id: this.props.workshop_warehouse_id,
-            black_decker_warehouse: this.props.blackdecker_warehouse_id,
-
-            close_order: close_order,
-            no_repair: no_repair,
+        const wo = this.props.work_order
+        //check if the order is already closed, if so, print
+        if(!wo.is_closed){
+            let data = {
+                client_id: this.props.client.id,
+                cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
+                cash_advances_to_delete: JSON.stringify(this.props.cashAdvancesToDelete),
+                
+                labor_list: JSON.stringify(this.props.laborList),
+                labor_list_to_delete: JSON.stringify(this.props.laborsToDelete),
+    
+                used_list: JSON.stringify(this.props.usedPartList),
+                used_list_to_delete: JSON.stringify(this.props.usedPartsToDelete),
+    
+                parts_request_list: JSON.stringify(this.props.partsRequestList),
+                parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
+    
+                main_warehouse_id: this.props.sales_warehouse_id,
+                workshop_warehouse_id: this.props.workshop_warehouse_id,
+                black_decker_warehouse: this.props.blackdecker_warehouse_id,
+    
+                close_order: close_order,
+                no_repair: no_repair,
+            }
+    
+            const saveKwargs = {
+                work_order_id: this.props.work_order.id,
+                data: data,
+                dispatcher: this.props.dispatch
+            }
+    
+            patchWorkView(saveKwargs)
+            return
+    
         }
 
-        const saveKwargs = {
-            work_order_id: this.props.work_order.id,
-            data: data,
-            dispatcher: this.props.dispatch
+        //print the order closed receipt
+        const is_bd_warranty = wo.warranty_number_bd.length > 0?true:false
+        if(wo.is_warranty && !wo.close_no_repair){
+            if(is_bd_warranty){
+                this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'bd_warranty'})
+                this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+            }else{
+                this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'internal_warranty'})
+                this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
+            }
         }
 
-        patchWorkView(saveKwargs)
 
     }
 
@@ -131,23 +144,6 @@ export default class WorkshopView extends React.Component {
         return result
 
     }
-
-    // closeOrder(){
-    //     this.saveOrderTransactions().then(()=>{
-    //         const kwargs = {
-    //             work_order_id: this.props.work_order.id,
-    //             new_status: true,
-    //             old_order: this.props.work_order_old,
-    //             new_order : this.props.work_order,
-    //             user: this.props.user
-    //         }
-    //         openCloseWorkOrder(kwargs).then(b=>{
-    //             alertify.alert('Completado: Orden de trabajo Guardada y Cerrada!', '')
-    //         })
-    //     })
-
-
-    // }
 
     componentWillUpdate(nextProps){
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
@@ -216,7 +212,7 @@ export default class WorkshopView extends React.Component {
     }
 
     printReceipt(e){
-        this.props.dispatch({type:'SET_RECEPTION_RECEIPT'})
+        this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'reception_receipt'})
         this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
     }
 
@@ -231,7 +227,8 @@ export default class WorkshopView extends React.Component {
             //do the closing process
 
         }else{
-            console.log("Imprimir recibo de cierre")
+            this.props.dispatch({type:'SET_RECEIPT_TO_PRINT', payload: 'no_reapair'})
+            this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
 
         }
     }

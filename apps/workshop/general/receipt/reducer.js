@@ -2,11 +2,19 @@
 const stateConst = {
     isVisible: false,
     isFull: false,
-    isPartRequestReceipt: false,
+    receipt_to_print: '',
 }
 
 export default function reducer(state=stateConst, action) {
     switch (action.type) {
+
+        case 'SET_RECEIPT_TO_PRINT':
+        {
+            return {
+                ...state,
+                receipt_to_print: action.payload
+            }
+        }
         case 'SHOW_RECEIPT_PANEL':
         {
             return {
@@ -25,6 +33,7 @@ export default function reducer(state=stateConst, action) {
 
         case 'SET_REQUEST_RECEIPT':
         {
+            adfasd
             return {
                 ...state,
                 isPartRequestReceipt: true
@@ -33,6 +42,7 @@ export default function reducer(state=stateConst, action) {
 
         case 'SET_RECEPTION_RECEIPT':
         {
+            asfasd
             return {
                 ...state,
                 isPartRequestReceipt: false
