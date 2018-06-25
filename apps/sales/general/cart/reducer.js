@@ -38,6 +38,26 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'CLEAR_CART':
+    {
+      return {
+        ...state,
+        editable: true,
+        created: '',
+        updated: '',
+        isNull: false,
+        cartHasItems: false, // var to check if cart has items
+        cartItems: [], // the list of items in cart
+        cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
+        cartSubtotal: 0, // the subtotal including discounts without taxes
+        cartTaxes: 0, // total amount of taxes in cart in currency
+        cartTotal: 0, // cart total after discount and taxes
+        globalDiscount: 0, // discount %
+        discountTotal: 0, // discount in currency
+        cartItemActive: false
+      }
+    }
+
     case 'ADD_TO_CART':
     {
 

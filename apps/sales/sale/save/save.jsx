@@ -14,7 +14,9 @@ const Mousetrap = require('mousetrap')
     user: store.user.user,
     debt: store.clients.clientSelectedDebt,
     warehouse_id: store.config.salesWarehouse,
-    presaleId: store.presales.presaleId
+    presaleId: store.presales.presaleId,
+    workOrderId: store.workOrders.workOrderId,
+    workOrder: store.workOrders.workOrderActive
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -26,9 +28,11 @@ export default class SaveBtn extends React.Component {
   saveBtn() {
     // const sales = this.props.sales
     // const user = this.props.user
-
+    const cart = this.props.cart
+    cart['work_order_id'] = this.props.workOrderId
+    cart['work_order'] = this.props.workOrder
     const sale = {
-      cart: JSON.stringify(this.props.cart),
+      cart: JSON.stringify(cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       pay: JSON.stringify(this.props.payObject),

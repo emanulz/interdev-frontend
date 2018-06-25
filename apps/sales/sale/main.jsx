@@ -10,6 +10,7 @@ import PayPanel from './pay/payPanel.jsx'
 import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
+import WorkOrders from './workOrders/workOrdersList.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
@@ -26,6 +27,7 @@ export default class Sale extends React.Component {
   componentWillMount() {
 
     this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+    this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
 
     this.props.dispatch({type: 'SALE_PANEL_MOUNTED', payload: ''})
 
@@ -54,6 +56,7 @@ export default class Sale extends React.Component {
       <InvoicePanel />
       <Presales />
       <ClientPanel />
+      <WorkOrders />
 
     </div>
 

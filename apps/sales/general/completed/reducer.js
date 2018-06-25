@@ -1,6 +1,7 @@
 const stateConst = {
   completed: false,
-  isPresaleLoaded: false
+  isPresaleLoaded: false,
+  isWorkOrderLoaded: false
 }
 
 export default function reducer(state = stateConst, action) {
@@ -20,6 +21,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         isPresaleLoaded: true
+      }
+    } // case
+
+    case 'WORK_ORDER_LOADED':
+    {
+      return {
+        ...state,
+        isWorkOrderLoaded: true
       }
     } // case
 

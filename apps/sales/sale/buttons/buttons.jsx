@@ -21,6 +21,9 @@ export default class Buttons extends React.Component {
   showPresalesPanel() {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
   }
+  showWorkOrdersPanel() {
+    this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
+  }
   newSale() {
     // window.location.reload()
     window.location.href = '/sales'
@@ -82,15 +85,15 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled
-        onClick={this.showSalePanel.bind(this)}
+        disabled={this.props.disabled}
+        onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
           'marginTop': '10px'
         }}
         className='btn btn-default buttons-payButton'>
-        Ventas del día
+        Órdenes Taller
         <span>
           <i className='fa fa-list' />
         </span>
@@ -108,6 +111,21 @@ export default class Buttons extends React.Component {
         Cobrar
         <span>
           <i className='fa fa-credit-card' />
+        </span>
+      </button>
+
+      <button
+        disabled
+        onClick={this.showSalePanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Ventas del día
+        <span>
+          <i className='fa fa-list' />
         </span>
       </button>
 

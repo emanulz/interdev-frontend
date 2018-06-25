@@ -94,15 +94,20 @@ export function updateItemLote(itemsInCart, code, lote) {
 }
 
 // When item is selected in code field
-export function productSelected(code, qty, product, itemsInCart, globalDiscount, client, warehouseId) {
+export function productSelected(code, qty, product, itemsInCart, globalDiscount, client, warehouseId, perLineVal) {
 
   // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
   if (!product.fractioned && !Number.isInteger(qty)) {
     alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
     return {type: 'NOT', payload: -1}
   }
+  let perLine = true
+  if (perLineVal == false) {
+    perLine = false
+  }
+  console.log('PERLINEEE', perLineVal)
+  console.log('PERLINEEE', perLine)
 
-  const perLine = true
   // FILTER CART LOOKING FOR SAME ITEMS
   const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
   // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
