@@ -28,8 +28,6 @@ export default class Header extends React.Component {
             <div className='compact-receipt-header'>
                 <div className='compact-receipt-header-info'>
                     <h2>{headerName}</h2>
-                    <h3>{headerName2}</h3>
-                    <h3>{idText}</h3>
                     <h3>{this.props.company.address1 || 'Dirección 1'}</h3>
                     <h3>{this.props.company.address2 || 'Dirección 2'}</h3>
                     <h3>{this.props.company.country || 'País'}</h3>

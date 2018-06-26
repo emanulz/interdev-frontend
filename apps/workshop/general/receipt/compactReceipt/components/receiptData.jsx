@@ -85,7 +85,7 @@ export default class ReceiptData extends React.Component {
         }else{
             const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
                 return <div className={base_class+"-cashadvance"} key={index} >
-                    {`${a.element.description} ₡ ${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
+                    {`${a.element.description} ₡${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
                 </div>
             })
             return cash_advances
