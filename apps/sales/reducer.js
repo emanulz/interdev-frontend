@@ -19,6 +19,7 @@ import workOrders from './sale/workOrders/reducer.js'
 import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 import search from '../../general/search/reducer.js'
 import completed from './general/completed/reducer.js'
+import todaySales from './sale/todaySales/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -40,5 +41,6 @@ export default combineReducers({
   productSearch: search('productSearch'),
   clientSearch: search('clientSearch'),
   completed,
-  workOrders
+  workOrders,
+  todaySales
 })

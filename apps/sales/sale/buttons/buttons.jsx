@@ -24,6 +24,9 @@ export default class Buttons extends React.Component {
   showWorkOrdersPanel() {
     this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
   }
+  showTodaySalesPanel() {
+    this.props.dispatch({type: 'SHOW_TODAY_SALES_PANEL', payload: -1})
+  }
   newSale() {
     // window.location.reload()
     window.location.href = '/sales'
@@ -115,8 +118,8 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled
-        onClick={this.showSalePanel.bind(this)}
+        disabled={this.props.disabled}
+        onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',

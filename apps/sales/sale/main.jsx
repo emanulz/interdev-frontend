@@ -11,6 +11,7 @@ import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
 import WorkOrders from './workOrders/workOrdersList.jsx'
+import TodaySales from './todaySales/todaySales.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
@@ -57,6 +58,7 @@ export default class Sale extends React.Component {
       <Presales />
       <ClientPanel />
       <WorkOrders />
+      <TodaySales />
 
     </div>
 
