@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadWorkOrder, getPendingWorkOrders} from './actions.js'
 import {productSelected, setProduct} from '../../general/product/actions.js'
+import {setClient} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
@@ -57,13 +58,15 @@ export default class WorkOrdersPanel extends React.Component {
       this.props.dispatch({type: 'CLEAR_CART', payload: ''})
       data.work_order.client = JSON.parse(data.work_order.client)
       data.work_order.receiving_employee = JSON.parse(data.work_order.receiving_employee)
-      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.work_order.client})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
       _this.props.dispatch({type: 'CLEAR_PAY_OBJECT', payload: ''})
       _this.props.dispatch({type: 'SET_WORK_ORDER_LOADED', payload: data})
       _this.props.dispatch({type: 'SET_WORK_ORDER_ID', payload: data.work_order.id})
       _this.props.dispatch({type: 'SET_WORK_ORDER_USER', payload: data.work_order.receiving_employee})
       _this.props.dispatch({type: 'PRESALE_LOADED', payload: ''})
+
+      // LOAD CLIENT AND PRODUCTS FROM BACKEND
+      _this.loadClient(data.work_order.client)
       _this.loadCart(data)
     }).catch((err) => {
       if (err.response) {
@@ -74,6 +77,33 @@ export default class WorkOrdersPanel extends React.Component {
         console.log(err)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
+
+  loadClient(client) {
+    const id = client.id
+    const _this = this
+    const setClientPromise = new Promise((resolve, reject) => {
+      const kwargs = {
+        lookUpField: 'id',
+        url: '/api/clients/',
+        lookUpValue: id,
+        lookUpName: 'código',
+        modelName: 'Clientes'
+      }
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      setClient(kwargs, resolve, reject)
+    })
+
+    setClientPromise.then((data) => {
+      console.log(data)
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      const client = data.results[0]
+      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      _this.props.dispatch({type: 'CLIENT_NOT_FOUND', payload: -1})
+      console.log(err)
     })
   }
 
@@ -92,22 +122,43 @@ export default class WorkOrdersPanel extends React.Component {
   }
 
   loadPartRequests(partRequest) {
+    const _this = this
     for (const item in partRequest) {
-      try {
-        const product = JSON.parse(partRequest[item].product)
-        this.props.dispatch(
-          productSelected(
-            product.code,
-            parseFloat(partRequest[item].amount),
-            product,
-            this.props.itemsInCart,
-            this.props.globalDiscount,
-            this.props.client,
-            this.props.warehouseId)
-        )
-      } catch (err) {
+
+      const product = JSON.parse(partRequest[item].product)
+      const setProductPromise = new Promise((resolve, reject) => {
+        const kwargs = {
+          lookUpField: 'code',
+          url: '/api/productslist/',
+          lookUpValue: product.code,
+          lookUpName: 'código',
+          modelName: 'Productos'
+        }
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        setProduct(kwargs, resolve, reject)
+      })
+      setProductPromise.then((data) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        const product = data.results[0]
+        try {
+          _this.props.dispatch(
+            productSelected(
+              product.code,
+              parseFloat(partRequest[item].amount),
+              product,
+              _this.props.itemsInCart,
+              _this.props.globalDiscount,
+              _this.props.client,
+              _this.props.warehouse_id)
+          )
+        } catch (err) {
+          console.log(err)
+        }
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
-      }
+      })
+
     }
   }
 
