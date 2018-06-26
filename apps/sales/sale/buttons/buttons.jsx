@@ -129,7 +129,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
 
-      <button
+      {/* <button
         disabled={this.props.disabled}
         onClick={this.showInoicePanel.bind(this)}
         style={{
@@ -142,7 +142,7 @@ export default class Buttons extends React.Component {
         <span>
           <i className='fa fa-credit-card' />
         </span>
-      </button>
+      </button> */}
 
       {buttons}
 
