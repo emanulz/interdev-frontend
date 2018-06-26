@@ -39,14 +39,17 @@ export function updateTotals(inCart) {
   // total = Math.round(subtotal + taxes)
   total = subtotal + taxes
   // returs a dispatch with a payload of the obtained values
+  const totalRounded = Math.round((total / 5)) * 5
+  console.log(totalRounded)
   return {
     type: 'UPDATE_CART_TOTALS',
     payload: {
       subtotal: subtotal,
       taxes: taxes,
-      total: total,
+      total: totalRounded,
       discountTotal: discountTotal,
-      subTotalNoDiscount: subTotalNoDiscount
+      subTotalNoDiscount: subTotalNoDiscount,
+      totalNotRounded: total
     }
   }
 }

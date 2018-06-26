@@ -6,7 +6,8 @@ const stateConst = {
     card: [{'type': 'CARD', 'amount': 0, 'digits': '', 'auth': ''}],
     cred: [{'type': 'CRED', 'amount': 0}],
     vouc: [],
-    tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}]
+    tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
+    csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
   },
   isCredit: false
 }
@@ -147,6 +148,34 @@ export default function reducer(state = stateConst, action) {
         cardAuth: action.payload.pay.cardAuth
       }
     }
+
+    // ************************************
+    // ***** CLEAR PAY ********************
+    // ************************************
+
+    case 'CLEAR_PAY':
+    {
+      state = stateConst
+      return {
+        ...state, stateConst
+      }
+    } // case
+
+    case 'CLEAR_PAY_OBJECT':
+    {
+      state = stateConst
+      return {
+        ...state,
+        payObject: {
+          cash: [{'type': 'CASH', 'amount': 0}],
+          card: [{'type': 'CARD', 'amount': 0, 'digits': '', 'auth': ''}],
+          cred: [{'type': 'CRED', 'amount': 0}],
+          vouc: [],
+          tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
+          csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
+        }
+      }
+    } // case
 
   } // switch
 

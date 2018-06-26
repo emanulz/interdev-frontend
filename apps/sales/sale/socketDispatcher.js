@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------
 import {getItemDispatch} from '../../../utils/api'
 import alertify from 'alertifyjs'
-import {getPendingPresales} from './presales/actions.js'
+import {getPendingPresales, getPendingWorkOrders} from './presales/actions.js'
 
 // ------------------------------------------------------------------------------------------
 // HANDLE WEB SOCKET EVETS

@@ -85,6 +85,28 @@ export default class PaySideBar extends React.Component {
     return <div />
   }
 
+  getCashAdvancesTag() {
+    const total = parseFloat(this.props.cart.cartTotal)
+    const cashAdvances = this.props.pay.payObject.csha
+    let cashAdvancesAmount = 0
+    for (const item in cashAdvances) {
+      cashAdvancesAmount += cashAdvances[item].amount
+    }
+    if (cashAdvancesAmount > 0) {
+      return <div>
+        <div className='pay-tag left'>ADELANTOS :</div>
+        <div className='pay-tag right'>
+          ₡ -{cashAdvancesAmount.formatMoney(2, ',', '.')}
+        </div>
+        <div className='pay-tag left'>POR PAGAR :</div>
+        <div className='pay-tag right'>
+          ₡ {(total - cashAdvancesAmount).formatMoney(2, ',', '.')}
+        </div>
+      </div>
+    }
+    return <div />
+  }
+
   getCardTag() {
     const card = parseFloat(this.props.pay.payObject.card[0].amount)
     if (card > 0) {
@@ -134,6 +156,7 @@ export default class PaySideBar extends React.Component {
     const creditTag = this.getCreditTag()
     const cardTag = this.getCardTag()
     const transferTag = this.getTransferTag()
+    const cashAdvancesTag = this.getCashAdvancesTag()
 
     const totalInPay = this.calcTotalInPay()
 
@@ -187,6 +210,7 @@ export default class PaySideBar extends React.Component {
         <div className='pay-tag right'>
           ₡ {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
 
+        {cashAdvancesTag}
         {cashTag}
         {cardTag}
         {transferTag}

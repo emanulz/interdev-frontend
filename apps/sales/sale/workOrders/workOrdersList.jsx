@@ -24,10 +24,14 @@ export default class WorkOrdersPanel extends React.Component {
       ordering: '-updated',
       filterField: 'is_closed',
       filter: 'True',
-      filterField2: 'payed',
+      filterField2: 'paid',
       filter2: 'False',
       filterField3: 'is_null',
       filter3: 'False',
+      filterField4: 'is_warranty',
+      filter4: 'False',
+      filterField5: 'closed_no_repair',
+      filter5: 'False',
       successType: 'FETCH_WORK_ORDERS_FULFILLED',
       errorType: 'FETCH_WORK_ORDERS_REJECTED'
     }
@@ -54,11 +58,13 @@ export default class WorkOrdersPanel extends React.Component {
       data.work_order.client = JSON.parse(data.work_order.client)
       data.work_order.receiving_employee = JSON.parse(data.work_order.receiving_employee)
       _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.work_order.client})
-      _this.loadCart(data)
+      _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
+      _this.props.dispatch({type: 'CLEAR_PAY_OBJECT', payload: ''})
       _this.props.dispatch({type: 'SET_WORK_ORDER_LOADED', payload: data})
       _this.props.dispatch({type: 'SET_WORK_ORDER_ID', payload: data.work_order.id})
       _this.props.dispatch({type: 'SET_WORK_ORDER_USER', payload: data.work_order.receiving_employee})
       _this.props.dispatch({type: 'PRESALE_LOADED', payload: ''})
+      _this.loadCart(data)
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
@@ -76,11 +82,12 @@ export default class WorkOrdersPanel extends React.Component {
     const laborList = workOrder.labor_objects
     const usedObjects = workOrder.used_objects
     const partRequest = workOrder.part_requests
-    // const cashAdvances = workOrder.cash_advances
+    const cashAdvances = workOrder.cash_advances
 
     this.loadPartRequests(partRequest)
     this.loadUsedParts(usedObjects)
     this.loadLaborList(laborList)
+    this.loadCashAdvances(cashAdvances)
 
   }
 
@@ -91,7 +98,7 @@ export default class WorkOrdersPanel extends React.Component {
         this.props.dispatch(
           productSelected(
             product.code,
-            partRequest[item].amount,
+            parseFloat(partRequest[item].amount),
             product,
             this.props.itemsInCart,
             this.props.globalDiscount,
@@ -198,9 +205,13 @@ export default class WorkOrdersPanel extends React.Component {
 
   }
 
-  // loadCashAdvances(cashAdvances) {
-
-  // }
+  loadCashAdvances(cashAdvances) {
+    const _this = this
+    for (const item in cashAdvances) {
+      const advance = {'type': 'CSHA', 'amount': parseFloat(cashAdvances[item].amount), 'cashAdvanceId': cashAdvances[item].id}
+      _this.props.dispatch({type: 'ADD_CASH_ADVANCE', payload: advance})
+    }
+  }
 
   render() {
 

@@ -157,19 +157,19 @@ function getPayNoCredit(payObject, model, amount) {
   switch (model) {
     case 'CASH':
     {
-      return getPayCard(payObject) + getPayTransfer(payObject) + parseFloat(amount)
+      return getPayCard(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
     }
     case 'CARD':
     {
-      return getPayCash(payObject) + getPayTransfer(payObject) + parseFloat(amount)
+      return getPayCash(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
     }
     case 'TRAN':
     {
-      return getPayCash(payObject) + getPayCard(payObject) + parseFloat(amount)
+      return getPayCash(payObject) + getPayCard(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
     }
     case 'CRED':
     {
-      return getPayCash(payObject) + getPayTransfer(payObject) + getPayCard(payObject)
+      return getPayCash(payObject) + getPayTransfer(payObject) + getPayCard(payObject) + getPayCashAdvances(payObject)
     }
   }
 }
@@ -194,6 +194,14 @@ function getPayTransfer(payObject) {
   let total = 0
   for (const item in payObject.tran) {
     total += payObject.tran[item].amount
+  }
+  return total
+}
+
+function getPayCashAdvances(payObject) {
+  let total = 0
+  for (const item in payObject.csha) {
+    total += payObject.csha[item].amount
   }
   return total
 }

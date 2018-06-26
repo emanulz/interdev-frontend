@@ -20,6 +20,8 @@ export default class ReceiptData extends React.Component {
 
         const client = order.client ? `${order.client.code} - ${order.client.name} ${order.client.last_name}`
         :'00-Cliente Contado'
+        const phoneNumber = order.client.phone_number || order.client.cellphone_number  ? `${order.client.phone_number} ${order.client.cellphone_number}`
+        :'No registrado'
 
         const id = order.consecutive ? order.consecutive : '0001'
         const base_class = 'compact-receipt-data-field'
@@ -38,6 +40,10 @@ export default class ReceiptData extends React.Component {
             <div className={base_class} >
                 <span className={base_class + "-label"}>Cliente:</span>
                 <span className={base_class + "-value"}>{client}</span>
+            </div>
+            <div className={base_class}>
+                <span className={base_class + "-label"}>Teléfono:</span>
+                <span className={base_class + "-value"}>{phoneNumber}</span>
             </div>
             {order_elements}
             <div className='compact-receipt-separator'>

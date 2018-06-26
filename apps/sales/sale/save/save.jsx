@@ -14,6 +14,7 @@ const Mousetrap = require('mousetrap')
     user: store.user.user,
     debt: store.clients.clientSelectedDebt,
     warehouse_id: store.config.salesWarehouse,
+    warehouse2_id: store.config.workshopWarehouse,
     presaleId: store.presales.presaleId,
     workOrderId: store.workOrders.workOrderId,
     workOrder: store.workOrders.workOrderActive
@@ -28,16 +29,20 @@ export default class SaveBtn extends React.Component {
   saveBtn() {
     // const sales = this.props.sales
     // const user = this.props.user
+    // CHECK IF IS WORKSHOP OR NOT
+    const warehouse = this.props.workOrderId.length ? this.props.warehouse2_id : this.props.warehouse_id
+    // ADD WORKSHOP ITEMS TO CART
     const cart = this.props.cart
     cart['work_order_id'] = this.props.workOrderId
-    cart['work_order'] = this.props.workOrder
+    cart['work_order'] = JSON.stringify(this.props.workOrder)
+    // SALE
     const sale = {
       cart: JSON.stringify(cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       pay: JSON.stringify(this.props.payObject),
       client_id: this.props.client.id,
-      warehouse_id: this.props.warehouse_id,
+      warehouse_id: warehouse,
       presale_id: this.props.presaleId
     }
 

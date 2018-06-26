@@ -85,8 +85,7 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        // disabled={this.props.disabled}
-        disabled
+        disabled={this.props.disabled}
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
@@ -130,7 +129,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
 
-      {/* <button
+      <button
         disabled={this.props.disabled}
         onClick={this.showInoicePanel.bind(this)}
         style={{
@@ -143,7 +142,7 @@ export default class Buttons extends React.Component {
         <span>
           <i className='fa fa-credit-card' />
         </span>
-      </button> */}
+      </button>
 
       {buttons}
 

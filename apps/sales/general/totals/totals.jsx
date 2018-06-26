@@ -10,6 +10,7 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     total: store.cart.cartTotal,
+    totalNotRounded: store.cart.totalNotRounded,
     client: store.clients.clientSelected,
     taxes: store.cart.cartTaxes,
     discountTotal: store.cart.discountTotal,
