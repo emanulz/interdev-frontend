@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom'
         cashadvance: store.workorder.cash_advance,
         request_saved: store.workorder.request_saved,
         is_edit: store.workorder.is_edit,
+        is_stock_warranty: store.workorder.is_stock_warranty,
 
     }
 })
@@ -30,6 +31,11 @@ class CreateWorkOrderButtons extends React.Component {
         let work_order = JSON.parse(JSON.stringify(cleanWorkOrder(this.props.work_order)))
         work_order.client_id = this.props.client.id
         work_order.cash_advance = this.props.cashadvance
+        //if this is an stock warranty, set the warranty_invoice_number to 'STOCK'
+        if(this.props.is_stock_warranty){
+            work_order.warranty_invoice_number='STOCK'    
+        }
+        
 
         //check the work_order object before saving it
         const work_order_ok = checkWorkOrder(work_order)
@@ -60,6 +66,11 @@ class CreateWorkOrderButtons extends React.Component {
         let work_order = JSON.parse(JSON.stringify(cleanWorkOrder(this.props.work_order)))
         work_order.client_id = this.props.client.id
         work_order.cash_advance = this.props.cashadvance
+
+        //if this is an stock warranty, set the warranty_invoice_number to 'STOCK'
+        if(this.props.is_stock_warranty){
+            work_order.warranty_invoice_number='STOCK'    
+        }
  
         //check the work_order object before saving it
         const work_order_ok = checkWorkOrder(work_order)

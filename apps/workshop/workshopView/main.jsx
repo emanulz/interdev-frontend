@@ -39,6 +39,7 @@ let inspect = require('util-inspect')
         workshop_warehouse_id: store.workshopview.workshop_warehouse,
         sales_warehouse_id: store.workshopview.sales_warehouse,
         blackdecker_warehouse_id: store.workshopview.blackdecker_warehouse,
+        is_stock_warranty: store.workshopview.is_stock_warranty,
     }
 })
 
@@ -427,6 +428,8 @@ export default class WorkshopView extends React.Component {
         let bd_data = ''
         const wo = this.props.work_order
 
+        const warranty_invoice_date = this.props.is_stock_warranty?'STOCK':formatDate(wo.warranty_invoice_date)
+
         if(wo.warranty_number_bd !== '' && wo.warranty_number_bd !== undefined){
             bd_data = <div className="workshop-view-right-warranty">
                 <h1 className="workshop-view-right-warranty-section" >Información de Garantía </h1>
@@ -451,7 +454,7 @@ export default class WorkshopView extends React.Component {
 
                 <div className="workshop-view-right-warranty-prop">
                     <h3 className="workshop-view-right-warranty-label">Fecha venta:</h3>
-                    <span className="workshop-view-right-warranty-data">{formatDate(wo.warranty_invoice_date)} </span>
+                    <span className="workshop-view-right-warranty-data">{warranty_invoice_date} </span>
                 </div>
 
             </div>

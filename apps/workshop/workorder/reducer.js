@@ -191,13 +191,22 @@ const stateConst = {
     cash_advance: 0,
     request_show_receipt: false,
     request_saved: false,
-    is_edit: false
+    is_edit: false,
+    is_stock_warranty: false,
 
 }
 
 export default function reducer(state = stateConst, action){
 
     switch (action.type){
+
+        case 'SET_STOCK_CHECK':
+        {
+            return{
+                ...state,
+                is_stock_warranty: action.payload
+            }
+        }
         case 'DISABLE_RECEIPT_REQUEST':
         {
             return{
@@ -295,9 +304,11 @@ export default function reducer(state = stateConst, action){
         }
         case 'SET_WORK_ORDER':
         {
+            const is_stock = action.payload.warranty_invoice_number==="STOCK"?true:false
             return {
                 ...state,
-                work_order: action.payload
+                work_order: action.payload,
+                is_stock_warranty: is_stock
             }
         }
         case 'CLEAR_WORK_ORDER':
@@ -316,7 +327,8 @@ export default function reducer(state = stateConst, action){
                 cash_advance: 0,
                 request_show_receipt: false,
                 request_saved: false,
-                is_edit: false               
+                is_edit: false,
+                is_stock_warranty:false,            
                 
             }
         }
@@ -327,12 +339,13 @@ export default function reducer(state = stateConst, action){
             saved_wo.observations_list = JSON.parse(action.payload.work_order.observations_list)
             saved_wo.receiving_employee = JSON.parse(action.payload.work_order.receiving_employee)
             saved_wo.client = JSON.parse(action.payload.work_order.client)  
-            
+            const is_stock = saved_wo.warranty_invoice_number==="STOCK"?true:false
             return {
                 ...state,
                 work_order: saved_wo,
                 request_show_receipt: true,
-                request_saved: true
+                request_saved: true,
+                is_stock_warranty: is_stock,
             }
         }
 
@@ -344,10 +357,12 @@ export default function reducer(state = stateConst, action){
             saved_wo.receiving_employee = JSON.parse(action.payload.receiving_employee)
             saved_wo.client = JSON.parse(action.payload.client)  
             
+            const is_stock = saved_wo.warranty_invoice_number==="STOCK"?true:false
             return {
                 ...state,
                 work_order: saved_wo,
-                is_edit: true
+                is_edit: true,
+                is_stock_warranty: is_stock,
 
             }  
         }

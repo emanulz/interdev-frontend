@@ -26,6 +26,7 @@ import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx
         request_show_receipt: store.workorder.request_show_receipt,
         request_saved: store.workorder.request_saved,
         is_edit: store.workorder.is_edit,
+        is_stock_warranty: store.workorder.is_stock_warranty,
         
     }
 })
@@ -95,6 +96,13 @@ export default class Form extends React.Component {
         
         
 
+    }
+
+    handleStockCheck(event){
+        const target = event.target
+        let value
+        value = target.checked
+        this.props.dispatch({type:'SET_STOCK_CHECK', payload: value})
     }
 
     handleInputChange(event){
@@ -438,25 +446,14 @@ export default class Form extends React.Component {
         let  content=''
 
         let repaired_by_element = ''
-        // if(this.props.work_order.is_closed){
-        //     repaired_by_element = <div>
-        //     <label>Fecha de Entrega Estimada</label>
-        //     <div>{this.props.work_order.warranty_repaired_by}</div>
-        // </div>
-        // }
 
         let repair_body = ''
         if(this.props.work_order.is_warranty){
             const warranty = this.props.work_order.warranty_number_bd
-            if(warranty !== '' && warranty !== undefined){
-                    repair_body = <div>
-                    <label>Nombre Distribuidor</label>
-                    <input name="warranty_supplier_name" type='text'
-                        value={this.props.work_order.warranty_supplier_name}
-                        disabled={this.props.request_saved}
-                        className="form-control" placeholder="Vendedor Producto"
-                        onChange={this.handleInputChange.bind(this)}/>
 
+            let warranty_invoice_stock_dependant = ''
+            if(!this.props.is_stock_warranty){
+                warranty_invoice_stock_dependant = <div> 
                     <label>Fecha Factura</label>
                     <input value={this.props.work_order.warranty_invoice_date}
                         name='warranty_invoice_date' 
@@ -470,6 +467,26 @@ export default class Form extends React.Component {
                         disabled={this.props.request_saved}
                         className="form-control" placeholder="Número factura.."
                         onChange={this.handleInputChange.bind(this)}/>
+                </div>
+            }
+            if(warranty !== '' && warranty !== undefined){
+                    repair_body = <div>
+                    <label>Nombre Distribuidor</label>
+                    <input name="warranty_supplier_name" type='text'
+                        value={this.props.work_order.warranty_supplier_name}
+                        disabled={this.props.request_saved}
+                        className="form-control" placeholder="Vendedor Producto"
+                        onChange={this.handleInputChange.bind(this)}/>
+
+                    <div className="col-xs-6 first">
+                        <label>Es garantía STOCK?</label>
+                        <input checked={this.props.is_stock_warranty} name='is_warranty_stock'
+                            disabled={this.props.request_saved}
+                            onChange={this.handleStockCheck.bind(this)}
+                            type='checkbox' className='form-control' />
+                    </div>
+                    
+                    {warranty_invoice_stock_dependant}
 
                 </div>
 

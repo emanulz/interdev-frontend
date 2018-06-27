@@ -43,6 +43,7 @@ const stateConst = {
     workshop_warehouse: '',
     sales_warehouse:'',
     blackdecker_warehouse: '',
+    is_stock_warranty: false,
 }
 
 export default function reducer(state=stateConst, action){
@@ -117,9 +118,13 @@ export default function reducer(state=stateConst, action){
             saved_wo.receiving_employee = created_by
             saved_wo.client = loaded_client
 
+            const is_stock = saved_wo.warranty_invoice_number==="STOCK"?true:false
+
             return {
                 ...state, 
-                work_order: saved_wo
+                work_order: saved_wo,
+                is_stock_warranty: is_stock,
+
             }
         }
         case 'SET_WORK_ORDER_VIEW':
@@ -135,9 +140,11 @@ export default function reducer(state=stateConst, action){
             saved_wo.observations_list = observations
             saved_wo.receiving_employee = created_by
             saved_wo.client = loaded_client
+            const is_stock = saved_wo.warranty_invoice_number==="STOCK"?true:false
             return {
                 ...state, 
-                work_order: saved_wo
+                work_order: saved_wo,
+                is_stock_warranty: is_stock,
             }
 
         }

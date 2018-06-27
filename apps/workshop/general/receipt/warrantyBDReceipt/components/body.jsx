@@ -174,6 +174,10 @@ export default class WarrantyBodyBD extends React.Component{
     buildOrderTypeData(order){
         const base_class='compact-warrantyBD-data-field'
         const type ='Tipo Reparación:'
+
+        const is_stock_warranty = order.warranty_invoice_number
+        const invoice_date = is_stock_warranty?'STOCK':order.warranty_invoice_date
+
         if(order.is_warranty){
             if(order.warranty_number_bd !== undefined && order.warranty_number_bd !== ''){
                 return <div>
@@ -191,7 +195,7 @@ export default class WarrantyBodyBD extends React.Component{
                     </div>
                     <div className={base_class} >
                         <span className={base_class + "-label"}>{'Fecha Factura'}</span>
-                        <span className={base_class + "-value"}>{order.warranty_invoice_date}</span>
+                        <span className={base_class + "-value"}>{invoice_date}</span>
                     </div>
                     <div className={base_class} >
                         <span className={base_class + "-label"}>{'# Factura Venta'}</span>
