@@ -18,13 +18,14 @@ import {makeOrdersTableFriendly}  from '../../actions.js'
         searchResults: store.workorderSearch.searchResults,    
     }
 })
-export default class List_Warranty extends React.Component {
+
+export default class List_NR extends React.Component {
 
     componentWillMount(){
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch({type: 'FETCH_WORKORDERS_REJECTED'})
         const workordersKwargs = {
-            url: `/api/listwarrantybdworkorders/?limit=${this.props.pageSize}`,
+            url: `/api/listnrworkorders/?limit=${this.props.pageSize}`,
             successType: 'FETCH_WORKORDERS_FULFILLED',
             errorType: 'FETCH_WORKORDERS_REJECTED'
         }
@@ -87,11 +88,11 @@ export default class List_Warranty extends React.Component {
         const content = this.props.fetching ? fetching : list
 
         return <div className='list list-container'>
-            <h1>{'Listado de Garantías Black&Decker'}</h1>
+            <h1>Listado de Garantías Sin Reparación</h1>
             <SearchAdmin model='workorder' namespace='workorderSearch'/>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/listwarrantybdworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
-                <Pagination url='/api/listwarrantybdworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <ResultsPerPage url='api/listnrworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <Pagination url='api/listnrworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
             </div>
 
             {content}

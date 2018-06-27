@@ -6,7 +6,7 @@ import Pagination from '../../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
 import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
 import {getPaginationItemDispatch} from '../../../../../utils/api.js'
-
+import {makeOrdersTableFriendly}  from '../../actions.js'
 
 @connect(store=>{
     return {
