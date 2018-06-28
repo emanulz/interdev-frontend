@@ -52,3 +52,16 @@ export function getPendingPresales(kwargs) {
   }
 
 }
+
+export function setPresaleNull(id, resolve, reject) {
+  const url = `/api/presalespatch/${id}/set_null/`
+  axios({
+    method: 'post',
+    url: url,
+    data: {}
+  }).then((response) => {
+    resolve(response.data)
+  }).catch((err) => {
+    reject(err)
+  })
+}

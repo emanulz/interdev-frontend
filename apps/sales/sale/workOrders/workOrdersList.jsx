@@ -265,7 +265,7 @@ export default class WorkOrdersPanel extends React.Component {
     }
   }
 
-  reopenWorkOrder(id, consecutive) {
+  reopenSingelWorkOrder(id, consecutive) {
     alertify.confirm(`RE-ABRIR ORDEN #${consecutive}`, `¿Desea reabrir la orden de taller #${consecutive}? Esta acción no se puede deshacer.`, function() {
       const reopenWOPromise = new Promise((resolve, reject) => {
         reopenWorkOrder(id, resolve, reject)
@@ -305,7 +305,7 @@ export default class WorkOrdersPanel extends React.Component {
         <td>{`${formatDateTimeAmPm(workOrder.created)}`}</td>
         <td>{`${workOrder.client.name} ${workOrder.client.last_name}`}</td>
         <td>{presellerName}</td>
-        <td className='loadRow'><i onClick={this.reopenWorkOrder.bind(this, workOrder.id, workOrder.consecutive)} className='fa fa fa-share' /></td>
+        <td className='loadRow'><i onClick={this.reopenSingelWorkOrder.bind(this, workOrder.id, workOrder.consecutive)} className='fa fa fa-share' /></td>
         {/* <td>₡ {parseFloat(workOrder.cart.cartTotal).formatMoney(2, ',', '.')}</td> */}
       </tr>
     })

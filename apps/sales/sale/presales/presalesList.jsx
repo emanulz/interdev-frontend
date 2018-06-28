@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadPresale, getPendingPresales} from './actions.js'
+import {loadPresale, getPendingPresales, setPresaleNull} from './actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
@@ -61,6 +61,25 @@ export default class PresalesPanel extends React.Component {
     })
   }
 
+  setNullSinglePresale(id, consecutive) {
+    alertify.confirm(`ANULAR PREVENTA #${consecutive}`, `¿Desea Anular la Preventa #${consecutive}? Esta acción no se puede deshacer.`, function() {
+      const reopenWOPromise = new Promise((resolve, reject) => {
+        setPresaleNull(id, resolve, reject)
+      })
+      reopenWOPromise.then((data) => {
+        alertify.alert('COMPLETADO', `Preventa Anulada correctamente`, function() { location.reload() })
+      }).catch(err => {
+        console.log(err)
+        alertify.alert('ERROR', `Hubo un error al intentar anuar la preventa ERROR: ${err}`)
+      })
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Anular',
+      cancel: 'Cancelar'
+    })
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
@@ -83,6 +102,7 @@ export default class PresalesPanel extends React.Component {
         <td>{`${presale.client.name} ${presale.client.last_name}`}</td>
         <td>{presellerName}</td>
         <td>₡ {parseFloat(presale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
+        <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, presale.id, presale.consecutive)} className='fa fa fa-trash' /></td>
       </tr>
     })
 
@@ -102,6 +122,7 @@ export default class PresalesPanel extends React.Component {
                 <td>Cliente</td>
                 <td>Vendedor</td>
                 <td>Monto</td>
+                <td>Anular</td>
               </tr>
             </thead>
             <tbody>
