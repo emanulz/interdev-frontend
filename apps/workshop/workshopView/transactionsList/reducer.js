@@ -322,8 +322,12 @@ export default function reducer(state=stateConst, action){
 
             const parts_request_objects = action.payload.part_requests.map(item=>{
                 const req = JSON.parse(JSON.stringify(item))
-                req.employee = JSON.parse(req.employee)
                 req.product = JSON.parse(req.product)
+                try {
+                    req.employee = JSON.parse(req.employee)
+                } catch(err){
+                    console.log(err)
+                }
                 return req
             })
 
