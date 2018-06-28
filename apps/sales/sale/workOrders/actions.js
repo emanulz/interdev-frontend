@@ -56,3 +56,16 @@ export function getPendingWorkOrders(kwargs) {
   }
 
 }
+
+export function reopenWorkOrder(id, resolve, reject) {
+  const url = `/api/workorders/${id}/reopen/`
+  axios({
+    method: 'post',
+    url: url,
+    data: {}
+  }).then((response) => {
+    resolve(response.data)
+  }).catch((err) => {
+    reject(err)
+  })
+}

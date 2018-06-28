@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadWorkOrder, getPendingWorkOrders} from './actions.js'
+import {loadWorkOrder, getPendingWorkOrders, reopenWorkOrder} from './actions.js'
 import {productSelected, setProduct} from '../../general/product/actions.js'
 import {setClient} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
@@ -64,6 +64,7 @@ export default class WorkOrdersPanel extends React.Component {
       _this.props.dispatch({type: 'SET_WORK_ORDER_ID', payload: data.work_order.id})
       _this.props.dispatch({type: 'SET_WORK_ORDER_USER', payload: data.work_order.receiving_employee})
       _this.props.dispatch({type: 'PRESALE_LOADED', payload: ''})
+      _this.props.dispatch({type: 'WORK_ORDER_LOADED', payload: ''})
 
       // LOAD CLIENT AND PRODUCTS FROM BACKEND
       _this.loadClient(data.work_order.client)
@@ -264,6 +265,25 @@ export default class WorkOrdersPanel extends React.Component {
     }
   }
 
+  reopenWorkOrder(id, consecutive) {
+    alertify.confirm(`RE-ABRIR ORDEN #${consecutive}`, `¿Desea reabrir la orden de taller #${consecutive}? Esta acción no se puede deshacer.`, function() {
+      const reopenWOPromise = new Promise((resolve, reject) => {
+        reopenWorkOrder(id, resolve, reject)
+      })
+      reopenWOPromise.then((data) => {
+        alertify.alert('COMPLETADO', `Orden de trabajo re-abierta correctamente`, function() { location.reload() })
+      }).catch(err => {
+        console.log(err)
+        alertify.alert('ERROR', `Hubo un error al intentar re-abrir la order ERROR: ${err}`)
+      })
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Re-abrir',
+      cancel: 'No'
+    })
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
@@ -285,6 +305,7 @@ export default class WorkOrdersPanel extends React.Component {
         <td>{`${formatDateTimeAmPm(workOrder.created)}`}</td>
         <td>{`${workOrder.client.name} ${workOrder.client.last_name}`}</td>
         <td>{presellerName}</td>
+        <td className='loadRow'><i onClick={this.reopenWorkOrder.bind(this, workOrder.id, workOrder.consecutive)} className='fa fa fa-share' /></td>
         {/* <td>₡ {parseFloat(workOrder.cart.cartTotal).formatMoney(2, ',', '.')}</td> */}
       </tr>
     })
@@ -304,6 +325,7 @@ export default class WorkOrdersPanel extends React.Component {
                 <td>Fecha</td>
                 <td>Cliente</td>
                 <td>Vendedor</td>
+                <td>Re-Abrir</td>
                 {/* <td>Monto</td> */}
               </tr>
             </thead>
