@@ -11,7 +11,8 @@ import alertify from 'alertifyjs'
     products: store.products.products,
     productOld: store.products.productActiveOld,
     user: store.user.user,
-    permissions: store.products.permissions
+    permissions: store.products.permissions,
+    file: store.products.file,
   }
 })
 
@@ -46,9 +47,13 @@ class UpdateButtons extends React.Component {
       }
 
       const _this = this
-
+      console.log("HERE-->")
       const updatePromise = new Promise((resolve, reject) => {
         _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        const formData = new FormData()
+        formData.append('file', this.props.file)
+        formData.append('prod', JSON.stringify(kwargs.item))
+        kwargs.item = formData
         _this.props.dispatch(updateItem(kwargs))
         resolve()
       })
