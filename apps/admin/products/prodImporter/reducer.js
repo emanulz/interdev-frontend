@@ -7,10 +7,19 @@ const stateConst = {
     workshop_warehouse: '',
     sales_warehouse:'',
     allow_negatives: false,
+    file: '',
 }
 
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
+
+        case 'SET_IMAGE_FILE':
+        {
+            return {
+                ...state,
+                file: action.payload
+            }
+        }
 
         case 'SET_WORKSHOP_WAREHOUSE':
         {
