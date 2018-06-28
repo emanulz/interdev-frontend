@@ -5,7 +5,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {disabled: store.completed.completed}
+  return {
+    disabled: store.completed.completed,
+    isWorkOrderLoaded: store.completed.isWorkOrderLoaded,
+    isPresaleLoaded: store.completed.isPresaleLoaded
+  }
 })
 export default class Buttons extends React.Component {
 
@@ -73,7 +77,7 @@ export default class Buttons extends React.Component {
         <b>Pago:<br /></b>
       </span> */}
       <button
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
         onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -88,7 +92,7 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.isPresaleLoaded}
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
@@ -118,7 +122,7 @@ export default class Buttons extends React.Component {
       </button>
 
       <button
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
         onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',
