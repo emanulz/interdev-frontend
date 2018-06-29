@@ -16,23 +16,26 @@ export default class WorkshopTotal extends React.Component {
 
     //calculate cash advances
     const total_advances = this.props.transactions.cashAdvanceList.reduce(
-        (total, current)=> {return parseFloat(total + current.subTotal)},
+        (total, current)=> {return total + parseFloat(current.subTotal)},
         0.0)
 
     //calculate the total in labor
     const total_labor = this.props.transactions.laborList.reduce(
-        (total, current) => {return parseFloat(total + current.subTotal)},
+        (total, current) => {return total + parseFloat(current.subTotal)},
         0.0)
+
     //calculate the used parts total
     const total_used_parts = this.props.transactions.usedPartList.reduce(
-        (total, current) => {return parseFloat(total + current.subTotal)},
+        (total, current) => {return total + parseFloat(current.subTotal)},
         0.0)
+
     //calculate the parts total
     const total_parts_request = this.props.transactions.partsRequestList.reduce(
-        (total, current)=>{return parseFloat(total + current.subTotal)},
+        (total, current)=>{return total + parseFloat(current.subTotal)},
         0.0)
+
     const subtotal = total_labor + total_used_parts + total_parts_request
-        
+
         const item = this.props.is_warranty?'':
         <div className="total-container">
             <div className="total-container-subtotal">
