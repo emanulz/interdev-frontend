@@ -1,0 +1,47 @@
+.total
+    width: 100%
+    
+    &-container
+        margin-top: 6px
+        border-radius: 0.5em
+        background-color: $PRIMARY-COLOR
+        color: white
+        border: 1px solid #cacaca
+        display: flex
+        flex-direction: row
+        height: 60px
+        justify-content: space-around
+        align-items: center
+        font-size: 16px
+        text-transform: uppercase
+        &-subtotal
+            align-content: space-between
+            flex-grow: 1
+            display: flex
+            flex-direction: row
+            &-label
+                flex-grow: 1
+                text-align: right
+            &-value
+                flex-grow: 1
+                font-style: bold
+        &-advances
+            flex-grow: 1
+            display: flex
+            flex-direction: row
+            &-label
+                flex-grow: 1
+                text-align: right
+            &-value
+                flex-grow: 1
+                font-style: bold
+        &-balance
+            flex-grow: 1
+            display: flex
+            flex-direction: row
+            &-label
+                flex-grow: 1
+                text-align: right
+            &-value
+                flex-grow: 1
+                font-style: bold

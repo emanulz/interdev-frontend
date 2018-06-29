@@ -10,6 +10,7 @@ import {patchWorkView} from '../general/actions'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {productSearchDoubleClick} from './partsProvider/actions.js'
+import WorkshopTotal from './total/main.jsx'
 
 
 
@@ -187,6 +188,9 @@ export default class WorkshopView extends React.Component {
                     </div>
                     <div className="workshop-view-left-transactions">
                         <TransactionsList/>
+                    </div>
+                    <div className="workshop-view-left-total">
+                        <WorkshopTotal/>
                     </div>
 
                 </div>
