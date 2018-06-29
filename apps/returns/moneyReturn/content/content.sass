@@ -14,17 +14,17 @@
     -ms-filter: blur(4px)
     filter: blur(4px)
     background-color: #ccc
-    transition: all 0.3s ease-in-out
   &-sale
     width: 50%
     display: flex
     flex-flow: column
-    height: 100%
+    justify-content: space-between
+    padding-right: 5px
+    height: calc(100% - 70px)
     &-header
       width: 100%
-      background-color: $SECONDARY-COLOR
+      background-color: #495c7c
       color: white
-      position: relative
       text-align: center
       display: flex
       flex-flow: column
@@ -39,17 +39,29 @@
         &:hover
           font-size: 24px
     &-content
-      flex-grow: 1
       overflow-y: auto
-      border-right: 1px solid #cacaca 
+      flex-grow: 1
+    &-footer
+      height: 60px
+      width: 100%
+      background-color: #495c7c
+      text-align: center
+      font-size: 30px
+      color: white
+      display: flex
+      flex-flow: column
+      justify-content: center
   &-return
     width: 50%
     display: flex
     flex-flow: column
     height: 100%
+    padding-left: 5px
+    justify-content: space-between
+    height: calc(100% - 70px)
     &-header
       width: 100%
-      background-color: $SECONDARY-COLOR-ACCENT
+      background-color: #495c7c
       color: white
       position: relative
       text-align: center
@@ -68,4 +80,13 @@
     &-content
       flex-grow: 1
       overflow-y: auto
-      border-left: 1px solid #cacaca
+    &-footer
+      height: 60px
+      width: 100%
+      background-color: #495c7c
+      text-align: center
+      font-size: 30px
+      color: white
+      display: flex
+      flex-flow: column
+      justify-content: center

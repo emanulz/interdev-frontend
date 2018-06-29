@@ -4,6 +4,7 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
+import Sale from './sale/sale.jsx'
 
 @connect((store) => {
   return {
@@ -26,7 +27,10 @@ export default class Main extends React.Component {
           VENTA REGISTRADA
         </div>
         <div className='moneyReturn-content-sale-content'>
-          Content
+          <Sale />
+        </div>
+        <div className='moneyReturn-content-sale-footer'>
+          C 1300.00
         </div>
       </div>
       <div className='moneyReturn-content-return' >
@@ -36,6 +40,9 @@ export default class Main extends React.Component {
         </div>
         <div className='moneyReturn-content-return-content'>
           Content
+        </div>
+        <div className='moneyReturn-content-return-footer'>
+          C 1300.00
         </div>
       </div>
     </div>

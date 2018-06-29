@@ -8,7 +8,7 @@ import MoneyReturn from '../moneyReturn/main.jsx'
 
 const routes = <div className='heigh100'>
 
-  <Route exact path='/returns/moneyreturn' component={MoneyReturn} />
+  <Route path='/returns/moneyreturn/:sale' component={MoneyReturn} />
 
 </div>
 

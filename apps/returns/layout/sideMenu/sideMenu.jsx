@@ -50,9 +50,9 @@ export default class SideMenu extends React.Component {
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
           <li>
-            <Link to='/sales'>
+            <Link to='/returns'>
               <span className='fa fa-money' />
-              Caja</Link>
+              Inicio</Link>
           </li>
           {/* <li>
             <Link to='/sales/sale'>
@@ -60,9 +60,9 @@ export default class SideMenu extends React.Component {
               Nueva Venta</Link>
           </li> */}
           <li>
-            <Link to='/sales/proforma'>
-              <span className='fa fa-file-text' />
-              Cotización</Link>
+            <Link to='/returns/moneyreturn'>
+              <span className='fa fa-refresh' />
+              Devolución</Link>
           </li>
           {/* <li>
             <Link to='/sales/presale'>
