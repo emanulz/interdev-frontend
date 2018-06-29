@@ -234,9 +234,13 @@ export default class TransactionItems extends React.Component {
                         className={itemRowClass+"-description-input"+ " form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
                     </div>
+                    unit_price_element = <div className={itemRowClass + "-unitPrice"} >
+                        <h5>Precio Unitario</h5>
+                         {"N/A"}
+                    </div>
                     total_element =<div className={itemRowClass + "-total"}>
                         <h5>Total</h5>
-                        ₡ {"N/A"}
+                         {"N/A"}
                     </div>
                     break
                 }
