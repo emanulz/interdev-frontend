@@ -33,6 +33,9 @@ let inspect = require('util-inspect')
         usedPartList: store.transactionsList.usedPartList,
         usedPartsToDelete: store.transactionsList.usedPartsToDelete,
 
+        informativeList: store.transactionsList.informativeList,
+        informativeListToDelete: store.transactionsList.informativeListToDelete,
+
         user: store.user,
         client: store.workshopview.work_order.client,
         is_closed: store.workshopview.work_order.is_closed,
@@ -94,6 +97,9 @@ export default class WorkshopView extends React.Component {
     
                 parts_request_list: JSON.stringify(this.props.partsRequestList),
                 parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
+
+                informative_list: JSON.stringify(this.props.informativeList),
+                informative_list_to_delete: JSON.stringify(this.props.informativeListToDelete),
     
                 main_warehouse_id: this.props.sales_warehouse_id,
                 workshop_warehouse_id: this.props.workshop_warehouse_id,

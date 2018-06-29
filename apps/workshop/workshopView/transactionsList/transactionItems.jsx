@@ -2,7 +2,7 @@ let inspect = require('util-inspect')
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateQty} from '../partsProvider/actions'
-import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
+import {updateLaborCashAdvanceUsedPartInfoRow} from '../partsProvider/actions'
 
 @connect((store)=>{
     return {
@@ -13,6 +13,8 @@ import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
         laborList: store.transactionsList.laborList,
 
         usedPartList: store.transactionsList.usedPartList,
+
+        informativeList: store.transactionsList.informativeList,
 
         user: store.user,
 
@@ -41,10 +43,12 @@ export default class TransactionItems extends React.Component {
             list = this.props.cashAdvanceList
         }else if(item.type == 'USED_PART'){
             list = this.props.usedPartList
+        }else if(item.type=='INFORMATIVE_MOVEMENT'){
+            list = this.props.informativeList
         }
                
         this.props.dispatch(
-            updateLaborCashAdvanceUsedPartRow(item, e, list)
+            updateLaborCashAdvanceUsedPartInfoRow(item, e, list)
         )
     }
 
@@ -85,6 +89,12 @@ export default class TransactionItems extends React.Component {
                 this.props.dispatch({type:'PART_REQUEST_DELETED', payload:item.uuid})
                 break
             }
+            case 'INFORMATIVE_MOVEMENT':
+            {
+                let index = this.props.informativeList.findIndex(a=>a.uuid === item_uuid)
+                const item = this.props.informativeList[index]
+                this.props.dispatch({type:'INFORMATIVE_MOVEMENT_DELETED', payload:item.uuid})
+            }
             default:{
                 console.log('Unsuported type of transaction ' + type)
             }
@@ -98,7 +108,7 @@ export default class TransactionItems extends React.Component {
         const itemRowClass = 'transactions-body-item'
 
         const transactions = this.props.partsRequestList.concat(this.props.cashAdvanceList)
-            .concat(this.props.laborList).concat(this.props.usedPartList)
+            .concat(this.props.laborList).concat(this.props.usedPartList).concat(this.props.informativeList)
 
         const transactionsItems = transactions.map((item, index) =>{
             //determine wether it is saved, modified or new
@@ -128,6 +138,10 @@ export default class TransactionItems extends React.Component {
             let movementType = ''
             let desc_element = ''
             let unit_price_element = ''
+            let total_element =<div className={itemRowClass + "-total"}>
+                <h5>Total</h5>
+                ₡ {parseFloat(item.subTotal).toFixed(2)}
+            </div>
 
             switch(item.type){
                 case 'PART_REQUEST':
@@ -209,6 +223,23 @@ export default class TransactionItems extends React.Component {
                     </div>
                     break
                 }
+
+                case 'INFORMATIVE_MOVEMENT':
+                {
+                    movementType = "Movimiento Informativo"
+                    desc_element = <div className={itemRowClass+"-description"} >
+                        <input type='text' name='description'
+                        disabled={this.props.is_closed}
+                        value={item.element.description}
+                        className={itemRowClass+"-description-input"+ " form-control"}
+                        onChange={this.transactionChange.bind(this, item)} />
+                    </div>
+                    total_element =<div className={itemRowClass + "-total"}>
+                        <h5>Total</h5>
+                        ₡ {"N/A"}
+                    </div>
+                    break
+                }
             }
 
             return <div className={itemRowClass} key={item.uuid}>
@@ -236,10 +267,7 @@ export default class TransactionItems extends React.Component {
 
                 {unit_price_element}
 
-                <div className={itemRowClass + "-total"}>
-                    <h5>Total</h5>
-                    ₡ {parseFloat(item.subTotal).toFixed(2)}
-                </div>
+                {total_element}
 
                 <div className={status_class} >
                     <h5>Estado</h5>
