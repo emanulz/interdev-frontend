@@ -35,4 +35,3 @@ pip-log.txt
 *.old
 *.env
 yarn.lock
-/apps/returns/*

@@ -1,0 +1,71 @@
+.moneyReturn-content
+  height: 100%
+  width: 100%
+  transition: width 0.3s ease
+  position: absolute
+  left: 0
+  display: flex
+  flex-flow: row
+  font-family: 'Source Sans Pro', sans-serif
+  &.blured
+    -webkit-filter: blur(4px)
+    -moz-filter: blur(4px)
+    -o-filter: blur(4px)
+    -ms-filter: blur(4px)
+    filter: blur(4px)
+    background-color: #ccc
+    transition: all 0.3s ease-in-out
+  &-sale
+    width: 50%
+    display: flex
+    flex-flow: column
+    height: 100%
+    &-header
+      width: 100%
+      background-color: $SECONDARY-COLOR
+      color: white
+      position: relative
+      text-align: center
+      display: flex
+      flex-flow: column
+      justify-content: center
+      height: 50px
+      font-size: 20px
+      & i
+        position: absolute
+        right: 10px
+        font-size: 20px
+        cursor: pointer
+        &:hover
+          font-size: 24px
+    &-content
+      flex-grow: 1
+      overflow-y: auto
+      border-right: 1px solid #cacaca 
+  &-return
+    width: 50%
+    display: flex
+    flex-flow: column
+    height: 100%
+    &-header
+      width: 100%
+      background-color: $SECONDARY-COLOR-ACCENT
+      color: white
+      position: relative
+      text-align: center
+      display: flex
+      flex-flow: column
+      justify-content: center
+      height: 50px
+      font-size: 20px
+      & i
+        position: absolute
+        right: 10px
+        font-size: 20px
+        cursor: pointer
+        &:hover
+          font-size: 24px
+    &-content
+      flex-grow: 1
+      overflow-y: auto
+      border-left: 1px solid #cacaca

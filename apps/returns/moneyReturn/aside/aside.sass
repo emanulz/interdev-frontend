@@ -1,0 +1,43 @@
+.moneyReturn-aside
+  height: 100% !important
+  width: 45%
+  transition: left 0.3s ease
+  position: absolute
+  z-index: 2
+  left: 55%
+  display: flex
+  box-shadow: -2px 5px 10px 1px rgba(0,0,0,.176)
+  transition: all 0.3s ease-in-out
+  flex-flow: column
+  justify-content: space-between
+  background-color: white
+  font-family: 'Source Sans Pro', sans-serif
+  &.collapsed
+    left: 100%
+  &-content
+    display: flex
+    flex-flow: column
+    height: 100%
+    &-header
+      width: 100%
+      background-color: $PRIMARY-COLOR
+      color: white
+      position: relative
+      text-align: center
+      display: flex
+      flex-flow: column
+      justify-content: center
+      height: 50px
+      font-size: 20px
+      & i
+        position: absolute
+        right: 10px
+        font-size: 20px
+        cursor: pointer
+        &:hover
+          font-size: 24px
+    &-content
+      flex-grow: 1
+      background-color: red
+      overflow-y: auto
+
