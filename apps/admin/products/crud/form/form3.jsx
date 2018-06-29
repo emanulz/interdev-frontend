@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom'
 @connect((store) => {
   return {
     product: store.products.productActive,
-    products: store.products.products
+    products: store.products.products,
+    file: store.products.file,
   }
 })
 
@@ -51,6 +52,13 @@ class Form3 extends React.Component {
     ev.target.select()
   }
 
+  onImageChange(e){
+    this.props.dispatch({type:'SET_IMAGE_FILE', payload:e.target.files[0]})
+  }
+
+
+
+
   render() {
 
     // ********************************************************************
@@ -78,6 +86,10 @@ class Form3 extends React.Component {
 
         <span>Extras</span>
         <hr />
+        <div className="form-group">
+        <label>Imágen Producto</label>
+        <input type="file" name="image_picker" onChange={this.onImageChange.bind(this)} accept='image/png, image/jpeg'capture='camera'/>
+        </div>
 
       </div>
 

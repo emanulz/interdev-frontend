@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 import { loadGlobalConfig } from '../../../../utils/api.js'
 let inspect = require('util-inspect')
 import CSVReader from 'react-csv-reader'
-import {joinINV_CAT, saveProdInBatches, saveImportedProduct, importTestProducts, importFakeSuppliers, generateProductInvMovs} from './actions.js'
+import {joinINV_CAT, saveProdInBatches, saveImportedProduct, importTestProducts, 
+    importFakeSuppliers, generateProductInvMovs, imageProdTest, createProdWithImage} from './actions.js'
 
 import alertify from 'alertifyjs'
 
@@ -15,6 +16,7 @@ import alertify from 'alertifyjs'
         joint_data: store.productImporter.joint_data,
         allow_negatives: store.productImporter.allow_negatives,
         sales_warehouse: store.productImporter.sales_warehouse,
+        file: store.productImporter.file,
     }
 })
 export default class ImportProducts extends React.Component {
@@ -115,6 +117,20 @@ export default class ImportProducts extends React.Component {
         console.log('ERR --> ' + err)
     }
 
+    handleImageImport(e){
+
+        //create 
+        const prod_data = imageProdTest()
+
+        console.log("Dispatch image uploader")
+
+        createProdWithImage(prod_data, this.props.file)
+    }
+
+    onImageChange(e){
+        this.props.dispatch({type:'SET_IMAGE_FILE', payload:e.target.files[0]})
+    }
+
     render(){
         return <div className='product-importer' >
             <h1>PLEASE IMPORT ME!</h1>
@@ -135,6 +151,13 @@ export default class ImportProducts extends React.Component {
                 <div>Allow negatives?</div>
                 <input type="checkbox" value={this.props.allow_negatives} />
             </div>
+
+            <div>
+                <div>Pick image file</div>
+                <input type='file' name='image_picker' onChange={this.onImageChange.bind(this)} accept='image/png, image/jpeg'/>
+            </div>
+
+            <button onClick={this.handleImageImport.bind(this)}>Upload image</button>
             
             <button onClick={this.handleImport.bind(this)} >Importar productos</button>
 

@@ -9,7 +9,8 @@ import { withRouter } from 'react-router-dom'
   return {
     product: store.products.productActive,
     products: store.products.products,
-    user: store.user.user
+    user: store.user.user,
+    file: store.products.file,
   }
 })
 
@@ -24,7 +25,7 @@ class CreateButtons extends React.Component {
     const fieldsOk = checkProductData(product, products)
 
     if (fieldsOk) {
-      const kwargs = {
+      let kwargs = {
         url: '/api/products/',
         item: product,
         logCode: 'PRODUCT_CREATE',
@@ -42,6 +43,11 @@ class CreateButtons extends React.Component {
         kwargs.history = this.props.history
       }
       this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      const formData = new FormData()
+      formData.append('file', this.props.file)
+      formData.append('prod', JSON.stringify(kwargs.item))
+      kwargs.item = formData
+
       this.props.dispatch(saveItem(kwargs))
     }
   }
