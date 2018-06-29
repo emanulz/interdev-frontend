@@ -1,4 +1,21 @@
-export function getHeaderOrder(model) {
+export function getHeaderOrder(model, salesWarehouse) {
+
+  let get_existences_closure = (item)=>{
+      function getExistences(item){
+      console.log("SALES WAREHOUSE!! --> " + salesWarehouse)
+      if(salesWarehouse === undefined || salesWarehouse ===''){
+        return "0"
+      }
+      const parsed_inv = JSON.parse(item)
+      return parsed_inv[salesWarehouse] === undefined?0:parsed_inv[salesWarehouse]
+    }
+
+    return getExistences(item)
+  }
+
+
+  item=>{return JSON.parse(item)}
+
   const clientHeader = [
     {
       field: 'code',
@@ -34,6 +51,11 @@ export function getHeaderOrder(model) {
     }, {
       field: 'description',
       text: 'Descripción'
+    },{
+      type: 'function_process',
+      field: 'inventory_existent',
+      text: 'Existencias',
+      worker_method: get_existences_closure
     }, {
       field: 'supplier_code',
       text: 'Cod Prov'

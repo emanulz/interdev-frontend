@@ -10,15 +10,17 @@ import {getHeaderOrder} from './headerOrder.js'
 @connect((store, ownProps) => {
   return {
     fething: store.fetching.fetching,
-    searchResults: store[ownProps.namespace].searchResults
+    searchResults: store[ownProps.namespace].searchResults,
+    salesWarehouse: store.config.salesWarehouse,
   }
 })
 export default class ResultsTable extends React.Component {
 
   render() {
+
     const idField = 'id'
 
-    const headerOrder = getHeaderOrder(this.props.model)
+    const headerOrder = getHeaderOrder(this.props.model, this.props.salesWarehouse)
 
     const fetching = <Fecthing />
     const list = <AdminTable headerOrder={headerOrder} model={this.props.model} data={this.props.searchResults}
