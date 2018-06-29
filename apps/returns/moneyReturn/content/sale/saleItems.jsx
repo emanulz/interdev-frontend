@@ -37,7 +37,7 @@ export default class CartItems extends React.Component {
           </div>
           <div className='cart-body-item-add'>
             <h5>Agregar</h5>
-            <i className='fa fa-plus' />
+            <i className='fa fa-chevron-right' />
           </div>
 
         </div>

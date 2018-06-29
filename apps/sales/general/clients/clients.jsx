@@ -5,7 +5,7 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {userSelected, setClient} from './actions'
-import {recalcCart} from '../../general/product/actions'
+// import {recalcCart} from '../../general/product/actions'
 import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
@@ -13,7 +13,7 @@ const Mousetrap = require('mousetrap')
   return {
     clients: store.clients.clients,
     clientSelected: store.clients.clientSelected,
-    cart: store.cart.cartItems,
+    // cart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
     client: store.clients.clientSelected,
     users: store.clients.users,

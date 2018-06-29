@@ -6,7 +6,8 @@ import React from 'react'
 // import { getItemDispatch } from '../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
-import {loadGlobalConfig, setItem} from '../../../utils/api.js'
+import {loadGlobalConfig} from '../../../utils/api.js'
+import {setSale} from './actions.js'
 
 import {connect} from 'react-redux'
 
@@ -36,7 +37,7 @@ export default class Sale extends React.Component {
       modelName: 'Ventas'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(setItem(kwargs))
+    this.props.dispatch(setSale(kwargs))
 
   }
   // *******************************************************************

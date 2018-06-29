@@ -1,15 +1,15 @@
 .moneyReturn-aside
   height: 100% !important
   width: 45%
-  transition: left 0.3s ease
-  position: absolute
   z-index: 2
+  transition: left 0.3s ease
   left: 55%
   display: flex
   box-shadow: -2px 5px 10px 1px rgba(0,0,0,.176)
   transition: all 0.3s ease-in-out
   flex-flow: column
   justify-content: space-between
+  position: absolute
   background-color: white
   font-family: 'Source Sans Pro', sans-serif
   &.collapsed
@@ -17,7 +17,7 @@
   &-content
     display: flex
     flex-flow: column
-    height: 100%
+    height: calc(100% - 70px)
     &-header
       width: 100%
       background-color: $PRIMARY-COLOR
@@ -38,6 +38,15 @@
           font-size: 24px
     &-content
       flex-grow: 1
-      background-color: red
       overflow-y: auto
+    &-footer
+      height: 100px
+      width: 100%
+      background-color: #495c7c
+      text-align: center
+      font-size: 30px
+      color: white
+      display: flex
+      flex-flow: column
+      justify-content: center
 

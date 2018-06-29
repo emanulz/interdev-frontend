@@ -12,8 +12,7 @@ const stateConst = {
   globalDiscount: 0, // discount %
   discountTotal: 0, // discount in currency
   cartItemActive: false,
-  totalNotRounded: 0,
-  
+  totalNotRounded: 0
 }
 
 export default function reducer(state = stateConst, action) {

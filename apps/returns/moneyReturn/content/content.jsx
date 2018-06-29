@@ -8,7 +8,8 @@ import Sale from './sale/sale.jsx'
 
 @connect((store) => {
   return {
-    fullWidth: store.moneyReturn.fullWidth
+    fullWidth: store.moneyReturn.fullWidth,
+    sale: store.sale.saleActive
   }
 })
 export default class Main extends React.Component {
@@ -20,6 +21,9 @@ export default class Main extends React.Component {
   // Main Layout
   render() {
     const contentClass = this.props.fullWidth ? 'moneyReturn-content' : 'moneyReturn-content blured'
+    const sale = this.props.sale
+    const saleTotal = sale.cart
+      ? sale.cart.cartTotal : 0
 
     return <div className={contentClass}>
       <div className='moneyReturn-content-sale' >
@@ -30,7 +34,7 @@ export default class Main extends React.Component {
           <Sale />
         </div>
         <div className='moneyReturn-content-sale-footer'>
-          C 1300.00
+        ₡ {parseFloat(saleTotal).formatMoney()}
         </div>
       </div>
       <div className='moneyReturn-content-return' >

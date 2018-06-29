@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import Clients from '../../general/clients/clients.jsx'
 
 @connect((store) => {
   return {
@@ -26,7 +27,10 @@ export default class Aside extends React.Component {
           <i className='fa fa-chevron-right' onClick={this.toggleWidth.bind(this)} />
         </div>
         <div className='moneyReturn-aside-content-content'>
-          Content
+          <Clients />
+        </div>
+        <div className='moneyReturn-aside-content-footer'>
+          BOTONES
         </div>
       </div>
     </div>
