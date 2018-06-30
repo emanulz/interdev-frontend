@@ -7,6 +7,7 @@ import {formatDateTime } from '../../../../../../utils/formatDate'
         requestList: store.transactionsList.partsRequestList,  
         laborList: store.transactionsList.laborList,
         work_order: store.workshopview.work_order,
+        informativeList: store.transactionsList.informativeList,
     }
 })
 
@@ -76,6 +77,13 @@ export default class WarrantyBody extends React.Component{
 
             <div className='compact-receipt-separator'>
                 <span/>
+                    <h2>Informativos</h2>
+                <span/>
+            </div>
+            {this.buildInfMovs()}
+
+            <div className='compact-receipt-separator'>
+                <span/>
                     <h2>Final de Boleta</h2>
                 <span/>
             </div>
@@ -103,6 +111,17 @@ export default class WarrantyBody extends React.Component{
         })
         return <div>
             {labor_items}
+        </div>
+    }
+    
+    buildInfMovs(){
+        const base_class ='compact-receipt-data-field'
+        const inf_items =  this.props.informativeList.map(a=>{
+            return this.buildSimpleDataRow(base_class, '', a.element.description)
+        })
+
+        return <div>
+            {inf_items}
         </div>
     }
 

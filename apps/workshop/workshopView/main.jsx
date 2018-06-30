@@ -10,6 +10,7 @@ import {patchWorkView} from '../general/actions'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {productSearchDoubleClick} from './partsProvider/actions.js'
+import WorkshopTotal from './total/main.jsx'
 
 
 
@@ -31,6 +32,9 @@ let inspect = require('util-inspect')
 
         usedPartList: store.transactionsList.usedPartList,
         usedPartsToDelete: store.transactionsList.usedPartsToDelete,
+
+        informativeList: store.transactionsList.informativeList,
+        informativeListToDelete: store.transactionsList.informativeListToDelete,
 
         user: store.user,
         client: store.workshopview.work_order.client,
@@ -93,6 +97,9 @@ export default class WorkshopView extends React.Component {
     
                 parts_request_list: JSON.stringify(this.props.partsRequestList),
                 parts_request_to_delete: JSON.stringify(this.props.partsRequestToDelete),
+
+                informative_list: JSON.stringify(this.props.informativeList),
+                informative_list_to_delete: JSON.stringify(this.props.informativeListToDelete),
     
                 main_warehouse_id: this.props.sales_warehouse_id,
                 workshop_warehouse_id: this.props.workshop_warehouse_id,
@@ -187,6 +194,9 @@ export default class WorkshopView extends React.Component {
                     </div>
                     <div className="workshop-view-left-transactions">
                         <TransactionsList/>
+                    </div>
+                    <div className="workshop-view-left-total">
+                        <WorkshopTotal/>
                     </div>
 
                 </div>

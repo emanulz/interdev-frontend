@@ -121,6 +121,22 @@ export function updateQty(qty, itemsList, target_uuid, sales_warehouse){
     return res
 }
 
+export function buildInformativeMov(description){
+    console.log("Creating informative mov")
+    return {
+        type: 'ADD_TO_INFORMATIVE_LIST',
+        payload:{
+            uuid: uuidv1(),
+            element: {'amount': 0, 'description': description, 'subTotal': 0},
+            qty: 1,
+            type:'INFORMATIVE_MOVEMENT',
+            priceToUse: 0,
+            subTotal: 0,
+            saved: false
+        }
+    }
+}
+
 export function buildUsedPartRequest(amount, description){
     const subTotal  = calculateUsedPartSubTotal(amount)
     return {
@@ -170,7 +186,7 @@ export function buildLaborRequest(amount, description){
     }
 }
 
-export function updateLaborCashAdvanceUsedPartRow(item, e, list){
+export function updateLaborCashAdvanceUsedPartInfoRow(item, e, list){
 
     
         let val = e.target.value
@@ -215,6 +231,14 @@ export function updateLaborCashAdvanceUsedPartRow(item, e, list){
                 newItem.subTotal = calculateUsedPartSubTotal(newItem.element.amount)
                 return {type:'USED_PART_UPDATED', payload:{'item':newItem, 'index':index}}
 
+            }
+
+            case 'INFORMATIVE_MOVEMENT':
+            {
+                const newItem = JSON.parse(JSON.stringify(item))
+                newItem.saved = false
+                newItem.element[e.target.name] =  val
+                return {type: 'INFORMATIVE_MOVEMENT_UPDATED', payload:{'item': newItem, 'index': index}}
             }
     
         }

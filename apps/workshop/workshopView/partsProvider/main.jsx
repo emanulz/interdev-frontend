@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
 import {buildCashAdvanceRequest, buildLaborRequest, 
-    buildUsedPartRequest, searchProduct} from './actions.js'
+    buildUsedPartRequest, searchProduct, buildInformativeMov} from './actions.js'
 
 
 let inspect = require('util-inspect')
@@ -14,6 +14,7 @@ let inspect = require('util-inspect')
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         partsRequestList: store.transactionsList.partsRequestList,
         laborList: store.transactionsList.laborList,
+        informativeList: store.transactionsList.informativeList,
         is_closed: store.workshopview.work_order.is_closed,
         sales_warehouse: store.transactionsList.sales_warehouse
     }
@@ -88,6 +89,11 @@ export default class PartsProvider extends React.Component{
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
 
+                }else if(e.target.value.startsWith("in*")){
+                    let bits = e.target.value.split("*")
+                    let description = bits[1]
+                    this.props.dispatch(buildInformativeMov(description))
+                    this.props.dispatch({type: 'CLEAR_SEARCH_KEY'})
                 }else{
                     let bits = e.target.value.split('*')
                     const code = bits[0]

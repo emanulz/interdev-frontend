@@ -218,7 +218,6 @@ export default class AdminTable extends React.Component {
             case 'function_process':
             {
               const amount = header.worker_method(itemToRender)
-              console.log("FUNCTION PRO AMOUNT --> " + amount)
               item = <td key={`${el[idField]}_${header.field}`}>
                 {amount}
             </td>

@@ -40,6 +40,9 @@ const stateConst = {
     usedPartList: [],
     usedPartsToDelete: [],
 
+    informativeList: [],
+    informativeListToDelete: [],
+
     sales_warehouse: '',
   
 }
@@ -57,9 +60,9 @@ export default function reducer(state=stateConst, action){
                 partsRequestToDelete: [],
                 laborsToDelete: [],
                 usedPartsToDelete: [],
+                informativeListToDelete: [],
             }
         }
-
         case 'SET_SALES_WAREHOUSE':
         {
             return {
@@ -98,7 +101,16 @@ export default function reducer(state=stateConst, action){
             newUsedPartList[action.payload.index] = action.payload.item
             return {
                 ...state,
-                usedPartList : newUsedPartList
+                usedPartList: newUsedPartList
+            }
+        }
+        case 'INFORMATIVE_MOVEMENT_UPDATED':
+        {
+            const newInformativeList = [...state.informativeList]
+            newInformativeList[action.payload.index] =  action.payload.item
+            return {
+                ...state,
+                informativeList: newInformativeList
             }
         }
         case 'CLEAR_TRANSACTIONS_LIST':
@@ -145,6 +157,21 @@ export default function reducer(state=stateConst, action){
                 laborsToDelete: newLaborToDelete
             }
 
+        }
+        case 'INFORMATIVE_MOVEMENT_DELETED':
+        {
+            const index_in_informative_list = state.informativeList.findIndex(a=>a.uuid === action.payload)
+            const newInformativeToDelete = [...state.informativeListToDelete]
+            newInformativeToDelete.push(state.informativeList[index_in_informative_list].element.id)
+
+            const new_list = [...state.informativeList]
+            new_list.splice(index_in_informative_list, 1)
+
+            return {
+                ...state,
+                informativeList: new_list,
+                informativeListToDelete: newInformativeToDelete,
+            }
         }
         case 'USED_PART_DELETED':
         {
@@ -320,6 +347,27 @@ export default function reducer(state=stateConst, action){
                 return used_object
             })
 
+            const informative_objects = action.payload.informative_movements.map(item=>{
+                const inf = JSON.parse(JSON.stringify(item))
+                inf.employee = JSON.parse(inf.employee)
+                return inf
+            })
+
+            const new_inf_list = informative_objects.map(item=>{
+                const inf_object = {
+                    element: item,
+                    priceToUse: 0,
+                    qty: 1,
+                    subTotal: 0,
+                    type: 'INFORMATIVE_MOVEMENT',
+                    uuid: item.id,
+                    saved: true
+                }
+
+                return inf_object
+            })
+
+
             const parts_request_objects = action.payload.part_requests.map(item=>{
                 const req = JSON.parse(JSON.stringify(item))
                 req.product = JSON.parse(req.product)
@@ -353,6 +401,7 @@ export default function reducer(state=stateConst, action){
                 laborList: new_labor_list,
                 usedPartList: new_used_list,
                 partsRequestList: new_parts_request_list,
+                informativeList: new_inf_list,
                 cashAdvancesToDelete: [],
                 partsRequestToDelete: [],
                 laborsToDelete: [],
@@ -699,6 +748,16 @@ export default function reducer(state=stateConst, action){
                 ...state,
                 cashAdvanceList:[
                     ...state.cashAdvanceList,
+                    action.payload
+                ]
+            }
+        }
+        case 'ADD_TO_INFORMATIVE_LIST':
+        {
+            return {
+                ...state,
+                informativeList:[
+                    ...state.informativeList,
                     action.payload
                 ]
             }
