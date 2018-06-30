@@ -10,6 +10,7 @@ import messages from './messages/reducer.js'
 import config from './config/reducer.js'
 import moneyReturn from './moneyReturn/reducer.js'
 import sale from './moneyReturn/content/sale/reducer.js'
+import returnCart from './moneyReturn/content/return/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -21,5 +22,6 @@ export default combineReducers({
   config,
   completed,
   moneyReturn,
-  sale
+  sale,
+  returnCart
 })

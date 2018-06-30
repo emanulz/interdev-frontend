@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Clients from '../../general/clients/clients.jsx'
+import Save from './save/save.jsx'
 
 @connect((store) => {
   return {
@@ -30,7 +31,7 @@ export default class Aside extends React.Component {
           <Clients />
         </div>
         <div className='moneyReturn-aside-content-footer'>
-          BOTONES
+          <Save />
         </div>
       </div>
     </div>

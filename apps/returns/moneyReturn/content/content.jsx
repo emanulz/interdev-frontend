@@ -5,11 +5,13 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import Sale from './sale/sale.jsx'
+import Return from './return/return.jsx'
 
 @connect((store) => {
   return {
     fullWidth: store.moneyReturn.fullWidth,
-    sale: store.sale.saleActive
+    sale: store.sale.saleActive,
+    returnCart: store.returnCart
   }
 })
 export default class Main extends React.Component {
@@ -24,7 +26,8 @@ export default class Main extends React.Component {
     const sale = this.props.sale
     const saleTotal = sale.cart
       ? sale.cart.cartTotal : 0
-
+    const returnTotal = this.props.returnCart
+      ? this.props.returnCart.returnTotal : 0
     return <div className={contentClass}>
       <div className='moneyReturn-content-sale' >
         <div className='moneyReturn-content-sale-header'>
@@ -43,10 +46,10 @@ export default class Main extends React.Component {
           <i className='fa fa-chevron-left' onClick={this.toggleWidth.bind(this)} />
         </div>
         <div className='moneyReturn-content-return-content'>
-          Content
+          <Return />
         </div>
         <div className='moneyReturn-content-return-footer'>
-          C 1300.00
+          ₡ {parseFloat(returnTotal).formatMoney()}
         </div>
       </div>
     </div>

@@ -64,8 +64,6 @@ export default function reducer(state = stateConst, action) {
         returnSubtotal: action.payload.subtotal,
         returnTaxes: action.payload.taxes,
         returnTotal: action.payload.total,
-        discountTotal: action.payload.discountTotal,
-        returnSubtotalNoDiscount: action.payload.subTotalNoDiscount,
         totalNotRounded: action.payload.totalNotRounded
       }
     } // case

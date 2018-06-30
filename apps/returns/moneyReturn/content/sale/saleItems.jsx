@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import {addToReturn} from '../return/actions.js'
 
 @connect((store) => {
   return {
@@ -11,13 +12,17 @@ import {connect} from 'react-redux'
 })
 export default class CartItems extends React.Component {
 
+  addItem(item) {
+    const cart = this.props.cart
+    this.props.dispatch(addToReturn(item, item.qty, cart))
+  }
   render() {
 
     const sale = this.props.sale
     const items2 = sale.cart
       ? sale.cart.cartItems.map((item, index) => {
 
-        return <div className='cart-body-item' key={item.product.id}>
+        return <div className='cart-body-item' key={item.product.id} >
 
           <div className='cart-body-item-code'>
             <h5>Código</h5>
@@ -37,7 +42,7 @@ export default class CartItems extends React.Component {
           </div>
           <div className='cart-body-item-add'>
             <h5>Agregar</h5>
-            <i className='fa fa-chevron-right' />
+            <i className='fa fa-chevron-right' onClick={this.addItem.bind(this, item)} />
           </div>
 
         </div>
