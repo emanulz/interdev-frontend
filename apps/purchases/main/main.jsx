@@ -26,6 +26,7 @@ export default class Main extends React.Component {
     componentWillMount(){
         this.props.dispatch(fetchProfile())
         this.props.dispatch(fetchGlobalPreferences())
+
     }
 
     render () {

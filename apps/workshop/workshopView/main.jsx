@@ -51,6 +51,9 @@ export default class WorkshopView extends React.Component {
 
     componentWillMount(){
         
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
+        
         this.props.dispatch({type:'CLEAR_WORKSHOPVIEW'})
 
         const work_order_consecutive = this.props.location.pathname.split('/').pop()

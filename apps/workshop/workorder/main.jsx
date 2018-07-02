@@ -16,6 +16,9 @@ export default class WorkOrder extends React.Component{
 
     componentWillMount(){
 
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
+
         const permissions = {
             add: 'workshop.add_work_order',
             change: 'workshop.change_work_order',

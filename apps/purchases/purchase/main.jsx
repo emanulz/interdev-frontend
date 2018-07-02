@@ -18,6 +18,9 @@ import Search from '../../../general/search/search.jsx'
 export default class Purchase extends React.Component {
 
     componentWillMount() {
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
         
         const purchase_consecutive = this.props.location.pathname.split('/').pop()
         this.props.dispatch({type: 'PURCHASE_PANEL_MOUNTED', payload: ''})
