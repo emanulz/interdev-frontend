@@ -88,8 +88,6 @@ export default function reducer(state = stateConst, action) {
     }
     case 'LOADED_PURCHASE':
     {
-      console.log("CART TO LOAD--> ")
-      console.log(action.payload.cart)
       const cart = JSON.parse(action.payload.cart)
       return {
         ...state,
