@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {getTodaySales} from './actions.js'
+import {loadSaleToReprint} from '../../../../general/reprintInvoice/actions.js'
 
 @connect((store) => {
   return {todaySales: store.todaySales.todaySales, isVisible: store.todaySales.isVisible}
@@ -25,6 +26,11 @@ export default class TodaySalesPanel extends React.Component {
 
   hidePanel() {
     this.props.dispatch({type: 'HIDE_TODAY_SALES_PANEL', payload: -1})
+  }
+
+  loadSaleToPrint(consecutive) {
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(loadSaleToReprint(consecutive))
   }
 
   // loadPresaleItem(id, ev) {
@@ -74,7 +80,7 @@ export default class TodaySalesPanel extends React.Component {
         ? `${presale.user.first_name} ${presale.user.last_name}`
         : `${presale.user.username}`
       return <tr key={presale.id}>
-        <td className='loadRow'><i className='fa fa-list' /></td>
+        <td onClick={this.loadSaleToPrint.bind(this, presale.consecutive)} className='loadRow'><i className='fa fa-list' /></td>
         <td>{presale.consecutive}</td>
         <td>{`${formatDateTimeAmPm(presale.created)}`}</td>
         <td>{`${presale.client.name} ${presale.client.last_name}`}</td>
