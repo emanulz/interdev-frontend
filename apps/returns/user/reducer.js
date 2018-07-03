@@ -1,28 +1,30 @@
 const stateConst = {
-  topBarToggleVisible: true,
-  sideMenuVisible: false
+  user: {},
+  profile: {}
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'SALE_PANEL_MOUNTED':
+    case 'FETCH_PROFILE_FULFILLED':
     {
       return {
         ...state,
-        topBarToggleVisible: true,
-        sideMenuVisible: false
+        user: action.payload.user,
+        profile: action.payload.profile
       }
+
     } // case
 
-    case 'HOME_PANEL_MOUNTED':
+    case 'FETCH_PROFILE_REJECTED':
     {
       return {
         ...state,
-        topBarToggleVisible: false,
-        sideMenuVisible: true
+        user: {},
+        profile: {}
       }
+
     } // case
 
   } // switch

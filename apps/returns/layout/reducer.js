@@ -1,13 +1,13 @@
 const stateConst = {
-  topBarToggleVisible: true,
-  sideMenuVisible: false
+  topBarToggleVisible: false,
+  sideMenuVisible: true
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'SALE_PANEL_MOUNTED':
+    case 'RETURN_PANEL_MOUNTED':
     {
       return {
         ...state,
