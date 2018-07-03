@@ -87,6 +87,11 @@ export default class WorkshopView extends React.Component {
         const wo = this.props.work_order
         //check if the order is already closed, if so, print
         if(!wo.is_closed){
+            //check if the order has at least a mo or in movement before letting it be closed
+            if(this.props.laborList.length < 1 && this.props.informativeList.length <1){
+                this.props.dispatch({type:'CANT_CLOSE_WITHOUT_MOVES'})
+                return
+            }
             let data = {
                 client_id: this.props.client.id,
                 cash_advance_list: JSON.stringify(this.props.cashAdvanceList),
@@ -138,23 +143,23 @@ export default class WorkshopView extends React.Component {
 
     }
 
-    runSequence(all_tasks){
-        let result = Promise.resolve()
-        all_tasks.forEach(task=>{
-            result = result.then(()=>{
-                return Promise.all(task.promises).then(result=>{
-                    if(task.promises.length>0){
-                        this.props.dispatch({type:task.dispatch, payload:result})
-                    }
+    // runSequence(all_tasks){
+    //     let result = Promise.resolve()
+    //     all_tasks.forEach(task=>{
+    //         result = result.then(()=>{
+    //             return Promise.all(task.promises).then(result=>{
+    //                 if(task.promises.length>0){
+    //                     this.props.dispatch({type:task.dispatch, payload:result})
+    //                 }
                     
-                })
-            })
+    //             })
+    //         })
 
-        })
+    //     })
 
-        return result
+    //     return result
 
-    }
+    // }
 
     componentWillUpdate(nextProps){
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
@@ -235,6 +240,11 @@ export default class WorkshopView extends React.Component {
         if(!this.props.work_order.closed_no_repair && !this.props.work_order.is_closed){
             if(this.props.partsRequestList.length>0 || this.props.partsRequestToDelete.length>0){
                 this.props.dispatch({type: 'CANT_CLOSE_NO_REPAIR_WITH_PARTS_REQUEST'})
+                return
+            }
+
+            if(this.props.laborList.length < 1 && this.props.informativeList.length <1){
+                this.props.dispatch({type:'CANT_CLOSE_WITHOUT_MOVES_NO_REPAIR'})
                 return
             }
             this.saveOrderTransactionsOrPrint(true, true, null)
