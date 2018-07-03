@@ -15,6 +15,7 @@ import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 export default class ListPurchases  extends React.Component {
 
     componentWillMount(){
+        this.props.dispatch({type: 'PURCHASE_LIST_PANEL_MOUNTED'})
         this.props.dispatch({type: 'FETCHING_STARTED'})
 
         const purchasesKwargs = {

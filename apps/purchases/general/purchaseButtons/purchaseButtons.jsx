@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {savePurchase} from './actions.js'
+
 import { inspect } from 'util'
 
 @connect(store=>{
@@ -44,13 +45,24 @@ export default class PurchaseButtons extends React.Component {
         savePurchase(kwargs).then(result=>{
             this.props.dispatch({type: 'PURCHASE_SAVED', 
             payload:{ id: result.id, consecutive: result.consecutive , is_closed: result.is_closed}})
-            alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación')
+            let callback = ()=>{}
+            if(result.is_closed){
+                callback = ()=>{
+                    window.location.href=`/purchases/purchase/${result.consecutive}`
+                }
+            }
+            alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación', callback)
         })
         
     }
 
 
     printReport(){
+        //check if the report is already closed, do not allow 
+        if(!this.props.purchase.is_closed){
+            this.props.dispatch({type:'CANT_PRINT_NOT_CLOSED_PURCHASE'})
+            return
+        }
         this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
     }
 
