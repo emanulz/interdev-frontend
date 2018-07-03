@@ -12,14 +12,14 @@ import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
         pageSize: store.pagination.pageSize,
     }
 })
-export default class ListPurchases  extends React.Component {
+export default class ListIncompletePurchases  extends React.Component {
 
     componentWillMount(){
         this.props.dispatch({type: 'PURCHASE_LIST_PANEL_MOUNTED'})
         this.props.dispatch({type: 'FETCHING_STARTED'})
 
         const purchasesKwargs = {
-            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}`,
+            url : `/api/purchaseincompletelist/?limit=${this.props.pageSize}`,
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED'
         }
@@ -70,11 +70,11 @@ export default class ListPurchases  extends React.Component {
 
         return <div className='list list-container' >
             <div className='admin-list-header'>
-                <h1>Listado de Compras: </h1>
+                <h1>Listado de Compras Incompletas: </h1>
             </div>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
-                <Pagination url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <ResultsPerPage url='/api/purchaseincompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <Pagination url='/api/purchaseincompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
             </div>
             
             {content}

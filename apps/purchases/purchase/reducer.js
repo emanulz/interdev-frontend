@@ -81,6 +81,7 @@ const stateConst = {
 
           case 'FETCH_PURCHASES_FULFILLED':
           {
+              console.log("HERE --> " + action.payload)
               const tF = makeTableFriendly(action.payload)
               return {
                   ...state,
