@@ -6,6 +6,7 @@ import React from 'react'
 import routes from './routes.js'
 import {connect} from 'react-redux'
 import { checkUserPermissions } from '../../../utils/checkPermissions';
+import {loadGlobalConfig} from '../../../utils/api.js'
 
 @connect((store)=>{
     return{

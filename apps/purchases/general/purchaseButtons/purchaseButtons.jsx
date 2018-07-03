@@ -11,6 +11,7 @@ import { inspect } from 'util'
         cart:store.cart,
         pay:store.pay,
         purchase:store.purchase,
+        discount_mode: store.cart.discount_mode,
 
     }
 })
@@ -33,7 +34,8 @@ export default class PurchaseButtons extends React.Component {
             invoice_date: this.props.purchase.invoiceDate,
             credit_days: this.props.pay.creditDays,
             apply: apply,
-            update_purchase: false
+            update_purchase: false,
+            discount_mode: this.props.discount_mode,
         }
         if(this.props.purchase.purchase_id !== ''){
             //this should be a patch

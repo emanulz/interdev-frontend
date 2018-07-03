@@ -19,7 +19,8 @@ export function savePurchase(kwargs){
     const invoice_date = kwargs.invoice_date
     const credit_days = kwargs.credit_days
     const apply = kwargs.apply
-    
+    const discount_mode = kwargs.discount_mode
+    console.log("CART --> " +  cart_string)
     let method = 'post'
     let url = '/api/purchase/'
     
@@ -39,6 +40,7 @@ export function savePurchase(kwargs){
         invoice_date: invoice_date,
         credit_days: credit_days,
         update_pattern: 'byPrice',
+        discount_mode: discount_mode,
         apply: apply,
     }
     return new Promise((resolve, reject)=>{

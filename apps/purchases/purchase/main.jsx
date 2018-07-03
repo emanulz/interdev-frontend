@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {setItem} from '../../../utils/api'
+import {setItem, loadGlobalConfig} from '../../../utils/api'
 import {supplierSearchDoubleClick} from '../general/suppliers/actions.js'
 
 let inspect = require('util-inspect')

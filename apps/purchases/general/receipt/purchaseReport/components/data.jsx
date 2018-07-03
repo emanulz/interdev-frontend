@@ -18,15 +18,15 @@ export default class Data extends React.Component {
             },
             {
                 field: 'product.description',
-                text: 'Nombre Producto'
+                text: 'Producto'
             },
             {
                 field: 'qty',
-                text:'Cantidad Ingreso'
+                text:'Ingreso'
             },
             {
                 field: 'wanted_price_ivi',
-                text: 'Precio a Marcar'
+                text: 'Precio'
             }
         ]
 
