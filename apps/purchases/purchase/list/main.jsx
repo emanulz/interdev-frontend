@@ -72,8 +72,8 @@ export default class ListPurchases  extends React.Component {
                 <h1>Listado de Compras: </h1>
             </div>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/purchaseslist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
-                <Pagination url='/api/purchaseslist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <ResultsPerPage url='/api/purchaselist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <Pagination url='/api/purchaselist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
             </div>
             
             {content}
@@ -81,3 +81,4 @@ export default class ListPurchases  extends React.Component {
     
     }
 }
+
