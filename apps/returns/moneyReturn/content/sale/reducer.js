@@ -1,5 +1,6 @@
 const stateConst = {
-  saleActive: {}
+  saleActive: {},
+  sales: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -30,6 +31,30 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         saleActive: {}
+      }
+    } // case
+
+    case 'FETCH_SALES_FULFILLED':
+    {
+      return {
+        ...state,
+        sales: action.payload
+      }
+    } // case
+
+    case 'FETCH_SALES_REJECTED':
+    {
+      return {
+        ...state,
+        sales: {}
+      }
+    } // case
+
+    case 'CLEAR_SALES':
+    {
+      return {
+        ...state,
+        sales: {}
       }
     } // case
 

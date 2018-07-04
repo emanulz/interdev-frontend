@@ -13,7 +13,6 @@ export function getHeaderOrder(model, salesWarehouse) {
     return getExistences(item)
   }
 
-
   item=>{return JSON.parse(item)}
 
   const clientHeader = [
@@ -51,7 +50,7 @@ export function getHeaderOrder(model, salesWarehouse) {
     }, {
       field: 'description',
       text: 'Descripción'
-    },{
+    }, {
       type: 'function_process',
       field: 'inventory_existent',
       text: 'Existencias',

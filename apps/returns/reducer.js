@@ -11,6 +11,8 @@ import config from './config/reducer.js'
 import moneyReturn from './moneyReturn/reducer.js'
 import sale from './moneyReturn/content/sale/reducer.js'
 import returnCart from './moneyReturn/content/return/reducer.js'
+import search from '../../general/search/reducer.js'
+import pagination from '../../general/pagination/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -23,5 +25,7 @@ export default combineReducers({
   completed,
   moneyReturn,
   sale,
-  returnCart
+  returnCart,
+  pagination,
+  saleSearch: search('saleSearch')
 })

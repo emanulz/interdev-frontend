@@ -25,6 +25,15 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'SALES_LIST_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: false,
+        sideMenuVisible: true
+      }
+    } // case
+
   } // switch
 
   return state // default return
