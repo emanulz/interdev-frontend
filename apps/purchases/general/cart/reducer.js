@@ -64,6 +64,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
+        orderTransport:0,
+        discount_mode: 'percent_based',
         cartItemActive: false,
       }
     }
@@ -83,6 +85,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
+        orderTransport:0,
+        discount_mode: 'percent_based',
         cartItemActive: false,
       }
     }
