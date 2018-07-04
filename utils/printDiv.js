@@ -18,7 +18,7 @@ export default function PrintElem(elem, stylesList) {
 
   mywindow.onload = () => {
     mywindow.print()
-    mywindow.close()
+    // mywindow.close()
   }
 
   return true

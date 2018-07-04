@@ -17,6 +17,8 @@ import pagination from '../../general/pagination/reducer.js'
 import productImporter from './products/prodImporter/reducer.js'
 import search from '../../general/search/reducer.js'
 import clientCategories from './clientCategories/reducer.js'
+import sales from './sales/reducer.js'
+import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 
 export default combineReducers({
   users,
@@ -35,5 +37,7 @@ export default combineReducers({
   pagination,
   productImporter,
   adminSearch: search('adminSearch'),
-  clientCategories
+  clientCategories,
+  sales,
+  reprintInvoice
 })
