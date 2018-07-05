@@ -5,7 +5,6 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {userSelected, setClient} from './actions'
-import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -21,34 +20,6 @@ const Mousetrap = require('mousetrap')
   }
 })
 export default class Clients extends React.Component {
-
-  componentWillMount () {
-
-    const _this = this
-    // LOAD THE DEFAULT CLIENT
-    const setClientPromise = new Promise((resolve, reject) => {
-      const kwargs = {
-        lookUpField: 'code',
-        url: '/api/clients/',
-        lookUpValue: '00',
-        lookUpName: 'código',
-        modelName: 'Clientes'
-      }
-      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      setClient(kwargs, resolve, reject)
-    })
-
-    setClientPromise.then((data) => {
-      console.log(data)
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      const client = data.results[0]
-      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
-    }).catch((err) => {
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('ERROR', 'No existe un cliente general, por favor cree uno con el código "00" para las ventas sin cliente.')
-      console.log(err)
-    })
-  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.clientSelected != this.props.clientSelected) {

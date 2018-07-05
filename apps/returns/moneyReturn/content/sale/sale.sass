@@ -30,25 +30,32 @@
       display: flex
       align-items: center
       justify-content: center
-      width: 15%
+      width: 10%
+    &-returned
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 10%
     &-total
       display: flex
       align-items: center
       justify-content: flex-start
-      padding-right: 30px
-      width: 20%
+      padding: 0 10px
+      width: 15%
     &-add
       display: flex
       align-items: center
       justify-content: flex-end
       padding-right: 30px
       width: 5%
+    & .alignLeft
+      justify-content: flex-start
+    
     @media screen and (max-width: 800px)
       display: none
   &-body
     height: calc(100% - 40px)
     overflow-x: auto
-    padding-right: 5px
     &-item
       padding: 1px 5px
       border: 1px solid #cacaca
@@ -68,6 +75,10 @@
       &-description
         width: 50%
       &-qty
+        width: 30%
+        & input
+          font-size: 13px
+      &-returned
         width: 30%
         & input
           font-size: 13px
@@ -112,13 +123,18 @@
           display: flex
           align-items: center
           justify-content: center
-          width: 15%
+          width: 10%
+        &-returned
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 10%
         &-total
           display: flex
           align-items: center
           justify-content: flex-start
-          padding-right: 10px
-          width: 20%
+          padding: 0 10px
+          width: 15%
         &-add
           display: flex
           align-items: center
@@ -129,3 +145,14 @@
             cursor: pointer
             &:hover
               font-size: 18px
+    & .all-returned
+      color: #cacaca
+      & i
+        display: none
+        cursor: none
+    & .already-added
+      color: #a50404
+      & i
+        display: none
+        cursor: none
+         

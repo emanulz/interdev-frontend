@@ -1,5 +1,5 @@
 const stateConst = {
-  fullWidth: false
+  fullWidth: true
 }
 
 export default function reducer(state = stateConst, action) {

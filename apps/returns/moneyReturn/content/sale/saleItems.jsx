@@ -3,26 +3,38 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {addToReturn} from '../return/actions.js'
+import {addToReturn, getAlreadyReturnedQty} from '../return/actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
-    sale: store.sale.saleActive
+    sale: store.sale.saleActive,
+    returnItems: store.returnCart.returnItems
   }
 })
 export default class CartItems extends React.Component {
 
-  addItem(item) {
-    const cart = this.props.cart
-    this.props.dispatch(addToReturn(item, item.qty, cart))
+  addItem(item, alreadyIncart) {
+    if (alreadyIncart) {
+      alertify.alert('ERROR', `Usted está intentando agregar un elemento que ya fue agregado modificando los atributos,
+                               por favor no intente modificar la página, un EMAIL ha sido enviado a los desarrolladores con el usuario que intenta realizar la acción`)
+      return false
+    }
+    const alreadyReturned = getAlreadyReturnedQty(item, this.props.sale)
+    const qty = parseFloat(item.qty) - alreadyReturned
+    this.props.dispatch(addToReturn(item, qty, alreadyReturned))
   }
+
   render() {
 
     const sale = this.props.sale
     const items2 = sale.cart
       ? sale.cart.cartItems.map((item, index) => {
-
-        return <div className='cart-body-item' key={item.product.id} >
+        const alreadyReturned = getAlreadyReturnedQty(item, sale)
+        const alreadyIncart = this.props.returnItems.find(row => { return row.id == item.product.id })
+        const alreadyAddedClass = alreadyIncart ? 'already-added' : ''
+        const grayedClass = alreadyReturned >= parseFloat(item.qty) ? 'cart-body-item all-returned' : 'cart-body-item'
+        return <div className={`${grayedClass} ${alreadyAddedClass}`} key={item.product.id} >
 
           <div className='cart-body-item-code'>
             <h5>Código</h5>
@@ -36,13 +48,17 @@ export default class CartItems extends React.Component {
             <h5>Cantidad</h5>
             {item.qty}
           </div>
+          <div className='cart-body-item-returned'>
+            <h5>Devuelto</h5>
+            {alreadyReturned}
+          </div>
           <div className='cart-body-item-total'>
             <h5>Total</h5>
               ₡ {item.totalWithIv.formatMoney(2, ',', '.')}
           </div>
           <div className='cart-body-item-add'>
             <h5>Agregar</h5>
-            <i className='fa fa-chevron-right' onClick={this.addItem.bind(this, item)} />
+            <i className='fa fa-chevron-right' onClick={this.addItem.bind(this, item, alreadyIncart)} />
           </div>
 
         </div>

@@ -22,7 +22,7 @@ export default class Sale extends React.Component {
         <div className='cart-header-description'>
           <h5>Art</h5>
         </div>
-        <div className='cart-header-qty'>
+        <div className='cart-header-qty alignLeft'>
           <h5>Cant</h5>
         </div>
         <div className='cart-header-total'>

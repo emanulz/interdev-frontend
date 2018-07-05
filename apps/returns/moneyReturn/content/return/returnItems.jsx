@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {removeFromReturn, updateTotals} from '../return/actions.js'
+import {removeFromReturn, updateTotals, updateQty} from '../return/actions.js'
 
 @connect((store) => {
   return {
@@ -23,6 +23,19 @@ export default class CartItems extends React.Component {
 
   }
 
+  qtyInputChange(code, ev) {
+
+    const qty = parseFloat((ev.target.value))
+      ? ev.target.value
+      : 0
+    this.props.dispatch(updateQty(code, qty, this.props.returnCartItems))
+
+  }
+
+  fieldFocus(ev) {
+    ev.target.select()
+  }
+
   removeItem(uuid) {
     this.props.dispatch(removeFromReturn(this.props.returnCartItems, uuid))
   }
@@ -30,6 +43,16 @@ export default class CartItems extends React.Component {
 
     const items = this.props.returnCartItems
       ? this.props.returnCartItems.map((item, index) => {
+
+        const qtyField = <input
+          id={`qty${item.originalItem.product.code}`}
+          // disabled={this.props.disabled || this.props.presaleLoaded}
+          onChange={this.qtyInputChange.bind(this, item.uuid)}
+          onFocus={this.fieldFocus.bind(this)}
+          type='number'
+          className='form-control'
+          value={item.qty}
+        />
 
         return <div className='cart-body-item' key={item.originalItem.product.id} >
 
@@ -43,7 +66,7 @@ export default class CartItems extends React.Component {
           </div>
           <div className='cart-body-item-qty'>
             <h5>Cantidad</h5>
-            {item.qty}
+            {qtyField}
           </div>
           <div className='cart-body-item-total'>
             <h5>Total</h5>

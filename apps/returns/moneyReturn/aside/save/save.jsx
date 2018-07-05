@@ -32,7 +32,7 @@ export default class SaveBtn extends React.Component {
     })
     const returnItem = {
       'return_list': JSON.stringify(returnList),
-      'return_method': 'VOUCHER',
+      'return_method': 'CASH',
       'destination_warehouse_id': warehouse
     }
 

@@ -28,9 +28,13 @@ export default class Sale extends React.Component {
         <div className='cart-header-qty'>
           <h5>Cant</h5>
         </div>
+        <div className='cart-header-returned'>
+          <h5>Devuelto</h5>
+        </div>
         <div className='cart-header-total'>
           <h5>Total IVI</h5>
         </div>
+        <div className='cart-header-add' />
       </div>
 
       <SaleItems />
