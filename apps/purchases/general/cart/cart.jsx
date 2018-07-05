@@ -8,9 +8,7 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
-    // defaultConfig: store.config.defaultSales,
-    // userConfig: store.config.userSales,
-    // productSearchpanelVisible: store.searchProducts.visible
+    discount_mode: store.cart.discount_mode,
   }
 })
 export default class Cart extends React.Component {
@@ -61,6 +59,10 @@ export default class Cart extends React.Component {
     })
   }
 
+  discountRadioChanged(e){
+    this.props.dispatch({type:'SET_DISCOUNT_MODE', payload: e.target.value})
+  }
+
   // Main Layout
   render() {
 
@@ -79,7 +81,15 @@ export default class Cart extends React.Component {
           <h5>Costo Und</h5>
         </div>
         <div className="cart-header-discount">
-          <h5>Descuento</h5>
+          <h5>Descuento </h5>
+            <div className="cart-header-discount-radio" >
+              <input type="radio" name="discount_mode" value="money_based" onChange={this.discountRadioChanged.bind(this)} />
+                ₡
+            </div> 
+            <div className="cart-header-discount-radio" >
+              <input type="radio" name="discount_mode" value="percent_based" defaultChecked={this.props.discount_mode==='percent_based'} onChange={this.discountRadioChanged.bind(this)}/>
+                %
+            </div>
         </div>
         <div className="cart-header-discountToClient">
           <h5>A Cliente</h5>

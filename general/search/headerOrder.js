@@ -2,7 +2,6 @@ export function getHeaderOrder(model, salesWarehouse) {
 
   let get_existences_closure = (item)=>{
       function getExistences(item){
-      console.log("SALES WAREHOUSE!! --> " + salesWarehouse)
       if(salesWarehouse === undefined || salesWarehouse ===''){
         return "0"
       }

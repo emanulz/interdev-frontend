@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateItem} from '../product/actions.js'
-import { inspect } from 'util';
 
 @connect(store=>{
     return {
@@ -9,6 +8,7 @@ import { inspect } from 'util';
         cartItems: store.cart.cartItems,
         orderTransport: store.cart.orderTransport,
         cartSubtotal: store.cart.cartSubtotal,
+        discount_mode: store.cart.discount_mode,
     }
 })
 export default class ProductDetail extends React.Component {
@@ -20,6 +20,16 @@ export default class ProductDetail extends React.Component {
             for(let line of this.props.cartItems){
                 e.target.value = line.wanted_price_ivi
                 e.target.orderTransport = nextProps.orderTransport
+                e.target.discount_mode = this.props.discount_mode
+                this.updateWantedPrice(line.product.code, e)
+            }
+        }else if(this.props.discount_mode !== nextProps.discount_mode){
+            let e ={}
+            e.target={}
+            for(let line of this.props.cartItems){
+                e.target.value = line.wanted_price_ivi
+                e.target.orderTransport = this.props.orderTransport
+                e.target.discount_mode = nextProps.discount_mode
                 this.updateWantedPrice(line.product.code, e)
             }
         }
@@ -42,6 +52,7 @@ export default class ProductDetail extends React.Component {
                 itemsInCart: this.props.cartItems,
                 orderTransport: this.props.orderTransport,
                 cartSubtotal: this.props.cartSubtotal,
+                discount_mode: this.props.discount_mode,
                 target_utility: new_utility
             }
             this.props.dispatch(updateItem(kwargs))
@@ -68,6 +79,7 @@ export default class ProductDetail extends React.Component {
                 itemsInCart: this.props.cartItems,
                 orderTransport: e.target.orderTransport==undefined?this.props.orderTransport:e.target.orderTransport,
                 cartSubtotal: this.props.cartSubtotal,
+                discount_mode: e.target.discount_mode==undefined?this.props.discount_mode:e.target.discount_mode,
                 target_price: newWantedPrice
             }
             this.props.dispatch(updateItem(kwargs))

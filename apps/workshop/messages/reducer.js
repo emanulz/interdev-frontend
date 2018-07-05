@@ -7,6 +7,18 @@ const stateConst = {
 export default function reducer(state = stateConst, action){
     switch (action.type){
 
+        case 'CANT_CLOSE_WITHOUT_MOVES':
+        {
+          alertify.alert('No permitido', `No se puede cerrar una orden de trabajo sin movimientos.`)
+          break  
+        }
+
+        case 'CANT_CLOSE_WITHOUT_MOVES_NO_REPAIR':
+        {
+          alertify.alert('No permitido', `No se puede cerrar una orden de trabajo como "Sin reparación" sin un movimiento informativo.`)
+          break  
+        }
+
         case 'CANT_CLOSE_NO_REPAIR_WITH_PARTS_REQUEST':
         {
             alertify.alert('ERROR: NO SE PUEDE CERRAR ORDEN!', 'Para cerrar una orden como  "SIN REPARACIÓN" es necesario eliminar sus requisiciones de parte. ' + 

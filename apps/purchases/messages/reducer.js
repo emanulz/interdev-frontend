@@ -7,6 +7,12 @@ const stateConst = {
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
 
+      case 'CANT_PRINT_NOT_CLOSED_PURCHASE':
+      {
+        alertify.alert('No permitido', `No se permite imprimir tiquete de ingreso de producto de una compra no cerrada`)
+        break       
+      }
+
       case 'PRODUCT_ALREADY_IN_CART':
       {
         alertify.alert('No permitido', `El código ${action.payload} ya se incluyo en el ingreso de compra`)

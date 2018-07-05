@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import formatMoney from '../../../../utils/formatMoney'
 
 @connect(store=>{
     return{
@@ -13,7 +12,8 @@ import formatMoney from '../../../../utils/formatMoney'
         invoiceDate: store.purchase.invoiceDate,
         invoiceNumber: store.purchase.invoiceNumber,
         is_closed: store.purchase.is_closed,
-        orderTransport: store.cart.orderTransport
+        orderTransport: store.cart.orderTransport,
+        
     }
 })
 export default class Totals extends React.Component {
@@ -23,13 +23,6 @@ export default class Totals extends React.Component {
         if (transport == -1)return
         this.props.dispatch({type:'SET_TRANSPORT_AMOUNT', payload:transport})
         
-    }
-
-    discountAmountChanged(e){
-        if(e.target.value===''){this.props.dispatch({type:'SET_DISCOUNT_AMOUNT', payload:0})}
-        const total = parseFloat(e.target.value)?parseFloat(e.target.value):-1
-        if(total==-1){return}
-        this.props.dispatch({type:'SET_DISCOUNT_AMOUNT', payload:total})
     }
 
     taxesAmountChanged(e){
