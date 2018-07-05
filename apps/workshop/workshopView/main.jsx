@@ -88,7 +88,7 @@ export default class WorkshopView extends React.Component {
         //check if the order is already closed, if so, print
         if(!wo.is_closed){
             //check if the order has at least a mo or in movement before letting it be closed
-            if(this.props.laborList.length < 1 && this.props.informativeList.length <1){
+            if(this.props.laborList.length < 1 && this.props.informativeList.length <1 && close_order){
                 this.props.dispatch({type:'CANT_CLOSE_WITHOUT_MOVES'})
                 return
             }
