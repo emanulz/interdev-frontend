@@ -6,6 +6,7 @@ import React from 'react'
 import routes from './routes.js'
 import {connect} from 'react-redux'
 import { checkUserPermissions } from '../../../utils/checkPermissions';
+import {loadGlobalConfig} from '../../../utils/api.js'
 
 @connect((store)=>{
     return{
@@ -15,6 +16,9 @@ import { checkUserPermissions } from '../../../utils/checkPermissions';
 export default class WorkOrder extends React.Component{
 
     componentWillMount(){
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
 
         const permissions = {
             add: 'workshop.add_work_order',

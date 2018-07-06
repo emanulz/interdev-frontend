@@ -2,7 +2,6 @@ export function getHeaderOrder(model, salesWarehouse) {
 
   let get_existences_closure = (item)=>{
       function getExistences(item){
-      console.log("SALES WAREHOUSE!! --> " + salesWarehouse)
       if(salesWarehouse === undefined || salesWarehouse ===''){
         return "0"
       }
@@ -12,7 +11,6 @@ export function getHeaderOrder(model, salesWarehouse) {
 
     return getExistences(item)
   }
-
 
   item=>{return JSON.parse(item)}
 
@@ -51,7 +49,7 @@ export function getHeaderOrder(model, salesWarehouse) {
     }, {
       field: 'description',
       text: 'Descripción'
-    },{
+    }, {
       type: 'function_process',
       field: 'inventory_existent',
       text: 'Existencias',

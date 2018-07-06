@@ -1,10 +1,48 @@
 const stateConst = {
-    company: {}
+    company: {},
+    salesWarehouse: '',
+    workshopWarehouse: '',
   }
   
   export default function reducer(state = stateConst, action) {
   
     switch (action.type) {
+
+      case 'FETCH_SALES_WAREHOUSE_FULFILLED':
+      {
+        return {
+          ...state,
+          salesWarehouse: action.payload
+        }
+  
+      } // case
+  
+      case 'FETCH_SALES_WAREHOUSE_REJECTED':
+      {
+        return {
+          ...state,
+          salesWarehouse: ''
+        }
+  
+      } // case
+  
+      case 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED':
+      {
+        return {
+          ...state,
+          workshopWarehouse: action.payload
+        }
+  
+      } // case
+  
+      case 'FETCH_WORKSHOP_WAREHOUSE_REJECTED':
+      {
+        return {
+          ...state,
+          workshopWarehouse: ''
+        }
+  
+      } // case
   
       case 'FETCH_CONFIG_FULFILLED':
       {

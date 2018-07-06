@@ -1,0 +1,76 @@
+.single-product-panel
+  font-family: 'Source Sans Pro', sans-serif
+  height: 100%
+  width: 70%
+  position: absolute
+  top: 60px
+  right: -75%
+  transition: all 0.2s ease-in-out
+  display: flex
+  flex-flow: column
+  z-index: 2000
+  box-shadow: -2px 5px 10px 1px rgba(0,0,0,.176)
+  background-color: #efefef
+  &.visible
+    right: 0
+  &-header
+    height: 50px
+    background-color: $SECONDARY-COLOR-ACCENT
+    color: white
+    text-align: center
+    display: flex
+    flex-flow: column
+    justify-content: center
+    & i
+        position: absolute
+        right: 5px
+        top: 2px
+        cursor: pointer
+        font-size: 20px
+        &:hover
+            font-size: 25px
+  &-add
+    padding: 15px 20px
+    display: flex
+    flex-flow: row
+    justify-content: flex-start 
+    & button
+      width: 180px
+    & input
+      padding-left: 10px
+      width: 180px
+      margin-left: 10px
+  &-content
+    flex-grow: 1
+    padding: 0 20px
+    display: flex
+    flex-flow: row
+    &-data
+      width: 60%
+      & table
+        width: 100%
+        & th
+          width: 180px
+          background-color: $PRIMARY-COLOR
+          color: white
+          font-size: 15px
+          height: 50px
+          padding-left: 10px
+          vertical-align: middle
+          border-bottom: 1px solid white
+        & td
+          padding-left: 10px
+          font-size: 17px
+          vertical-align: middle
+    &-image
+      width: 40%
+      text-align: center
+      & h1
+        font-size: 18px
+      & img
+        margin-top: 20px
+        max-width: 100%
+
+
+
+

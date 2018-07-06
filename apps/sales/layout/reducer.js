@@ -1,6 +1,6 @@
 const stateConst = {
-  topBarToggleVisible: false,
-  sideMenuVisible: true
+  topBarToggleVisible: true,
+  sideMenuVisible: false
 }
 
 export default function reducer(state = stateConst, action) {

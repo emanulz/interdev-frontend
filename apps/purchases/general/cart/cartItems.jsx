@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {updateTotals, removeFromCart} from './actions'
 import {addSubOne, updateItem} from '../product/actions'
 import alertify from 'alertifyjs'
-import { inspect } from 'util';
+
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -18,6 +18,7 @@ const Mousetrap = require('mousetrap')
     is_closed: store.purchase.is_closed,
     orderTransport: store.cart.orderTransport,
     cartSubtotal: store.cart.cartSubtotal,
+    discount_mode: store.cart.discount_mode,
   }
 })
 export default class CartItems extends React.Component {
@@ -25,7 +26,7 @@ export default class CartItems extends React.Component {
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
 
-    this.props.dispatch(updateTotals(this.props.inCart, this.props.cartTaxes, this.props.orderTransport))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.cartTaxes, this.props.orderTransport, this.props.discount_mode))
 
     // Auto Scroll To end of container
     const elem = document.getElementById('cart-body')
@@ -103,6 +104,7 @@ export default class CartItems extends React.Component {
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
+      discount_mode: this.props.discount_mode,
       //what changed
       subtotal: subTotal,
       
@@ -122,6 +124,7 @@ export default class CartItems extends React.Component {
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
+      discount_mode: this.props.discount_mode,
       //what changed
       qty: qty,
     }
@@ -149,6 +152,7 @@ export default class CartItems extends React.Component {
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
+      discount_mode: this.props.discount_mode,
       //what changed
       target_utility: tUtility,
     }
@@ -169,6 +173,7 @@ export default class CartItems extends React.Component {
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
+      discount_mode: this.props.discount_mode,
       //what changed
       discount: discount,
     }
@@ -184,6 +189,7 @@ export default class CartItems extends React.Component {
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
+      discount_mode: this.props.discount_mode,
       //what changed
       applyToClient: apply,
     }

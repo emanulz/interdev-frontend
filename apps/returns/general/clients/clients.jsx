@@ -5,53 +5,21 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {userSelected, setClient} from './actions'
-import {recalcCart} from '../../general/product/actions'
-import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
     clients: store.clients.clients,
     clientSelected: store.clients.clientSelected,
-    cart: store.cart.cartItems,
-    globalDiscount: store.cart.globalDiscount,
     client: store.clients.clientSelected,
+    sale: store.sale.saleActive,
     users: store.clients.users,
     user: store.clients.userSelected,
-    // movements: store.clientmovements.movements,
     debt: store.clients.clientSelectedDebt,
     disabled: store.completed.completed
   }
 })
 export default class Clients extends React.Component {
-
-  componentWillMount () {
-
-    const _this = this
-    // LOAD THE DEFAULT CLIENT
-    const setClientPromise = new Promise((resolve, reject) => {
-      const kwargs = {
-        lookUpField: 'code',
-        url: '/api/clients/',
-        lookUpValue: '00',
-        lookUpName: 'código',
-        modelName: 'Clientes'
-      }
-      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      setClient(kwargs, resolve, reject)
-    })
-
-    setClientPromise.then((data) => {
-      console.log(data)
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      const client = data.results[0]
-      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
-    }).catch((err) => {
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('ERROR', 'No existe un cliente general, por favor cree uno con el código "00" para las ventas sin cliente.')
-      console.log(err)
-    })
-  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.clientSelected != this.props.clientSelected) {

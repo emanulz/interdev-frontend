@@ -5,7 +5,7 @@ const uuidv1 = require('uuid/v1')
 import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
-import { inspect } from 'util'
+
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
@@ -81,8 +81,6 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 // export function updateItem(search_key, is_search_uuid, itemsInCart, qty, subtotal, tUtility, targetPrice,){
 export function updateItem(kwargs){
 
-  //const cartItems = cons
-  //console.log("update kwargs --> " +  inspect(kwargs))
   let itemsInCart = kwargs.itemsInCart
   const index = kwargs.is_search_uuid
   ?itemsInCart.findIndex(item=> item.uuid==kwargs.id)
@@ -114,7 +112,12 @@ export function updateItem(kwargs){
   //add the per unit transport cost to the unit_cost
   unit_cost += transport_per_line_item
   if(reflectOnCost){
-    unit_cost -= newDiscount/qtyNum
+    if(kwargs.discount_mode==='percent_based'){
+      unit_cost -= (newDiscount/100.0*kwargs.itemsInCart[index].subtotal)/qtyNum
+    }else{
+      unit_cost -= newDiscount/qtyNum
+    }
+    
   }
 
   const updateKwargs = {
@@ -180,7 +183,6 @@ function calculateRealUtility(cost, target_utility, target_price,
 
     case 'byPrice':
     {
-
       let int_target_price = Math.round(target_price)
       let coin_round_modulus = int_target_price  % round_to_coin
       wanted_price = int_target_price - coin_round_modulus
@@ -246,7 +248,6 @@ function updatedCartItem(kwargs) {
   //keep the subtotal the same
   const uuid = kwargs.itemsInCart[kwargs.index].uuid
   let prod = kwargs.itemsInCart[kwargs.index].product
-  //prod.cost = kwargs.unit_cost
 
   return {
     uuid: uuid,

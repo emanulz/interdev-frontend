@@ -215,13 +215,34 @@ export default class AdminTable extends React.Component {
               break
             }
 
+            case 'link_text':
+            {
+
+              item = <td key={`${el[idField]}_${header.field}_tl`}>
+                {/* <Link to={`/admin/${model}/edit#${itemToRender}`}>
+                                              {itemToRender}
+                                          </Link> */}
+                <a target='_blank' href={`${header.baseLink}/${itemToRender}`}>
+                  {header.textToRender}
+                </a>
+              </td>
+              break
+            }
+
             case 'function_process':
             {
               const amount = header.worker_method(itemToRender)
               item = <td key={`${el[idField]}_${header.field}`}>
                 {amount}
-            </td>
-            break
+              </td>
+              break
+            }
+            case 'function_on_click':
+            {
+              item = <td key={`${el[idField]}_${header.field}_fclick`}>
+                <a onClick={header.onClickFunction.bind(this, itemToRender)} href='#' >{header.textToRender}</a>
+              </td>
+              break
             }
             case 'link_mask':
             {
