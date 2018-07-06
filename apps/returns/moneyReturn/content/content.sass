@@ -29,20 +29,25 @@
       display: flex
       flex-flow: column
       justify-content: center
-      height: 50px
+      min-height: 50px
       font-size: 20px
-      & i
+      position: relative
+      & span
         position: absolute
+        width: 80px
         right: 10px
-        font-size: 20px
         cursor: pointer
+        font-size: 16px
+        & i
+          font-size: 18px
+          margin-left: 5px
         &:hover
-          font-size: 24px
+          color: #cacaca
     &-content
       overflow-y: auto
       flex-grow: 1
     &-footer
-      height: 60px
+      min-height: 60px
       width: 100%
       background-color: #495c7c
       text-align: center
@@ -70,13 +75,17 @@
       justify-content: center
       height: 50px
       font-size: 20px
-      & i
+      & span
         position: absolute
+        width: 80px
         right: 10px
-        font-size: 20px
         cursor: pointer
+        font-size: 16px
+        & i
+          font-size: 18px
+          margin-left: 5px
         &:hover
-          font-size: 24px
+          color: #cacaca
     &-content
       flex-grow: 1
       overflow-y: auto

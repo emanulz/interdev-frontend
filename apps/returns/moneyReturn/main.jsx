@@ -6,6 +6,7 @@ import React from 'react'
 // import { getItemDispatch } from '../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
+import PrintReturn from '../../../general/printReturn/printReturnPanel/printReturnPanel.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {setSale} from './actions.js'
 
@@ -47,6 +48,7 @@ export default class Sale extends React.Component {
     return <div className='return'>
       <Content />
       <Aside />
+      <PrintReturn />
 
     </div>
 

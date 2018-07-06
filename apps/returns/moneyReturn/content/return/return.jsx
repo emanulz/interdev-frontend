@@ -9,7 +9,7 @@ import {connect} from 'react-redux'
   return {
   }
 })
-export default class Sale extends React.Component {
+export default class Return extends React.Component {
 
   // Main Layout
   render() {

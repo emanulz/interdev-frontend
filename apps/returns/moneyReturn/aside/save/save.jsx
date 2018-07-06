@@ -11,7 +11,8 @@ import alertify from 'alertifyjs'
     warehouse_id: store.config.salesWarehouse,
     warehouse2_id: store.config.workshopWarehouse,
     sale: store.sale.saleActive,
-    returnItems: store.returnCart.returnItems
+    returnItems: store.returnCart.returnItems,
+    returnCart: store.returnCart
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -19,6 +20,24 @@ import alertify from 'alertifyjs'
   }
 })
 export default class SaveBtn extends React.Component {
+  preSaveBtn() {
+    const _this = this
+    if (this.props.returnCart.returnTotal > 0) {
+      alertify.confirm('CREAR', `Desea guardar la nota de crédito para la factura #${this.props.sale.consecutive},
+      por un monto de ₡${this.props.returnCart.returnTotal}? Esta acción no se puede deshacer.`,
+      function() {
+        _this.saveBtn()
+      }, function() {
+        return true
+      }).set('labels', {
+        ok: 'Si',
+        cancel: 'No'
+      })
+    } else {
+      alertify.alert('ERROR', 'No se puede crear una nota de crédito con monto ₡ 0.00.')
+    }
+
+  }
 
   saveBtn() {
     // const sales = this.props.sales
@@ -50,13 +69,13 @@ export default class SaveBtn extends React.Component {
     })
     // SAVE PROCESS
     updatePromise.then((data) => {
-      alertify.alert('COMPLETETADO', 'PROCESO COMPLETO')
+      alertify.alert('COMPLETETADO', 'Devolución y nota de crédito creadas correctamente.')
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(data)
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {
-        alertify.alert('ERROR', `${err.response.data[Object.keys(err.response.data)[0]]}`)
+        alertify.alert('ERROR', `Hubo un error al guardar la devolución, error: ${err.response.data}`)
       } else {
         alertify.alert('ERROR', `Hubo un error al guardar la devolución, error: ${err}`)
       }
@@ -67,9 +86,11 @@ export default class SaveBtn extends React.Component {
 
   render() {
 
-    return <div onClick={this.saveBtn.bind(this)} className='save-btn'>
-      Registrar
-      <i className='fa fa-credit-card' aria-hidden='true' />
+    return <div onClick={this.preSaveBtn.bind(this)} className='save-btn'>
+      <div>
+        Registrar
+        <i className='fa fa-credit-card' aria-hidden='true' />
+      </div>
     </div>
 
   }

@@ -56,6 +56,14 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_RETURN_ITEMS':
+    {
+      return {
+        ...state,
+        returnItems: []
+      }
+    } // case
+
     case 'UPDATE_RETURN_TOTALS':
     {
 

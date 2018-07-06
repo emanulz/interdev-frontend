@@ -7,7 +7,8 @@ import {removeFromReturn, updateTotals, updateQty} from '../return/actions.js'
 
 @connect((store) => {
   return {
-    returnCartItems: store.returnCart.returnItems
+    returnCartItems: store.returnCart.returnItems,
+    sale: store.sale.saleActive
   }
 })
 export default class CartItems extends React.Component {
@@ -28,7 +29,7 @@ export default class CartItems extends React.Component {
     const qty = parseFloat((ev.target.value))
       ? ev.target.value
       : 0
-    this.props.dispatch(updateQty(code, qty, this.props.returnCartItems))
+    this.props.dispatch(updateQty(code, qty, this.props.returnCartItems, this.props.sale))
 
   }
 

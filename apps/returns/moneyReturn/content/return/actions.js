@@ -75,9 +75,8 @@ export function updateTotals(inCart) {
 }
 
 // UPDATE QTY IN RETURN, check if the qty is not more than the total in cart
-export function updateQty (code, qty, itemsInCart) {
+export function updateQty (code, qty, itemsInCart, sale) {
   const qtyNum = parseFloat(qty)
-  console.log(qtyNum)
   const indexInCart = itemsInCart.findIndex(item => item.originalItem.uuid == code)
 
   const product = itemsInCart[indexInCart].originalItem.product
@@ -87,15 +86,12 @@ export function updateQty (code, qty, itemsInCart) {
     return {type: 'NOT', payload: -1}
   }
 
-  const sameInCart = itemsInCart.filter(cart => cart.originalItem.product.code == code || cart.originalItem.product.barcode == code)
-  // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
-  let qtyToCheck = qtyNum
+  const alreadyReturned = getAlreadyReturnedQty(itemsInCart[indexInCart].originalItem, sale)
+  // console.log('ALREADY RETURNED --->', alreadyReturned)
   // IF THERE ARE ITEMS ALREADY IN CART
-  if (sameInCart.length > 0) {
-    // LOOP ADDING QTY OF ITEMS ALREADY IN CART
-    for (let i = 0; i < sameInCart.length; i++) {
-      qtyToCheck = qtyToCheck + sameInCart[i].qty
-    }
+  if ((qtyNum + alreadyReturned) > parseFloat(itemsInCart[indexInCart].originalItem.qty)) {
+    alertify.alert('ERROR', 'No puede agregar mas elementos del total de la línea en la venta oroginal.')
+    return false
   }
   // CALC THE NEW TOTAL SUB AND TOTAL IV
   const subtotal = (itemsInCart[indexInCart].originalItem.subtotal / itemsInCart[indexInCart].originalItem.qty) * qtyNum
@@ -121,10 +117,17 @@ export function updateQty (code, qty, itemsInCart) {
 }
 
 export function getAlreadyReturnedQty(item, sale) {
-  const itemReturns = sale.returns_collection.filter(row => { return row.id == item.product.id })
-  let alreadyReturned = 0
-  for (let i = 0; i < itemReturns.length; i++) {
-    alreadyReturned += parseFloat(itemReturns[i]['ret_qty'])
+
+  try {
+    const itemReturns = sale.returns_collection.filter(row => { return row.id == item.product.id })
+    let alreadyReturned = 0
+    for (let i = 0; i < itemReturns.length; i++) {
+      alreadyReturned += parseFloat(itemReturns[i]['ret_qty'])
+    }
+    return alreadyReturned
+
+  } catch (err) {
+    return 0
   }
-  return alreadyReturned
+
 }

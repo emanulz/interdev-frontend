@@ -13,6 +13,7 @@ import sale from './moneyReturn/content/sale/reducer.js'
 import returnCart from './moneyReturn/content/return/reducer.js'
 import search from '../../general/search/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
+import printReturn from '../../general/printReturn/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -27,5 +28,6 @@ export default combineReducers({
   sale,
   returnCart,
   pagination,
-  saleSearch: search('saleSearch')
+  saleSearch: search('saleSearch'),
+  printReturn
 })
