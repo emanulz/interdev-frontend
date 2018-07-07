@@ -4,14 +4,16 @@ import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 
 @connect((store) => {
   return {
-    returnObject: store.printReturn.return_object
+    returnObject: store.printReturn.return_object,
+    creditNote: store.printReturn.credit_note
   }
 })
 export default class Data extends React.Component {
 
   render() {
     const returnObject = this.props.returnObject
-    const user = Object.keys(returnObject).length > 0 ? returnObject.user : ''
+    const creditNote = this.props.creditNote
+    const user = returnObject.user ? returnObject.user : ''
 
     const date = returnObject.created
       ? `${formatDateTimeAmPm(returnObject.created)}`
@@ -21,8 +23,9 @@ export default class Data extends React.Component {
       : user.length ? `${user.username}` : ''
 
     const client = returnObject.client ? `${returnObject.client.code} - ${returnObject.client.name} ${returnObject.client.last_name}` : '00 - Cliente de Contado'
-    const id = returnObject.consecutive ? returnObject.consecutive : '0001'
-
+    const saleId = returnObject.sale_consecutive ? returnObject.sale_consecutive : '0001'
+    const returnId = returnObject.consecutive ? returnObject.consecutive : '0001'
+    const creditNoteId = creditNote.consecutive ? creditNote.consecutive : '0001'
     const seller = cashierName
 
     return <div className='print-return-compact-invoice-data'>
@@ -34,17 +37,23 @@ export default class Data extends React.Component {
             <td>{date}</td>
           </tr>
           <tr>
-            <th>Factura:</th>
-            <td>{id}</td>
-
+            <th>Devolución #:</th>
+            <td>{returnId}</td>
+          </tr>
+          <tr>
+            <th>N.Cred #:</th>
+            <td>{creditNoteId}</td>
+          </tr>
+          <tr>
+            <th>Factura Venta:</th>
+            <td>{saleId}</td>
           </tr>
           <tr>
             <th>Cliente:</th>
             <td>{client}</td>
           </tr>
-
           <tr>
-            <th>Vendedor:</th>
+            <th>Cajero:</th>
             <td>{seller}</td>
           </tr>
 

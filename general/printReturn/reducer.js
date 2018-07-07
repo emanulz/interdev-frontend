@@ -47,18 +47,18 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_PRINT_RETURN_RETURN':
     {
-      const returnObj = action.payload
-      let returnObject = {}
-      let creditNote = {}
-      let voucher = {}
+      const returnObject = action.payload.return_object
+      const creditNote = action.payload.credit_note
+      const voucher = action.payload.voucher
       try {
-        returnObject = JSON.parse(returnObj.return_object)
-        creditNote = JSON.parse(returnObj.credit_note)
-        voucher = JSON.parse(returnObj.voucher)
+        returnObject.client = JSON.parse(returnObject.client)
+        returnObject.sale_cart = JSON.parse(returnObject.sale_cart)
+        returnObject.user = JSON.parse(returnObject.user)
+        returnObject.return_list = JSON.parse(returnObject.return_list)
       } catch (err) { console.log(err) }
       return {
         ...state,
-        returnObject: returnObject,
+        return_object: returnObject,
         credit_note: creditNote,
         voucher: voucher
       }
@@ -68,7 +68,7 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        sale: {},
+        return_object: {},
         credit_note: {},
         voucher: {}
       }

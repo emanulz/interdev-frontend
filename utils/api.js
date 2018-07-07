@@ -180,7 +180,6 @@ export function getPaginationItemDispatch(kwargs) {
   return function(dispatch) {
     axios.get(url).then(function(response) {
       dispatch({type: successType, payload: response.data.results})
-      console.log(response.data)
       const paginationPayload = {
         total: response.data.count,
         next: response.data.next,

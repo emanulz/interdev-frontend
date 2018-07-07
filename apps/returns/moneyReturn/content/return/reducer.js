@@ -5,7 +5,8 @@ const stateConst = {
   returnTaxes: 0, // total amount of taxes in return in currency
   returnTotal: 0, // return total after discount and taxes
   returnItemActive: false,
-  totalNotRounded: 0
+  totalNotRounded: 0,
+  returns: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -64,6 +65,11 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_RETURN_ALL':
+    {
+      return stateConst
+    } // case
+
     case 'UPDATE_RETURN_TOTALS':
     {
 
@@ -97,6 +103,30 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         returnItemActive: action.payload
+      }
+    } // case
+
+    case 'FETCH_RETURNS_FULFILLED':
+    {
+      return {
+        ...state,
+        returns: action.payload
+      }
+    } // case
+
+    case 'FETCH_RETURNS_REJECTED':
+    {
+      return {
+        ...state,
+        returns: {}
+      }
+    } // case
+
+    case 'CLEAR_RETURNS':
+    {
+      return {
+        ...state,
+        returns: {}
       }
     } // case
 

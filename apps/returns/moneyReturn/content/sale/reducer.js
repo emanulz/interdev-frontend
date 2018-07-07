@@ -34,6 +34,11 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_SALE_ALL':
+    {
+      return stateConst
+    } // case
+
     case 'FETCH_SALES_FULFILLED':
     {
       return {

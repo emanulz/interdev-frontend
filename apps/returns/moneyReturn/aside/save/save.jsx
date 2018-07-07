@@ -3,6 +3,8 @@ import React from 'react'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
+import {loadReturnToPrint} from '../../../../../general/printReturn/actions.js'
+import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
@@ -19,12 +21,12 @@ import alertify from 'alertifyjs'
     // movements: store.clientmovements.movements
   }
 })
-export default class SaveBtn extends React.Component {
+class SaveBtn extends React.Component {
   preSaveBtn() {
     const _this = this
     if (this.props.returnCart.returnTotal > 0) {
-      alertify.confirm('CREAR', `Desea guardar la nota de crédito para la factura #${this.props.sale.consecutive},
-      por un monto de ₡${this.props.returnCart.returnTotal}? Esta acción no se puede deshacer.`,
+      alertify.confirm('CREAR', `Desea guardar la devolución y nota de crédito para la factura
+      #${this.props.sale.consecutive}, por un monto de ₡${parseFloat(this.props.returnCart.returnTotal).formatMoney()}? Esta acción no se puede deshacer.`,
       function() {
         _this.saveBtn()
       }, function() {
@@ -69,9 +71,15 @@ export default class SaveBtn extends React.Component {
     })
     // SAVE PROCESS
     updatePromise.then((data) => {
-      alertify.alert('COMPLETETADO', 'Devolución y nota de crédito creadas correctamente.')
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      console.log(data)
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      const returnObjectCreated = JSON.parse(data)
+      _this.props.dispatch(loadReturnToPrint(returnObjectCreated.consecutive))
+      // CLEAR ALL REDUCERS
+      _this.props.dispatch({type: 'CLEAR_RETURN_ALL', payload: ''})
+      _this.props.dispatch({type: 'CLEAR_SALE_ALL', payload: ''})
+      _this.props.dispatch({type: 'SET_FULL_WIDTH', payload: ''})
+      // NAVIGATE TO THE RETURNS PAGE
+      _this.props.history.push('/returns')
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {
@@ -96,3 +104,6 @@ export default class SaveBtn extends React.Component {
   }
 
 }
+
+// EXPORT THE CLASS WITH ROUTER
+export default withRouter(SaveBtn)

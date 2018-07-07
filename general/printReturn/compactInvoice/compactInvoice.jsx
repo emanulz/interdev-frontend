@@ -14,9 +14,9 @@ export default class CompactInvoice extends React.Component {
 
       <Header />
       <Data />
-      {/* <Table />
+      <Table />
       <Totals />
-      <Notes /> */}
+      <Notes />
 
     </div>
 

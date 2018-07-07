@@ -15,6 +15,14 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'SET_FULL_WIDTH':
+    {
+      return {
+        ...state,
+        fullWidth: true
+      }
+    } // case
+
   } // switch
 
   return state // default return

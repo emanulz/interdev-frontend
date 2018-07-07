@@ -29,5 +29,6 @@ export default combineReducers({
   returnCart,
   pagination,
   saleSearch: search('saleSearch'),
+  returnSearch: search('returnSearch'),
   printReturn
 })

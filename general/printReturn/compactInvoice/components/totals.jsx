@@ -3,39 +3,31 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.reprintInvoice.sale
+    creditNote: store.printReturn.credit_note
   }
 })
 export default class Totals extends React.Component {
 
-  getPayCashAdvances(payObject) {
-    let total = 0
-    for (const item in payObject.csha) {
-      total += payObject.csha[item].amount
-    }
-    return total
-  }
-
   render() {
-    const sale = this.props.sale
+    const creditNote = this.props.creditNote
     // SET THE DEFAULT VALUES
     let total = 0
     let taxes = 0
-    let subTotalNoDiscount = 0
+    let subTotal = 0
     // LOAD ITEMS FROM SALE ONLY IF LOADED
-    if (Object.keys(sale).length > 0) {
-      total = sale.cart.cartTotal
-      taxes = sale.cart.cartTaxes
-      subTotalNoDiscount = sale.cart.cartSubtotalNoDiscount
+    if (Object.keys(creditNote).length > 0) {
+      total = parseFloat(creditNote.amount)
+      taxes = parseFloat(creditNote.taxes_amount)
+      subTotal = parseFloat(creditNote.subtotal_amount)
     }
 
-    return <div className='reprint-compact-invoice-totals'>
+    return <div className='print-return-compact-invoice-totals'>
 
       <table>
         <tbody>
           <tr>
             <th>Sub-total Dev</th>
-            <td>₡ {subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+            <td>₡ {subTotal.formatMoney(2, ',', '.')}</td>
 
           </tr>
           <tr>
