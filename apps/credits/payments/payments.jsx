@@ -83,7 +83,7 @@ export default class Update extends React.Component {
 
     if (event.target.checked) {
       const item = {
-        bill_: sale.id,
+        bill_id: sale.id,
         sale: sale,
         amount: Math.abs(parseFloat(sale.balance)),
         complete: true
