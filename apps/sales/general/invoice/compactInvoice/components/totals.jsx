@@ -9,7 +9,9 @@ import {connect} from 'react-redux'
     subTotalNoDiscount: store.cart.cartSubtotalNoDiscount,
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
-    payObject: store.pay.payObject
+    payObject: store.pay.payObject,
+    isExempt: store.cart.isExempt,
+    exemptAmount: store.cart.cartExemptAmount
   }
 })
 export default class Totals extends React.Component {
@@ -36,6 +38,13 @@ export default class Totals extends React.Component {
         <td>₡ {(this.props.total - advances).formatMoney(2, ',', '.')}</td>
       </tr>
     }
+
+    const ExemptTotal = this.props.isExempt
+      ? <tr>
+        <th>IV Exonerado:</th>
+        <td>₡ {this.props.exemptAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
     return <div className='compact-invoice-totals'>
 
       <table>
@@ -53,6 +62,7 @@ export default class Totals extends React.Component {
             <th>IV</th>
             <td>₡ {this.props.taxes.formatMoney(2, ',', '.')}</td>
           </tr>
+          {ExemptTotal}
           <tr className='total-row'>
             <th>Total</th>
             <td>₡ {this.props.total.formatMoney(2, ',', '.')}</td>

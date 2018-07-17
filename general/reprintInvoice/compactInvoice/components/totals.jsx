@@ -24,6 +24,8 @@ export default class Totals extends React.Component {
     let discountTotal = 0
     let subTotalNoDiscount = 0
     let payObject = {}
+    let isExempt = false
+    let exemptAmount = 0
     // LOAD ITEMS FROM SALE ONLY IF LOADED
     if (Object.keys(sale).length > 0) {
       total = sale.cart.cartTotal
@@ -31,6 +33,8 @@ export default class Totals extends React.Component {
       discountTotal = sale.cart.discountTotal
       subTotalNoDiscount = sale.cart.cartSubtotalNoDiscount
       payObject = sale.pay
+      isExempt = sale.cart.isExempt
+      exemptAmount = sale.cart.cartExemptAmount
     }
 
     let advance = <tr />
@@ -46,6 +50,14 @@ export default class Totals extends React.Component {
         <td>₡ {(total - advances).formatMoney(2, ',', '.')}</td>
       </tr>
     }
+
+    const ExemptTotal = isExempt
+      ? <tr>
+        <th>IV Exonerado:</th>
+        <td className='price'>₡ -{exemptAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+
     return <div className='reprint-compact-invoice-totals'>
 
       <table>
@@ -63,6 +75,7 @@ export default class Totals extends React.Component {
             <th>IV</th>
             <td>₡ {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
+          {ExemptTotal}
           <tr className='total-row'>
             <th>Total</th>
             <td>₡ {total.formatMoney(2, ',', '.')}</td>

@@ -22,9 +22,7 @@ export default class Notes extends React.Component {
     let wasCredit = false
     try {
       wasCredit = this.props.sale.pay.cred[0].amount
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
     const sing = this.getSingDiv(wasCredit)
     return <div className='reprint-compact-invoice-notes'>
       {sing}

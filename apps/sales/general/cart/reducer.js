@@ -8,11 +8,14 @@ const stateConst = {
   cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
   cartSubtotal: 0, // the subtotal including discounts without taxes
   cartTaxes: 0, // total amount of taxes in cart in currency
+  cartExemptAmount: 0, // total amount of exempt in cart in currency
   cartTotal: 0, // cart total after discount and taxes
   globalDiscount: 0, // discount %
   discountTotal: 0, // discount in currency
   cartItemActive: false,
-  totalNotRounded: 0
+  totalNotRounded: 0,
+  exemptionDocument: '',
+  isExempt: false
 }
 
 export default function reducer(state = stateConst, action) {
@@ -32,6 +35,7 @@ export default function reducer(state = stateConst, action) {
         cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
         cartSubtotal: 0, // the subtotal including discounts without taxes
         cartTaxes: 0, // total amount of taxes in cart in currency
+        cartExemptAmount: 0, // total amount of taxes in cart in currency
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
@@ -53,6 +57,7 @@ export default function reducer(state = stateConst, action) {
         cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
         cartSubtotal: 0, // the subtotal including discounts without taxes
         cartTaxes: 0, // total amount of taxes in cart in currency
+        cartExemptAmount: 0, // total amount of taxes in cart in currency
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
@@ -124,6 +129,7 @@ export default function reducer(state = stateConst, action) {
         ...state,
         cartSubtotal: action.payload.subtotal,
         cartTaxes: action.payload.taxes,
+        cartExemptAmount: action.payload.exemptAmount,
         cartTotal: action.payload.total,
         discountTotal: action.payload.discountTotal,
         cartSubtotalNoDiscount: action.payload.subTotalNoDiscount,
@@ -156,6 +162,24 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         cartItems: newCart
+      }
+    }
+
+    case 'EXEMPT_SALE':
+    {
+
+      return {
+        ...state,
+        isExempt: true
+      }
+    }
+
+    case 'CLEAR_EXEMPT_SALE':
+    {
+
+      return {
+        ...state,
+        isExempt: false
       }
     }
 

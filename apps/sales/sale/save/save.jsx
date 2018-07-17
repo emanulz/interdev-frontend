@@ -17,7 +17,8 @@ const Mousetrap = require('mousetrap')
     warehouse2_id: store.config.workshopWarehouse,
     presaleId: store.presales.presaleId,
     workOrderId: store.workOrders.workOrderId,
-    workOrder: store.workOrders.workOrderActive
+    workOrder: store.workOrders.workOrderActive,
+    exemptionData: store.taxExemption.exemptionData
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -33,8 +34,13 @@ export default class SaveBtn extends React.Component {
     const warehouse = this.props.workOrderId.length ? this.props.warehouse2_id : this.props.warehouse_id
     // ADD WORKSHOP ITEMS TO CART
     const cart = this.props.cart
+    const exemptionData = this.props.exemptionData
+    // the tax Amout for exemption is th exemption total
+    exemptionData['exemptAmount'] = cart['cartExemptAmount']
+
     cart['work_order_id'] = this.props.workOrderId
     cart['work_order'] = JSON.stringify(this.props.workOrder)
+    cart['exemption_data'] = exemptionData
     // SALE
     const sale = {
       cart: JSON.stringify(cart),

@@ -16,7 +16,8 @@ const Mousetrap = require('mousetrap')
     disabled: store.completed.completed,
     cartItemActive: store.cart.cartItemActive,
     warehouse_id: store.config.salesWarehouse,
-    presaleLoaded: store.completed.isPresaleLoaded
+    presaleLoaded: store.completed.isPresaleLoaded,
+    isExempt: store.cart.isExempt
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -26,7 +27,7 @@ export default class CartItems extends React.Component {
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
 
-    this.props.dispatch(updateTotals(this.props.inCart))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt))
 
     // Auto Scroll To end of container
     const elem = document.getElementById('cart-body')

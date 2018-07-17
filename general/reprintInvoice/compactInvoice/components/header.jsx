@@ -13,9 +13,7 @@ export default class Header extends React.Component {
     let wasCredit = false
     try {
       wasCredit = this.props.sale.pay.cred[0].amount
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
     const headertext = wasCredit ? 'Factura de crédito' : 'Factura de contado'
 
     // BILL DATA

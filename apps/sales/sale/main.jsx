@@ -12,6 +12,7 @@ import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.js
 import Presales from './presales/presalesList.jsx'
 import WorkOrders from './workOrders/workOrdersList.jsx'
 import TodaySales from './todaySales/todaySales.jsx'
+import TaxExemptionPanel from './taxExemption/taxExemption.jsx'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
@@ -60,6 +61,7 @@ export default class Sale extends React.Component {
       <ClientPanel />
       <WorkOrders />
       <TodaySales />
+      <TaxExemptionPanel />
       <ReprintInvoice />
 
     </div>

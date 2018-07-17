@@ -32,8 +32,6 @@ export default class Data extends React.Component {
     const seller = Object.keys(presaleUser).length !== 0
       ? presellerName
       : cashierName
-    console.log('CASHIER NAME', cashierName)
-    console.log('SELLER NAME', presellerName)
     return <div className='reprint-compact-invoice-data'>
 
       <table className='datenum-table'>
