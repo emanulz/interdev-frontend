@@ -27,7 +27,7 @@ export default class Update extends React.Component {
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
     const clientsKwargs = {
-      url: '/api/clients/?limit=400',
+      url: '/api/clients/?limit=600',
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }
