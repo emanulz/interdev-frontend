@@ -14,7 +14,13 @@ export default class Add extends React.Component {
   render() {
 
     return <div className='take-movements-content-add'>
-      ADD
+      <div className='take-movements-content-add-container'>
+        <input type='text' />
+        <i className='fa fa-barcode' />
+      </div>
+      <div className='take-movements-content-add-search'>
+        <i className='fa fa-search' />
+      </div>
     </div>
 
   }
