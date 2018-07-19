@@ -10,6 +10,7 @@ import sidePanel from './movements/sidePanel/reducer.js'
 import inventoryMovements from './tracking/productMovements/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
 import search from '../../general/search/reducer.js'
+import physicalTake from './physicalTake/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -21,5 +22,6 @@ export default combineReducers({
   sidePanel,
   inventoryMovements,
   pagination,
-  inventorySearch: search('inventorySearch')
+  inventorySearch: search('inventorySearch'),
+  physicalTake
 })
