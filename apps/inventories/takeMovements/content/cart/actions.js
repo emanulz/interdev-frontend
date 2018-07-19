@@ -1,3 +1,5 @@
+import alertify from 'alertifyjs'
+
 export function removeFromCart(itemsInCart, code) {
 
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
@@ -17,7 +19,15 @@ export function removeFromCart(itemsInCart, code) {
 
 export function updateQty(itemsInCart, code, qty) {
 
+  const qtyNum = parseFloat(qty)
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
+
+  if (indexInCart != -1) {
+    if (!itemsInCart[indexInCart].product.fractioned && !Number.isInteger(qtyNum)) {
+      alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
+      return false
+    }
+  }
 
   const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
     ? {

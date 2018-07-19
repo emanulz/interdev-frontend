@@ -18,15 +18,12 @@ export function setProduct(kwargs, resolve, reject) {
 
   // REMOVE FIRST ZERO
   const splittedValue = kwargs.lookUpValue.split('')
-  console.log('SPLITTED--->', splittedValue)
   if (splittedValue[0] == '0') {
-    console.log('INSIDE')
     splittedValue.splice(0, 1)
   }
   const lookUpValue = splittedValue.join('')
   const lookUpField = kwargs.lookUpField
   const url = kwargs.url
-  console.log('VALUE---->', lookUpValue)
   axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
     if (response.data.count) {
       // IF THERE IS MORE THAN ONE ELEMENT FILTERED

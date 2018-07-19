@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {setProduct} from './actions.js'
+import alertify from 'alertifyjs'
 const uuidv1 = require('uuid/v1')
 
 @connect((store) => {
@@ -41,12 +42,18 @@ export default class Add extends React.Component {
         setProductPromise.then((data) => {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
           const product = data.results[0]
-          _this.props.dispatch({type: 'CLEAR_ADD_FIELD_VALUE', payload: ''})
+          const qtyNum = parseFloat(qty)
 
+          if (!product.fractioned && !Number.isInteger(qtyNum)) {
+            alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
+            return false
+          }
+
+          _this.props.dispatch({type: 'CLEAR_ADD_FIELD_VALUE', payload: ''})
           const cartData = {
             product: product,
             product_id: product.id,
-            qty: qty,
+            qty: qtyNum,
             uuid: uuidv1()
           }
           _this.props.dispatch({type: 'ADD_TO_TAKE_MOVEMENTS_CART', payload: cartData})
