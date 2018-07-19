@@ -27,9 +27,17 @@ export default class Aside extends React.Component {
   }
 
   preSaveTakeMovements() {
+    if (!this.props.cart.length) {
+      alertify.alert('ERROR', 'Por agregue movimientos para guardar.')
+      return true
+    }
+    if (!this.props.takeId) {
+      alertify.alert('ERROR', 'Por favor seleccione una toma física activa.')
+      return true
+    }
     const _this = this
     alertify.confirm('REGISTRAR MOVIMIENTOS', 'Registar los movimientos en la toma física sleccionada? Esta acción no se puede deshacer.',
-      function() { _this.saveTakemovements() }, function() {}).set('labels', {ok: 'Abrir', cancel: 'Cancelar'})
+      function() { _this.saveTakemovements() }, function() {}).set('labels', {ok: 'Registar', cancel: 'Cancelar'})
 
   }
 
@@ -48,6 +56,7 @@ export default class Aside extends React.Component {
       alertify.alert('COMPLETADO', 'Movimientos agregados correctamente')
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       // CLEAR CART AND OTHER STUFF
+      _this.props.dispatch({type: 'CLEAR_TAKE_MOVEMENTS_CART', payload: ''})
 
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -63,7 +72,7 @@ export default class Aside extends React.Component {
     })
 
     return <div className='take-movements-aside'>
-      <h4>Toma Física:</h4>
+      <h4>Seleccionar Toma Física:</h4>
       <Select2
         name='takeId'
         value={this.props.takeId}

@@ -57,15 +57,29 @@ export default function reducer(state = stateConst, action) {
 
     case 'REMOVE_FROM_TAKE_MOVEMENTS_CART':
     {
-      const cart = state.cart
-      cart.splice(action.payload.index, 1)
+
+      const newCart = [...state.cart]
+      newCart.splice(action.payload, 1)
+
       return {
         ...state,
-        cart: cart
+        cart: newCart
       }
     } // case
 
-    case 'CLEAT_TAKE_MOVEMENTS_CART':
+    case 'UPDATE_TAKE_MOVEMENTS_CART_QTY':
+    {
+
+      const newCart = [...state.cart]
+      newCart[action.payload.index].qty = parseFloat(action.payload.qty)
+
+      return {
+        ...state,
+        cart: newCart
+      }
+    } // case
+
+    case 'CLEAR_TAKE_MOVEMENTS_CART':
     {
       return {
         ...state,
