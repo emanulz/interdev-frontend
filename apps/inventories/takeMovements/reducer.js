@@ -1,21 +1,58 @@
 
 const stateConst = {
   cart: [],
-  physicalTakeId: ''
+  physicalTakeId: '',
+  addFieldValue: '',
+  openTakes: []
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'ADD_TO_TAKE_MOVEMENTS_CART':
+    case 'FETCH_OPEN_TAKES_FULFILLED':
     {
-      const cart = state.cart
-      cart.push(action.payload)
       return {
         ...state,
-        cart: cart
+        openTakes: action.payload
       }
+    } // case
+
+    case 'FETCH_OPEN_TAKES_REJECTED':
+    {
+      return {
+        ...state,
+        openTakes: []
+      }
+    } // case
+
+    case 'SET_ADD_FIELD_VALUE':
+    {
+      return {
+        ...state,
+        addFieldValue: action.payload
+      }
+    } // case
+
+    case 'CLEAR_ADD_FIELD_VALUE':
+    {
+      return {
+        ...state,
+        addFieldValue: ''
+      }
+    } // case
+
+    case 'ADD_TO_TAKE_MOVEMENTS_CART':
+    {
+      return {
+        ...state,
+        cart: [
+          // action.payload,
+          ...state.cart,
+          action.payload
+        ]
+      }
+
     } // case
 
     case 'REMOVE_FROM_TAKE_MOVEMENTS_CART':
@@ -36,15 +73,15 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_TAKE_ID':
+    case 'SET_MOVEMENTS_TAKE_ID':
     {
       return {
         ...state,
-        physicalTakeId: action.paylod
+        physicalTakeId: action.payload
       }
     } // case
 
-    case 'CLEAR_TAKE_ID':
+    case 'CLEAR_MOVEMENTS_TAKE_ID':
     {
       return {
         ...state,
