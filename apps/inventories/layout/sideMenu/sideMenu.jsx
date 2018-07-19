@@ -70,13 +70,18 @@ export default class SideMenu extends React.Component {
               Toma Física</Link>
           </li>
           <li>
+            <Link to='/inventories/takemovements'>
+              <span className='fa fa-user' />
+              Movimientos Toma Física</Link>
+          </li>
+          <li>
             <Link to='/inventories/warehouses'>
               <span className='fa fa-building' />
               Bodegas</Link>
           </li>
           <li>
             <Link to='/inventories/reports'>
-              <span className='fa fa-sheet' />
+              <span className='fa fa-file' />
               Reportes</Link>
           </li>
         </ul>
