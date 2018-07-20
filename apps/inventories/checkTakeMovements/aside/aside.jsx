@@ -112,7 +112,7 @@ export default class Aside extends React.Component {
         Registrar Movimientos
       </button>
 
-      <h4 className='consult'>Cantidad ya ingresada:</h4>
+      <h4>Producto Activo:</h4>
 
       <table className='table'>
         <tbody>

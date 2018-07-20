@@ -12,6 +12,7 @@ import pagination from '../../general/pagination/reducer.js'
 import search from '../../general/search/reducer.js'
 import physicalTake from './physicalTake/reducer.js'
 import takeMovements from './takeMovements/reducer.js'
+import checkTakeMovements from './checkTakeMovements/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -25,5 +26,6 @@ export default combineReducers({
   pagination,
   inventorySearch: search('inventorySearch'),
   physicalTake,
-  takeMovements
+  takeMovements,
+  checkTakeMovements
 })
