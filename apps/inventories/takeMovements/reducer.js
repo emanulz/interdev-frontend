@@ -3,7 +3,9 @@ const stateConst = {
   cart: [],
   physicalTakeId: '',
   addFieldValue: '',
-  openTakes: []
+  openTakes: [],
+  productMovements: {},
+  productActive: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -100,6 +102,42 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         physicalTakeId: ''
+      }
+    } // case
+
+    case 'ADD_TAKE_PRODUCT_MOVEMENTS':
+    {
+      const id = action.payload.id
+      const productMovements = state.productMovements
+      delete productMovements[id]
+      productMovements[id] = action.payload.movements
+      return {
+        ...state,
+        productMovements: productMovements
+      }
+    } // case
+
+    case 'CLEAR_TAKE_PRODUCT_MOVEMENTS':
+    {
+      return {
+        ...state,
+        productMovements: {}
+      }
+    } // case
+
+    case 'SET_TAKE_PRODUCT_ACTIVE':
+    {
+      return {
+        ...state,
+        productActive: action.payload
+      }
+    } // case
+
+    case 'CLEAR_TAKE_PRODUCT_ACTIVE':
+    {
+      return {
+        ...state,
+        productActive: ''
       }
     } // case
 

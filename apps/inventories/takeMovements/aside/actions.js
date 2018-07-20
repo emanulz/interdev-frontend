@@ -38,6 +38,9 @@ export function getOpenTakes() {
     })
       .then((response) => {
         dispatch({type: 'FETCH_OPEN_TAKES_FULFILLED', payload: response.data.results})
+        if (response.data.results.length == 1) {
+          dispatch({type: 'SET_MOVEMENTS_TAKE_ID', payload: response.data.results[0].id})
+        }
       }).catch((err) => {
         console.log(err)
         dispatch({type: 'FETCH_OPEN_TAKES_REJECTED', payload: ''})

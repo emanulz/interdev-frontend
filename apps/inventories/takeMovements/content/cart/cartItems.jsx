@@ -32,6 +32,10 @@ export default class CartItems extends React.Component {
     ev.target.select()
   }
 
+  setProductAsActive(id, ev) {
+    this.props.dispatch({type: 'SET_TAKE_PRODUCT_ACTIVE', payload: id})
+  }
+
   // Main Layout
   render() {
     const items = this.props.cart.map(item => {
@@ -45,7 +49,7 @@ export default class CartItems extends React.Component {
         onFocus={this.fieldFocus.bind(this)}
       />
 
-      return <div className='cart-body-item' key={item.uuid}>
+      return <div onClick={this.setProductAsActive.bind(this, item.product.id)} className='cart-body-item' key={item.uuid}>
         <div className='cart-body-item-code'>
           {item.product.code}
         </div>

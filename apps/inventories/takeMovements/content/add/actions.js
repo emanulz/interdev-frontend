@@ -47,3 +47,14 @@ export function setProduct(kwargs, resolve, reject) {
     reject()
   })
 }
+
+export function getProductTakeMovements(kwargs, resolve, reject) {
+  const url = kwargs.url
+  axios.get(url).then(function(response) {
+    resolve(response.data)
+  }).catch(function(error) {
+    alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+    administrador del sistema con el siguiete error: ${error}`)
+    reject(error)
+  })
+}

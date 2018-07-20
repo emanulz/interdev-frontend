@@ -11,7 +11,9 @@ import Select2 from 'react-select2-wrapper'
   return {
     cart: store.takeMovements.cart,
     takeId: store.takeMovements.physicalTakeId,
-    openTakes: store.takeMovements.openTakes
+    openTakes: store.takeMovements.openTakes,
+    productActive: store.takeMovements.productActive,
+    productMovements: store.takeMovements.productMovements
   }
 })
 export default class Aside extends React.Component {
@@ -57,11 +59,21 @@ export default class Aside extends React.Component {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       // CLEAR CART AND OTHER STUFF
       _this.props.dispatch({type: 'CLEAR_TAKE_MOVEMENTS_CART', payload: ''})
+      _this.props.dispatch({type: 'CLEAR_TAKE_PRODUCT_MOVEMENTS', payload: ''})
+      _this.props.dispatch({type: 'CLEAR_TAKE_PRODUCT_ACTIVE', payload: ''})
 
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       alertify.alert('ERROR', err)
     })
+  }
+
+  getAlreadyAmount(movements) {
+    let amount = 0
+    for (let i = 0; i < movements.length; i++) {
+      amount += parseFloat(movements[i].amount)
+    }
+    return amount
   }
 
   // Main Layout
@@ -70,6 +82,18 @@ export default class Aside extends React.Component {
     const openTakesData = this.props.openTakes.map(take => {
       return {text: `${take.consecutive} - ${take.warehouse_name} - ${take.description}`, id: `${take.id}`}
     })
+
+    const movements = this.props.productMovements
+    const active = this.props.productActive
+    let productCode = '0000'
+    let productName = 'Sin Producto Seleccionado'
+    let alreadyTaken = '0'
+
+    if (active && movements[active]) {
+      productCode = movements[active].product.code
+      productName = movements[active].product.description
+      alreadyTaken = this.getAlreadyAmount(movements[active].movements)
+    }
 
     return <div className='take-movements-aside'>
       <h4>Seleccionar Toma Física:</h4>
@@ -87,6 +111,26 @@ export default class Aside extends React.Component {
       <button className='btn btn-primary' onClick={this.preSaveTakeMovements.bind(this)}>
         Registrar Movimientos
       </button>
+
+      <h4>Producto Activo:</h4>
+
+      <table className='table'>
+        <tbody>
+          <tr>
+            <th>Código:</th>
+            <td>{productCode}</td>
+          </tr>
+          <tr>
+            <th>Descripción:</th>
+            <td>{productName}</td>
+          </tr>
+          <tr>
+            <th>Ya en Toma:</th>
+            <td>{alreadyTaken}</td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
 
   }

@@ -3,13 +3,14 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {setProduct} from './actions.js'
+import {setProduct, getProductTakeMovements} from './actions.js'
 import alertify from 'alertifyjs'
 const uuidv1 = require('uuid/v1')
 
 @connect((store) => {
   return {
-    addFieldValue: store.takeMovements.addFieldValue
+    addFieldValue: store.takeMovements.addFieldValue,
+    takeId: store.takeMovements.physicalTakeId
   }
 })
 export default class Add extends React.Component {
@@ -57,6 +58,7 @@ export default class Add extends React.Component {
             uuid: uuidv1()
           }
           _this.props.dispatch({type: 'ADD_TO_TAKE_MOVEMENTS_CART', payload: cartData})
+          _this.getProductMovements(product.id)
 
         }).catch((err) => {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -73,7 +75,36 @@ export default class Add extends React.Component {
     } else {
       this.props.dispatch({type: 'SET_ADD_FIELD_VALUE', payload: ev.target.value})
     }
+  }
+  getProductMovements(id) {
+    const takeId = this.props.takeId
+    const _this = this
+    if (takeId) {
+      const getProductMovementsPromise = new Promise((resolve, reject) => {
+        const kwargs = {
+          url: `/api/physicaltakes/${takeId}/get_product_movements/?product_id=${id}`
+        }
+        // _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        getProductTakeMovements(kwargs, resolve, reject)
+      })
 
+      getProductMovementsPromise.then((data) => {
+        const payload = {
+          id: id,
+          movements: data
+        }
+
+        _this.props.dispatch({type: 'ADD_TAKE_PRODUCT_MOVEMENTS', payload: payload})
+        _this.props.dispatch({type: 'SET_TAKE_PRODUCT_ACTIVE', payload: id})
+
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log(err)
+      })
+
+    } else {
+      alertify.alert('ALERTA', 'Por favor seleccione una toma física para ver los movimientos activos')
+    }
   }
 
   // Main Layout

@@ -25,6 +25,7 @@ export default class Body extends React.Component {
           <li><a className='landing-roundBtn' href='/returns'>Devoluciones <i className='fa fa-rotate-left' /></a></li>
         </ul>
         <ul className='buttons-container'>
+          <li><a className='landing-roundBtn' href='/workshop'>Taller <i className='fa fa-wrench' /></a></li>
           <li><a className='landing-roundBtn' href='/purchases'>Compras <i className='fa fa-truck' /></a></li>
           <li><a className='landing-roundBtn' href='/payables'>Por Pagar <i className='fa fa-money' /></a></li>
         </ul>
