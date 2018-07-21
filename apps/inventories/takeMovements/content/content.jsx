@@ -16,6 +16,7 @@ export default class Content extends React.Component {
   render() {
 
     return <div className='take-movements-content'>
+      <h1>Agregar movimientos:</h1>
       <Add />
       <Cart />
     </div>

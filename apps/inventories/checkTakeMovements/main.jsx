@@ -14,13 +14,13 @@ import {connect} from 'react-redux'
 export default class Movements extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch({type: 'PHYSICAL_TAKE_MOVEMENTS_PANEL_MOUNTED', payload: ''})
+    this.props.dispatch({type: 'PHYSICAL_TAKE_CHECK_MOVEMENTS_PANEL_MOUNTED', payload: ''})
   }
 
   // Main Layout
   render() {
 
-    return <div className='heigh100 take-movements'>
+    return <div className='heigh100 check-take-movements'>
       <Content />
       <Aside />
     </div>

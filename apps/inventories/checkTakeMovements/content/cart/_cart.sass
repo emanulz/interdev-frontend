@@ -1,77 +1,87 @@
-.take-movements-content-cart
+.check-take-movements-content-cart
   flex-grow: 1
   overflow-y: auto
 
-.cart
-  font-size: 13px
-  display: flex
-  flex-flow: column
-  justify-content: flex-start
-  height: 100%
-  &-header
-    border: 1px solid #cacaca
-    display: flex
-    flex-flow: row
-    flex-wrap: wrap
-    justify-content: flex-start
-    color: white
-    background-color: $PRIMARY-COLOR
-    height: 40px
+  & .cart
     font-size: 13px
-    text-transform: uppercase
-    &-code
-      padding-left: 5px
-      display: flex
-      align-items: center
-      width: 25%
-    &-description
-      display: flex
-      align-items: center
-      width: 45%
-    &-qty
-      display: flex
-      align-items: center
-      justify-content: flex-start
-      width: 30%
-
-  &-body
-    height: calc(100% - 40px)
-    overflow-x: auto
-    padding-right: 5px
-    justify-content: space-between
-    &-item
-      padding: 5px 5px
+    display: flex
+    flex-flow: column
+    justify-content: flex-start
+    height: 100%
+    &-header
       border: 1px solid #cacaca
-      border-radius: 5px
-      margin: 3px 0
       display: flex
       flex-flow: row
       flex-wrap: wrap
       justify-content: flex-start
-      position: relative
-      & .removeItemIcon
-        position: absolute
-        right: -5px
-        top: -5px
-        & i
-          cursor: pointer
-          font-size: 20px
-          color: $SECONDARY-COLOR
-          &:hover
-            font-size: 25px
-          & .disabled
-            display: none
+      color: white
+      background-color: $PRIMARY-COLOR
+      height: 40px
+      font-size: 13px
+      text-transform: uppercase
       &-code
         padding-left: 5px
         display: flex
         align-items: center
-        width: 25%
+        width: 15%
       &-description
         display: flex
         align-items: center
-        width: 45%
-      &-qty
+        width: 40%
+      &-date
         display: flex
         align-items: center
         justify-content: flex-start
         width: 30%
+      &-qty
+        display: flex
+        align-items: center
+        justify-content: flex-start
+        width: 15%
+
+    &-body
+      height: calc(100% - 40px)
+      overflow-x: auto
+      padding-right: 5px
+      justify-content: space-between
+      &-item
+        padding: 5px 5px
+        border: 1px solid #cacaca
+        border-radius: 5px
+        margin: 3px 0
+        display: flex
+        flex-flow: row
+        flex-wrap: wrap
+        justify-content: flex-start
+        position: relative
+        & .removeItemIcon
+          position: absolute
+          right: -5px
+          top: -5px
+          & i
+            cursor: pointer
+            font-size: 20px
+            color: #960000
+            &:hover
+              font-size: 27px
+            & .disabled
+              display: none
+        &-code
+          padding-left: 5px
+          display: flex
+          align-items: center
+          width: 15%
+        &-date
+          display: flex
+          align-items: center
+          justify-content: flex-start
+          width: 30%
+        &-description
+          display: flex
+          align-items: center
+          width: 40%
+        &-qty
+          display: flex
+          align-items: center
+          justify-content: flex-start
+          width: 15%

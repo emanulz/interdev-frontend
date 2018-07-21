@@ -15,7 +15,8 @@ export default class Content extends React.Component {
   // Main Layout
   render() {
 
-    return <div className='take-movements-content'>
+    return <div className='check-take-movements-content'>
+      <h1>Consulta de movimientos:</h1>
       <Add />
       <Cart />
     </div>

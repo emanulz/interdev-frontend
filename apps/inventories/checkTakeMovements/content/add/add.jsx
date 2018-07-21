@@ -5,12 +5,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {setProduct, getProductTakeMovements} from './actions.js'
 import alertify from 'alertifyjs'
-const uuidv1 = require('uuid/v1')
 
 @connect((store) => {
   return {
-    addFieldValue: store.takeMovements.addFieldValue,
-    takeId: store.takeMovements.physicalTakeId
+    addFieldValue: store.checkTakeMovements.addFieldValue,
+    takeId: store.checkTakeMovements.physicalTakeId
   }
 })
 export default class Add extends React.Component {
@@ -20,12 +19,7 @@ export default class Add extends React.Component {
     const _this = this
     if (ev.key == 'Enter') {
       if (ev.target.value) {
-        const code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
-        let qty = ev.target.value.split('*')[1]
-
-        qty = (isNaN(qty))
-          ? 1
-          : parseFloat(qty) // if no qty sets to 1
+        const code = ev.target.value
 
         const setProductPromise = new Promise((resolve, reject) => {
           const kwargs = {
@@ -33,32 +27,20 @@ export default class Add extends React.Component {
             url: '/api/productslist/',
             lookUpValue: code,
             lookUpName: 'código',
-            modelName: 'Productos',
-            qty: qty
+            modelName: 'Productos'
           }
-          // _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          // CLEAR ALL BEFOR START
+          _this.props.dispatch({type: 'CLEAR_CHECK_TAKE_MOVEMENTS_CART', payload: ''})
+          _this.props.dispatch({type: 'CLEAR_CHECK_TAKE_PRODUCT_MOVEMENTS', payload: ''})
+          _this.props.dispatch({type: 'CLEAR_CHECK_TAKE_PRODUCT_ACTIVE', payload: ''})
           setProduct(kwargs, resolve, reject)
         })
 
         setProductPromise.then((data) => {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
           const product = data.results[0]
-          const qtyNum = parseFloat(qty)
 
-          if (!product.fractioned && !Number.isInteger(qtyNum)) {
-            alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
-            return false
-          }
-
-          _this.props.dispatch({type: 'CLEAR_ADD_FIELD_VALUE', payload: ''})
-          const cartData = {
-            product: product,
-            product_id: product.id,
-            qty: qtyNum,
-            uuid: uuidv1()
-          }
-          _this.props.dispatch({type: 'ADD_TO_TAKE_MOVEMENTS_CART', payload: cartData})
-          _this.getProductMovements(product.id)
+          _this.getProductMovements(product)
 
         }).catch((err) => {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -73,16 +55,16 @@ export default class Add extends React.Component {
         // this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
       }
     } else {
-      this.props.dispatch({type: 'SET_ADD_FIELD_VALUE', payload: ev.target.value})
+      this.props.dispatch({type: 'SET_CHECK_ADD_FIELD_VALUE', payload: ev.target.value})
     }
   }
-  getProductMovements(id) {
+  getProductMovements(product) {
     const takeId = this.props.takeId
     const _this = this
     if (takeId) {
       const getProductMovementsPromise = new Promise((resolve, reject) => {
         const kwargs = {
-          url: `/api/physicaltakes/${takeId}/get_product_movements/?product_id=${id}`
+          url: `/api/physicaltakes/${takeId}/get_product_movements/?product_id=${product.id}`
         }
         // _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         getProductTakeMovements(kwargs, resolve, reject)
@@ -90,12 +72,18 @@ export default class Add extends React.Component {
 
       getProductMovementsPromise.then((data) => {
         const payload = {
-          id: id,
+          id: product.id,
           movements: data
         }
 
-        _this.props.dispatch({type: 'ADD_TAKE_PRODUCT_MOVEMENTS', payload: payload})
-        _this.props.dispatch({type: 'SET_TAKE_PRODUCT_ACTIVE', payload: id})
+        _this.props.dispatch({type: 'ADD_CHECK_TAKE_PRODUCT_MOVEMENTS', payload: payload})
+        _this.props.dispatch({type: 'SET_CHECK_TAKE_PRODUCT_ACTIVE', payload: product.id})
+
+        _this.props.dispatch({type: 'CLEAR_CHECK_ADD_FIELD_VALUE', payload: ''})
+        const cartData = {
+          movements: data
+        }
+        _this.props.dispatch({type: 'ADD_TO_CHECK_TAKE_MOVEMENTS_CART', payload: cartData})
 
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -110,8 +98,8 @@ export default class Add extends React.Component {
   // Main Layout
   render() {
 
-    return <div className='take-movements-content-add'>
-      <div className='take-movements-content-add-container'>
+    return <div className='check-take-movements-content-add'>
+      <div className='check-take-movements-content-add-container'>
         <input
           type='text'
           onKeyDown={this.inputKeyPress.bind(this)}
@@ -121,7 +109,7 @@ export default class Add extends React.Component {
         />
         <i className='fa fa-barcode' />
       </div>
-      <div className='take-movements-content-add-search'>
+      <div className='check-take-movements-content-add-search'>
         <i className='fa fa-search' />
       </div>
     </div>

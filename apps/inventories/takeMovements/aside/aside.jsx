@@ -22,6 +22,10 @@ export default class Aside extends React.Component {
     this.props.dispatch(getOpenTakes())
   }
 
+  downloadReport() {
+    console.log('TOMAR')
+  }
+
   setTakeId(event) {
     const target = event.target
     const value = target.value
@@ -130,6 +134,10 @@ export default class Aside extends React.Component {
           </tr>
         </tbody>
       </table>
+
+      <button className='btn btn-primary' onClick={this.downloadReport.bind(this)}>
+        Descargar Listado de comparación
+      </button>
 
     </div>
 

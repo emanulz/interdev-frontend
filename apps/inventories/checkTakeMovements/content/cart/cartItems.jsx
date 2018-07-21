@@ -3,29 +3,25 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {removeFromCart, updateQty} from './actions.js'
+import {nullMovement} from './actions.js'
+import {formatDateTimeAmPm} from '../../../../../utils/formatDate.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
-    cart: store.takeMovements.cart
+    cart: store.checkTakeMovements.cart,
+    takeId: store.checkTakeMovements.physicalTakeId
   }
 })
 
 export default class CartItems extends React.Component {
 
-  removeItem(code, ev) {
-
-    this.props.dispatch(removeFromCart(this.props.cart, code))
-
-  }
-
-  qtyInputChange(code, ev) {
-
-    const qty = parseFloat((ev.target.value))
-      ? ev.target.value
-      : 0
-    this.props.dispatch(updateQty(this.props.cart, code, qty))
-
+  nullItem(code, ev) {
+    const _this = this
+    alertify.confirm('ANULAR MOVIMIENTO', 'Desea anular el movimiento seleccionado? Esta acción no se puede deshacer.',
+      function() {},
+      function() { _this.props.dispatch(nullMovement(_this.props.takeId, code)) })
+      .set('labels', {ok: 'Conservar', cancel: 'Anular'})
   }
 
   fieldFocus(ev) {
@@ -33,39 +29,34 @@ export default class CartItems extends React.Component {
   }
 
   setProductAsActive(id, ev) {
-    this.props.dispatch({type: 'SET_TAKE_PRODUCT_ACTIVE', payload: id})
+    this.props.dispatch({type: 'SET_CHECK_TAKE_PRODUCT_ACTIVE', payload: id})
   }
 
   // Main Layout
   render() {
-    const items = this.props.cart.map(item => {
+    const items = this.props.cart.movements ? this.props.cart.movements.map(item => {
 
-      const qtyField = <input
-        id={`qty${item.product.code}`}
-        type='number'
-        className='form-control'
-        value={item.qty}
-        onChange={this.qtyInputChange.bind(this, item.uuid)}
-        onFocus={this.fieldFocus.bind(this)}
-      />
-
-      return <div onClick={this.setProductAsActive.bind(this, item.product.id)} className='cart-body-item' key={item.uuid}>
+      return <div className='cart-body-item' key={item.id}>
         <div className='cart-body-item-code'>
-          {item.product.code}
+          {item.consecutive}
         </div>
         <div className='cart-body-item-description'>
-          {item.product.description}
+          {this.props.cart.product.description}
+        </div>
+        <div className='cart-body-item-date'>
+          {formatDateTimeAmPm(item.created)}
         </div>
         <div className='cart-body-item-qty'>
-          {qtyField}
+          {item.amount}
         </div>
 
         <span className='removeItemIcon'>
-          <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />
+          <i onClick={this.nullItem.bind(this, item.id)} className='fa fa-times-circle' />
         </span>
 
       </div>
     })
+      : <div />
 
     return <div id='cart-body' className='cart-body'>
       {items}

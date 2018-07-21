@@ -28,7 +28,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_ADD_FIELD_VALUE':
+    case 'SET_CHECK_ADD_FIELD_VALUE':
     {
       return {
         ...state,
@@ -36,7 +36,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'CLEAR_ADD_FIELD_VALUE':
+    case 'CLEAR_CHECK_ADD_FIELD_VALUE':
     {
       return {
         ...state,
@@ -44,20 +44,16 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'ADD_TO_TAKE_MOVEMENTS_CART':
+    case 'ADD_TO_CHECK_TAKE_MOVEMENTS_CART':
     {
       return {
         ...state,
-        cart: [
-          // action.payload,
-          ...state.cart,
-          action.payload
-        ]
+        cart: action.payload.movements
       }
 
     } // case
 
-    case 'REMOVE_FROM_TAKE_MOVEMENTS_CART':
+    case 'REMOVE_FROM_CHECK_TAKE_MOVEMENTS_CART':
     {
 
       const newCart = [...state.cart]
@@ -69,19 +65,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'UPDATE_TAKE_MOVEMENTS_CART_QTY':
-    {
-
-      const newCart = [...state.cart]
-      newCart[action.payload.index].qty = parseFloat(action.payload.qty)
-
-      return {
-        ...state,
-        cart: newCart
-      }
-    } // case
-
-    case 'CLEAR_TAKE_MOVEMENTS_CART':
+    case 'CLEAR_CHECK_TAKE_MOVEMENTS_CART':
     {
       return {
         ...state,
@@ -105,7 +89,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'ADD_TAKE_PRODUCT_MOVEMENTS':
+    case 'ADD_CHECK_TAKE_PRODUCT_MOVEMENTS':
     {
       const id = action.payload.id
       const productMovements = state.productMovements
@@ -117,7 +101,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'CLEAR_TAKE_PRODUCT_MOVEMENTS':
+    case 'CLEAR_CHECK_TAKE_PRODUCT_MOVEMENTS':
     {
       return {
         ...state,
@@ -125,7 +109,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_TAKE_PRODUCT_ACTIVE':
+    case 'SET_CHECK_TAKE_PRODUCT_ACTIVE':
     {
       return {
         ...state,
@@ -133,7 +117,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'CLEAR_TAKE_PRODUCT_ACTIVE':
+    case 'CLEAR_CHECK_TAKE_PRODUCT_ACTIVE':
     {
       return {
         ...state,

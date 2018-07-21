@@ -3,17 +3,16 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import alertify from 'alertifyjs'
-import {savePhysicalTakeMovements, getOpenTakes} from './actions.js'
+import {getOpenTakes} from './actions.js'
 import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
-    cart: store.takeMovements.cart,
-    takeId: store.takeMovements.physicalTakeId,
-    openTakes: store.takeMovements.openTakes,
-    productActive: store.takeMovements.productActive,
-    productMovements: store.takeMovements.productMovements
+    cart: store.checkTakeMovements.cart,
+    takeId: store.checkTakeMovements.physicalTakeId,
+    openTakes: store.checkTakeMovements.openTakes,
+    productActive: store.checkTakeMovements.productActive,
+    productMovements: store.checkTakeMovements.productMovements
   }
 })
 export default class Aside extends React.Component {
@@ -26,46 +25,6 @@ export default class Aside extends React.Component {
     const target = event.target
     const value = target.value
     this.props.dispatch({type: 'SET_MOVEMENTS_TAKE_ID', payload: value})
-  }
-
-  preSaveTakeMovements() {
-    if (!this.props.cart.length) {
-      alertify.alert('ERROR', 'Por agregue movimientos para guardar.')
-      return true
-    }
-    if (!this.props.takeId) {
-      alertify.alert('ERROR', 'Por favor seleccione una toma física activa.')
-      return true
-    }
-    const _this = this
-    alertify.confirm('REGISTRAR MOVIMIENTOS', 'Registar los movimientos en la toma física sleccionada? Esta acción no se puede deshacer.',
-      function() { _this.saveTakemovements() }, function() {}).set('labels', {ok: 'Registar', cancel: 'Cancelar'})
-
-  }
-
-  saveTakemovements() {
-    const _this = this
-    const kwargs = {
-      cart: this.props.cart,
-      takeId: this.props.takeId
-    }
-    const savePromise = new Promise((resolve, reject) => {
-      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      savePhysicalTakeMovements(kwargs, resolve, reject)
-    })
-
-    savePromise.then((data) => {
-      alertify.alert('COMPLETADO', 'Movimientos agregados correctamente')
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      // CLEAR CART AND OTHER STUFF
-      _this.props.dispatch({type: 'CLEAR_TAKE_MOVEMENTS_CART', payload: ''})
-      _this.props.dispatch({type: 'CLEAR_TAKE_PRODUCT_MOVEMENTS', payload: ''})
-      _this.props.dispatch({type: 'CLEAR_TAKE_PRODUCT_ACTIVE', payload: ''})
-
-    }).catch((err) => {
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('ERROR', err)
-    })
   }
 
   getAlreadyAmount(movements) {
@@ -108,11 +67,8 @@ export default class Aside extends React.Component {
           noResultsText: 'Sin elementos'
         }}
       />
-      <button className='btn btn-primary' onClick={this.preSaveTakeMovements.bind(this)}>
-        Registrar Movimientos
-      </button>
 
-      <h4>Producto Activo:</h4>
+      <h4 className='consult'>Cantidad ya ingresada:</h4>
 
       <table className='table'>
         <tbody>
@@ -130,7 +86,6 @@ export default class Aside extends React.Component {
           </tr>
         </tbody>
       </table>
-
     </div>
 
   }
