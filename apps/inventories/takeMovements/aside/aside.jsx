@@ -23,7 +23,8 @@ export default class Aside extends React.Component {
   }
 
   downloadReport() {
-    console.log('TOMAR')
+    const url = `/reportsExcel/physicaltake/?physicaltakeid=${this.props.takeId}&isphysicaltake_full=True&includemonetaryvalue=True`
+    window.open(url, '_blank')
   }
 
   setTakeId(event) {
