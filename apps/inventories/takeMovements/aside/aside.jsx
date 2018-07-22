@@ -45,7 +45,6 @@ export default class Aside extends React.Component {
     const _this = this
     alertify.confirm('REGISTRAR MOVIMIENTOS', 'Registar los movimientos en la toma física sleccionada? Esta acción no se puede deshacer.',
       function() { _this.saveTakemovements() }, function() {}).set('labels', {ok: 'Registar', cancel: 'Cancelar'})
-
   }
 
   saveTakemovements() {

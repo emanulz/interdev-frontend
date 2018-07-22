@@ -8,6 +8,8 @@ import AdminTable from '../../../../general/adminTable/adminTable.jsx'
 import Pagination from '../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 import { getPaginationItemDispatch } from '../../../../utils/api.js'
+import alertify from 'alertifyjs'
+import {applyPhysicalTake} from './actions.js'
 
 @connect((store) => {
   return {
@@ -49,6 +51,21 @@ export default class Main extends React.Component {
       return 'Toma Parcial'
     }
 
+    const applyTake = (item) => {
+      const _this = this
+      alertify.confirm('CERRAR TOMA', `Desea cerrar la toma física, y aplicar todos sus movimientos? Esta acción modificará todas las existencias implicadas en la toma física, y no se puede deshacer.`,
+        function() {
+          const kwargs = {
+            apply_full: true,
+            deactivate_not_taken_non_existent: true,
+            id: item
+          }
+          console.log(kwargs)
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          _this.props.dispatch(applyPhysicalTake(kwargs))
+        }, function() {}).set('labels', {ok: 'Aplicar y cerrar', cancel: 'Cancelar'})
+    }
+
     const headerOrder = [
       {
         field: 'consecutive',
@@ -69,6 +86,12 @@ export default class Main extends React.Component {
         field: 'is_closed',
         text: 'Cerrada?',
         type: 'bool'
+      }, {
+        field: 'id',
+        text: 'Cerrar Toma',
+        type: 'function_on_click',
+        textToRender: 'Cerrar',
+        onClickFunction: applyTake
       }
     ]
 
