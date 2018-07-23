@@ -23,7 +23,10 @@ export default class Aside extends React.Component {
   }
 
   downloadReport() {
-    const url = `/reportsExcel/physicaltake/?physicaltakeid=${this.props.takeId}&isphysicaltake_full=True&includemonetaryvalue=True`
+    const takes = this.props.openTakes
+    const take = takes.find(row => row.id == this.props.takeId)
+    const isFull = take.is_full ? 'True' : 'False'
+    const url = `/reportsExcel/physicaltake/?physicaltakeid=${this.props.takeId}&isphysicaltake_full=${isFull}&includemonetaryvalue=True`
     window.open(url, '_blank')
   }
 
@@ -43,7 +46,7 @@ export default class Aside extends React.Component {
       return true
     }
     const _this = this
-    alertify.confirm('REGISTRAR MOVIMIENTOS', 'Registar los movimientos en la toma física sleccionada? Esta acción no se puede deshacer.',
+    alertify.confirm('REGISTRAR MOVIMIENTOS', 'Registar los movimientos en la toma física seleccionada? Esta acción no se puede deshacer.',
       function() { _this.saveTakemovements() }, function() {}).set('labels', {ok: 'Registar', cancel: 'Cancelar'})
   }
 

@@ -50,15 +50,27 @@ export default class Add extends React.Component {
             return false
           }
 
-          _this.props.dispatch({type: 'CLEAR_ADD_FIELD_VALUE', payload: ''})
           const cartData = {
             product: product,
             product_id: product.id,
             qty: qtyNum,
             uuid: uuidv1()
           }
-          _this.props.dispatch({type: 'ADD_TO_TAKE_MOVEMENTS_CART', payload: cartData})
-          _this.getProductMovements(product.id)
+
+          const __this = _this
+
+          if (!product.is_active) {
+            alertify.confirm('CERRAR TOMA', `El producto se encuentra actualmente inactivo, desea agregarlo a la toma física? Esta acción activará el producto.`,
+              function() {
+                __this.props.dispatch({type: 'ADD_TO_TAKE_MOVEMENTS_CART', payload: cartData})
+                __this.getProductMovements(product.id)
+                __this.props.dispatch({type: 'CLEAR_ADD_FIELD_VALUE', payload: ''})
+              }, function() {}).set('labels', {ok: 'Agregar', cancel: 'Cancelar'})
+          } else {
+            _this.props.dispatch({type: 'ADD_TO_TAKE_MOVEMENTS_CART', payload: cartData})
+            _this.getProductMovements(product.id)
+            _this.props.dispatch({type: 'CLEAR_ADD_FIELD_VALUE', payload: ''})
+          }
 
         }).catch((err) => {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})

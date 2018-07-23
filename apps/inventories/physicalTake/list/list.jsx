@@ -55,14 +55,23 @@ export default class Main extends React.Component {
       const _this = this
       alertify.confirm('CERRAR TOMA', `Desea cerrar la toma física, y aplicar todos sus movimientos? Esta acción modificará todas las existencias implicadas en la toma física, y no se puede deshacer.`,
         function() {
-          const kwargs = {
-            apply_full: true,
-            deactivate_not_taken_non_existent: true,
-            id: item
+          try {
+            const takes = _this.props.physicalTakes
+            const take = takes.find(row => row.id == item)
+            const isFull = take.is_full
+            const kwargs = {
+              apply_full: isFull,
+              deactivate_not_taken_non_existent: isFull,
+              id: item
+            }
+            console.log(kwargs)
+            _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+            _this.props.dispatch(applyPhysicalTake(kwargs))
+
+          } catch (err) {
+            alertify.alert('ERROR', `Error: ${err}`)
           }
-          console.log(kwargs)
-          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-          _this.props.dispatch(applyPhysicalTake(kwargs))
+
         }, function() {}).set('labels', {ok: 'Aplicar y cerrar', cancel: 'Cancelar'})
     }
 
