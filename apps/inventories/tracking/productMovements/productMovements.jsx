@@ -246,7 +246,7 @@ export default class MovementsList extends React.Component {
                 <th className='center'>Fecha</th>
                 <th className='center'>Tipo</th>
                 <th className='center'>Anterior</th>
-                <th className='center'>Monto</th>
+                <th className='center'>Monto/variación</th>
                 <th className='center'>Final</th>
                 <th className='center'>Bodega</th>
                 <th className='center'>Detalle</th>

@@ -354,8 +354,7 @@ export default class Products extends React.Component {
     const movementTypeData = [
       {text: `1 - Entrada`, id: 'INPUT'},
       {text: `2 - Salida`, id: 'OUTPUT'},
-      {text: `3 - Toma Física`, id: 'ADJUST'},
-      {text: `4 - Traslado entre bodegas`, id: 'OUTPUT-INPUT'}
+      {text: `3 - Traslado entre bodegas`, id: 'OUTPUT-INPUT'}
     ]
 
     // ********************************************************************
