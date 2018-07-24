@@ -14,7 +14,7 @@ import fetching from '../../general/fetching/reducer.js'
 import addresses from './addresses/reducer.js'
 import warehouses from './warehouses/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
-import productImporter from './products/prodImporter/reducer.js'
+import Importer from './products/importer/reducer.js'
 import search from '../../general/search/reducer.js'
 import clientCategories from './clientCategories/reducer.js'
 import sales from './sales/reducer.js'
@@ -35,7 +35,7 @@ export default combineReducers({
   addresses,
   warehouses,
   pagination,
-  productImporter,
+  Importer,
   adminSearch: search('adminSearch'),
   clientCategories,
   sales,
