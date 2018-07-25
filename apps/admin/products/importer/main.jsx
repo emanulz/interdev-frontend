@@ -49,7 +49,7 @@ export default class Importer extends React.Component {
         console.log("Data is valid")
         const formData = new FormData()
         formData.append('products_file', this.props.file)
-        formData.append('warehouse', this.props.destination_warehouse)
+        formData.append('warehouse', this.props.destination_warehouse.id)
         const import_kwargs = {
             url: '/api/importer/importFromExcel/',
             data: formData
