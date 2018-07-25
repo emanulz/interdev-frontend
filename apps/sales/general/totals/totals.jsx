@@ -10,12 +10,15 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     total: store.cart.cartTotal,
+    totalNotRounded: store.cart.totalNotRounded,
     client: store.clients.clientSelected,
     taxes: store.cart.cartTaxes,
     discountTotal: store.cart.discountTotal,
     subTotalNoDiscount: store.cart.cartSubtotalNoDiscount,
     itemsInCart: store.cart.cartItems,
-    globalDiscount: store.cart.globalDiscount
+    globalDiscount: store.cart.globalDiscount,
+    isExempt: store.cart.isExempt,
+    exemptAmount: store.cart.cartExemptAmount
     // disabled: store.sales.completed
   }
 })
@@ -77,6 +80,13 @@ export default class Totals extends React.Component {
   // Main Layout
   render() {
 
+    const ExemptTotal = this.props.isExempt
+      ? <tr>
+        <th>IV Exonerado:</th>
+        <td className='price'>₡ {this.props.exemptAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+
     return <div className='totals'>
       <div style={{
         'paddingTop': '0',
@@ -89,7 +99,7 @@ export default class Totals extends React.Component {
           <tbody>
             <tr>
               <th>Sub-Total:</th>
-              <td className='price'>₡ {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+              <td className='price'>₡ -{this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
 
             </tr>
             {/* <tr>
@@ -129,6 +139,7 @@ export default class Totals extends React.Component {
               <th>IV:</th>
               <td className='price'>₡ {this.props.taxes.formatMoney(2, ',', '.')}</td>
             </tr>
+            {ExemptTotal}
             <tr>
               {/* <th onClick={this.showInvoicePanel.bind(this)}>Total:</th> */}
               <th>Total:</th>

@@ -38,7 +38,7 @@ export default class General extends React.Component {
     // add is the variable to see if is checked or not
     const kwargs = {
       userId: this.props.user.id,
-      model: 'users',
+      model: 'general',
       add: value,
       permission: permission
     }

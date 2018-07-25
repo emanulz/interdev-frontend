@@ -9,12 +9,14 @@ import AdminTable from '../../../general/adminTable/adminTable.jsx'
 import { getPaginationItemDispatch } from '../../../utils/api.js'
 import Pagination from '../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
+import SearchAdmin from '../../../general/search/searchAdmin.jsx'
 
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
     clients: store.clients.clients,
-    pageSize: store.pagination.pageSize
+    pageSize: store.pagination.pageSize,
+    searchResults: store.receivableSearch.searchResults
   }
 })
 export default class List extends React.Component {
@@ -25,7 +27,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
 
     const clientKwargs = {
-      url: '/api/clients',
+      url: `/api/clients/?limit=${this.props.pageSize}`,
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }
@@ -36,9 +38,6 @@ export default class List extends React.Component {
 
   // Render the product
   render() {
-    const clients = this.props.clients
-
-    const dataFiltered = clients.filter(el => el.balance > 0 || el.has_credit)
 
     const headerOrder = [
       {
@@ -55,9 +54,9 @@ export default class List extends React.Component {
         type: 'text'
       },
       {
-        field: 'debt',
+        field: 'balance',
         text: 'Saldo',
-        type: 'price'
+        type: 'priceAbs'
       },
       {
         field: 'code',
@@ -68,6 +67,11 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
+
+    const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.clients
+
+    const dataFiltered = tableData.filter(el => el.balance > 0 || el.has_credit)
+
     const list = <AdminTable headerOrder={headerOrder} model='receivable' data={dataFiltered}
       idField='id' app='credits' />
 
@@ -77,12 +81,13 @@ export default class List extends React.Component {
       <div className='admin-list-header'>
         <h1>Listado de Cuentas por cobrar:</h1>
       </div>
-      <div className='admin-list-search'>
+      {/* <div className='admin-list-search'>
         <input
           type='text'
           placeholder='Ingrese un texto para buscar...'
         />
-      </div>
+      </div> */}
+      <SearchAdmin model='client' namespace='receivableSearch' />
       <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
         <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />

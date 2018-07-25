@@ -54,10 +54,12 @@ export function assingUserPermission(kwargs, resolve, reject) {
     const data = JSON.stringify(
       {permission: kwargs.permission, userId: kwargs.userId, add: kwargs.add}
     )
+    console.log(data)
     // calls the function in backend to check permissions
     axios.post('/api/assinguserpermission/', data)
       .then(function(response) {
         console.log('SUCESSSS')
+        console.log('response')
         resolve()
       })
       .catch(function(error) {

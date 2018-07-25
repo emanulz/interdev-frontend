@@ -177,11 +177,9 @@ export function getPaginationItemDispatch(kwargs) {
   const url = kwargs.url
   const successType = kwargs.successType
   const errorType = kwargs.errorType
-
   return function(dispatch) {
     axios.get(url).then(function(response) {
       dispatch({type: successType, payload: response.data.results})
-      console.log(response.data)
       const paginationPayload = {
         total: response.data.count,
         next: response.data.next,
@@ -290,11 +288,11 @@ export function saveItem(kwargs) {
   const item = kwargs.item
   delete item['id']
   const url = kwargs.url
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
-  const user = kwargs.user
+  // const logCode = kwargs.logCode
+  // const itemOld = kwargs.itemOld
+  // const logModel = kwargs.logModel
+  // const logDescription = kwargs.logDescription
+  // const user = kwargs.user
   const isSale = kwargs.isSale
   const isWorkOrder = kwargs.isWorkOrder
   return function(dispatch) {
@@ -312,7 +310,7 @@ export function saveItem(kwargs) {
             }
           })
         dispatch({type: kwargs.dispatchType, payload: ''})
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
+        // saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'FETCHING_DONE', payload: ''})
         if (isSale) {
           dispatch({type: 'SET_SALE', payload: response.data})
@@ -326,6 +324,7 @@ export function saveItem(kwargs) {
           console.log(err.response.data)
         }
         alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
   }
@@ -367,6 +366,7 @@ export function updateItem(kwargs) {
           console.log(err.response.data)
         }
         alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
   }
@@ -411,6 +411,7 @@ export function patchItem(kwargs) {
           console.log(err.response.data)
         }
         alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
   }
@@ -476,6 +477,7 @@ export function patchItems(kwargs, kwargs2) {
               console.log(err.response.data)
             }
             alertify.alert('Error', `${kwargs2.errorMessage} ERROR: ${err}.`)
+            dispatch({type: 'FETCHING_DONE', payload: ''})
           })
 
       // FIRST PATCH CATCH
@@ -485,6 +487,7 @@ export function patchItems(kwargs, kwargs2) {
           console.log(err.response.data)
         }
         alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
   }
@@ -523,6 +526,7 @@ export function deleteItem(kwargs) {
 
       }).catch((err) => {
         alertify.alert('Error', `Hubo un error al eliminar el ${model} ERROR: ${err}.`)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
   }
 }
@@ -594,6 +598,7 @@ export function loadGlobalConfig(section, name, success, fail) {
         dispatch({type: success, payload: {data: data, section: section}})
       }).catch(function(error) {
         dispatch({type: fail, payload: error})
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
     }
   }

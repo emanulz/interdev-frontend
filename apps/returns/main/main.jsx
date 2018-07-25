@@ -12,6 +12,7 @@ import routes from './routes'
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
+import PrintReturn from '../../../general/printReturn/printReturnPanel/printReturnPanel.jsx'
 
 // import routes from './routes.js'
 
@@ -42,6 +43,7 @@ export default class Main extends React.Component {
             {fetching}
           </div>
         </div>
+        <PrintReturn />
       </div>
     </Router>
 

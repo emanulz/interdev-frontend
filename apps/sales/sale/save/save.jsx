@@ -14,7 +14,11 @@ const Mousetrap = require('mousetrap')
     user: store.user.user,
     debt: store.clients.clientSelectedDebt,
     warehouse_id: store.config.salesWarehouse,
-    presaleId: store.presales.presaleId
+    warehouse2_id: store.config.workshopWarehouse,
+    presaleId: store.presales.presaleId,
+    workOrderId: store.workOrders.workOrderId,
+    workOrder: store.workOrders.workOrderActive,
+    exemptionData: store.taxExemption.exemptionData
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -26,20 +30,32 @@ export default class SaveBtn extends React.Component {
   saveBtn() {
     // const sales = this.props.sales
     // const user = this.props.user
+    // CHECK IF IS WORKSHOP OR NOT
+    const warehouse = this.props.workOrderId.length ? this.props.warehouse2_id : this.props.warehouse_id
+    // ADD WORKSHOP ITEMS TO CART
+    const cart = this.props.cart
+    const exemptionData = this.props.exemptionData
+    // the tax Amout for exemption is th exemption total
+    exemptionData['exemptAmount'] = cart['cartExemptAmount']
 
+    cart['work_order_id'] = this.props.workOrderId
+    cart['work_order'] = JSON.stringify(this.props.workOrder)
+    cart['exemption_data'] = exemptionData
+    // SALE
     const sale = {
-      cart: JSON.stringify(this.props.cart),
+      cart: JSON.stringify(cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       pay: JSON.stringify(this.props.payObject),
       client_id: this.props.client.id,
-      warehouse_id: this.props.warehouse_id,
+      warehouse_id: warehouse,
       presale_id: this.props.presaleId
     }
 
     const kwargs = {
       url: '/api/sales/',
-      item: sale
+      item: sale,
+      sucessMessage: 'Venta creada correctamente'
     }
 
     const _this = this
@@ -49,10 +65,12 @@ export default class SaveBtn extends React.Component {
       _this.props.dispatch(saveItem(kwargs, resolve, reject))
     })
     // SAVE PROCESS
-    updatePromise.then(() => {
+    updatePromise.then((data) => {
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+      this.props.dispatch({type: 'SET_SALE', payload: data})
+      this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       Mousetrap.reset()
     }).catch((err) => {
       console.log(err.response.data)

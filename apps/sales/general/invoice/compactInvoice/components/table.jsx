@@ -12,40 +12,43 @@ export default class Table extends React.Component {
     const cartItems = this.props.inCart
     const items = cartItems.map((item) => {
 
-      const taxesText = (item.product.useTaxes)
+      const taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
         ? `G`
         : `E`
 
-      return <tr key={item.uuid}>
-        <td>
-          {item.qty}
-        </td>
-        <td>
+      return <div className='compact-invoice-table-body-item' key={item.uuid}>
+        <div className='compact-invoice-table-body-item-description'>
           {item.product.description}
-        </td>
-        <td className='right-in-table'>
-          {taxesText}
-        </td>
-        <td className='right-in-table'>
-          ₡ {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
-        </td>
-      </tr>
+        </div>
+        <div className='compact-invoice-table-body-item-data'>
+          <div className='compact-invoice-table-body-item-data-qty'>
+            {item.qty}
+          </div>
+          <div className='compact-invoice-table-body-item-data-code'>
+            {item.product.code}
+          </div>
+          <div className='compact-invoice-table-body-item-data-iv'>
+            {taxesText}
+          </div>
+          <div className='compact-invoice-table-body-item-data-total'>
+            ₡ {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
+          </div>
+        </div>
+      </div>
     })
 
-    return <table className='compact-invoice-table table'>
-      <thead>
-        <tr>
-          <th>Cant</th>
-          <th className='description-row'>Articulo</th>
-          <th className='right-in-table'>IV</th>
-          <th className='right-in-table'>Total</th>
-        </tr>
-      </thead>
-      <tbody className=''>
+    return <div className='compact-invoice-table'>
+      <div className='compact-invoice-table-header'>
+        <div className='compact-invoice-table-header-qty'>Cant</div>
+        <div className='compact-invoice-table-header-code'>Código</div>
+        <div className='compact-invoice-table-header-iv'>IV</div>
+        <div className='compact-invoice-table-header-total'>Total</div>
+      </div>
+      <div className='compact-invoice-table-body'>
         {items}
-      </tbody>
+      </div>
 
-    </table>
+    </div>
 
   }
 

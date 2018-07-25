@@ -113,11 +113,19 @@ export default class MovementsList extends React.Component {
         : 'movements-table-content center adjust'
     const typeText = movement.movement_type == 'INPUT' ? 'Entrada' : movement.movement_type == 'OUTPUT' ? 'Salida' : 'T. Física'
     const date = new Date(movement.created)
+    let afterAmount = 0
+    try {
+      const product2 = JSON.parse(movement.product)
+      afterAmount = JSON.parse(product2.inventory_existent)[movement.warehouse_id]
+    } catch (err) {}
+
     return <tr key={movement.id}>
       <td className='center'><div className='movements-table-content'>{movement.consecutive}</div></td>
       <td><div className='movements-table-content'>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</div></td>
       <td><div className={`${movClass}`} >{typeText}</div></td>
+      <td><div className='movements-table-content'>{parseFloat(afterAmount) - parseFloat(movement.amount)}</div></td>
       <td><div className='movements-table-content'>{movement.amount}</div></td>
+      <td><div className='movements-table-content'>{afterAmount}</div></td>
       <td><div className='movements-table-content'>{movement.warehouse.name}</div></td>
       <td><div className='movements-table-content'>{movement.description}</div></td>
     </tr>
@@ -128,7 +136,6 @@ export default class MovementsList extends React.Component {
     const movements = this.props.movements
 
     const product = this.props.product
-    console.log(product)
     const rows = movements.length
       ? movements.map(movement => {
         return this.movementItem(movement)
@@ -238,7 +245,9 @@ export default class MovementsList extends React.Component {
                 <th className='center'>Movimiento #</th>
                 <th className='center'>Fecha</th>
                 <th className='center'>Tipo</th>
-                <th className='center'>Monto</th>
+                <th className='center'>Anterior</th>
+                <th className='center'>Monto/variación</th>
+                <th className='center'>Final</th>
                 <th className='center'>Bodega</th>
                 <th className='center'>Detalle</th>
               </tr>

@@ -13,6 +13,9 @@ import pay from './purchase/pay/reducer.js'
 import main from './main/reducer.js'
 import warehouses from './general/warehouses/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
+import search from '../../general/search/reducer.js'
+import purchaseReceipt from './general/receipt/reducer.js'
+import config from './general/config/reducer.js'
 
 export default combineReducers({
     main,
@@ -28,4 +31,8 @@ export default combineReducers({
     pay,
     warehouses,
     pagination,
+    productSearch: search('productSearch'),
+    supplierSearch: search('supplierSearch'),
+    purchaseReceipt,
+    config,
 })

@@ -281,6 +281,13 @@ export default class Products extends React.Component {
 
     const product = this.props.productActive
 
+    try {
+      const inventoryByWarehouse = JSON.parse(product.inventory_existent)
+      product.inventory_existent = inventoryByWarehouse
+    } catch (err) {
+      console.log(err)
+    }
+
     const department = this.props.departments.filter(department => {
       return department.id == product.department
     })
@@ -313,17 +320,17 @@ export default class Products extends React.Component {
           </tr>
           <tr>
             <th>Existencia:</th>
-            <td>{`${product.inventory} ${product.unit}`}</td>
+            <td>{`${product.inventory_existent.total} ${product.unit}`}</td>
           </tr>
         </tbody>
       </table>
       : <div />
 
     const table2Content = this.props.warehouses.map(warehouse => {
-      return product.inventory
+      return product.inventory_existent
         ? <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
-          <td>{product['inventory_by_warehouse'][warehouse.id]} {product.unit}</td>
+          <td>{product.inventory_existent[warehouse.id]} {product.unit}</td>
         </tr>
         : <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
@@ -347,8 +354,7 @@ export default class Products extends React.Component {
     const movementTypeData = [
       {text: `1 - Entrada`, id: 'INPUT'},
       {text: `2 - Salida`, id: 'OUTPUT'},
-      {text: `3 - Toma Física`, id: 'ADJUST'},
-      {text: `4 - Traslado entre bodegas`, id: 'OUTPUT-INPUT'}
+      {text: `3 - Traslado entre bodegas`, id: 'OUTPUT-INPUT'}
     ]
 
     // ********************************************************************

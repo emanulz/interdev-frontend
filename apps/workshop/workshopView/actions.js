@@ -5,7 +5,6 @@ import {saveLog} from '../../../utils/api'
 let inspect = require('util-inspect')
 
 export function createPartRequest(work_order_id, employee, amount, product, id_move_workshop, id_move_origin){
-    console.log("Creating part request")
     const url = '/api/partrequest/'
     const logCode = 'WORKORDER_PART_REQUEST_CREATED'
     const logDescription = 'Part request for work order --> ' +work_order_id
@@ -40,11 +39,7 @@ export function createPartRequest(work_order_id, employee, amount, product, id_m
 }
 
 export function deleteInventoryTransactions(part_request, user){
-    console.log('Delete part request')
-    const url_movements = '/api/inventorymovements/'
     const url_warehouses = '/api/warehouses/'
-    const logCodeCreate = 'WORKSHOP_PART_REQUEST'
-    const descriptionCreate = 'WORKSHOP_CREATE_PART_REQUEST'
     
     const workshop_warehouse_id = "4a25f16d-0f1a-4e9e-95b0-a464c085a20c"
     const main_warehouse_id = "9d85cecc-feb1-4710-9a19-0a187580e15e"
@@ -66,12 +61,9 @@ export function deleteInventoryTransactions(part_request, user){
 }
 
 export function saveInventoryTransactions(work_order_id, parts_request_list, user){
-    console.log('Parts request transactions save')
-    const url_movements = '/api/inventorymovements/'
+
     const url_warehouses = '/api/warehouses/'
-    const logCodeCreate = 'WORKSHOP_PART_REQUEST'
-    const descriptionCreate = 'WORKSHOP_CREATE_PART_REQUEST'
-    
+
     const workshop_warehouse_id = "4a25f16d-0f1a-4e9e-95b0-a464c085a20c"
     const main_warehouse_id = "9d85cecc-feb1-4710-9a19-0a187580e15e"
     const warehouse_promises = [axios.get(`${url_warehouses}${main_warehouse_id}`),
@@ -126,12 +118,7 @@ export function saveInventoryTransactions(work_order_id, parts_request_list, use
 
 
 export function saveUsedPartTransactions(work_order_id, used_list, used_list_old, user){
-        const url = '/api/usedparts/'
-        const logCodeCreate = 'USED_PART_CREATE'
-        const logCodeUpdate = 'USED_PART_UPDATE'
-        const descriptionCreate = 'USED_PART_CREATE'
-        const descriptionUpdate = 'USED_PART_UPDATE'
-    
+
         let promises_save = []
         let promises_patch = []
         for (let part of used_list){
@@ -156,7 +143,6 @@ export function saveUsedPartTransactions(work_order_id, used_list, used_list_old
     }
 
 export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_old, user, client){
-    console.log("Cash advance saver method")
 
     let promises_save = []
     let promises_patch = []
@@ -164,13 +150,11 @@ export function saveCashAdvanceTransactions(work_order_id, cash_list, cash_list_
     for (let advance of cash_list){
         if(advance.saved === false){
             if(advance.element.work_order_id !== undefined && advance.element.work_order_id !== ''){
-                console.log('patch advance')
                 const index_old = cash_list_old.findIndex(a=>a.element.id === advance.element.id)
                 promises_patch.push(
                     patchCashAdvanceMovement(cash_list_old[index_old], advance, user)
                 )
             }else{
-                const user_string = JSON.stringify(user)
                 promises_save.push(
                     createCashAdvance(work_order_id, advance.element.amount, JSON.stringify(client),
                                         JSON.stringify(user), advance.element.description, '' )

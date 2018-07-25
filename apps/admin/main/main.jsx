@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile, fecthIsAdminLocked} from './actions'
+import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
 
 // COMPONENTS
 
@@ -46,6 +47,7 @@ export default class Main extends React.Component {
             {fetching}
           </div>
         </div>
+        <ReprintInvoice />
       </div>
     </Router>
 

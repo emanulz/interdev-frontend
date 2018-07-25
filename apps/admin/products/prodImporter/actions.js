@@ -27,10 +27,13 @@ export function saveProdInBatches(start, temp_end, total, prods, warehouse){
     while(current <= temp_end){
         promise_set.push(
             new Promise((resolve, reject)=>{
-                
+
                 axios({
                     method: 'post',
                     url: '/api/products/',
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    },
                     data:prods[current]
                 }).then((prod)=>{
                     resolve(prod.data)
@@ -317,7 +320,7 @@ export function importTestProducts(start_code, end_code){
 
 }
 
-export function saveImportedProduct(data){
+export function saveImportedProduct(data, warehouse, allow_negatives){
     const qty = data.qty? data.qty : 0
     const prodData = {
         code:data.code,
@@ -334,7 +337,7 @@ export function saveImportedProduct(data){
         inventory_enabled: true,
         inventory_minimum:0,
         inventory_maximum: 500,
-        inventory_negative: true,
+        inventory_negative: allow_negatives,
         cost: data.cost.toFixed(5),
         cost_based: false,
         utility: data.utility,
@@ -365,19 +368,68 @@ export function saveImportedProduct(data){
 
     }
     return prodData
-    // return new Promise((resolve, reject)=>{
-    //     axios({
-    //         method:'post',
-    //         url:'/api/products/',
-    //         data: prodData
-    //     }).then(response=>{
-    //         resolve(response.data)
-    //     }).catch(err=>{
-    //         err.is_err= true
-    //         console.log(err)
-    //         reject(err) //Rather deal with the failures than abort the saving process
-    //     })
-    // })
+
+}
+
+export function imageProdTest(){
+    const prodData = {
+        code:"TEST_CODE",
+        description: "TEST_DESCRIPTION",
+        unit: "unit",
+        fractioned: true,
+        department:'',
+        subdepartment:'',
+        barcode:'',
+        internal_barcode: "data.code",
+        supplier_code: "data.supplier_code",
+        model:'',
+        part_number: '',
+        inventory_enabled: true,
+        inventory_minimum:0,
+        inventory_maximum: 500,
+        inventory_negative: false,
+        cost: "1555.55",
+        cost_based: false,
+        utility: "0.35",
+        price: "1655",
+        sell_price: "1878",
+        ask_price: false,
+        use_taxes: true,
+        taxes: 13.0,
+        tax_code: '00',
+        use_taxes2: false,
+        taxes2: 0,
+        tax_code2: '00',
+        use_taxes3: false,
+        taxes3: 0,
+        tax_code3: '00',
+        pred_discount: 0,
+        max_sale_discount: 20,
+        on_sale: false,
+        is_active: true,
+        consignement: false,
+        generic: false,
+        observations: '',
+        short_description: "short_description",
+        brand_code:'',
+        inventory_existent: '{"total":"0"}',
+        inv_load_amount: 11
+
+    }
+    return prodData
+
+}
+
+export function createProdWithImage(prod_data, image){
+    const formData = new FormData()
+    formData.append('file', image)
+    formData.append('prod', JSON.stringify(prod_data))
+
+    axios({
+        method: 'post',
+        url: '/api/products/',
+        data: formData
+    })
 }
 
 export function joinINV_CAT(cat_data, inv_data){

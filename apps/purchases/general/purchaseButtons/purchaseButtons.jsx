@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {savePurchase, saveInventoryTransaction, saveCreditPayment,saveCreditMovement} from './actions.js'
+import {savePurchase} from './actions.js'
+
 import { inspect } from 'util'
 
 @connect(store=>{
@@ -11,6 +12,7 @@ import { inspect } from 'util'
         cart:store.cart,
         pay:store.pay,
         purchase:store.purchase,
+        discount_mode: store.cart.discount_mode,
 
     }
 })
@@ -33,7 +35,8 @@ export default class PurchaseButtons extends React.Component {
             invoice_date: this.props.purchase.invoiceDate,
             credit_days: this.props.pay.creditDays,
             apply: apply,
-            update_purchase: false
+            update_purchase: false,
+            discount_mode: this.props.discount_mode,
         }
         if(this.props.purchase.purchase_id !== ''){
             //this should be a patch
@@ -42,9 +45,25 @@ export default class PurchaseButtons extends React.Component {
         savePurchase(kwargs).then(result=>{
             this.props.dispatch({type: 'PURCHASE_SAVED', 
             payload:{ id: result.id, consecutive: result.consecutive , is_closed: result.is_closed}})
-            alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación')
+            let callback = ()=>{}
+            if(result.is_closed){
+                callback = ()=>{
+                    window.location.href=`/purchases/purchase/${result.consecutive}`
+                }
+            }
+            alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación', callback)
         })
         
+    }
+
+
+    printReport(){
+        //check if the report is already closed, do not allow 
+        if(!this.props.purchase.is_closed){
+            this.props.dispatch({type:'CANT_PRINT_NOT_CLOSED_PURCHASE'})
+            return
+        }
+        this.props.dispatch({type:'SHOW_RECEIPT_PANEL'})
     }
 
     render() {
@@ -77,9 +96,10 @@ export default class PurchaseButtons extends React.Component {
                     <span> <i className='fa fa-check' /> </span>
                 </button>
 
-                <button className='purchase-buttons-normal' >
-                    Facturas Incompletas
-                    <span> <i className='fa fa-exclamation' /> </span>
+                <button className='purchase-buttons-normal' 
+                onClick={this.printReport.bind(this, true)}>
+                    Imprimir Ingreso
+                    <span> <i className='fa fa-print' /> </span>
                 </button>
             </div>
         </div>

@@ -1,18 +1,41 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {updateStoreCreditAmount} from '../actions.js'
+import {updateStoreCreditAmount, autoUpdateCreditAmount} from '../actions.js'
 
 @connect((store) => {
   return {
     client: store.clients.clientSelected,
     debt: store.clients.clientSelectedDebt,
-    creditAmount: store.pay.payObject.cred[0].amount}
+    creditAmount: store.pay.payObject.cred[0].amount,
+    isCredit: store.pay.isCredit,
+    cartTotal: store.cart.cartTotal,
+    payObject: store.pay.payObject
+  }
 })
 export default class PayCredit extends React.Component {
 
   cardAmountChanged(ev) {
 
     this.props.dispatch(updateStoreCreditAmount(ev.target.value))
+  }
+
+  changeIsCredit(ev) {
+    const isCredit = ev.target.checked
+    this.props.dispatch({type: 'CHANGE_IS_CREDIT', payload: isCredit})
+    if (isCredit) {
+      autoUpdateCreditAmount(
+        'CRED',
+        0,
+        this.props.cartTotal,
+        this.props.client,
+        this.props.payObject,
+        this.props.dispatch)
+    } else {
+      this.props.dispatch({
+        type: 'UPDATE_CREDIT_AMOUNT',
+        payload: 0
+      })
+    }
   }
 
   render() {
@@ -31,6 +54,15 @@ export default class PayCredit extends React.Component {
       </div>
 
       <div className='pay-method-body-content'>
+        <div>
+          <div className='pay-tag left'>ES CRÉDITO:</div>
+          <input disabled={!this.props.client.has_credit} type='checkbox' checked={this.props.isCredit} onChange={this.changeIsCredit.bind(this)} />
+        </div>
+
+        <div className='pay-tag left'>MONTO:</div>
+        <div className='pay-tag right'>
+          ₡ {this.props.creditAmount.formatMoney(2, ',', '.')}</div>
+        {/* <input value={this.props.creditAmount} onChange={this.cardAmountChanged.bind(this)} type='Number' className='form-control' /> */}
 
         <div className='pay-tag left'>LÍMITE:</div>
         <div className='pay-tag right'>
@@ -40,9 +72,6 @@ export default class PayCredit extends React.Component {
         <div className='pay-tag left'>DISPONIBLE:</div>
         <div className='pay-tag right'>
           {clientAvailable}</div>
-
-        <div className='pay-tag left'>MONTO:</div>
-        <input value={this.props.creditAmount} onChange={this.cardAmountChanged.bind(this)} type='Number' className='form-control' />
 
         <br />
         <br />

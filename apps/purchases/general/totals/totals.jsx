@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import formatMoney from '../../../../utils/formatMoney'
 
 @connect(store=>{
     return{
@@ -13,15 +12,17 @@ import formatMoney from '../../../../utils/formatMoney'
         invoiceDate: store.purchase.invoiceDate,
         invoiceNumber: store.purchase.invoiceNumber,
         is_closed: store.purchase.is_closed,
+        orderTransport: store.cart.orderTransport,
+        
     }
 })
 export default class Totals extends React.Component {
 
-    discountAmountChanged(e){
-        if(e.target.value===''){this.props.dispatch({type:'SET_DISCOUNT_AMOUNT', payload:0})}
-        const total = parseFloat(e.target.value)?parseFloat(e.target.value):-1
-        if(total==-1){return}
-        this.props.dispatch({type:'SET_DISCOUNT_AMOUNT', payload:total})
+    transportAmountChanged(e){
+        const transport = parseFloat(e.target.value)?parseFloat(e.target.value):-1
+        if (transport == -1)return
+        this.props.dispatch({type:'SET_TRANSPORT_AMOUNT', payload:transport})
+        
     }
 
     taxesAmountChanged(e){
@@ -44,32 +45,6 @@ export default class Totals extends React.Component {
         const subtotal = this.props.cartSubtotal.formatMoney(2, ',', '.')
         return <div className='totals'>
             <div className='totals-data-row'>
-                <div className='totals-data-row-label' >Subtotal:</div>
-                <div className='totals-data-row-value'>₡{subtotal}</div>
-            </div>
-
-            <div className='totals-data-row'>
-                <div className='totals-data-row-label' >Descuento ₡:</div>
-                <input className='totals-data-row-input' type='text'
-                onChange={this.discountAmountChanged.bind(this)}
-                disabled={this.props.is_closed}
-                value={this.props.discountTotal}/>
-            </div>
-            
-            <div className='totals-data-row'>
-                <div className='totals-data-row-label' >Impuesto ₡:</div>
-                <input className='totals-data-row-input' type='text'
-                onChange={this.taxesAmountChanged.bind(this)}
-                disabled={this.props.is_closed}
-                value={this.props.cartTaxes} />
-            </div>
-
-            <div className='totals-data-row'>
-                <div className='totals-data-row-label' >Total:</div>
-                <div className='totals-data-row-value'>₡{total}</div>
-            </div>
-            <hr/>
-            <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Número de Factura:</div>
                 <input className='totals-data-row-input' type="text"
                 onChange={this.invoiceNumberChanged.bind(this)}
@@ -83,6 +58,35 @@ export default class Totals extends React.Component {
                 disabled={this.props.is_closed}
                 value={this.props.invoiceDate}/>
             </div>
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Subtotal:</div>
+                <div className='totals-data-row-value'>₡{subtotal}</div>
+            </div>
+
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Descuento ₡:</div>
+                <div className='totals-data-row-input'>{this.props.discountTotal}</div>
+            </div>
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Transporte ₡:</div>
+                <input className='totals-data-row-input' type='text'
+                onChange={this.transportAmountChanged.bind(this)}
+                disabled={this.props.is_closed}
+                value={this.props.orderTransport} />
+            </div>
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Impuesto ₡:</div>
+                <input className='totals-data-row-input' type='text'
+                onChange={this.taxesAmountChanged.bind(this)}
+                disabled={this.props.is_closed}
+                value={this.props.cartTaxes} />
+            </div>
+
+            <div className='totals-data-row'>
+                <div className='totals-data-row-label' >Total:</div>
+                <div className='totals-data-row-value'>₡{total}</div>
+            </div>
+
         </div>
     }
 }

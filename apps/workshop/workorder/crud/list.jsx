@@ -1,6 +1,3 @@
-/*
- * Module dependencies
- */
 import React from 'react'
 
 import ListComponent from './list/list.jsx'

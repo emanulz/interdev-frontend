@@ -5,6 +5,7 @@ import Table from './components/table.jsx'
 import Data from './components/data.jsx'
 import Totals from './components/totals.jsx'
 import Notes from './components/notes.jsx'
+import WorkOrderData from './components/workshopData.jsx'
 
 export default class CompactInvoice extends React.Component {
 
@@ -14,6 +15,7 @@ export default class CompactInvoice extends React.Component {
 
       <Header />
       <Data />
+      <WorkOrderData />
       <Table />
       <Totals />
       <Notes />

@@ -15,7 +15,7 @@ export function searchItem(text, model, namespace) {
   const newstr = text.replace('%', '&', 'gi').replace('+', '!', 'gi').replace('*', '$', 'gi')
   const data = {
     model: model,
-    max_results: 15,
+    max_results: 20,
     search_key: newstr
   }
   return function(dispatch) {

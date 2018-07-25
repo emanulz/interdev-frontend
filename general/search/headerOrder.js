@@ -1,4 +1,19 @@
-export function getHeaderOrder(model) {
+export function getHeaderOrder(model, salesWarehouse) {
+
+  let get_existences_closure = (item)=>{
+      function getExistences(item){
+      if(salesWarehouse === undefined || salesWarehouse ===''){
+        return "0"
+      }
+      const parsed_inv = JSON.parse(item)
+      return parsed_inv[salesWarehouse] === undefined?0:parsed_inv[salesWarehouse]
+    }
+
+    return getExistences(item)
+  }
+
+  item=>{return JSON.parse(item)}
+
   const clientHeader = [
     {
       field: 'code',
@@ -35,12 +50,40 @@ export function getHeaderOrder(model) {
       field: 'description',
       text: 'Descripción'
     }, {
+      type: 'function_process',
+      field: 'inventory_existent',
+      text: 'Existencias',
+      worker_method: get_existences_closure
+    }, {
       field: 'supplier_code',
       text: 'Cod Prov'
     }, {
       field: 'sell_price',
       text: 'Precio IVI',
       type: 'price'
+    }
+  ]
+
+  const supplierHeader = [
+    {
+      field: 'code',
+      text: 'Código',
+      width: '150px',
+    }, {
+      field: 'name',
+      text: 'Nombre',
+    }, {
+      field: 'phone_number',
+      text: 'Tel.',
+    }, {
+      field: 'agent_name',
+      text: 'Nombre Agente'
+    }, {
+      field: 'agent_last_name',
+      text: 'Apellido Agente'
+    }, {
+      field: 'agent_phone_number',
+      text: 'Tel. Agente'
     }
   ]
   // Return the header switching model cases
@@ -51,6 +94,9 @@ export function getHeaderOrder(model) {
     }
     case 'client': {
       return clientHeader
+    }
+    case 'supplier': {
+      return supplierHeader
     }
   }
 

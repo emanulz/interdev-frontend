@@ -5,15 +5,16 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {searchClient} from './actions'
-import {getItemDispatch} from '../../../../utils/api'
 
 @connect((store) => {
   return {
     clients: store.clients.clients,
     clientSelected: store.clients.clientSelected,
     client: store.clients.clientSelected,
+    disabled: store.clients.disabled,
     users: store.clients.users,
     user: store.clients.userSelected,
+    is_edit: store.workorder.is_edit,
 
   }
 })
@@ -23,17 +24,6 @@ export default class Clients extends React.Component {
   }
 
   componentWillMount() {
-
-    this.props.dispatch({type: 'FETCHING_STARTED'})
-
-    const clientKwargs = {
-      url: '/api/clients/?code=00',
-      successType: 'CLIENT_SELECTED_LIST',
-      errorType: 'FETCH_CLIENT_REJECTED'
-    }
-
-    this.props.dispatch(getItemDispatch(clientKwargs))
-
   }
 
   componentWillUnmount(){

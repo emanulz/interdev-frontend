@@ -22,7 +22,11 @@ import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx
         
         work_order: store.workorder.work_order,
 
-        cash_advance : store.workorder.cash_advance
+        cash_advance : store.workorder.cash_advance,
+        request_show_receipt: store.workorder.request_show_receipt,
+        request_saved: store.workorder.request_saved,
+        is_edit: store.workorder.is_edit,
+        is_stock_warranty: store.workorder.is_stock_warranty,
         
     }
 })
@@ -38,6 +42,13 @@ export default class Form extends React.Component {
     componentWillUnmount(){
         this.props.dispatch({type:'CLEAR_WORK_ORDER'})
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'}) 
+    }
+
+    componentWillUpdate(){
+        if(this.props.request_show_receipt){
+            this.props.dispatch({type: 'DISABLE_RECEIPT_REQUEST'})
+            this.props.dispatch({type: 'SHOW_RECEIPT_PANEL'})
+        }
     }
 
     handleOtherInput(event){
@@ -85,6 +96,13 @@ export default class Form extends React.Component {
         
         
 
+    }
+
+    handleStockCheck(event){
+        const target = event.target
+        let value
+        value = target.checked
+        this.props.dispatch({type:'SET_STOCK_CHECK', payload: value})
     }
 
     handleInputChange(event){
@@ -226,6 +244,7 @@ export default class Form extends React.Component {
         const failures_list = this.props.work_order.malfunction_details.map((malfunction, index)=>
             <li key={malfunction.key} className="workshop-list-damages-item" >
             <span id ={"failure_id-"+index} className="fa fa-minus-square" 
+            disabled={this.props.request_saved}
             onClick={this.handleInputChange.bind(this)}/> {malfunction.value}
             </li>
         )
@@ -236,6 +255,7 @@ export default class Form extends React.Component {
             className='form-control'
             onSelect={this.handleInputChange.bind(this)}
             data={this.props.article_failures}
+            disabled={this.props.request_saved}
             options={{
                 placeholder: 'Elija fallas de la lista..',
                 noResultsText: 'Sin elementos'
@@ -245,6 +265,7 @@ export default class Form extends React.Component {
             failure_input_object = <div className="col-xs-6 second">
             <input type="text" value={this.props.article_custom_failure} 
                 name="custom_malfunction_input" 
+                disabled={this.props.request_saved}
                 onBlur={this.handleInputChange.bind(this)} 
                 onChange={this.handleInputChange.bind(this)}
                 className='form-control' placeholder="Falla.."/>
@@ -254,6 +275,7 @@ export default class Form extends React.Component {
         const observations_list = this.props.work_order.observations_list.map((observation, index)=>
             <li key={observation.key} className="workshop-list-observation-item">
             <span id={"observation_id-"+index} className="fa fa-minus-square" 
+            disabled={this.props.request_saved}
             onClick={this.handleInputChange.bind(this)}/> {observation.value}
             </li>
         )
@@ -263,6 +285,7 @@ export default class Form extends React.Component {
             observations_input_object = <Select2
             name='observations_list'
             className='form-control'
+            disabled={this.props.request_saved}
             onSelect={this.handleInputChange.bind(this)}
             data={this.props.article_observations}
             options={{
@@ -274,6 +297,7 @@ export default class Form extends React.Component {
             observations_input_object = <div className="col-xs-6 second">
             <input type="text" value={this.props.article_custom_observation} 
                 name="custom_observation_input" 
+                disabled={this.props.request_saved}
                 onBlur={this.handleInputChange.bind(this)} 
                 onChange={this.handleInputChange.bind(this)}
                 className='form-control' placeholder="Observación.."/>
@@ -294,6 +318,7 @@ export default class Form extends React.Component {
                             name='article_type'
                             value={this.props.work_order.article_type}
                             onSelect={this.handleInputChange.bind(this)}
+                            disabled={this.props.request_saved}
                             options={{
                                 placeholder: 'Elija el tipo de artículo...',
                                 noResultsText: 'Sin elementos'
@@ -308,6 +333,7 @@ export default class Form extends React.Component {
                         name='article_brand'
                         value={this.props.work_order.article_brand}
                         onSelect={this.handleInputChange.bind(this)}
+                        disabled={this.props.request_saved}
                         options={{
                             placeholder: 'Elija la marca del artículo...',
                             noResultsText: 'Sin elementos'
@@ -324,6 +350,7 @@ export default class Form extends React.Component {
                         name='article_color'
                         value={this.props.work_order.article_color}
                         onSelect={this.handleInputChange.bind(this)}
+                        disabled={this.props.request_saved}
                         options={{
                             placeholder: 'Elija el color del artículo...',
                             noResultsText: 'Sin elementos'
@@ -335,6 +362,7 @@ export default class Form extends React.Component {
                 <div className="col-xs-6 second">
                         <label>Modelo</label>
                         <input type="text" value={this.props.work_order.article_model} 
+                            disabled={this.props.request_saved}
                             name="article_model" onChange={this.handleInputChange.bind(this)} 
                             className='form-control' placeholder="Modelo.."/>
                 </div>
@@ -344,12 +372,14 @@ export default class Form extends React.Component {
                 <div className="col-xs-6 first">
                     <label>Número de Serie</label>
                     <input name="article_serial" type="text" value={this.props.work_order.article_serial}
+                        disabled={this.props.request_saved}
                         className="form-control" placeholder="Número de Serie.." onChange={this.handleInputChange.bind(this)}/>
                 </div>
 
                 <div className="col-xs-6 first">
                     <label>Es garantía?</label>
                     <input checked={this.props.work_order.is_warranty} name='is_warranty'
+                        disabled={this.props.request_saved}
                         onChange={this.handleInputChange.bind(this)}
                         type='checkbox' className='form-control' />
                 </div>
@@ -416,48 +446,66 @@ export default class Form extends React.Component {
         let  content=''
 
         let repaired_by_element = ''
-        if(this.props.work_order.is_closed){
-            repaired_by_element = <div>
-            <label>Fecha de Entrega Estimada</label>
-            <div>{this.props.work_order.warranty_repaired_by}</div>
-        </div>
-        }
 
         let repair_body = ''
         if(this.props.work_order.is_warranty){
             const warranty = this.props.work_order.warranty_number_bd
-            if(warranty !== '' && warranty !== undefined){
-                    repair_body = <div>
-                    <label>Nombre vendedor</label>
-                    <input name="warranty_supplier_name" type='text'
-                        value={this.props.work_order.warranty_supplier_name}
-                        className="form-control" placeholder="Vendedor Producto"
-                        onChange={this.handleInputChange.bind(this)}/>
 
+            let warranty_invoice_stock_dependant = ''
+            if(!this.props.is_stock_warranty){
+                warranty_invoice_stock_dependant = <div> 
                     <label>Fecha Factura</label>
                     <input value={this.props.work_order.warranty_invoice_date}
                         name='warranty_invoice_date' 
+                        disabled={this.props.request_saved}
                         onChange={this.handleInputChange.bind(this)} 
                         type='date' className='form-control'/>
 
                     <label>Número de Factura</label>
                     <input name="warranty_invoice_number" type='text'
                         value={this.props.work_order.warranty_invoice_number}
+                        disabled={this.props.request_saved}
                         className="form-control" placeholder="Número factura.."
                         onChange={this.handleInputChange.bind(this)}/>
+                </div>
+            }
+            if(warranty !== '' && warranty !== undefined){
+                    repair_body = <div>
+                    <label>Nombre Distribuidor</label>
+                    <input name="warranty_supplier_name" type='text'
+                        value={this.props.work_order.warranty_supplier_name}
+                        disabled={this.props.request_saved}
+                        className="form-control" placeholder="Vendedor Producto"
+                        onChange={this.handleInputChange.bind(this)}/>
+
+                    <div className="col-xs-6 first">
+                        <label>Es garantía STOCK?</label>
+                        <input checked={this.props.is_stock_warranty} name='is_warranty_stock'
+                            disabled={this.props.request_saved}
+                            onChange={this.handleStockCheck.bind(this)}
+                            type='checkbox' className='form-control' />
+                    </div>
+                    
+                    {warranty_invoice_stock_dependant}
 
                 </div>
 
             }
 
         }else{ //internal warranty form
-            repair_body = <div>
+            if(!this.props.is_edit){
+                repair_body = <div>
                 <label>Adelanto</label>
                 <input name="cash_advance" type='text'
                     value={this.props.cash_advance} className="form-control"
                     placeholder="Ingrese monto adelanto.." 
+                    disabled={this.props.request_saved}
                     onChange={this.handleOtherInput.bind(this)} />
             </div>
+            }else{
+                repair_body = ''
+            }
+
 
         }
 
@@ -467,6 +515,7 @@ export default class Form extends React.Component {
             bd_entry =<div>
                 <label>Número de Garantía Black Decker</label>
                 <input name="warranty_number_bd" type="text" 
+                    disabled={this.props.request_saved}
                     value={this.props.work_order.warranty_number_bd}
                     className="form-control" placeholder="Número de Garantía.." 
                     onChange={this.handleInputChange.bind(this)} /> 

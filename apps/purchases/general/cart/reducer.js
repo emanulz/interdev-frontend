@@ -10,12 +10,29 @@ const stateConst = {
   cartTotal: 0, // cart total after discount and taxes
   discountTotal: 0, // discount in currency
   cartItemActive: false,
+  orderTransport: 0, //the amount of transport invoiced
+  discount_mode: 'percent_based'
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    case 'SET_DISCOUNT_MODE':
+    {
+      return {
+        ...state,
+        discount_mode: action.payload
+      }
+    }
+
+    case 'SET_TRANSPORT_AMOUNT':
+    {
+      return {
+        ...state,
+        orderTransport: action.payload
+      }
+    }
     case 'SET_DISCOUNT_AMOUNT':
     {
       return {
@@ -47,6 +64,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
+        orderTransport:0,
+        discount_mode: 'percent_based',
         cartItemActive: false,
       }
     }
@@ -66,16 +85,16 @@ export default function reducer(state = stateConst, action) {
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
+        orderTransport:0,
+        discount_mode: 'percent_based',
         cartItemActive: false,
       }
     }
     case 'LOADED_PURCHASE':
     {
       const cart = JSON.parse(action.payload.cart)
-      const oldCart = JSON.parse(JSON.stringify(cart))
       return {
         ...state,
-        oldCart: oldCart,
         editable:cart.editable,
         created:cart.created,
         updated:cart.updated,
@@ -87,6 +106,7 @@ export default function reducer(state = stateConst, action) {
         cartTotal: cart.cartTotal,
         discountTotal: cart.discountTotal,
         cartItemActive: cart.cartItemActive,
+        orderTransport:cart.orderTransport?cart.orderTransport:0,
       }
     }
 

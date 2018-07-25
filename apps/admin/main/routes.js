@@ -13,12 +13,15 @@ import Permissions from '../permissions/main.jsx'
 import ProductDepartments from '../productDepartments/main.jsx'
 import ProductSubDepartments from '../productSubDepartments/main.jsx'
 import Warehouses from '../warehouses/main.jsx'
+import ClientCategories from '../clientCategories/main.jsx'
+import Sales from '../sales/main.jsx'
 
 const routes = <div className='heigh100'>
 
   <Route exact path='/admin' component={Home} />
   <Route path='/admin/users' component={Users} />
   <Route path='/admin/clients' component={Clients} />
+  <Route path='/admin/clientcategories' component={ClientCategories} />
   <Route path='/admin/senders' component={Senders} />
   <Route path='/admin/products' component={Products} />
   <Route path='/admin/productdepartments' component={ProductDepartments} />
@@ -26,6 +29,7 @@ const routes = <div className='heigh100'>
   <Route path='/admin/permissions' component={Permissions} />
   <Route path='/admin/suppliers' component={Suppliers} />
   <Route path='/admin/warehouses' component={Warehouses} />
+  <Route path='/admin/sales' component={Sales} />
 
 </div>
 

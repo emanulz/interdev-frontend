@@ -7,15 +7,6 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'SALE_PANEL_MOUNTED':
-    {
-      return {
-        ...state,
-        topBarToggleVisible: true,
-        sideMenuVisible: false
-      }
-    } // case
-
     case 'RETURN_PANEL_MOUNTED':
     {
       return {
@@ -26,6 +17,24 @@ export default function reducer(state = stateConst, action) {
     } // case
 
     case 'HOME_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: false,
+        sideMenuVisible: true
+      }
+    } // case
+
+    case 'SALES_LIST_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: false,
+        sideMenuVisible: true
+      }
+    } // case
+
+    case 'RETURNS_LIST_PANEL_MOUNTED':
     {
       return {
         ...state,

@@ -4,6 +4,7 @@
   flex-flow: column
   justify-content: flex-start
   height: 100%
+  margin-top: 10px
   &-header
     border: 1px solid #cacaca
     display: flex
@@ -44,6 +45,19 @@
       align-items: center
       justify-content: flex-start
       width: 15%
+    &-discount
+      display: flex
+      align-items: center
+      justify-content: flex-start
+      width: 15%
+      &-radio
+        padding: 0.2em
+
+    &-discountToClient
+      display: flex
+      align-items: center
+      justify-content: flex-start
+      width: 15%
     &-total
       display: flex
       align-items: center
@@ -70,19 +84,22 @@
         font-size: 15px
         width: 100%
       &-code
-        width: 10%
-      &-description
         width: 20%
+      &-description
+        width: 30%
       &-qty
-        width: 10%
+        width: 20%
         & input
           font-size: 13px
       &-cost
+        width: 30%
+      &-discount
+        width: 30%
+      &-discountToClient
         width: 15%
-      &-targetutility
-        width: 15%
-      &-realutility
-        width: 15%
+        display: flex
+        flex-flow: row
+        justify-content: center
       &-total
         text-align: center
         width: 20%
@@ -131,14 +148,15 @@
           width: 15%
           display: flex
           align-items: center
-        &-targetutility
+        &-discount
           width: 15%
           display: flex
           align-items: center
-        &-realutility
+        &-discountToClient
           width: 15%
           display: flex
-          align-items: center
+          flex-flow: row
+          justify-content: center
         &-total
           display: flex
           align-items: center

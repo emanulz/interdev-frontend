@@ -4,12 +4,18 @@ import {loadGlobalConfig} from '../../../../../utils/api.js'
 
 import FullReceipt from '../fullReceipt/main.jsx'
 import CompactReceipt from '../compactReceipt/main.jsx'
+import PartRequestReceipt from '../partRequest/main.jsx'
+
+import WarrantyBDReceipt from '../warrantyBDReceipt/main.jsx'
+import WarrantyReceipt from '../warrantyCloseReceipt/main.jsx'
+import NoRepairReceipt from '../noRepairReceipt/main.jsx'
 
 
 @connect((store)=>{
     return {
         isVisible: store.workshopReceipt.isVisible,
-        isFull: store.workshopReceipt.isFull
+        isFull: store.workshopReceipt.isFull,
+        receipt_to_print: store.workshopReceipt.receipt_to_print
     }
 })
 export default class ReceiptPanel extends React.Component {
@@ -35,14 +41,58 @@ export default class ReceiptPanel extends React.Component {
             ? ''
             : ' compact-receipt-on'
         
-            const componentToMount = this.props.isFull
+        let componentToMount = ''
+        let receipt_request_header = ''
+        switch(this.props.receipt_to_print)
+        {
+            case 'part_request_receipt':
+            {
+                componentToMount =  <PartRequestReceipt />
+                receipt_request_header = "Imprimir Requisición de Parte"
+                break
+            }
+            case 'reception_receipt':
+            {
+                receipt_request_header = "Imprimir Ingreso a Taller"
+                componentToMount = this.props.isFull
                 ? <FullReceipt/>
                 : <CompactReceipt/>
+                break
+            }
+            case 'internal_warranty':
+            {
+                receipt_request_header = "Imprimir Cierre de Garantía"
+                componentToMount = <WarrantyReceipt/>
+                break
+            }
+            case 'bd_warranty':
+            {
+                receipt_request_header = "Imprimir Cierre de Garantía B&D"
+                componentToMount = <WarrantyBDReceipt/>
+                break
+            }
+            case 'no_reapair':
+            {
+                receipt_request_header = "Imprimir Cierre sin Reparación"
+                componentToMount = <NoRepairReceipt/>
+                break
+            }
+        }
+        // if(!this.props.isPartRequestReceipt){
+        //     componentToMount = this.props.isFull
+        //     ? <FullReceipt/>
+        //     : <CompactReceipt/>
+        // }else{
+        //     componentToMount = <PartRequestReceipt/>
+        // }
+
+        
+
         return <div className={isVisibleClass}>
             <div className={'receipt-panel-main' + isFullClass} >
                 <div className="receipt-panel-header">
                     <div>
-                        Recepción Orden de Trabajo
+                        {receipt_request_header}
                     </div>
                     <div>
                         <i onClick={this.hidePanel.bind(this)} className='fa fa-times'/>

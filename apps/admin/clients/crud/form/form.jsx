@@ -11,6 +11,7 @@ import Select2 from 'react-select2-wrapper'
     provinces: store.addresses.provinces,
     cantons: store.addresses.cantons,
     districts: store.addresses.districts,
+    clientCategories: store.clientCategories.clientCategories,
     towns: store.addresses.towns
   }
 })
@@ -141,6 +142,12 @@ class Form extends React.Component {
     const cantons = this.props.cantons
     const districts = this.props.districts
     const towns = this.props.towns
+    const clientCategories = this.props.clientCategories
+
+    // map the provinces and return items to render in Select2
+    const clientCategoriesData = clientCategories.map(clientCategory => {
+      return {text: `${clientCategory.code} - ${clientCategory.name}`, id: `${clientCategory.id}`}
+    })
 
     // map the provinces and return items to render in Select2
     const provincesData = provinces.map(province => {
@@ -327,40 +334,34 @@ class Form extends React.Component {
 
         <div className='form-group'>
           <label>Tipo</label>
-          <select onChange={this.handleInputChange.bind(this)} className='form-control' name='client_type'
-            value={this.props.client.client_type} >
-            <option value='GENERAL'>Cliente General</option>
-            <option value='DISTRIB'>Distribuidor</option>
-            <option value='WHOLESA'>Mayorista</option>
-          </select>
-        </div>
-
-        <div className='form-group row input-block'>
-          <div className='col-xs-6 first'>
-
-            <label>Desc Máximo %</label>
-            <input value={this.props.client.max_discount} name='max_discount'
-              onChange={this.handleInputChange.bind(this)}
-              type='number'
-              className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-
-          <div className='col-xs-6 second'>
-
-            <label>Desc Predet %</label>
-            <input value={this.props.client.pred_discount} name='pred_discount'
-              onChange={this.handleInputChange.bind(this)}
-              type='number'
-              className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
+          <Select2
+            name='category_code'
+            data={clientCategoriesData}
+            value={this.props.client.category_code}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija una Categoría...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
         </div>
 
         <div className='form-group'>
-          <label>Desc Máx Línea %</label>
-          <input value={this.props.client.max_line_discount} name='max_line_discount'
-            onChange={this.handleInputChange.bind(this)} type='number'
+
+          <label>Desc Máximo %</label>
+          <input value={this.props.client.max_discount} name='max_discount'
+            onChange={this.handleInputChange.bind(this)}
+            type='number'
+            className='form-control' onFocus={this.fieldFocus.bind(this)} />
+
+        </div>
+
+        <div className='form-group'>
+          <label>Desc Predet %</label>
+          <input value={this.props.client.pred_discount} name='pred_discount'
+            onChange={this.handleInputChange.bind(this)}
+            type='number'
             className='form-control' onFocus={this.fieldFocus.bind(this)} />
         </div>
 

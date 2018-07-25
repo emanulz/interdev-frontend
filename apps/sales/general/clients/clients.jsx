@@ -5,7 +5,7 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {userSelected, setClient} from './actions'
-import {recalcCart} from '../../general/product/actions'
+// import {recalcCart} from '../../general/product/actions'
 import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
@@ -13,14 +13,14 @@ const Mousetrap = require('mousetrap')
   return {
     clients: store.clients.clients,
     clientSelected: store.clients.clientSelected,
-    cart: store.cart.cartItems,
+    // cart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
     client: store.clients.clientSelected,
     users: store.clients.users,
     user: store.clients.userSelected,
     // movements: store.clientmovements.movements,
-    debt: store.clients.clientSelectedDebt
-    // disabled: store.sales.completed
+    debt: store.clients.clientSelectedDebt,
+    disabled: store.completed.completed
   }
 })
 export default class Clients extends React.Component {
@@ -143,6 +143,10 @@ export default class Clients extends React.Component {
     this.props.dispatch({type: 'SHOW_CREATE_CLIENT_PANEL', payload: -1})
   }
 
+  doNothing() {
+
+  }
+
   // Main Layout
   render() {
 
@@ -157,11 +161,12 @@ export default class Clients extends React.Component {
     // const creditIcon = (this.props.clientSelected && this.props.clientSelected.has_credit)
     //   ? 'fa fa-check-square'
     //   : 'fa fa-times-circle'
-
+    const clientOnClick = this.props.disabled ? this.doNothing.bind(this) : this.showClientPanel.bind(this)
+    const imgOnClick = this.props.disabled ? this.doNothing.bind(this) : this.searchClientClick.bind(this)
     return <div className='client'>
 
       <div className='client-img'>
-        <img disabled={this.props.disabled} onClick={this.searchClientClick.bind(this)}
+        <img disabled={this.props.disabled} onClick={imgOnClick}
           src='/media/default/profile.jpg'
         />
       </div>
@@ -173,7 +178,7 @@ export default class Clients extends React.Component {
           <input disabled={this.props.disabled} onKeyUp={this.inputKeyPress.bind(this)}
             type='text' className='mousetrap'
           />
-          <i className='fa fa-plus-circle' onClick={this.showClientPanel.bind(this)} />
+          <i disabled={this.props.disabled} className='fa fa-plus-circle' onClick={clientOnClick} />
         </div>
 
         <div className='client-data-row'>

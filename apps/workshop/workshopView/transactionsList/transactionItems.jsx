@@ -2,25 +2,24 @@ let inspect = require('util-inspect')
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateQty} from '../partsProvider/actions'
-import {deleteItemDispatch} from '../../../../utils/api'
-import {updateLaborCashAdvanceUsedPartRow} from '../partsProvider/actions'
-import {deleteInventoryTransactions} from '../actions'
+import {updateLaborCashAdvanceUsedPartInfoRow} from '../partsProvider/actions'
 
 @connect((store)=>{
     return {
         cashAdvanceList: store.transactionsList.cashAdvanceList,
-        cashAdvanceListOld: store.transactionsList.cashAdvanceListOld,
 
         partsRequestList: store.transactionsList.partsRequestList,
-        partsRequestListOld: store.transactionsList.partsRequestListOld,
 
         laborList: store.transactionsList.laborList,
-        laborListOld : store.transactionsList.laborListOld,
 
         usedPartList: store.transactionsList.usedPartList,
-        usedPartListOld: store.transactionsList.usedPartListOld,
 
-        user: store.user
+        informativeList: store.transactionsList.informativeList,
+
+        user: store.user,
+
+        is_closed: store.workshopview.work_order.is_closed,
+        sales_warehouse: store.transactionsList.sales_warehouse,
     }
 })
 
@@ -32,7 +31,7 @@ export default class TransactionItems extends React.Component {
         ? e.target.value
         :0
         this.props.dispatch(
-            updateQty(qty, this.props.partsRequestList, item_uuid)
+            updateQty(qty, this.props.partsRequestList, item_uuid, this.props.sales_warehouse)
         )
     }
 
@@ -44,37 +43,27 @@ export default class TransactionItems extends React.Component {
             list = this.props.cashAdvanceList
         }else if(item.type == 'USED_PART'){
             list = this.props.usedPartList
+        }else if(item.type=='INFORMATIVE_MOVEMENT'){
+            list = this.props.informativeList
         }
                
         this.props.dispatch(
-            updateLaborCashAdvanceUsedPartRow(item, e, list)
+            updateLaborCashAdvanceUsedPartInfoRow(item, e, list)
         )
     }
 
     transactionDelete(item_uuid, type, e){
+        if(this.props.is_closed){
+            this.props.dispatch({type:'CANT_DELETE_FROM_CLOSED_ORDER'})
+            return
+        }
         switch(type){
             case 'USED_PART':
             {
                 let index = this.props.usedPartList.findIndex(a=>a.uuid === item_uuid)
                 //check if the item was already store in the database
                 const item =  this.props.usedPartList[index]
-                if(item.element.work_order_id === undefined){
-                    this.props.dispatch({type:'USED_PART_DELETED',payload:item.uuid})
-                    return
-                }
-                
-                const kwargs = {
-                    item:this.props.usedPartList[index].element,
-                    url: `/api/usedparts/${this.props.usedPartList[index].element.id}`,
-                    modelName: 'USED_PART',
-                    logCode: 'Transación parte usada Borrada',
-                    itemOld: this.props.usedPartList[index],
-                    logModel: 'USED_PART',
-                    user: JSON.stringify(this.props.user),
-                    dispatchType: 'USED_PART_DELETED'
-                }
-                this.props.dispatch({type:'FETCHING_STARTED'})
-                this.props.dispatch(deleteItemDispatch(kwargs))
+                this.props.dispatch({type:'USED_PART_DELETED', payload:item.uuid})
                 break
             }
             case 'LABOR':
@@ -82,22 +71,7 @@ export default class TransactionItems extends React.Component {
                 let index = this.props.laborList.findIndex(a=>a.uuid === item_uuid)
                 //check if the item was already stored in the database
                 const item = this.props.laborList[index]
-                if(item.element.work_order_id === undefined){ //item its on memory only
-                    this.props.dispatch({type:'LABOR_ITEM_DELETED', payload:item.uuid})
-                    return
-                }
-                const kwargs = {
-                    item:this.props.laborList[index].element,
-                    url: `/api/labor/${this.props.laborList[index].element.id}`,
-                    modelName: 'LABOR',
-                    logCode: 'Mano de obra Borrada',
-                    itemOld: this.props.laborList[index],
-                    logModel: 'LABOR',
-                    user: JSON.stringify(this.props.user),
-                    dispatchType: 'LABOR_ITEM_DELETED'
-                }
-                this.props.dispatch({type:'FETCHING_STARTED'})
-                this.props.dispatch(deleteItemDispatch(kwargs))
+                this.props.dispatch({type:'LABOR_ITEM_DELETED', payload:item.uuid})
                 break
             }
             case 'CASH_ADVANCE':
@@ -106,55 +80,20 @@ export default class TransactionItems extends React.Component {
                 //check if the item was already stored in the database
                 const item =this.props.cashAdvanceList[index]
                 this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
-                // if(item.element.work_order_id === undefined){
-                //     this.props.dispatch({type:'CASH_ADVANCE_DELETED', payload:item.uuid})
-                //     return
-                // }
-                /*
-                const kwargs = {
-                    item:this.props.cashAdvanceList[index].element,
-                    url:`/api/cashadvances/${this.props.cashAdvanceList[index].element.id}`,
-                    modelName: 'CASH_ADVANCE',
-                    logCode: 'Adelanto de dinero borrado',
-                    itemOld: this.props.cashAdvanceList[index],
-                    logModel: 'CASH_ADVANCE',
-                    user: JSON.stringify(this.props.user),
-                    dispatchType: 'CASH_ADVANCE_DELETED'
-                }
-
-                this.props.dispatch({type:'FETCHING_STARTED'})
-                this.props.dispatch(deleteItemDispatch(kwargs))
-                */
                 break
             }
             case 'PART_REQUEST':
             {
                 let index =  this.props.partsRequestList.findIndex(a=>a.uuid === item_uuid)
                 const item = this.props.partsRequestList[index]
-                if(item.work_order_id === undefined){
-                    this.props.dispatch({type:'PART_REQUEST_DELETED', payload:item.uuid})
-                    return
-                }
-                deleteInventoryTransactions(item, this.props.user).then((part)=>{
-                    const item = {
-                        id:part.id,
-
-                    }
-                    const kwargs = {
-                        item:item,
-                        url:`/api/partrequest/${this.props.partsRequestList[index].uuid}`,
-                        modelName: 'PART_REQUEST',
-                        logCode:'Requisición de parte borrada',
-                        itemOld: item,
-                        logModel: 'PART_REQUEST',
-                        user: JSON.stringify(this.props.user),
-                        dispatchType: 'PART_REQUEST_DELETED'
-                    }
-                    this.props.dispatch({type:'FETCHING_STARTED'})
-                    this.props.dispatch(deleteItemDispatch(kwargs))
-                })
-
+                this.props.dispatch({type:'PART_REQUEST_DELETED', payload:item.uuid})
                 break
+            }
+            case 'INFORMATIVE_MOVEMENT':
+            {
+                let index = this.props.informativeList.findIndex(a=>a.uuid === item_uuid)
+                const item = this.props.informativeList[index]
+                this.props.dispatch({type:'INFORMATIVE_MOVEMENT_DELETED', payload:item.uuid})
             }
             default:{
                 console.log('Unsuported type of transaction ' + type)
@@ -169,7 +108,7 @@ export default class TransactionItems extends React.Component {
         const itemRowClass = 'transactions-body-item'
 
         const transactions = this.props.partsRequestList.concat(this.props.cashAdvanceList)
-            .concat(this.props.laborList).concat(this.props.usedPartList)
+            .concat(this.props.laborList).concat(this.props.usedPartList).concat(this.props.informativeList)
 
         const transactionsItems = transactions.map((item, index) =>{
             //determine wether it is saved, modified or new
@@ -189,7 +128,7 @@ export default class TransactionItems extends React.Component {
             const disable_quantity = item.type === 'PART_REQUEST' ? (item.saved?true:false) : true
             const qtyField = <input
                 id={`qty${item.qty}`}
-                disabled={disable_quantity}
+                disabled={disable_quantity || this.props.is_closed}
                 onChange={this.qtyInputChange.bind(this, item.uuid)}
                 type='number'
                 className='form-control'
@@ -199,6 +138,10 @@ export default class TransactionItems extends React.Component {
             let movementType = ''
             let desc_element = ''
             let unit_price_element = ''
+            let total_element =<div className={itemRowClass + "-total"}>
+                <h5>Total</h5>
+                ₡ {parseFloat(item.subTotal).toFixed(2)}
+            </div>
 
             switch(item.type){
                 case 'PART_REQUEST':
@@ -212,7 +155,7 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass + "-unitPrice"}>
                         <h5>P Unit</h5>
-                        ₡ {parseFloat(item.priceToUse)}
+                        ₡ {parseFloat(item.priceToUse).toFixed(2)}
                     </div>
 
                     break
@@ -223,6 +166,7 @@ export default class TransactionItems extends React.Component {
                     movementType = 'Adelanto'
                     desc_element = <div className={itemRowClass+"-description"}>
                         <input type='text'
+                        disabled={this.props.is_closed}
                         name='description' 
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
@@ -231,7 +175,8 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass+"-unitProce"} >
                         <input type="text" name='amount'
-                        value={item.priceToUse}
+                        disabled={this.props.is_closed}
+                        value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)}/>
                     </div>
@@ -243,6 +188,7 @@ export default class TransactionItems extends React.Component {
                     movementType = 'Mano de Obra'
                     desc_element = <div className={itemRowClass+"-description"}>
                         <input type='text' name='description' 
+                        disabled={this.props.is_closed}
                         value={item.element.description}
                         className={itemRowClass+"-description-input" + " form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
@@ -250,7 +196,8 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element = <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name='amount'
-                        value={item.priceToUse}
+                        disabled={this.props.is_closed}
+                        value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)}/>
                     </div>
@@ -261,6 +208,7 @@ export default class TransactionItems extends React.Component {
                     movementType = "Repuesto Usado"
                     desc_element = <div className={itemRowClass+"-description"} >
                         <input type='text' name='description'
+                        disabled={this.props.is_closed}
                         value={item.element.description}
                         className={itemRowClass+"-description-input"+ " form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
@@ -268,9 +216,31 @@ export default class TransactionItems extends React.Component {
 
                     unit_price_element =  <div className={itemRowClass+"-unitPrice"} >
                         <input type="text" name="amount"
-                        value={item.priceToUse}
+                        disabled={this.props.is_closed}
+                        value={parseFloat(item.priceToUse).toFixed(2)}
                         className={itemRowClass+"description-input form-control"}
                         onChange={this.transactionChange.bind(this, item)} />
+                    </div>
+                    break
+                }
+
+                case 'INFORMATIVE_MOVEMENT':
+                {
+                    movementType = "Movimiento Informativo"
+                    desc_element = <div className={itemRowClass+"-description"} >
+                        <input type='text' name='description'
+                        disabled={this.props.is_closed}
+                        value={item.element.description}
+                        className={itemRowClass+"-description-input"+ " form-control"}
+                        onChange={this.transactionChange.bind(this, item)} />
+                    </div>
+                    unit_price_element = <div className={itemRowClass + "-unitPrice"} >
+                        <h5>Precio Unitario</h5>
+                         {"N/A"}
+                    </div>
+                    total_element =<div className={itemRowClass + "-total"}>
+                        <h5>Total</h5>
+                         {"N/A"}
                     </div>
                     break
                 }
@@ -301,10 +271,7 @@ export default class TransactionItems extends React.Component {
 
                 {unit_price_element}
 
-                <div className={itemRowClass + "-total"}>
-                    <h5>Total</h5>
-                    ₡ {parseFloat(item.subTotal)}
-                </div>
+                {total_element}
 
                 <div className={status_class} >
                     <h5>Estado</h5>

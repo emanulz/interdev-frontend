@@ -1,4 +1,4 @@
-import alertify from 'alertifyjs'
+import {validateInventory} from './actions.js'
 let inspect = require('util-inspect')
 
 const work_order_model = {
@@ -39,6 +39,11 @@ const stateConst = {
 
     usedPartList: [],
     usedPartsToDelete: [],
+
+    informativeList: [],
+    informativeListToDelete: [],
+
+    sales_warehouse: '',
   
 }
 
@@ -47,6 +52,31 @@ export default function reducer(state=stateConst, action){
 
     switch(action.type){
 
+        case 'CLEAR_WORKSHOPVIEW':
+        {
+            return {
+                ...state,
+                cashAdvancesToDelete: [],
+                partsRequestToDelete: [],
+                laborsToDelete: [],
+                usedPartsToDelete: [],
+                informativeListToDelete: [],
+            }
+        }
+        case 'SET_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: action.payload
+            }
+        }
+        case 'CLEAR_SALES_WAREHOUSE':
+        {
+            return {
+                ...state,
+                sales_warehouse: ''
+            }
+        }
         case 'LABOR_UPDATED':
         {
             const newLaborList = [...state.laborList]
@@ -71,7 +101,16 @@ export default function reducer(state=stateConst, action){
             newUsedPartList[action.payload.index] = action.payload.item
             return {
                 ...state,
-                usedPartList : newUsedPartList
+                usedPartList: newUsedPartList
+            }
+        }
+        case 'INFORMATIVE_MOVEMENT_UPDATED':
+        {
+            const newInformativeList = [...state.informativeList]
+            newInformativeList[action.payload.index] =  action.payload.item
+            return {
+                ...state,
+                informativeList: newInformativeList
             }
         }
         case 'CLEAR_TRANSACTIONS_LIST':
@@ -80,23 +119,17 @@ export default function reducer(state=stateConst, action){
             return{
                 ...state,
                 cashAdvanceList : [],
-                cashAdvanceListOld: [],
 
                 partsRequestList : [],
-                partsRequestListOld: [],
 
                 laborList: [],
-                laborListOld: [],
 
                 usedPartList: [],
-                usedPartListOld: [],
             }
         }
         case 'CASH_ADVANCE_DELETED':
         {
             const index_in_cash = state.cashAdvanceList.findIndex(a=>a.uuid === action.payload)
-            
-
             const newCashToDelete = [...state.cashAdvancesToDelete]
             newCashToDelete.push(state.cashAdvanceList[index_in_cash].element.id)
 
@@ -112,52 +145,63 @@ export default function reducer(state=stateConst, action){
         case 'LABOR_ITEM_DELETED':
         {
             const index_in_labor = state.laborList.findIndex(a=>a.uuid === action.payload)
-            const index_in_labor_old = state.laborListOld.findIndex(a=>a.uuid === action.payload)
+            const newLaborToDelete = [...state.laborsToDelete]
+            newLaborToDelete.push(state.laborList[index_in_labor].element.id)
             
             const new_list = [...state.laborList]
             new_list.splice(index_in_labor, 1)
 
-            const new_old = [...state.laborListOld]
-            new_old.splice(index_in_labor_old, 1)
             return {
                 ...state,
                 laborList:new_list,
-                laborListOld:new_old
+                laborsToDelete: newLaborToDelete
             }
 
+        }
+        case 'INFORMATIVE_MOVEMENT_DELETED':
+        {
+            const index_in_informative_list = state.informativeList.findIndex(a=>a.uuid === action.payload)
+            const newInformativeToDelete = [...state.informativeListToDelete]
+            newInformativeToDelete.push(state.informativeList[index_in_informative_list].element.id)
+
+            const new_list = [...state.informativeList]
+            new_list.splice(index_in_informative_list, 1)
+
+            return {
+                ...state,
+                informativeList: new_list,
+                informativeListToDelete: newInformativeToDelete,
+            }
         }
         case 'USED_PART_DELETED':
         {
             const index_in_used = state.usedPartList.findIndex(a=>a.uuid === action.payload)
-            const index_in_used_old = state.usedPartListOld.findIndex(a=>a.uuid === action.payload)
+            const newUsedToDelete = [...state.usedPartsToDelete]
+            newUsedToDelete.push(state.usedPartList[index_in_used].element.id)
             
             const new_list = [...state.usedPartList]
             new_list.splice(index_in_used, 1)
 
-            const new_old = [...state.usedPartListOld]
-            new_old.splice(index_in_used_old, 1)
             return {
                 ...state,
-                usedPartList:new_list,
-                usedPartListOld:new_old
+                usedPartList: new_list,
+                usedPartsToDelete: newUsedToDelete
             }
 
         }
         case 'PART_REQUEST_DELETED':
         {
             const index_part_request =  state.partsRequestList.findIndex(a=>a.uuid === action.payload)
-            const index_part_request_old = state.partsRequestListOld.findIndex(a=>a.uuid===action.payload)
+            const newPartsRequestToDelete = [...state.partsRequestToDelete]
+            newPartsRequestToDelete.push(state.partsRequestList[index_part_request].uuid)
 
             const new_list = [...state.partsRequestList]
             new_list.splice(index_part_request, 1)
 
-            const new_old = [...state.partsRequestListOld]
-            new_old.splice(index_part_request_old, 1)
-
             return {
                 ...state,
                 partsRequestList: new_list,
-                partsRequestListOld: new_old
+                partsRequestToDelete: newPartsRequestToDelete,
             }
         }
         case 'LABOR_LOADED':
@@ -232,10 +276,8 @@ export default function reducer(state=stateConst, action){
                 usedPartListOld: new_old_list
             }
         }
-        //case 'CASH_ADVANCES_LOADED':
         case 'SET_WORK_ORDER_VIEW':
         {
-            console.log("SET_WORK_ORDER AT TRANSACTION LIST")
             const cash_objects = action.payload.cash_advances.map(item=>{
                 const cash = {
                     id:item.id,
@@ -253,7 +295,7 @@ export default function reducer(state=stateConst, action){
 
                 return cash
             })
-
+            
             const new_cash_list = cash_objects.map(cash =>{
                 const cash_item = {
                     element: cash,
@@ -267,15 +309,108 @@ export default function reducer(state=stateConst, action){
                 
                 return cash_item
             })
+
+            const labor_objects = action.payload.labor_objects.map(item=>{
+                const labor = JSON.parse(JSON.stringify(item))
+                labor.employee = JSON.parse(labor.employee)
+                return labor
+            })
+            const new_labor_list = labor_objects.map(labor=>{
+                const labor_object = {
+                    element: labor,
+                    priceToUse: labor.amount,
+                    qty: 1,
+                    subTotal: labor.amount,
+                    type: 'LABOR',
+                    uuid: labor.id,
+                    saved: true
+                }
+                return labor_object
+            })
+
+            const used_objects = action.payload.used_objects.map(item=>{
+                const used = JSON.parse(JSON.stringify(item))
+                used.employee = JSON.parse(used.employee)
+                return used
+            })
+
+            const new_used_list = used_objects.map(used=>{
+                const used_object = {
+                    element: used,
+                    priceToUse: used.amount,
+                    qty: 1,
+                    subTotal: used.amount,
+                    type: 'USED_PART',
+                    uuid: used.id,
+                    saved: true
+                }
+                return used_object
+            })
+
+            const informative_objects = action.payload.informative_movements.map(item=>{
+                const inf = JSON.parse(JSON.stringify(item))
+                inf.employee = JSON.parse(inf.employee)
+                return inf
+            })
+
+            const new_inf_list = informative_objects.map(item=>{
+                const inf_object = {
+                    element: item,
+                    priceToUse: 0,
+                    qty: 1,
+                    subTotal: 0,
+                    type: 'INFORMATIVE_MOVEMENT',
+                    uuid: item.id,
+                    saved: true
+                }
+
+                return inf_object
+            })
+
+
+            const parts_request_objects = action.payload.part_requests.map(item=>{
+                const req = JSON.parse(JSON.stringify(item))
+                req.product = JSON.parse(req.product)
+                try {
+                    req.employee = JSON.parse(req.employee)
+                } catch(err){
+                    console.log(err)
+                }
+                return req
+            })
+
+            const new_parts_request_list = parts_request_objects.map(req=>{
+
+                const req_object = {
+                    element: req.product,
+                    priceToUse: (parseFloat(req.amount)*parseFloat(req.product.sell_price)).toFixed(2),
+                    qty: req.amount,
+                    subTotal: (parseFloat(req.amount)*parseFloat(req.product.sell_price)).toFixed(2),
+                    type: 'PART_REQUEST',
+                    uuid: req.id,
+                    saved: true,
+                    part_request_group: req.part_request_group
+                }
+                return req_object
+            })
+
+
             return {
                 ...state,
-                cashAdvanceList:new_cash_list,
+                cashAdvanceList: new_cash_list,
+                laborList: new_labor_list,
+                usedPartList: new_used_list,
+                partsRequestList: new_parts_request_list,
+                informativeList: new_inf_list,
+                cashAdvancesToDelete: [],
+                partsRequestToDelete: [],
+                laborsToDelete: [],
+                usedPartsToDelete: [],
             }
 
         }
         case 'PARTS_REQUEST_LOADED':
         {
-            console.log('PARTS REQUEST LOADED')
             const parts_objects = action.payload.map(item=>{
                 //console.log(item)
                 const part = {
@@ -519,7 +654,6 @@ export default function reducer(state=stateConst, action){
         }
         case 'LABOR_MOVEMENTS_PATCHED':
         {
-            console.log("Labor Items patched")
             const labor_objects = action.payload.map(item =>{
                 const labor = {
                     id:item.id,
@@ -618,6 +752,16 @@ export default function reducer(state=stateConst, action){
                 ]
             }
         }
+        case 'ADD_TO_INFORMATIVE_LIST':
+        {
+            return {
+                ...state,
+                informativeList:[
+                    ...state.informativeList,
+                    action.payload
+                ]
+            }
+        }
         case 'ADD_TO_USED_PART_LIST':
         {
             return {
@@ -630,7 +774,10 @@ export default function reducer(state=stateConst, action){
         }
         case 'ADD_TO_PARTS_LIST':
         {
-            console.log('Payload ' + inspect(action.payload))
+            //console.log('Payload ' + inspect(action.payload))
+            let is_valid = validateInventory(action.payload.element, action.payload.qty, 
+                                                state.sales_warehouse)
+            
             return {
                 ...state,
                 partsRequestList: [
@@ -642,7 +789,6 @@ export default function reducer(state=stateConst, action){
         case 'UPDATE_PARTS_LIST':
         { 
             if(action.payload.item.saved){ //disallow updating an already saved item
-                console.log('upate not allowed, already saved')
                 return 
             }
             const newPartsList = [...state.partsRequestList]

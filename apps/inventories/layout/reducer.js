@@ -1,11 +1,29 @@
 const stateConst = {
-  topBarToggleVisible: false,
-  sideMenuVisible: true
+  topBarToggleVisible: true,
+  sideMenuVisible: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'PHYSICAL_TAKE_CHECK_MOVEMENTS_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: true,
+        sideMenuVisible: false
+      }
+    } // case
+
+    case 'PHYSICAL_TAKE_MOVEMENTS_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: true,
+        sideMenuVisible: false
+      }
+    } // case
 
     case 'MOVEMENTS_PANEL_MOUNTED':
     {

@@ -10,6 +10,7 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     total: store.cart.cartTotal,
+    totalNotRounded: store.cart.totalNotRounded,
     client: store.clients.clientSelected,
     taxes: store.cart.cartTaxes,
     discountTotal: store.cart.discountTotal,
@@ -92,7 +93,7 @@ export default class Totals extends React.Component {
               <td className='price'>₡ {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
 
             </tr>
-            <tr>
+            {/* <tr>
               <th style={{
                 'width': '37%'
               }}>Descuento %</th>
@@ -118,7 +119,7 @@ export default class Totals extends React.Component {
                   className='sale_global_discount_input form-control' />
               </td>
 
-            </tr>
+            </tr> */}
             <tr>
               <th>Descuento:</th>
               <td className='price'>₡ {this.props.discountTotal.formatMoney(2, ',', '.')}</td>

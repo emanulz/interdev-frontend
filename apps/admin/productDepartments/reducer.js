@@ -9,7 +9,8 @@ const productDepartmentModel = {
   id: '0000000000',
   code: '',
   name: '',
-  observations: ''
+  observations: '',
+  identifier: ''
 }
 
 const stateConst = {

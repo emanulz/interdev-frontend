@@ -1,19 +1,10 @@
-const inventoryMovementModel = {
-  movement_type: '',
-  user: '',
-  amount: '',
-  product: '',
-  product_id: '',
-  description: '',
-  warehouse: '',
-  warehouse_id: '',
-  toWarehouse_id: '',
-  fromWarehouse_id: ''
-}
 
 const stateConst = {
-  inventoryMovementActive: inventoryMovementModel,
-  fullWidth: false
+  fullWidth: false,
+  warehouse_id: '',
+  description: '',
+  type: 'COMPLETE',
+  physicalTakes: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -29,13 +20,61 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'ADD_TO_TAKE_ARRAY':
+    case 'FETCH_PHYSICAL_TAKES_FULFILLED':
     {
-      const obj = {...state.takeObj}
-      obj[action.payload.id] = action.payload.object
       return {
         ...state,
-        takeObj: obj
+        physicalTakes: action.payload
+      }
+    } // case
+
+    case 'FETCH_PHYSICAL_TAKES_REJECTED':
+    {
+      return {
+        ...state,
+        physicalTakes: {}
+      }
+    } // case
+
+    case 'CLEAR_PHYSICAL_TAKES':
+    {
+      return {
+        ...state,
+        physicalTakes: {}
+      }
+    } // case
+
+    case 'SET_PHYSICAL_TAKE_WH_ID':
+    {
+      return {
+        ...state,
+        warehouse_id: action.payload
+      }
+    } // case
+
+    case 'SET_PHYSICAL_TAKE_TYPE':
+    {
+      return {
+        ...state,
+        type: action.payload
+      }
+    } // case
+
+    case 'SET_PHYSICAL_TAKE_DESCRIPTION':
+    {
+      return {
+        ...state,
+        description: action.payload
+      }
+    } // case
+
+    case 'CLEAR_PHYSICAL_TAKE_DATA':
+    {
+      return {
+        ...state,
+        warehouse_id: '',
+        description: '',
+        type: 'COMPLETE'
       }
     } // case
 

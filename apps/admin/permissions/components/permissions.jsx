@@ -9,8 +9,12 @@ import General from './forms/general.jsx'
 import Products from './forms/products.jsx'
 import Clients from './forms/clients.jsx'
 import Users from './forms/users.jsx'
-import Sales from './forms/sales.jsx'
 import Suppliers from './forms/suppliers.jsx'
+import Sales from './forms/sales.jsx'
+import Presales from './forms/presales.jsx'
+import Access from './forms/access.jsx'
+import WorkOrder from './forms/workOrders.jsx'
+import CashAdvances from './forms/cashAdvances.jsx'
 
 @connect((store) => {
   return {
@@ -31,6 +35,10 @@ export default class Permissions extends React.Component {
           <Tab tabFor='four'>Usuarios</Tab>
           <Tab tabFor='five'>Proveedores</Tab>
           <Tab tabFor='six'>Ventas</Tab>
+          <Tab tabFor='seven'>Preventas</Tab>
+          <Tab tabFor='eight'>Accesos</Tab>
+          <Tab tabFor='nine'>Ordenes de Trabajo</Tab>
+          <Tab tabFor='ten'>Adelantos de Efectivo</Tab>
         </TabList>
 
         <TabPanel tabId='one'>
@@ -57,6 +65,21 @@ export default class Permissions extends React.Component {
           <Sales />
         </TabPanel>
 
+        <TabPanel tabId='seven'>
+          <Presales />
+        </TabPanel>
+
+        <TabPanel tabId='eight'>
+          <Access />
+        </TabPanel>
+
+        <TabPanel tabId='nine'>
+          <WorkOrder />
+        </TabPanel>
+
+        <TabPanel tabId='ten'>
+          <CashAdvances />
+        </TabPanel>
       </Tabs>
 
       : <div />

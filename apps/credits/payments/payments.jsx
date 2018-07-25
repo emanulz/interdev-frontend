@@ -27,7 +27,7 @@ export default class Update extends React.Component {
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
     const clientsKwargs = {
-      url: '/api/clients/?limit=400',
+      url: '/api/clients/?limit=6000',
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }
@@ -83,7 +83,7 @@ export default class Update extends React.Component {
 
     if (event.target.checked) {
       const item = {
-        bill_: sale.id,
+        bill_id: sale.id,
         sale: sale,
         amount: Math.abs(parseFloat(sale.balance)),
         complete: true

@@ -6,13 +6,22 @@ const stateConst = {
     card: [{'type': 'CARD', 'amount': 0, 'digits': '', 'auth': ''}],
     cred: [{'type': 'CRED', 'amount': 0}],
     vouc: [],
-    tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}]
-  }
+    tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
+    csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
+  },
+  isCredit: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+    case 'CHANGE_IS_CREDIT':
+    {
+      return {
+        ...state,
+        isCredit: action.payload
+      }
+    } // case
 
     case 'SHOW_PAY_PANEL':
     {
@@ -48,6 +57,17 @@ export default function reducer(state = stateConst, action) {
       newState.payObject.cash[0].amount = action.payload
       return newState
     }
+    // ************************************
+    // ***** CASH ADVANCE *************************
+    // ************************************
+
+    case 'ADD_CASH_ADVANCE':
+    {
+      const newState = {...state}
+      newState.payObject.csha.push(action.payload)
+      return newState
+    }
+
     // ************************************
     // ***** CREDIT *************************
     // ************************************
@@ -128,6 +148,34 @@ export default function reducer(state = stateConst, action) {
         cardAuth: action.payload.pay.cardAuth
       }
     }
+
+    // ************************************
+    // ***** CLEAR PAY ********************
+    // ************************************
+
+    case 'CLEAR_PAY':
+    {
+      state = stateConst
+      return {
+        ...state, stateConst
+      }
+    } // case
+
+    case 'CLEAR_PAY_OBJECT':
+    {
+      state = stateConst
+      return {
+        ...state,
+        payObject: {
+          cash: [{'type': 'CASH', 'amount': 0}],
+          card: [{'type': 'CARD', 'amount': 0, 'digits': '', 'auth': ''}],
+          cred: [{'type': 'CRED', 'amount': 0}],
+          vouc: [],
+          tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
+          csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
+        }
+      }
+    } // case
 
   } // switch
 

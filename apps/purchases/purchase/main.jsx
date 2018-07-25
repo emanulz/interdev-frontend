@@ -1,12 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {setItem} from '../../../utils/api'
+import {setItem, loadGlobalConfig} from '../../../utils/api'
+import {supplierSearchDoubleClick} from '../general/suppliers/actions.js'
+
 let inspect = require('util-inspect')
 
 //components
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import PayPanel from './pay/payPanel.jsx'
+import Search from '../../../general/search/search.jsx'
 
 @connect(store=>{
     return {
@@ -15,6 +18,9 @@ import PayPanel from './pay/payPanel.jsx'
 export default class Purchase extends React.Component {
 
     componentWillMount() {
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
         
         const purchase_consecutive = this.props.location.pathname.split('/').pop()
         this.props.dispatch({type: 'PURCHASE_PANEL_MOUNTED', payload: ''})
@@ -39,6 +45,7 @@ export default class Purchase extends React.Component {
 
     render() {
         return <div className='purchase' >
+            <Search modelText='Proveedor' model='supplier' namespace='supplierSearch' onRowDoubleClick = {supplierSearchDoubleClick}/>
             <Content/>
             <Aside/>
             <PayPanel/>

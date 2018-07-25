@@ -8,10 +8,14 @@ const stateConst = {
   cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
   cartSubtotal: 0, // the subtotal including discounts without taxes
   cartTaxes: 0, // total amount of taxes in cart in currency
+  cartExemptAmount: 0, // total amount of exempt in cart in currency
   cartTotal: 0, // cart total after discount and taxes
   globalDiscount: 0, // discount %
   discountTotal: 0, // discount in currency
-  cartItemActive: false
+  cartItemActive: false,
+  totalNotRounded: 0,
+  exemptionDocument: '',
+  isExempt: false
 }
 
 export default function reducer(state = stateConst, action) {
@@ -31,10 +35,34 @@ export default function reducer(state = stateConst, action) {
         cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
         cartSubtotal: 0, // the subtotal including discounts without taxes
         cartTaxes: 0, // total amount of taxes in cart in currency
+        cartExemptAmount: 0, // total amount of taxes in cart in currency
         cartTotal: 0, // cart total after discount and taxes
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
-        cartItemActive: false
+        cartItemActive: false,
+        totalNotRounded: 0
+      }
+    }
+
+    case 'CLEAR_CART':
+    {
+      return {
+        ...state,
+        editable: true,
+        created: '',
+        updated: '',
+        isNull: false,
+        cartHasItems: false, // var to check if cart has items
+        cartItems: [], // the list of items in cart
+        cartSubtotalNoDiscount: 0, // subtotal without discount and taxes
+        cartSubtotal: 0, // the subtotal including discounts without taxes
+        cartTaxes: 0, // total amount of taxes in cart in currency
+        cartExemptAmount: 0, // total amount of taxes in cart in currency
+        cartTotal: 0, // cart total after discount and taxes
+        globalDiscount: 0, // discount %
+        discountTotal: 0, // discount in currency
+        cartItemActive: false,
+        totalNotRounded: 0
       }
     }
 
@@ -101,9 +129,11 @@ export default function reducer(state = stateConst, action) {
         ...state,
         cartSubtotal: action.payload.subtotal,
         cartTaxes: action.payload.taxes,
+        cartExemptAmount: action.payload.exemptAmount,
         cartTotal: action.payload.total,
         discountTotal: action.payload.discountTotal,
-        cartSubtotalNoDiscount: action.payload.subTotalNoDiscount
+        cartSubtotalNoDiscount: action.payload.subTotalNoDiscount,
+        totalNotRounded: action.payload.totalNotRounded
       }
     } // case
 
@@ -135,6 +165,24 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'EXEMPT_SALE':
+    {
+
+      return {
+        ...state,
+        isExempt: true
+      }
+    }
+
+    case 'CLEAR_EXEMPT_SALE':
+    {
+
+      return {
+        ...state,
+        isExempt: false
+      }
+    }
+
     case 'NEW_SALE':
     {
       state = stateConst
@@ -156,7 +204,8 @@ export default function reducer(state = stateConst, action) {
         cartTaxes: action.payload.cart.cartTaxes, // total amount of taxes in cart in currency
         cartTotal: action.payload.cart.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.cart.globalDiscount, // discount %
-        discountTotal: action.payload.cart.discountTotal // discount in currency
+        discountTotal: action.payload.cart.discountTotal, // discount in currency
+        totalNotRounded: action.payload.cart.totalNotRounded
       }
     }
 
@@ -173,7 +222,8 @@ export default function reducer(state = stateConst, action) {
         cartTaxes: action.payload.cart.cartTaxes, // total amount of taxes in cart in currency
         cartTotal: action.payload.cart.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.cart.globalDiscount, // discount %
-        discountTotal: action.payload.cart.discountTotal // discount in currency
+        discountTotal: action.payload.cart.discountTotal, // discount in currency
+        totalNotNotRounded: action.payload.cart.totalNotNotRounded
       }
     }
 
@@ -190,7 +240,8 @@ export default function reducer(state = stateConst, action) {
         cartTaxes: action.payload.cart.cartTaxes, // total amount of taxes in cart in currency
         cartTotal: action.payload.cart.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.cart.globalDiscount, // discount %
-        discountTotal: action.payload.cart.discountTotal // discount in currency
+        discountTotal: action.payload.cart.discountTotal, // discount in currency
+        totalNotRounded: action.payload.cart.totalNotRounded
       }
     }
 
@@ -206,7 +257,8 @@ export default function reducer(state = stateConst, action) {
         cartTaxes: action.payload.cartTaxes, // total amount of taxes in cart in currency
         cartTotal: action.payload.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.globalDiscount, // discount %
-        discountTotal: action.payload.discountTotal // discount in currency
+        discountTotal: action.payload.discountTotal, // discount in currency
+        totalNotRounded: action.payload.totalNotRounded
 
       }
     }

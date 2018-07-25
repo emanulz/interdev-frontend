@@ -5,6 +5,7 @@ import React from 'react'
 
 import Table from './table/table.jsx'
 import {connect} from 'react-redux'
+import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
 
 @connect((store) => {
   return {
@@ -22,6 +23,7 @@ export default class Main extends React.Component {
     const contentClass = this.props.fullWidth ? 'inventories-products fullWidth' : 'inventories-products'
 
     return <div className={contentClass}>
+      <SearchAdmin model='product' namespace='inventorySearch' />
       <Table />
     </div>
 

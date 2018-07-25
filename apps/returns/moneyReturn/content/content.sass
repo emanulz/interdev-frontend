@@ -1,0 +1,101 @@
+.moneyReturn-content
+  height: 100%
+  width: 100%
+  transition: width 0.3s ease
+  position: absolute
+  left: 0
+  display: flex
+  flex-flow: row
+  font-family: 'Source Sans Pro', sans-serif
+  &.blured
+    -webkit-filter: blur(4px)
+    -moz-filter: blur(4px)
+    -o-filter: blur(4px)
+    -ms-filter: blur(4px)
+    filter: blur(4px)
+    background-color: #ccc
+  &-sale
+    width: 50%
+    display: flex
+    flex-flow: column
+    justify-content: space-between
+    padding-right: 5px
+    height: calc(100% - 70px)
+    &-header
+      width: 100%
+      background-color: #495c7c
+      color: white
+      text-align: center
+      display: flex
+      flex-flow: column
+      justify-content: center
+      min-height: 50px
+      font-size: 20px
+      position: relative
+      & span
+        position: absolute
+        width: 80px
+        right: 10px
+        cursor: pointer
+        font-size: 16px
+        & i
+          font-size: 18px
+          margin-left: 5px
+        &:hover
+          color: #cacaca
+    &-content
+      overflow-y: auto
+      flex-grow: 1
+    &-footer
+      min-height: 60px
+      width: 100%
+      background-color: #495c7c
+      text-align: center
+      font-size: 30px
+      color: white
+      display: flex
+      flex-flow: column
+      justify-content: center
+  &-return
+    width: 50%
+    display: flex
+    flex-flow: column
+    height: 100%
+    padding-left: 5px
+    justify-content: space-between
+    height: calc(100% - 70px)
+    &-header
+      width: 100%
+      background-color: #495c7c
+      color: white
+      position: relative
+      text-align: center
+      display: flex
+      flex-flow: column
+      justify-content: center
+      height: 50px
+      font-size: 20px
+      & span
+        position: absolute
+        width: 80px
+        right: 10px
+        cursor: pointer
+        font-size: 16px
+        & i
+          font-size: 18px
+          margin-left: 5px
+        &:hover
+          color: #cacaca
+    &-content
+      flex-grow: 1
+      overflow-y: auto
+    &-footer
+      height: 60px
+      width: 100%
+      background-color: #495c7c
+      text-align: center
+      font-size: 30px
+      color: white
+      display: flex
+      flex-flow: column
+      justify-content: center

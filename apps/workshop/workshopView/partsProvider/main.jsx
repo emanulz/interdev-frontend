@@ -1,8 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { getItemDispatch } from '../../../../utils/api'
 import {checkUserPermissions} from '../../../../utils/checkPermissions'
-import {userPartSearchRequest, buildCashAdvanceRequest, buildLaborRequest, buildUsedPartRequest} from './actions.js'
+import {buildCashAdvanceRequest, buildLaborRequest, 
+    buildUsedPartRequest, searchProduct, buildInformativeMov} from './actions.js'
 
 
 let inspect = require('util-inspect')
@@ -13,7 +13,10 @@ let inspect = require('util-inspect')
         parts: store.partsProvider.parts,
         cashAdvanceList: store.transactionsList.cashAdvanceList,
         partsRequestList: store.transactionsList.partsRequestList,
-        laborList: store.transactionsList.laborList
+        laborList: store.transactionsList.laborList,
+        informativeList: store.transactionsList.informativeList,
+        is_closed: store.workshopview.work_order.is_closed,
+        sales_warehouse: store.transactionsList.sales_warehouse
     }
 })
 
@@ -24,14 +27,6 @@ export default class PartsProvider extends React.Component{
         this.fetchUserPermissions()
         //get the products data
         this.props.dispatch({type: 'FETCHING_STARTED', payload:''})
-
-
-        // const productKwargs = {
-        //     url: '/api/products',
-        //     successType: 'FETCH_PRODUCTS_FULFILLED',
-        //     errorType: 'FETCH_PRODUCTS_REJECTED'
-        // }
-        // this.props.dispatch(getItemDispatch(productKwargs))
 
     }
 
@@ -94,18 +89,18 @@ export default class PartsProvider extends React.Component{
                     //signal the search field clear
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
 
+                }else if(e.target.value.startsWith("in*")){
+                    let bits = e.target.value.split("*")
+                    let description = bits[1]
+                    this.props.dispatch(buildInformativeMov(description))
+                    this.props.dispatch({type: 'CLEAR_SEARCH_KEY'})
                 }else{
                     let bits = e.target.value.split('*')
                     const code = bits[0]
                     const qty = isNaN(bits[1]) ? 1 : parseInt(bits[1])
-
-                    //process user search request
-                    const next_action = userPartSearchRequest(this.props.parts, code, qty, this.props.partsRequestList)
-                    this.props.dispatch(next_action)
-                    
-                    //signal the search field clear
+                    this.props.dispatch(searchProduct(code, 'product', 'productSearch', qty, this.props.partsRequestList, this.props.sales_warehouse))
                     this.props.dispatch({type:'CLEAR_SEARCH_KEY'})
-                    //signal the transactionsList with the code of the product
+
                 }
 
             }
@@ -115,7 +110,7 @@ export default class PartsProvider extends React.Component{
     }
 
     searchProductClick(e){
-        this.props.dispatch({type:'PRODUCT_SHOW_PANEL'})
+        this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL'})
     }
 
     render(){
@@ -127,6 +122,7 @@ export default class PartsProvider extends React.Component{
                     <input className="parts-inputs-code-input form-control input-lg"
                     id='parts-input-code-input'
                     placeholder="Ingrese el código del producto" type="text" 
+                    disabled={this.props.is_closed}
                     value={this.props.searchKey} 
                     onKeyDown={this.inputKeyPress.bind(this)} 
                     onChange={this.inputKeyPress.bind(this)} />

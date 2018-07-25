@@ -5,7 +5,12 @@ import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 
 @connect((store) => {
-  return {panelVisible: store.invoice.isVisible, isFull: store.invoice.isFull}
+  return {
+    panelVisible: store.invoice.isVisible,
+    isFull: store.invoice.isFull,
+    cart: store.cart,
+    payObject: store.pay.payObject
+  }
 })
 export default class InvoicePanel extends React.Component {
 
@@ -35,6 +40,19 @@ export default class InvoicePanel extends React.Component {
     window.printDiv('invoice-print', ['/static/bundles/css/sales.css'])
   }
 
+  calcTotalInPay () {
+    const payObject = this.props.payObject
+    let total = 0
+    for (const item in payObject) {
+      let innerAmount = 0
+      for (const innerItem in payObject[item]) {
+        innerAmount += payObject[item][innerItem].amount
+      }
+      total += innerAmount
+    }
+    return total
+  }
+
   render() {
 
     const isVisible = (this.props.panelVisible)
@@ -47,7 +65,9 @@ export default class InvoicePanel extends React.Component {
     const componentToMount = (this.props.isFull)
       ? <FullInvoice />
       : <CompactInvoice />
-
+    const total = parseFloat(this.props.cart.cartTotal)
+    const totalInPay = this.calcTotalInPay()
+    const change = totalInPay - total
     return <div className={isVisible}>
 
       <div className={'invoice-panel-main' + isFullClass}>
@@ -69,6 +89,11 @@ export default class InvoicePanel extends React.Component {
 
         </div>
 
+      </div>
+
+      <div className='invoice-panel-main-change'>
+        <span>CAMBIO</span>
+        <h1>₡ {parseFloat(change).formatMoney(2, ',', '.')}</h1>
       </div>
 
     </div>

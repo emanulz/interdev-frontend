@@ -188,20 +188,38 @@ class Form extends React.Component {
           </div>
         </div>
 
-        <div className='form-group'>
-          <label>Nombre</label>
-          <input value={this.props.user.first_name} name='first_name'
-            onChange={this.handleInputChange.bind(this)}
-            type='text'
-            className='form-control' />
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+            <label>Nombre</label>
+            <input value={this.props.user.first_name} name='first_name'
+              onChange={this.handleInputChange.bind(this)}
+              type='text'
+              className='form-control' />
+          </div>
+          <div className='col-xs-6 second'>
+            <label>Apellidos</label>
+            <input value={this.props.user.last_name} name='last_name'
+              onChange={this.handleInputChange.bind(this)}
+              type='text'
+              className='form-control' />
+          </div>
         </div>
 
-        <div className='form-group'>
-          <label>Apellidos</label>
-          <input value={this.props.user.last_name} name='last_name'
-            onChange={this.handleInputChange.bind(this)}
-            type='text'
-            className='form-control' />
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+            <label>Código</label>
+            <input value={this.props.profile.code} name='code'
+              onChange={this.handleInputProfileChange.bind(this)}
+              type='text'
+              className='form-control' />
+          </div>
+          <div className='col-xs-6 second'>
+            <label>PIN</label>
+            <input value={this.props.profile.pin} name='pin'
+              onChange={this.handleInputProfileChange.bind(this)}
+              type='password'
+              className='form-control' />
+          </div>
         </div>
 
       </div>

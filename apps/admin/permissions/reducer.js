@@ -26,6 +26,37 @@ const permissionsModel = {
     add: false,
     change: false,
     delete: false
+  },
+  presales: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
+  },
+  sales: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
+  },
+  access: {
+    access_administration: false,
+    access_sales: false,
+    access_presales: false,
+    access_inventories: false,
+    access_workshop: false
+  },
+  work_orders: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
+  },
+  cash_advances: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
   }
 }
 

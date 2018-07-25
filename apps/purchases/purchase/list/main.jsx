@@ -15,10 +15,11 @@ import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 export default class ListPurchases  extends React.Component {
 
     componentWillMount(){
+        this.props.dispatch({type: 'PURCHASE_LIST_PANEL_MOUNTED'})
         this.props.dispatch({type: 'FETCHING_STARTED'})
 
         const purchasesKwargs = {
-            url : `/api/purchaselist/?limit=${this.props.pageSize}`,
+            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}`,
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED'
         }
@@ -72,8 +73,8 @@ export default class ListPurchases  extends React.Component {
                 <h1>Listado de Compras: </h1>
             </div>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/purchaseslist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
-                <Pagination url='/api/purchaseslist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <ResultsPerPage url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <Pagination url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
             </div>
             
             {content}
@@ -81,3 +82,4 @@ export default class ListPurchases  extends React.Component {
     
     }
 }
+

@@ -25,7 +25,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'PRODUCT_IN_CART_NOT_FOUND':
+    case 'PRODUCT_IN_RETURN_NOT_FOUND':
     {
       alertify.alert('ERROR!', 'Hubo un error al encontrar el producto en la lista de productos agregados,por favor intente de nuevo, si el error persiste comuníquese con soporte técnico.')
       return {

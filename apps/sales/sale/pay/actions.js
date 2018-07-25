@@ -4,7 +4,7 @@
 // import alertify from 'alertifyjs'
 
 // Finds a code in the cart and sends a dispatch to remove it from cart based on index
-export function updateStoreCashAmount(amount) {
+export function updateStoreCashAmount(amount, saleTotal, client, payObject, dispatch, isCredit) {
 
   const res = (amount) // if its a value
     ? {
@@ -15,7 +15,9 @@ export function updateStoreCashAmount(amount) {
       type: 'UPDATE_CASH_AMOUNT',
       payload: 0
     }
-
+  if (isCredit) {
+    autoUpdateCreditAmount('CASH', amount, saleTotal, client, payObject, dispatch)
+  }
   return res
 }
 
@@ -49,7 +51,7 @@ export function updateStoreCardDigits(number) {
   return res
 }
 
-export function updateStoreCardAmount(amount) {
+export function updateStoreCardAmount(amount, saleTotal, client, payObject, dispatch, isCredit) {
 
   const res = (amount) // if its a value
     ? {
@@ -60,6 +62,10 @@ export function updateStoreCardAmount(amount) {
       type: 'UPDATE_CARD_AMOUNT',
       payload: 0
     }
+
+  if (isCredit) {
+    autoUpdateCreditAmount('CARD', amount, saleTotal, client, payObject, dispatch)
+  }
 
   return res
 }
@@ -79,7 +85,7 @@ export function updateStoreCreditAmount(amount) {
   return res
 }
 
-export function updateStoreTransferAmount(amount) {
+export function updateStoreTransferAmount(amount, saleTotal, client, payObject, dispatch, isCredit) {
 
   const res = (amount) // if its a value
     ? {
@@ -90,6 +96,10 @@ export function updateStoreTransferAmount(amount) {
       type: 'UPDATE_TRANSFER_AMOUNT',
       payload: 0
     }
+
+  if (isCredit) {
+    autoUpdateCreditAmount('TRAN', amount, saleTotal, client, payObject, dispatch)
+  }
 
   return res
 }
@@ -123,89 +133,75 @@ export function updateStoreTransferNumber(number) {
 
   return res
 }
-// export function loadSale(id, sales) {
-//   const filteredSales = sales.filter(sale => {
-//     return sale.id == id
-//   })
-//   return function(dispatch) {
-//     if (filteredSales.length) {
-//       filteredSales[0]['created'] = new Date(filteredSales[0]['created'])
-//       // filteredSales[0]['globalDiscount'] = parseFloat(filteredSales[0]['globalDiscount'])
-//       document.getElementById('discountField').value = parseFloat(filteredSales[0]['cart']['globalDiscount'])
-//       document.title = `Venta #${id}`
-//       filteredSales[0]['client']['saleLoaded'] = true
 
-//       dispatch({type: 'LOADED_SALE', payload: filteredSales[0]})
-//       dispatch({type: 'SET_SALE', payload: filteredSales[0]})
-//       dispatch({type: 'SET_SALE_ID', payload: filteredSales[0]._id})
+export function autoUpdateCreditAmount(model, amount, saleTotal, client, payObject, dispatch) {
+  let creditAmount = 0
+  if (client.has_credit) {
+    const debt = Math.abs(parseFloat(client.balance))
+    const limit = Math.abs(parseFloat(client.credit_limit))
+    const available = limit - debt
+    if (limit > (debt + saleTotal)) {
+      creditAmount = saleTotal - getPayNoCredit(payObject, model, amount)
+    } else {
+      creditAmount = available
+    }
+  }
+  creditAmount = creditAmount > 0 ? creditAmount : 0
+  dispatch({
+    type: 'UPDATE_CREDIT_AMOUNT',
+    payload: creditAmount
+  })
+}
 
-//     } else {
-//       dispatch({type: 'NOT_FOUND_SALE', payload: id})
-//     }
-//   }
-// }
+function getPayNoCredit(payObject, model, amount) {
+  switch (model) {
+    case 'CASH':
+    {
+      return getPayCard(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
+    }
+    case 'CARD':
+    {
+      return getPayCash(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
+    }
+    case 'TRAN':
+    {
+      return getPayCash(payObject) + getPayCard(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
+    }
+    case 'CRED':
+    {
+      return getPayCash(payObject) + getPayTransfer(payObject) + getPayCard(payObject) + getPayCashAdvances(payObject)
+    }
+  }
+}
 
-// export function saveItem(kwargs) {
+function getPayCash(payObject) {
+  let total = 0
+  for (const item in payObject.cash) {
+    total += payObject.cash[item].amount
+  }
+  return total
+}
 
-//   const item = kwargs.item
-//   const movements = kwargs.movements
-//   return function(dispatch) {
-//     const db = new PouchDB(kwargs.db)
+function getPayCard(payObject) {
+  let total = 0
+  for (const item in payObject.card) {
+    total += payObject.card[item].amount
+  }
+  return total
+}
 
-//     db.post(item).then((response) => {
+function getPayTransfer(payObject) {
+  let total = 0
+  for (const item in payObject.tran) {
+    total += payObject.tran[item].amount
+  }
+  return total
+}
 
-//       dispatch({type: 'SET_SALE', payload: item})
-//       dispatch({type: 'SET_SALE_ID', payload: response.id})
-
-//       if (item.pay.payMethod == 'CREDIT') { // IF CREDIT CREATE CREDIT MOVEMENT
-//         const db2 = new PouchDB('general')
-//         const movement = getMovement(movements, response.id, item)
-
-//         db2.post(movement).then(response => {
-//           dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
-//           dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
-//         }).catch(err => { // IF ERROR SHOW MESSAGE
-//           alertify.alert('Error', `Error al crear el movimiento de crédito, por favor anule la factura y creela
-//           de nuevo ERROR: ${err}.`)
-//         })
-
-//       } else { // IF NOT CREDIT SHOW PANELS
-//         dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
-//         dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
-//       }
-
-//     }).catch((err) => {
-//       alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
-//     })
-//   }
-// }
-
-// function getMovement(movements, saleId, sale) {
-
-//   const sortedMovements = movements.length > 1 ? movements.sort((a, b) => {
-//     if (a.document < b.document) {
-//       return 1
-//     }
-//     if (a.document > b.document) {
-//       return -1
-//     }
-//     return 0
-//   }) : movements
-
-//   const nextId = sortedMovements.length > 0 ? sortedMovements[0].document + 1 : 1
-
-//   const movement = {
-//     'document': nextId,
-//     'docType': 'CLIENT_MOVEMENT',
-//     'clientId': sale.client._id,
-//     'type': 'CREDIT',
-//     'amount': parseFloat(sale.cart.cartTotal),
-//     'date': new Date(),
-//     'sale_id': saleId,
-//     'saleId': sale.id,
-//     'description': `Venta a crédito con factura #${sale.id}`
-//   }
-
-//   return movement
-
-// }
+function getPayCashAdvances(payObject) {
+  let total = 0
+  for (const item in payObject.csha) {
+    total += payObject.csha[item].amount
+  }
+  return total
+}

@@ -13,6 +13,7 @@ export default class Content extends React.Component {
 
     toggleWidth() {
         this.props.dispatch({type:'TOGGLE_FULL_WIDTH'})
+
     }
 
     render() {

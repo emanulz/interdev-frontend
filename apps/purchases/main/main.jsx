@@ -4,17 +4,21 @@ import routes from './routes'
 import {fetchProfile} from './actions'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fetchGlobalPreferences} from './actions.js'
+import {productSearchDoubleClick} from '../general/product/actions.js'
 
 //components
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
+import Search from '../../../general/search/search.jsx'
+import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 
 
 @connect(store=>{
     return {
         fetching: store.fetching.fetching,
-        sideMenuVisible: store.layout.sideMenuVisible
+        sideMenuVisible: store.layout.sideMenuVisible,
+        cartItems: store.cart.cartItems,
     }
 })
 export default class Main extends React.Component {
@@ -22,6 +26,7 @@ export default class Main extends React.Component {
     componentWillMount(){
         this.props.dispatch(fetchProfile())
         this.props.dispatch(fetchGlobalPreferences())
+
     }
 
     render () {
@@ -29,7 +34,9 @@ export default class Main extends React.Component {
         const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer': 'mainContainer sideHidden'
         const content = <Router>
             <div>
+                <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind({cartItems: this.props.cartItems})} />
                 <SideMenu/>
+
                 <div id='mainContainer' className={mainContainerClass} >
                     <TopBar/>
                     <div className='mainContainer-content' >
@@ -37,6 +44,7 @@ export default class Main extends React.Component {
                         {fetching}
                     </div>
                 </div>
+                <ReceiptPanel/>
             </div>
         </Router>
 

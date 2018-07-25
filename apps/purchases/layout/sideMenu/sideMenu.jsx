@@ -26,8 +26,6 @@ export default class SideMenu extends React.Component {
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const sideMenuClass = this.props.sideMenuVisible ? 'sideMenu' : 'sideMenu hiddenByApp'
     return <div id='sideMenu' className={sideMenuClass}>
-
-      {/* <h3 className='sideMenu-header'>{title.toUpperCase()}</h3> */}
       <User />
 
       <Search />
@@ -45,9 +43,14 @@ export default class SideMenu extends React.Component {
               Ingresar Factura</Link>
           </li>
           <li>
-            <Link to='/purchases/list'>
+            <Link to='/purchases/completelist'>
               <span className='fa fa-list-alt' />
-              Listado Facturas</Link>
+              Listado Facturas Cerradas</Link>
+          </li>
+          <li>
+            <Link to='/purchases/incompletelist'>
+              <span className='fa fa-list-alt' />
+              Listado Facturas Pendientes</Link>
           </li>
         </ul>
       </div>

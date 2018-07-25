@@ -64,6 +64,21 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-list-alt' />
               Órdenes de trabajo</Link>
           </li>
+          <li>
+            <Link to='/workshop/workorder/listinternal'>
+              <span className='fa fa-list-alt' />
+              Garantías Internas</Link>
+          </li>
+          <li>
+            <Link to='/workshop/workorder/listbd'>
+              <span className='fa fa-list-alt' />
+              {'Garantías Black&Decker'}</Link>
+          </li>
+          <li>
+            <Link to='/workshop/workorder/listnr'>
+              <span className='fa fa-list-alt' />
+              Cerradas Sin Reparación</Link>
+          </li>
         </ul>
       </div>
 

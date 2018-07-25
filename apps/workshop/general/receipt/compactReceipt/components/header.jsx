@@ -13,13 +13,13 @@ export default class Header extends React.Component {
     
     render(){
         const headerText =  'Recibo Orden de Trabajo'
-        const headerName = this.props.company.comercialName || 'Nombre de la Empresa'
-        const headerName2 = this.props.company.legalName || 'Nombre legal Empresa'
+        const headerName = this.props.company.comercial_name || 'Nombre de la Empresa'
+        const headerName2 = this.props.company.legal_name || 'Nombre legal Empresa'
 
         const tels =  this.props.company.telephones || '506-9999/506-8888'
         const telsText = tels.split('/').length > 1 ? `Tels: ${tels}` : `Tel: ${tels}`
 
-        const idType = this.props.company.idType || ''
+        const idType = this.props.company.id_type || ''
         const id = this.props.company.id || 'PERSON'
         const idText = idType == 'JURIDI' ? `Céd Jurid No ${id}` : `Céd No ${id}`
 
@@ -28,8 +28,6 @@ export default class Header extends React.Component {
             <div className='compact-receipt-header'>
                 <div className='compact-receipt-header-info'>
                     <h2>{headerName}</h2>
-                    <h3>{headerName2}</h3>
-                    <h3>{idText}</h3>
                     <h3>{this.props.company.address1 || 'Dirección 1'}</h3>
                     <h3>{this.props.company.address2 || 'Dirección 2'}</h3>
                     <h3>{this.props.company.country || 'País'}</h3>

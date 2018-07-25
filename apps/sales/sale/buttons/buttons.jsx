@@ -5,7 +5,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {disabled: store.sales.completed}
+  return {
+    disabled: store.completed.completed,
+    isWorkOrderLoaded: store.completed.isWorkOrderLoaded,
+    isPresaleLoaded: store.completed.isPresaleLoaded
+  }
 })
 export default class Buttons extends React.Component {
 
@@ -18,12 +22,21 @@ export default class Buttons extends React.Component {
   showSalePanel() {
     this.props.dispatch({type: 'SHOW_SALES_PANEL', payload: -1})
   }
+  showExemptionPanel() {
+    this.props.dispatch({type: 'SHOW_EXEMPTION_PANEL', payload: -1})
+  }
   showPresalesPanel() {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
   }
+  showWorkOrdersPanel() {
+    this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
+  }
+  showTodaySalesPanel() {
+    this.props.dispatch({type: 'SHOW_TODAY_SALES_PANEL', payload: -1})
+  }
   newSale() {
     // window.location.reload()
-    window.location.href = '/sales/sale'
+    window.location.href = '/sales'
     // this.props.dispatch({type: 'NEW_SALE', payload: -1})
   }
 
@@ -66,8 +79,9 @@ export default class Buttons extends React.Component {
       {/* <span>
         <b>Pago:<br /></b>
       </span> */}
+
       <button
-        disabled={this.props.disabled}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
         onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -83,7 +97,37 @@ export default class Buttons extends React.Component {
 
       <button
         disabled={this.props.disabled}
-        onClick={this.showSalePanel.bind(this)}
+        onClick={this.showExemptionPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Exonerar
+        <span>
+          <i className='fa fa-map' />
+        </span>
+      </button>
+
+      <button
+        disabled={this.props.disabled || this.props.isPresaleLoaded}
+        onClick={this.showWorkOrdersPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Órdenes Taller
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+
+      <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
@@ -110,6 +154,23 @@ export default class Buttons extends React.Component {
           <i className='fa fa-credit-card' />
         </span>
       </button>
+
+
+
+      {/* <button
+        disabled={this.props.disabled}
+        onClick={this.showInoicePanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Factura
+        <span>
+          <i className='fa fa-credit-card' />
+        </span>
+      </button> */}
 
       {buttons}
 

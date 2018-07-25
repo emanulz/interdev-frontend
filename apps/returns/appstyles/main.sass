@@ -12,7 +12,7 @@
 @import "../../../../backend/static/vendor/side-panel/style"
 @import "../../../styles/reset"
 @import "../../../styles/globalVars"
-@import "returnsVars"
+@import "moneyReturnsVars"
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro')
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900')
 
@@ -37,7 +37,6 @@
         height: calc(100% - 70px)
         overflow-y: auto
         overflow-x: hidden
-        padding: 0
         &-inner
           height: 100%
 
@@ -50,6 +49,13 @@
 
 @import "../../../general/fetching/fetching"
 @import "../layout/_all"
-@import "../sale/_all"
-@import "../return/_all"
-@import "../../../general/clientCreatePanel/clientCreatePanel"
+@import "../moneyReturn/_all"
+@import "../general/clients/clients"
+@import "../../admin/appstyles/crud/list"
+@import "../../../general/adminTable/adminTable"
+@import "../../../general/pagination/pagination"
+@import "../../../general/search/search"
+@import "../../../general/printReturn/_all"
+
+.list-container
+  padding: 20px

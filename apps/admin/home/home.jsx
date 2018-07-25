@@ -74,7 +74,7 @@ export default class Home extends React.Component {
     // }
 
     return <div className='home'>
-      <h1>Grafico de distribución de Ventas por mes:</h1>
+      <h1>INICIO APLICACIÓN DE ADMINISTRACIÓN</h1>
       {/* <div className='homeChart col-xs-12'>
         <Bar data={data} height={500} options={{
           maintainAspectRatio: false,

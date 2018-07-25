@@ -10,13 +10,16 @@ import {connect} from 'react-redux'
 export default class Header extends React.Component {
 
   render() {
-
-    const headertext = this.props.sale.pay.payMethod == 'CREDIT' ? 'Factura de crédito' : 'Factura de contado'
+    let wasCredit = false
+    try {
+      wasCredit = this.props.sale.pay.cred[0].amount
+    } catch (err) {}
+    const headertext = wasCredit ? 'Factura de crédito' : 'Factura de contado'
 
     // BILL DATA
-    const headerName = this.props.company.comercialName || ''
+    const headerName = this.props.company.comercial_name || ''
 
-    const headerName2 = this.props.company.legalName || ''
+    const headerName2 = this.props.company.legal_name || ''
 
     const tels = this.props.company.telephones || ''
     const telsText = tels.split('/').length > 1 ? `Tels: ${tels}` : `Tel: ${tels}`

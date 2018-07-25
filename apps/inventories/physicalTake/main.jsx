@@ -4,8 +4,8 @@
 import React from 'react'
 // import { checkUserPermissions } from '../../utils/checkPermissions'
 import { getItemDispatch } from '../../../utils/api.js'
-import Content from './content/content.jsx'
-import Filters from './filters/filters.jsx'
+import List from './list/list.jsx'
+import Create from './create/create.jsx'
 
 import {connect} from 'react-redux'
 
@@ -58,8 +58,8 @@ export default class Movements extends React.Component {
   render() {
 
     return <div className='inventories-list'>
-      <Filters />
-      <Content />
+      <Create />
+      <List />
     </div>
 
   }

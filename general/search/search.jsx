@@ -17,7 +17,6 @@ export default class SearchPanel extends React.Component {
   }
 
   inputKeyPress(ev) {
-
     if (ev.key == 'Enter') {
       ev.preventDefault()
       this.searchClientAction()

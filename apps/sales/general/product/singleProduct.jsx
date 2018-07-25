@@ -50,6 +50,10 @@ export default class SingleProduct extends React.Component {
     const panelClass = this.props.isVisible ? 'single-product-panel visible' : 'single-product-panel'
     const productStr = this.props.product.code ? `${this.props.product.code} - ${this.props.product.description}` : ''
     const existance = this.props.product.inventory_existent ? (JSON.parse(product.inventory_existent)[this.props.salesWarehouse] || 0) : 0
+    const srcCode = ('000000' + this.props.product.code).slice(-6)
+
+    const imageUrl = product.image_name!==''? `/media/productImages/${product.image_name}` : `/media/Imagenes/${srcCode}.jpg`
+
     return <div className={panelClass}>
       <div className='single-product-panel-header'>
         <span>{productStr}</span>
@@ -107,7 +111,7 @@ export default class SingleProduct extends React.Component {
         </div>
         <div className='single-product-panel-content-image'>
           <h1>Imagen del Artículo</h1>
-          <img src='/media/default/noimage.png' alt='NO IMAGE AVAILABLE' />
+          <img src={imageUrl} onError={(e) => { e.target.src = '/media/default/noimage.png' }} />
         </div>
       </div>
     </div>

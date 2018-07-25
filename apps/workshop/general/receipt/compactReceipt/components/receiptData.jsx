@@ -5,17 +5,23 @@ import {formatDate} from '../../../../../../utils/formatDate'
 @connect(store=>{
     return {
         work_order: store.workshopview.work_order,
+        work_order_creation: store.workorder.work_order,
+        cash_advance_create: store.workorder.cash_advance,
         transactions: store.transactionsList,
+        use_create_work_order: store.workorder.request_saved,
     }
 })
 export default class ReceiptData extends React.Component {
 
     render(){
-        const order = this.props.work_order
+        const use_create_work_order = this.props.use_create_work_order
+        const order = use_create_work_order? this.props.work_order_creation: this.props.work_order
         const date =  formatDate(order.created)
 
         const client = order.client ? `${order.client.code} - ${order.client.name} ${order.client.last_name}`
         :'00-Cliente Contado'
+        const phoneNumber = order.client.phone_number || order.client.cellphone_number  ? `${order.client.phone_number} ${order.client.cellphone_number}`
+        :'No registrado'
 
         const id = order.consecutive ? order.consecutive : '0001'
         const base_class = 'compact-receipt-data-field'
@@ -34,6 +40,10 @@ export default class ReceiptData extends React.Component {
             <div className={base_class} >
                 <span className={base_class + "-label"}>Cliente:</span>
                 <span className={base_class + "-value"}>{client}</span>
+            </div>
+            <div className={base_class}>
+                <span className={base_class + "-label"}>Teléfono:</span>
+                <span className={base_class + "-value"}>{phoneNumber}</span>
             </div>
             {order_elements}
             <div className='compact-receipt-separator'>
@@ -58,21 +68,29 @@ export default class ReceiptData extends React.Component {
             {this.buildArticleMalfunctions(order)}
             <div className='compact-receipt-separator'>
                 <span/>
-                    <h2>Adelanto</h2>
+                    <h2>Adelantos </h2>
                 <span/>
-                {this.buildArticleCashAdvances()}
+                
             </div>
+            {this.buildArticleCashAdvances(use_create_work_order)}
         </div>
     }
 
-    buildArticleCashAdvances(){
+    buildArticleCashAdvances(use_create_work_order){
         const base_class = 'compact-receipt-data-field'
-        const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
-            return <div className={base_class} key={index} >
-                {`${a.element.description} ₡ ${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
-            </div>
-        })
-        return cash_advances
+        if(use_create_work_order){
+            return <div className={base_class+"-cashadvance"} key={'-1'} >
+            {`${"Adelanto en recepción"} ₡ ${parseFloat(this.props.cash_advance_create).formatMoney(2, ',', '.')}`}
+        </div>
+        }else{
+            const cash_advances = this.props.transactions.cashAdvanceList.map((a, index)=>{
+                return <div className={base_class+"-cashadvance"} key={index} >
+                    {`${a.element.description} ₡${parseFloat(a.element.amount).formatMoney(2, ',', '.')}`}
+                </div>
+            })
+            return cash_advances
+        }
+
     }
 
     buildObservations(order){
@@ -132,7 +150,7 @@ export default class ReceiptData extends React.Component {
                         <span className={base_class + "-value"}>{'Garantía B&D'}</span>
                     </div>
                     <div className={base_class} >
-                        <span className={base_class + "-label"}>{type}</span>
+                        <span className={base_class + "-label"}>{'# Garantía B&D'}</span>
                         <span className={base_class + "-value"}>{order.warranty_number_bd}</span>
                     </div>
                 </div>

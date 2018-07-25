@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 // import {getItemDispatch} from '../../../../utils/api'
 import {productSelected, setProduct} from './actions.js'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -13,8 +14,9 @@ import {productSelected, setProduct} from './actions.js'
     itemsInCart: store.cart.cartItems,
     inputVal: store.products.inputVal,
     globalDiscount: store.cart.globalDiscount,
-    warehouse_id: store.config.salesWarehouse
-    // disabled: store.sales.completed,
+    warehouse_id: store.config.salesWarehouse,
+    disabled: store.completed.completed,
+    presaleLoaded: store.completed.isPresaleLoaded
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -31,7 +33,7 @@ export default class Product extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch({type: 'CLEAR_PRODUCTS', payload: ''})
 
     // const productKwargs = {
@@ -46,7 +48,17 @@ export default class Product extends React.Component {
 
   searchProductClick() {
 
-    this.props.dispatch({type: 'PRODUCT_SHOW_PANEL', payload: -1})
+    this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+    document.getElementById('productSearch-input-field').focus()
+    document.getElementById('productSearch-input-field').value = ''
+    const _this = this
+
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
 
   }
 
@@ -113,7 +125,7 @@ export default class Product extends React.Component {
       <div className='product-inputs'>
         <div className='product-inputs-code'>
           <i className='fa fa-barcode' />
-          <input id='productCodeInputField' disabled={this.props.disabled}
+          <input id='productCodeInputField' disabled={this.props.disabled || this.props.presaleLoaded}
             onKeyDown={this.inputKeyPress.bind(this)}
             value={this.props.inputVal}
             onChange={this.inputKeyPress.bind(this)}
@@ -123,7 +135,7 @@ export default class Product extends React.Component {
             type='text' placeholder='Ingrese el Código del Producto'
             className='product-inputs-code-input mousetrap form-control input-lg' />
         </div>
-        <button disabled={this.props.disabled} onClick={this.searchProductClick.bind(this)}
+        <button disabled={this.props.disabled || this.props.presaleLoaded} onClick={this.searchProductClick.bind(this)}
           className='product-inputs-search'>
           <span>
             <i className='fa fa-search' />
