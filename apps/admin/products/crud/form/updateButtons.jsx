@@ -89,7 +89,7 @@ class UpdateButtons extends React.Component {
       logModel: 'PRODUCT',
       user: user,
       itemOld: productOld,
-      modelName: 'SProducto',
+      modelName: 'Producto',
       dispatchType: 'CLEAR_PRODUCT',
       redirectUrl: '/admin/products',
       history: this.props.history
