@@ -7,6 +7,12 @@ const stateConst = {
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
 
+      case 'REPORTS_DEFINITIONS_REJECTED':
+      {
+        alertify.alert('Error', `No se obtuvieron definiciones de reportes para esta aplicación`)
+        break
+      }
+
       case 'CANT_PRINT_NOT_CLOSED_PURCHASE':
       {
         alertify.alert('No permitido', `No se permite imprimir tiquete de ingreso de producto de una compra no cerrada`)

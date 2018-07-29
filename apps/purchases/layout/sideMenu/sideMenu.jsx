@@ -52,6 +52,12 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-list-alt' />
               Listado Facturas Pendientes</Link>
           </li>
+          <li>
+            <Link to='/purchases/reports'>
+              <span className='fa fa-list-alt' />
+              <span>Reportes</span>
+            </Link>
+          </li>
         </ul>
       </div>
 
