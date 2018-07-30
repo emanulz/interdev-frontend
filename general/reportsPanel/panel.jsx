@@ -13,6 +13,9 @@ export default class ReportsPanel extends React.Component {
         }
     }
 
+    onPanelClick(data, e){
+        this.props.dispatch({type: 'SET_SELECTED_REPORT', payload: data})
+    }
 
     render(){
         const base_class = "mosaic-panel"
@@ -23,9 +26,7 @@ export default class ReportsPanel extends React.Component {
             icon_element = <i className={rep_data.icon_class + base_class+"-icon"}  ></i>
         }
 
-        
-        
-        return <div className="mosaic-panel">
+        return <div className="mosaic-panel" onClick={this.onPanelClick.bind(this, rep_data)}>
 
             <h3>{icon_element}{rep_data.name}</h3>
             <p className={base_class+"-description"} >{rep_data.description}</p>

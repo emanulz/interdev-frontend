@@ -6,6 +6,7 @@ import {getSingleItemDispatch} from '../../../utils/api.js'
 @connect(store=>{
     return {
         reports_definitions: store.reports.reports_definitions,
+        show_detail: store.reports.show_detail,
     }
 })
 
@@ -26,11 +27,10 @@ export default class Reports extends React.Component {
     render() {
         //to be used while the data is retrieved
         const fetching = <div/>
-        const app_specific_reports = this.props.reports_definitions.inventory
+        const app_specific_reports = this.props.reports_definitions.purchases
 
         let panel=''
-        if(this.props.reports_definitions.inventory != undefined){
-            console.log(this.props.reports_definitions.inventory)
+        if(this.props.reports_definitions.purchases != undefined){
             panel = <ReportsPanel title={'Listado Reportes Disponibles'} available_reports={app_specific_reports}/>
         }
         

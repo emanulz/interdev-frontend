@@ -16,7 +16,7 @@ import pagination from '../../general/pagination/reducer.js'
 import search from '../../general/search/reducer.js'
 import purchaseReceipt from './general/receipt/reducer.js'
 import config from './general/config/reducer.js'
-import reports  from './reports/reducer.js'
+import reports  from '../../general/reportsPanel/reducer.js'
 export default combineReducers({
     main,
     fetching,
