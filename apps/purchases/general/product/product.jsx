@@ -21,9 +21,6 @@ export default class Product extends React.Component {
     this.codeInput.focus()
   }
 
-  componentDidUpdate() {
-    // this.codeInput.focus()
-  }
 
   componentWillMount() {
 
