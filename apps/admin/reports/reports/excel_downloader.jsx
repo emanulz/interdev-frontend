@@ -26,16 +26,17 @@ export default class ExcelFetcher extends React.Component {
             alertify.alert('ERROR', `Se deben seleccionar ambas fechas`)
             return    
         }
+        let start = new Date(this.props.start_date)
+        let end = new Date(this.props.end_date)
+        start = new Date( start.getTime() + start.getTimezoneOffset() * 60000 )
+        end = new Date( end.getTime() + end.getTimezoneOffset() * 60000 )
 
-        const start = new Date(this.props.start_date)
-        const end = new Date(this.props.end_date)
         if(start > end){
             alertify.alert('ERROR', `La fecha inicial no puede ser posterior a la final`)
             return
         }
         const s_date = `${start.getFullYear()}-${start.getMonth()+1}-${start.getDate()}`
         const e_date = `${end.getFullYear()}-${end.getMonth()+1}-${end.getDate()}`
-        
         return [s_date, e_date]
 
     }

@@ -22,8 +22,6 @@ export default class PurchasesVrsSales extends React.Component {
         var month_last = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
         //http://dante/api/reporting/getReportVisualizationData/?report=salesvrspurchases&start=2018-06-1&end=2018-06-30
 
-
-
         this.props.dispatch({type: 'SET_START_DATE', payload: `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,"0")}-${month_first.toString().padStart(2, "0")}`})
         this.props.dispatch({type: 'SET_END_DATE', payload: `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,"0")}-${month_last.toString().padStart(2,"0")}`})
 
