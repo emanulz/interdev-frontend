@@ -53,9 +53,9 @@ export default class SideMenu extends React.Component {
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
           <li>
-            <Link to='/admin'>
+            <Link to='/admin/reports'>
               <span className='fa fa-tasks' />
-              Administración</Link>
+              Reportes Generales</Link>
           </li>
           <li>
             <Link to='/admin/users'>
@@ -102,11 +102,11 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-tags' />
               Sub-Familias de Productos</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/products/importproducts'>
               <span className='fa fa-indent' />
               Importar Productos</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/admin/suppliers'>
               <span className='fa fa-truck' />
