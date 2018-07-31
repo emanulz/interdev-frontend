@@ -5,13 +5,22 @@ const stateConst = {
     reportHeader: [],
     reportPrettyData: [],
     start_date: '',
-    end_date: ''
+    end_date: '',
+    selected_section: 'purchases_sales'
   }
   
 
 export default function reducer(state=stateConst, action){
     switch(action.type) {
         
+        case 'SET_SECTION':
+        {
+            return {
+                ...state,
+                selected_section: action.payload
+            }
+        }
+
         case 'SET_START_DATE': 
         {
             return {

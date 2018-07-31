@@ -1,3 +1,11 @@
+import alertify from 'alertifyjs'
+
+import axios from 'axios'
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
+
+
 export function makeTableFriendly(data, header){
     const cloned_orders = JSON.parse(JSON.stringify(data))
     const pretty_orders = cloned_orders.map((item, index)=>{
@@ -16,3 +24,5 @@ export function makeTableFriendly(data, header){
     return pretty_orders
     
 }
+
+
