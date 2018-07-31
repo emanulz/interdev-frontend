@@ -49,6 +49,11 @@ export default class PurchasesVrsSales extends React.Component {
 
     updateReportData(e){
         //check if the start date is smaller than the end date
+        if(this.props.start_date==='' || this.props.end_date ===''){
+            alertify.alert('ERROR', `Se deben seleccionar ambas fechas`)
+            return    
+        }
+
         const start = new Date(this.props.start_date)
         const end = new Date(this.props.end_date)
         if(start > end){
@@ -122,21 +127,21 @@ export default class PurchasesVrsSales extends React.Component {
                 <h1>Reporte de Compras y Ventas</h1>
             </div>
 
-            <div className="sales-purchase-dates">
-                <div className="sales-purchase-dates-start">
+            <div className="sales-purchases-dates">
+                <div className="sales-purchases-dates-item">
                     <label htmlFor="start-date">Fecha Inicial:</label>
                     <input type="date" name="start-date" 
                         onChange={this.onStartDateChange.bind(this)}
                         value={this.props.start_date}/>
                 </div>
 
-                <div className="sales-purchase-dates-end">
-                    <label htmlFor="start-date">Fecha Final:</label>
+                <div className="sales-purchases-dates-item">
+                    <label htmlFor="end-date">Fecha Final:</label>
                     <input type="date" name="end-date"
                         onChange={this.onEndDateChange.bind(this)}
                         value={this.props.end_date}/>
                 </div>
-                <button  onClick={this.updateReportData.bind(this)}>Actualizar reporte</button>
+                <button className="form-control btn-primary"  onClick={this.updateReportData.bind(this)}>Actualizar reporte</button>
             </div>
             
             {content}
