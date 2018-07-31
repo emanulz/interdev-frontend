@@ -7,6 +7,24 @@ const stateConst = {
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
 
+      case 'LINE_PERCENT_DISCOUNT_OVER_100':
+      {
+        alertify.alert('Error', `En modo porcentual el descuento no puede ser mayor a 100.`)
+        break       
+      }
+
+      case 'LINE_DISCOUNT_TOO_HIGH':
+      {
+        alertify.alert('Error', `El monto del descuento para está linea es sospechosamente alto.`)
+        break
+      }
+
+      case 'REPORTS_DEFINITIONS_REJECTED':
+      {
+        alertify.alert('Error', `No se obtuvieron definiciones de reportes para esta aplicación`)
+        break
+      }
+
       case 'CANT_PRINT_NOT_CLOSED_PURCHASE':
       {
         alertify.alert('No permitido', `No se permite imprimir tiquete de ingreso de producto de una compra no cerrada`)

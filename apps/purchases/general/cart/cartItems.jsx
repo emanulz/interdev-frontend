@@ -162,10 +162,20 @@ export default class CartItems extends React.Component {
   // HERE UPDATE COST BASED ON DISCOUNT
   discountFieldChange(id, e) {
     // DISCOUNT
-    console.log("Subtotal --> " +  this.props.cartSubtotal)
-    const discount= parseFloat(e.target.value)
+
+    let discount= parseFloat(e.target.value)
     ? parseFloat(e.target.value)
     : -1
+    if(this.props.discount_mode =='percent_based'){
+      if(discount>100){
+        this.props.dispatch({type: 'LINE_PERCENT_DISCOUNT_OVER_100'})
+        discount = 100
+      }
+
+      if(discount>75){
+        this.props.dispatch({type: 'LINE_DISCOUNT_TOO_HIGH'})
+      }
+    }
     if(discount==-1){return}
     const kwargs = {
       id: id, 
