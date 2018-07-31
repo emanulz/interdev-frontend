@@ -19,6 +19,8 @@ import search from '../../general/search/reducer.js'
 import clientCategories from './clientCategories/reducer.js'
 import sales from './sales/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
+import generalReports from '../admin/reports/reducer.js'
+
 
 export default combineReducers({
   users,
@@ -39,5 +41,6 @@ export default combineReducers({
   adminSearch: search('adminSearch'),
   clientCategories,
   sales,
-  reprintInvoice
+  reprintInvoice,
+  generalReports
 })
