@@ -36,13 +36,22 @@ const stateConst = {
   userProfileActiveOld: profileModel,
   nextUser: 0,
   previousUser: 0,
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  is_passwordvalid: '',
+
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    case 'SET_PASSWORD_VALID':
+    {
+      return {
+        ...state,
+        is_passwordvalid: action.payload
+      }
+    }
     case 'FETCH_USER_USER_PERMISSIONS_FULLFILLED':
     {
       return {

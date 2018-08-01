@@ -9,8 +9,8 @@ export default class Unauthorized extends React.Component {
   render() {
 
     return <div className='List'>
-      <h1>UNAAUTHORIZED</h1>
-      <p>No tiene permiso para entar en esta página</p>
+      <h1>PERMISOS INSUFICIENTES</h1>
+      <p>No tiene permiso para entar en esta página.</p>
     </div>
     
   }

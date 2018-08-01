@@ -1,12 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { setItem } from '../../../../../utils/api'
+import { setItem, getSingleItemDispatch } from '../../../../../utils/api'
 
 @connect((store) => {
   return {
     user: store.users.userActive,
-    users: store.users.users
+    users: store.users.users,
+    is_passwordvalid: store.users.is_passwordvalid,
   }
 })
 
@@ -100,8 +101,21 @@ class Form extends React.Component {
     }
 
     user[name] = value
-
+    console.log("SET USER --> ", user)
+    //check password only if the pass is not empty, meaning already set
+    if(user.password !== ''){
+      this.checkIsValidPassword(user.password)
+    }
     this.props.dispatch({type: 'SET_USER', payload: user})
+  }
+
+  checkIsValidPassword(password){
+    const kwargs = {
+      url: `/checkpassword/?password=${password}`,
+      successType: 'SET_PASSWORD_VALID',
+      errorType:'',
+    }
+    this.props.dispatch(getSingleItemDispatch(kwargs))
   }
 
   fieldFocus(ev) {
@@ -113,6 +127,15 @@ class Form extends React.Component {
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
+
+    let passInput_class = ""
+    if(this.props.is_passwordvalid === 'OK'){
+      passInput_class = 'password-ok'
+    }else if(this.props.is_passwordvalid ===''){
+      passInput_class = ''
+    }else{
+      passInput_class = 'password-bad'
+    }
     return <div className='col-xs-12 row form-container'>
 
       <div className='col-xs-12 col-sm-6 fields-container first'>
@@ -130,7 +153,7 @@ class Form extends React.Component {
           <label>Contraseña</label>
           <input value={this.props.user.password} name='password' onChange={this.handleInputChange.bind(this)}
             type='password'
-            className='form-control' />
+            className={'form-control ' + passInput_class} />
         </div>
 
         <div className='form-group'>
