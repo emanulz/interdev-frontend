@@ -83,6 +83,11 @@ export default class SideMenu extends React.Component {
               Clientes</Link>
           </li>
           <li>
+            <Link to='/admin/taxpayers'>
+              <span className='fa fa-user' />
+              Contribuyentes</Link>
+          </li>
+          <li>
             <Link to='/admin/clientcategories'>
               <span className='fa fa-tasks' />
               Categorías de clientes</Link>

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import users from './users/reducer.js'
+import taxpayer from './taxpayer/reducer.js'
 import clients from './clients/reducer.js'
 import senders from './senders/reducer.js'
 import products from './products/reducer.js'
@@ -24,6 +25,7 @@ import generalReports from '../admin/reports/reducer.js'
 
 export default combineReducers({
   users,
+  taxpayer,
   clients,
   senders,
   products,
