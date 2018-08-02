@@ -7,16 +7,33 @@ import Unauthorized from '../../../../general/unauthorized.jsx'
 
 @connect(store=>{
     return {
-        //permissions: store.taxpayer.permissions
+        permissions: store.taxpayer.permissions,
     }
 })
 export default class List extends React.Component {
 
 
     render(){
-        let content = 'LIST!'
 
-        return <div>
+        switch(this.props.permissions.list){
+            case true:
+            {
+                content = <ListComponent/>
+                break
+            }
+            case false:
+            {
+                content = <Unauthorized />
+                break
+            }
+            default:
+            {
+                content = <div/>
+                break
+            }
+        }
+
+        return <div className='List'>
             {content}
         </div>
 
