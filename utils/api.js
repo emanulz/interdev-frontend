@@ -688,3 +688,30 @@ export function setNextPrevItem(kwargs) {
     dispatch({type: kwargs.dispatchType, payload: {next: nextCode, previous: prevCode}})
   }
 }
+
+export function postDispatch(kwargs){
+  const data = kwargs.data
+  const url = kwargs.url
+  const successDispatch = kwargs.onSuccess
+  const errorDispatch =  kwargs.onError
+
+  return function(dispatch){
+    axios({
+      method: 'post',
+      url: url,
+      data:data
+    }).then(response=>{
+      dispatch({type: successDispatch, payload: response.data})
+      dispatch({type: 'FETCHING_DONE'})
+
+    }).catch(err=>{
+      console.log("ERROR on postDispatch")
+      console.log(err)
+      if(err.response){
+        console.log(err.response.data)
+      }
+      dispatch({type: errorDispatch})
+      dispatch({type:'FETCHING_DONE'})
+    })
+  }
+}

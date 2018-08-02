@@ -7,22 +7,27 @@ const defaultPermissions = {
 
 const taxpayerModel = {
     id: '-1',
-    legal_name: 'Nombre legal',
-    commercial_name: 'Nombre Comercial',
-    email: 'correo@dominio.com',
+    legal_name: '',
+    commercial_name: '',
+    email: '',
     id_type: '00',
-    id_number: '0000',
+    id_number: '',
     provincia: 'Provincia',
     canton: 'Cantón',
     distrito: 'Distrito',
     barrio: 'Barrio',
-    otras_senas: 'Otras señas de dirección',
+    otras_senas: '',
     country_code: '506',
-    phone_number: '0000-0000',
-    fax_number: '0000-0000',
+    phone_number: '',
+    fax_number: '',
     invoicing_backup_email: 'backup@gmail.com',
     tax_payer_admins_emails: 'adminemails@domain.com',
-    is_digital_invoicing_active: false
+    is_digital_invoicing_active: false,
+    certificate_name: '',
+    signing_secret: '',
+    oauth_id: '',
+    oauth_password: '',
+
 
 }
 
@@ -30,6 +35,9 @@ const stateConst = {
     taxpayers: [],
     taxpayer_active: taxpayerModel,
     permissions: defaultPermissions,
+    oauth_credentials_valid: undefined,
+    certificate_valid: undefined,
+    certificate_file: '',
 
 }
 
@@ -37,7 +45,53 @@ export default function reducer(state=stateConst, action){
 
 
     switch(action.type){
+        case 'OAUTH_VALIDATION_RESULT':
+        {
+            if(action.payload == "INVALID"){
+                alertify.alert('ERROR', `Los credenciales OAUTH de Hacienda son incorrectos.`) 
+            }else{
+                alertify.alert('Éxito', `Los credenciales OAUTH de Hacienda son correctos.`) 
+            }
+            return {
+                ...state,
+                oauth_credentials_valid: action.payload,
 
+            }
+        }
+        case 'OAUTH_VALIDATION_REJECT':
+        {
+            return{
+                ...state,
+                oauth_credentials_valid: undefined
+            }
+        }
+        case 'CERTIFICATE_VALIDATION_RESULT':
+        {
+            if(action.payload == "INVALID"){
+                alertify.alert('ERROR', `El secreto ingresado no puede desbloquear la llave de firmado, intente de nuevo.`) 
+            }else{
+                alertify.alert('Éxito', `El secreto desbloquea correctamente la llave criptográfica`) 
+            }
+            return {
+                ...state,
+                certificate_valid: action.payload,
+
+            }
+        }
+        case  'CERTIFICATE_VALIDATION_REJECT':
+        {
+            return{
+                ...state,
+                certificate_valid: undefined
+            }
+        }
+        case 'SET_CERTIFICATE_FILE':
+        {
+            return {
+                ...state,
+                certificate_file: action.payload
+            }
+        }
         case 'SET_TAXPAYER':
         {
             return {
