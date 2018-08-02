@@ -3,11 +3,16 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 
-export function checkData(user, users) {
+export function checkData(user, users, is_password_valid) {
   let Ok = true
 
   if (user.username == '') {
     alertify.alert('Error', 'El nombre de Usuario no puede estar vacío')
+    return false
+  }
+
+  if(is_password_valid!=='OK'){
+    alertify.alert('Error', `El password no cumple las reglas de seguridad: --> \n${is_password_valid}`)
     return false
   }
 
