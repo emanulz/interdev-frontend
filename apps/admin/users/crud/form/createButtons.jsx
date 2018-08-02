@@ -9,7 +9,8 @@ import { withRouter } from 'react-router-dom'
   return {
     user: store.users.userActive,
     users: store.users.users,
-    userCreating: store.user.user
+    userCreating: store.user.user,
+    is_passwordvalid: store.users.is_passwordvalid,
   }
 })
 
@@ -21,7 +22,7 @@ class CreateButtons extends React.Component {
     const userCreating = this.props.userCreating
     const userOld = {noPrevious: 'No previous Item needed'}
     const users = this.props.users
-    const fieldsOk = checkData(user, users)
+    const fieldsOk = checkData(user, users, this.props.is_passwordvalid)
 
     if (fieldsOk) {
       const kwargs = {
