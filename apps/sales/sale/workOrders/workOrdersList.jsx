@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadWorkOrder, getPendingWorkOrders, reopenWorkOrder} from './actions.js'
 import {productSelected, setProduct} from '../../general/product/actions.js'
-import {setClient} from '../../general/clients/actions.js'
+import {getFullClientById} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
@@ -67,7 +67,7 @@ export default class WorkOrdersPanel extends React.Component {
       _this.props.dispatch({type: 'WORK_ORDER_LOADED', payload: ''})
 
       // LOAD CLIENT AND PRODUCTS FROM BACKEND
-      _this.loadClient(data.work_order.client)
+      getFullClientById(data.work_order.client.id)
       _this.loadCart(data)
     }).catch((err) => {
       if (err.response) {
@@ -78,33 +78,6 @@ export default class WorkOrdersPanel extends React.Component {
         console.log(err)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-    })
-  }
-
-  loadClient(client) {
-    const id = client.id
-    const _this = this
-    const setClientPromise = new Promise((resolve, reject) => {
-      const kwargs = {
-        lookUpField: 'id',
-        url: '/api/clients/',
-        lookUpValue: id,
-        lookUpName: 'código',
-        modelName: 'Clientes'
-      }
-      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      setClient(kwargs, resolve, reject)
-    })
-
-    setClientPromise.then((data) => {
-      console.log(data)
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      const client = data.results[0]
-      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
-    }).catch((err) => {
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      _this.props.dispatch({type: 'CLIENT_NOT_FOUND', payload: -1})
-      console.log(err)
     })
   }
 

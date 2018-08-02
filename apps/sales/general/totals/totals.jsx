@@ -11,7 +11,7 @@ import alertify from 'alertifyjs'
   return {
     total: store.cart.cartTotal,
     totalNotRounded: store.cart.totalNotRounded,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     taxes: store.cart.cartTaxes,
     discountTotal: store.cart.discountTotal,
     subTotalNoDiscount: store.cart.cartSubtotalNoDiscount,
