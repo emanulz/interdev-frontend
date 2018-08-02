@@ -72,8 +72,6 @@ class Form extends React.Component {
 
       if (nextProps.product.id == '0000000000') {
 
-        console.log('UPDATE FORM 1 and ID')
-
         const kwargs = {
           lookUpField: 'code',
           url: '/api/productslist/',
@@ -123,7 +121,6 @@ class Form extends React.Component {
     const product = {
       ...this.props.product
     }
-    console.log('Pdoduct value --> ' + value)
     product[name] = value
 
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
