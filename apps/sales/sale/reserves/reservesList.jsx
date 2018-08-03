@@ -52,7 +52,7 @@ export default class PresalesPanel extends React.Component {
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_RESERVE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
-      _this.props.dispatch({type: 'PRESALE_LOADED', payload: data.user})
+      _this.props.dispatch({type: 'RESERVE_LOADED', payload: data.user})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
     }).catch((err) => {
       if (err.response) {

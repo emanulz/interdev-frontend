@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
     disabled: store.completed.completed,
     isWorkOrderLoaded: store.completed.isWorkOrderLoaded,
     isPresaleLoaded: store.completed.isPresaleLoaded,
+    isReserveLoaded: store.completed.isReserveLoaded,
     useReserves: store.config.globalConf.useReserves,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
   }
@@ -67,7 +68,7 @@ export default class Buttons extends React.Component {
 
     const workOrdersBtn = this.props.workshopAppInstalled
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded}
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
@@ -120,7 +121,7 @@ export default class Buttons extends React.Component {
       </span> */}
 
       <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
         onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -154,7 +155,7 @@ export default class Buttons extends React.Component {
       {workOrdersBtn}
 
       <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
         onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',
