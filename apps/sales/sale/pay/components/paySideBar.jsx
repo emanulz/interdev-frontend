@@ -11,7 +11,7 @@ const Mousetrap = require('mousetrap')
     payMethod: store.pay.payMethodActive,
     pay: store.pay,
     payObject: store.pay.payObject,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     user: store.clients.userSelected,
     debt: store.clients.clientSelectedDebt,
     isCredit: store.pay.isCredit

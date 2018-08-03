@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.sales.saleActive
+    sale: store.reprintInvoice.sale
   }
 })
 export default class WorkOrderData extends React.Component {
@@ -25,8 +25,8 @@ export default class WorkOrderData extends React.Component {
       workOrderId = this.props.sale.cart.work_order_id
     } catch (err) {}
     const ret = workOrderId
-      ? <div className='compact-invoice-data'>
-        <div className='compact-invoice-separator'>
+      ? <div className='reprint-compact-invoice-data'>
+        <div className='reprint-compact-invoice-separator'>
           <span />
 
           <h1>CIERRE DE TALLER</h1>

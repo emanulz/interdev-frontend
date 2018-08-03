@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadPresale, getPendingPresales, setPresaleNull} from './actions.js'
+import {getFullClientById} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
@@ -45,7 +46,8 @@ export default class PresalesPanel extends React.Component {
       data.cart = JSON.parse(data.cart)
       data.client = JSON.parse(data.client)
       data.user = JSON.parse(data.user)
-      _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
+      // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
+      getFullClientById(data.client.id, _this.props.dispatch)
       _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})

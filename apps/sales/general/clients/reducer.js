@@ -1,16 +1,18 @@
 const clientSelectedModel = {
-  code: '0000',
-  clientType: 'GENERAL',
-  created: '',
-  credit_days: 0,
-  credit_limit: 0,
-  docType: 'CLIENT',
-  has_credit: false,
-  id: '000000000',
-  last_name: 'Contado',
-  name: 'Cliente',
-  updated: '',
-  saleLoaded: false
+  client: {
+    code: '0000',
+    clientType: 'GENERAL',
+    created: '',
+    credit_days: 0,
+    credit_limit: 0,
+    docType: 'CLIENT',
+    has_credit: false,
+    id: '000000000',
+    last_name: 'Contado',
+    name: 'Cliente',
+    updated: '',
+    saleLoaded: false
+  }
 }
 
 const userSelectedModel = {

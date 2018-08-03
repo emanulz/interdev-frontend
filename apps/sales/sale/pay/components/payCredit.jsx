@@ -4,7 +4,7 @@ import {updateStoreCreditAmount, autoUpdateCreditAmount} from '../actions.js'
 
 @connect((store) => {
   return {
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     debt: store.clients.clientSelectedDebt,
     creditAmount: store.pay.payObject.cred[0].amount,
     isCredit: store.pay.isCredit,

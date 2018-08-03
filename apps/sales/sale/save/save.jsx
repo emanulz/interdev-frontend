@@ -10,7 +10,7 @@ const Mousetrap = require('mousetrap')
     cart: store.cart,
     payMethod: store.pay.payMethod,
     payObject: store.pay.payObject,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     user: store.user.user,
     debt: store.clients.clientSelectedDebt,
     warehouse_id: store.config.salesWarehouse,
