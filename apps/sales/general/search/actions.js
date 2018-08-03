@@ -13,7 +13,7 @@ export function productSearchDoubleClick(item, dispatch) {
 
 export function clientSearchDoubleClick(item, dispatch) {
   axios.get(`/api/clients/${item}`).then(function(response) {
-    dispatch({type: 'CLIENT_SELECTED', payload: response.data.client})
+    dispatch({type: 'CLIENT_SELECTED', payload: response.data})
     dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
   }).catch(function(error) {
     alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el

@@ -8,7 +8,7 @@ import {updateStoreTransferAmount, updateStoreTransferBank, updateStoreTransferN
     tranferBank: store.pay.payObject.tran[0].bank,
     transferNumber: store.pay.payObject.tran[0].transferNumber,
     cartTotal: store.cart.cartTotal,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     payObject: store.pay.payObject,
     isCredit: store.pay.isCredit
   }

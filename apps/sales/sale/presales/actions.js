@@ -35,7 +35,7 @@ export function getPendingPresales(kwargs) {
   const filterField3 = kwargs.filterField3
   const ordering = kwargs.ordering
 
-  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&ordering=${ordering}&limit=200`
+  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&presale_type=REGULAR&ordering=${ordering}&limit=200`
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {

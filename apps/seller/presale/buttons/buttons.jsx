@@ -5,7 +5,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {disabled: store.completed.completed}
+  return {
+    disabled: store.completed.completed,
+    globalConf: store.config.globalConf
+  }
 })
 export default class Buttons extends React.Component {
 
@@ -13,6 +16,7 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
   }
   showSendPanel() {
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'REGULAR'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
   }
   showInoicePanel() {
@@ -23,6 +27,14 @@ export default class Buttons extends React.Component {
   }
   showPresalesPanel() {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
+  }
+  saveReserve() {
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'RESERVE'})
+    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+  }
+  saveProforma() {
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'QUOTING'})
+    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
   }
   newSale() {
     // window.location.reload()
@@ -50,6 +62,43 @@ export default class Buttons extends React.Component {
         </button>
       </div>
       : ''
+    const reserveBtn = this.props.globalConf.useReserves
+      ? <button
+        disabled={this.props.disabled}
+        onClick={this.saveReserve.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Guardar Apartado
+        <span>
+          <i className='fa fa-save' />
+        </span>
+      </button>
+      : ''
+    const proformaBtn = this.props.globalConf.useQuoting
+      ? <button
+        disabled={this.props.disabled}
+        onClick={this.saveProforma.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Guardar Proforma
+        <span>
+          <i className='fa fa-save' />
+        </span>
+      </button>
+      : ''
+
+    const extraButtons = <div>
+      {reserveBtn}
+      {proformaBtn}
+    </div>
 
     return <div className='col-xs-12 buttons'>
 
@@ -103,6 +152,8 @@ export default class Buttons extends React.Component {
       </button>
 
       {buttons}
+
+      {extraButtons}
 
     </div>
 

@@ -11,7 +11,7 @@ import alertify from 'alertifyjs'
   return {
     total: store.cart.cartTotal,
     totalNotRounded: store.cart.totalNotRounded,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     taxes: store.cart.cartTaxes,
     discountTotal: store.cart.discountTotal,
     subTotalNoDiscount: store.cart.cartSubtotalNoDiscount,
@@ -99,7 +99,7 @@ export default class Totals extends React.Component {
           <tbody>
             <tr>
               <th>Sub-Total:</th>
-              <td className='price'>₡ -{this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+              <td className='price'>₡ {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
 
             </tr>
             {/* <tr>

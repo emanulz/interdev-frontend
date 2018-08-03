@@ -33,37 +33,6 @@ export default class TodaySalesPanel extends React.Component {
     this.props.dispatch(loadSaleToReprint(consecutive))
   }
 
-  // loadPresaleItem(id, ev) {
-
-  //   const _this = this
-  //   const url = `/api/todaySales/${id}`
-  //   const loadPromise = new Promise((resolve, reject) => {
-  //     _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-  //     this.props.dispatch(loadPresale(url, resolve, reject))
-  //   })
-  //   loadPromise.then((data) => {
-  //     console.log(data)
-  //     this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
-  //     this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-  //     data.cart = JSON.parse(data.cart)
-  //     data.client = JSON.parse(data.client)
-  //     data.user = JSON.parse(data.user)
-  //     _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
-  //     _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
-  //     _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
-  //     _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
-  //     _this.props.dispatch({type: 'PRESALE_LOADED', payload: data.user})
-  //     _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
-  //   }).catch((err) => {
-  //     if (err.response) {
-  //       alertify.alert('ERROR', `${err.response.data}`)
-  //     } else {
-  //       alertify.alert('ERROR', `Hubo un error al cargar la preventa, error: ${err}`)
-  //     }
-  //     this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-  //   })
-  // }
-
   render() {
 
     const isVisible = (this.props.isVisible)

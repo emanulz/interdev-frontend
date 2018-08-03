@@ -38,7 +38,7 @@ export default class WorkOrderData extends React.Component {
           <tbody>
             <tr>
               <th># De orden:</th>
-              <td style={{'font-size': '15px', 'font-weight': 'bold'}} >{workOrderNumber}</td>
+              <td style={{'fontSize': '15px', 'fontWeight': 'bold'}} >{workOrderNumber}</td>
             </tr>
             <tr>
               <th>Articulo:</th>
