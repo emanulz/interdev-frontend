@@ -5,7 +5,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {disabled: store.completed.completed}
+  return {
+    disabled: store.completed.completed,
+    globalConf: store.config.globalConf
+  }
 })
 export default class Buttons extends React.Component {
 
@@ -23,6 +26,12 @@ export default class Buttons extends React.Component {
   }
   showPresalesPanel() {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
+  }
+  saveReserve() {
+    console.log('RESERVE')
+  }
+  saveProforma() {
+    console.log('PROFORMA')
   }
   newSale() {
     // window.location.reload()
@@ -50,6 +59,41 @@ export default class Buttons extends React.Component {
         </button>
       </div>
       : ''
+    const reserveBtn = this.props.globalConf.useReserves
+      ? <button
+        onClick={this.saveReserve.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Guardar Apartado
+        <span>
+          <i className='fa fa-save' />
+        </span>
+      </button>
+      : ''
+    const proformaBtn = this.props.globalConf.useQuoting
+      ? <button
+        onClick={this.saveProforma.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Guardar Proforma
+        <span>
+          <i className='fa fa-save' />
+        </span>
+      </button>
+      : ''
+
+    const extraButtons = <div>
+      {reserveBtn}
+      {proformaBtn}
+    </div>
 
     return <div className='col-xs-12 buttons'>
 
@@ -103,6 +147,8 @@ export default class Buttons extends React.Component {
       </button>
 
       {buttons}
+
+      {extraButtons}
 
     </div>
 

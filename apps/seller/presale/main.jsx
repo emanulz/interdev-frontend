@@ -21,6 +21,7 @@ export default class Sale extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+    this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_USE_RESERVES_REJECTED'))
     this.props.dispatch({type: 'PRESALE_PANEL_MOUNTED', payload: ''})
 
   }
