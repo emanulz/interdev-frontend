@@ -67,7 +67,7 @@ export default class WorkOrdersPanel extends React.Component {
       _this.props.dispatch({type: 'WORK_ORDER_LOADED', payload: ''})
 
       // LOAD CLIENT AND PRODUCTS FROM BACKEND
-      getFullClientById(data.work_order.client.id)
+      getFullClientById(data.work_order.client.id, _this.props.dispatch)
       _this.loadCart(data)
     }).catch((err) => {
       if (err.response) {
