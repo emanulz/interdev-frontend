@@ -15,6 +15,7 @@ import invoice from './general/invoice/reducer.js'
 import sales from './general/sales/reducer.js'
 import config from './config/reducer.js'
 import presales from './sale/presales/reducer.js'
+import reserves from './sale/reserves/reducer.js'
 import workOrders from './sale/workOrders/reducer.js'
 import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 import search from '../../general/search/reducer.js'
@@ -46,5 +47,6 @@ export default combineReducers({
   workOrders,
   todaySales,
   taxExemption,
-  reprintInvoice
+  reprintInvoice,
+  reserves
 })

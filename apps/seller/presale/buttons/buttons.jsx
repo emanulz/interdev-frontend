@@ -64,6 +64,7 @@ export default class Buttons extends React.Component {
       : ''
     const reserveBtn = this.props.globalConf.useReserves
       ? <button
+        disabled={this.props.disabled}
         onClick={this.saveReserve.bind(this)}
         style={{
           'height': '48px',
@@ -79,6 +80,7 @@ export default class Buttons extends React.Component {
       : ''
     const proformaBtn = this.props.globalConf.useQuoting
       ? <button
+        disabled={this.props.disabled}
         onClick={this.saveProforma.bind(this)}
         style={{
           'height': '48px',

@@ -2,6 +2,7 @@ import React from 'react'
 // import {saveItem, loadSale} from '../actions'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
+import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 
 @connect((store) => {
   return {
@@ -58,7 +59,9 @@ export default class SaveBtn extends React.Component {
       this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
-      console.log('PRESALE', data)
+      if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING') {
+        this.props.dispatch(loadPresaleToPrint(data.consecutive))
+      }
     }).catch((err) => {
       console.log(err)
     })

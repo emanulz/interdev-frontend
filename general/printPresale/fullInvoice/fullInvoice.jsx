@@ -10,7 +10,7 @@ export default class FullInvoice extends React.Component {
 
   render() {
 
-    return <div className='reprint-full-invoice'>
+    return <div className='print-full-presale'>
 
       <Header />
       <Data />

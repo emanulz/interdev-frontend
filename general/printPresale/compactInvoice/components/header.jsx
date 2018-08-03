@@ -3,18 +3,23 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.reprintInvoice.sale,
-    company: store.reprintInvoice.company
+    presale: store.printPresale.presale,
+    company: store.printPresale.company
   }
 })
 export default class Header extends React.Component {
 
   render() {
-    let wasCredit = false
+    let wasReserve = false
     try {
-      wasCredit = this.props.sale.pay.cred[0].amount
+      wasReserve = this.props.presale.presale_type == 'RESERVE'
     } catch (err) {}
-    const headertext = wasCredit ? 'Factura de crédito' : 'Factura de contado'
+    let wasQuoting = false
+    try {
+      wasQuoting = this.props.presale.presale_type == 'QUOTING'
+    } catch (err) {}
+
+    const headertext = wasReserve ? 'Recibo' : wasQuoting ? 'Factura Proforma' : 'Recibo de Preventa'
 
     // BILL DATA
     const headerName = this.props.company.comercial_name || ''
@@ -24,18 +29,13 @@ export default class Header extends React.Component {
     const tels = this.props.company.telephones || ''
     const telsText = tels.split('/').length > 1 ? `Tels: ${tels}` : `Tel: ${tels}`
 
-    const idType = this.props.company.idType || ''
-    const id = this.props.company.id || 'PERSON'
-    const idText = idType == 'JURIDI' ? `Céd Jurid No ${id}` : `Céd No ${id}`
-
     return <div>
 
-      <div className='reprint-compact-invoice-header'>
+      <div className='print-compact-presale-header'>
 
-        <div className='reprint-compact-invoice-header-info'>
+        <div className='print-compact-presale-header-info'>
           <h2>{headerName}</h2>
           <h3>{headerName2}</h3>
-          <h3>{idText}</h3>
           <h3>{this.props.company.address1 || ''}</h3>
           <h3>{this.props.company.address2 || ''}</h3>
           <h3>{this.props.company.country || ''}</h3>
@@ -44,7 +44,7 @@ export default class Header extends React.Component {
 
       </div>
 
-      <div className='reprint-compact-invoice-separator'>
+      <div className='print-compact-presale-separator'>
         <span />
 
         <h1>{headertext}</h1>

@@ -7,6 +7,7 @@ import React from 'react'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import Send from './send/sendPanel.jsx'
+import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
@@ -39,6 +40,7 @@ export default class Sale extends React.Component {
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <Send />
       <ClientPanel />
+      <PrintPresale />
 
     </div>
 
