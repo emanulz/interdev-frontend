@@ -3,7 +3,8 @@ const stateConst = {
   user: {},
   profile: {},
   userCode: '',
-  userPin: ''
+  userPin: '',
+  presale_type: 'REGULAR'
 }
 
 export default function reducer(state = stateConst, action) {
@@ -75,6 +76,14 @@ export default function reducer(state = stateConst, action) {
         ...state,
         userCode: '',
         userPin: ''
+      }
+    } // case
+
+    case 'SET_PRESALE_TYPE':
+    {
+      return {
+        ...state,
+        presale_type: action.payload
       }
     } // case
 

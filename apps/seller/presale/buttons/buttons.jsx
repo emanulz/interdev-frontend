@@ -16,6 +16,7 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
   }
   showSendPanel() {
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'REGULAR'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
   }
   showInoicePanel() {
@@ -28,10 +29,12 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
   }
   saveReserve() {
-    console.log('RESERVE')
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'RESERVE'})
+    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
   }
   saveProforma() {
-    console.log('PROFORMA')
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'QUOTING'})
+    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
   }
   newSale() {
     // window.location.reload()

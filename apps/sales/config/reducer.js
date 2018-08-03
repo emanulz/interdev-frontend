@@ -2,6 +2,7 @@ const stateConst = {
   company: {},
   salesWarehouse: '',
   workshopWarehouse: '',
+  reservesWarehouse: '',
   globalConf: {}
 }
 
@@ -50,6 +51,24 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         salesWarehouse: ''
+      }
+
+    } // case
+
+    case 'FETCH_RESERVES_WAREHOUSE_FULFILLED':
+    {
+      return {
+        ...state,
+        reservesWarehouse: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_RESERVES_WAREHOUSE_REJECTED':
+    {
+      return {
+        ...state,
+        reservesWarehouse: ''
       }
 
     } // case

@@ -6,7 +6,7 @@ import SaveBtn from '../../save/save.jsx'
 @connect((store) => {
   return {
     cart: store.cart,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected.client,
     user: store.send.user
   }
 })
