@@ -7,26 +7,26 @@ const defaultPermissions = {
 
 const taxpayerModel = {
     id: '-1',
-    legal_name: '',
-    commercial_name: '',
-    email: '',
-    id_type: '00',
-    id_number: '',
-    provincia: 'Provincia',
-    canton: 'Cantón',
-    distrito: 'Distrito',
-    barrio: 'Barrio',
-    otras_senas: '',
+    legal_name: 'Los Mangos',
+    commercial_name: ' Los Mangos Enterprise',
+    email: 'losmangos@losmangos.com',
+    id_type: '01',
+    id_number: '113540770',
+    provincia: '1',
+    canton: '19',
+    distrito: '2',
+    barrio: '2',
+    otras_senas: 'Santa Ana Centro',
     country_code: '506',
-    phone_number: '',
-    fax_number: '',
-    invoicing_backup_email: 'backup@gmail.com',
-    tax_payer_admins_emails: 'adminemails@domain.com',
+    phone_number: '8888-8888',
+    fax_number: '7777-7777',
+    invoicing_backup_email: 'backup@losmangos.com',
+    tax_payer_admins_emails: 'adminemails@losmangos.com',
     is_digital_invoicing_active: false,
     certificate_name: '',
-    signing_secret: '',
-    oauth_id: '',
-    oauth_password: '',
+    signing_secret: '1234',
+    oauth_id: 'cpf-01-1353-0032@stag.comprobanteselectronicos.go.cr',
+    oauth_password: 'L[@9{*T=h@flY9q_#//d',
 
 
 }
@@ -100,6 +100,13 @@ export default function reducer(state=stateConst, action){
             }
         }
 
+        case 'TAX_PAYER_CREATION_ERR':
+        {
+            alertify.alert("Error", 'Error creando contribuyente '+ action.payload)
+            return {
+                ...state,
+            }
+        }
         case 'CLEAR_TAX_PAYER':
         {
             return{

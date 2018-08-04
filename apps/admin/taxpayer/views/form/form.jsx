@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
 import {getCantonsSelect, getDistrictsSelect, getTownsSelect} from '../../actions.js'
 import {postDispatch, getItemDispatch, saveItem} from '../../../../../utils/api.js'
+import CreateButtons from './createButtons.jsx'
 var util = require('util')
 
 @connect(store=>{
@@ -148,6 +149,7 @@ export default class Form extends React.Component {
                     <label>Tipo de Identificación</label>
                     <select onChange={this.handleInputChange.bind(this)} className='form-control' name='id_type'
                         value={this.props.taxpayer.id_type} >
+                        <option value='00'>Sin seleccionar</option>
                         <option value='01'>Cédula Física</option>
                         <option value='02'>Cédula Jurídica</option>
                         <option value='03'>Pasaporte</option>
@@ -269,7 +271,7 @@ export default class Form extends React.Component {
                     <div className="oauth-container">
                         <div className="oauth-container-field">
                             <label>Usuario OAUTH Hacienda</label>
-                            <input value={this.props.taxpayer.oauth_user} onChange={this.handleInputChange.bind(this)} name='oauth_id' 
+                            <input value={this.props.taxpayer.oauth_id} onChange={this.handleInputChange.bind(this)} name='oauth_id' 
                             type='text' className='form-control' placeholder="Ingrese usuario OAUTH"/>
                         </div>
 
@@ -302,6 +304,7 @@ export default class Form extends React.Component {
                 </div>
             </div>
         </div>
+        <CreateButtons/>
         </div>
     }
 
@@ -321,7 +324,6 @@ export default class Form extends React.Component {
     }
 
     validateOauthCredentials(e){
-
         //if the credentials are empty, return err
         const taxpayer = this.props.taxpayer
         let errors = []

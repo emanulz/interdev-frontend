@@ -288,11 +288,7 @@ export function saveItem(kwargs) {
   const item = kwargs.item
   delete item['id']
   const url = kwargs.url
-  // const logCode = kwargs.logCode
-  // const itemOld = kwargs.itemOld
-  // const logModel = kwargs.logModel
-  // const logDescription = kwargs.logDescription
-  // const user = kwargs.user
+
   const isSale = kwargs.isSale
   const isWorkOrder = kwargs.isWorkOrder
   return function(dispatch) {
@@ -607,36 +603,36 @@ export function loadGlobalConfig(section, name, success, fail) {
 // ------------------------------------------------------------------------------------------
 // SAVE LOG FUNCTION (CREATE LOG)
 // ------------------------------------------------------------------------------------------
-export function saveLog (code, model, oldObject, object, description, user) {
+// export function saveLog (code, model, oldObject, object, description, user) {
 
-  const prevObject = JSON.stringify(oldObject)
-  const newObject = JSON.stringify(object)
-  const user2 = JSON.stringify(user)
+//   const prevObject = JSON.stringify(oldObject)
+//   const newObject = JSON.stringify(object)
+//   const user2 = JSON.stringify(user)
 
-  const item = {
-    code: code,
-    model: model,
-    prev_object: prevObject,
-    new_object: newObject,
-    description: description,
-    user: user2
-  }
+//   const item = {
+//     code: code,
+//     model: model,
+//     prev_object: prevObject,
+//     new_object: newObject,
+//     description: description,
+//     user: user2
+//   }
 
-  axios({
-    method: 'post',
-    url: '/api/logs/',
-    data: item
-  })
-    .then((response) => {
+//   axios({
+//     method: 'post',
+//     url: '/api/logs/',
+//     data: item
+//   })
+//     .then((response) => {
 
-    }).catch((err) => {
-      console.log(err)
-      if (err.response) {
-        console.log(err.response.data)
-      }
-      alertify.alert('Error', `Error al crear el Log del movimiento, ERROR: ${err}.`)
-    })
-}
+//     }).catch((err) => {
+//       console.log(err)
+//       if (err.response) {
+//         console.log(err.response.data)
+//       }
+//       alertify.alert('Error', `Error al crear el Log del movimiento, ERROR: ${err}.`)
+//     })
+// }
 
 // ------------------------------------------------------------------------------------------
 // AUX FUNCTIONS
@@ -687,6 +683,26 @@ export function setNextPrevItem(kwargs) {
   return function(dispatch) {
     dispatch({type: kwargs.dispatchType, payload: {next: nextCode, previous: prevCode}})
   }
+}
+
+export function postNoDispatch(kwargs){
+  const data = kwargs.data
+  const url = kwargs.url
+  return new Promise((resolve, reject)=>{
+    axios({
+      method:'post',
+      url:url,
+      data:data
+    }).then(response=>{
+      resolve(response.data)
+    }).catch(err=>{
+      console.log(err)
+      if(err.response){
+        console.log(err.response.data)
+      }
+      reject(err)
+    })
+  })
 }
 
 export function postDispatch(kwargs){
