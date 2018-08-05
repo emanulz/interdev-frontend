@@ -10,9 +10,11 @@ import PayPanel from './pay/payPanel.jsx'
 import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
+import Reserves from './reserves/reservesList.jsx'
 import WorkOrders from './workOrders/workOrdersList.jsx'
 import TodaySales from './todaySales/todaySales.jsx'
 import TaxExemptionPanel from './taxExemption/taxExemption.jsx'
+import CashAdvancePanel from './cashAdvance/cashAdvance.jsx'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
@@ -31,7 +33,9 @@ export default class Sale extends React.Component {
 
     this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
     this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
+    this.props.dispatch(loadGlobalConfig('inventory', 'reserves_warehouse', 'FETCH_RESERVES_WAREHOUSE_FULFILLED', 'FETCH_RESERVES_WAREHOUSE_REJECTED'))
     this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
+    this.props.dispatch(loadGlobalConfig('installed_apps', false, 'FETCH_INSTALLED_APPS_FULFILLED', 'FETCH_INSTALLED_APPS_REJECTED'))
 
     this.props.dispatch({type: 'SALE_PANEL_MOUNTED', payload: ''})
 
@@ -59,10 +63,12 @@ export default class Sale extends React.Component {
       <PayPanel />
       <InvoicePanel />
       <Presales />
+      <Reserves />
       <ClientPanel />
       <WorkOrders />
       <TodaySales />
       <TaxExemptionPanel />
+      <CashAdvancePanel />
       <ReprintInvoice />
 
     </div>

@@ -15,12 +15,14 @@ import invoice from './general/invoice/reducer.js'
 import sales from './general/sales/reducer.js'
 import config from './config/reducer.js'
 import presales from './sale/presales/reducer.js'
+import reserves from './sale/reserves/reducer.js'
 import workOrders from './sale/workOrders/reducer.js'
 import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 import search from '../../general/search/reducer.js'
 import completed from './general/completed/reducer.js'
 import todaySales from './sale/todaySales/reducer.js'
 import taxExemption from './sale/taxExemption/reducer.js'
+import cashAdvance from './sale/cashAdvance/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 
 export default combineReducers({
@@ -46,5 +48,7 @@ export default combineReducers({
   workOrders,
   todaySales,
   taxExemption,
-  reprintInvoice
+  cashAdvance,
+  reprintInvoice,
+  reserves
 })

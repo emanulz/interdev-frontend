@@ -8,7 +8,11 @@ import {connect} from 'react-redux'
   return {
     disabled: store.completed.completed,
     isWorkOrderLoaded: store.completed.isWorkOrderLoaded,
-    isPresaleLoaded: store.completed.isPresaleLoaded
+    isPresaleLoaded: store.completed.isPresaleLoaded,
+    isReserveLoaded: store.completed.isReserveLoaded,
+    useReserves: store.config.globalConf.useReserves,
+    acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
+    workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
   }
 })
 export default class Buttons extends React.Component {
@@ -28,12 +32,20 @@ export default class Buttons extends React.Component {
   showPresalesPanel() {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
   }
+  showReservesPanel() {
+    this.props.dispatch({type: 'SHOW_RESERVES_PANEL', payload: -1})
+  }
   showWorkOrdersPanel() {
     this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
   }
   showTodaySalesPanel() {
     this.props.dispatch({type: 'SHOW_TODAY_SALES_PANEL', payload: -1})
   }
+
+  showCashAdvancesPanel() {
+    this.props.dispatch({type: 'SHOW_CASH_ADVANCE_PANEL', payload: -1})
+  }
+
   newSale() {
     // window.location.reload()
     window.location.href = '/sales'
@@ -42,6 +54,57 @@ export default class Buttons extends React.Component {
 
   // Main Layout
   render() {
+
+    const reservesBtn = this.props.useReserves
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        onClick={this.showReservesPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Apartados
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
+    const workOrdersBtn = this.props.workshopAppInstalled
+      ? <button
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        onClick={this.showWorkOrdersPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Órdenes Taller
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
+    const cashAdvanceBtn = this.props.acceptCashAdvances
+      ? <button
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        onClick={this.showCashAdvancesPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Adelantos de efectivo
+        <span>
+          <i className='fa fa-money' />
+        </span>
+      </button>
+      : ''
 
     const buttons = this.props.disabled
       ? <div>
@@ -81,7 +144,7 @@ export default class Buttons extends React.Component {
       </span> */}
 
       <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
         onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -94,6 +157,9 @@ export default class Buttons extends React.Component {
           <i className='fa fa-list' />
         </span>
       </button>
+
+      {reservesBtn}
+      {cashAdvanceBtn}
 
       <button
         disabled={this.props.disabled}
@@ -110,23 +176,10 @@ export default class Buttons extends React.Component {
         </span>
       </button>
 
-      <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded}
-        onClick={this.showWorkOrdersPanel.bind(this)}
-        style={{
-          'height': '48px',
-          'width': '49%',
-          'marginTop': '10px'
-        }}
-        className='btn btn-default buttons-payButton'>
-        Órdenes Taller
-        <span>
-          <i className='fa fa-list' />
-        </span>
-      </button>
+      {workOrdersBtn}
 
       <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
         onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',

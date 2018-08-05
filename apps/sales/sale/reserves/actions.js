@@ -10,7 +10,7 @@ import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
-export function loadPresale(url, resolve, reject) {
+export function loadReserve(url, resolve, reject) {
   return function() {
     axios.get(url).then(function(response) {
       resolve(response.data)
@@ -22,7 +22,7 @@ export function loadPresale(url, resolve, reject) {
 // ------------------------------------------------------------------------------------------
 // GET PRESALES CLOSED, NOT NULL AND NOT BILLED
 // ------------------------------------------------------------------------------------------
-export function getPendingPresales(kwargs) {
+export function getPendingReserves(kwargs) {
 
   const url = kwargs.url
   const successType = kwargs.successType
@@ -35,7 +35,7 @@ export function getPendingPresales(kwargs) {
   const filterField3 = kwargs.filterField3
   const ordering = kwargs.ordering
 
-  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&presale_type=REGULAR&ordering=${ordering}&limit=200`
+  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&presale_type=RESERVE&ordering=${ordering}&limit=50`
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {
@@ -53,7 +53,7 @@ export function getPendingPresales(kwargs) {
 
 }
 
-export function setPresaleNull(id, resolve, reject) {
+export function setReserveNull(id, resolve, reject) {
   const url = `/api/presalespatch/${id}/set_null/`
   axios({
     method: 'post',

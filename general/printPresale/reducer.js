@@ -1,7 +1,6 @@
 const stateConst = {
   isVisible: false,
   isFull: false,
-  sale: {},
   presale: {},
   company: {}
 }
@@ -10,7 +9,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'SHOW_REPRINT_INVOICE_PANEL':
+    case 'SHOW_PRINT_PRESALE_PANEL':
     {
       return {
         ...state,
@@ -18,7 +17,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'HIDE_REPRINT_INVOICE_PANEL':
+    case 'HIDE_PRINT_PRESALE_PANEL':
     {
       return {
         ...state,
@@ -26,7 +25,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'TOGGLE_REPRINT_INVOICE_PANEL':
+    case 'TOGGLE_PRINT_PRESALE_PANEL':
     {
       const visibleOrNot = state.isVisible
       return {
@@ -35,7 +34,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'TOGGLE_REPRINT_INVOICE_PANEL_FULL':
+    case 'TOGGLE_PRINT_PRESALE_PANEL_FULL':
     {
       const fullOrNot = state.isFull
       return {
@@ -44,30 +43,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_REPRINT_INVOICE_SALE':
-    {
-      const sale = action.payload
-      try {
-        sale.cart = JSON.parse(sale.cart)
-        sale.user = JSON.parse(sale.user)
-        sale.client = JSON.parse(sale.client)
-        sale.pay = JSON.parse(sale.pay)
-      } catch (err) { console.log(err) }
-      return {
-        ...state,
-        sale: sale
-      }
-    } // case
-
-    case 'CLEAR_REPRINT_INVOICE_SALE':
-    {
-      return {
-        ...state,
-        sale: {}
-      }
-    } // case
-
-    case 'SET_REPRINT_INVOICE_PRESALE':
+    case 'SET_PRINT_PRESALE':
     {
       const presale = action.payload
       try {
@@ -81,7 +57,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'CLEAR_REPRINT_INVOICE_PRESALE':
+    case 'CLEAR_PRINT_PRESALE':
     {
       return {
         ...state,
@@ -89,7 +65,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_REPRINT_INVOICE_COMPANY':
+    case 'SET_PRINT_PRESALE_COMPANY':
     {
       return {
         ...state,
@@ -97,7 +73,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'CLEAR_REPRINT_INVOICE_COMPANY':
+    case 'CLEAR_PRINT_PRESALE_COMPANY':
     {
       return {
         ...state,

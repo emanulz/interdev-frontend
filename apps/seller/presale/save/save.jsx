@@ -2,12 +2,15 @@ import React from 'react'
 // import {saveItem, loadSale} from '../actions'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
+import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 
 @connect((store) => {
   return {
     cart: store.cart,
     client: store.clients.clientSelected.client,
-    user: store.send.user
+    user: store.send.user,
+    presaleType: store.send.presale_type,
+    reserves_warehouse: store.config.reserves_warehouse
   }
 })
 export default class SaveBtn extends React.Component {
@@ -21,7 +24,9 @@ export default class SaveBtn extends React.Component {
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       client_id: this.props.client.id,
-      closed: true
+      closed: true,
+      reserves_warehouse: this.props.reserves_warehouse,
+      presale_type: this.props.presaleType
     }
 
     const creditMovement = {
@@ -50,10 +55,13 @@ export default class SaveBtn extends React.Component {
       _this.props.dispatch(saveItem(kwargs, resolve, reject))
     })
 
-    updatePromise.then(() => {
+    updatePromise.then((data) => {
       this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
+      if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING') {
+        this.props.dispatch(loadPresaleToPrint(data.consecutive))
+      }
     }).catch((err) => {
       console.log(err)
     })
@@ -62,9 +70,12 @@ export default class SaveBtn extends React.Component {
 
   render() {
 
+    const btnSendText = this.props.presaleType == 'REGULAR' ? 'Enviar' : 'Guardar'
+    const btnSendIcon = this.props.presaleType == 'REGULAR' ? 'fa fa-send' : 'fa fa-save'
+
     return <div onClick={this.saveBtn.bind(this)} className={this.props.sendButtonClass}>
-      Enviar
-      <i className='fa fa-send' aria-hidden='true' />
+      {btnSendText}
+      <i className={btnSendIcon} aria-hidden='true' />
     </div>
 
   }

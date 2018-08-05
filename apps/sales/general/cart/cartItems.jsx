@@ -17,6 +17,7 @@ const Mousetrap = require('mousetrap')
     cartItemActive: store.cart.cartItemActive,
     warehouse_id: store.config.salesWarehouse,
     presaleLoaded: store.completed.isPresaleLoaded,
+    reserveLoaded: store.completed.isReserveLoaded,
     isExempt: store.cart.isExempt
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
@@ -204,7 +205,7 @@ export default class CartItems extends React.Component {
 
       const qtyField = <input
         id={`qty${item.product.code}`}
-        disabled={this.props.disabled || this.props.presaleLoaded}
+        disabled={this.props.disabled || this.props.presaleLoaded || this.props.reserveLoaded}
         onChange={this.qtyInputChange.bind(this, item.uuid)}
         onFocus={this.fieldFocus.bind(this)}
         onKeyUp={this.qtyInputKeyPress.bind(this)}

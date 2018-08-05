@@ -65,6 +65,7 @@ export default class ExcelFetcher extends React.Component {
                         onChange={this.onEndDateChange.bind(this)}
                         value={this.props.end_date}/>
                 </div>
+                <a href={`/reportsExcel/cashregister/?start=${s}&end=${e}`}>Cierre de Caja</a>
                 <a href={`/reportsExcel/generalsales/?start=${s}&end=${e}`}>General Ventas</a>
                 <a href={`/reportsExcel/generalpurchases/?start=${s}&end=${e}`}>General Compras</a>
                 <a href="/reportsExcel/invvalue">Valoración de Inventario</a>

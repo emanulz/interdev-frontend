@@ -11,7 +11,7 @@ export default class CompactInvoice extends React.Component {
 
   render() {
 
-    return <div className='reprint-compact-invoice'>
+    return <div className='print-compact-presale'>
 
       <Header />
       <Data />

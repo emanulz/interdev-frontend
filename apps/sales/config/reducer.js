@@ -2,7 +2,9 @@ const stateConst = {
   company: {},
   salesWarehouse: '',
   workshopWarehouse: '',
-  globalConf: {}
+  reservesWarehouse: '',
+  globalConf: {},
+  installed_apps: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -54,6 +56,24 @@ export default function reducer(state = stateConst, action) {
 
     } // case
 
+    case 'FETCH_RESERVES_WAREHOUSE_FULFILLED':
+    {
+      return {
+        ...state,
+        reservesWarehouse: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_RESERVES_WAREHOUSE_REJECTED':
+    {
+      return {
+        ...state,
+        reservesWarehouse: ''
+      }
+
+    } // case
+
     case 'FETCH_GLOBAL_CONF_FULFILLED':
     {
       return {
@@ -68,6 +88,24 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         globalConf: {}
+      }
+
+    } // case
+
+    case 'FETCH_INSTALLED_APPS_FULFILLED':
+    {
+      return {
+        ...state,
+        installed_apps: action.payload.data
+      }
+
+    } // case
+
+    case 'FETCH_INSTALLED_APPS_REJECTED':
+    {
+      return {
+        ...state,
+        installed_apps: {}
       }
 
     } // case

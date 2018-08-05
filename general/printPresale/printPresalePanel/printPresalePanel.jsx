@@ -6,37 +6,37 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 
 @connect((store) => {
   return {
-    panelVisible: store.reprintInvoice.isVisible,
-    isFull: store.reprintInvoice.isFull
+    panelVisible: store.printPresale.isVisible,
+    isFull: store.printPresale.isFull
   }
 })
-export default class ReprintInvoicePanel extends React.Component {
+export default class PrintPresalePanel extends React.Component {
 
   componentWillMount () {
-    this.props.dispatch(loadGlobalConfig('company', false, 'SET_REPRINT_INVOICE_COMPANY', 'CLEAR_REPRINT_INVOICE_COMPANY'))
+    this.props.dispatch(loadGlobalConfig('company', false, 'SET_PRINT_PRESALE_COMPANY', 'CLEAR_PRINT_PRESALE_COMPANY'))
   }
 
   hidePanel() {
 
-    this.props.dispatch({type: 'HIDE_REPRINT_INVOICE_PANEL', payload: -1})
+    this.props.dispatch({type: 'HIDE_PRINT_PRESALE_PANEL', payload: -1})
     // printDiv('full-invoice-print')
   }
 
   togglePanel() {
 
-    this.props.dispatch({type: 'TOGGLE_REPRINT_INVOICE_PANEL_FULL', payload: -1})
+    this.props.dispatch({type: 'TOGGLE_PRINT_PRESALE_PANEL_FULL', payload: -1})
 
   }
 
   printPanel() {
-    window.printDiv('reprint-invoice-print', ['/static/bundles/css/sales.css'])
+    window.printDiv('print-presale-print', ['/static/bundles/css/sales.css'])
   }
 
   render() {
 
     const isVisible = (this.props.panelVisible)
-      ? 'reprint-invoice-panel is-visible'
-      : 'reprint-invoice-panel'
+      ? 'print-presale-panel is-visible'
+      : 'print-presale-panel'
     const isFullClass = (this.props.isFull)
       ? ''
       : ' compact-invoice-on'
@@ -47,8 +47,8 @@ export default class ReprintInvoicePanel extends React.Component {
 
     return <div className={isVisible}>
 
-      <div className={'reprint-invoice-panel-main' + isFullClass}>
-        <div className='reprint-invoice-panel-header'>
+      <div className={'print-presale-panel-main' + isFullClass}>
+        <div className='print-presale-panel-header'>
           <div>
             Factura de Venta
           </div>
@@ -60,7 +60,7 @@ export default class ReprintInvoicePanel extends React.Component {
           </div>
         </div>
 
-        <div id='reprint-invoice-print' className={'reprint-invoice-panel-container' + isFullClass}>
+        <div id='print-presale-print' className={'print-presale-panel-container' + isFullClass}>
 
           {componentToMount}
 
