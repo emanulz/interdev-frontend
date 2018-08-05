@@ -31,7 +31,7 @@ export default class Sale extends React.Component {
       url: '/api/saleslist/',
       lookUpValue: lookUp,
       dispatchType: 'SET_SALE',
-      dispatchType2: 'SET_CLIENT_OLD',
+      dispatchType2: 'SET_SALE_OLD',
       dispatchErrorType: 'SALE_NOT_FOUND',
       lookUpName: 'código',
       modelName: 'Ventas'

@@ -22,6 +22,7 @@ import search from '../../general/search/reducer.js'
 import completed from './general/completed/reducer.js'
 import todaySales from './sale/todaySales/reducer.js'
 import taxExemption from './sale/taxExemption/reducer.js'
+import cashAdvance from './sale/cashAdvance/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 
 export default combineReducers({
@@ -47,6 +48,7 @@ export default combineReducers({
   workOrders,
   todaySales,
   taxExemption,
+  cashAdvance,
   reprintInvoice,
   reserves
 })
