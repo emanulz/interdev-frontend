@@ -20,12 +20,8 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // GET FUNCTIONS (RETRIEVE ALL)
 // ------------------------------------------------------------------------------------------
 export function savePayableCreditMovementPromise(kwargs){
-  const logCode = 'CREDIT_MOVEMENT_CREATED'
-  const logDescription = `Credit movement created for purchase ${kwargs.purchase_id} and invoice number ${kwargs.invoice_number}`
-  const old = {noPrevious: 'Initial creation'}
   const method = 'post'
   const url ='/api/payablescreditmovement/'
-  const logModel = 'PAYABLE_CREDIT_MOVEMENT'
 
   const cre_mov_desc = kwargs.description?kwargs.description:`Débito a factura ${kwargs.invoice_number}`
 
@@ -46,7 +42,6 @@ export function savePayableCreditMovementPromise(kwargs){
           url:url,
           data:data
       }).then(response=>{
-          saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
           resolve(response.data)
       }).catch(err=>{
           console.log(err)
@@ -59,12 +54,9 @@ export function savePayableCreditMovementPromise(kwargs){
 }
 
 export function savePayableCreditPaymentPromise(kwargs){
-  const logCode = 'CREDIT_PAYMENT_CREATED'
-  const logDescription = `Credit payment created for purchase ${kwargs.purchase_id} and invoice number ${kwargs.invoice_number}`
-  const old = {noPrevious: 'Initial creation'}
+
   const method = 'post'
   const url ='/api/payablescreditpayment/'
-  const logModel = 'PAYABLE_CREDIT_PAYMENT'
 
   const cre_mov_desc = kwargs.description?kwargs.description:`Pago a crédito por factura ${kwargs.invoice_number}`
   const data = {
@@ -82,7 +74,6 @@ export function savePayableCreditPaymentPromise(kwargs){
           url:url,
           data:data
       }).then(response=>{
-          saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
           resolve(response.data)
       }).catch(err=>{
           console.log(err)
@@ -188,7 +179,6 @@ export function getPaginationItemDispatch(kwargs) {
       dispatch({type: 'PAGINATION_DATA', payload: paginationPayload})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
-      // console.log(error.response.status)
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
       alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
       administrador del sistema con el siguiete error: ${error}`)
@@ -306,7 +296,6 @@ export function saveItem(kwargs) {
             }
           })
         dispatch({type: kwargs.dispatchType, payload: ''})
-        // saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'FETCHING_DONE', payload: ''})
         if (isSale) {
           dispatch({type: 'SET_SALE', payload: response.data})
@@ -333,12 +322,6 @@ export function saveItem(kwargs) {
 export function updateItem(kwargs) {
   const item = kwargs.item
   const url = kwargs.url
-  // const logCode = kwargs.logCode
-  // const itemOld = kwargs.itemOld
-  // const logModel = kwargs.logModel
-  // const logDescription = kwargs.logDescription
-  // const user = kwargs.user
-
   return function(dispatch) {
 
     axios({
@@ -354,7 +337,6 @@ export function updateItem(kwargs) {
             }
           })
         dispatch({type: kwargs.dispatchType, payload: ''})
-        // saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {
         console.log(err)
@@ -375,10 +357,6 @@ export function updateItem(kwargs) {
 export function patchItem(kwargs) {
   const item = kwargs.item
   const url = kwargs.url
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
   const user = kwargs.user
 
   return function(dispatch) {
@@ -398,7 +376,6 @@ export function patchItem(kwargs) {
             })
         }
         dispatch({type: kwargs.dispatchType, payload: ''})
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'SET_SALE_ID', payload: ''})
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {
@@ -420,18 +397,10 @@ export function patchItem(kwargs) {
 export function patchItems(kwargs, kwargs2) {
   const item = kwargs.item
   const url = kwargs.url
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
   const user = kwargs.user
 
   const item2 = kwargs2.item
   const url2 = kwargs2.url
-  const logCode2 = kwargs2.logCode
-  const itemOld2 = kwargs2.itemOld
-  const logModel2 = kwargs2.logModel
-  const logDescription2 = kwargs2.logDescription
 
   return function(dispatch) {
 
@@ -444,7 +413,6 @@ export function patchItems(kwargs, kwargs2) {
       .then((response) => {
 
         dispatch({type: kwargs.dispatchType, payload: ''})
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
 
         // SECOND PATCH
         axios({
@@ -463,7 +431,6 @@ export function patchItems(kwargs, kwargs2) {
                 })
             }
             dispatch({type: kwargs2.dispatchType, payload: ''})
-            saveLog(logCode2, logModel2, itemOld2, item2, logDescription2, user)
             dispatch({type: 'FETCHING_DONE', payload: ''})
 
           // SECOND PATCH CATCH
@@ -497,10 +464,6 @@ export function deleteItem(kwargs) {
   const item = kwargs.item
   const url = kwargs.url
   const model = kwargs.modelName
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
   const user = kwargs.user
 
   return function(dispatch) {
@@ -517,7 +480,6 @@ export function deleteItem(kwargs) {
               kwargs.history.push(kwargs.redirectUrl)
             }
           })
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       }).catch((err) => {
@@ -535,14 +497,8 @@ export function deleteItemDispatch(kwargs) {
   const item = kwargs.item
   const url = kwargs.url
   const model = kwargs.modelName
-  const logCode = kwargs.logCode
-  const itemOld = kwargs.itemOld
-  const logModel = kwargs.logModel
-  const logDescription = kwargs.logDescription
-  const user = kwargs.user
   const dispatchType = kwargs.dispatchType
   return function(dispatch) {
-    console.log('Item ' + url)
     axios({
       method: 'delete',
       url: url
@@ -555,7 +511,6 @@ export function deleteItemDispatch(kwargs) {
               kwargs.history.push(kwargs.redirectUrl)
             }
           })
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
         dispatch({type: dispatchType, payload: item.id})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
