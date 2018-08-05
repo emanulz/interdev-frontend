@@ -53,7 +53,7 @@ class SaveBtn extends React.Component {
     })
     const returnItem = {
       'return_list': JSON.stringify(returnList),
-      'return_method': 'CASH',
+      'return_method': 'VOUCHER',
       'destination_warehouse_id': warehouse
     }
 

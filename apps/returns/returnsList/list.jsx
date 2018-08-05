@@ -61,7 +61,7 @@ export default class List extends React.Component {
       {
         field: 'consecutive',
         text: 'Consecutivo',
-        type: 'primaryNoEdit'
+        type: 'text'
       }, {
         field: 'created',
         text: 'Fecha',

@@ -11,6 +11,7 @@ import {connect} from 'react-redux'
     isPresaleLoaded: store.completed.isPresaleLoaded,
     isReserveLoaded: store.completed.isReserveLoaded,
     useReserves: store.config.globalConf.useReserves,
+    acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
   }
 })
@@ -40,6 +41,11 @@ export default class Buttons extends React.Component {
   showTodaySalesPanel() {
     this.props.dispatch({type: 'SHOW_TODAY_SALES_PANEL', payload: -1})
   }
+
+  showCashAdvancesPanel() {
+    this.props.dispatch({type: 'SHOW_CASH_ADVANCE_PANEL', payload: -1})
+  }
+
   newSale() {
     // window.location.reload()
     window.location.href = '/sales'
@@ -79,6 +85,23 @@ export default class Buttons extends React.Component {
         Órdenes Taller
         <span>
           <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
+    const cashAdvanceBtn = this.props.acceptCashAdvances
+      ? <button
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        onClick={this.showCashAdvancesPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Adelantos de efectivo
+        <span>
+          <i className='fa fa-money' />
         </span>
       </button>
       : ''
@@ -136,6 +159,7 @@ export default class Buttons extends React.Component {
       </button>
 
       {reservesBtn}
+      {cashAdvanceBtn}
 
       <button
         disabled={this.props.disabled}
