@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
 import {saveClient} from '../actions.js'
+import {getFullClientById} from '../../../apps/sales/general/clients/actions.js'
 
 @connect((store) => {
   return {
@@ -42,9 +43,11 @@ export default class ClientCreateSave extends React.Component {
       // THEN SET THE NEW CLIENT AS ACTIVE
       let newClient
       try {
+        console.log('DATTTASSS', data)
         newClient = JSON.parse(data.data)
-        console.log(newClient)
-        _this.props.dispatch({type: 'CLIENT_SELECTED', payload: newClient})
+        const clientId = newClient.id
+        getFullClientById(clientId, _this.props.dispatch)
+        // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: newClient})
         alertify.alert('COMPLETADO', `Nuevo Cliente creado correctamente con el código: ${newClient.code}`)
       } catch (err) {
         alertify.alert('ERROR', `Error al cargar el nuevo cliente, por favor haga una búsqueda por nombre para utilizarlo.`)
