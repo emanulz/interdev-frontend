@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { setItem, getItemDispatch } from '../../../../../utils/api'
-import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
@@ -35,7 +34,7 @@ class Form extends React.Component {
       const lookUp = this.props.location.pathname.split('/').pop()
 
       const kwargs = {
-        lookUpField: 'code',
+        lookUpField: 'consecutive',
         url: '/api/productsubdepartments/',
         lookUpValue: lookUp,
         dispatchType: 'SET_PRODUCT_SUBDEPARTMENT',
@@ -61,7 +60,7 @@ class Form extends React.Component {
       if (nextProps.productSubDepartment.id == '0000000000') {
 
         const kwargs = {
-          lookUpField: 'code',
+          lookUpField: 'consecutive',
           url: '/api/productsubdepartments/',
           lookUpValue: lookUp,
           dispatchType: 'SET_PRODUCT_SUBDEPARTMENT',
@@ -124,19 +123,6 @@ class Form extends React.Component {
   render() {
 
     // ********************************************************************
-    // SELECT2 DATA
-    // ********************************************************************
-    const departments = this.props.productDepartments
-
-    departments.sort((a, b) => {
-      return a.code - b.code
-    })
-
-    const departmentData = departments.map(department => {
-      return {text: `${department.code} - ${department.name}`, id: `${department.id}`}
-    })
-
-    // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
     return <div className='col-xs-12 row form-container'>
@@ -147,8 +133,8 @@ class Form extends React.Component {
         <hr />
 
         <div className='form-group'>
-          <label>Código</label>
-          <input value={this.props.productSubDepartment.code} name='code' onChange={this.handleInputChange.bind(this)} type='text'
+          <label>Identificador</label>
+          <input value={this.props.productSubDepartment.identifier} name='identifier' onChange={this.handleInputChange.bind(this)} type='text'
             className='form-control' />
         </div>
 
@@ -156,28 +142,6 @@ class Form extends React.Component {
           <label>Nombre</label>
           <input value={this.props.productSubDepartment.name} name='name' onChange={this.handleInputChange.bind(this)} type='text'
             className='form-control' />
-        </div>
-
-        <div className='form-group'>
-          <label>Identificador</label>
-          <input value={this.props.productSubDepartment.identifier} name='identifier' onChange={this.handleInputChange.bind(this)} type='text'
-            className='form-control' />
-        </div>
-
-        <div className='form-group'>
-          <label>Departamento</label>
-
-          <Select2
-            name='department'
-            value={this.props.productSubDepartment.department}
-            className='form-control'
-            onSelect={this.handleInputChange.bind(this)}
-            data={departmentData}
-            options={{
-              placeholder: 'Elija una Familia...',
-              noResultsText: 'Sin elementos'
-            }}
-          />
         </div>
 
         <div className='form-group'>

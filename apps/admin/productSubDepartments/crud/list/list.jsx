@@ -37,7 +37,7 @@ export default class List extends React.Component {
 
     const headerOrder = [
       {
-        field: 'code',
+        field: 'consecutive',
         text: 'Código',
         type: 'primary'
       }, {

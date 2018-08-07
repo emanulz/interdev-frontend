@@ -56,7 +56,7 @@ export default class Update extends React.Component {
       </div>
       {content}
 
-      <ItemsBar items={this.props.productSubDepartments} tittle='Lista de Sub Familias' codeField='code'
+      <ItemsBar items={this.props.productSubDepartments} tittle='Lista de Sub Familias' codeField='consecutive'
         descriptionField='name' descriptionField2={false} editPath='/admin/productsubdepartments/edit/' />
     </div>
 

@@ -22,7 +22,7 @@ class Form extends React.Component {
       const lookUp = this.props.location.pathname.split('/').pop()
 
       const kwargs = {
-        lookUpField: 'code',
+        lookUpField: 'consecutive',
         url: '/api/productdepartments/',
         lookUpValue: lookUp,
         dispatchType: 'SET_PRODUCT_DEPARTMENT',
@@ -48,7 +48,7 @@ class Form extends React.Component {
       if (nextProps.productDepartment.id == '0000000000') {
 
         const kwargs = {
-          lookUpField: 'code',
+          lookUpField: 'consecutive',
           url: '/api/productdepartments/',
           lookUpValue: lookUp,
           dispatchType: 'SET_PRODUCT_DEPARTMENT',
@@ -121,20 +121,14 @@ class Form extends React.Component {
         <hr />
 
         <div className='form-group'>
-          <label>Código</label>
-          <input value={this.props.productDepartment.code} name='code' onChange={this.handleInputChange.bind(this)} type='text'
+          <label>Identificador</label>
+          <input value={this.props.productDepartment.identifier} name='identifier' onChange={this.handleInputChange.bind(this)} type='text'
             className='form-control' />
         </div>
 
         <div className='form-group'>
           <label>Nombre</label>
           <input value={this.props.productDepartment.name} name='name' onChange={this.handleInputChange.bind(this)} type='text'
-            className='form-control' />
-        </div>
-
-        <div className='form-group'>
-          <label>Identificador</label>
-          <input value={this.props.productDepartment.identifier} name='identifier' onChange={this.handleInputChange.bind(this)} type='text'
             className='form-control' />
         </div>
 

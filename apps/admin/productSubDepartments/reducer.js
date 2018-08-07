@@ -7,8 +7,6 @@ const defaultPermissions = {
 
 const productSubDepartmentModel = {
   id: '0000000000',
-  department: '0000000000',
-  code: '',
   name: '',
   observations: '',
   identifier: ''

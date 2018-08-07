@@ -37,7 +37,7 @@ export default class Update extends React.Component {
         items: [
           ...nextProps.productDepartments
         ],
-        codeField: 'code',
+        codeField: 'consecutive',
         code: code,
         dispatchType: 'SET_NEXT_PREV_PRODUCT_DEPARTMENT'
       }
@@ -94,7 +94,7 @@ export default class Update extends React.Component {
 
       {content}
 
-      <ItemsBar items={this.props.productDepartments} tittle='Lista de Familias' codeField='code' descriptionField='name'
+      <ItemsBar items={this.props.productDepartments} tittle='Lista de Familias' codeField='consecutive' descriptionField='name'
         descriptionField2={false} editPath='/admin/productdepartments/edit/' />
     </div>
 

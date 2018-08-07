@@ -5,9 +5,8 @@ import alertify from 'alertifyjs'
 
 export function checkProductSubDepartmentData(productSubDepartment, productSubDepartments) {
   let Ok = true
-
-  if (productSubDepartment.code == '') {
-    alertify.alert('Error', 'Debe especificar el código de la Sub Familia')
+  if (productSubDepartment.identifier == '') {
+    alertify.alert('Error', 'Debe especificar el Identificador de la Sub Familia')
     // alertify.notify('Debe especificar el código del Cliente', 'error', 5, function() { console.log('dismissed') })
     return false
   }
@@ -17,16 +16,11 @@ export function checkProductSubDepartmentData(productSubDepartment, productSubDe
     return false
   }
 
-  if (productSubDepartment.department == '') {
-    alertify.alert('Error', 'Debe especificar una Familia a la que pertenece esta Sub Familia')
-    return false
-  }
-
   // UNIQUE FIELDS
   productSubDepartments.forEach((productSubDepartmentData) => {
-    if (productSubDepartment.code == productSubDepartmentData.code) {
+    if (productSubDepartment.identifier == productSubDepartmentData.identifier) {
       if (productSubDepartment.id != productSubDepartmentData.id) {
-        alertify.alert('Error', `La Familia ${productSubDepartmentData.name} ya posee el código ${productSubDepartmentData.code}`)
+        alertify.alert('Error', `La Sub-Familia ${productSubDepartmentData.name} ya posee el identificador ${productSubDepartmentData.identifier}`)
         Ok = false
         return false
       }
