@@ -24,6 +24,7 @@ import todaySales from './sale/todaySales/reducer.js'
 import taxExemption from './sale/taxExemption/reducer.js'
 import cashAdvance from './sale/cashAdvance/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
+import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -50,5 +51,6 @@ export default combineReducers({
   taxExemption,
   cashAdvance,
   reprintInvoice,
-  reserves
+  reserves,
+  printCashAdvance
 })

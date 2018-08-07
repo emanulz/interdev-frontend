@@ -1,12 +1,12 @@
 
-.compact-invoice
+.cash-advance-compact-invoice
     position: relative
     height: 100%
     width: 100%
     color: black
 
 
-.compact-invoice-header
+.cash-advance-compact-invoice-header
 
     display: flex
     flex-direction: row
@@ -24,7 +24,7 @@
             font-weight: normal
 
 
-.compact-invoice-separator
+.cash-advance-compact-invoice-separator
 
     display: flex
     flex-direction: row
@@ -44,7 +44,7 @@
         vertical-align: middle
 
 
-.compact-invoice-data
+.cash-advance-compact-invoice-data
     position: relative
     display: flex
     flex-flow: column
@@ -65,34 +65,27 @@
             font-size: 13px
 
 
-.compact-invoice-table
+.cash-advance-compact-invoice-table
     margin-top: 10px
     border: none
 
     &-header
-        font-size: 13px
+        font-size: 14px
+        color: black
         width: 100%
         display: flex
         flex-flow: row
         font-weight: bold
-        &-qty
-            width: 20%
-        &-code
-            width: 25%
-            text-align: center
-        &-iv
-            width: 20%
-            text-align: center
-        &-total
-            width: 35%
-            text-align: right
+        padding: 10px 0
+        &-description
+            width: 100%
     &-body
         border-top: 1px solid #ccc
         margin-top: 5px
-        font-size: 11px
+        font-size: 13px
         &-item
             width: 100%
-            padding: 5px 0
+            padding: 10px 0
             border-bottom: 1px solid #ccc
             &-description
                 width: 100%
@@ -100,27 +93,10 @@
                 flex-flow: column
                 justify-content: center
                 overflow: hidden
-            &-data
-                width: 100%
-                display: flex
-                flex-flow: row
-                margin-top: 5px
-                &-qty
-                    width: 20%
-                &-code
-                    width: 25%
-                    text-align: center
-                &-iv
-                    width: 25%
-                    text-align: center
-                &-total
-                    width: 30%
-                    text-align: right
 
 
-
-.compact-invoice-totals
-    margin-top: 10px
+.cash-advance-compact-invoice-totals
+    margin-top: 15px
     display: flex
     justify-content: flex-end
     & table
@@ -143,6 +119,7 @@
         & th
             font-size: 16px
             font-weight: bold
+            padding: 5px 0
             border-top: 1px solid #ccc
             border-bottom: 1px solid #ccc
         & td
@@ -152,7 +129,7 @@
             border-bottom: 1px solid #ccc
 
 
-.compact-invoice-notes
+.cash-advance-compact-invoice-notes
     width: 100%
     font-size: 11px
     display: flex
