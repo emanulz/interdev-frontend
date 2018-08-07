@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {createAdvance, checkAdvanceData} from './actions.js'
 import alertify from 'alertifyjs'
+import {loadCashAdvanceToPrint} from '../../../../general/printCashAdvance/actions.js'
 
 @connect((store) => {
   return {
@@ -76,6 +77,7 @@ export default class CashAdvancePanel extends React.Component {
         this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
 
         this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
+        this.props.dispatch(loadCashAdvanceToPrint(data.consecutive))
       }).catch((err) => {
         console.log(err.response.data)
         if (err.response) {
