@@ -28,8 +28,6 @@ export function saveItem(kwargs, resolve, reject) {
     })
       .then((response) => {
 
-        saveLog(logCode, logModel, itemOld, item, logDescription, user)
-
         dispatch({type: 'CLEAR_PRESALE', payload: ''})
         dispatch({type: 'SET_PRESALE', payload: response.data})
         alertify.alert('Completado', kwargs.sucessMessage)
