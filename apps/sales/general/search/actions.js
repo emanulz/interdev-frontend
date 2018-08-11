@@ -11,6 +11,10 @@ export function productSearchDoubleClick(item, dispatch) {
   })
 }
 
+export function productSearchClick(index, dispatch) {
+  dispatch({type: 'productSearch_SET_ACTIVE_INDEX', payload: index})
+}
+
 export function clientSearchDoubleClick(item, dispatch) {
   axios.get(`/api/clients/${item}`).then(function(response) {
     dispatch({type: 'CLIENT_SELECTED', payload: response.data})

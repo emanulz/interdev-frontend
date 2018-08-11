@@ -146,6 +146,22 @@ export default class PaySideBar extends React.Component {
     return <div />
   }
 
+  getVochersTag() {
+    let total = 0
+    for (const item in this.props.pay.payObject.vouc) {
+      total += this.props.pay.payObject.vouc[item].amount
+    }
+    if (total > 0) {
+      return <div>
+        <div className='pay-tag left'>VALES :</div>
+        <div className='pay-tag right'>
+          ₡ {total.formatMoney(2, ',', '.')}
+        </div>
+      </div>
+    }
+    return <div />
+  }
+
   render() {
 
     let change = 0
@@ -157,6 +173,7 @@ export default class PaySideBar extends React.Component {
     const cardTag = this.getCardTag()
     const transferTag = this.getTransferTag()
     const cashAdvancesTag = this.getCashAdvancesTag()
+    const vouchersTag = this.getVochersTag()
 
     const totalInPay = this.calcTotalInPay()
 
@@ -210,11 +227,12 @@ export default class PaySideBar extends React.Component {
         <div className='pay-tag right'>
           ₡ {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
 
-        {cashAdvancesTag}
         {cashTag}
         {cardTag}
-        {transferTag}
         {creditTag}
+        {vouchersTag}
+        {transferTag}
+        {cashAdvancesTag}
 
         <div className='pay-tag left'>TOTAL PAGO :</div>
         <div className='pay-tag right'>

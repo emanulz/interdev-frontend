@@ -16,7 +16,7 @@ export function updateStoreCashAmount(amount, saleTotal, client, payObject, disp
       payload: 0
     }
   if (isCredit) {
-    autoUpdateCreditAmount('CASH', amount, saleTotal, client, payObject, dispatch)
+    autoUpdateCreditAmount('CASH', amount, saleTotal, client.client, payObject, dispatch)
   }
   return res
 }
@@ -64,7 +64,7 @@ export function updateStoreCardAmount(amount, saleTotal, client, payObject, disp
     }
 
   if (isCredit) {
-    autoUpdateCreditAmount('CARD', amount, saleTotal, client, payObject, dispatch)
+    autoUpdateCreditAmount('CARD', amount, saleTotal, client.client, payObject, dispatch)
   }
 
   return res
@@ -98,7 +98,7 @@ export function updateStoreTransferAmount(amount, saleTotal, client, payObject, 
     }
 
   if (isCredit) {
-    autoUpdateCreditAmount('TRAN', amount, saleTotal, client, payObject, dispatch)
+    autoUpdateCreditAmount('TRAN', amount, saleTotal, client.client, payObject, dispatch)
   }
 
   return res
@@ -134,6 +134,31 @@ export function updateStoreTransferNumber(number) {
   return res
 }
 
+export function updateStoreVoucherAmount(checked, id, amount, saleTotal, client, payObject, dispatch, isCredit) {
+
+  const payload = {
+    voucherNumber: id,
+    amount: parseFloat(amount),
+    type: 'VOUC'
+  }
+
+  const res = (checked) // if its a value
+    ? {
+      type: 'ADD_TO_VOUCHER_ARRAY',
+      payload: payload
+    }
+    : {
+      type: 'REMOVE_FROM_VOUCHER_ARRAY',
+      payload: payload
+    }
+  // ADDED AMOUNT CAN BE NEGATIVE IF THE CHECK WAS REMOVED
+  const addedAmount = checked ? parseFloat(amount) : parseFloat(amount) * -1
+  if (isCredit) {
+    autoUpdateCreditAmount('VOUC', addedAmount, saleTotal, client.client, payObject, dispatch)
+  }
+  return res
+}
+
 export function autoUpdateCreditAmount(model, amount, saleTotal, client, payObject, dispatch) {
   let creditAmount = 0
   if (client.has_credit) {
@@ -157,19 +182,23 @@ function getPayNoCredit(payObject, model, amount) {
   switch (model) {
     case 'CASH':
     {
-      return getPayCard(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
+      return getPayCard(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject) + getPayVouchers(payObject)
     }
     case 'CARD':
     {
-      return getPayCash(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
+      return getPayCash(payObject) + getPayTransfer(payObject) + parseFloat(amount) + getPayCashAdvances(payObject) + getPayVouchers(payObject)
     }
     case 'TRAN':
     {
-      return getPayCash(payObject) + getPayCard(payObject) + parseFloat(amount) + getPayCashAdvances(payObject)
+      return getPayCash(payObject) + getPayCard(payObject) + parseFloat(amount) + getPayCashAdvances(payObject) + getPayVouchers(payObject)
     }
     case 'CRED':
     {
-      return getPayCash(payObject) + getPayTransfer(payObject) + getPayCard(payObject) + getPayCashAdvances(payObject)
+      return getPayCash(payObject) + getPayTransfer(payObject) + getPayCard(payObject) + getPayCashAdvances(payObject) + getPayVouchers(payObject)
+    }
+    case 'VOUC':
+    {
+      return getPayCash(payObject) + getPayTransfer(payObject) + getPayCard(payObject) + getPayCashAdvances(payObject) + getPayVouchers(payObject) + amount
     }
   }
 }
@@ -202,6 +231,14 @@ function getPayCashAdvances(payObject) {
   let total = 0
   for (const item in payObject.csha) {
     total += payObject.csha[item].amount
+  }
+  return total
+}
+
+function getPayVouchers(payObject) {
+  let total = 0
+  for (const item in payObject.vouc) {
+    total += payObject.vouc[item].amount
   }
   return total
 }

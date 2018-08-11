@@ -20,7 +20,7 @@ import PrintCashAdvance from '../../../general/printCashAdvance/printCashAdvance
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
-import {productSearchDoubleClick, clientSearchDoubleClick} from '../general/search/actions.js'
+import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick} from '../general/search/actions.js'
 
 import {connect} from 'react-redux'
 
@@ -59,7 +59,7 @@ export default class Sale extends React.Component {
       <Content />
       <Aside />
 
-      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick} />
+      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick} onRowClick={productSearchClick} sortedBy='code' />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <PayPanel />
       <InvoicePanel />

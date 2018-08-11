@@ -13,6 +13,8 @@ export default class SearchPanel extends React.Component {
 
   hidePanel() {
     Mousetrap.unbind('esc')
+    Mousetrap.unbind('up')
+    Mousetrap.unbind('down')
     this.props.dispatch({type: `${this.props.namespace}_TOGGLE_SEARCH_PANEL`, payload: -1})
   }
 
@@ -60,7 +62,8 @@ export default class SearchPanel extends React.Component {
 
         <div className='search-panel-results'>
 
-          <ResultsTable model={this.props.model} namespace={this.props.namespace} onRowDoubleClick={this.props.onRowDoubleClick} />
+          <ResultsTable model={this.props.model} sortedBy={this.props.sortedBy} namespace={this.props.namespace}
+            onRowDoubleClick={this.props.onRowDoubleClick} onRowClick={this.props.onRowClick} />
 
         </div>
 

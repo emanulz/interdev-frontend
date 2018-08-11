@@ -12,10 +12,10 @@ export function searchItem(text, model, namespace) {
       dispatch({type: `${namespace}_CLEAR_SEARCH_RESULTS`, payload: ''})
     }
   }
-  const newstr = text.replace('%', '&', 'gi').replace('+', '!', 'gi').replace('*', '$', 'gi')
+  const newstr = text.replace(/%/g, '&').replace('+', '!', 'gi').replace('*', '$', 'gi')
   const data = {
     model: model,
-    max_results: 20,
+    max_results: 100,
     search_key: newstr
   }
   return function(dispatch) {

@@ -12,6 +12,7 @@ import {getHeaderOrder} from './headerOrder.js'
     fething: store.fetching.fetching,
     searchResults: store[ownProps.namespace].searchResults,
     salesWarehouse: store.config.salesWarehouse,
+    resultsActiveIndex: store[ownProps.namespace].activeindex
   }
 })
 export default class ResultsTable extends React.Component {
@@ -24,7 +25,9 @@ export default class ResultsTable extends React.Component {
 
     const fetching = <Fecthing />
     const list = <AdminTable headerOrder={headerOrder} model={this.props.model} data={this.props.searchResults}
-      idField={idField} onRowDoubleClick={this.props.onRowDoubleClick} />
+      idField={idField} onRowDoubleClick={this.props.onRowDoubleClick} onRowClick={this.props.onRowClick}
+      activeIndex={this.props.resultsActiveIndex}
+      sortedBy={this.props.sortedBy} />
 
     const content = this.props.fetching ? fetching : list
 
