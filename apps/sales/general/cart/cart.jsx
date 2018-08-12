@@ -36,6 +36,14 @@ export default class Cart extends React.Component {
         document.getElementById('productCodeInputField').focus()
         document.getElementById('productCodeInputField').value = ''
         Mousetrap.unbind('esc')
+        Mousetrap.unbind('up')
+        Mousetrap.unbind('down')
+      })
+      Mousetrap.bind('down', function(e) {
+        _this.props.dispatch({type: 'productSearch_INCREASE_ACTIVE_INDEX', payload: -1})
+      })
+      Mousetrap.bind('up', function(e) {
+        _this.props.dispatch({type: 'productSearch_DECREASE_ACTIVE_INDEX', payload: -1})
       })
     })
 
@@ -57,6 +65,8 @@ export default class Cart extends React.Component {
         document.getElementById('productCodeInputField').focus()
         document.getElementById('productCodeInputField').value = ''
         Mousetrap.unbind('esc')
+        Mousetrap.unbind('up')
+        Mousetrap.unbind('down')
       })
     })
   }

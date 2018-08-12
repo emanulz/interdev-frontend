@@ -61,6 +61,13 @@ export default class Product extends React.Component {
       Mousetrap.unbind('esc')
     })
 
+    Mousetrap.bind('down', function(e) {
+      _this.props.dispatch({type: 'productSearch_INCREASE_ACTIVE_INDEX', payload: -1})
+    })
+    Mousetrap.bind('up', function(e) {
+      _this.props.dispatch({type: 'productSearch_DECREASE_ACTIVE_INDEX', payload: -1})
+    })
+
   }
 
   inputKeyPress(ev) {

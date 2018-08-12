@@ -12,7 +12,7 @@ import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.js
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import Search from '../../../general/search/search.jsx'
-import {productSearchDoubleClick, clientSearchDoubleClick} from '../../sales/general/search/actions.js'
+import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../../sales/general/search/actions.js'
 
 @connect((store) => {
   return {
@@ -36,7 +36,8 @@ export default class Sale extends React.Component {
       <Content />
       <Aside />
 
-      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick} />
+      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
+        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <Send />
       <ClientPanel />

@@ -1,8 +1,8 @@
 export function getHeaderOrder(model, salesWarehouse) {
 
-  let get_existences_closure = (item)=>{
-      function getExistences(item){
-      if(salesWarehouse === undefined || salesWarehouse ===''){
+  let get_existences_closure = (item) => {
+    function getExistences(item) {
+      if (salesWarehouse === undefined || salesWarehouse === '') {
         return "0"
       }
       const parsed_inv = JSON.parse(item)

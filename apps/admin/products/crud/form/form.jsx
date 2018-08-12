@@ -146,17 +146,11 @@ class Form extends React.Component {
     })
 
     const departmentData = departments.map(department => {
-      return {text: `${department.code} - ${department.name}`, id: `${department.id}`}
+      return {text: `${department.identifier} - ${department.name}`, id: `${department.id}`}
     })
 
-    const filteredSubDepartments = subDepartments.filter(el => {
-      return el.department == this.props.product.department
-    })
-    filteredSubDepartments.sort((a, b) => {
-      return a.code - b.code
-    })
-    const subDepartmentData = filteredSubDepartments.map(subdepartment => {
-      return {text: `${subdepartment.code} - ${subdepartment.name}`, id: subdepartment.id}
+    const subDepartmentData = subDepartments.map(subdepartment => {
+      return {text: `${subdepartment.identifier} - ${subdepartment.name}`, id: subdepartment.id}
     })
 
     // ********************************************************************
