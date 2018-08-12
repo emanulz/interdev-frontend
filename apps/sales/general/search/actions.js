@@ -15,6 +15,10 @@ export function productSearchClick(index, dispatch) {
   dispatch({type: 'productSearch_SET_ACTIVE_INDEX', payload: index})
 }
 
+export function productSearchActive(product, dispatch) {
+  dispatch({type: 'productSearch_SET_ACTIVE_IMAGE', payload: {name: product.image_name, code: product.code}})
+}
+
 export function clientSearchDoubleClick(item, dispatch) {
   axios.get(`/api/clients/${item}`).then(function(response) {
     dispatch({type: 'CLIENT_SELECTED', payload: response.data})

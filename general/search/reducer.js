@@ -2,34 +2,46 @@ const stateConst = {
   isVisible: false,
   searchText: '',
   searchResults: [],
-  activeindex: 0
+  activeIndex: 0,
+  activeImageName: '',
+  activeImageCode: ''
 }
 
 const reducer = (namespace) => (state = stateConst, action) => {
   switch (action.type) {
+
+    case `${namespace}_SET_ACTIVE_IMAGE`:
+    {
+      return {
+        ...state,
+        activeImageName: action.payload.name,
+        activeImageCode: action.payload.code
+      }
+    }
+
     case `${namespace}_INCREASE_ACTIVE_INDEX`:
     {
       const searchResultsMax = state.searchResults.length - 1
-      let activeindex = state.activeindex + 1
-      if (activeindex > searchResultsMax) {
-        activeindex = 0
+      let activeIndex = state.activeIndex + 1
+      if (activeIndex > searchResultsMax) {
+        activeIndex = 0
       }
       return {
         ...state,
-        activeindex: activeindex
+        activeIndex: activeIndex
       }
     } // case
 
     case `${namespace}_DECREASE_ACTIVE_INDEX`:
     {
       const searchResultsMax = state.searchResults.length - 1
-      let activeindex = state.activeindex - 1
-      if (activeindex < 0) {
-        activeindex = searchResultsMax
+      let activeIndex = state.activeIndex - 1
+      if (activeIndex < 0) {
+        activeIndex = searchResultsMax
       }
       return {
         ...state,
-        activeindex: activeindex
+        activeIndex: activeIndex
       }
     } // case
 
@@ -37,7 +49,7 @@ const reducer = (namespace) => (state = stateConst, action) => {
     {
       return {
         ...state,
-        activeindex: action.payload
+        activeIndex: action.payload
       }
     } // case
 

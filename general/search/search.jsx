@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import ResultsTable from './resultsTable.jsx'
 import {searchItem} from './actions.js'
+import SearchImage from './searchImage.jsx'
 const Mousetrap = require('mousetrap')
 @connect((store, ownProps) => {
   return {
@@ -39,7 +40,7 @@ export default class SearchPanel extends React.Component {
     const isVisible = (this.props.isVisible)
       ? 'search-panel is-visible'
       : 'search-panel'
-
+    const imageComponent = this.props.useImage ? <SearchImage namespace={this.props.namespace} /> : <div />
     return <div className={isVisible}>
 
       <div className='search-panel-main'>
@@ -47,6 +48,8 @@ export default class SearchPanel extends React.Component {
           Busqueda de {this.props.modelText}
           <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
         </div>
+
+        {imageComponent}
 
         <div className='search-panel-input insideIcon'>
           <input
@@ -63,7 +66,7 @@ export default class SearchPanel extends React.Component {
         <div className='search-panel-results'>
 
           <ResultsTable model={this.props.model} sortedBy={this.props.sortedBy} namespace={this.props.namespace}
-            onRowDoubleClick={this.props.onRowDoubleClick} onRowClick={this.props.onRowClick} />
+            onRowDoubleClick={this.props.onRowDoubleClick} onRowClick={this.props.onRowClick} onActiveItem={this.props.onActiveItem} />
 
         </div>
 
