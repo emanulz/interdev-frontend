@@ -3,15 +3,19 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.sales.saleActive,
-    company: store.config.company
+    sale: store.reprintInvoice.sale,
+    company: store.reprintInvoice.company
   }
 })
 export default class Header extends React.Component {
 
   render() {
     // Credit or cash
-    const headertext = this.props.sale.pay.payMethod == 'CREDIT' ? 'Factura de crédito' : 'Factura de contado'
+    let wasCredit = false
+    try {
+      wasCredit = this.props.sale.pay.cred[0].amount
+    } catch (err) {}
+    const headertext = wasCredit ? 'Factura de crédito' : 'Factura de contado'
     // LOGO
     const logo = this.props.company.logo || ''
     const logoWidth = this.props.company.logoWidth || '130px'

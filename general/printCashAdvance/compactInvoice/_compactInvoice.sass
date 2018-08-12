@@ -1,0 +1,152 @@
+
+.cash-advance-compact-invoice
+    position: relative
+    height: 100%
+    width: 100%
+    color: black
+
+
+.cash-advance-compact-invoice-header
+
+    display: flex
+    flex-direction: row
+    justify-content: center
+    &-info
+        flex-grow: 1
+        text-align: center
+        & h2
+            font-size: 14px
+            margin: 0 0 2px 0
+            font-weight: bold
+        & h3
+            font-size: 11px
+            margin: 0 0 1px 0
+            font-weight: normal
+
+
+.cash-advance-compact-invoice-separator
+
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    height: 40px
+    line-height: 40px
+    text-transform: uppercase
+    & h1
+        font-size: 14px
+        margin: 0 5px
+        line-height: 40px
+    & span
+        flex-grow: 1
+        margin-top: 20px
+        height: 1px
+        border-top: 1px solid #ccc
+        vertical-align: middle
+
+
+.cash-advance-compact-invoice-data
+    position: relative
+    display: flex
+    flex-flow: column
+
+    & .datenum-table
+        float: right
+        border: none
+        & th
+            width: 22%
+            background: none
+            color: black
+            padding: 2px 0
+            font-weight: bold
+            font-size: 13px
+
+        & td
+            padding: 2px 0
+            font-size: 13px
+
+
+.cash-advance-compact-invoice-table
+    margin-top: 10px
+    border: none
+
+    &-header
+        font-size: 14px
+        color: black
+        width: 100%
+        display: flex
+        flex-flow: row
+        font-weight: bold
+        padding: 10px 0
+        &-description
+            width: 100%
+    &-body
+        border-top: 1px solid #ccc
+        margin-top: 5px
+        font-size: 13px
+        &-item
+            width: 100%
+            padding: 10px 0
+            border-bottom: 1px solid #ccc
+            &-description
+                width: 100%
+                display: flex
+                flex-flow: column
+                justify-content: center
+                overflow: hidden
+
+
+.cash-advance-compact-invoice-totals
+    margin-top: 15px
+    display: flex
+    justify-content: flex-end
+    & table
+
+        width: 80%
+        border: none
+        & th
+            width: 45%
+            text-align: right
+            padding-right: 20px
+            background: none
+            color: black
+            font-size: 12px
+        & td
+            padding: 2px
+            font-size: 12px
+            text-align: right
+
+    & .total-row
+        & th
+            font-size: 16px
+            font-weight: bold
+            padding: 5px 0
+            border-top: 1px solid #ccc
+            border-bottom: 1px solid #ccc
+        & td
+            font-size: 14px
+            font-weight: bold
+            border-top: 1px solid #ccc
+            border-bottom: 1px solid #ccc
+
+
+.cash-advance-compact-invoice-notes
+    width: 100%
+    font-size: 11px
+    display: flex
+    flex-flow: column
+    justify-content: flex-start
+    margin-top: 20px
+    & h1
+        font-size: 12px
+        font-weight: bold
+        padding: 0
+        margin: 0
+    &-sing
+        padding-top: 30px
+        & h1
+            font-size: 13px
+        & hr
+            margin-top: 30px
+            border: none
+            border-bottom: 1px solid #ccc
+

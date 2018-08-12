@@ -211,3 +211,44 @@ input:not(:placeholder-shown) + label,
 input:focus + label 
   transform: translate(0, 0) scale(1)
   cursor: pointer
+
+.voucher-header
+    display: flex
+    flex-flow: row
+    height: 50px
+    padding: 5px
+    line-height: 40px
+    background-color: $PRIMARY-COLOR
+    color: white
+    &-consecutive
+        width: 20%
+    &-date
+        width: 25%
+        text-align: center
+    &-amount
+        width: 40%
+        text-align: center
+    &-checkbox
+        text-align: center
+        width: 15%
+
+.voucher-item
+    display: flex
+    flex-flow: row
+    height: 50px
+    padding: 5px
+    line-height: 40px
+    &-consecutive
+        width: 20%
+    &-date
+        width: 25%
+        text-align: center
+    &-amount
+        width: 40%
+        text-align: center
+    &-checkbox
+        width: 15%
+        text-align: center
+        & input
+            margin: 0
+            max-height: 20px

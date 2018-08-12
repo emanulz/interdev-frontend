@@ -26,6 +26,20 @@ export default class AdminTable extends React.Component {
     }
   }
 
+  rowClick(index, ev) {
+    if (this.props.onRowClick) {
+      this.props.onRowClick(index, this.props.dispatch)
+      return true
+    }
+  }
+
+  activeItemAction(el) {
+    if (this.props.onActiveItem) {
+      this.props.onActiveItem(el, this.props.dispatch)
+      return true
+    }
+  }
+
   generateBody(headerOrder, data) {}
 
   generateRow() {}
@@ -98,11 +112,17 @@ export default class AdminTable extends React.Component {
     })
 
     const idField = this.props.idField
+    let currentIndex = 0
     const bodyRows = data.map(el => {
-
-      return <tr key={el[idField]} onDoubleClick={this.rowDoubleClick.bind(this, el[idField])} >
-        {headerOrder.map(header => {
-
+      const activeClass = this.props.activeIndex == currentIndex ? 'admin-table-active-row' : ''
+      // IN CASE IT IS THE ACTIVE INDEX, EXECUTE THE FUNCTION FOR ACTIVE INDEX
+      if (currentIndex == this.props.activeIndex) {
+        this.activeItemAction(el)
+      }
+      // ADD 1 TO CURRENT INDEX BEFORE CICLE ENDS
+      currentIndex += 1
+      return <tr className={activeClass} key={el[idField]} onDoubleClick={this.rowDoubleClick.bind(this, el[idField])} onClick={this.rowClick.bind(this, currentIndex - 1)} >
+        { headerOrder.map(header => {
           // const fieldName = header.field
           // const itemToRender = el[fieldName]
 
@@ -306,7 +326,8 @@ export default class AdminTable extends React.Component {
           }
 
           return item
-        })}
+        })
+        }
       </tr>
     })
 

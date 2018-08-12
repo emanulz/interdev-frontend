@@ -127,7 +127,29 @@ export default function reducer(state = stateConst, action) {
     }
 
     // ************************************
-    // ***** CRED *************************
+    // **************VOUCCHER**************
+    // ************************************
+
+    case 'ADD_TO_VOUCHER_ARRAY':
+    {
+      const newState = {...state}
+      newState.payObject.vouc.push(action.payload)
+      return newState
+    }
+
+    case 'REMOVE_FROM_VOUCHER_ARRAY':
+    {
+      const newState = {...state}
+
+      const index = newState.payObject.vouc.findIndex(item => item.voucherNumber == action.payload.voucherNumber)
+      if (index != -1) {
+        newState.payObject.vouc.splice(index, 1)
+      }
+      return newState
+    }
+
+    // ************************************
+    // ***** NEW SALE *********************
     // ************************************
 
     case 'NEW_SALE':

@@ -16,10 +16,11 @@ import TodaySales from './todaySales/todaySales.jsx'
 import TaxExemptionPanel from './taxExemption/taxExemption.jsx'
 import CashAdvancePanel from './cashAdvance/cashAdvance.jsx'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
+import PrintCashAdvance from '../../../general/printCashAdvance/printCashAdvancePanel/printCashAdvancePanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
-import {productSearchDoubleClick, clientSearchDoubleClick} from '../general/search/actions.js'
+import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../general/search/actions.js'
 
 import {connect} from 'react-redux'
 
@@ -57,8 +58,8 @@ export default class Sale extends React.Component {
     return <div className='sale'>
       <Content />
       <Aside />
-
-      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick} />
+      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
+        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <PayPanel />
       <InvoicePanel />
@@ -70,6 +71,7 @@ export default class Sale extends React.Component {
       <TaxExemptionPanel />
       <CashAdvancePanel />
       <ReprintInvoice />
+      <PrintCashAdvance />
 
     </div>
 
