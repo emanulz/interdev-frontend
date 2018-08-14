@@ -19,7 +19,8 @@ const Mousetrap = require('mousetrap')
     user: store.clients.userSelected,
     // movements: store.clientmovements.movements,
     debt: store.clients.clientSelectedDebt,
-    disabled: store.completed.completed
+    disabled: store.completed.completed,
+    extraClient: store.extras.client
   }
 })
 export default class Clients extends React.Component {
@@ -64,6 +65,21 @@ export default class Clients extends React.Component {
 
   }
 
+  handleInputChange(event) {
+
+    const target = event.target
+    const value = target.value
+    const name = target.name
+
+    const client = {
+      ...this.props.extraClient
+    }
+
+    client[name] = value
+
+    this.props.dispatch({type: 'SET_EXTRAS_CLIENT', payload: client})
+  }
+
   userSelect(ev) {
     const _id = ev.target.value
     this.props.dispatch(userSelected(_id, this.props.users)) // dispatchs action according to result
@@ -99,6 +115,36 @@ export default class Clients extends React.Component {
 
   }
 
+  determinClientName() {
+    if (this.props.clientSelected.client) {
+      if (this.props.clientSelected.client.code == '00') {
+        return this.props.extraClient.name
+      }
+      return this.props.clientSelected.client.name
+    }
+    return 'Cliente'
+  }
+
+  determinClientLastName() {
+    if (this.props.clientSelected.client) {
+      if (this.props.clientSelected.client.code == '00') {
+        return this.props.extraClient.last_name
+      }
+      return this.props.clientSelected.client.last_name
+    }
+    return 'General'
+  }
+
+  determinClientEmail() {
+    if (this.props.clientSelected.client) {
+      if (this.props.clientSelected.client.code == '00') {
+        return this.props.extraClient.email
+      }
+      return this.props.clientSelected.client.email ? this.props.clientSelected.client.email : 'Sin Correo Registrado'
+    }
+    return 'Sin Correo Registrado'
+  }
+
   // Main Layout
   render() {
 
@@ -106,36 +152,57 @@ export default class Clients extends React.Component {
     // SELECT2 DATA
     // ********************************************************************
 
-    const clientToShow = (this.props.clientSelected)
-      ? `${this.props.clientSelected.client.name} ${this.props.clientSelected.client.last_name}`
-      : 'Cliente Contado'
+    const clientName = this.determinClientName()
+    const clientLastName = this.determinClientLastName()
+    const clientEmail = this.determinClientEmail()
 
-    // const creditIcon = (this.props.clientSelected && this.props.clientSelected.has_credit)
-    //   ? 'fa fa-check-square'
-    //   : 'fa fa-times-circle'
+    const clientNameInput = <input type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} />
+    const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} />
+    const clientEmailInput = <input type='text' value={clientEmail} name='email' onChange={this.handleInputChange.bind(this)} />
+
+    const nameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientNameInput : <span>{clientName}</span>
+    const lastNameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientLastnameInput : <span>{clientLastName}</span>
+    const emailToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientEmailInput : <span>{clientEmail}</span>
+
     const clientOnClick = this.props.disabled ? this.doNothing.bind(this) : this.showClientPanel.bind(this)
     const imgOnClick = this.props.disabled ? this.doNothing.bind(this) : this.searchClientClick.bind(this)
+
     return <div className='client'>
 
-      <div className='client-img'>
+      {/* <div className='client-img'>
         <img disabled={this.props.disabled} onClick={imgOnClick}
           src='/media/default/profile.jpg'
         />
-      </div>
+      </div> */}
 
       <div className='client-data'>
 
-        <div className='client-data-row'>
+        <div className='client-data-first-row'>
           <h3>Cliente :</h3>
-          <input disabled={this.props.disabled} onKeyUp={this.inputKeyPress.bind(this)}
-            type='text' className='mousetrap'
-          />
-          <i disabled={this.props.disabled} className='fa fa-plus-circle' onClick={clientOnClick} />
+          <div className='client-data-first-row-input'>
+            <input disabled={this.props.disabled} onKeyUp={this.inputKeyPress.bind(this)}
+              type='text' className='mousetrap'
+            />
+            <i disabled={this.props.disabled} className='fa fa-search' onClick={imgOnClick} />
+          </div>
         </div>
 
-        <div className='client-data-row'>
-          <h3>Nombre :</h3>
-          <span>{clientToShow}</span>
+        <div className='client-data-second-row'>
+          <div className='client-data-second-row-inline'>
+            <h3>Nombre :</h3>
+            {nameToShow}
+            <i disabled={this.props.disabled} className='fa fa-plus-circle' onClick={clientOnClick} />
+          </div>
+          <div className='client-data-second-row-inline'>
+            <h3>Apellido :</h3>
+            {lastNameToShow}
+          </div>
+
+          <div className='client-data-second-row-inline'>
+            <h3>Email :</h3>
+            {emailToShow}
+          </div>
+
         </div>
 
       </div>

@@ -20,7 +20,8 @@ const Mousetrap = require('mousetrap')
     workOrderId: store.workOrders.workOrderId,
     reserveId: store.reserves.reserveId,
     workOrder: store.workOrders.workOrderActive,
-    exemptionData: store.taxExemption.exemptionData
+    exemptionData: store.taxExemption.exemptionData,
+    extras: store.extras
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -49,6 +50,7 @@ export default class SaveBtn extends React.Component {
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       pay: JSON.stringify(this.props.payObject),
+      extras: JSON.stringify(this.props.extras),
       client_id: this.props.client.id,
       warehouse_id: warehouse,
       presale_id: this.props.presaleId

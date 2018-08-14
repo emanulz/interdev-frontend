@@ -9,11 +9,27 @@
             border-radius: 100%
             cursor: pointer
     &-data
-        &-row
+        flex-grow: 1
+        &-first-row
             padding: 5px 0
             display: flex
             flex-flow: row
-            justify-content: flex-start
+            &-input
+                display: flex
+                flex-flow: row
+                & input
+                    width: 220px
+        &-second-row
+            display: flex
+            flex-flow: column
+            &-inline
+                padding: 5px 0
+                display: flex
+                flex-flow: row
+                & input
+                    width: 220px
+                & span
+                    width: 220px
         & h3
             width: 70px
             font-weight: bolder

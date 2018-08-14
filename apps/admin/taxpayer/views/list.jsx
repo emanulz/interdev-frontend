@@ -3,8 +3,6 @@ import {connect} from 'react-redux'
 import ListComponent from './list/list.jsx'
 import Unauthorized from '../../../../general/unauthorized.jsx'
 
-
-
 @connect(store=>{
     return {
         permissions: store.taxpayer.permissions,
@@ -12,8 +10,9 @@ import Unauthorized from '../../../../general/unauthorized.jsx'
 })
 export default class List extends React.Component {
 
-
     render(){
+
+        let content = ''
 
         switch(this.props.permissions.list){
             case true:
