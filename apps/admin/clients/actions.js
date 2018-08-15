@@ -6,11 +6,6 @@ import alertify from 'alertifyjs'
 export function checkClientData(client, clients) {
   let Ok = true
 
-  if (client.code == '') {
-    alertify.alert('Error', 'Debe especificar el código del Cliente')
-    return false
-  }
-
   if (client.name == '') {
     alertify.alert('Error', 'Debe especificar el nombre del Cliente')
     return false

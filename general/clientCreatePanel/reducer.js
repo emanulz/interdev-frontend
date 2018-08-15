@@ -6,13 +6,22 @@ const clientModel = {
   id_num: '',
   last_name: '',
   name: '',
-  phone_number: ''
+  phone_number: '',
+  province: '',
+  canton: '',
+  district: '',
+  town: '',
+  other_address: ''
 }
 
 const stateConst = {
   isVisible: false,
   clientActive: clientModel,
-  autoCode: true
+  autoCode: true,
+  provinces: [],
+  cantons: [],
+  districts: [],
+  towns: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -59,6 +68,100 @@ export default function reducer(state = stateConst, action) {
         autoCode: true
       }
     }
+
+    case 'FETCH_PROVINCES_FULFILLED':
+    {
+      return {
+        ...state,
+        provinces: action.payload
+      }
+    }
+
+    case 'FETCH_PROVINCES_REJECTED':
+    {
+      return {
+        ...state,
+        provinces: []
+      }
+    }
+
+    case 'FETCH_CANTONS_FULFILLED':
+    {
+      return {
+        ...state,
+        cantons: action.payload
+      }
+    }
+
+    case 'FETCH_CANTONS_REJECTED':
+    {
+      return {
+        ...state,
+        cantons: []
+      }
+    }
+
+    case 'FETCH_DISTRICTS_FULFILLED':
+    {
+      return {
+        ...state,
+        districts: action.payload
+      }
+    }
+
+    case 'FETCH_DISTRICTS_REJECTED':
+    {
+      return {
+        ...state,
+        districts: []
+      }
+    }
+
+    case 'FETCH_TOWNS_FULFILLED':
+    {
+      return {
+        ...state,
+        towns: action.payload
+      }
+    }
+
+    case 'FETCH_TOWNS_REJECTED':
+    {
+      return {
+        ...state,
+        towns: []
+      }
+    }
+
+    case 'CLEAR_CANTON':
+    {
+      const client = state.clientActive
+      client.canton = ''
+      return {
+        ...state,
+        clientActive: client
+      }
+    } // case
+
+    case 'CLEAR_DISTRICT':
+    {
+      const client = state.clientActive
+      client.district = ''
+      return {
+        ...state,
+        clientActive: client
+      }
+    } // case
+
+    case 'CLEAR_TOWN':
+    {
+      const client = state.clientActive
+      client.town = ''
+      return {
+        ...state,
+        clientActive: client
+      }
+    } // case
 
   } // switch
 

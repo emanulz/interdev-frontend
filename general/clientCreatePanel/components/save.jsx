@@ -10,23 +10,18 @@ import {getFullClientById} from '../../../apps/sales/general/clients/actions.js'
 @connect((store) => {
   return {
     client: store.clientCreatePanel.clientActive,
-    autoCode: store.clientCreatePanel.autoCode,
-    user: store.user.user
+    autoCode: store.clientCreatePanel.autoCode
   }
 })
 export default class ClientCreateSave extends React.Component {
 
   saveBtn() {
     const client = {...this.props.client}
-    client['autoCode'] = this.props.autoCode
+    client['code'] = this.props.autoCode ? '' : client['code']
 
-    const user = this.props.user
     const kwargs = {
-      url: '/api/clientquickcreate/',
-      item: client,
-      user: user,
-      sucessMessage: 'Cliente creado Correctamente.',
-      errorMessage: 'Hubo un error al crear el cliente, intente de nuevo.'
+      url: '/api/clients/',
+      item: client
     }
 
     const _this = this
@@ -43,8 +38,7 @@ export default class ClientCreateSave extends React.Component {
       // THEN SET THE NEW CLIENT AS ACTIVE
       let newClient
       try {
-        console.log('DATTTASSS', data)
-        newClient = JSON.parse(data.data)
+        newClient = data
         const clientId = newClient.id
         getFullClientById(clientId, _this.props.dispatch)
         // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: newClient})
@@ -53,6 +47,9 @@ export default class ClientCreateSave extends React.Component {
         alertify.alert('ERROR', `Error al cargar el nuevo cliente, por favor haga una búsqueda por nombre para utilizarlo.`)
       }
     }).catch((err) => {
+      console.log(err.response)
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('ERROR', `Error al crear cliente: ${err.response.data}`)
       let error = err.response.data
       error = error.replace(/\{/g, '').replace(/\}/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/'/g, '')
       alertify.alert('ERROR', `Error: ${error}`)

@@ -47,7 +47,7 @@ export default class List extends React.Component {
     // Then fetch provinces of the model and dispatch to reducer
     // *******************************************************************
     const provinceKwargs = {
-      url: '/api/provinces',
+      url: '/api/provinces/?limit=6000',
       successType: 'FETCH_PROVINCES_FULFILLED',
       errorType: 'FETCH_PROVINCES_REJECTED'
     }
@@ -58,7 +58,7 @@ export default class List extends React.Component {
     // Then fetch cantons of the model and dispatch to reducer
     // *******************************************************************
     const cantonKwargs = {
-      url: '/api/cantons',
+      url: '/api/cantons/?limit=6000',
       successType: 'FETCH_CANTONS_FULFILLED',
       errorType: 'FETCH_CANTONS_REJECTED'
     }
@@ -69,7 +69,7 @@ export default class List extends React.Component {
     // Then fetch districts of the model and dispatch to reducer
     // *******************************************************************
     const districtKwargs = {
-      url: '/api/districts/?limit=5000',
+      url: '/api/districts/?limit=6000',
       successType: 'FETCH_DISTRICTS_FULFILLED',
       errorType: 'FETCH_DISTRICTS_REJECTED'
     }
@@ -80,7 +80,7 @@ export default class List extends React.Component {
     // Then fetch towns of the model and dispatch to reducer
     // *******************************************************************
     const townKwargs = {
-      url: '/api/towns/?limit=6000',
+      url: '/api/towns/?limit=7000',
       successType: 'FETCH_TOWNS_FULFILLED',
       errorType: 'FETCH_TOWNS_REJECTED'
     }
