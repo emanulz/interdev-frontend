@@ -46,12 +46,16 @@ export default class PresalesPanel extends React.Component {
       data.cart = JSON.parse(data.cart)
       data.client = JSON.parse(data.client)
       data.user = JSON.parse(data.user)
+      try {
+        data.extras = JSON.parse(data.extras)
+      } catch (err) { data.extras = null }
       // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
       getFullClientById(data.client.id, _this.props.dispatch)
       _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_RESERVE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
+      _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
       _this.props.dispatch({type: 'RESERVE_LOADED', payload: data.user})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
     }).catch((err) => {
