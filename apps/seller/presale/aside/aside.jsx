@@ -5,6 +5,7 @@ import React from 'react'
 
 import Client from '../../../sales/general/clients/clients.jsx'
 import Totals from '../../../sales/general/totals/totals.jsx'
+import Notes from '../../../sales/general/extras/notes.jsx'
 import Buttons from '../buttons/buttons.jsx'
 import {connect} from 'react-redux'
 
@@ -33,6 +34,7 @@ export default class Aside extends React.Component {
         </div> */}
         <Client />
         <Totals />
+        <Notes />
         <Buttons />
       </div>
       {/* <Buttons /> */}

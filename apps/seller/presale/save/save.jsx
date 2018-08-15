@@ -10,7 +10,8 @@ import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
     client: store.clients.clientSelected.client,
     user: store.send.user,
     presaleType: store.send.presale_type,
-    reserves_warehouse: store.config.reserves_warehouse
+    reserves_warehouse: store.config.reserves_warehouse,
+    extras: store.extras
   }
 })
 export default class SaveBtn extends React.Component {
@@ -24,6 +25,7 @@ export default class SaveBtn extends React.Component {
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       client_id: this.props.client.id,
+      extras: JSON.stringify(this.props.extras),
       closed: true,
       reserves_warehouse: this.props.reserves_warehouse,
       presale_type: this.props.presaleType

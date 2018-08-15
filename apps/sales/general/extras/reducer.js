@@ -54,6 +54,17 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'SET_PRESALE_EXTRAS':
+    {
+      const notes = action.payload ? action.payload.notes : ''
+      const client = action.payload ? action.payload.client : clientModel
+      return {
+        ...state,
+        notes: notes,
+        client: client
+      }
+    } // case
+
   } // switch
 
   return state // default return
