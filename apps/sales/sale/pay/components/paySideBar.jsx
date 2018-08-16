@@ -14,7 +14,8 @@ const Mousetrap = require('mousetrap')
     client: store.clients.clientSelected.client,
     user: store.clients.userSelected,
     debt: store.clients.clientSelectedDebt,
-    isCredit: store.pay.isCredit
+    isCredit: store.pay.isCredit,
+    profile: store.userProfile
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -181,7 +182,7 @@ export default class PaySideBar extends React.Component {
     payButtonClass = (total > 0 && change >= -0.1)
       ? 'pay-tag tag-button enable'
       : 'pay-tag tag-button'
-
+    const eDocumentSelectClass = this.props.profile.taxPayer.is_digital_invoicing_active ? 'edocument-visible' : 'edocument-hidden'
     // switch (this.props.payMethod) {
 
     //   case 'CASH':
@@ -243,7 +244,16 @@ export default class PaySideBar extends React.Component {
           ₡ {change.formatMoney(2, ',', '.')}</div>
 
         <br />
-
+        <div className={`edocument-type ${eDocumentSelectClass}`}>
+          <div className='pay-tag left'>TIPO COMP :</div>
+          <div className='pay-dropdown right'>
+            <select>
+              <option value='TIQUETE'>Tiquete Electrónico</option>
+              <option value='FACTURA'>Factura Electónica</option>
+            </select>
+          </div>
+        </div>
+        <br />
         <SaveBtn payButtonClass={payButtonClass} />
 
       </div>
