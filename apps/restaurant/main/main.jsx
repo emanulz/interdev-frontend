@@ -6,7 +6,9 @@ import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import routes from './routes'
+import {getItemDispatch} from '../../../utils/api.js'
 import SingleProduct from '../../sales/general/product/singleProduct.jsx'
+import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
 // COMPONENTS
 
@@ -26,6 +28,13 @@ export default class Main extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(fecthProfile())
+    const tablesKwargs = {
+      url: '/api/restauranttables/?limit=200',
+      successType: 'FETCH_TABLES_FULFILLED',
+      errorType: 'FETCH_TABLES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(tablesKwargs))
   }
 
   // Main Layout
@@ -35,6 +44,7 @@ export default class Main extends React.Component {
     const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer' : 'mainContainer sideHidden'
     const content = <Router>
       <div>
+        <UserProfile />
         <SideMenu />
         <div id='mainContainer' className={mainContainerClass}>
           <TopBar />

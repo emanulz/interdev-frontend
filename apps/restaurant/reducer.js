@@ -16,6 +16,9 @@ import completed from '../sales/general/completed/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
 import searchRestaurant from './presale/search/reducer.js'
+import userProfile from '../../general/userProfile/reducer.js'
+import tables from './tables/reducer.js'
+import tableBills from './tableBills/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -33,5 +36,8 @@ export default combineReducers({
   completed,
   printPresale,
   extras,
-  searchRestaurant
+  searchRestaurant,
+  userProfile,
+  tables,
+  tableBills
 })
