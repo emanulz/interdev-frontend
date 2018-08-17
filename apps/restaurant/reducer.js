@@ -19,6 +19,7 @@ import searchRestaurant from './presale/search/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 import tables from './tables/reducer.js'
 import tableBills from './tableBills/reducer.js'
+import newBill from './tableBills/newBill/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -39,5 +40,6 @@ export default combineReducers({
   searchRestaurant,
   userProfile,
   tables,
-  tableBills
+  tableBills,
+  newBill
 })

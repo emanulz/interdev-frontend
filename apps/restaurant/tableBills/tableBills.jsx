@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import alertify from 'alertifyjs'
+import NewBillPanel from './newBill/newBillPanel.jsx'
 
 @connect((store) => {
   return {
@@ -20,7 +20,7 @@ export default class Sale extends React.Component {
   }
 
   openNewBill() {
-
+    this.props.dispatch({type: 'SHOW_NEW_BILL_PANEL', payload: ''})
   }
 
   // Main Layout
@@ -41,6 +41,7 @@ export default class Sale extends React.Component {
         </div>
 
       </div>
+      <NewBillPanel />
     </div>
 
   }
