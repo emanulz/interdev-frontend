@@ -12,13 +12,13 @@ export function getUserByCode(code, pin) {
   return function(dispatch) {
     const data = JSON.stringify({code: code, pin: pin})
     axios.post('/getuserbycode/', data).then(function(response) {
-      dispatch({type: 'SET_SEND_USER', payload: response.data.user})
-      dispatch({type: 'SET_SEND_USER_PROFILE', payload: response.data.profile})
-      dispatch({type: 'CLEAR_SEND_USER_INPUTS', payload: ''})
+      dispatch({type: 'SET_NEW_BILL_USER', payload: response.data.user})
+      dispatch({type: 'SET_NEW_BILL_USER_PROFILE', payload: response.data.profile})
+      dispatch({type: 'CLEAR_NEW_BILL_USER_INPUTS', payload: ''})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       alertify.alert('ERROR', 'La combinación de código de usuario y PIN son incorrectos')
-      dispatch({type: 'CLEAR_SEND_USER', payload: error})
+      dispatch({type: 'CLEAR_NEW_BILL_USER', payload: error})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     })
   }
