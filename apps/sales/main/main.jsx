@@ -7,6 +7,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import routes from './routes'
 import SingleProduct from '../general/product/singleProduct.jsx'
+import GeneralItem from '../general/product/generalItem/generalItem.jsx'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
 // COMPONENTS
@@ -44,6 +45,7 @@ export default class Main extends React.Component {
             {routes}
             {fetching}
             <SingleProduct />
+            <GeneralItem />
           </div>
         </div>
       </div>

@@ -1,0 +1,48 @@
+.general-item
+    width: 100%
+    height: 100%
+    position: absolute
+    top: -100%
+    left: 0
+    z-index: 15
+    background-color: rgba(145, 145, 145, 0.67)
+    background-size: 100% 100%
+    transition: all 0.2s ease-in-out
+    display: flex
+    justify-content: center
+    &.is-visible
+        position: absolute
+        top: 0
+        z-index: 15
+    &-container
+        width: 90%
+        background-color: white
+        &-header
+            width: 100%
+            height: 50px
+            font-size: 20px
+            text-align: center
+            font-family: inherit
+            font-weight: bold
+            color: white
+            background-color: $SECONDARY-COLOR-ACCENT
+            line-height: 50px
+            position: relative
+            & i
+                position: absolute
+                right: 5px
+                top: 2px
+                cursor: pointer
+                &:hover
+                    font-size: 25px
+        &-content
+            width: 100%
+            padding: 40px
+            display: flex
+            flex-flow: row
+            &-left
+                padding: 0 20px
+                width: 50%
+            &-right
+                width: 50%
+                padding: 0 20px

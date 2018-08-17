@@ -27,6 +27,7 @@ import cashAdvance from './sale/cashAdvance/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
+import generalItem from './general/product/generalItem/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -56,5 +57,6 @@ export default combineReducers({
   reserves,
   printCashAdvance,
   extras,
-  userProfile
+  userProfile,
+  generalItem
 })

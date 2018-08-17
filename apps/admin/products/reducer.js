@@ -10,7 +10,7 @@ const productModel = {
   code: '',
   description: '',
   short_description: '',
-  unit: 'uni',
+  unit: 'Unid',
   fractioned: true,
   department: '0000000000',
   subdepartment: '0000000000',
@@ -53,7 +53,8 @@ const productModel = {
   observations: '',
   on_sale: false,
   max_sale_discount: 0,
-  max_regular_discount: 5
+  max_regular_discount: 5,
+  is_service: false
 }
 
 const stateConst = {

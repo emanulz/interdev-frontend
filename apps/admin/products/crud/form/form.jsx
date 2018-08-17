@@ -319,11 +319,19 @@ class Form extends React.Component {
           </div>
         </div>
 
-        <div className='form-group'>
-          <label>Activo?</label>
-          <input checked={this.props.product.is_active} name='is_active'
-            onChange={this.handleInputChange.bind(this)}
-            type='checkbox' className='form-control' />
+        <div className='form-group row input-block'>
+          <div className='col-xs-6 first'>
+            <label>Activo?</label>
+            <input checked={this.props.product.is_active} name='is_active'
+              onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control' />
+          </div>
+          <div className='col-xs-6 second'>
+            <label>Es Servicio?</label>
+            <input checked={this.props.product.is_service} name='is_service'
+              onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control' />
+          </div>
         </div>
 
       </div>
