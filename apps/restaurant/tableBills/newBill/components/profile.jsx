@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {user: store.send.user, profile: store.send.profile}
+  return {user: store.newBill.user, profile: store.newBill.profile}
 })
 export default class Profile extends React.Component {
 

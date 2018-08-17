@@ -3,14 +3,14 @@ import {connect} from 'react-redux'
 import {getUserByCode} from '../actions.js'
 
 @connect((store) => {
-  return {code: store.send.userCode, pin: store.send.userPin}
+  return {code: store.newBill.userCode, pin: store.newBill.userPin}
 })
 export default class PayCash extends React.Component {
 
   setCode(ev) {
     ev.preventDefault()
     const value = ev.target.value
-    this.props.dispatch({type: 'SET_SEND_USER_CODE', payload: value})
+    this.props.dispatch({type: 'SET_NEW_BILL_USER_CODE', payload: value})
   }
 
   setPin(ev) {
@@ -19,7 +19,7 @@ export default class PayCash extends React.Component {
       this.getUser()
     } else {
       const value = ev.target.value
-      this.props.dispatch({type: 'SET_SEND_USER_PIN', payload: value})
+      this.props.dispatch({type: 'SET_NEW_BILL_USER_PIN', payload: value})
     }
   }
 
@@ -33,18 +33,18 @@ export default class PayCash extends React.Component {
 
   render() {
 
-    return <div className='send-method-body'>
+    return <div className='newBill-method-body'>
 
-      <div className='send-method-body-header'>
+      <div className='newBill-method-body-header'>
         <span>Usuario</span>
       </div>
 
-      <div className='send-method-body-content'>
-        <div className='send-tag-inline'>
+      <div className='newBill-method-body-content'>
+        <div className='newBill-tag-inline'>
           <div className='first'>CÓDIGO:</div>
           <input value={this.props.code} onChange={this.setCode.bind(this)} type='Text' className='second' />
         </div>
-        <div className='send-tag-inline'>
+        <div className='newBill-tag-inline'>
           <div className='first'>PIN:</div>
           <form className='second' onSubmit={e => { e.preventDefault() }}>
             <input value={this.props.pin} onChange={this.setPin.bind(this)} onKeyUp={this.setPin.bind(this)} autoComplete='off' type='Password' />
