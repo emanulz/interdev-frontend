@@ -1,5 +1,6 @@
 const stateConst = {
-  fullWidth: true
+  fullWidth: true,
+  presaleActiveId: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -12,6 +13,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         fullWidth: width
+      }
+    } // case
+
+    case 'SET_PRESALE_ACTIVE_ID':
+    {
+      return {
+        ...state,
+        presaleActiveId: action.payload
       }
     } // case
 
