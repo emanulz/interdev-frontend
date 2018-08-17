@@ -6,7 +6,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'FETCH_TABLES_FULFILLED':
+    case 'FETCH_TABLE_BILLS_FULFILLED':
     {
       return {
         ...state,
@@ -15,7 +15,7 @@ export default function reducer(state = stateConst, action) {
 
     } // case
 
-    case 'FETCH_TABLES_REJECTED':
+    case 'FETCH_TABLE_BILLS_REJECTED':
     {
       return {
         ...state,

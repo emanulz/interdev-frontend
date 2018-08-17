@@ -3,8 +3,6 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import alertify from 'alertifyjs'
-import {getItemDispatch} from '../../../utils/api.js'
 import {Link} from 'react-router-dom'
 
 @connect((store) => {

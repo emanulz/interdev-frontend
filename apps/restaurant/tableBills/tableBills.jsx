@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import NewBillPanel from './newBill/newBillPanel.jsx'
+import {getItemDispatch} from './actions.js'
 
 @connect((store) => {
   return {
@@ -16,7 +17,17 @@ export default class Sale extends React.Component {
   componentWillMount() {
     this.props.dispatch({type: 'PRESALE_PANEL_MOUNTED', payload: ''})
     const tableId = this.props.location.pathname.split('/').pop()
-    if (tableId) { this.props.dispatch({type: 'SET_TABLE_ACTIVE', payload: tableId}) }
+    if (tableId) {
+      this.props.dispatch({type: 'SET_TABLE_ACTIVE', payload: tableId})
+      const tableBillsKwargs = {
+        url: `/api/restauranttables/${tableId}/tablebills/`,
+        successType: 'FETCH_TABLE_BILLS_FULFILLED',
+        errorType: 'FETCH_TABLE_BILLS_REJECTED'
+      }
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getItemDispatch(tableBillsKwargs))
+
+    }
   }
 
   openNewBill() {

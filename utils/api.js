@@ -152,7 +152,7 @@ export function getItemDispatch(kwargs) {
     }).catch(function(error) {
       console.log(error.response.status)
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
-      dispatch({type:'FETCHING_DONE'})
+      dispatch({type: 'FETCHING_DONE'})
       if (error.response.status != 403) {
         alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
         administrador del sistema con el siguiete error: ${error}`)
