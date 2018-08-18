@@ -1,1 +1,28 @@
 @import './newBill/newBill'
+.table-bills
+  font-family: 'Source Sans Pro', sans-serif
+  &-header
+    display: flex
+    flex-flow: row
+    justify-content: space-between
+    padding: 20px
+    align-items: center
+    &-details
+      font-size: 22px
+      font-weight: bold
+    &-add
+      & button
+        font-size: 22px
+        width: 150px
+        height: 60px
+        & i
+          padding-left: 10px
+  &-content
+    padding: 0 20px
+    & table
+      & thead
+        background-color: $PRIMARY-COLOR
+        color: white 
+        font-size: 18px
+      & tbody
+        font-size: 18px

@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import NewBillPanel from './newBill/newBillPanel.jsx'
 import {getItemDispatch} from './actions.js'
+import { withRouter } from 'react-router-dom'
 import BillList from './billLists.jsx'
 @connect((store) => {
   return {
@@ -12,7 +13,7 @@ import BillList from './billLists.jsx'
     tableActive: store.tables.tableActive
   }
 })
-export default class TableBills extends React.Component {
+class TableBills extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'PRESALE_PANEL_MOUNTED', payload: ''})
@@ -33,6 +34,10 @@ export default class TableBills extends React.Component {
 
   openNewBill() {
     this.props.dispatch({type: 'SHOW_NEW_BILL_PANEL', payload: ''})
+  }
+
+  goToTables() {
+
   }
 
   // Main Layout
@@ -61,3 +66,6 @@ export default class TableBills extends React.Component {
   }
 
 }
+
+// EXPORT THE CLASS WITH ROUTER
+export default withRouter(TableBills)

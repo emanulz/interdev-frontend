@@ -15,12 +15,13 @@ import {productSearchDoubleClick} from '../../sales/general/search/actions.js'
 import {loadPresale} from './actions.js'
 import {getFullClientById} from '../../sales/general/clients/actions.js'
 import alertify from 'alertifyjs'
+import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
   }
 })
-export default class Sale extends React.Component {
+class Presale extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
@@ -126,3 +127,6 @@ export default class Sale extends React.Component {
   }
 
 }
+
+// EXPORT THE CLASS WITH ROUTER
+export default withRouter(Presale)

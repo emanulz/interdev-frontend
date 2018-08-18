@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
 import {updatePresale} from './actions.js'
 import alertify from 'alertifyjs'
 import {loadPresaleItem} from '../actions.js'
+import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
@@ -23,7 +24,7 @@ import {loadPresaleItem} from '../actions.js'
     presaleActiveId: store.presale.presaleActiveId
   }
 })
-export default class Main extends React.Component {
+class Content extends React.Component {
 
   toggleWidth () {
     this.props.dispatch({type: 'TOGGLE_FULL_WIDTH', payload: ''})
@@ -75,6 +76,12 @@ export default class Main extends React.Component {
 
   }
 
+  goToTableBillList() {
+    const lookUp = this.props.location.pathname.split('/')
+    const table = lookUp[lookUp.length - 2]
+    this.props.history.push(`/restaurant/${table}`)
+  }
+
   // Main Layout
   render() {
     const contentClass = this.props.fullWidth ? 'sale-content fullWidth' : 'sale-content'
@@ -84,8 +91,12 @@ export default class Main extends React.Component {
 
     return <div className={contentClass}>
       <div className={buttonsClass} >
-        <button onClick={this.closePresale.bind(this)} >Cerrar</button>
-        <button onClick={this.savePresale.bind(this, false)} >Actualizar</button>
+        <button onClick={this.goToTableBillList.bind(this)} className='btn btn-primary' >
+          <i className='fa fa-chevron-left' />
+          Lista de Cuentas
+        </button>
+        <button onClick={this.closePresale.bind(this)} className='btn btn-success' >Cerrar <i className='fa fa-save' /></button>
+        <button onClick={this.savePresale.bind(this, false)} className='btn btn-success' >Actualizar <i className='fa fa-pencil' /></button>
       </div>
       <div className='sale-content-product' >
         <Product />
@@ -101,3 +112,5 @@ export default class Main extends React.Component {
   }
 
 }
+// EXPORT THE CLASS WITH ROUTER
+export default withRouter(Content)
