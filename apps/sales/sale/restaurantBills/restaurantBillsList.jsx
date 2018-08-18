@@ -1,14 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadPresale, getPendingPresales, setPresaleNull} from './actions.js'
-import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
+import {loadRestaurantBill, getPendingRestaurantBills, setRestaurantBillNull} from './actions.js'
+import {getFullClientById} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
-  return {presales: store.presales.presales, isVisible: store.presales.isVisible, extraClient: store.extras.client}
+  return {restaurantBills: store.restaurantBills.restaurantBills, isVisible: store.restaurantBills.isVisible}
 })
-export default class PresalesPanel extends React.Component {
+export default class RestaurantBillsPanel extends React.Component {
 
   componentWillMount() {
     const kwargs = {
@@ -20,15 +20,15 @@ export default class PresalesPanel extends React.Component {
       filter2: 'False',
       filterField3: 'is_null',
       filter3: 'False',
-      successType: 'FETCH_PRESALES_FULFILLED',
-      errorType: 'FETCH_PRESALES_REJECTED'
+      successType: 'FETCH_RESTAURANT_BILLS_FULFILLED',
+      errorType: 'FETCH_RESTAURANT_BILLS_REJECTED'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getPendingPresales(kwargs))
+    this.props.dispatch(getPendingRestaurantBills(kwargs))
   }
 
   hidePanel() {
-    this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+    this.props.dispatch({type: 'HIDE_RESTAURANT_BILLS_PANEL', payload: -1})
   }
 
   loadPresaleItem(id, ev) {
@@ -37,11 +37,11 @@ export default class PresalesPanel extends React.Component {
     const url = `/api/presales/${id}`
     const loadPromise = new Promise((resolve, reject) => {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      this.props.dispatch(loadPresale(url, resolve, reject))
+      this.props.dispatch(loadRestaurantBill(url, resolve, reject))
     })
     loadPromise.then((data) => {
       console.log(data)
-      this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+      this.props.dispatch({type: 'HIDE_RESTAURANT_BILLS_PANEL', payload: -1})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       data.cart = JSON.parse(data.cart)
       data.client = JSON.parse(data.client)
@@ -53,15 +53,16 @@ export default class PresalesPanel extends React.Component {
       getFullClientById(data.client.id, _this.props.dispatch)
       _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
+      _this.props.dispatch({type: 'SET_RESTAURANT_BILL_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
       _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
-      _this.props.dispatch({type: 'PRESALE_LOADED', payload: data.user})
+      _this.props.dispatch({type: 'RESTAURANT_BILL_LOADED', payload: data.user})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
       } else {
-        alertify.alert('ERROR', `Hubo un error al cargar la preventa, error: ${err}`)
+        alertify.alert('ERROR', `Hubo un error al cargar el apartado, error: ${err}`)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
@@ -70,7 +71,7 @@ export default class PresalesPanel extends React.Component {
   setNullSinglePresale(id, consecutive) {
     alertify.confirm(`ANULAR PREVENTA #${consecutive}`, `¿Desea Anular la Preventa #${consecutive}? Esta acción no se puede deshacer.`, function() {
       const reopenWOPromise = new Promise((resolve, reject) => {
-        setPresaleNull(id, resolve, reject)
+        setRestaurantBillNull(id, resolve, reject)
       })
       reopenWOPromise.then((data) => {
         alertify.alert('COMPLETADO', `Preventa Anulada correctamente`, function() { location.reload() })
@@ -89,49 +90,36 @@ export default class PresalesPanel extends React.Component {
   render() {
 
     const isVisible = (this.props.isVisible)
-      ? 'presales-panel is-visible'
-      : 'presales-panel'
+      ? 'restaurantBills-panel is-visible'
+      : 'restaurantBills-panel'
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
-    const presales = this.props.presales
+    const restaurantBills = this.props.restaurantBills
 
-    const itemsToRender = presales.map(presale => {
-
-      let extras = {
-        notes: '',
-        client: {
-          last_name: 'General',
-          name: 'Cliente',
-          email: ''
-        }
-      }
-      try {
-        extras = extras != null ? JSON.parse(presale.extras) : extras
-      } catch (err) {}
-      const clientName = determinClientName(presale.client, presale.client)
-      const clientLastName = determinClientLastName(presale.client, presale.client)
-      const presellerName = presale.user.first_name
-        ? `${presale.user.first_name} ${presale.user.last_name}`
-        : `${presale.user.username}`
-      return <tr key={presale.id}>
-        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, presale.id)} className='fa fa-download' /></td>
-        <td>{presale.consecutive}</td>
-        <td>{`${formatDateTimeAmPm(presale.created)}`}</td>
-        <td>{`${clientName} ${clientLastName}`}</td>
+    const itemsToRender = restaurantBills.map(restaurantBill => {
+      const presellerName = restaurantBill.user.first_name
+        ? `${restaurantBill.user.first_name} ${restaurantBill.user.last_name}`
+        : `${restaurantBill.user.username}`
+      return <tr key={restaurantBill.id}>
+        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, restaurantBill.id)} className='fa fa-download' /></td>
+        <td>{restaurantBill.consecutive}</td>
+        <td>{`${formatDateTimeAmPm(restaurantBill.created)}`}</td>
+        <td>{`${restaurantBill.client.name} ${restaurantBill.client.last_name}`}</td>
         <td>{presellerName}</td>
-        <td>₡ {parseFloat(presale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
-        <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, presale.id, presale.consecutive)} className='fa fa fa-trash' /></td>
+        <td>₡ {parseFloat(restaurantBill.cart.cartTotal).formatMoney(2, ',', '.')}</td>
+        <td className='loadRow'><i className='fa fa fa-trash' /></td>
+        {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, restaurantBill.id, restaurantBill.consecutive)} className='fa fa fa-trash' /></td> */}
       </tr>
     })
 
     return <div className={isVisible}>
-      <div className='presales-panel-header'>
-        PREVENTAS SIN FACTURAR
+      <div className='restaurantBills-panel-header'>
+        CUENTAS DE RESTAURANTE SIN FACTURAR
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
-      <div className='presales-panel-container'>
+      <div className='restaurantBills-panel-container'>
         <div className='col-xs-12'>
           <table className='table'>
             <thead>
@@ -142,7 +130,7 @@ export default class PresalesPanel extends React.Component {
                 <td>Cliente</td>
                 <td>Vendedor</td>
                 <td>Monto</td>
-                <td>Anular</td>
+                <td>Imprimir</td>
               </tr>
             </thead>
             <tbody>

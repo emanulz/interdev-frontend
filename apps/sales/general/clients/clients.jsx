@@ -4,7 +4,7 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
-import {userSelected, getFullClientByCode} from './actions'
+import {userSelected, getFullClientByCode, determinClientName, determinClientLastName, determinClientEmail} from './actions'
 // import {recalcCart} from '../../general/product/actions'
 const Mousetrap = require('mousetrap')
 
@@ -115,35 +115,35 @@ export default class Clients extends React.Component {
 
   }
 
-  determinClientName() {
-    if (this.props.clientSelected.client) {
-      if (this.props.clientSelected.client.code == '00') {
-        return this.props.extraClient.name
-      }
-      return this.props.clientSelected.client.name
-    }
-    return 'Cliente'
-  }
+  // determinClientName() {
+  //   if (this.props.clientSelected.client) {
+  //     if (this.props.clientSelected.client.code == '00') {
+  //       return this.props.extraClient.name
+  //     }
+  //     return this.props.clientSelected.client.name
+  //   }
+  //   return 'Cliente'
+  // }
 
-  determinClientLastName() {
-    if (this.props.clientSelected.client) {
-      if (this.props.clientSelected.client.code == '00') {
-        return this.props.extraClient.last_name
-      }
-      return this.props.clientSelected.client.last_name
-    }
-    return 'General'
-  }
+  // determinClientLastName() {
+  //   if (this.props.clientSelected.client) {
+  //     if (this.props.clientSelected.client.code == '00') {
+  //       return this.props.extraClient.last_name
+  //     }
+  //     return this.props.clientSelected.client.last_name
+  //   }
+  //   return 'General'
+  // }
 
-  determinClientEmail() {
-    if (this.props.clientSelected.client) {
-      if (this.props.clientSelected.client.code == '00') {
-        return this.props.extraClient.email
-      }
-      return this.props.clientSelected.client.email ? this.props.clientSelected.client.email : 'Sin Correo Registrado'
-    }
-    return 'Sin Correo Registrado'
-  }
+  // determinClientEmail() {
+  //   if (this.props.clientSelected.client) {
+  //     if (this.props.clientSelected.client.code == '00') {
+  //       return this.props.extraClient.email
+  //     }
+  //     return this.props.clientSelected.client.email ? this.props.clientSelected.client.email : 'Sin Correo Registrado'
+  //   }
+  //   return 'Sin Correo Registrado'
+  // }
 
   // Main Layout
   render() {
@@ -152,9 +152,9 @@ export default class Clients extends React.Component {
     // SELECT2 DATA
     // ********************************************************************
 
-    const clientName = this.determinClientName()
-    const clientLastName = this.determinClientLastName()
-    const clientEmail = this.determinClientEmail()
+    const clientName = determinClientName(this.props.clientSelected, this.props.extraClient)
+    const clientLastName = determinClientLastName(this.props.clientSelected, this.props.extraClient)
+    const clientEmail = determinClientEmail(this.props.clientSelected, this.props.extraClient)
 
     const clientNameInput = <input type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} />
     const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} />

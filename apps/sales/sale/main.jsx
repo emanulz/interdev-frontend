@@ -11,6 +11,7 @@ import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
 import Reserves from './reserves/reservesList.jsx'
+import RestaurantBills from './restaurantBills/restaurantBillsList.jsx'
 import WorkOrders from './workOrders/workOrdersList.jsx'
 import TodaySales from './todaySales/todaySales.jsx'
 import TaxExemptionPanel from './taxExemption/taxExemption.jsx'
@@ -68,6 +69,7 @@ export default class Sale extends React.Component {
       <ClientPanel />
       <WorkOrders />
       <TodaySales />
+      <RestaurantBills />
       <TaxExemptionPanel />
       <CashAdvancePanel />
       <ReprintInvoice />

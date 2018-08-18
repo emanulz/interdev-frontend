@@ -8,6 +8,7 @@ import Cart from '../../../sales/general/cart/cart.jsx'
 import {connect} from 'react-redux'
 import {updatePresale} from './actions.js'
 import alertify from 'alertifyjs'
+import {loadPresaleItem} from '../actions.js'
 
 @connect((store) => {
   return {
@@ -63,11 +64,12 @@ export default class Main extends React.Component {
 
     updatePromise.then((data) => {
       console.log(data)
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       alertify.alert('Completado', 'Orden Actualizada Correctamente')
+      loadPresaleItem(data.id, _this.props.dispatch)
     }).catch((err) => {
       console.log(err)
-      this.props.dispatch({type: 'FETCHING_DONE'})
+      _this.props.dispatch({type: 'FETCHING_DONE'})
       alertify.alert('ERROR', 'Error al actualizar la orden')
     })
 

@@ -157,3 +157,33 @@ export function getFullClientById(id, dispatch) {
     console.log(err)
   })
 }
+
+export function determinClientName(client, extraClient) {
+  if (client) {
+    if (client.code == '00') {
+      return extraClient.name
+    }
+    return client.name
+  }
+  return 'Cliente'
+}
+
+export function determinClientLastName(client, extraClient) {
+  if (client) {
+    if (client.code == '00') {
+      return extraClient.last_name
+    }
+    return client.last_name
+  }
+  return 'General'
+}
+
+export function determinClientEmail(client, extraClient) {
+  if (client) {
+    if (client.code == '00') {
+      return extraClient.email
+    }
+    return client.email ? client.email : 'Sin Correo Registrado'
+  }
+  return 'Sin Correo Registrado'
+}

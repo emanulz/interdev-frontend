@@ -10,7 +10,9 @@ import {connect} from 'react-redux'
     isWorkOrderLoaded: store.completed.isWorkOrderLoaded,
     isPresaleLoaded: store.completed.isPresaleLoaded,
     isReserveLoaded: store.completed.isReserveLoaded,
+    isRestaurantBillLoaded: store.completed.isRestaurantBillLoaded,
     useReserves: store.config.globalConf.useReserves,
+    useResrestaurant: store.config.globalConf.useRestaurant,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
   }
@@ -46,6 +48,10 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_CASH_ADVANCE_PANEL', payload: -1})
   }
 
+  showRestaurantBillsPanel() {
+    this.props.dispatch({type: 'SHOW_RESTAURANT_BILLS_PANEL', payload: -1})
+  }
+
   newSale() {
     // window.location.reload()
     window.location.href = '/sales'
@@ -55,9 +61,26 @@ export default class Buttons extends React.Component {
   // Main Layout
   render() {
 
+    const restaurantBillsBtn = this.props.useResrestaurant
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded}
+        onClick={this.showRestaurantBillsPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Cuentas Restaurante
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
     const reservesBtn = this.props.useReserves
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded}
         onClick={this.showReservesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -74,7 +97,7 @@ export default class Buttons extends React.Component {
 
     const workOrdersBtn = this.props.workshopAppInstalled
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded}
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
@@ -91,7 +114,7 @@ export default class Buttons extends React.Component {
 
     const cashAdvanceBtn = this.props.acceptCashAdvances
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded}
         onClick={this.showCashAdvancesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -160,6 +183,7 @@ export default class Buttons extends React.Component {
 
       {reservesBtn}
       {cashAdvanceBtn}
+      {restaurantBillsBtn}
 
       <button
         disabled={this.props.disabled}
@@ -202,7 +226,7 @@ export default class Buttons extends React.Component {
           'marginTop': '10px'
         }}
         className='btn btn-default buttons-payButton'>
-        Cobrar
+        Facturar
         <span>
           <i className='fa fa-credit-card' />
         </span>

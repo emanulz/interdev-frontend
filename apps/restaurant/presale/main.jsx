@@ -11,7 +11,7 @@ import PrintPresale from '../../../general/printPresale/printPresalePanel/printP
 import {loadGlobalConfig, getItemDispatch} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import Search from './search/search.jsx'
-import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../../sales/general/search/actions.js'
+import {productSearchDoubleClick} from '../../sales/general/search/actions.js'
 import {loadPresale} from './actions.js'
 import {getFullClientById} from '../../sales/general/clients/actions.js'
 import alertify from 'alertifyjs'

@@ -17,6 +17,7 @@ import extras from './general/extras/reducer.js'
 import config from './config/reducer.js'
 import presales from './sale/presales/reducer.js'
 import reserves from './sale/reserves/reducer.js'
+import restaurantBills from './sale/restaurantBills/reducer.js'
 import workOrders from './sale/workOrders/reducer.js'
 import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
 import search from '../../general/search/reducer.js'
@@ -55,6 +56,7 @@ export default combineReducers({
   cashAdvance,
   reprintInvoice,
   reserves,
+  restaurantBills,
   printCashAdvance,
   extras,
   userProfile,
