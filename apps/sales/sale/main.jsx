@@ -18,6 +18,7 @@ import TaxExemptionPanel from './taxExemption/taxExemption.jsx'
 import CashAdvancePanel from './cashAdvance/cashAdvance.jsx'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
 import PrintCashAdvance from '../../../general/printCashAdvance/printCashAdvancePanel/printCashAdvancePanel.jsx'
+import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
@@ -74,6 +75,7 @@ export default class Sale extends React.Component {
       <CashAdvancePanel />
       <ReprintInvoice />
       <PrintCashAdvance />
+      <PrintPresale />
 
     </div>
 

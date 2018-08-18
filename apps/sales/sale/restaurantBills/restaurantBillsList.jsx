@@ -4,6 +4,7 @@ import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadRestaurantBill, getPendingRestaurantBills, setRestaurantBillNull} from './actions.js'
 import {getFullClientById} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
+import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 
 @connect((store) => {
   return {restaurantBills: store.restaurantBills.restaurantBills, isVisible: store.restaurantBills.isVisible}
@@ -87,6 +88,10 @@ export default class RestaurantBillsPanel extends React.Component {
     })
   }
 
+  printPresale(id) {
+    this.props.dispatch(loadPresaleToPrint(id))
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
@@ -109,7 +114,7 @@ export default class RestaurantBillsPanel extends React.Component {
         <td>{`${restaurantBill.client.name} ${restaurantBill.client.last_name}`}</td>
         <td>{presellerName}</td>
         <td>₡ {parseFloat(restaurantBill.cart.cartTotal).formatMoney(2, ',', '.')}</td>
-        <td className='loadRow'><i className='fa fa fa-trash' /></td>
+        <td className='loadRow'><i className='fa fa-print' onClick={this.printPresale.bind(this, restaurantBill.consecutive)} /></td>
         {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, restaurantBill.id, restaurantBill.consecutive)} className='fa fa fa-trash' /></td> */}
       </tr>
     })

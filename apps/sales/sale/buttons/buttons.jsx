@@ -12,6 +12,7 @@ import {connect} from 'react-redux'
     isReserveLoaded: store.completed.isReserveLoaded,
     isRestaurantBillLoaded: store.completed.isRestaurantBillLoaded,
     useReserves: store.config.globalConf.useReserves,
+    usePresales: store.config.globalConf.usePresales,
     useResrestaurant: store.config.globalConf.useRestaurant,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
@@ -60,6 +61,23 @@ export default class Buttons extends React.Component {
 
   // Main Layout
   render() {
+
+    const presalesBtn = this.props.usePresales
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        onClick={this.showPresalesPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Pre-Ventas
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
 
     const restaurantBillsBtn = this.props.useResrestaurant
       ? <button
@@ -166,21 +184,7 @@ export default class Buttons extends React.Component {
         <b>Pago:<br /></b>
       </span> */}
 
-      <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
-        onClick={this.showPresalesPanel.bind(this)}
-        style={{
-          'height': '48px',
-          'width': '49%',
-          'marginTop': '10px'
-        }}
-        className='btn btn-default buttons-payButton'>
-        Pre-Ventas
-        <span>
-          <i className='fa fa-list' />
-        </span>
-      </button>
-
+      {presalesBtn}
       {reservesBtn}
       {cashAdvanceBtn}
       {restaurantBillsBtn}
