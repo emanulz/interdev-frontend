@@ -37,7 +37,7 @@ class TableBills extends React.Component {
   }
 
   goToTables() {
-
+    this.props.history.push(`/restaurant`)
   }
 
   // Main Layout
@@ -46,6 +46,12 @@ class TableBills extends React.Component {
     const tableName = tableSelected ? tableSelected.indentifier : ''
     return <div className='table-bills'>
       <div className='table-bills-header'>
+        <div className='table-bills-header-add'>
+          <button className='table-bills-header-add-btn btn btn-primary' onClick={this.goToTables.bind(this)}>
+            <i className='fa fa-chevron-left' />
+            Mesas
+          </button>
+        </div>
         <div className='table-bills-header-details'>
           Mesa: {tableName}
         </div>
