@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadReserve, getPendingReserves, setReserveNull} from './actions.js'
-import {getFullClientById} from '../../general/clients/actions.js'
+import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
@@ -99,6 +99,19 @@ export default class PresalesPanel extends React.Component {
     const reserves = this.props.reserves
 
     const itemsToRender = reserves.map(reserve => {
+      let extras = {
+        notes: '',
+        client: {
+          last_name: 'General',
+          name: 'Cliente',
+          email: ''
+        }
+      }
+      try {
+        extras = reserve.extras ? JSON.parse(reserve.extras) : extras
+      } catch (err) { console.log('ERROR PARSE', err) }
+      const clientName = determinClientName(reserve.client, extras.client)
+      const clientLastName = determinClientLastName(reserve.client, extras.client)
       const presellerName = reserve.user.first_name
         ? `${reserve.user.first_name} ${reserve.user.last_name}`
         : `${reserve.user.username}`
@@ -106,7 +119,7 @@ export default class PresalesPanel extends React.Component {
         <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, reserve.id)} className='fa fa-download' /></td>
         <td>{reserve.consecutive}</td>
         <td>{`${formatDateTimeAmPm(reserve.created)}`}</td>
-        <td>{`${reserve.client.name} ${reserve.client.last_name}`}</td>
+        <td>{`${clientName} ${clientLastName}`}</td>
         <td>{presellerName}</td>
         <td>₡ {parseFloat(reserve.cart.cartTotal).formatMoney(2, ',', '.')}</td>
         <td className='loadRow'><i className='fa fa fa-trash' /></td>

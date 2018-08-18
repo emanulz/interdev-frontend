@@ -159,6 +159,7 @@ export function getFullClientById(id, dispatch) {
 }
 
 export function determinClientName(client, extraClient) {
+  if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
       return extraClient.name
@@ -169,6 +170,7 @@ export function determinClientName(client, extraClient) {
 }
 
 export function determinClientLastName(client, extraClient) {
+  if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
       return extraClient.last_name
@@ -179,9 +181,10 @@ export function determinClientLastName(client, extraClient) {
 }
 
 export function determinClientEmail(client, extraClient) {
+  if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
-      return extraClient.email
+      return extraClient.email ? extraClient.email : 'Sin Correo Registrado'
     }
     return client.email ? client.email : 'Sin Correo Registrado'
   }

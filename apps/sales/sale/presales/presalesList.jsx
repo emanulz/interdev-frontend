@@ -98,7 +98,6 @@ export default class PresalesPanel extends React.Component {
     const presales = this.props.presales
 
     const itemsToRender = presales.map(presale => {
-
       let extras = {
         notes: '',
         client: {
@@ -108,10 +107,10 @@ export default class PresalesPanel extends React.Component {
         }
       }
       try {
-        extras = extras != null ? JSON.parse(presale.extras) : extras
-      } catch (err) {}
-      const clientName = determinClientName(presale.client, presale.client)
-      const clientLastName = determinClientLastName(presale.client, presale.client)
+        extras = presale.extras ? JSON.parse(presale.extras) : extras
+      } catch (err) { console.log('ERROR PARSE', err) }
+      const clientName = determinClientName(presale.client, extras.client)
+      const clientLastName = determinClientLastName(presale.client, extras.client)
       const presellerName = presale.user.first_name
         ? `${presale.user.first_name} ${presale.user.last_name}`
         : `${presale.user.username}`
