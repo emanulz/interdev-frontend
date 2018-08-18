@@ -67,6 +67,7 @@ export default class Main extends React.Component {
       alertify.alert('Completado', 'Orden Actualizada Correctamente')
     }).catch((err) => {
       console.log(err)
+      this.props.dispatch({type: 'FETCHING_DONE'})
       alertify.alert('ERROR', 'Error al actualizar la orden')
     })
 
