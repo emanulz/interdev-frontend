@@ -24,6 +24,15 @@ export default function reducer(state = stateConst, action) {
 
     } // case
 
+    case 'CLEAR_TABLE_BILLS':
+    {
+      return {
+        ...state,
+        tableBills: []
+      }
+
+    } // case
+
   }
 
   return state // default return

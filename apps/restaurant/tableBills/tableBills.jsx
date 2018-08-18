@@ -5,17 +5,18 @@ import React from 'react'
 import {connect} from 'react-redux'
 import NewBillPanel from './newBill/newBillPanel.jsx'
 import {getItemDispatch} from './actions.js'
-
+import BillList from './billLists.jsx'
 @connect((store) => {
   return {
     tables: store.tables.tables,
     tableActive: store.tables.tableActive
   }
 })
-export default class Sale extends React.Component {
+export default class TableBills extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'PRESALE_PANEL_MOUNTED', payload: ''})
+    this.props.dispatch({type: 'CLEAR_TABLE_BILLS', payload: ''})
     const tableId = this.props.location.pathname.split('/').pop()
     if (tableId) {
       this.props.dispatch({type: 'SET_TABLE_ACTIVE', payload: tableId})
@@ -52,6 +53,8 @@ export default class Sale extends React.Component {
         </div>
 
       </div>
+      <BillList />
+
       <NewBillPanel />
     </div>
 
