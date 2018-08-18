@@ -54,7 +54,7 @@ export default class RestaurantBillsPanel extends React.Component {
       getFullClientById(data.client.id, _this.props.dispatch)
       _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
-      _this.props.dispatch({type: 'SET_RESTAURANT_BILL_ID', payload: data.id})
+      _this.props.dispatch({type: 'SET_RESERVE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
       _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
       _this.props.dispatch({type: 'RESTAURANT_BILL_LOADED', payload: data.user})
