@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
-import {loadCashAdvanceToPrint} from '../actions.js'
 
 @connect((store) => {
   return {

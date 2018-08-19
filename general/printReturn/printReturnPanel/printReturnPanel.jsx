@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {loadGlobalConfig} from '../../../utils/api.js'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 
@@ -11,10 +10,6 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
   }
 })
 export default class ReprintInvoicePanel extends React.Component {
-
-  componentWillMount () {
-    this.props.dispatch(loadGlobalConfig('company', false, 'SET_PRINT_RETURN_COMPANY', 'CLEAR_PRINT_RETURN_COMPANY'))
-  }
 
   hidePanel() {
 
@@ -50,7 +45,7 @@ export default class ReprintInvoicePanel extends React.Component {
       <div className={'print-return-panel-main' + isFullClass}>
         <div className='print-return-panel-header'>
           <div>
-            Factura de Venta
+            Recibo por devolución
           </div>
           <div>
             <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />

@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import routes from './routes'
-
+import UserProfile from '../../../general/userProfile/userProfile.jsx'
 // COMPONENTS
 
 import TopBar from '../layout/topBar/topBar.jsx'
@@ -35,6 +35,7 @@ export default class Main extends React.Component {
     const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer' : 'mainContainer sideHidden'
     const content = <Router>
       <div>
+        <UserProfile />
         <SideMenu />
         <div id='mainContainer' className={mainContainerClass}>
           <TopBar />

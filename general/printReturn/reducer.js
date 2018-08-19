@@ -1,10 +1,9 @@
 const stateConst = {
-  isVisible: false,
+  isVisible: true,
   isFull: false,
   return_object: {},
   credit_note: {},
-  voucher: {},
-  company: {}
+  voucher: {}
 }
 
 export default function reducer(state = stateConst, action) {
