@@ -1,28 +1,51 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
+import {determinClientName, determinClientLastName} from '../../../../apps/sales/general/clients/actions.js'
 
 @connect((store) => {
-  return {sale: store.sales.saleActive}
+  return {
+    sale: store.printPresale.presale,
+    presale: store.printPresale.presale
+  }
 })
 export default class Data extends React.Component {
 
   render() {
 
     const sale = this.props.sale
-    const date = sale.created
-      ? `${('0' + sale.created.getDate()).slice(-2)}/
-      ${('0' + (sale.created.getMonth() + 1)).slice(-2)}/
-      ${sale.created.getFullYear()}`
-      : '01/01/1970'
-    const client = sale.client ? `${sale.client.code} - ${sale.client.name} ${sale.client.last_name}` : '00 - Cliente de Contado'
-    const clientAdress = sale.client.adress
-      ? <tr>
-        <td className='reprint-clientAdress'>DIRECCIÓN: {sale.client.adress}</td>
-      </tr>
-      : <tr />
-    const id = sale.consecutive ? sale.consecutive : '00001'
+    const presale = this.props.presale
+    const presaleUser = Object.keys(presale).length > 0 ? presale.user : ''
 
-    return <div className='reprint-full-invoice-data'>
+    const date = sale.created
+      ? `${formatDateTimeAmPm(sale.created)}`
+      : `${formatDateTimeAmPm(new Date())}`
+
+    const presellerName = presaleUser.first_name
+      ? `${presaleUser.first_name} ${presaleUser.last_name}`
+      : presaleUser.length ? `${presaleUser.username}` : ''
+
+    const id = sale.consecutive ? sale.consecutive : '0001'
+
+    const seller = Object.keys(presaleUser).length !== 0
+      ? presellerName
+      : 'Cajero Predeterminado'
+
+    // DETERMIN THE NAME AND LASTNAME OF CLIENT BASED ON CLIENT CODE ANS EXTRAS
+    let extras = {
+      notes: '',
+      client: {
+        last_name: 'General',
+        name: 'Cliente',
+        email: ''
+      }
+    }
+    try {
+      extras = presale.extras ? JSON.parse(presale.extras) : extras
+    } catch (err) { console.log('ERROR PARSE', err) }
+    const client = presale.client ? `${presale.client.code} - ${determinClientName(presale.client, extras.client)} ${determinClientLastName(presale.client, extras.client)}` : '00 - Cliente General'
+
+    return <div className='reprint-full-presale-data'>
 
       <table className='client-table'>
         <thead>
@@ -34,7 +57,6 @@ export default class Data extends React.Component {
           <tr>
             <td>{client}</td>
           </tr>
-          {clientAdress}
         </tbody>
 
       </table>

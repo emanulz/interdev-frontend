@@ -3,52 +3,80 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.sales.saleActive,
-    company: store.config.company
+    presale: store.printPresale.presale,
+    userProfile: store.userProfile
   }
 })
 export default class Header extends React.Component {
 
   render() {
-    // Credit or cash
-    const headertext = this.props.sale.pay.payMethod == 'CREDIT' ? 'Factura de crédito' : 'Factura de contado'
-    // LOGO
-    const logo = this.props.company.logo || ''
-    const logoWidth = this.props.company.logoWidth || '130px'
-    const logoUrl = `/media/logos/${logo}`
+    let wasReserve = false
+    try {
+      wasReserve = this.props.presale.presale_type == 'RESERVE'
+    } catch (err) {}
+    let wasQuoting = false
+    try {
+      wasQuoting = this.props.presale.presale_type == 'QUOTING'
+    } catch (err) {}
+
+    let wasRestaurant = false
+    try {
+      wasRestaurant = this.props.presale.presale_type == 'RESTAURANT'
+    } catch (err) {}
+
+    const headertext = wasReserve ? 'Recibo' : wasQuoting ? 'Factura Proforma' : wasRestaurant ? 'Cuenta de restaurante' : 'Recibo de Preventa'
 
     // BILL DATA
-    const headerName = this.props.company.comercial_name || ''
-    const headerName2 = this.props.company.legal_name || ''
+    const profile = this.props.userProfile.profile
+    const tpLocals = this.props.userProfile.tp_locals
+    const taxPayer = this.props.userProfile.taxPayer
+    const activeLocal = profile.active_local_id
 
-    const tels = this.props.company.telephones || ''
+    let local = false
+    try {
+      local = tpLocals.find(local => {
+        return local.id == activeLocal
+      })
+    } catch (err) { console.log('LOCAL ERR', err) }
+    // COMERCIAL NAME
+    const headerName = local && local.name ? local.name : 'NOMBRE DEL LOCAL NO CONFIGURADO'
+
+    const headerName2 = taxPayer && taxPayer.legal_name ? taxPayer.legal_name : 'CONTRIBUYENTE NO CONFIGURADO'
+
+    const tels = local && local.phone_number ? local.phone_number : 'TELEFONO NO CONFIGURADO'
     const telsText = tels.split('/').length > 1 ? `Tels: ${tels}` : `Tel: ${tels}`
 
-    const idType = this.props.company.idType || 'PERSON'
-    const id = this.props.company.id || ''
-    const idText = idType == 'JURIDI' ? `Céd Jurid No ${id}` : `Céd No ${id}`
+    const address1 = local && local.long_address ? local.long_address : 'DIRECCION 1 NO CONFIGURADA'
+    const address2 = local && local.receipt_address ? local.receipt_address : 'DIRECCION 2 NO CONFIGURADA'
+
+    const email = local && local.email ? local.email : ''
+    const emailTag = email ? <h3>{email}</h3> : ''
+
+    // LOGO
+    const logo = local && local.logo_name ? local.logo_name : 'logoInterdev.png'
+    const logoWidth = local && local.logo_width ? local.logo_width : '130px'
+    const logoUrl = `/media/logos/${logo}`
 
     return <div>
 
-      <div className='reprint-full-invoice-header'>
+      <div className='reprint-full-presale-header'>
 
-        <div className='reprint-full-invoice-header-logo'>
+        <div className='reprint-full-presale-header-logo'>
           <img style={{'width': `${logoWidth}`}} src={logoUrl} />
         </div>
-        <div className='reprint-full-invoice-header-info'>
+        <div className='reprint-full-presale-header-info'>
           <h2>{headerName.toUpperCase()}</h2>
           <h3>{headerName2}</h3>
-          <h3>{idText}</h3>
-          <h3>{this.props.company.address1 || ''}</h3>
-          <h3>{this.props.company.address2 || ''}</h3>
-          <h3>{this.props.company.country || ''}</h3>
+          <h3>{address1}</h3>
+          <h3>{address2}</h3>
+          <h3>Costa Rica</h3>
           <h3>{telsText}</h3>
-          <h3>{this.props.company.email || ''}</h3>
+          {emailTag}
         </div>
 
       </div>
 
-      <div className='reprint-full-invoice-separator'>
+      <div className='reprint-full-presale-separator'>
         <span />
 
         <h1>{headertext}</h1>

@@ -3,31 +3,30 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
+    presale: store.printPresale.presale
   }
 })
 export default class Notes extends React.Component {
 
-  getSingDiv(wasCredit) {
-    if (wasCredit) {
-      return <div className='print-compact-presale-notes-sing'>
-        <h1>Firma del Cliente:</h1>
-        <hr />
-      </div>
-    }
-  }
-
   render() {
-
-    let wasCredit = false
+    const presale = this.props.presale
+    let extras = {
+      notes: '',
+      client: {
+        last_name: 'General',
+        name: 'Cliente',
+        email: ''
+      }
+    }
     try {
-      wasCredit = this.props.sale.pay.cred[0].amount
-    } catch (err) {}
-    const sing = this.getSingDiv(wasCredit)
+      extras = presale.extras ? JSON.parse(presale.extras) : extras
+    } catch (err) { console.log('EXTRAS ERROR PARSE', err) }
+    const notes = extras.notes
+
     return <div className='print-compact-presale-notes'>
-      {sing}
       <h1>Notas:</h1>
       <div className='print-compact-presale-notes-content'>
-        <div>-</div>
+        <div>{notes}</div>
       </div>
 
     </div>

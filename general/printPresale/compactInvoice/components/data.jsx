@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
+import {determinClientName, determinClientLastName} from '../../../../apps/sales/general/clients/actions.js'
 
 @connect((store) => {
   return {
@@ -22,12 +23,27 @@ export default class Data extends React.Component {
     const presellerName = presaleUser.first_name
       ? `${presaleUser.first_name} ${presaleUser.last_name}`
       : presaleUser.length ? `${presaleUser.username}` : ''
-    const client = sale.client ? `${sale.client.code} - ${sale.client.name} ${sale.client.last_name}` : '00 - Cliente de Contado'
+
     const id = sale.consecutive ? sale.consecutive : '0001'
 
     const seller = Object.keys(presaleUser).length !== 0
       ? presellerName
       : 'Cajero Predeterminado'
+
+    // DETERMIN THE NAME AND LASTNAME OF CLIENT BASED ON CLIENT CODE ANS EXTRAS
+    let extras = {
+      notes: '',
+      client: {
+        last_name: 'General',
+        name: 'Cliente',
+        email: ''
+      }
+    }
+    try {
+      extras = presale.extras ? JSON.parse(presale.extras) : extras
+    } catch (err) { console.log('ERROR PARSE', err) }
+    const client = presale.client ? `${presale.client.code} - ${determinClientName(presale.client, extras.client)} ${determinClientLastName(presale.client, extras.client)}` : '00 - Cliente General'
+
     return <div className='print-compact-presale-data'>
 
       <table className='datenum-table'>

@@ -1,8 +1,7 @@
 const stateConst = {
-  isVisible: false,
+  isVisible: true,
   isFull: false,
-  presale: {},
-  company: {}
+  presale: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -62,22 +61,6 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         presale: {}
-      }
-    } // case
-
-    case 'SET_PRINT_PRESALE_COMPANY':
-    {
-      return {
-        ...state,
-        company: action.payload.data
-      }
-    } // case
-
-    case 'CLEAR_PRINT_PRESALE_COMPANY':
-    {
-      return {
-        ...state,
-        company: {}
       }
     } // case
 

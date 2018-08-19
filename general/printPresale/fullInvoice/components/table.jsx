@@ -2,17 +2,14 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {inCart: store.cart.cartItems, globalDiscount: store.cart.globalDiscount}
+  return {sale: store.printPresale.presale}
 })
 export default class Table extends React.Component {
 
   // Main Layout
   render() {
 
-    const cartItems = this.props.inCart
-    const globalDiscount = (this.props.globalDiscount)
-      ? <td className='right-in-table'>{this.props.globalDiscount}</td>
-      : <td style={{'display': 'none'}} >-</td>
+    const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
     const items = cartItems.length
       ? cartItems.map((item) => {
 
@@ -36,7 +33,6 @@ export default class Table extends React.Component {
           <td className='right-in-table'>
             {item.discount}
           </td>
-          {globalDiscount}
           <td className='right-in-table'>
             {taxesText}
           </td>
@@ -46,7 +42,7 @@ export default class Table extends React.Component {
         </tr>
       })
       : <tr>
-        <td>--</td>
+        <td>-</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
@@ -55,10 +51,7 @@ export default class Table extends React.Component {
         <td>-</td>
       </tr>
 
-    const globalDiscountRow = this.props.globalDiscount ? <th className='right-in-table'>Des2 %</th>
-      : <th style={{'display': 'none'}} >-</th>
-
-    return <table className='reprint-full-invoice-table table'>
+    return <table className='reprint-full-presale-table table'>
       <thead>
         <tr>
           <th>Código</th>
@@ -66,7 +59,6 @@ export default class Table extends React.Component {
           <th className='right-in-table'>Cantidad</th>
           <th className='right-in-table'>P.U</th>
           <th className='right-in-table'>Des%</th>
-          {globalDiscountRow}
           <th className='right-in-table'>IV</th>
           <th className='right-in-table'>Precio</th>
         </tr>

@@ -1,13 +1,34 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
+@connect((store) => {
+  return {
+    presale: store.printPresale.presale
+  }
+})
 export default class Notes extends React.Component {
 
   render() {
 
-    return <div className='reprint-full-invoice-notes'>
-      <h1>Notas:</h1>
+    const presale = this.props.presale
+    let extras = {
+      notes: '',
+      client: {
+        last_name: 'General',
+        name: 'Cliente',
+        email: ''
+      }
+    }
+    try {
+      extras = presale.extras ? JSON.parse(presale.extras) : extras
+    } catch (err) { console.log('EXTRAS ERROR PARSE', err) }
+    const notes = extras.notes
 
-      <div>Factura autorizada mediante la resolucion N1197 del 12/08/1997 del DGDT.</div>
+    return <div className='reprint-full-presale-notes'>
+      <h1>Notas:</h1>
+      <div className='print-full-presale-notes-content'>
+        <div>{notes}</div>
+      </div>
 
     </div>
 
