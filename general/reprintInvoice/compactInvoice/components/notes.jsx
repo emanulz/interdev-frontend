@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.sales.saleActive
+    sale: store.reprintInvoice.sale
   }
 })
 export default class Notes extends React.Component {
@@ -18,16 +18,29 @@ export default class Notes extends React.Component {
   }
 
   render() {
-
+    const sale = this.props.sale
     let wasCredit = false
     try {
       wasCredit = this.props.sale.pay.cred[0].amount
     } catch (err) {}
     const sing = this.getSingDiv(wasCredit)
+    let extras = {
+      notes: '',
+      client: {
+        last_name: 'General',
+        name: 'Cliente',
+        email: ''
+      }
+    }
+    try {
+      extras = sale.extras ? JSON.parse(sale.extras) : extras
+    } catch (err) { console.log('EXTRAS ERROR PARSE', err) }
+    const notes = extras.notes
     return <div className='reprint-compact-invoice-notes'>
       {sing}
       <h1>Notas:</h1>
       <div className='reprint-compact-invoice-notes-content'>
+        <div>{notes}</div>
         <div>Factura autorizada mediante la resolucion N1197 del 12/08/1997 del DGDT.</div>
       </div>
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {loadGlobalConfig} from '../../../utils/api.js'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 
@@ -11,10 +10,6 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
   }
 })
 export default class ReprintInvoicePanel extends React.Component {
-
-  componentWillMount () {
-    this.props.dispatch(loadGlobalConfig('company', false, 'SET_REPRINT_INVOICE_COMPANY', 'CLEAR_REPRINT_INVOICE_COMPANY'))
-  }
 
   hidePanel() {
 
