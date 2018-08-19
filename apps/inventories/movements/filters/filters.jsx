@@ -104,7 +104,7 @@ export default class Filters extends React.Component {
       </div>
       <div className='inventories-filters-container'>
 
-        <input value={this.props.filterText} onChange={this.setFilterText.bind(this)} type='text'
+        {/* <input value={this.props.filterText} onChange={this.setFilterText.bind(this)} type='text'
           placeholder='Filtrar...' className='form-control' />
 
         <h4>Familia:</h4>
@@ -132,7 +132,7 @@ export default class Filters extends React.Component {
             placeholder: 'Elija una sub Familia...',
             noResultsText: 'Sin elementos'
           }}
-        />
+        /> */}
 
         <h4>Bodega:</h4>
         <Select2
