@@ -184,7 +184,7 @@ export function determinClientEmail(client, extraClient) {
   if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
-      return extraClient.email ? extraClient.email : 'Sin Correo Registrado'
+      return extraClient.email
     }
     return client.email ? client.email : 'Sin Correo Registrado'
   }

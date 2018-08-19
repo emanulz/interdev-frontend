@@ -7,7 +7,6 @@ import React from 'react'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import PayPanel from './pay/payPanel.jsx'
-import InvoicePanel from '../general/invoice/invoicePanel/invoicePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
 import Reserves from './reserves/reservesList.jsx'
@@ -64,7 +63,6 @@ export default class Sale extends React.Component {
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <PayPanel />
-      <InvoicePanel />
       <Presales />
       <Reserves />
       <ClientPanel />

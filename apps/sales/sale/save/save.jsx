@@ -3,6 +3,7 @@ import React from 'react'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
+import {loadSaleToReprint} from '../../../../general/reprintInvoice/actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -72,7 +73,7 @@ export default class SaveBtn extends React.Component {
     updatePromise.then((data) => {
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+      this.props.dispatch(loadSaleToReprint(data.consecutive))
       this.props.dispatch({type: 'SET_SALE', payload: data})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       Mousetrap.reset()

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.reprintInvoice.sale,
+    sale: store.sales.saleActive,
     userProfile: store.userProfile
   }
 })
@@ -43,27 +43,22 @@ export default class Header extends React.Component {
     const address1 = local && local.long_address ? local.long_address : 'DIRECCION 1 NO CONFIGURADA'
     const address2 = local && local.receipt_address ? local.receipt_address : 'DIRECCION 2 NO CONFIGURADA'
 
-    const email = local && local.email ? local.email : ''
-    const emailTag = email ? <h3>{email}</h3> : ''
-
     return <div>
 
-      <div className='reprint-compact-invoice-header'>
+      <div className='compact-invoice-header'>
 
-        <div className='reprint-compact-invoice-header-info'>
-          <h2>{headerName.toUpperCase()}</h2>
+        <div className='compact-invoice-header-info'>
+          <h2>{headerName}</h2>
           <h3>{headerName2}</h3>
           <h3>{idText}</h3>
           <h3>{address1}</h3>
           <h3>{address2}</h3>
-          <h3>Costa Rica</h3>
           <h3>{telsText}</h3>
-          {emailTag}
         </div>
 
       </div>
 
-      <div className='reprint-compact-invoice-separator'>
+      <div className='compact-invoice-separator'>
         <span />
 
         <h1>{headertext}</h1>

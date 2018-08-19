@@ -1,7 +1,7 @@
 const stateConst = {
   profile: {},
   taxPayer: {},
-  tp_locals: {}
+  tp_locals: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -24,7 +24,7 @@ export default function reducer(state = stateConst, action) {
         ...state,
         profile: {},
         taxPayer: {},
-        tp_locals: {}
+        tp_locals: []
       }
     } // case
 

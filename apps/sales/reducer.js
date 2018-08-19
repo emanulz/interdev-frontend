@@ -11,7 +11,6 @@ import messages from './messages/reducer.js'
 import searchClients from './general/search/clients/reducer.js'
 import searchProducts from './general/search/products/reducer.js'
 import pay from './sale/pay/reducer.js'
-import invoice from './general/invoice/reducer.js'
 import sales from './general/sales/reducer.js'
 import extras from './general/extras/reducer.js'
 import config from './config/reducer.js'
@@ -43,7 +42,6 @@ export default combineReducers({
   searchClients,
   searchProducts,
   pay,
-  invoice,
   sales,
   config,
   presales,
