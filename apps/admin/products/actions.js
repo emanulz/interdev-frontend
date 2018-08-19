@@ -6,11 +6,6 @@ import alertify from 'alertifyjs'
 export function checkProductData(product, products) {
   let Ok = true
 
-  if (product.code == '') {
-    alertify.alert('Error', 'Debe especificar el código del Producto')
-    return false
-  }
-
   if (product.name == '') {
     alertify.alert('Error', 'Debe especificar el nombre del Producto')
     return false
