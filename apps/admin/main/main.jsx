@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile, fecthIsAdminLocked} from './actions'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
+import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
 // COMPONENTS
 
@@ -38,6 +39,7 @@ export default class Main extends React.Component {
 
     const unlocked = <Router>
       <div>
+        <UserProfile />
         <SideMenu />
         <div id='mainContainer' className='blur-div mainContainer'>
           <TopBar />

@@ -18,6 +18,7 @@ import search from '../../general/search/reducer.js'
 import completed from '../sales/general/completed/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
+import userProfile from '../../general/userProfile/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -38,5 +39,6 @@ export default combineReducers({
   clientSearch: search('clientSearch'),
   completed,
   printPresale,
-  extras
+  extras,
+  userProfile
 })

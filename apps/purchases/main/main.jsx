@@ -5,6 +5,7 @@ import {fetchProfile} from './actions'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fetchGlobalPreferences} from './actions.js'
 import {productSearchDoubleClick} from '../general/product/actions.js'
+import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
 //components
 import TopBar from '../layout/topBar/topBar.jsx'
@@ -34,6 +35,7 @@ export default class Main extends React.Component {
         const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer': 'mainContainer sideHidden'
         const content = <Router>
             <div>
+                <UserProfile />
                 <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind({cartItems: this.props.cartItems})} />
                 <SideMenu/>
 

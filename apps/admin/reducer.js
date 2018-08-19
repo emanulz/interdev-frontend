@@ -21,7 +21,7 @@ import clientCategories from './clientCategories/reducer.js'
 import sales from './sales/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 import generalReports from '../admin/reports/reducer.js'
-
+import userProfile from '../../general/userProfile/reducer.js'
 
 export default combineReducers({
   users,
@@ -44,5 +44,6 @@ export default combineReducers({
   clientCategories,
   sales,
   reprintInvoice,
-  generalReports
+  generalReports,
+  userProfile
 })

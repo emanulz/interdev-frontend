@@ -11,6 +11,7 @@ import invoice from './invoice/reducer.js'
 import config from './config/reducer'
 import pagination from '../../general/pagination/reducer.js'
 import search from '../../general/search/reducer.js'
+import userProfile from '../../general/userProfile/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -23,5 +24,6 @@ export default combineReducers({
   invoice,
   config,
   pagination,
-  receivableSearch: search('receivableSearch')
+  receivableSearch: search('receivableSearch'),
+  userProfile
 })

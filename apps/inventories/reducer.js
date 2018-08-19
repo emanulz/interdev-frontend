@@ -13,6 +13,7 @@ import search from '../../general/search/reducer.js'
 import physicalTake from './physicalTake/reducer.js'
 import takeMovements from './takeMovements/reducer.js'
 import checkTakeMovements from './checkTakeMovements/reducer.js'
+import userProfile from '../../general/userProfile/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -27,5 +28,6 @@ export default combineReducers({
   inventorySearch: search('inventorySearch'),
   physicalTake,
   takeMovements,
-  checkTakeMovements
+  checkTakeMovements,
+  userProfile
 })
