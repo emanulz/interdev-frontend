@@ -36,5 +36,4 @@ export default combineReducers({
     workorderSearch: search('workorderSearch'),
     pagination,
     userProfile
-
 })
