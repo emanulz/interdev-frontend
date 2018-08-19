@@ -57,7 +57,7 @@ export default class Header extends React.Component {
       <div className='print-compact-presale-header'>
 
         <div className='print-compact-presale-header-info'>
-          <h2>{headerName}</h2>
+          <h2>{headerName.toUpperCase()}</h2>
           <h3>{headerName2}</h3>
           <h3>{address1}</h3>
           <h3>{address2}</h3>

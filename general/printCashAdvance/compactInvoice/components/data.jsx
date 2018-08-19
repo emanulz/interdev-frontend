@@ -40,12 +40,10 @@ export default class Data extends React.Component {
           <tr>
             <th>Adel #:</th>
             <td>{consecutive}</td>
-
           </tr>
           <tr>
             <th>Vale #:</th>
             <td>{voucherConsecutive}</td>
-
           </tr>
           <tr>
             <th>Cliente:</th>
