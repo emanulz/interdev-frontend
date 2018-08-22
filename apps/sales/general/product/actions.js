@@ -120,8 +120,6 @@ export function productSelected(code, qty, product, itemsInCart, globalDiscount,
   if (perLineVal == false) {
     perLine = false
   }
-  console.log('PERLINEEE', perLineVal)
-  console.log('PERLINEEE', perLine)
 
   // FILTER CART LOOKING FOR SAME ITEMS
   const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
@@ -405,6 +403,7 @@ function updatedCartItem(itemsInCart, index, newQty, productDiscount, globalDisc
 export function setProduct(kwargs, resolve, reject) {
   const lookUpValue = kwargs.lookUpValue
   const lookUpField = kwargs.lookUpField
+  const lookUpField2 = kwargs.lookUpField2
   const url = kwargs.url
 
   axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
@@ -420,8 +419,28 @@ export function setProduct(kwargs, resolve, reject) {
       resolve(response.data)
 
     } else {
-      alertify.alert('Error', `No hay ${kwargs.modelName} con el valor de ${kwargs.lookUpName}: ${kwargs.lookUpValue}`)
-      reject()
+      // TEMPORARY FIX O AGAIN TO BACKEND TO SEARCH BY BARCODE
+      axios.get(`${url}?${lookUpField2}=${lookUpValue}`).then(function(response) {
+        if (response.data.count) {
+          // IF THERE IS MORE THAN ONE ELEMENT FILTERED
+          if (response.data.count > 1) {
+            alertify.alert('ATENCIÓN', `Existe mas de un ${kwargs.modelName} con el ${kwargs.lookUpName}:
+            ${kwargs.lookUpValue}, se utilizará el primero en lista, por lo que puede no ser el mismo que ud desea
+            actualizar, esto puede deberse a un error, por favor revise los
+            datos o contacte con el administrador del sistema.`)
+          }
+          resolve(response.data)
+        } else {
+          alertify.alert('Error', `No hay ${kwargs.modelName} con el valor de ${kwargs.lookUpName2}: ${kwargs.lookUpValue}`)
+          reject()
+        }
+
+      }).catch(function(error) {
+        alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+        administrador del sistema con el siguiete error: ${error}`)
+        reject()
+      })
+
     }
 
   }).catch(function(error) {

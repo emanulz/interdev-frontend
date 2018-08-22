@@ -38,7 +38,7 @@ export default class Header extends React.Component {
     const telsText = tels.split('/').length > 1 ? `Tels: ${tels}` : `Tel: ${tels}`
 
     const idType = taxPayer ? taxPayer.id_type : '01'
-    const id = taxPayer && taxPayer.id ? taxPayer.id : 'IDENTIFICACION NO CONFIGURADA'
+    const id = taxPayer && taxPayer.id_number ? taxPayer.id_number : 'IDENTIFICACION NO CONFIGURADA'
     const idText = idType == '02' ? `Céd Jurid No ${id}` : `Céd No ${id}`
 
     const address1 = local && local.long_address ? local.long_address : 'DIRECCION 1 NO CONFIGURADA'

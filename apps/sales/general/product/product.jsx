@@ -85,13 +85,16 @@ export default class Product extends React.Component {
         const setProductPromise = new Promise((resolve, reject) => {
           const kwargs = {
             lookUpField: 'code',
+            lookUpField2: 'barcode',
             url: '/api/productslist/',
             lookUpValue: code,
             lookUpName: 'código',
+            lookUpName2: 'Código de Barras',
             modelName: 'Productos',
             qty: qty
           }
-          // _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
           setProduct(kwargs, resolve, reject)
         })
 

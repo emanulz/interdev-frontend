@@ -209,7 +209,6 @@ export function getItemDoubleDispatch(kwargs) {
       }
     })
   }
-
 }
 
 export function getItemReturn(kwargs) {
@@ -223,7 +222,6 @@ export function getItemReturn(kwargs) {
     administrador del sistema con el siguiete error: ${error}`)
     return error
   })
-
 }
 
 // ------------------------------------------------------------------------------------------
