@@ -8,6 +8,7 @@ import {fecthProfile} from './actions'
 import routes from './routes'
 import SingleProduct from '../../sales/general/product/singleProduct.jsx'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
+import GeneralItem from '../../sales/general/product/generalItem/generalItem.jsx'
 
 // COMPONENTS
 
@@ -44,6 +45,7 @@ export default class Main extends React.Component {
             {routes}
             {fetching}
             <SingleProduct />
+            <GeneralItem />
           </div>
         </div>
       </div>
