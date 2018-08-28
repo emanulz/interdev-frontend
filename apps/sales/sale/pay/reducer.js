@@ -115,14 +115,14 @@ export default function reducer(state = stateConst, action) {
     case 'UPDATE_TRANSFER_BANK':
     {
       const newState = {...state}
-      newState.payObject.card[0].bank = action.payload
+      newState.payObject.tran[0].bank = action.payload
       return newState
     }
 
     case 'UPDATE_TRANSFER_NUMBER':
     {
       const newState = {...state}
-      newState.payObject.card[0].transferNumber = action.payload
+      newState.payObject.tran[0].transferNumber = action.payload
       return newState
     }
 
