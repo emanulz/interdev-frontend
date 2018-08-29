@@ -59,7 +59,7 @@ export default class SideMenu extends React.Component {
         class: 'fa-outdent',
         href: '/admin/invoicing/debitnotes'
       }, {
-        text: 'Compras Electrónicas',
+        text: 'Aceptar Compras',
         class: 'fa-upload',
         href: '/admin/invoicing/purchases'
       }, {

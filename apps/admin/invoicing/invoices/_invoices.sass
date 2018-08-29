@@ -1,0 +1,87 @@
+.accept-purchase
+  & label
+    font-size: 20px
+  & input
+    height: 70px
+    width: 80%
+  & .form-group
+    display: flex
+    flex-flow: row
+    width: 100%
+    padding-top: 40px
+    &-content
+      width: 100%
+      display: flex
+      flex-flow: column
+      & .uploadButton
+        margin-top: 20px
+        width: 300px
+        height: 40px
+        font-size: 18px
+.viewInvoice
+  font-family: 'Source Sans Pro', sans-serif
+  display: flex
+  flex-flow: column
+  width: 100%
+  padding-top: 40px
+  & h1
+      font-weight: bold
+  &-cantBe
+    margin: 20px 0
+  &-data
+    margin: 20px 0
+    display: flex
+    flex-flow: row
+    justify-content: space-between
+    &-emitter
+      padding: 20px
+      height: 100%
+      border: 1px solid #cacaca
+      min-width: 380px
+      border-radius: 5px
+    &-receiver
+      min-width: 380px
+      padding: 20px
+      height: 100%
+      border: 1px solid #cacaca
+      border-radius: 5px
+  &-body
+    display: flex
+    flex-flow: column
+    width: 100%
+    margin-top: 20px
+    margin-bottom: 40px
+    &-item
+      display: flex
+      flex-flow: row
+      width: 100%
+      justify-content: space-between
+      padding: 5px 20px
+    &-header
+      padding: 0 20px
+      display: flex
+      flex-flow: row
+      width: 100%
+      justify-content: space-between
+      height: 40px
+      color: white
+      background-color: $PRIMARY-COLOR
+      line-height: 40px
+
+  &-totals
+    display: flex
+    flex-flow: row
+    justify-content: flex-end
+    &-table
+      padding: 20px
+      border: 1px solid #cacaca
+      border-radius: 5px
+      width: 380px
+  &-buttons
+    display: flex
+    flex-flow: row
+    justify-content: space-between
+    & button
+      width: 380px
+      height: 60px
+

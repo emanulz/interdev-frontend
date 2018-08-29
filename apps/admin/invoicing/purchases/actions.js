@@ -28,7 +28,6 @@ export function uploadEPurchase(kwargs) {
       data: item
     })
       .then((response) => {
-        alertify.alert('Completado', kwargs.sucessMessage)
         console.log(response.data)
         dispatch({type: 'SET_EPURCHASE', payload: response.data})
         dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -63,7 +62,7 @@ export function acceptEPurchase(kwargs) {
       data: item
     })
       .then((response) => {
-        alertify.alert('Completado', kwargs.sucessMessage)
+        alertify.alert('PROCESO INICIADO', kwargs.sucessMessage)
         console.log(response.data)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {

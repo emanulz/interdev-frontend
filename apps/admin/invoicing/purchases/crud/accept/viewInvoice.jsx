@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {acceptEPurchase} from '../../actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -27,22 +28,48 @@ class Form extends React.Component {
       sucessMessage: 'Proceso de aceptación iniciado correctamente.',
       errorMessage: 'Hubo un error al aceptar la compra, intente de nuevo.'
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(acceptEPurchase(kwargs))
+    // ALERTIFY CONFIRM
+    const _this = this
+    alertify.confirm('Aceptar', `¿Desea aceptar esta factura ante hacienda? Esta acción no se puede deshacer.`, function() {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch(acceptEPurchase(kwargs))
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Aceptar',
+      cancel: 'Cancelar'
+    })
   }
 
   rejectInvoice() {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
     formData.append('taxpayer_response', 'REJECTED')
-    const kwargs = {
-      url: '/api/facturareception/processHaciendaXML/',
-      item: formData,
-      sucessMessage: 'Proceso de rechazo iniciado correctamente.',
-      errorMessage: 'Hubo un error al rechazar la compra, intente de nuevo.'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(acceptEPurchase(kwargs))
+    const _this = this
+    alertify.prompt('Rechazar', 'Ingrese la razón del rechazo', '',
+      function(evt, value) {
+        formData.append('reject_reason', value)
+        for (const val of formData.values()) {
+          console.log(val)
+        }
+        if (!value.length) {
+          alertify.alert('ERROR', 'Debe especificar una razón de rechazo.')
+          return true
+        }
+        if (value.length <= 79) {
+          const kwargs = {
+            url: '/api/facturareception/processHaciendaXML/',
+            item: formData,
+            sucessMessage: 'Proceso de rechazo iniciado correctamente.',
+            errorMessage: 'Hubo un error al rechazar la compra, intente de nuevo.'
+          }
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          _this.props.dispatch(acceptEPurchase(kwargs))
+        } else {
+          alertify.alert('ERROR', 'La razón del rechazo debe ser menor a 80 caracteres.')
+        }
+
+      }, function() { return true })
   }
 
   render() {

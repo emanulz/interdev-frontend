@@ -23,6 +23,7 @@ import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 import generalReports from '../admin/reports/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 import epurchases from './invoicing/purchases/reducer.js'
+import einvoices from './invoicing/invoices/reducer.js'
 
 export default combineReducers({
   users,
@@ -47,5 +48,6 @@ export default combineReducers({
   reprintInvoice,
   generalReports,
   userProfile,
-  epurchases
+  epurchases,
+  einvoices
 })
