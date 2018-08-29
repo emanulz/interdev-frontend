@@ -3,46 +3,41 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 
-export function checkClientData(client, clients) {
-  let Ok = true
+import axios from 'axios'
 
-  if (client.name == '') {
-    alertify.alert('Error', 'Debe especificar el nombre del Cliente')
-    return false
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
+// ------------------------------------------------------------------------------------------
+// UPLOAD FUNCTION
+// ------------------------------------------------------------------------------------------
+export function uploadEPurchase(kwargs) {
+  const item = kwargs.item
+  delete item['id']
+  const url = kwargs.url
+
+  return function(dispatch) {
+
+    axios({
+      method: 'post',
+      url: url,
+      data: item
+    })
+      .then((response) => {
+        alertify.alert('Completado', kwargs.sucessMessage)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+      }).catch((err) => {
+        console.log(err)
+        if (err.response) {
+          console.log(err.response.data)
+        }
+        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+      })
+
   }
-
-  if (client.max_discount > 100 || client.max_discount < 0) {
-    alertify.alert('Error', 'El descuento Máximo debe estar entre 0% y 100%')
-    return false
-  }
-
-  if (client.pred_discount > 100 || client.pred_discount < 0) {
-    alertify.alert('Error', 'El descuento Predeterminado debe estar entre 0% y 100%')
-    return false
-  }
-
-  if (client.pred_discount > client.max_discount) {
-    alertify.alert('Error', 'El descuento Predeterminado no puede ser mayor al descuento Máximo')
-    return false
-  }
-
-  // UNIQUE FIELDS
-  clients.forEach((clientData) => {
-    if (client.code == clientData.code) {
-      if (client.id != clientData.id) {
-        alertify.alert('Error', `El cliente ${clientData.name} ${clientData.last_name} ya posee el código ${clientData.code}`)
-        Ok = false
-        return false
-      }
-    }
-    if (client.id_num == clientData.id_num && clientData.id_num != '') {
-      if (client.id != clientData.id) {
-        alertify.alert('Error', `El cliente ${clientData.name} ${clientData.last_name} ya posee la identificación ${clientData.id_num}`)
-        Ok = false
-        return false
-      }
-    }
-  })
-
-  return Ok
 }

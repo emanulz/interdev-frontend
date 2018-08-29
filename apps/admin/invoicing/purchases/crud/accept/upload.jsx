@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { uploadEPurchase } from '../../actions.js'
 
 @connect((store) => {
   return {
@@ -71,6 +72,19 @@ class Form extends React.Component {
     reader.readAsDataURL(file)
   }
 
+  uploadFile() {
+    const formData = new FormData()
+    formData.append('file', this.props.purchaseToUpload)
+    const kwargs = {
+      url: '/api/facturareception/processHaciendaXML/',
+      item: formData,
+      sucessMessage: 'Compra Cargada Correctamente.',
+      errorMessage: 'Hubo un error al cargar la venta, intente de nuevo.'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(uploadEPurchase(kwargs))
+  }
+
   render() {
 
     return <div className='col-xs-12 row form-container'>
@@ -85,7 +99,7 @@ class Form extends React.Component {
             <label>CARGAR FACTURA</label>
             <input name='code' onChange={this.handleFileChange.bind(this)} type='file'
               className='form-control' />
-            <button className='btn btn-primary uploadButton'> Cargar </button>
+            <button onClick={this.uploadFile.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>
           </div>
         </div>
 

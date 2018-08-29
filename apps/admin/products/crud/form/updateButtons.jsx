@@ -47,7 +47,6 @@ class UpdateButtons extends React.Component {
       }
 
       const _this = this
-      console.log("HERE-->")
       const updatePromise = new Promise((resolve, reject) => {
         _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         const formData = new FormData()
