@@ -3,10 +3,8 @@
  */
 import React from 'react'
 import Upload from './accept/upload.jsx'
-
-import Unauthorized from '../../../../../general/unauthorized.jsx'
+import ViewInvoice from './accept/viewInvoice.jsx'
 import {connect} from 'react-redux'
-import CreateButtons from './accept/createButtons.jsx'
 
 @connect((store) => {
   return {
@@ -21,9 +19,7 @@ export default class Update extends React.Component {
 
     const content = Object.keys(this.props.loadedPurchase).length
       ? <div className='heigh100'>
-        LOADED
-        <Upload />
-        <CreateButtons />
+        <ViewInvoice />
       </div>
       : <div className='heigh100 accept-purchase'>
         <Upload />

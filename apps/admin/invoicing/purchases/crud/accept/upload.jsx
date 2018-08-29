@@ -79,7 +79,7 @@ class Form extends React.Component {
       url: '/api/facturareception/processHaciendaXML/',
       item: formData,
       sucessMessage: 'Compra Cargada Correctamente.',
-      errorMessage: 'Hubo un error al cargar la venta, intente de nuevo.'
+      errorMessage: 'Hubo un error al cargar la compra, intente de nuevo.'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(uploadEPurchase(kwargs))

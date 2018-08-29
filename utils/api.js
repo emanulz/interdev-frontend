@@ -19,7 +19,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // ------------------------------------------------------------------------------------------
 // GET FUNCTIONS (RETRIEVE ALL)
 // ------------------------------------------------------------------------------------------
-export function savePayableCreditMovementPromise(kwargs){
+export function savePayableCreditMovementPromise(kwargs) {
   const method = 'post'
   const url ='/api/payablescreditmovement/'
 
@@ -302,11 +302,14 @@ export function saveItem(kwargs) {
           dispatch({type: 'WORK_ORDER_CREATED', payload: response.data})
         }
       }).catch((err) => {
-        console.log(err)
         if (err.response) {
           console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         }
-        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
@@ -337,11 +340,14 @@ export function updateItem(kwargs) {
         dispatch({type: kwargs.dispatchType, payload: ''})
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {
-        console.log(err)
         if (err.response) {
           console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         }
-        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
@@ -377,11 +383,14 @@ export function patchItem(kwargs) {
         dispatch({type: 'SET_SALE_ID', payload: ''})
         dispatch({type: 'FETCHING_DONE', payload: ''})
       }).catch((err) => {
-        console.log(err)
         if (err.response) {
           console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         }
-        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
@@ -443,11 +452,14 @@ export function patchItems(kwargs, kwargs2) {
 
       // FIRST PATCH CATCH
       }).catch((err) => {
-        console.log(err)
         if (err.response) {
           console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         }
-        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })
 
@@ -481,7 +493,14 @@ export function deleteItem(kwargs) {
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       }).catch((err) => {
-        alertify.alert('Error', `Hubo un error al eliminar el ${model} ERROR: ${err}.`)
+        if (err.response) {
+          console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        }
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })
   }
@@ -513,7 +532,15 @@ export function deleteItemDispatch(kwargs) {
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       }).catch((err) => {
-        alertify.alert('Error', `Hubo un error al eliminar el ${model} ERROR: ${err}.`)
+        if (err.response) {
+          console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        }
+        dispatch({type: 'FETCHING_DONE', payload: ''})
       })
   }
 }
