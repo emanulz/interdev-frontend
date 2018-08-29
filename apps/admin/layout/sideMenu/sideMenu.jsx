@@ -41,6 +41,34 @@ export default class SideMenu extends React.Component {
       }
     ]
 
+    const childInvoicing = [
+      {
+        text: 'Facturas Electrónicas',
+        class: 'fa-gift',
+        href: '/admin/invoicing/invoices'
+      }, {
+        text: 'Tiquetes Electrónicos',
+        class: 'fa-list',
+        href: '/admin/invoicing/tickets'
+      }, {
+        text: 'N. de Crédito Electrónicas',
+        class: 'fa-outdent',
+        href: '/admin/invoicing/creditnotes'
+      }, {
+        text: 'N. de Débito Electrónicas',
+        class: 'fa-outdent',
+        href: '/admin/invoicing/debitnotes'
+      }, {
+        text: 'Compras Electrónicas',
+        class: 'fa-upload',
+        href: '/admin/invoicing/purchases'
+      }, {
+        text: 'Ventas Antiguas',
+        class: 'fa-gift',
+        href: '/admin/sales'
+      }
+    ]
+
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
 
     return <div id='sideMenu' className='sideMenu'>
@@ -67,11 +95,8 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-sitemap' />
               Permisos</Link>
           </li>
-          <li>
-            <Link to='/admin/sales'>
-              <span className='fa fa-gift' />
-              Ventas</Link>
-          </li>
+          <ComposedItem mainTittle='Facturación' mainIcon='fa-gift' childItems={childInvoicing} />
+
           <li>
             <Link to='/admin/products'>
               <span className='fa fa-database' />

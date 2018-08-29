@@ -9,12 +9,12 @@ import {productSelected} from './actions.js'
   return {
     isVisible: store.products.singleProductVisible,
     product: store.products.sigleProductActive,
-    salesWarehouse: store.config.salesWarehouse,
+    salesWarehouse: store.userProfile.salesWarehouse,
     qty: store.products.singleProductQty,
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
-    warehouse_id: store.config.salesWarehouse
+    warehouse_id: store.userProfile.salesWarehouse
   }
 })
 export default class SingleProduct extends React.Component {

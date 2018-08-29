@@ -13,7 +13,7 @@ import {productSelected} from '../actions.js'
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
-    warehouse_id: store.config.salesWarehouse,
+    warehouse_id: store.userProfile.salesWarehouse,
     disabled: store.completed.completed
   }
 })

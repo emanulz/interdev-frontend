@@ -13,7 +13,7 @@ const Mousetrap = require('mousetrap')
     client: store.clients.clientSelected,
     user: store.user.user,
     debt: store.clients.clientSelectedDebt,
-    warehouse_id: store.config.salesWarehouse,
+    warehouse_id: store.userProfile.salesWarehouse,
     presaleId: store.presales.presaleId
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,

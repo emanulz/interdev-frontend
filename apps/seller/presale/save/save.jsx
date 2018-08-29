@@ -10,7 +10,7 @@ import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
     client: store.clients.clientSelected.client,
     user: store.send.user,
     presaleType: store.send.presale_type,
-    reserves_warehouse: store.config.reserves_warehouse,
+    reserves_warehouse: store.userProfile.reservesWarehouse,
     extras: store.extras
   }
 })
@@ -27,7 +27,6 @@ export default class SaveBtn extends React.Component {
       client_id: this.props.client.id,
       extras: JSON.stringify(this.props.extras),
       closed: true,
-      reserves_warehouse: this.props.reserves_warehouse,
       presale_type: this.props.presaleType
     }
 
@@ -65,6 +64,7 @@ export default class SaveBtn extends React.Component {
         this.props.dispatch(loadPresaleToPrint(data.consecutive))
       }
     }).catch((err) => {
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
     })
 

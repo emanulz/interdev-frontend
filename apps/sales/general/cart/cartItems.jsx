@@ -15,7 +15,7 @@ const Mousetrap = require('mousetrap')
     globalDiscount: store.cart.globalDiscount,
     disabled: store.completed.completed,
     cartItemActive: store.cart.cartItemActive,
-    warehouse_id: store.config.salesWarehouse,
+    warehouse_id: store.userProfile.salesWarehouse,
     presaleLoaded: store.completed.isPresaleLoaded,
     reserveLoaded: store.completed.isReserveLoaded,
     isExempt: store.cart.isExempt

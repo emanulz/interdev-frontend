@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom'
   return {
     cart: store.cart,
     client: store.clients.clientSelected,
-    warehouse_id: store.config.salesWarehouse,
+    warehouse_id: store.userProfile.salesWarehouse,
     warehouse2_id: store.config.workshopWarehouse,
     sale: store.sale.saleActive,
     returnItems: store.returnCart.returnItems,

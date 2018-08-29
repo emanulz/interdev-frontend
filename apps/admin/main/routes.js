@@ -17,6 +17,7 @@ import Warehouses from '../warehouses/main.jsx'
 import ClientCategories from '../clientCategories/main.jsx'
 import Sales from '../sales/main.jsx'
 import GeneralReports from '../reports/main.jsx'
+import Invoicing from '../invoicing/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -34,6 +35,7 @@ const routes = <div className='heigh100'>
   <Route path='/admin/warehouses' component={Warehouses} />
   <Route path='/admin/sales' component={Sales} />
   <Route path='/admin/reports' component={GeneralReports} />
+  <Route path='/admin/invoicing' component={Invoicing} />
 
 </div>
 
