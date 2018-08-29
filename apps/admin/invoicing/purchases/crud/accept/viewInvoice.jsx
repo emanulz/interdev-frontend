@@ -49,57 +49,111 @@ class Form extends React.Component {
 
     const item = this.props.loadedPurchase
     const buttons = this.props.loadedPurchase.can_be_accepted
-      ? <div>
-        <button onClick={this.acceptInvoice.bind(this)} className='btn btn-primary uploadButton'> ACEPTAR </button>
-        <button onClick={this.rejectInvoice.bind(this)} className='btn btn-primary uploadButton'> RECHAZAR </button>
+      ? <div className='viewInvoice-buttons'>
+        <button onClick={this.acceptInvoice.bind(this)} className='btn btn-success uploadButton'> ACEPTAR </button>
+        <button onClick={this.rejectInvoice.bind(this)} className='btn btn-danger uploadButton'> RECHAZAR </button>
       </div>
-      : <div>
+      : <div />
+
+    const cantBeAccepted = !this.props.loadedPurchase.can_be_accepted
+      ? <div className='viewInvoice-cantBe'>
         <h1>
-          El Elemento cargado no puede ser aceptado o rechazado.
+          ATENCION! El Elemento cargado no puede ser aceptado o rechazado.
         </h1>
         <h2>
-          Razón: {item.reason}
+          <b>Razón:</b> {item.reason}
         </h2>
-
       </div>
+      : <div />
+
+    const body = item.lineas.map(linea => {
+      return <div key={linea.NumeroLinea} className='viewInvoice-body-item'>
+        <div>
+          {linea.Codigo}
+        </div>
+        <div>
+          {linea.Detalle}
+        </div>
+        <div>
+          {linea.PrecioUnitario}
+        </div>
+        <div>
+          {linea.Cantidad}
+        </div>
+        <div>
+          {linea.MontoTotal}
+        </div>
+      </div>
+    })
 
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
     return <div className='col-xs-12 viewInvoice'>
 
+      {cantBeAccepted}
+
       <div className='viewInvoice-header'>
-        <h1>DATOS</h1>
+        <h1>{item.header.DocType}</h1>
         <h2>Clave: {item.header.Clave}</h2>
         <h2>Fecha: {item.header.FechaEmision}</h2>
         <h2>Consecutivo: {item.header.NumeroConsecutivo}</h2>
       </div>
 
-      <div className='viewInvoice-emitter'>
-        <h1>EMISOR</h1>
-        <h2>Nombre: {item.emisor.Nombre}</h2>
-        <h2>Email: {item.emisor.CorreoElectronico}</h2>
-        <h2>Identificación: {item.header.Numero}</h2>
+      <div className='viewInvoice-data'>
+        <div className='viewInvoice-data-emitter'>
+          <h1>EMISOR</h1>
+          <h2>{item.emisor.Nombre}</h2>
+          <h2>{item.header.Numero}</h2>
+          <h2>{item.emisor.CorreoElectronico}</h2>
+          <h2>{item.emisor.Telefono}</h2>
+        </div>
+
+        <div className='viewInvoice-data-receiver'>
+          <h1>RECEPTOR</h1>
+          <h2>{item.receptor.Nombre}</h2>
+          <h2>identificación{item.receptor.Numero}</h2>
+          <h2>{item.receptor.CorreoElectronico}</h2>
+        </div>
       </div>
 
-      <div className='viewInvoice-receiver'>
-        <h1>RECEPTOR</h1>
-        <h2>Nombre: {item.receptor.Nombre}</h2>
-        <h2>Email: {item.receptor.CorreoElectronico}</h2>
-        <h2>Identificación: {item.receptor.Numero}</h2>
+      <div className='viewInvoice-body'>
+        <div className='viewInvoice-body-header'>
+          <div>
+            Código
+          </div>
+          <div>
+            Detalle
+          </div>
+          <div>
+            P.U
+          </div>
+          <div>
+            Cantidad
+          </div>
+          <div>
+            Total
+          </div>
+        </div>
+        {body}
       </div>
 
       <div className='viewInvoice-totals'>
-        <h1>RESUMEN</h1>
-        <h2>Subtotal: {item.resumen.Nombre}</h2>
-        <h2>Descuento: {item.resumen.TotalDescuentos}</h2>
-        <h2>IV: {item.resumen.TotalGravado}</h2>
-        <h2>Total: {item.resumen.TotalVenta}</h2>
+        <div className='viewInvoice-totals-table'>
+          <h1>TOTALES</h1>
+          <h2>Subtotal: {item.resumen.TotalVenta}</h2>
+          <h2>Descuento: {item.resumen.TotalDescuentos}</h2>
+          <h2>IV: {item.resumen.TotalGravado}</h2>
+          <h2>Total: {item.resumen.TotalVentaNeta}</h2>
+        </div>
       </div>
 
       {buttons}
-      <button onClick={this.acceptInvoice.bind(this)} className='btn btn-primary uploadButton'> ACEPTAR </button>
-      <button onClick={this.rejectInvoice.bind(this)} className='btn btn-primary uploadButton'> RECHAZAR </button>
+      ****** Temp for testing *****
+      <div className='viewInvoice-buttons'>
+        <button onClick={this.acceptInvoice.bind(this)} className='btn btn-success uploadButton'> ACEPTAR </button>
+        <button onClick={this.rejectInvoice.bind(this)} className='btn btn-danger uploadButton'> RECHAZAR </button>
+      </div>
 
     </div>
   }

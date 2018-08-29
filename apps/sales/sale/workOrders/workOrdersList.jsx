@@ -203,7 +203,9 @@ export default class WorkOrdersPanel extends React.Component {
 
       for (const item in usedObjects) {
         try {
-          const productCopy = product
+          const productCopy = {
+            ...product
+          }
           productCopy.price = usedObjects[item].amount
           productCopy.description = usedObjects[item].description
           this.props.dispatch(

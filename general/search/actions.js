@@ -18,6 +18,7 @@ export function searchItem(text, model, namespace) {
     max_results: 100,
     search_key: newstr
   }
+  console.log('DATAAAA', data)
   return function(dispatch) {
     console.log(data)
     axios({
