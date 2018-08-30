@@ -1,5 +1,6 @@
 const stateConst = {
-  fullWidth: false
+  fullWidth: false,
+  isInvoice: 'TIQUETE'
 }
 
 export default function reducer(state = stateConst, action) {
@@ -12,6 +13,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         fullWidth: width
+      }
+    } // case
+
+    case 'SET_IS_INVOICE_VALUE':
+    {
+      return {
+        ...state,
+        isInvoice: action.payload
       }
     } // case
 

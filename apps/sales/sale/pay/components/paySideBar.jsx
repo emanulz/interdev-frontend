@@ -15,7 +15,8 @@ const Mousetrap = require('mousetrap')
     user: store.clients.userSelected,
     debt: store.clients.clientSelectedDebt,
     isCredit: store.pay.isCredit,
-    profile: store.userProfile
+    profile: store.userProfile,
+    isInvoice: store.sale.isInvoice
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -163,6 +164,11 @@ export default class PaySideBar extends React.Component {
     return <div />
   }
 
+  setTicketOrInvoice(ev) {
+    const val = ev.target.value
+    this.props.dispatch({type: 'SET_IS_INVOICE_VALUE', payload: val})
+  }
+
   render() {
 
     let change = 0
@@ -247,7 +253,7 @@ export default class PaySideBar extends React.Component {
         <div className={`edocument-type ${eDocumentSelectClass}`}>
           <div className='pay-tag left'>TIPO COMP :</div>
           <div className='pay-dropdown right'>
-            <select>
+            <select value={this.props.isInvoice} onChange={this.setTicketOrInvoice.bind(this)}>
               <option value='TIQUETE'>Tiquete Electrónico</option>
               <option value='FACTURA'>Factura Electónica</option>
             </select>

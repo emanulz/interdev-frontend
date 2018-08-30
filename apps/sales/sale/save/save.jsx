@@ -22,7 +22,8 @@ const Mousetrap = require('mousetrap')
     reserveId: store.reserves.reserveId,
     workOrder: store.workOrders.workOrderActive,
     exemptionData: store.taxExemption.exemptionData,
-    extras: store.extras
+    extras: store.extras,
+    isinvoice: store.sale.isinvoice
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -35,6 +36,7 @@ export default class SaveBtn extends React.Component {
     // const sales = this.props.sales
     // const user = this.props.user
     // CHECK IF IS WORKSHOP OR NOT
+    const isinvoice = this.isinvoice == 'FACTURA'
     const warehouse = this.props.workOrderId.length ? this.props.warehouse2_id : this.props.reserveId.length ? this.props.warehouse3_id : this.props.warehouse_id
     // ADD WORKSHOP ITEMS TO CART
     const cart = this.props.cart
@@ -54,7 +56,8 @@ export default class SaveBtn extends React.Component {
       extras: JSON.stringify(this.props.extras),
       client_id: this.props.client.id,
       warehouse_id: warehouse,
-      presale_id: this.props.presaleId
+      presale_id: this.props.presaleId,
+      isinvoice: isinvoice
     }
 
     const kwargs = {

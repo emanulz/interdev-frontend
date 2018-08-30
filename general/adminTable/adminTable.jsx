@@ -54,6 +54,11 @@ export default class AdminTable extends React.Component {
     }
   }
 
+  downloadDocument(baseUrl, item) {
+    const url = `${baseUrl}/${item}.pdf`
+    console.log(url)
+  }
+
   render() {
     const headerOrder = this.props.headerOrder
     const model = this.props.model
@@ -144,6 +149,21 @@ export default class AdminTable extends React.Component {
 
           let item
           switch (header.type) {
+            case 'PDF':
+            {
+              item = <td key={`${el[idField]}_${header.field}`}>
+                <i className='fa fa-file-pdf-o' onClick={this.downloadDocument.bind(this, header.base_url, itemToRender)} />
+              </td>
+              break
+            }
+
+            case 'XML':
+            {
+              item = <td key={`${el[idField]}_${header.field}`}>
+                <i className='fa fa-file-code-o' />
+              </td>
+              break
+            }
             case 'price':
             {
               item = <td key={`${el[idField]}_${header.field}`}>
