@@ -55,10 +55,6 @@ export default class SideMenu extends React.Component {
         class: 'fa-outdent',
         href: '/admin/invoicing/creditnotes'
       }, {
-        text: 'N. de Débito Electrónicas',
-        class: 'fa-outdent',
-        href: '/admin/invoicing/debitnotes'
-      }, {
         text: 'Aceptar Compras',
         class: 'fa-upload',
         href: '/admin/invoicing/purchases'
@@ -95,7 +91,7 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-sitemap' />
               Permisos</Link>
           </li>
-          <ComposedItem mainTittle='Facturación' mainIcon='fa-gift' childItems={childInvoicing} />
+          <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} />
 
           <li>
             <Link to='/admin/products'>

@@ -8,7 +8,7 @@ import List from './crud/list.jsx'
 
 const routes = <div className='heigh100'>
 
-  <Route exact path='/admin/invoicing/invoices' component={List} />
+  <Route exact path='/admin/invoicing/creditnotes' component={List} />
   {/* <Route exact path='/admin/invoicing/tickets/:ticket' component={Accept} /> */}
 
 </div>

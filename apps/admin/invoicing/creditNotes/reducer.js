@@ -6,8 +6,8 @@ const defaultPermissions = {
 }
 
 const stateConst = {
-  einvoices: [],
-  loadedInvoice: {},
+  ecreditNotes: [],
+  loadedCreditNote: {},
   permissions: defaultPermissions
 }
 
@@ -15,7 +15,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'FETCH_USER_EINVOICE_PERMISSIONS_FULLFILLED':
+    case 'FETCH_USER_ECREDIT_NOTE_PERMISSIONS_FULLFILLED':
     {
       return {
         ...state,
@@ -23,7 +23,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'FETCH_USER_EINVOICE_PERMISSIONS_REJECTED':
+    case 'FETCH_USER_ECREDIT_NOTE_PERMISSIONS_REJECTED':
     {
       return {
         ...state,
@@ -31,45 +31,37 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'FETCH_EINVOICES_FULFILLED':
+    case 'FETCH_ECREDIT_NOTES_FULFILLED':
     {
       return {
         ...state,
-        einvoices: action.payload
+        ecreditNotes: action.payload
       }
 
     } // case
 
-    case 'FETCH_EINVOICES_REJECTED':
+    case 'FETCH_ECREDIT_NOTES_REJECTED':
     {
       return {
         ...state,
-        einvoices: []
+        ecreditNotes: []
       }
     } // case
 
-    case 'SET_EINVOICE':
+    case 'SET_ECREDIT_NOTE':
     {
       return {
         ...state,
-        loadedInvoice: action.payload
+        loadedCreditNote: action.payload
       }
     }
 
-    case 'SET_EINVOICE_FILE':
+    case 'CLEAR_ECREDIT_NOTES':
     {
       return {
         ...state,
-        invoiceloadedInvoiceToUpload: action.payload
-      }
-    }
-
-    case 'CLEAR_EINVOICE':
-    {
-      return {
-        ...state,
-        invoices: [],
-        loadedInvoice: {}
+        creditNotes: [],
+        loadedCreditNote: {}
       }
     }
 

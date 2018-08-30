@@ -5,6 +5,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {formatDateTimeAmPm} from '../../utils/formatDate.js'
 import {connect} from 'react-redux'
+import axios from 'axios'
 
 @connect((store) => {
   return {
@@ -54,8 +55,23 @@ export default class AdminTable extends React.Component {
     }
   }
 
-  downloadDocument(baseUrl, item) {
-    const url = `${baseUrl}/${item}.pdf`
+  downloadPdf(baseUrl, item) {
+    const url = `${baseUrl}/${item}_signed.pdf`
+    console.log(url)
+    axios.get(url).then(response => {
+      console.log(response)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  downloadXML(baseUrl, item) {
+    const url = `${baseUrl}/${item}_signed.xml`
+    console.log(url)
+  }
+
+  downloadHaciendaResponseXML(baseUrl, item) {
+    const url = `${baseUrl}/${item}_response.xml`
     console.log(url)
   }
 
@@ -151,16 +167,26 @@ export default class AdminTable extends React.Component {
           switch (header.type) {
             case 'PDF':
             {
-              item = <td key={`${el[idField]}_${header.field}`}>
-                <i className='fa fa-file-pdf-o' onClick={this.downloadDocument.bind(this, header.base_url, itemToRender)} />
+              const url = `${header.base_url}/${itemToRender}_signed.pdf`
+              item = <td key={`${el[idField]}_${header.field}_pdf`}>
+                <a download={`${itemToRender}.pdf`} href={url}><i className='fa fa-file-pdf-o' /></a>
               </td>
               break
             }
 
             case 'XML':
             {
-              item = <td key={`${el[idField]}_${header.field}`}>
-                <i className='fa fa-file-code-o' />
+              const url = `${header.base_url}/${itemToRender}_signed.xml`
+              item = <td key={`${el[idField]}_${header.field}_xml`}>
+                <a download={`${itemToRender}.xml`} href={url}><i className='fa fa-file-code-o' /></a>
+              </td>
+              break
+            }
+            case 'XML_HACIENDA':
+            {
+              const url = `${header.base_url}/${itemToRender}_response.xml`
+              item = <td key={`${el[idField]}_${header.field}_xml_response`}>
+                <a download={`${itemToRender}_respuesta.xml`} href={url}><i className='fa fa-file-code-o' /></a>
               </td>
               break
             }

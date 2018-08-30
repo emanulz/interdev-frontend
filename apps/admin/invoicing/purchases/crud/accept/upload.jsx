@@ -98,7 +98,7 @@ class Form extends React.Component {
           <div className='form-group-content'>
             <label>CARGAR FACTURA</label>
             <input name='code' onChange={this.handleFileChange.bind(this)} type='file'
-              className='form-control' />
+              className='form-control' accept='application/xml' />
             <button onClick={this.uploadFile.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>
           </div>
         </div>

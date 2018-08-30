@@ -25,7 +25,7 @@ import userProfile from '../../general/userProfile/reducer.js'
 import epurchases from './invoicing/purchases/reducer.js'
 import einvoices from './invoicing/invoices/reducer.js'
 import etickets from './invoicing/tickets/reducer.js'
-
+import ecreditNotes from './invoicing/creditNotes/reducer.js'
 
 export default combineReducers({
   users,
@@ -52,5 +52,6 @@ export default combineReducers({
   userProfile,
   epurchases,
   einvoices,
-  etickets
+  etickets,
+  ecreditNotes
 })
