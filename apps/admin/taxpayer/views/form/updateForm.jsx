@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
 import {getCantonsSelect, getDistrictsSelect, getTownsSelect} from '../../actions.js'
 import {postDispatch, getItemDispatch, saveItem} from '../../../../../utils/api.js'
-import CreateButtons from './createButtons.jsx'
+import UpdateButtons from './updateButtons.jsx'
 var util = require('util')
 
 @connect(store=>{
@@ -125,146 +125,10 @@ export default class Form extends React.Component {
             this.props.taxpayer.provincia, towns)
         return <div className="container">
             <div className='admin-list-header'>
-                <h1>Agregar Contribuyente</h1>
+                <h1>ATENCION SI ESOS PARAMETROS SON MODIFICADOS EL SISTEMA DEJARÁ DE FUNCIONAR</h1>
             </div>
             <div className="taxpayer">
-            <div className="taxpayer-left">
-                <div className="taxpayer-left-header">
-                    <h1>Información General</h1>
-                    <br/>
-                </div>
-                <div className="taxpayer-left-field">
-                    <label>Nombre Legal</label>
-                    <input value={this.props.taxpayer.legal_name} name='legal_name' onChange={this.handleInputChange.bind(this)}
-                    type='text' placeholder="Nombre Legal"
-                    className='form-control' />
-                </div>
-                <div className="taxpayer-left-field">
-                    <label>Nombre Comercial</label>
-                    <input value={this.props.taxpayer.commercial_name} name='commercial_name' onChange={this.handleInputChange.bind(this)}
-                    type='text' placeholder="Nombre Comercial"
-                    className='form-control' />
-                </div>
-                <div className="taxpayer-left-field">
-                    <label>Tipo de Identificación</label>
-                    <select onChange={this.handleInputChange.bind(this)} className='form-control' name='id_type'
-                        value={this.props.taxpayer.id_type} >
-                        <option value='00'>Sin seleccionar</option>
-                        <option value='01'>Cédula Física</option>
-                        <option value='02'>Cédula Jurídica</option>
-                        <option value='03'>Pasaporte</option>
-                    </select>
-                </div>
-
-                <div className="taxpayer-left-field">
-                    <label>Identificación</label>
-                    <input value={this.props.taxpayer.id_number} onChange={this.handleInputChange.bind(this)} name='id_number' type='text'
-                    className='form-control' placeholder="Número de Identificación"/>
-                </div>
-
-                <div className="taxpayer-left-field">
-                    <label>Email</label>
-                    <input value={this.props.taxpayer.email} name='email' onChange={this.handleInputChange.bind(this)} type='email'
-                    className='form-control' placeholder="Ingresar correo electrónico"/>
-                    </div>
-            </div>
-            <div className="taxpayer-middle">
-                <div className="taxpayer-middle-header">
-                    <h1>Contacto y Dirección</h1>
-                    <br/>
-                </div>
-                <div className="taxpayer-middle-field">
-                    <label>Teléfono</label>
-                    <input value={this.props.taxpayer.phone_number} name='phone_number' onChange={this.handleInputChange.bind(this)}
-                    type='text' placeholder="Teléfono"
-                    className='form-control' />
-                </div>
-                <div className="taxpayer-middle-field">
-                    <label>Celular</label>
-                    <input value={this.props.taxpayer.cellphone_number} name='cellphone_number'
-                        onChange={this.handleInputChange.bind(this)}
-                        type='text' placeholder="Celular"
-                        className='form-control' />
-                </div>
-                
-                <div className="taxpayer-middle-field">
-                    <label>Provincia</label>
-                    <Select2
-                        name='provincia'
-                        data={provincesData}
-                        value={this.props.taxpayer.provincia}
-                        className='form-control'
-                        onSelect={this.handleInputChange.bind(this)}
-                        options={{
-                        placeholder: 'Elija una Provincia...',
-                        noResultsText: 'Sin elementos'
-                        }}
-                    />
-                </div>
-
-                <div className="taxpayer-middle-field">
-                    <label>Cantón</label>
-                    <Select2
-                        name='canton'
-                        data={cantonData}
-                        value={this.props.taxpayer.canton}
-                        className='form-control'
-                        onSelect={this.handleInputChange.bind(this)}
-                        options={{
-                        placeholder: 'Elija un Cantón...',
-                        noResultsText: 'Sin elementos'
-                        }}
-                    />
-                </div>
-
-                <div className="taxpayer-middle-field">
-                
-                    <label>Distrito</label>
-                    <Select2
-                        name='distrito'
-                        data={districtsData}
-                        value={this.props.taxpayer.distrito}
-                        className='form-control'
-                        onSelect={this.handleInputChange.bind(this)}
-                        options={{
-                        placeholder: 'Elija un Distrito...',
-                        noResultsText: 'Sin elementos'
-                        }}
-                    />
-                
-                </div>
-
-                <div className="taxpayer-middle-field">
-                
-                    <label>Barrio</label>
-                    <Select2
-                        name='barrio'
-                        data={townsData}
-                        value={this.props.taxpayer.barrio}
-                        className='form-control'
-                        onSelect={this.handleInputChange.bind(this)}
-                        options={{
-                        placeholder: 'Elija un Barrio...',
-                        noResultsText: 'Sin elementos'
-                        }}
-                    />
-                
-                </div>
-
-                <div className="taxpayer-middle-field">
-                
-                    <label>Otras señas</label>
-                    <textarea value={this.props.taxpayer.otras_senas} name='otras_senas'
-                    style={{resize: 'none'}}
-                    rows='4'
-                    placeholder="Otras señas"
-                    onChange={this.handleInputChange.bind(this)}
-                    className='form-control' />
-                
-                </div>
-
-            </div>
-            <div className="taxpayer-right">
+                <div className="taxpayer-right">
                 <div className="taxpayer-left-header">
                     <h1>Credenciales Hacienda</h1>
                     <br/>
@@ -303,7 +167,7 @@ export default class Form extends React.Component {
                 </div>
             </div>
         </div>
-        <CreateButtons/>
+        <UpdateButtons/>
         </div>
     }
 

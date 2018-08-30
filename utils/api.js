@@ -385,11 +385,11 @@ export function patchItem(kwargs) {
       }).catch((err) => {
         if (err.response) {
           console.log(err.response.data)
-          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+          alertify.alert('Errorrr', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
         } else {
           console.log('NO CUSTOM ERROR')
           console.log(err)
-          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+          alertify.alert('Errorrr', `${kwargs.errorMessage} ERROR: ${err}.`)
         }
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })

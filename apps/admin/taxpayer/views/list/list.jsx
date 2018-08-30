@@ -31,7 +31,7 @@ export default class List extends React.Component {
             {
                 field: 'id',
                 text: 'Consecutive',
-                type: 'primary'
+                type: 'text'
             },
             {
                 field: 'legal_name',

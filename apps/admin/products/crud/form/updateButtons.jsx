@@ -12,7 +12,7 @@ import alertify from 'alertifyjs'
     productOld: store.products.productActiveOld,
     user: store.user.user,
     permissions: store.products.permissions,
-    file: store.products.file,
+    file: store.products.file
   }
 })
 
@@ -25,7 +25,7 @@ class UpdateButtons extends React.Component {
     const productOld = this.props.productOld
     const products = this.props.products
     const fieldsOk = checkProductData(product, products)
-
+    console.log('OK???', fieldsOk)
     if (fieldsOk) {
       const kwargs = {
         url: `/api/products/${product.id}/`,
@@ -54,7 +54,7 @@ class UpdateButtons extends React.Component {
         formData.append('prod', JSON.stringify(kwargs.item))
         kwargs.item = formData
         _this.props.dispatch(updateItem(kwargs))
-        resolve()
+        // resolve()
       })
 
       updatePromise.then(() => {

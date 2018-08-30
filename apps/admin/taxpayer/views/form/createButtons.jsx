@@ -113,7 +113,7 @@ class CreateButtons extends React.Component {
                 </button>
             </div>
             <div className="buttons-row-button">
-                <button onClick={this.saveBtn.bind(this, true)}
+                <button onClick={this.cancelBtn.bind(this, true)}
                     className='form-buttons-container-save form-control btn-danger'>
                     Cancelar
                 </button>
