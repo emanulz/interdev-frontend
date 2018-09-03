@@ -68,7 +68,13 @@ export default class List extends React.Component {
         type: 'XML_HACIENDA',
         base_url: `/media/electronic_tickets/signed/${this.props.userProfile.tax_payer_id}`,
         idField: 'consecutive_numbering'
+      }, {
+        field: 'id',
+        type: 'RESET_HUMAN',
+        idField: 'id',
+        text: 'Reintentar'
       }
+
     ]
 
     const fetching = <div />

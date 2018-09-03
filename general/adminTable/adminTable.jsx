@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import {formatDateTimeAmPm} from '../../utils/formatDate.js'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -73,6 +74,24 @@ export default class AdminTable extends React.Component {
   downloadHaciendaResponseXML(baseUrl, item) {
     const url = `${baseUrl}/${item}_response.xml`
     console.log(url)
+  }
+
+  resetHuman(id) {
+    console.log('ID', id)
+    const docList = []
+    docList.push(id)
+    const data = {
+      docs_list: docList
+    }
+    axios({
+      method: 'post',
+      url: '/api/docactionrequired/reset_human_required/',
+      data: data
+    }).then((response) => {
+      alertify.alert('COMPLETADO', 'Elemento Reintentando...')
+    }).catch((err) => {
+      alertify.alert('ERROR', `Error al reintentar el documento ${err}`)
+    })
   }
 
   render() {
@@ -165,6 +184,13 @@ export default class AdminTable extends React.Component {
 
           let item
           switch (header.type) {
+            case 'RESET_HUMAN':
+            {
+              item = <td key={`${el[idField]}_${header.field}_retry`}>
+                <button className='btn btn-primary' onClick={this.resetHuman.bind(this, itemToRender)} >Reintentar</button>
+              </td>
+              break
+            }
             case 'PDF':
             {
               const url = `${header.base_url}/${itemToRender}_signed.pdf`
