@@ -4,8 +4,8 @@
 import alertify from 'alertifyjs'
 import axios from 'axios'
 
-export function loadSaleToReprint(consecutive) {
-  const url = `/api/saleslist/?consecutive=${consecutive}`
+export function OldloadSaleToReprint(consecutive) {
+  const url = `/api/saleslist?consecutive=${consecutive}`
 
   return function(dispatch) {
     // GET THE SALE AND DISPATCH
@@ -60,6 +60,65 @@ export function loadSaleToReprint(consecutive) {
       dispatch({type: 'FETCHING_DONE', payload: ''})
       alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
       administrador del sistema con el siguiete error: ${error}`)
+    })
+  }
+}
+
+export function loadSaleToReprint(consecutive) {
+  const url = `/api/saleslist/getsaledata/?consecutive=${consecutive}`
+
+  return function(dispatch) {
+    // GET THE SALE AND DISPATCH
+    axios.get(url).then(function(response) {
+      console.log(response)
+      // FIRST CLEAR REDUCER DATA
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_SALE', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_PRESALE', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_TICKET', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_INVOICE', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_CREDIT_NOTES', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_DEBIT_NOTES', payload: ''})
+
+      dispatch({type: 'SET_REPRINT_INVOICE_SALE', payload: response.data.sale})
+      dispatch({type: 'SET_REPRINT_INVOICE_TICKET', payload: response.data.ticket})
+      dispatch({type: 'SET_REPRINT_INVOICE_INVOICE', payload: response.data.invoice})
+      dispatch({type: 'SET_REPRINT_INVOICE_CREDIT_NOTES', payload: response.data.credit_notes})
+      dispatch({type: 'SET_REPRINT_INVOICE_CREDIT_DEBIT', payload: response.data.debit_notes})
+      // THEN IF THERE IS A PRESALE, FETCH IT AND DISPATCH
+      if (response.data.sale.presale_id) {
+        const presaleId = response.data.sale.presale_id
+        const url2 = `/api/presales/${presaleId}`
+        axios.get(url2).then(function(response) {
+
+          dispatch({type: 'SET_REPRINT_INVOICE_PRESALE', payload: response.data})
+          dispatch({type: 'FETCHING_DONE', payload: ''})
+          dispatch({type: 'SHOW_REPRINT_INVOICE_PANEL', payload: ''})
+
+        }).catch(function(error) { // ON ERROR FETCHING PRESALE CLEAN ALL
+          dispatch({type: 'CLEAR_REPRINT_INVOICE_SALE', payload: ''})
+          dispatch({type: 'CLEAR_REPRINT_INVOICE_PRESALE', payload: ''})
+          dispatch({type: 'FETCHING_DONE', payload: ''})
+          alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+          administrador del sistema con el siguiete error: ${error}`)
+        })
+      // IF THERE IS NO PRESALE ID
+      } else {
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'SHOW_REPRINT_INVOICE_PANEL', payload: ''})
+      }
+
+    }).catch(function(error) { // ON ERROR FETCHING SALE CLEAN ALL
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_SALE', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_PRESALE', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_TICKET', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_INVOICE', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_CREDIT_NOTES', payload: ''})
+      dispatch({type: 'CLEAR_REPRINT_INVOICE_DEBIT_NOTES', payload: ''})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+      console.log(error)
+      alertify.alert('Error', `No se encontraron ventas con el valor de consecutivo interno: ${consecutive}`)
+      // alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
+      // administrador del sistema con el siguiete error: ${error}`)
     })
   }
 }

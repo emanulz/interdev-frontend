@@ -2,7 +2,11 @@ const stateConst = {
   isVisible: false,
   isFull: false,
   sale: {},
-  presale: {}
+  presale: {},
+  ticket: {},
+  invoice: {},
+  creditNotes: [],
+  debitNotes: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -85,6 +89,70 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         presale: {}
+      }
+    } // case
+
+    case 'SET_REPRINT_INVOICE_TICKET':
+    {
+      return {
+        ...state,
+        ticket: action.payload
+      }
+    } // case
+
+    case 'CLEAR_REPRINT_INVOICE_TICKET':
+    {
+      return {
+        ...state,
+        ticket: {}
+      }
+    } // case
+
+    case 'SET_REPRINT_INVOICE_INVOICE':
+    {
+      return {
+        ...state,
+        invoice: action.payload
+      }
+    } // case
+
+    case 'CLEAR_REPRINT_INVOICE_INVOICE':
+    {
+      return {
+        ...state,
+        invoice: {}
+      }
+    } // case
+
+    case 'SET_REPRINT_INVOICE_CREDIT_NOTE':
+    {
+      return {
+        ...state,
+        creditNotes: action.payload
+      }
+    } // case
+
+    case 'CLEAR_REPRINT_INVOICE_CREDIT_NOTES':
+    {
+      return {
+        ...state,
+        creditNotes: []
+      }
+    } // case
+
+    case 'SET_REPRINT_INVOICE_DEBIT_NOTE':
+    {
+      return {
+        ...state,
+        debitNotes: action.payload
+      }
+    } // case
+
+    case 'CLEAR_REPRINT_INVOICE_DEBIT_NOTES':
+    {
+      return {
+        ...state,
+        debitNotes: []
       }
     } // case
 

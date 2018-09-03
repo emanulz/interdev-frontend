@@ -6,7 +6,8 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 @connect((store) => {
   return {
     panelVisible: store.reprintInvoice.isVisible,
-    isFull: store.reprintInvoice.isFull
+    isFull: store.reprintInvoice.isFull,
+    sale: store.reprintInvoice.sale
   }
 })
 export default class ReprintInvoicePanel extends React.Component {
@@ -27,6 +28,19 @@ export default class ReprintInvoicePanel extends React.Component {
     window.printDiv('reprint-invoice-print', ['/static/bundles/css/sales.css'])
   }
 
+  calcTotalInPay () {
+    const pay = this.props.sale.pay
+    let total = 0
+    for (const item in pay) {
+      let innerAmount = 0
+      for (const innerItem in pay[item]) {
+        innerAmount += pay[item][innerItem].amount
+      }
+      total += innerAmount
+    }
+    return total
+  }
+
   render() {
 
     const isVisible = (this.props.panelVisible)
@@ -39,6 +53,15 @@ export default class ReprintInvoicePanel extends React.Component {
     const componentToMount = (this.props.isFull)
       ? <FullInvoice />
       : <CompactInvoice />
+
+    let change = ''
+    try {
+      const total = parseFloat(this.props.sale.cart.cartTotal)
+      const totalInPay = this.calcTotalInPay()
+      change = totalInPay - total
+    } catch (err) {
+      console.log(err)
+    }
 
     return <div className={isVisible}>
 
@@ -61,6 +84,11 @@ export default class ReprintInvoicePanel extends React.Component {
 
         </div>
 
+      </div>
+
+      <div className='reprint-invoice-panel-main-change'>
+        <span>CAMBIO</span>
+        <h1>₡ {parseFloat(change).formatMoney(2, ',', '.')}</h1>
       </div>
 
     </div>

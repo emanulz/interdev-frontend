@@ -6,7 +6,9 @@ import {determinClientName, determinClientLastName} from '../../../../apps/sales
 @connect((store) => {
   return {
     sale: store.reprintInvoice.sale,
-    presale: store.reprintInvoice.presale
+    presale: store.reprintInvoice.presale,
+    ticket: store.reprintInvoice.ticket,
+    invoice: store.reprintInvoice.invoice
   }
 })
 export default class Data extends React.Component {
@@ -47,6 +49,24 @@ export default class Data extends React.Component {
     } catch (err) { console.log('ERROR PARSE', err) }
     const client = sale.client ? `${sale.client.code} - ${determinClientName(sale.client, extras.client)} ${determinClientLastName(sale.client, extras.client)}` : '00 - Cliente General'
 
+    const ticket = this.props.ticket
+    const invoice = this.props.invoice
+    let numericKey = ''
+    let longConsecutive = ''
+    let documentType = ''
+    try {
+      if (invoice) {
+        numericKey = invoice.numeric_key
+        longConsecutive = invoice.consecutive_numbering
+        documentType = 'Factura Electrónica'
+      }
+      if (ticket) {
+        numericKey = ticket.numeric_key
+        longConsecutive = ticket.consecutive_numbering
+        documentType = 'Tiquete Electrónico'
+      }
+    } catch (err) {}
+
     return <div className='reprint-compact-invoice-data'>
 
       <table className='datenum-table'>
@@ -56,9 +76,20 @@ export default class Data extends React.Component {
             <td>{date}</td>
           </tr>
           <tr>
+            <th>Tipo:</th>
+            <td>{documentType}</td>
+          </tr>
+          <tr>
             <th>Factura:</th>
             <td>{id}</td>
-
+          </tr>
+          <tr>
+            <th>Consec:</th>
+            <td>{longConsecutive}</td>
+          </tr>
+          <tr>
+            <th>Clave:</th>
+            <td className='numeric-key-compact'>{numericKey}</td>
           </tr>
           <tr>
             <th>Cliente:</th>
