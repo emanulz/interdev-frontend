@@ -51,6 +51,13 @@ export default class List extends React.Component {
       }, {
         field: 'description',
         text: 'Descripción'
+      }, {
+        field: 'taxes',
+        text: 'Impuesto'
+      }, {
+        field: 'sell_price',
+        text: 'Precio de Venta',
+        type: 'price'
       }
     ]
 
