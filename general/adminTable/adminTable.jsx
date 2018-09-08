@@ -336,6 +336,14 @@ export default class AdminTable extends React.Component {
               </td>
               break
             }
+            case 'function_element':
+            {
+              const element = header.worker_method(el)
+              item = <td className='functionElement' key={`${el[idField]}_${header.field}`}>
+                {element}
+              </td>
+              break
+            }
             case 'link_mask':
             {
 

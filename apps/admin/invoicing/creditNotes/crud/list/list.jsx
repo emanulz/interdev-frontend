@@ -37,6 +37,28 @@ export default class List extends React.Component {
 
   render() {
 
+    const getStatus = (item) => {
+      function getElementStatus(item) {
+        const splittedHistory = item.process_history.split('_')
+        let text = 'PROCESANDO'
+        let className = 'processing'
+        const accepted = splittedHistory.find((el) => { return el == '4' })
+        const rejected = splittedHistory.find((el) => { return el == '5' })
+        if (accepted) {
+          text = 'ACEPTADO'
+          className = 'accepted'
+        }
+
+        if (rejected) {
+          text = 'RECHAZADO'
+          className = 'rejected'
+        }
+
+        return <span className={className}>{text}</span>
+      }
+      return getElementStatus(item)
+    }
+
     const headerOrder = [
       {
         field: 'consecutive_numbering',
@@ -49,6 +71,12 @@ export default class List extends React.Component {
       }, {
         field: 'process_status',
         text: 'Estado del Proceso'
+      }, {
+        field: 'id',
+        type: 'function_element',
+        idField: 'id',
+        worker_method: getStatus,
+        text: 'Estado Hacienda'
       }, {
         field: 'numeric_key',
         text: 'PDF',
