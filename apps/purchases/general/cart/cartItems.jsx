@@ -165,7 +165,7 @@ export default class CartItems extends React.Component {
 
     let discount= parseFloat(e.target.value)
     ? parseFloat(e.target.value)
-    : -1
+    : 0
     if(this.props.discount_mode =='percent_based'){
       if(discount>100){
         this.props.dispatch({type: 'LINE_PERCENT_DISCOUNT_OVER_100'})
