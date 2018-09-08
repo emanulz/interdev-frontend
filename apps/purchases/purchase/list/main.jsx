@@ -4,12 +4,16 @@ import {getPaginationItemDispatch} from '../../../../utils/api.js'
 import AdminTable from '../../../../general/adminTable/adminTable.jsx'
 import Pagination from '../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
+import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
+import { makeTableFriendly } from './actions.js';
+
 
 @connect(store=>{
     return {
         purchases: store.purchase.purchasesTableFriendly,
         fetching: store.fetching.fetching,
         pageSize: store.pagination.pageSize,
+        searchResults: store.purchaseSearch.searchResults,
     }
 })
 export default class ListPurchases  extends React.Component {
@@ -17,6 +21,7 @@ export default class ListPurchases  extends React.Component {
     componentWillMount(){
         this.props.dispatch({type: 'PURCHASE_LIST_PANEL_MOUNTED'})
         this.props.dispatch({type: 'FETCHING_STARTED'})
+        this.props.dispatch({type: `purchaseSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
         const purchasesKwargs = {
             url : `/api/purchasecompletelist/?limit=${this.props.pageSize}`,
@@ -25,6 +30,10 @@ export default class ListPurchases  extends React.Component {
         }
 
         this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
+    }
+
+    componentWillUnMount() {
+        this.props.dispatch({type: `purchaseSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
     }
 
     render(){
@@ -63,8 +72,13 @@ export default class ListPurchases  extends React.Component {
 
         
         const fetching = <div/>
+        let tableData = this.props.searchResults.length ? this.props.searchResults : this.props.purchases
+        if(this.props.searchResults.length){
+            tableData = makeTableFriendly(tableData)
+        }
+        console.log("Make table friendly --> ", tableData)
         const list = <AdminTable headerOrder={header} app="purchases" model="purchase" 
-            data={this.props.purchases} />
+            data={tableData} />
 
         const content = this.props.purchases.length > 0 ? list : fetching
 
@@ -76,7 +90,7 @@ export default class ListPurchases  extends React.Component {
                 <ResultsPerPage url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
                 <Pagination url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
             </div>
-            
+            <SearchAdmin model='purchase' namespace='purchaseSearch' />
             {content}
         </div>
     
