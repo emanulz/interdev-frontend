@@ -27,7 +27,8 @@ export default class PurchasesVrsSales extends React.Component {
 
         const start_date = `${now.getFullYear()}-${now.getMonth()+1}-${month_first}`
         const end_date = `${now.getFullYear()}-${now.getMonth()+1}-${month_last}`
-        let url = `/api/reporting/getReportVisualizationData/?report=salesvrspurchases&start=`
+        //let url = `/api/reporting/getReportVisualizationData/?report=salesvrspurchases&start=`
+        let url = `/api/reporting/getReportVisualizationData/?report=utilitiesreport&start=`
         url += `${start_date}&end=${end_date}`
         const kwargs = {
             url: url,
@@ -97,7 +98,7 @@ export default class PurchasesVrsSales extends React.Component {
                 {
                     field: 'sale_total',
                     text: header[3],
-                    type: 'price'
+                    //type: 'price'
                 },
                 {
                     field: 'purchase_subtotal',
@@ -109,11 +110,11 @@ export default class PurchasesVrsSales extends React.Component {
                     text: header[5],
                     type: 'price'
                 },
-                {
-                    field: 'purchase_total',
-                    text: header[6],
-                    type: 'price'
-                }
+                // {
+                //     field: 'purchase_total',
+                //     text: header[6],
+                //     type: 'price'
+                // }
             ]
             content = <AdminTable headerOrder={headerOrder} 
                 data={this.props.reportPrettyData} app="none" model="none"/>
