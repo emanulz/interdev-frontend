@@ -18,6 +18,7 @@ import purchaseReceipt from './general/receipt/reducer.js'
 import config from './general/config/reducer.js'
 import reports  from '../../general/reportsPanel/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
+
 export default combineReducers({
     main,
     fetching,
@@ -34,6 +35,7 @@ export default combineReducers({
     pagination,
     productSearch: search('productSearch'),
     supplierSearch: search('supplierSearch'),
+    purchaseSearch: search('purchaseSearch'),
     purchaseReceipt,
     config,
     reports,
