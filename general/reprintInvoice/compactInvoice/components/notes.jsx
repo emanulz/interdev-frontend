@@ -41,7 +41,7 @@ export default class Notes extends React.Component {
       <h1>Notas:</h1>
       <div className='reprint-compact-invoice-notes-content'>
         <div>{notes}</div>
-        <div>Factura autorizada mediante la resolucion N1197 del 12/08/1997 del DGDT.</div>
+        <div>Autorizada mediante la resolucion N DGT-R-48-2016 del 7 de Octubre del 2016.</div>
       </div>
 
     </div>
