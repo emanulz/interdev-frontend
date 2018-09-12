@@ -171,10 +171,18 @@ function calculateRealUtility(cost, target_utility, target_price,
 
       let target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
       //trim decimals from the price
-      let int_ivi_price = Math.round(target_price_ivi)
+      let int_ivi_price = target_price_ivi
+      if(product.use_coin_round){
+        int_ivi_price = Math.round(int_ivi_price)
+      }
+
 
       //round to the nearest usable coin
-      let coin_round_modulus = int_ivi_price % round_to_coin
+      let coin_round_modulus = 0
+      if(product.use_coin_round){
+        coin_round_modulus = int_ivi_price % round_to_coin
+      }
+       
 
       wanted_price = int_ivi_price - coin_round_modulus
 
@@ -183,8 +191,13 @@ function calculateRealUtility(cost, target_utility, target_price,
 
     case 'byPrice':
     {
-      let int_target_price = Math.round(target_price)
-      let coin_round_modulus = int_target_price  % round_to_coin
+      let int_target_price = target_price
+      let coin_round_modulus = 0
+      if(product.use_coin_round){
+        int_target_price = Math.round(int_target_price)
+        coin_round_modulus = int_target_price  % round_to_coin
+      }
+       
       wanted_price = int_target_price - coin_round_modulus
       break
     }
