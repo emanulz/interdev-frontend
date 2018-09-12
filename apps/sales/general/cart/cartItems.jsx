@@ -18,12 +18,18 @@ const Mousetrap = require('mousetrap')
     warehouse_id: store.userProfile.salesWarehouse,
     presaleLoaded: store.completed.isPresaleLoaded,
     reserveLoaded: store.completed.isReserveLoaded,
-    isExempt: store.cart.isExempt
+    isExempt: store.cart.isExempt,
+    config: store.config.globalConf
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
 })
 export default class CartItems extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {qtyField: ''}
+  }
 
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
@@ -126,22 +132,24 @@ export default class CartItems extends React.Component {
   }
 
   qtyInputChange(code, ev) {
-
-    const qty = parseFloat((ev.target.value))
-      ? ev.target.value
-      : 0
+    console.log(ev.target.value)
+    const qty = ev.target.value
+      ? parseFloat(ev.target.value)
+      : -1
+    // this.state.qtyField = qty
+    if (qty == -1) { return }
     this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client, this.props.warehouse_id))
 
   }
 
-  qtyInputKeyPress(ev) {
-    ev.preventDefault()
-    console.log('called')
-    if (ev.key == 'Enter') {
-      console.log('Presssss', ev.key)
-      document.getElementById('productCodeInputField').focus()
-    }
-  }
+  // qtyInputKeyPress(ev) {
+  //   ev.preventDefault()
+  //   console.log('called')
+  //   if (ev.key == 'Enter') {
+  //     console.log('Presssss', ev.key)
+  //     document.getElementById('productCodeInputField').focus()
+  //   }
+  // }
 
   loteInputKeyPress(code, ev) {
 
@@ -197,18 +205,19 @@ export default class CartItems extends React.Component {
         ? 'cart-activeRow cart-body-item'
         : 'cart-body-item'
 
-      const removeIconClass = this.props.disabled || this.props.presaleLoaded ? 'removeItemIcon disabled' : 'removeItemIcon'
+      const removeIconClass = this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) ? 'removeItemIcon disabled' : 'removeItemIcon'
 
       const taxes1 = (item.product.use_taxes)
         ? item.product.taxes
         : 0
 
       const qtyField = <input
+        lang='en-150'
         id={`qty${item.product.code}`}
-        disabled={this.props.disabled || this.props.presaleLoaded || this.props.reserveLoaded}
+        disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) || this.props.reserveLoaded}
         onChange={this.qtyInputChange.bind(this, item.uuid)}
         onFocus={this.fieldFocus.bind(this)}
-        onKeyUp={this.qtyInputKeyPress.bind(this)}
+        // onKeyUp={this.qtyInputKeyPress.bind(this)}
         type='number'
         className='form-control'
         value={item.qty}
@@ -216,7 +225,7 @@ export default class CartItems extends React.Component {
 
       const discountField = this.props.client.saleLoaded
         ? <input
-          disabled={this.props.disabled || this.props.presaleLoaded}
+          disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
           onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
@@ -224,7 +233,7 @@ export default class CartItems extends React.Component {
           defaultValue={parseFloat(item.discount)}
         />
         : <input
-          disabled={this.props.disabled || this.props.presaleLoaded}
+          disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
           onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}

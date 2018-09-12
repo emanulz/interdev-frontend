@@ -59,7 +59,7 @@ export default class SideMenu extends React.Component {
         class: 'fa-upload',
         href: '/admin/invoicing/purchases'
       }, {
-        text: 'Ventas Antiguas',
+        text: 'Listado de Ventas',
         class: 'fa-gift',
         href: '/admin/sales'
       }
