@@ -11,7 +11,7 @@ import {getHeaderOrder} from './headerOrder.js'
   return {
     fething: store.fetching.fetching,
     searchResults: store[ownProps.namespace].searchResults,
-    salesWarehouse: store.config.salesWarehouse,
+    salesWarehouse: store.userProfile.salesWarehouse,
     resultsActiveIndex: store[ownProps.namespace].activeIndex
   }
 })
