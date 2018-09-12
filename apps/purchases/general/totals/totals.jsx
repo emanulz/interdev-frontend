@@ -69,14 +69,14 @@ export default class Totals extends React.Component {
             </div>
             <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Transporte ₡:</div>
-                <input className='totals-data-row-input' type='text'
+                <input className='totals-data-row-input' type='number'
                 onChange={this.transportAmountChanged.bind(this)}
                 disabled={this.props.is_closed}
                 value={this.props.orderTransport} />
             </div>
             <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Impuesto ₡:</div>
-                <input className='totals-data-row-input' type='text'
+                <input className='totals-data-row-input' type='number'
                 onChange={this.taxesAmountChanged.bind(this)}
                 disabled={this.props.is_closed}
                 value={this.props.cartTaxes} />

@@ -16,7 +16,7 @@ export default class Cart extends React.Component {
   componentWillMount() {
 
     const _this = this
-    Mousetrap.bind('mod+b', function(e) {
+    Mousetrap.bind('f1', function(e) {
 
       if (e.preventDefault) {
         e.preventDefault()
@@ -25,19 +25,27 @@ export default class Cart extends React.Component {
         e.returnValue = false
       }
 
-      _this.props.dispatch({type: 'SEARCH_PRODUCT_TOGGLE_PANEL', payload: -1})
-      document.getElementById('product-search-input').focus()
-      document.getElementById('product-search-input').value = ''
+      _this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+      document.getElementById('productSearch-input-field').focus()
+      document.getElementById('productSearch-input-field').value = ''
 
       Mousetrap.bind('esc', function() {
-        _this.props.dispatch({type: 'SEARCH_PRODUCT_TOGGLE_PANEL', payload: -1})
+        _this.props.dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
         document.getElementById('productCodeInputField').focus()
         document.getElementById('productCodeInputField').value = ''
         Mousetrap.unbind('esc')
+        Mousetrap.unbind('up')
+        Mousetrap.unbind('down')
+      })
+      Mousetrap.bind('down', function(e) {
+        _this.props.dispatch({type: 'productSearch_INCREASE_ACTIVE_INDEX', payload: -1})
+      })
+      Mousetrap.bind('up', function(e) {
+        _this.props.dispatch({type: 'productSearch_DECREASE_ACTIVE_INDEX', payload: -1})
       })
     })
 
-    Mousetrap.bind('mod+c', function(e) {
+    Mousetrap.bind('f2', function(e) {
 
       if (e.preventDefault) {
         e.preventDefault()
@@ -46,15 +54,17 @@ export default class Cart extends React.Component {
         e.returnValue = false
       }
 
-      _this.props.dispatch({type: 'SEARCH_CLIENT_TOGGLE_PANEL', payload: -1})
-      document.getElementById('client-search-input').focus()
-      document.getElementById('client-search-input').value = ''
+      _this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+      document.getElementById('clientSearch-input-field').focus()
+      document.getElementById('clientSearch-input-field').value = ''
 
       Mousetrap.bind('esc', function() {
-        _this.props.dispatch({type: 'SEARCH_CLIENT_TOGGLE_PANEL', payload: -1})
+        _this.props.dispatch({type: 'clientSearch_TOGGLE_SEARCH_PANEL', payload: -1})
         document.getElementById('productCodeInputField').focus()
         document.getElementById('productCodeInputField').value = ''
         Mousetrap.unbind('esc')
+        Mousetrap.unbind('up')
+        Mousetrap.unbind('down')
       })
     })
   }
