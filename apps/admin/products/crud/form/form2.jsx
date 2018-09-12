@@ -207,8 +207,8 @@ class Form2 extends React.Component {
         </div>
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>
-            <label>Pide Precio al facturar?</label>
-            <input checked={this.props.product.ask_price} name='ask_price'
+            <label>Usa Redondeo de precio?</label>
+            <input checked={this.props.product.use_coin_round} name='use_coin_round'
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
@@ -227,8 +227,8 @@ class Form2 extends React.Component {
             <label>Impuesto 1</label>
 
             <Select2
-              name='taxes_code'
-              value={this.props.product.taxes_code}
+              name='tax_code'
+              value={this.props.product.tax_code}
               data={taxesData}
               className='form-control'
               onSelect={this.handleInputChange.bind(this)}
@@ -258,8 +258,8 @@ class Form2 extends React.Component {
           <div className='col-xs-6 first'>
             <label>Impuesto 2</label>
             <Select2
-              name='taxes_code2'
-              value={this.props.product.taxes_code2}
+              name='tax_code2'
+              value={this.props.product.tax_code2}
               data={taxesData}
               className='form-control'
               onSelect={this.handleInputChange.bind(this)}

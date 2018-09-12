@@ -38,13 +38,13 @@ const productModel = {
   ask_price: false,
   use_taxes: false,
   taxes: 0,
-  taxes_code: '00',
+  tax_code: '00',
   use_taxes2: false,
   taxes2: 0,
-  taxes_code2: '00',
+  tax_code2: '00',
   use_taxes3: false,
   taxes3: 0,
-  taxes_code3: '00',
+  tax_code3: '00',
   pred_discount: 0,
   is_active: true,
   consignment: false,
@@ -54,7 +54,8 @@ const productModel = {
   on_sale: false,
   max_sale_discount: 0,
   max_regular_discount: 5,
-  is_service: false
+  is_service: false,
+  use_coin_round: true
 }
 
 const stateConst = {
