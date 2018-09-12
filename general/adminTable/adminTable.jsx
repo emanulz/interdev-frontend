@@ -216,6 +216,15 @@ export default class AdminTable extends React.Component {
               </td>
               break
             }
+
+            case 'XML_HACIENDA_PURCHASE':
+            {
+              const url = `${header.base_url}/${itemToRender}-${itemToRender2}_response.xml`
+              item = <td key={`${el[idField]}_${header.field}_xml_response`}>
+                <a download={`${itemToRender}_respuesta.xml`} href={url}><i className='fa fa-file-code-o' /></a>
+              </td>
+              break
+            }
             case 'price':
             {
               item = <td key={`${el[idField]}_${header.field}`}>

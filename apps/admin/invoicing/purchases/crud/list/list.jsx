@@ -89,8 +89,9 @@ export default class List extends React.Component {
         idField: 'consecutive_numbering'
       }, {
         field: 'numeric_key',
+        field2: 'consecutive_numbering',
         text: 'Respuesta',
-        type: 'XML_HACIENDA',
+        type: 'XML_HACIENDA_PURCHASE',
         base_url: `/media/purchases/signed/${this.props.userProfile.tax_payer_id}`,
         idField: 'consecutive_numbering'
       }, {
