@@ -7,10 +7,17 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
   return {
     panelVisible: store.reprintInvoice.isVisible,
     isFull: store.reprintInvoice.isFull,
-    sale: store.reprintInvoice.sale
+    sale: store.reprintInvoice.sale,
+    config: store.config.globalConf
   }
 })
 export default class ReprintInvoicePanel extends React.Component {
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.config != nextProps.config) {
+      this.props.dispatch({type: 'SET_REPRINT_INVOICE_PANEL_FULL', payload: nextProps.config.defaultInvoiceFull})
+    }
+  }
 
   hidePanel() {
 

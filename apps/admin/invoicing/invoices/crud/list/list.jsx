@@ -43,7 +43,10 @@ export default class List extends React.Component {
         let text = 'PROCESANDO'
         let className = 'processing'
         const accepted = splittedHistory.find((el) => { return el == '4' })
-        const rejected = splittedHistory.find((el) => { return el == '5' })
+        const rejected = splittedHistory.find((el) => {
+          const num = parseInt(el)
+          return !accepted && num >= 5
+        })
         if (accepted) {
           text = 'ACEPTADO'
           className = 'accepted'
