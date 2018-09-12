@@ -13,9 +13,10 @@ import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    clients: store.clients.clients,
+    purchases: store.epurchases.epurchases,
     pageSize: store.pagination.pageSize,
-    searchResults: store.adminSearch.searchResults
+    searchResults: store.adminSearch.searchResults,
+    userProfile: store.userProfile.profile
   }
 })
 export default class List extends React.Component {
@@ -23,13 +24,13 @@ export default class List extends React.Component {
   componentWillMount() {
 
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_EPURCHASES', payload: ''})
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const clientKwargs = {
-      url: `/api/clients/?limit=${this.props.pageSize}`,
-      successType: 'FETCH_CLIENTS_FULFILLED',
-      errorType: 'FETCH_CLIENTS_REJECTED'
+      url: `/api/receivedelectronicdoc/?limit=${this.props.pageSize}`,
+      successType: 'FETCH_EPURCHASES_FULFILLED',
+      errorType: 'FETCH_EPURCHASES_REJECTED'
     }
 
     this.props.dispatch(getPaginationItemDispatch(clientKwargs))
@@ -37,36 +38,70 @@ export default class List extends React.Component {
 
   render() {
 
+    const getStatus = (item) => {
+      function getElementStatus(item) {
+        const splittedHistory = item.process_history.split('_')
+        let text = 'PROCESANDO'
+        let className = 'processing'
+        const accepted = splittedHistory.find((el) => { return el == '4' })
+        const rejected = splittedHistory.find((el) => {
+          const num = parseInt(el)
+          return !accepted && num >= 5
+        })
+        if (accepted) {
+          text = 'ACEPTADO'
+          className = 'accepted'
+        }
+
+        if (rejected) {
+          text = 'RECHAZADO'
+          className = 'rejected'
+        }
+
+        return <span className={className}>{text}</span>
+      }
+      return getElementStatus(item)
+    }
+
     const headerOrder = [
       {
-        field: 'code',
-        text: 'Código',
-        type: 'primary'
+        field: 'consecutive_numbering',
+        text: 'Consecutivo',
+        type: 'text'
       }, {
-        field: 'name',
-        text: 'Nombre'
+        field: 'updated',
+        text: 'Fecha Modificación',
+        type: 'date'
       }, {
-        field: 'last_name',
-        text: 'Apellido'
+        field: 'process_status',
+        text: 'Estado del Proceso'
       }, {
-        field: 'id_num',
-        text: 'Identificación'
+        field: 'id',
+        type: 'function_element',
+        idField: 'id',
+        worker_method: getStatus,
+        text: 'Estado Hacienda'
       }, {
-        field: 'has_credit',
-        text: 'Tiene Crédito',
-        type: 'bool'
+        field: 'numeric_key',
+        text: 'XML',
+        type: 'XML',
+        base_url: `/media/purchases/signed/${this.props.userProfile.tax_payer_id}`,
+        idField: 'consecutive_numbering'
       }, {
-        field: 'credit_limit',
-        text: 'Límite de crédito',
-        type: 'price'
+        field: 'numeric_key',
+        text: 'Respuesta',
+        type: 'XML_HACIENDA',
+        base_url: `/media/purchases/signed/${this.props.userProfile.tax_payer_id}`,
+        idField: 'consecutive_numbering'
       }, {
-        field: 'credit_days',
-        text: 'Días de crédito'
+        field: 'id',
+        type: 'RESET_HUMAN',
+        idField: 'id',
+        text: 'Reintentar'
       }
     ]
-
     const fetching = <div />
-    const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.clients
+    const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.purchases
     const list = <AdminTable headerOrder={headerOrder} model='clients' data={tableData}
       idField='id' />
 
@@ -79,8 +114,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
-        <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+        <ResultsPerPage url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
+        <Pagination url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
       </div>
       : <div />
 
@@ -98,8 +133,8 @@ export default class List extends React.Component {
       <SearchAdmin model='client' namespace='adminSearch' />
       {paginationDiv}
       {/* <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
-        <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+        <ResultsPerPage url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
+        <Pagination url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
       </div> */}
       {content}
     </div>

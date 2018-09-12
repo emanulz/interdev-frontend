@@ -6,7 +6,7 @@ const defaultPermissions = {
 }
 
 const stateConst = {
-  purchases: [],
+  epurchases: [],
   loadedPurchase: {},
   purchaseToUpload: '',
   permissions: defaultPermissions
