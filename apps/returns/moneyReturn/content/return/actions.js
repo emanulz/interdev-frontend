@@ -119,7 +119,12 @@ export function updateQty (code, qty, itemsInCart, sale) {
 export function getAlreadyReturnedQty(item, sale) {
 
   try {
-    const itemReturns = sale.returns_collection.filter(row => { return row.id == item.product.id })
+    const itemReturns = sale.returns_collection.filter(row => {
+      if (row.uuid) {
+        return row.uuid == item.uuid
+      }
+      return row.id == item.product.id
+    })
     let alreadyReturned = 0
     for (let i = 0; i < itemReturns.length; i++) {
       alreadyReturned += parseFloat(itemReturns[i]['ret_qty'])
