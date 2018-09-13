@@ -28,7 +28,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const clientKwargs = {
-      url: `/api/electronicticket/?limit=${this.props.pageSize}`,
+      url: `/api/electronicticket/?limit=${this.props.pageSize}&ordering=-created`,
       successType: 'FETCH_ETICKETS_FULFILLED',
       errorType: 'FETCH_ETICKETS_REJECTED'
     }

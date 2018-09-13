@@ -27,7 +27,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const clientKwargs = {
-      url: `/api/electroniccreditnote/?limit=${this.props.pageSize}`,
+      url: `/api/electroniccreditnote/?limit=${this.props.pageSize}&ordering=-created`,
       successType: 'FETCH_ECREDIT_NOTES_FULFILLED',
       errorType: 'FETCH_ECREDIT_NOTES_REJECTED'
     }

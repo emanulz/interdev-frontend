@@ -27,7 +27,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const clientKwargs = {
-      url: `/api/electronicinvoice/?limit=${this.props.pageSize}`,
+      url: `/api/electronicinvoice/?limit=${this.props.pageSize}&ordering=-created`,
       successType: 'FETCH_EINVOICES_FULFILLED',
       errorType: 'FETCH_EINVOICES_REJECTED'
     }
