@@ -31,10 +31,10 @@ export default class CartItems extends React.Component {
     const items2 = sale.cart
       ? sale.cart.cartItems.map((item, index) => {
         const alreadyReturned = getAlreadyReturnedQty(item, sale)
-        const alreadyIncart = this.props.returnItems.find(row => { return row.id == item.product.id })
+        const alreadyIncart = this.props.returnItems.find(row => { return row.uuid == item.uuid })
         const alreadyAddedClass = alreadyIncart ? 'already-added' : ''
         const grayedClass = alreadyReturned >= parseFloat(item.qty) ? 'cart-body-item all-returned' : 'cart-body-item'
-        return <div className={`${grayedClass} ${alreadyAddedClass}`} key={item.product.id} >
+        return <div className={`${grayedClass} ${alreadyAddedClass}`} key={item.uuid} >
 
           <div className='cart-body-item-code'>
             <h5>Código</h5>

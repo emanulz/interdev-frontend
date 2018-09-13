@@ -212,7 +212,6 @@ export default class CartItems extends React.Component {
         : 0
 
       const qtyField = <input
-        lang='en-150'
         id={`qty${item.product.code}`}
         disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) || this.props.reserveLoaded}
         onChange={this.qtyInputChange.bind(this, item.uuid)}

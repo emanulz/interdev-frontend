@@ -55,7 +55,7 @@ export default class CartItems extends React.Component {
           value={item.qty}
         />
 
-        return <div className='cart-body-item' key={item.originalItem.product.id} >
+        return <div className='cart-body-item' key={item.originalItem.uuid} >
 
           <div className='cart-body-item-code'>
             <h5>Código</h5>

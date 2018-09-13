@@ -255,7 +255,7 @@ export default class PaySideBar extends React.Component {
           <div className='pay-dropdown right'>
             <select value={this.props.isInvoice} onChange={this.setTicketOrInvoice.bind(this)}>
               <option value='TIQUETE'>Tiquete Electrónico</option>
-              <option value='FACTURA'>Factura Electónica</option>
+              <option value='FACTURA'>Factura Electrónica</option>
             </select>
           </div>
         </div>
