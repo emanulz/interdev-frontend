@@ -176,11 +176,11 @@ class Form extends React.Component {
       </div>
 
       {buttons}
-      ****** Temp for testing *****
+      {/* ****** Temp for testing *****
       <div className='viewInvoice-buttons'>
         <button onClick={this.acceptInvoice.bind(this)} className='btn btn-success uploadButton'> ACEPTAR </button>
         <button onClick={this.rejectInvoice.bind(this)} className='btn btn-danger uploadButton'> RECHAZAR </button>
-      </div>
+      </div> */}
 
     </div>
   }
