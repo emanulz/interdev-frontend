@@ -9,6 +9,7 @@ import {updateItem} from '../product/actions.js'
         orderTransport: store.cart.orderTransport,
         cartSubtotal: store.cart.cartSubtotal,
         discount_mode: store.cart.discount_mode,
+        selected_warehouse: store.warehouses.selectedWarehouse
     }
 })
 export default class ProductDetail extends React.Component {
@@ -117,8 +118,14 @@ export default class ProductDetail extends React.Component {
         let new_cost = ''
         let new_utility = ''
         let transport_cost = ''
+        let product_existence = ''
+
         if(index != -1){
             description = cart_line.product.description
+            let selected_warehouse =  this.props.selected_warehouse['id']
+            //obtain the current existences on the selected warehouse
+            product_existence = JSON.parse(cart_line.product.inventory_existent)[selected_warehouse]
+
             current_price_tax = (cart_line.product.sell_price)
             current_cost = cart_line.product.cost.toFixed(2)
             current_utility = (cart_line.product.utility*100).toFixed(2)
@@ -141,7 +148,10 @@ export default class ProductDetail extends React.Component {
                 <div className="productDetail-data-row-label">Descripción:</div>
                 <div className="productDetail-data-row-value"> {description} </div>
             </div>
-
+            <div className='productDetail-data-row'>
+                <div className="productDetail-data-row-label">Existencia:</div>
+                <div className="productDetail-data-row-value"> {product_existence} </div>
+            </div>
             <div className='productDetail-data-row'>
                 <div className="productDetail-data-row-label">Costo Actual:</div>
                 <div className="productDetail-data-row-value"> {current_cost} </div>
