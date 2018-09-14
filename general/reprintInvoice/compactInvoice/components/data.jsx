@@ -52,6 +52,8 @@ export default class Data extends React.Component {
     const ticket = this.props.ticket
     const invoice = this.props.invoice
     let numericKey = ''
+    let numericKey1 = ''
+    let numericKey2 = ''
     let longConsecutive = ''
     let documentType = ''
     try {
@@ -62,6 +64,11 @@ export default class Data extends React.Component {
       }
       if (ticket) {
         numericKey = ticket.numeric_key
+        try {
+          numericKey1 = numericKey.substr(0, 21)
+          numericKey2 = numericKey.substr(21, 50)
+        } catch (err) {}
+
         longConsecutive = ticket.consecutive_numbering
         documentType = 'Tiquete Electrónico'
       }
@@ -89,7 +96,11 @@ export default class Data extends React.Component {
           </tr>
           <tr>
             <th>Clave:</th>
-            <td className='numeric-key-compact'>{numericKey}</td>
+            <td >{numericKey1}</td>
+          </tr>
+          <tr>
+            <th />
+            <td>{numericKey2}</td>
           </tr>
           <tr>
             <th>Cliente:</th>

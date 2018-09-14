@@ -1,5 +1,6 @@
 
 .reprint-compact-invoice
+    font-family: Arial, sans-serif
     position: relative
     height: 100%
     width: 100%
@@ -15,12 +16,12 @@
         flex-grow: 1
         text-align: center
         & h2
-            font-size: 14px
+            font-size: 17px
             margin: 0 0 2px 0
             font-weight: bold
         & h3
-            font-size: 11px
-            margin: 0 0 1px 0
+            font-size: 14px
+            margin: 0 0 3px 0
             font-weight: normal
 
 
@@ -33,14 +34,15 @@
     line-height: 40px
     text-transform: uppercase
     & h1
-        font-size: 14px
+        font-size: 17px
         margin: 0 5px
         line-height: 40px
+        font-weight: bold
     & span
         flex-grow: 1
         margin-top: 20px
         height: 1px
-        border-top: 1px solid #ccc
+        border-top: 1px solid black
         vertical-align: middle
 
 
@@ -48,52 +50,58 @@
     position: relative
     display: flex
     flex-flow: column
+    font-family: Arial, sans-serif
 
     & .datenum-table
         float: right
         border: none
         & th
+            font-family: Arial, sans-serif
             width: 22%
             background: none
             color: black
-            padding: 2px 0
+            padding: 5px 0
             font-weight: bold
-            font-size: 13px
+            font-size: 14px
 
         & td
+            font-family: Arial, sans-serif
+            font-weight: normal
             padding: 2px 0
-            font-size: 13px
+            font-size: 14px
 
 
 .reprint-compact-invoice-table
-    margin-top: 10px
+    margin-top: 15px
     border: none
+    font-family: Arial, sans-serif
 
     &-header
-        font-size: 13px
+        font-size: 16px
         width: 100%
         display: flex
         flex-flow: row
         font-weight: bold
         &-qty
-            width: 20%
+            width: 25%
         &-code
             width: 25%
-            text-align: center
+            text-align: left
         &-iv
             width: 20%
             text-align: center
         &-total
-            width: 35%
+            width: 30%
             text-align: right
     &-body
-        border-top: 1px solid #ccc
+        font-family: Arial, sans-serif
+        border-top: 1px solid black
         margin-top: 5px
-        font-size: 11px
+        font-size: 14px
         &-item
             width: 100%
             padding: 5px 0
-            border-bottom: 1px solid #ccc
+            border-bottom: 1px solid black
             &-description
                 width: 100%
                 display: flex
@@ -106,12 +114,12 @@
                 flex-flow: row
                 margin-top: 5px
                 &-qty
-                    width: 20%
+                    width: 25%
                 &-code
                     width: 25%
-                    text-align: center
+                    text-align: left
                 &-iv
-                    width: 25%
+                    width: 20%
                     text-align: center
                 &-total
                     width: 30%
@@ -124,7 +132,6 @@
     display: flex
     justify-content: flex-end
     & table
-
         width: 80%
         border: none
         & th
@@ -133,34 +140,44 @@
             padding-right: 20px
             background: none
             color: black
-            font-size: 12px
+            font-size: 15px
         & td
             padding: 2px
-            font-size: 12px
+            font-size: 15px
             text-align: right
-
+            color: black
     & .total-row
         & th
-            font-size: 16px
+            font-size: 17px
             font-weight: bold
-            border-top: 1px solid #ccc
-            border-bottom: 1px solid #ccc
+            border-top: 1px solid black
+            border-bottom: 1px solid black
         & td
-            font-size: 14px
+            font-size: 17px
             font-weight: bold
-            border-top: 1px solid #ccc
-            border-bottom: 1px solid #ccc
+            border-top: 1px solid black
+            border-bottom: 1px solid black
+
+.reprint-compact-invoice-payment
+    margin-top: 15px
+    & table
+        width: 100%
+        & tr
+            width: 100%
+            & th
+                font-weight: bold
+                width: 22%
 
 
 .reprint-compact-invoice-notes
     width: 100%
-    font-size: 11px
+    font-size: 14px
     display: flex
     flex-flow: column
     justify-content: flex-start
     margin-top: 20px
     & h1
-        font-size: 12px
+        font-size: 14px
         font-weight: bold
         padding: 0
         margin: 0
@@ -171,7 +188,7 @@
         & hr
             margin-top: 30px
             border: none
-            border-bottom: 1px solid #ccc
+            border-bottom: 1px solid black
     &-content
         & div
             padding-top: 15px
