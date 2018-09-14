@@ -108,7 +108,7 @@ export default class Data extends React.Component {
           </tr>
 
           <tr>
-            <th>Vendedor:</th>
+            <th>Vend:</th>
             <td>{seller}</td>
           </tr>
 
