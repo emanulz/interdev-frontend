@@ -124,7 +124,15 @@ export default class ProductDetail extends React.Component {
             description = cart_line.product.description
             let selected_warehouse =  this.props.selected_warehouse['id']
             //obtain the current existences on the selected warehouse
-            product_existence = JSON.parse(cart_line.product.inventory_existent)[selected_warehouse]
+            try{
+                console.log("earehouse ", selected_warehouse)
+                console.log("cart line", cart_line)
+                product_existence = JSON.parse(cart_line.product.inventory_existent)[selected_warehouse]
+            }catch(err){
+                console.log("Error parsing product existence")
+                product_existence = cart_line.product.inventory_existent[selected_warehouse]
+            }
+            
 
             current_price_tax = (cart_line.product.sell_price)
             current_cost = cart_line.product.cost.toFixed(2)
