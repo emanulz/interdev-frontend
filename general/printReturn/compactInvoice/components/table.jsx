@@ -13,7 +13,14 @@ export default class Table extends React.Component {
     const returnItems = this.props.returnObject.return_list ? this.props.returnObject.return_list : []
 
     const items = returnItems.map((itemInner) => {
-      const item = cartItems.find(inner => { return inner.product.id == itemInner.id })
+      const item = cartItems.find(inner => {
+        if (itemInner.uuid) {
+          return inner.uuid == itemInner.uuid
+        }
+        if (itemInner.id) {
+          return inner.product.id == itemInner.id
+        }
+      })
       const taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
         ? `G`
         : `E`
