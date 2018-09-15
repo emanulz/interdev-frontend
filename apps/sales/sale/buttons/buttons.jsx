@@ -9,10 +9,12 @@ import {connect} from 'react-redux'
     disabled: store.completed.completed,
     isWorkOrderLoaded: store.completed.isWorkOrderLoaded,
     isPresaleLoaded: store.completed.isPresaleLoaded,
+    isQuotationLoaded: store.completed.isQuotationLoaded,
     isReserveLoaded: store.completed.isReserveLoaded,
     isRestaurantBillLoaded: store.completed.isRestaurantBillLoaded,
     useReserves: store.config.globalConf.useReserves,
     usePresales: store.config.globalConf.usePresales,
+    useQuoting: store.config.globalConf.useQuoting,
     useResrestaurant: store.config.globalConf.useRestaurant,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
@@ -23,8 +25,8 @@ export default class Buttons extends React.Component {
   showPayPanel() {
     this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
   }
-  showInoicePanel() {
-    this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: -1})
+  showInvoicePanel() {
+    this.props.dispatch({type: 'SHOW_REPRINT_INVOICE_PANEL', payload: -1})
   }
   showSalePanel() {
     this.props.dispatch({type: 'SHOW_SALES_PANEL', payload: -1})
@@ -37,6 +39,9 @@ export default class Buttons extends React.Component {
   }
   showReservesPanel() {
     this.props.dispatch({type: 'SHOW_RESERVES_PANEL', payload: -1})
+  }
+  showQuotationsPanel() {
+    this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
   }
   showWorkOrdersPanel() {
     this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
@@ -64,7 +69,7 @@ export default class Buttons extends React.Component {
 
     const presalesBtn = this.props.usePresales
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
         onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -79,9 +84,26 @@ export default class Buttons extends React.Component {
       </button>
       : ''
 
+    const quotationsBtn = this.props.useQuoting
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
+        onClick={this.showQuotationsPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Cotizaciones
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
     const restaurantBillsBtn = this.props.useResrestaurant
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
         onClick={this.showRestaurantBillsPanel.bind(this)}
         style={{
           'height': '48px',
@@ -98,7 +120,7 @@ export default class Buttons extends React.Component {
 
     const reservesBtn = this.props.useReserves
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
         onClick={this.showReservesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -115,7 +137,7 @@ export default class Buttons extends React.Component {
 
     const workOrdersBtn = this.props.workshopAppInstalled
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
@@ -132,7 +154,7 @@ export default class Buttons extends React.Component {
 
     const cashAdvanceBtn = this.props.acceptCashAdvances
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
         onClick={this.showCashAdvancesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -150,7 +172,7 @@ export default class Buttons extends React.Component {
     const buttons = this.props.disabled
       ? <div>
         <button
-          onClick={this.showInoicePanel.bind(this)}
+          onClick={this.showInvoicePanel.bind(this)}
           style={{
             'height': '48px',
             'width': '49%',
@@ -188,6 +210,7 @@ export default class Buttons extends React.Component {
       {reservesBtn}
       {cashAdvanceBtn}
       {restaurantBillsBtn}
+      {quotationsBtn}
 
       <button
         disabled={this.props.disabled}
@@ -207,7 +230,7 @@ export default class Buttons extends React.Component {
       {workOrdersBtn}
 
       <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
         onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',

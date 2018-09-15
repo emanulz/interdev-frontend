@@ -11,7 +11,7 @@ export default class Header extends React.Component {
 
   render() {
 
-    const headertext = 'Devolución a factura'
+    const headertext = 'Nota de crédito a factura'
 
     // BILL DATA
     const profile = this.props.userProfile.profile
@@ -46,12 +46,12 @@ export default class Header extends React.Component {
 
     return <div>
 
-      <div className='reprint-full-invoice-header'>
+      <div className='print-return-full-invoice-header'>
 
-        <div className='reprint-full-invoice-header-logo'>
+        <div className='print-return-full-invoice-header-logo'>
           <img style={{'width': `${logoWidth}`}} src={logoUrl} />
         </div>
-        <div className='reprint-full-invoice-header-info'>
+        <div className='print-return-full-invoice-header-info'>
           <h2>{headerName.toUpperCase()}</h2>
           <h3>{headerName2}</h3>
           <h3>{address1}</h3>
@@ -63,7 +63,7 @@ export default class Header extends React.Component {
 
       </div>
 
-      <div className='reprint-full-invoice-separator'>
+      <div className='print-return-full-invoice-separator'>
         <span />
 
         <h1>{headertext}</h1>

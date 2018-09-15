@@ -3,38 +3,40 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    total: store.cart.cartTotal,
-    taxes: store.cart.cartTaxes,
-    discountTotal: store.cart.discountTotal,
-    subTotalNoDiscount: store.cart.cartSubtotalNoDiscount,
-    itemsInCart: store.cart.cartItems,
-    globalDiscount: store.cart.globalDiscount
+    creditNote: store.printReturn.credit_note
   }
 })
 export default class Totals extends React.Component {
 
   render() {
 
-    return <div className='reprint-full-invoice-totals'>
+    const creditNote = this.props.creditNote
+    // SET THE DEFAULT VALUES
+    let total = 0
+    let taxes = 0
+    let subTotal = 0
+    // LOAD ITEMS FROM SALE ONLY IF LOADED
+    if (Object.keys(creditNote).length > 0) {
+      total = parseFloat(creditNote.amount)
+      taxes = parseFloat(creditNote.taxes_amount)
+      subTotal = parseFloat(creditNote.subtotal_amount)
+    }
+
+    return <div className='print-return-full-invoice-totals'>
 
       <table>
         <tbody>
           <tr>
-            <th>Sub-total</th>
-            <td>₡ {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
-
+            <th>Sub-total Dev</th>
+            <td>₡ {subTotal.formatMoney(2, ',', '.')}</td>
           </tr>
           <tr>
-            <th>Descuento</th>
-            <td>₡ {this.props.discountTotal.formatMoney(2, ',', '.')}</td>
-          </tr>
-          <tr>
-            <th>IV</th>
-            <td>₡ {this.props.taxes.formatMoney(2, ',', '.')}</td>
+            <th>IV Dev</th>
+            <td>₡ {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
           <tr className='total-row'>
-            <th>Total</th>
-            <td>₡ {this.props.total.formatMoney(2, ',', '.')}</td>
+            <th>Total dev</th>
+            <td>₡ {total.formatMoney(2, ',', '.')}</td>
           </tr>
         </tbody>
       </table>

@@ -1,29 +1,35 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 
 @connect((store) => {
-  return {sale: store.sales.saleActive}
+  return {
+    returnObject: store.printReturn.return_object,
+    creditNote: store.printReturn.credit_note
+  }
 })
 export default class Data extends React.Component {
 
   render() {
 
-    const sale = this.props.sale
-    const date = sale.created
-      ? `${('0' + sale.created.getDate()).slice(-2)}/
-      ${('0' + (sale.created.getMonth() + 1)).slice(-2)}/
-      ${sale.created.getFullYear()}`
-      : '01/01/1970'
-    const client = sale.client ? `${sale.client.code} - ${sale.client.name} ${sale.client.last_name}` : '00 - Cliente de Contado'
-    const clientAdress = sale.client.adress
-      ? <tr>
-        <td className='reprint-clientAdress'>DIRECCIÓN: {sale.client.adress}</td>
-      </tr>
-      : <tr />
-    const id = sale.consecutive ? sale.consecutive : '00001'
+    const returnObject = this.props.returnObject
+    const creditNote = this.props.creditNote
+    const user = returnObject.user ? returnObject.user : ''
 
-    return <div className='reprint-full-invoice-data'>
+    const date = returnObject.created
+      ? `${formatDateTimeAmPm(returnObject.created)}`
+      : `${formatDateTimeAmPm(new Date())}`
+    const cashierName = user.first_name
+      ? `${user.first_name} ${user.last_name}`
+      : user.length ? `${user.username}` : ''
 
+    const client = returnObject.client ? `${returnObject.client.code} - ${returnObject.client.name} ${returnObject.client.last_name}` : '00 - Cliente de Contado'
+    const saleId = returnObject.sale_consecutive ? returnObject.sale_consecutive : '0001'
+    const returnId = returnObject.consecutive ? returnObject.consecutive : '0001'
+    const creditNoteId = creditNote.consecutive ? creditNote.consecutive : '0001'
+    const seller = cashierName
+
+    return <div className='print-return-full-invoice-data'>
       <table className='client-table'>
         <thead>
           <tr>
@@ -34,21 +40,26 @@ export default class Data extends React.Component {
           <tr>
             <td>{client}</td>
           </tr>
-          {clientAdress}
         </tbody>
 
       </table>
       <table className='datenum-table'>
-
         <tbody>
           <tr>
-            <th>N. de factura:</th>
-            <td>{('00000' + id).slice(-5)}</td>
-
+            <th>N. de Devolución:</th>
+            <td>{returnId}</td>
+          </tr>
+          <tr>
+            <th>N. de Nota:</th>
+            <td>{creditNoteId}</td>
           </tr>
           <tr>
             <th>Fecha:</th>
             <td>{date}</td>
+          </tr>
+          <tr>
+            <th>Factura de venta:</th>
+            <td>{saleId}</td>
           </tr>
         </tbody>
 

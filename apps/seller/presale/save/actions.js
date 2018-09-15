@@ -30,9 +30,7 @@ export function saveItem(kwargs, resolve, reject) {
         console.log(response)
         dispatch({type: 'CLEAR_PRESALE', payload: ''})
         dispatch({type: 'SET_PRESALE', payload: response.data})
-        alertify.alert('Completado', kwargs.sucessMessage)
         resolve(response.data)
-
       }).catch((err) => {
         console.log(err)
         reject()

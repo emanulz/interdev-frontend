@@ -3,6 +3,7 @@ import React from 'react'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
 import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -62,6 +63,8 @@ export default class SaveBtn extends React.Component {
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING') {
         this.props.dispatch(loadPresaleToPrint(data.consecutive))
+      } else {
+        alertify.alert('COMPLETADO', 'Preventa Enviada a Caja Correctamente')
       }
     }).catch((err) => {
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})

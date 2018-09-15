@@ -11,7 +11,7 @@ export default class Header extends React.Component {
 
   render() {
 
-    const headertext = 'Devolución a factura'
+    const headertext = 'N. de Crédito a factura'
 
     // BILL DATA
     const profile = this.props.userProfile.profile

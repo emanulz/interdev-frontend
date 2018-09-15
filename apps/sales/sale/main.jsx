@@ -10,6 +10,7 @@ import PayPanel from './pay/payPanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
 import Reserves from './reserves/reservesList.jsx'
+import Quotations from './quotations/quotationsList.jsx'
 import RestaurantBills from './restaurantBills/restaurantBillsList.jsx'
 import WorkOrders from './workOrders/workOrdersList.jsx'
 import TodaySales from './todaySales/todaySales.jsx'
@@ -65,6 +66,7 @@ export default class Sale extends React.Component {
       <PayPanel />
       <Presales />
       <Reserves />
+      <Quotations />
       <ClientPanel />
       <WorkOrders />
       <TodaySales />
