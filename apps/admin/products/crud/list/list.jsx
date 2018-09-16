@@ -24,6 +24,7 @@ export default class List extends React.Component {
 
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_IMAGE_FILE', payload: ''})
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const productKwargs = {

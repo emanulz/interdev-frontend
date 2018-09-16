@@ -64,6 +64,7 @@ class UpdateButtons extends React.Component {
           successType2: 'CLEAR_PRODUCT',
           errorType: 'FETCH_PRODUCTS_REJECTED'
         }
+        _this.props.dispatch({type: 'CLEAR_IMAGE_FILE', payload: ''})
         _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         _this.props.dispatch(getItemDoubleDispatch(productKwargs))
       }).catch((err) => {

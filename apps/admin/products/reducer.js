@@ -66,7 +66,7 @@ const stateConst = {
   previousProduct: 0,
   permissions: defaultPermissions,
   taxes: [],
-  file: '',
+  file: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -74,10 +74,18 @@ export default function reducer(state = stateConst, action) {
   switch (action.type) {
     case 'SET_IMAGE_FILE':
     {
-        return {
-            ...state,
-            file: action.payload
-        }
+      return {
+        ...state,
+        file: action.payload
+      }
+    }
+
+    case 'CLEAR_IMAGE_FILE':
+    {
+      return {
+        ...state,
+        file: action.payload
+      }
     }
 
     case 'FETCH_USER_PRODUCT_PERMISSIONS_FULLFILLED':

@@ -18,6 +18,7 @@ class Form extends React.Component {
   componentWillMount() {
 
     this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_IMAGE_FILE', payload: ''})
     this.props.dispatch({type: 'CLEAR_NEXT_PREV_PRODUCT', payload: ''})
 
     // Fetch the elements of the Departments model and dispatch to reducer

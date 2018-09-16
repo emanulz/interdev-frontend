@@ -49,6 +49,7 @@ class CreateButtons extends React.Component {
       kwargs.item = formData
 
       this.props.dispatch(saveItem(kwargs))
+      this.props.dispatch({type: 'CLEAR_IMAGE_FILE', payload: ''})
     }
   }
 
