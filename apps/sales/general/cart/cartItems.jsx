@@ -260,11 +260,11 @@ export default class CartItems extends React.Component {
           ₡ {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
         </div>
         <div className='cart-body-item-discount'>
-          <h5>Desc</h5>
+          <h5>Descuento</h5>
           {discountField}
         </div>
         <div className='cart-body-item-iva'>
-          <h5>IVA</h5>
+          <h5>IV</h5>
           {taxes1}
         </div>
         <div className='cart-body-item-total'>

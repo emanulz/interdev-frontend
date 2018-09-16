@@ -66,8 +66,10 @@
       flex-wrap: wrap
       justify-content: flex-start
       position: relative
+      font-size: 16px
       & h5
-        font-size: 15px
+        font-size: 16px
+        font-weight: bold
         width: 100%
       &-code
         width: 20%
@@ -76,18 +78,18 @@
       &-qty
         width: 30%
         & input
-          font-size: 13px
+          font-size: 15px
       &-unitPrice
         width: 20%
       &-discount
         width: 25%
         & input
-          font-size: 13px
+          font-size: 15px
       &-iva
         text-align: center
         width: 25%
       &-total
-        text-align: center
+        text-align: left
         width: 30%
       & .removeItemIcon
         position: absolute
@@ -95,10 +97,10 @@
         top: -5px
         & i
           cursor: pointer
-          font-size: 25px
+          font-size: 30px
           color: $SECONDARY-COLOR
           &:hover
-            font-size: 40px
+            font-size: 45px
       @media screen and (min-width: 800px)
         justify-content: space-between
         & .removeItemIcon
