@@ -87,22 +87,25 @@ export default class PaySideBar extends React.Component {
         <span>Cliente</span>
       </div>
 
-      <div className='newBill-method-body-content'>
-
-        <div className='newBill-tag left'>
-          Nombre :
+      <div className='newBill-side-bar-body-content'>
+        <div className='newBill-side-bar-body-content-row'>
+          <div className='left'>
+            Nombre :
+          </div>
+          {nameToShow}
         </div>
-        {nameToShow}
-
-        <div className='newBill-tag left'>
-          Apellido :
+        <div className='newBill-side-bar-body-content-row'>
+          <div className='left'>
+            Apellido :
+          </div>
+          {lastNameToShow}
         </div>
-        {lastNameToShow}
-
-        <div className='newBill-tag left'>
-          Email :
+        <div className='newBill-side-bar-body-content-row'>
+          <div className='left'>
+            Email :
+          </div>
+          {emailToShow}
         </div>
-        {emailToShow}
 
         <SaveBtn newBillButtonClass={newBillButtonClass} />
 

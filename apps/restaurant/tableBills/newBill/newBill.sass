@@ -90,7 +90,22 @@
     display: inline-block
     width: 100%
     border: 1px solid gray
-
+    &-body-content-row
+        display: flex
+        flex-flow: row
+        padding: 0 20px
+        margin-top: 10px
+        & .left
+            width: 200px
+            height: 50px
+            background-color: $SECONDARY-COLOR
+            color: white
+            padding-left: 10px
+            line-height: 50px
+        & input
+            margin-left: 15px
+            padding-left: 15px
+            flex-grow: 1
 .newBill-tag
     display: inline-block
     width: 40%
@@ -133,7 +148,8 @@
     &.tag-button
         width: 30%
         float: right
-        margin-right: 8%
+        margin-top: 10px
+        margin-right: 20px
         text-align: center
         cursor: pointer
         border-radius: 5px

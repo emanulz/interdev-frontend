@@ -415,7 +415,6 @@ export function setProduct(kwargs, resolve, reject) {
         actualizar, esto puede deberse a un error, por favor revise los
         datos o contacte con el administrador del sistema.`)
       }
-
       resolve(response.data)
 
     } else {

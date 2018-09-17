@@ -10,6 +10,7 @@ import {updatePresale} from './actions.js'
 import alertify from 'alertifyjs'
 import {loadPresaleItem} from '../actions.js'
 import { withRouter } from 'react-router-dom'
+import { setProduct, productSelected } from '../../../sales/general/product/actions.js'
 
 @connect((store) => {
   return {
@@ -21,7 +22,8 @@ import { withRouter } from 'react-router-dom'
     presaleType: store.send.presale_type,
     reserves_warehouse: store.config.reserves_warehouse,
     extras: store.extras,
-    presaleActiveId: store.presale.presaleActiveId
+    presaleActiveId: store.presale.presaleActiveId,
+    warehouse_id: store.userProfile.salesWarehouse
   }
 })
 class Content extends React.Component {
@@ -34,13 +36,58 @@ class Content extends React.Component {
     // ALERTIFY CONFIRM
     const _this = this
     alertify.confirm('Cerrar Orden', `¿Desea Cerrar la orden y calcular la cuenta? Esta acción no se puede deshacer`, function() {
-      _this.savePresale(true)
+      _this.add10PercentToCart(true)
     }, function() {
       return true
     }).set('labels', {
       ok: 'Cerrar',
       cancel: 'Permanecer'
     })
+  }
+
+  calc10Percent(cart, table) {
+    return cart.cartSubtotal * 0.1
+  }
+
+  add10PercentToCart(close) {
+    const _this = this
+    const setProductPromise = new Promise((resolve, reject) => {
+      const kwargs = {
+        lookUpField: 'code',
+        url: '/api/productslist/',
+        lookUpValue: '000',
+        lookUpName: 'código',
+        modelName: 'Productos'
+      }
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      setProduct(kwargs, resolve, reject)
+    })
+    setProductPromise.then((data) => {
+      console.log('DATAA', data)
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      const product = data.results[0]
+      product.price = _this.calc10Percent(_this.props.cart, 1)
+      try {
+        _this.props.dispatch(
+          productSelected(
+            product.code,
+            1,
+            product,
+            _this.props.cart.cartItems,
+            0,
+            _this.props.client,
+            _this.props.warehouse_id)
+        )
+        // AFTER ADDING THE 10 PERCENT CLOSE ORDER
+        this.savePresale(close)
+      } catch (err) {
+        console.log(err)
+      }
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      console.log(err)
+    })
+
   }
 
   savePresale(close) {
