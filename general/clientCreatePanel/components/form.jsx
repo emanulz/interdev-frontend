@@ -183,6 +183,18 @@ export default class Form extends React.Component {
       </div>
       <div className='clientCreatePanel-content-form-inline'>
         <div className='form-group'>
+          <label>Tipo de Identificación</label>
+          <div className='insideIcon'>
+            <select onChange={this.handleInputChange.bind(this)} className='form-control' name='id_type'
+              value={this.props.client.id_type} >
+              <option value='01'>Cédula Física</option>
+              <option value='02'>Cédula Jurídica</option>
+              <option value='03'>Pasaporte</option>
+            </select>
+            <i className='fa fa-id-card' />
+          </div>
+        </div>
+        <div className='form-group'>
           <label>Identificación</label>
           <div className='insideIcon'>
             <input value={this.props.client.id_num} name='id_num' onChange={this.handleInputChange.bind(this)} type='text'
@@ -190,6 +202,11 @@ export default class Form extends React.Component {
             <i className='fa fa-id-card' />
           </div>
         </div>
+
+      </div>
+
+      <div className='clientCreatePanel-content-form-inline'>
+
         <div className='form-group'>
           <label>Provincia</label>
           <div className='insideIcon'>
@@ -207,9 +224,6 @@ export default class Form extends React.Component {
             <i className='fa fa-home' />
           </div>
         </div>
-      </div>
-
-      <div className='clientCreatePanel-content-form-inline'>
         <div className='form-group'>
           <label>Canton</label>
           <div className='insideIcon'>
@@ -227,6 +241,9 @@ export default class Form extends React.Component {
             <i className='fa fa-home' />
           </div>
         </div>
+
+      </div>
+      <div className='clientCreatePanel-content-form-inline'>
         <div className='form-group'>
           <label>Distrito</label>
           <div className='insideIcon'>
@@ -244,8 +261,6 @@ export default class Form extends React.Component {
             <i className='fa fa-home' />
           </div>
         </div>
-      </div>
-      <div className='clientCreatePanel-content-form-inline'>
         <div className='form-group'>
           <label>Barrio</label>
           <div className='insideIcon'>
@@ -260,14 +275,6 @@ export default class Form extends React.Component {
                 noResultsText: 'Sin elementos'
               }}
             />
-            <i className='fa fa-home' />
-          </div>
-        </div>
-        <div className='form-group'>
-          <label>Otras Señas</label>
-          <div className='insideIcon'>
-            <input value={this.props.client.other_address} name='other_address' onChange={this.handleInputChange.bind(this)} type='text'
-              className='form-control' />
             <i className='fa fa-home' />
           </div>
         </div>

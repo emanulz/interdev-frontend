@@ -49,9 +49,14 @@ export default class SideMenu extends React.Component {
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
           <li>
-            <Link to='/restaurant'>
+            <Link to='/restaurant/tables'>
               <span className='fa fa-cutlery' />
               Mesas</Link>
+          </li>
+          <li>
+            <Link to='/restaurant/actions'>
+              <span className='fa fa-list' />
+              Comandas</Link>
           </li>
         </ul>
       </div>

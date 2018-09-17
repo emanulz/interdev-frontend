@@ -21,7 +21,7 @@ export default class Sale extends React.Component {
         <td>{bill.client_name}</td>
         <td>{bill.waiter_name}</td>
         <td>
-          <Link to={`/restaurant/${this.props.tableActive}/${bill.id_presale}`}>
+          <Link to={`/restaurant/tables/${this.props.tableActive}/${bill.id_presale}`}>
             Abrir
           </Link>
         </td>

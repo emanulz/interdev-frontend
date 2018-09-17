@@ -3,6 +3,7 @@ const clientModel = {
   code: '',
   email: '',
   has_credit: false,
+  id_type: '01',
   id_num: '',
   last_name: '',
   name: '',

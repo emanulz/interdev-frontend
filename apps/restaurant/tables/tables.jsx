@@ -21,7 +21,7 @@ export default class Sale extends React.Component {
 
     const tableList = this.props.tables.map(table => {
 
-      return <Link key={table.id} className='tables-single' to={`/restaurant/${table.id}`} >
+      return <Link key={table.id} className='tables-single' to={`/restaurant/tables/${table.id}`} >
         <div className='tables-single-identifier'>
           {table.indentifier}
         </div>

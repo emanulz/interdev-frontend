@@ -7,12 +7,14 @@ import {Route} from 'react-router-dom'
 import Presale from '../presale/main.jsx'
 import Tables from '../tables/tables.jsx'
 import TableBillss from '../tableBills/tableBills.jsx'
+import ActionList from '../actionList/actionList.jsx'
 
 const routes = <div className='heigh100'>
 
-  <Route exact path='/restaurant/' component={Tables} />
-  <Route exact path='/restaurant/:table' component={TableBillss} />
-  <Route exact path='/restaurant/:table/:presale' component={Presale} />
+  <Route exact path='/restaurant/tables' component={Tables} />
+  <Route exact path='/restaurant/actions' component={ActionList} />
+  <Route exact path='/restaurant/tables/:table' component={TableBillss} />
+  <Route exact path='/restaurant/tables/:table/:presale' component={Presale} />
   {/* <Route path='/seller/presale' component={Presale} /> */}
 
 </div>

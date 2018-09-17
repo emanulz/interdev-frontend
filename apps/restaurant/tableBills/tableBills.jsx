@@ -37,7 +37,7 @@ class TableBills extends React.Component {
   }
 
   goToTables() {
-    this.props.history.push(`/restaurant`)
+    this.props.history.push(`/restaurant/tables`)
   }
 
   // Main Layout

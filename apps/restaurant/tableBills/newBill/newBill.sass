@@ -50,19 +50,16 @@
     width: 90%
     height: calc(100% - 220px)
     min-height: 280px
-    display: inline-block
+    display: flex
+    flex-flow: column
 
 
 .newBill-method-body
-    display: inline-block
-    position: absolute
     top: 0
     left: 0
-    width: 49%
-    height: 100%
+    width: 100%
     border: 1px solid gray
     &-header
-        position: absolute
         display: block
         width: 100%
         top: 0
@@ -73,11 +70,8 @@
         font-size: 18px
         line-height: 30px
     &-content
-        position: relative
-        display: block
-        top: 50px
-        left: 0
         width: 100%
+        padding: 20px 0
         & input
             height: 50px
             font-size: 20px
@@ -93,12 +87,8 @@
                 margin-left: 10px
 
 .newBill-side-bar
-    position: absolute
-    top: 0
-    left: 50%
     display: inline-block
-    width: 49%
-    height: 100%
+    width: 100%
     border: 1px solid gray
 
 .newBill-tag

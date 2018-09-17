@@ -20,6 +20,7 @@ import userProfile from '../../general/userProfile/reducer.js'
 import tables from './tables/reducer.js'
 import tableBills from './tableBills/reducer.js'
 import newBill from './tableBills/newBill/reducer.js'
+import actions from './actionList/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -41,5 +42,6 @@ export default combineReducers({
   userProfile,
   tables,
   tableBills,
-  newBill
+  newBill,
+  actions
 })

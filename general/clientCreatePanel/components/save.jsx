@@ -47,12 +47,14 @@ export default class ClientCreateSave extends React.Component {
         alertify.alert('ERROR', `Error al cargar el nuevo cliente, por favor haga una búsqueda por nombre para utilizarlo.`)
       }
     }).catch((err) => {
-      console.log(err.response)
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('ERROR', `Error al crear cliente: ${err.response.data}`)
-      let error = err.response.data
-      error = error.replace(/\{/g, '').replace(/\}/g, '').replace(/\[/g, '').replace(/\]/g, '').replace(/'/g, '')
-      alertify.alert('ERROR', `Error: ${error}`)
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `Hubo un error al Crear el Cliente, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `Hubo un error al Crear el Cliente, ERROR: ${err}.`)
+      }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
 
