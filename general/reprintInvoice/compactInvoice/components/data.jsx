@@ -59,6 +59,10 @@ export default class Data extends React.Component {
     try {
       if (invoice) {
         numericKey = invoice.numeric_key
+        try {
+          numericKey1 = numericKey.substr(0, 21)
+          numericKey2 = numericKey.substr(21, 50)
+        } catch (err) {}
         longConsecutive = invoice.consecutive_numbering
         documentType = 'Factura Electrónica'
       }
