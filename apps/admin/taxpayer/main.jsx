@@ -41,7 +41,7 @@ export default class TaxPayerList extends React.Component {
         // Then fetch cantons of the model and dispatch to reducer
         // *******************************************************************
         const cantonKwargs = {
-            url: '/api/cantons',
+            url: '/api/cantons/?limit=100',
             successType: 'FETCH_CANTONS_FULFILLED',
             errorType: 'FETCH_CANTONS_REJECTED'
         }
@@ -52,7 +52,7 @@ export default class TaxPayerList extends React.Component {
         // Then fetch districts of the model and dispatch to reducer
         // *******************************************************************
         const districtKwargs = {
-            url: '/api/districts/?limit=5000',
+            url: '/api/districts/?limit=10000',
             successType: 'FETCH_DISTRICTS_FULFILLED',
             errorType: 'FETCH_DISTRICTS_REJECTED'
         }
@@ -63,7 +63,7 @@ export default class TaxPayerList extends React.Component {
         // Then fetch towns of the model and dispatch to reducer
         // *******************************************************************
         const townKwargs = {
-            url: '/api/towns/?limit=6000',
+            url: '/api/towns/?limit=10000',
             successType: 'FETCH_TOWNS_FULFILLED',
             errorType: 'FETCH_TOWNS_REJECTED'
         }
