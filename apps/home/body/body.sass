@@ -14,13 +14,15 @@
     color: white
 
 .buttons-container
-  display: flex
-  flex-flow: row
-  justify-content: space-between
+  display: grid
+  grid-template-columns: repeat(4, 1fr)
+  justify-items: center
+  @media screen and (max-width: 1200px)
+    grid-template-columns: repeat(3, 1fr)
   @media screen and (max-width: 768px)
-    flex-flow: column
-    justify-content: none
-    align-items: center
+    grid-template-columns: repeat(2, 1fr)
+  @media screen and (max-width: 500px)
+    grid-template-columns: repeat(1, 1fr)
 
 .landing-btn
   width: 230px

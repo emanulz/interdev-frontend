@@ -559,7 +559,7 @@ export function loadGlobalConfig(section, name, success, fail) {
       })
 
     } else {
-      axios.get(`/api/globalprefs`).then(function(response) {
+      axios.get(`/api/globalprefs/?limit=10000`).then(function(response) {
         // The property to modify in reducer
         const config = response.data.results
           ? response.data.results.filter(item => {
