@@ -111,6 +111,10 @@ export default class Clients extends React.Component {
     this.props.dispatch({type: 'SHOW_CREATE_CLIENT_PANEL', payload: -1})
   }
 
+  showClientUpdatePanel() {
+    this.props.dispatch({type: 'SHOW_UPDATE_CLIENT_PANEL', payload: -1})
+  }
+
   doNothing() {
 
   }
@@ -166,6 +170,11 @@ export default class Clients extends React.Component {
 
     const clientOnClick = this.props.disabled ? this.doNothing.bind(this) : this.showClientPanel.bind(this)
     const imgOnClick = this.props.disabled ? this.doNothing.bind(this) : this.searchClientClick.bind(this)
+    const clientEditOnClick = this.props.disabled ? this.doNothing.bind(this) : this.showClientUpdatePanel.bind(this)
+
+    const editClientIcon = this.props.clientSelected.client.code != '0000' && this.props.clientSelected.client.code != '00'
+      ? <i disabled={this.props.disabled} className='fa fa-edit' onClick={clientEditOnClick} />
+      : ''
 
     return <div className='client'>
 
@@ -196,6 +205,7 @@ export default class Clients extends React.Component {
           <div className='client-data-second-row-inline'>
             <h3>Apellido :</h3>
             {lastNameToShow}
+            {editClientIcon}
           </div>
 
           <div className='client-data-second-row-inline'>

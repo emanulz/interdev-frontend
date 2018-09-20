@@ -20,6 +20,7 @@ import printPresale from '../../general/printPresale/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 import generalItem from '../sales/general/product/generalItem/reducer.js'
+import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -42,5 +43,6 @@ export default combineReducers({
   printPresale,
   extras,
   userProfile,
-  generalItem
+  generalItem,
+  clientUpdatePanel
 })

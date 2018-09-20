@@ -123,6 +123,14 @@ export function getFullClientByCode(code, dispatch) {
       console.log('CATEGORY', client.category)
       client.category = client.category.length ? JSON.parse(client.category) : {}
       dispatch({type: 'CLIENT_SELECTED', payload: client})
+      // ON LOAD DISPATCH OR CLEAN THE CLIENT TO UPDATE
+      try {
+        if (client.client.code != '00') {
+          dispatch({type: 'SET_UPDATE_CLIENT', payload: client.client})
+        } else {
+          dispatch({type: 'CLEAR_UPDATE_CLIENT', payload: ''})
+        }
+      } catch (err) {}
     }).catch((err) => {
       dispatch({type: 'FETCHING_DONE', payload: ''})
       dispatch({type: 'CLIENT_NOT_FOUND', payload: -1})
@@ -151,6 +159,14 @@ export function getFullClientById(id, dispatch) {
     console.log('CATEGORY', client.category)
     client.category = client.category.length ? JSON.parse(client.category) : {}
     dispatch({type: 'CLIENT_SELECTED', payload: client})
+    // ON LOAD DISPATCH OR CLEAN THE CLIENT TO UPDATE
+    try {
+      if (client.client.code != '00') {
+        dispatch({type: 'SET_UPDATE_CLIENT', payload: client.client})
+      } else {
+        dispatch({type: 'CLEAR_UPDATE_CLIENT', payload: ''})
+      }
+    } catch (err) {}
   }).catch((err) => {
     dispatch({type: 'FETCHING_DONE', payload: ''})
     dispatch({type: 'CLIENT_NOT_FOUND', payload: -1})
