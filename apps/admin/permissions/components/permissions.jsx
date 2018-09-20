@@ -5,7 +5,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
-import General from './forms/general.jsx'
 import Products from './forms/products.jsx'
 import Clients from './forms/clients.jsx'
 import Users from './forms/users.jsx'
@@ -15,6 +14,7 @@ import Presales from './forms/presales.jsx'
 import Access from './forms/access.jsx'
 import WorkOrder from './forms/workOrders.jsx'
 import CashAdvances from './forms/cashAdvances.jsx'
+import CreditVouchers from './forms/creditVouchers.jsx'
 
 @connect((store) => {
   return {
@@ -38,6 +38,7 @@ export default class Permissions extends React.Component {
           <Tab tabFor='seven'>Preventas</Tab>
           <Tab tabFor='eight'>Ordenes de Trabajo</Tab>
           <Tab tabFor='nine'>Adelantos de Efectivo</Tab>
+          <Tab tabFor='ten'>Vales de Crédito</Tab>
         </TabList>
 
         <TabPanel tabId='one'>
@@ -75,6 +76,11 @@ export default class Permissions extends React.Component {
         <TabPanel tabId='nine'>
           <CashAdvances />
         </TabPanel>
+
+        <TabPanel tabId='ten'>
+          <CreditVouchers />
+        </TabPanel>
+
       </Tabs>
 
       : <div />

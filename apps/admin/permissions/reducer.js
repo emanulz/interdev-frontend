@@ -57,6 +57,12 @@ const permissionsModel = {
     add: false,
     change: false,
     delete: false
+  },
+  credit_vouchers: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
   }
 }
 
