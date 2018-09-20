@@ -8,6 +8,7 @@ import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import PayPanel from './pay/payPanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
+import Currency from '../../../general/currency/currency.jsx'
 import ClientUpdatePanel from '../../../general/clientUpdatePanel/clientUpdatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
 import Reserves from './reserves/reservesList.jsx'
@@ -59,6 +60,7 @@ export default class Sale extends React.Component {
   render() {
 
     return <div className='sale'>
+      <Currency />
       <Content />
       <Aside />
       <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}

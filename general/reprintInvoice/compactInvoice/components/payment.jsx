@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.reprintInvoice.sale
+    sale: store.reprintInvoice.sale,
+    currencySymbol: store.currency.symbolSelected
   }
 })
 export default class Payment extends React.Component {
@@ -49,6 +50,7 @@ export default class Payment extends React.Component {
   }
 
   render() {
+    const symbol = this.props.currencySymbol
     const sale = this.props.sale
     // SET THE DEFAULT VALUES
     let total = 0
@@ -63,7 +65,7 @@ export default class Payment extends React.Component {
     const cash = cashAmount > 0
       ? <tr>
         <th>Efectivo:</th>
-        <td>₡ {cashAmount.formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {cashAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : ''
     // DETERMIN THE CARD AMOUNT
@@ -71,7 +73,7 @@ export default class Payment extends React.Component {
     const card = cardAmount > 0
       ? <tr>
         <th>Tarjeta:</th>
-        <td>₡ {cardAmount.formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {cardAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : ''
 
@@ -80,7 +82,7 @@ export default class Payment extends React.Component {
     const tran = tranAmount > 0
       ? <tr>
         <th>Transf:</th>
-        <td>₡ {tranAmount.formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {tranAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : ''
 
@@ -89,7 +91,7 @@ export default class Payment extends React.Component {
     const cred = credAmount > 0
       ? <tr>
         <th>Crédito:</th>
-        <td>₡ {credAmount.formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {credAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : ''
     // DETERMIN THE CHANGE
@@ -97,7 +99,7 @@ export default class Payment extends React.Component {
     const change = changeAmount > 0.01
       ? <tr className='change-row' >
         <th>Vuelto:</th>
-        <td>₡ {changeAmount.formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {changeAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr className='change-row'>
         <th>Vuelto:</th>

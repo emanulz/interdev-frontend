@@ -2,12 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {sale: store.reprintInvoice.sale}
+  return {sale: store.reprintInvoice.sale, currencySymbol: store.currency.symbolSelected}
 })
 export default class Table extends React.Component {
 
   // Main Layout
   render() {
+    const symbol = this.props.currencySymbol
 
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
     const items = cartItems.map((item) => {
@@ -31,7 +32,7 @@ export default class Table extends React.Component {
             {taxesText}
           </div>
           <div className='reprint-compact-invoice-table-body-item-data-total'>
-            ₡ {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
+            {symbol} {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
           </div>
         </div>
       </div>

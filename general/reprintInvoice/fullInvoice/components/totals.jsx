@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.reprintInvoice.sale
+    sale: store.reprintInvoice.sale,
+    currencySymbol: store.currency.symbolSelected
   }
 })
 export default class Totals extends React.Component {
@@ -17,7 +18,7 @@ export default class Totals extends React.Component {
   }
 
   render() {
-
+    const symbol = this.props.currencySymbol
     const sale = this.props.sale
     // SET THE DEFAULT VALUES
     let total = 0
@@ -44,18 +45,18 @@ export default class Totals extends React.Component {
     if (advances > 0) {
       advance = <tr className='total-row'>
         <th>Adelanto</th>
-        <td>₡ {advances.formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {advances.formatMoney(2, ',', '.')}</td>
       </tr>
       total2 = <tr className='total-row'>
         <th>Pago</th>
-        <td>₡ {(total - advances).formatMoney(2, ',', '.')}</td>
+        <td>{symbol} {(total - advances).formatMoney(2, ',', '.')}</td>
       </tr>
     }
 
     const ExemptTotal = isExempt
       ? <tr>
         <th>IV Exonerado:</th>
-        <td className='price'>₡ -{exemptAmount.formatMoney(2, ',', '.')}</td>
+        <td className='price'>{symbol} -{exemptAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />
 
@@ -65,21 +66,21 @@ export default class Totals extends React.Component {
         <tbody>
           <tr>
             <th>Sub-total</th>
-            <td>₡ {subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+            <td>{symbol} {subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
 
           </tr>
           <tr>
             <th>Descuento</th>
-            <td>₡ {discountTotal.formatMoney(2, ',', '.')}</td>
+            <td>{symbol} {discountTotal.formatMoney(2, ',', '.')}</td>
           </tr>
           <tr>
             <th>IV</th>
-            <td>₡ {taxes.formatMoney(2, ',', '.')}</td>
+            <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
           {ExemptTotal}
           <tr className='total-row'>
             <th>Total</th>
-            <td>₡ {total.formatMoney(2, ',', '.')}</td>
+            <td>{symbol} {total.formatMoney(2, ',', '.')}</td>
           </tr>
           {advance}
           {total2}

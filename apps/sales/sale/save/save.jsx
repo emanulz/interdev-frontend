@@ -23,7 +23,9 @@ const Mousetrap = require('mousetrap')
     workOrder: store.workOrders.workOrderActive,
     exemptionData: store.taxExemption.exemptionData,
     extras: store.extras,
-    isinvoice: store.sale.isInvoice
+    isinvoice: store.sale.isInvoice,
+    currency: store.currency.currencySelected,
+    exchange: store.currency.exchangeRateSelected
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -59,7 +61,9 @@ export default class SaveBtn extends React.Component {
       client_id: this.props.client.id,
       warehouse_id: warehouse,
       presale_id: this.props.presaleId,
-      isinvoice: isinvoice
+      isinvoice: isinvoice,
+      currency_code: this.props.currency,
+      exchange_rate: this.props.exchange
     }
 
     const kwargs = {

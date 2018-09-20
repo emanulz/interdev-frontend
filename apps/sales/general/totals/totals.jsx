@@ -18,7 +18,8 @@ import alertify from 'alertifyjs'
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
     isExempt: store.cart.isExempt,
-    exemptAmount: store.cart.cartExemptAmount
+    exemptAmount: store.cart.cartExemptAmount,
+    currencySymbol: store.currency.symbolSelected
     // disabled: store.sales.completed
   }
 })
@@ -80,10 +81,12 @@ export default class Totals extends React.Component {
   // Main Layout
   render() {
 
+    const symbol = this.props.currencySymbol
+
     const ExemptTotal = this.props.isExempt
       ? <tr>
         <th>IV Exonerado:</th>
-        <td className='price'>₡ {this.props.exemptAmount.formatMoney(2, ',', '.')}</td>
+        <td className='price'>{symbol} {this.props.exemptAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />
 
@@ -99,51 +102,24 @@ export default class Totals extends React.Component {
           <tbody>
             <tr>
               <th>Sub-Total:</th>
-              <td className='price'>₡ {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+              <td className='price'>{symbol} {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
 
             </tr>
-            {/* <tr>
-              <th style={{
-                'width': '37%'
-              }}>Descuento %</th>
-              <td style={{
-                'padding': '0'
-              }}>
-                <input
-                  id='discountField'
-                  disabled={this.props.disabled}
-                  onKeyPress={this.inputKeyPress.bind(this)}
-                  onChange={this.inputKeyPress.bind(this)}
-                  onBlur={this.inputOnBlur.bind(this)}
-                  type='number'
-                  style={{
-                    'width': '100%',
-                    'height': '37px',
-                    'padding': '0 0 0 10px',
-                    'fontSize': '15px',
-                    'border': '0',
-                    'position': 'relative',
-                    'display': 'inline-block'
-                  }}
-                  className='sale_global_discount_input form-control' />
-              </td>
-
-            </tr> */}
             <tr>
               <th>Descuento:</th>
-              <td className='price'>₡ {this.props.discountTotal.formatMoney(2, ',', '.')}</td>
+              <td className='price'>{symbol} {this.props.discountTotal.formatMoney(2, ',', '.')}</td>
 
             </tr>
 
             <tr>
               <th>IV:</th>
-              <td className='price'>₡ {this.props.taxes.formatMoney(2, ',', '.')}</td>
+              <td className='price'>{symbol} {this.props.taxes.formatMoney(2, ',', '.')}</td>
             </tr>
             {ExemptTotal}
             <tr>
               {/* <th onClick={this.showInvoicePanel.bind(this)}>Total:</th> */}
               <th>Total:</th>
-              <td className='price'>₡ {this.props.total.formatMoney(2, ',', '.')}</td>
+              <td className='price'>{symbol} {this.props.total.formatMoney(2, ',', '.')}</td>
 
             </tr>
           </tbody>

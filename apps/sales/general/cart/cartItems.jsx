@@ -19,7 +19,8 @@ const Mousetrap = require('mousetrap')
     presaleLoaded: store.completed.isPresaleLoaded,
     reserveLoaded: store.completed.isReserveLoaded,
     isExempt: store.cart.isExempt,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    currencySymbol: store.currency.symbolSelected
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -197,6 +198,7 @@ export default class CartItems extends React.Component {
   // Render the items in cart using table rows
 
   render() {
+    const symbol = this.props.currencySymbol
 
     const cartItems = this.props.inCart
     const items2 = cartItems.map((item, index) => {
@@ -257,7 +259,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className='cart-body-item-unitPrice'>
           <h5>P Unit</h5>
-          ₡ {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
+          {symbol} {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
         </div>
         <div className='cart-body-item-discount'>
           <h5>Descuento</h5>
@@ -269,7 +271,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>
-            ₡ {item.totalWithIv.formatMoney(2, ',', '.')}
+          {symbol} {item.totalWithIv.formatMoney(2, ',', '.')}
         </div>
 
         <span className={removeIconClass}>

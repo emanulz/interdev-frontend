@@ -2,13 +2,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {sale: store.reprintInvoice.sale}
+  return {sale: store.reprintInvoice.sale, currencySymbol: store.currency.symbolSelected}
 })
 export default class Table extends React.Component {
 
   // Main Layout
   render() {
-
+    const symbol = this.props.currencySymbol
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
     const items = cartItems.length
@@ -29,7 +29,7 @@ export default class Table extends React.Component {
             {item.qty}
           </td>
           <td className='right-in-table'>
-            ₡ {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
+            {symbol} {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
           </td>
           <td className='right-in-table'>
             {item.discount}
@@ -38,7 +38,7 @@ export default class Table extends React.Component {
             {taxesText}
           </td>
           <td className='right-in-table'>
-            ₡ {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
+            {symbol} {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
           </td>
         </tr>
       })
