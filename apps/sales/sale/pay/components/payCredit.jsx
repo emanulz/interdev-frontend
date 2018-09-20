@@ -9,7 +9,9 @@ import {updateStoreCreditAmount, autoUpdateCreditAmount} from '../actions.js'
     creditAmount: store.pay.payObject.cred[0].amount,
     isCredit: store.pay.isCredit,
     cartTotal: store.cart.cartTotal,
-    payObject: store.pay.payObject
+    payObject: store.pay.payObject,
+    currency: store.currency.currencySelected,
+    currencySymbol: store.currency.symbolSelected
   }
 })
 export default class PayCredit extends React.Component {
@@ -39,6 +41,7 @@ export default class PayCredit extends React.Component {
   }
 
   render() {
+    const symbol = this.props.currencySymbol
     const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
     const clientLimit = this.props.client.has_credit
       ? `₡ ${parseFloat(this.props.client.credit_limit).formatMoney(2, ',', '.')}`
@@ -46,7 +49,8 @@ export default class PayCredit extends React.Component {
     const clientAvailable = this.props.client.has_credit
       ? `₡ ${available.formatMoney(2, ',', '.')}`
       : 'SIN CRÉDITO'
-
+    const message = this.props.currency != 'CRC' ? `ATENCIÓN: LOS MOVIMIENTOS DE CRÉDITO NO SON SOPORTADOS EN MONEDA EXTRANJERA,
+    POR LO QUE EL SALDO DEL CLIENTE NO SE ACTUALIZARÁ, NI MOVIMIENTOS SERÁN CREADOS EN LA CUENTA.` : ''
     return <div className='pay-method-body'>
 
       <div className='pay-method-body-header'>
@@ -54,6 +58,9 @@ export default class PayCredit extends React.Component {
       </div>
 
       <div className='pay-method-body-content'>
+        <div className='pay-method-body-message'>
+          {message}
+        </div>
         <div>
           <div className='pay-tag left'>ES CRÉDITO:</div>
           <input disabled={!this.props.client.has_credit} type='checkbox' checked={this.props.isCredit} onChange={this.changeIsCredit.bind(this)} />
@@ -61,7 +68,7 @@ export default class PayCredit extends React.Component {
 
         <div className='pay-tag left'>MONTO:</div>
         <div className='pay-tag right'>
-          ₡ {this.props.creditAmount.formatMoney(2, ',', '.')}</div>
+          {symbol} {this.props.creditAmount.formatMoney(2, ',', '.')}</div>
         {/* <input value={this.props.creditAmount} onChange={this.cardAmountChanged.bind(this)} type='Number' className='form-control' /> */}
 
         <div className='pay-tag left'>LÍMITE:</div>

@@ -10,6 +10,7 @@ import Send from './send/sendPanel.jsx'
 import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
 import ClientPanel from '../../../general/clientCreatePanel/clientCreatePanel.jsx'
 import ClientUpdatePanel from '../../../general/clientUpdatePanel/clientUpdatePanel.jsx'
+import Currency from '../../../general/currency/currency.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import Search from '../../../general/search/search.jsx'
@@ -34,6 +35,7 @@ export default class Sale extends React.Component {
   render() {
 
     return <div className='sale'>
+      <Currency />
       <Content />
       <Aside />
 

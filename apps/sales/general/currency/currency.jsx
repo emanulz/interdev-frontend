@@ -55,10 +55,6 @@ export default class Clients extends React.Component {
             <input type='number' value={this.props.exchange} onChange={this.exchangeRateChanged.bind(this)} />
           </div>
 
-          <div className='currency-container-exchange-save'>
-            <i className='fa fa-save' />
-          </div>
-
         </div>
       }
     } catch (err) { console.log(err) }

@@ -80,6 +80,7 @@ export function loadSaleToReprint(consecutive) {
       dispatch({type: 'CLEAR_REPRINT_INVOICE_DEBIT_NOTES', payload: ''})
 
       dispatch({type: 'SET_REPRINT_INVOICE_SALE', payload: response.data.sale})
+      dispatch({type: 'SET_CURRENCY', payload: response.data.sale.currency_code})
       dispatch({type: 'SET_REPRINT_INVOICE_TICKET', payload: response.data.ticket})
       dispatch({type: 'SET_REPRINT_INVOICE_INVOICE', payload: response.data.invoice})
       dispatch({type: 'SET_REPRINT_INVOICE_CREDIT_NOTES', payload: response.data.credit_notes})

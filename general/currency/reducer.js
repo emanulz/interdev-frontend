@@ -80,7 +80,7 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        exchangeRate: action.payload
+        exchangeRateSelected: action.payload
       }
     } // case
 
@@ -88,7 +88,7 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        exchangeRate: 585
+        exchangeRateSelected: 585
       }
     } // case
 

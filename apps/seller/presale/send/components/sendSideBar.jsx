@@ -7,13 +7,14 @@ import SaveBtn from '../../save/save.jsx'
   return {
     cart: store.cart,
     client: store.clients.clientSelected.client,
-    user: store.send.user
+    user: store.send.user,
+    currencySymbol: store.currency.symbolSelected
   }
 })
 export default class PaySideBar extends React.Component {
 
   render() {
-
+    const symbol = this.props.currencySymbol
     let sendButtonClass = 'send-tag tag-button'
     const total = parseFloat(this.props.cart.cartTotal)
     const client = this.props.client
@@ -33,7 +34,7 @@ export default class PaySideBar extends React.Component {
         <div className='send-tag left'>
           TOTAL :</div>
         <div className='send-tag right'>
-          ₡ {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
+          {symbol} {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
 
         <div className='send-tag left'>CLIENTE :</div>
         <div className='send-tag right'>

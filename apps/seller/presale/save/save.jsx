@@ -12,7 +12,9 @@ import alertify from 'alertifyjs'
     user: store.send.user,
     presaleType: store.send.presale_type,
     reserves_warehouse: store.userProfile.reservesWarehouse,
-    extras: store.extras
+    extras: store.extras,
+    currency: store.currency.currencySelected,
+    exchange: store.currency.exchangeRateSelected
   }
 })
 export default class SaveBtn extends React.Component {
@@ -28,7 +30,9 @@ export default class SaveBtn extends React.Component {
       client_id: this.props.client.id,
       extras: JSON.stringify(this.props.extras),
       closed: true,
-      presale_type: this.props.presaleType
+      presale_type: this.props.presaleType,
+      currency_code: this.props.currency,
+      exchange_rate: this.props.exchange
     }
 
     const creditMovement = {

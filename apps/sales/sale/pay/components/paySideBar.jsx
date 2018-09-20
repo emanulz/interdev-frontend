@@ -16,7 +16,8 @@ const Mousetrap = require('mousetrap')
     debt: store.clients.clientSelectedDebt,
     isCredit: store.pay.isCredit,
     profile: store.userProfile,
-    isInvoice: store.sale.isInvoice
+    isInvoice: store.sale.isInvoice,
+    currencySymbol: store.currency.symbolSelected
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -37,57 +38,57 @@ export default class PaySideBar extends React.Component {
     return total
   }
 
-  saveBtn() {
-    // const sales = this.props.sales
-    const user = this.props.user
-    const sale = {
-      cart: JSON.stringify(this.props.cart),
-      client: JSON.stringify(this.props.client),
-      user: JSON.stringify(this.props.user),
-      pay: JSON.stringify(this.props.pay)
-    }
+  // saveBtn() {
+  //   // const sales = this.props.sales
+  //   const user = this.props.user
+  //   const sale = {
+  //     cart: JSON.stringify(this.props.cart),
+  //     client: JSON.stringify(this.props.client),
+  //     user: JSON.stringify(this.props.user),
+  //     pay: JSON.stringify(this.props.pay)
+  //   }
 
-    if (this.props.pay.payMethod == 'CREDIT') {
-      sale.pay.debt = this.props.cart.cartTotal
-      sale.pay.payed = false
-    }
+  //   if (this.props.pay.payMethod == 'CREDIT') {
+  //     sale.pay.debt = this.props.cart.cartTotal
+  //     sale.pay.payed = false
+  //   }
 
-    const kwargs = {
-      url: '/api/sales/',
-      item: sale,
-      logCode: 'SALE_CREATE',
-      logDescription: 'Creación de nueva Venta',
-      logModel: 'SALE',
-      user: user,
-      itemOld: '',
-      sucessMessage: 'Venta creada Correctamente.',
-      errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.',
-      dispatchType: 'CLEAR_SALE',
-      isSale: true
-    }
+  //   const kwargs = {
+  //     url: '/api/sales/',
+  //     item: sale,
+  //     logCode: 'SALE_CREATE',
+  //     logDescription: 'Creación de nueva Venta',
+  //     logModel: 'SALE',
+  //     user: user,
+  //     itemOld: '',
+  //     sucessMessage: 'Venta creada Correctamente.',
+  //     errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.',
+  //     dispatchType: 'CLEAR_SALE',
+  //     isSale: true
+  //   }
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(saveItem(kwargs))
-    this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
+  //   this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+  //   this.props.dispatch(saveItem(kwargs))
+  //   this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
 
-    Mousetrap.reset()
+  //   Mousetrap.reset()
 
-  }
+  // }
 
-  getCashTag() {
+  getCashTag(symbol) {
     const cash = parseFloat(this.props.pay.payObject.cash[0].amount)
     if (cash > 0) {
       return <div>
         <div className='pay-tag left'>EFECTIVO :</div>
         <div className='pay-tag right'>
-          ₡ {cash.formatMoney(2, ',', '.')}
+          {symbol} {cash.formatMoney(2, ',', '.')}
         </div>
       </div>
     }
     return <div />
   }
 
-  getCashAdvancesTag() {
+  getCashAdvancesTag(symbol) {
     const total = parseFloat(this.props.cart.cartTotal)
     const cashAdvances = this.props.pay.payObject.csha
     let cashAdvancesAmount = 0
@@ -98,57 +99,57 @@ export default class PaySideBar extends React.Component {
       return <div>
         <div className='pay-tag left'>ADELANTOS :</div>
         <div className='pay-tag right'>
-          ₡ -{cashAdvancesAmount.formatMoney(2, ',', '.')}
+          {symbol} -{cashAdvancesAmount.formatMoney(2, ',', '.')}
         </div>
         <div className='pay-tag left'>POR PAGAR :</div>
         <div className='pay-tag right'>
-          ₡ {(total - cashAdvancesAmount).formatMoney(2, ',', '.')}
+          {symbol} {(total - cashAdvancesAmount).formatMoney(2, ',', '.')}
         </div>
       </div>
     }
     return <div />
   }
 
-  getCardTag() {
+  getCardTag(symbol) {
     const card = parseFloat(this.props.pay.payObject.card[0].amount)
     if (card > 0) {
       return <div>
         <div className='pay-tag left'>TARJETA :</div>
         <div className='pay-tag right'>
-          ₡ {card.formatMoney(2, ',', '.')}
+          {symbol} {card.formatMoney(2, ',', '.')}
         </div>
       </div>
     }
     return <div />
   }
 
-  getTransferTag() {
+  getTransferTag(symbol) {
     const tran = parseFloat(this.props.pay.payObject.tran[0].amount)
     if (tran > 0) {
       return <div>
         <div className='pay-tag left'>TRANSFER :</div>
         <div className='pay-tag right'>
-          ₡ {tran.formatMoney(2, ',', '.')}
+          {symbol} {tran.formatMoney(2, ',', '.')}
         </div>
       </div>
     }
     return <div />
   }
 
-  getCreditTag() {
+  getCreditTag(symbol) {
     const credit = parseFloat(this.props.pay.payObject.cred[0].amount)
     if (credit > 0) {
       return <div>
         <div className='pay-tag left'>CRÉDITO :</div>
         <div className='pay-tag right'>
-          ₡ {credit.formatMoney(2, ',', '.')}
+          {symbol} {credit.formatMoney(2, ',', '.')}
         </div>
       </div>
     }
     return <div />
   }
 
-  getVochersTag() {
+  getVochersTag(symbol) {
     let total = 0
     for (const item in this.props.pay.payObject.vouc) {
       total += this.props.pay.payObject.vouc[item].amount
@@ -157,7 +158,7 @@ export default class PaySideBar extends React.Component {
       return <div>
         <div className='pay-tag left'>VALES :</div>
         <div className='pay-tag right'>
-          ₡ {total.formatMoney(2, ',', '.')}
+          {symbol} {total.formatMoney(2, ',', '.')}
         </div>
       </div>
     }
@@ -170,19 +171,19 @@ export default class PaySideBar extends React.Component {
   }
 
   render() {
-
+    const symbol = this.props.currencySymbol
     let change = 0
     let payButtonClass = 'pay-tag tag-button enable'
     const total = parseFloat(this.props.cart.cartTotal)
 
-    const cashTag = this.getCashTag()
-    const creditTag = this.getCreditTag()
-    const cardTag = this.getCardTag()
-    const transferTag = this.getTransferTag()
-    const cashAdvancesTag = this.getCashAdvancesTag()
-    const vouchersTag = this.getVochersTag()
+    const cashTag = this.getCashTag(symbol)
+    const creditTag = this.getCreditTag(symbol)
+    const cardTag = this.getCardTag(symbol)
+    const transferTag = this.getTransferTag(symbol)
+    const cashAdvancesTag = this.getCashAdvancesTag(symbol)
+    const vouchersTag = this.getVochersTag(symbol)
 
-    const totalInPay = this.calcTotalInPay()
+    const totalInPay = this.calcTotalInPay(symbol)
 
     change = totalInPay - total
     payButtonClass = (total > 0 && change >= -0.1)
@@ -232,7 +233,7 @@ export default class PaySideBar extends React.Component {
         <div className='pay-tag left'>
           TOTAL VENTA :</div>
         <div className='pay-tag right'>
-          ₡ {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
+          {symbol} {this.props.cart.cartTotal.formatMoney(2, ',', '.')}</div>
 
         {cashTag}
         {cardTag}
@@ -243,11 +244,11 @@ export default class PaySideBar extends React.Component {
 
         <div className='pay-tag left'>TOTAL PAGO :</div>
         <div className='pay-tag right'>
-          ₡ {totalInPay.formatMoney(2, ',', '.')}</div>
+          {symbol} {totalInPay.formatMoney(2, ',', '.')}</div>
 
         <div className='pay-tag left'>VUELTO :</div>
         <div className='pay-tag right'>
-          ₡ {change.formatMoney(2, ',', '.')}</div>
+          {symbol} {change.formatMoney(2, ',', '.')}</div>
 
         <br />
         <div className={`edocument-type ${eDocumentSelectClass}`}>
