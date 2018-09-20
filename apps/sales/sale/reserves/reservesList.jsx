@@ -48,6 +48,7 @@ export default class PresalesPanel extends React.Component {
       data.user = JSON.parse(data.user)
       try {
         data.extras = JSON.parse(data.extras)
+        _this.props.dispatch({type: 'SET_CURRENCY', payload: data.currency_code})
       } catch (err) { data.extras = null }
       // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
       getFullClientById(data.client.id, _this.props.dispatch)
