@@ -44,7 +44,12 @@ const permissionsModel = {
     access_sales: false,
     access_presales: false,
     access_inventories: false,
-    access_workshop: false
+    access_workshop: false,
+    access_credits: false,
+    access_purchases: false,
+    access_restaurant: false,
+    access_returns: false,
+    access_payables: false
   },
   work_orders: {
     list: false,
