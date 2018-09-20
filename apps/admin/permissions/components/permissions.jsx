@@ -29,20 +29,19 @@ export default class Permissions extends React.Component {
     const content = this.props.user.id != '0000000000'
       ? <Tabs vertical defaultTab='one'>
         <TabList vertical>
-          <Tab tabFor='one'>General</Tab>
+          <Tab tabFor='one'>Accesos</Tab>
           <Tab tabFor='two'>Productos</Tab>
           <Tab tabFor='three'>Clientes</Tab>
           <Tab tabFor='four'>Usuarios</Tab>
           <Tab tabFor='five'>Proveedores</Tab>
           <Tab tabFor='six'>Ventas</Tab>
           <Tab tabFor='seven'>Preventas</Tab>
-          <Tab tabFor='eight'>Accesos</Tab>
-          <Tab tabFor='nine'>Ordenes de Trabajo</Tab>
-          <Tab tabFor='ten'>Adelantos de Efectivo</Tab>
+          <Tab tabFor='eight'>Ordenes de Trabajo</Tab>
+          <Tab tabFor='nine'>Adelantos de Efectivo</Tab>
         </TabList>
 
         <TabPanel tabId='one'>
-          <General />
+          <Access />
         </TabPanel>
 
         <TabPanel tabId='two'>
@@ -70,14 +69,10 @@ export default class Permissions extends React.Component {
         </TabPanel>
 
         <TabPanel tabId='eight'>
-          <Access />
-        </TabPanel>
-
-        <TabPanel tabId='nine'>
           <WorkOrder />
         </TabPanel>
 
-        <TabPanel tabId='ten'>
+        <TabPanel tabId='nine'>
           <CashAdvances />
         </TabPanel>
       </Tabs>
