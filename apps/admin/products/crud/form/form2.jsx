@@ -152,7 +152,7 @@ class Form2 extends React.Component {
           <div className='col-xs-4 first'>
 
             <label>Utilidad 1 %</label>
-            <input value={this.props.product.utility} name='utility' onChange={this.handleInputChange.bind(this)}
+            <input value={this.props.product.utility1} name='utility1' onChange={this.handleInputChange.bind(this)}
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)}
               disabled={!this.props.product.cost_based}
             />
@@ -162,7 +162,7 @@ class Form2 extends React.Component {
           <div className='col-xs-4'>
 
             <label>Precio 1</label>
-            <input value={this.props.product.price} name='price' onChange={this.handleInputChange.bind(this)}
+            <input value={this.props.product.price1} name='price1' onChange={this.handleInputChange.bind(this)}
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
 
           </div>
@@ -170,7 +170,7 @@ class Form2 extends React.Component {
           <div className='col-xs-4 second'>
 
             <label>Precio 1 IVI</label>
-            <input value={this.props.product.sell_price} name='sell_price' onChange={this.handleInputChange.bind(this)}
+            <input value={this.props.product.sell_price1} name='sell_price1' onChange={this.handleInputChange.bind(this)}
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
 
           </div>
