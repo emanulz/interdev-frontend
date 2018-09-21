@@ -9,7 +9,17 @@ import {getPendingPresales, getPendingWorkOrders} from './presales/actions.js'
 // HANDLE WEB SOCKET EVETS
 // ------------------------------------------------------------------------------------------
 export function socketDispatcher(message, item, dispatch) {
+  console.log('MESSAGE', message)
   switch (message) {
+
+    case 'PRODUCT_INV_EVENT':
+    {
+      const sound = new Audio('/media/sounds/newPresale.mp3')
+      alertify.set('notifier', 'position', 'top-right')
+      alertify.notify(`${item.message}`, 'error', 15)
+      sound.play()
+      break
+    }
 
     // IN CASE THERE IS A MESSAGE FOR PRODUCT UPDATED REFETCH PRODUCTS
     case 'PRODUCT_UPDATED':
