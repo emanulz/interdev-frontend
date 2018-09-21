@@ -8,6 +8,7 @@ import {fecthProfile, fecthIsAdminLocked} from './actions'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
+import Currency from '../../../general/currency/currency.jsx'
 
 // COMPONENTS
 
@@ -43,6 +44,7 @@ export default class Main extends React.Component {
       <div>
         <UserProfile />
         <SideMenu />
+        <Currency />
         <div id='mainContainer' className='blur-div mainContainer'>
           <TopBar />
           <Configbar />
