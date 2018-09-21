@@ -7,7 +7,8 @@ import Select2 from 'react-select2-wrapper'
 @connect((store) => {
   return {
     product: store.products.productActive,
-    taxes: store.products.taxes
+    taxes: store.products.taxes,
+    config: store.config
   }
 })
 
@@ -60,6 +61,63 @@ class Form2 extends React.Component {
     const taxesData = this.props.taxes.map(tax => {
       return {text: `${tax.code} - ${tax.name}`, id: `${tax.code}`}
     })
+    const prices2Fields = this.props.config.globalConf.usesMultiplePrices
+      ? <div className='form-group row input-block'>
+        <div className='col-xs-4 first'>
+
+          <label>Utilidad 2 %</label>
+          <input value={this.props.product.utility2} name='utility2' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)}
+            disabled={!this.props.product.cost_based} />
+
+        </div>
+
+        <div className='col-xs-4'>
+
+          <label>Precio 2</label>
+          <input value={this.props.product.price2} name='price2' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+
+        </div>
+
+        <div className='col-xs-4 second'>
+
+          <label>Precio 2 IVI</label>
+          <input value={this.props.product.sell_price2} name='sell_price2' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+
+        </div>
+      </div>
+      : ''
+
+    const prices3Fields = this.props.config.globalConf.usesMultiplePrices
+      ? <div className='form-group row input-block'>
+        <div className='col-xs-4 first'>
+
+          <label>Utilidad 3 %</label>
+          <input value={this.props.product.utility3} name='utility3' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)}
+            disabled={!this.props.product.cost_based} />
+
+        </div>
+
+        <div className='col-xs-4'>
+
+          <label>Precio 3</label>
+          <input value={this.props.product.price3} name='price3' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+
+        </div>
+
+        <div className='col-xs-4 second'>
+
+          <label>Precio 3 IVI</label>
+          <input value={this.props.product.sell_price3} name='sell_price3' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+
+        </div>
+      </div>
+      : ''
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
@@ -118,57 +176,9 @@ class Form2 extends React.Component {
           </div>
         </div>
 
-        {/* <div className='form-group row input-block'>
-          <div className='col-xs-4 first'>
+        {prices2Fields}
 
-            <label>Utilidad 2 %</label>
-            <input value={this.props.product.utility2} name='utility2' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-
-          <div className='col-xs-4'>
-
-            <label>Precio 2</label>
-            <input value={this.props.product.price2} name='price2' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-
-          <div className='col-xs-4 second'>
-
-            <label>Precio 2 IVI</label>
-            <input value={this.props.product.sell_price2} name='sell_price2' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-        </div> */}
-
-        {/* <div className='form-group row input-block'>
-          <div className='col-xs-4 first'>
-
-            <label>Utilidad 3 %</label>
-            <input value={this.props.product.utility3} name='utility3' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-
-          <div className='col-xs-4'>
-
-            <label>Precio 3</label>
-            <input value={this.props.product.price3} name='price3' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-
-          <div className='col-xs-4 second'>
-
-            <label>Precio 3 IVI</label>
-            <input value={this.props.product.sell_price3} name='sell_price3' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-          </div>
-        </div> */}
+        {prices3Fields}
 
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>
