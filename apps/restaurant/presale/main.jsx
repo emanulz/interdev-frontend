@@ -8,6 +8,7 @@ import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import Send from './send/sendPanel.jsx'
 import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
+import Currency from '../../../general/currency/currency.jsx'
 import {loadGlobalConfig, getItemDispatch} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import Search from './search/search.jsx'
@@ -111,6 +112,7 @@ class Presale extends React.Component {
   render() {
 
     return <div className='sale'>
+      <Currency />
       <Content />
       <Aside />
 

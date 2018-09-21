@@ -24,7 +24,7 @@ export function getClientPendingSales(kwargs) {
   return function(dispatch) {
     axios.get(`${url}/?client_id=${clientId}&limit=400`).then(function(response) {
       const responseData = response.data.results.filter(item => {
-        return item.balance > 0
+        return item.balance > 0 && item.currency_code == 'CRC'
       })
       // parse the items in JSON objects stored as strings
       const responseData2 = responseData.map(item => {

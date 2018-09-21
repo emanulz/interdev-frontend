@@ -1,25 +1,28 @@
 .compact-receipt
-    font-family: 'Source Sans Pro', sans-serif
+    font-family: Arial, sans-serif
     position: relative
     height: 100%
     width: 100%
+    color: black
+    padding-right: 15px
 
 .compact-receipt-header
     display: flex
     flex-direction: row
     justify-content: center
-    font-size: 13px
+    font-family: Arial, sans-serif !important
     &-info
         flex-grow: 1
         text-align: center
+        font-family: Arial, sans-serif
         & h2
-            font-size: 14px
+            font-size: 20px
             margin: 0 0 2px 0
             font-weight: bold
         & h3
             font-size: 14px
-            margin: 0 0 1px 0
-            font-weight: normal
+            margin: 0 0 2px 0
+            font-weight: bold
 
 .compact-receipt-separator
     display: flex
@@ -39,25 +42,33 @@
         flex-grow: 1
         margin-top: 20px
         height: 1px
-        border-top: 1px solid #ccc
+        border-top: 1px solid black
         vertical-align: middle
 
 .compact-receipt-data-field
     display: flex
     font-size: 12px
+    flex-flow: row
     &-label
         font-weight: bold
+        font-size: 14px
+        width: 25%
     &-value
         padding-left: 4px
+        font-size: 14px
+        font-weight: bold
     &-observation
-        font-size: 12px
+        font-size: 14px
+        font-weight: bold
     &-malfunction
-        font-size: 12px
+        font-size: 14px
+        font-weight: bold
     &-cashadvance
         display: flex
-        font-size: 12px
+        font-size: 14px
+        font-weight: bold
 .compact-receipt-data
-    font-family: sans-serif
+    font-family: Arial, sans-serif
         
 
 

@@ -1,26 +1,26 @@
 
-const currenciesTemp = [
-  {
-    currency_name: 'Colones',
-    currency_code: 'CRC',
-    currency_symbol: '₡',
-    currency_exchange_rate: 1
-  }, {
-    currency_name: 'Dólares',
-    currency_code: 'USD',
-    currency_symbol: '$',
-    currency_exchange_rate: 585
-  }, {
-    currency_name: 'Euros',
-    currency_code: 'EUR',
-    currency_symbol: '€',
-    currency_exchange_rate: 682
-  }
+// const currenciesTemp = [
+//   {
+//     currency_name: 'Colones',
+//     currency_code: 'CRC',
+//     currency_symbol: '₡',
+//     currency_exchange_rate: 1
+//   }, {
+//     currency_name: 'Dólares',
+//     currency_code: 'USD',
+//     currency_symbol: '$',
+//     currency_exchange_rate: 585
+//   }, {
+//     currency_name: 'Euros',
+//     currency_code: 'EUR',
+//     currency_symbol: '€',
+//     currency_exchange_rate: 682
+//   }
 
-]
+// ]
 
 const stateConst = {
-  currencies: currenciesTemp,
+  currencies: [],
   currencySelected: 'CRC',
   exchangeRateSelected: 1,
   symbolSelected: '₡'
@@ -54,7 +54,7 @@ export default function reducer(state = stateConst, action) {
           ...state,
           currencySelected: currency.currency_code,
           symbolSelected: currency.currency_symbol,
-          exchangeRateSelected: currency.currency_exchange_rate
+          exchangeRateSelected: currency.currency_exchange_rate_sale
         }
       }
       return {

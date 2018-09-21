@@ -1,29 +1,28 @@
 .compact-partRequest
-    font-family: sans-serif
+    font-family: Arial, sans-serif
     position: relative
     height: 100%
     width: 100%
 
 .compact-receipt-header
-    font-family: sans-serif
     display: flex
     flex-direction: row
     justify-content: center
-    font-size: 13px
+    font-family: Arial, sans-serif
     &-info
         flex-grow: 1
         text-align: center
+        font-family: Arial, sans-serif
         & h2
-            font-size: 14px
+            font-size: 18px
             margin: 0 0 2px 0
             font-weight: bold
         & h3
-            font-size: 13px
-            margin: 0 0 1px 0
-            font-weight: normal
+            font-size: 14px
+            margin: 0 0 2px 0
+            font-weight: bold
 
 .compact-receipt-separator
-    font-family: sans-serif
     display: flex
     flex-direction: row
     justify-content: space-between
@@ -31,65 +30,80 @@
     line-height: 40px
     text-transform: uppercase
     & h1
-        font-size: 13px
+        font-size: 14px
         margin: 0 5px
         line-height: 40px
-    & h2
-        font-size: 12px
         font-weight: bold
-    & span 
+    & h2
+        font-size: 14px
+        margin: 0 5px
+        line-height: 40px
+        font-weight: bold
+    & span
         flex-grow: 1
         margin-top: 20px
         height: 1px
-        border-top: 1px solid #ccc
+        border-top: 1px solid black
         vertical-align: middle
 
 .compact-receipt-data-field
-    font-family: sans-serif
     display: flex
     font-size: 12px
+    flex-flow: row
     &-label
         font-weight: bold
+        font-size: 14px
+        width: 25%
     &-value
         padding-left: 4px
+        font-size: 14px
+        font-weight: bold
     &-observation
-        font-size: 12px
+        font-size: 14px
+        font-weight: bold
     &-malfunction
-        font-size: 12px
+        font-size: 14px
+        font-weight: bold
     &-cashadvance
         display: flex
-        font-size: 12px
+        font-size: 14px
+        font-weight: bold
         
 .compact-invoice-table
-    font-family: sans-serif
-    margin-top: 10px
+    margin-top: 15px
     border: none
+    font-family: Arial, sans-serif
 
     &-header
-        font-size: 13px
+        font-size: 16px
         width: 100%
         display: flex
         flex-flow: row
         font-weight: bold
         &-qty
-            width: 30%
+            width: 25%
         &-code
-            width: 35%
-            text-align: center
+            width: 25%
+            text-align: left
         &-iv
             width: 20%
             text-align: center
         &-total
-            width: 35%
+            width: 30%
             text-align: right
     &-body
-        border-top: 1px solid #ccc
+        font-family: Arial, sans-serif
+        border-top: 1px solid black
         margin-top: 5px
-        font-size: 11px
+        font-size: 14px
+        font-weight: bold !important
         &-item
             width: 100%
             padding: 5px 0
-            border-bottom: 1px solid #ccc
+            border-bottom: 1px solid black
+            font-weight: bold !important
+            &:last-child
+                border-bottom: none
             &-description
                 width: 100%
                 display: flex
@@ -101,17 +115,19 @@
                 display: flex
                 flex-flow: row
                 margin-top: 5px
+                font-weight: bold !important
                 &-qty
-                    width: 30%
-                &-code
-                    width: 35%
-                    text-align: center
-                &-iv
                     width: 25%
+                &-code
+                    width: 25%
+                    text-align: left
+                &-iv
+                    width: 20%
                     text-align: center
                 &-total
-                    width: 35%
+                    width: 30%
                     text-align: right
+
 
 
 
