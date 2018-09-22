@@ -41,7 +41,7 @@ export default class List extends React.Component {
   render() {
     const getClientNameClosure = (item) => {
       function getName(item) {
-        if (item == undefined || item.client =='') {
+        if (item == undefined || item.client == '') {
           return 'SIN NOMBRE'
         }
         try {
@@ -66,8 +66,12 @@ export default class List extends React.Component {
       }, {
         type: 'function_process',
         field: 'client',
-        text: 'Cliente',
+        text: 'Cliente Hacienda',
         worker_method: getClientNameClosure
+      }, {
+        type: 'CLIENT_NAME_EXTRAS',
+        field: 'client',
+        text: 'Nombre en Factura'
       }, {
         field: 'sale_total',
         text: 'Monto',

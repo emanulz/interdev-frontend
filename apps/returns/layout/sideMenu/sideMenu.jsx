@@ -52,7 +52,7 @@ export default class SideMenu extends React.Component {
           <li>
             <Link to='/returns'>
               <span className='fa fa-money' />
-              Inicio</Link>
+              Listado Devoluciones</Link>
           </li>
           {/* <li>
             <Link to='/sales/sale'>
@@ -62,7 +62,7 @@ export default class SideMenu extends React.Component {
           <li>
             <Link to='/returns/moneyreturn'>
               <span className='fa fa-refresh' />
-              Devolución</Link>
+              Devolución / NC</Link>
           </li>
           {/* <li>
             <Link to='/sales/presale'>
