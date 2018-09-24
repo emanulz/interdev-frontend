@@ -3,11 +3,13 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import {getEarmings} from './actions.js'
 
 @connect((store) => {
   return {
     disabled: store.completed.completed,
-    globalConf: store.config.globalConf
+    globalConf: store.config.globalConf,
+    cart: store.cart
   }
 })
 export default class Buttons extends React.Component {
@@ -35,6 +37,9 @@ export default class Buttons extends React.Component {
   saveProforma() {
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'QUOTING'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+  }
+  showEarnings() {
+    getEarmings(this.props.cart)
   }
   newSale() {
     // window.location.reload()
@@ -95,9 +100,27 @@ export default class Buttons extends React.Component {
       </button>
       : ''
 
+    const earningsBtn = this.props.globalConf.showEarningsInPresales
+      ? <button
+        disabled={this.props.disabled}
+        onClick={this.showEarnings.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Rentabilidad
+        <span>
+          <i className='fa fa-money' />
+        </span>
+      </button>
+      : ''
+
     const extraButtons = <div>
       {reserveBtn}
       {proformaBtn}
+      {earningsBtn}
     </div>
 
     return <div className='col-xs-12 buttons'>
@@ -106,7 +129,7 @@ export default class Buttons extends React.Component {
         <b>Pago:<br /></b>
       </span> */}
 
-      <button
+      {/* <button
         disabled
         onClick={this.showPayPanel.bind(this)}
         style={{
@@ -134,7 +157,7 @@ export default class Buttons extends React.Component {
         <span>
           <i className='fa fa-list' />
         </span>
-      </button>
+      </button> */}
 
       <button
         disabled={this.props.disabled}

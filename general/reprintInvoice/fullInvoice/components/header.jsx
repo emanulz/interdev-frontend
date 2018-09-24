@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     sale: store.reprintInvoice.sale,
-    userProfile: store.userProfile
+    userProfile: store.userProfile,
+    conf: store.config.globalConf
   }
 })
 export default class Header extends React.Component {
@@ -52,12 +53,15 @@ export default class Header extends React.Component {
     const logoWidth = local && local.logo_width ? local.logo_width : '130px'
     const logoUrl = `/media/logos/${logo}`
 
+    const slogan = this.props.conf.tempSlogan ? <span>{this.props.conf.tempSlogan}</span> : ''
+    
     return <div>
 
       <div className='reprint-full-invoice-header'>
 
         <div className='reprint-full-invoice-header-logo'>
           <img style={{'width': `${logoWidth}`}} src={logoUrl} />
+          {slogan}
         </div>
         <div className='reprint-full-invoice-header-info'>
           <h2>{headerName.toUpperCase()}</h2>

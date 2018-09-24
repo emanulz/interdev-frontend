@@ -94,6 +94,28 @@ export default class AdminTable extends React.Component {
     })
   }
 
+  determinClientName(client, extraClient) {
+    if (client.client) { client = client.client }
+    if (client) {
+      if (client.code == '00') {
+        return extraClient.name
+      }
+      return client.name
+    }
+    return 'Cliente'
+  }
+
+  determinClientLastName(client, extraClient) {
+    if (client.client) { client = client.client }
+    if (client) {
+      if (client.code == '00') {
+        return extraClient.last_name
+      }
+      return client.last_name
+    }
+    return 'General'
+  }
+
   render() {
     const headerOrder = this.props.headerOrder
     const model = this.props.model
@@ -222,6 +244,33 @@ export default class AdminTable extends React.Component {
               const url = `${header.base_url}/${itemToRender}-${itemToRender2}_response.xml`
               item = <td key={`${el[idField]}_${header.field}_xml_response`}>
                 <a download={`${itemToRender}_respuesta.xml`} href={url}><i className='fa fa-file-code-o' /></a>
+              </td>
+              break
+            }
+            case 'CLIENT_NAME_EXTRAS':
+            {
+              // PRELOAD SOME EXTRAS IN CASE SALE DOES NOT HAVE ONE
+              let extras = {
+                notes: '',
+                client: {
+                  last_name: 'General',
+                  name: 'Cliente',
+                  email: ''
+                }
+              }
+              try {
+                extras = el.extras ? JSON.parse(el.extras) : extras
+              } catch (err) { console.log('ERROR PARSE', err) }
+              // PARSE THE CLIENT
+              let client = itemToRender
+              try {
+                client = JSON.parse(client)
+              } catch (err) { console.log(err) }
+              // DETERMIN THE NAME AND LAST_NAME
+              const name = this.determinClientName(client, extras.client)
+              const lastName = this.determinClientLastName(client, extras.client)
+              item = <td key={`${el[idField]}_extras_name`}>
+                {`${name} ${lastName}`}
               </td>
               break
             }
