@@ -498,6 +498,30 @@ export function setProductNew(kwargs, resolve, reject) {
 
 }
 
+export function getProductsList(kwargs, resolve, reject) {
+  axios({
+    method: 'post',
+    url: kwargs.url,
+    data: kwargs.data
+  })
+    .then((response) => {
+      console.log(response)
+      resolve(response.data)
+    })
+    .catch((err) => {
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `ERROR: ${err}.`)
+      }
+      reject(err)
+    })
+
+}
+
 export function determinPriceToUse(line, priceListSelected, usePriceListAsDefault) {
 
   const listSelected = parseInt(priceListSelected)

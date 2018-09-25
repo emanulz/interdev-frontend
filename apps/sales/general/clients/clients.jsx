@@ -5,6 +5,7 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {userSelected, getFullClientByCode, determinClientName, determinClientLastName, determinClientEmail} from './actions'
+import {getProductsList} from '../product/actions'
 // import {recalcCart} from '../../general/product/actions'
 const Mousetrap = require('mousetrap')
 
@@ -20,7 +21,11 @@ const Mousetrap = require('mousetrap')
     // movements: store.clientmovements.movements,
     debt: store.clients.clientSelectedDebt,
     disabled: store.completed.completed,
-    extraClient: store.extras.client
+    extraClient: store.extras.client,
+    listSelected: store.priceList.listSelected,
+    useListAsDefault: store.priceList.useAsDefault,
+    cartItems: store.cart.cartItems,
+    pricesDetails: store.products.pricesDetails
   }
 })
 export default class Clients extends React.Component {
@@ -39,6 +44,34 @@ export default class Clients extends React.Component {
       // this.props.dispatch(recalcCart(nextProps.cart, discount, nextProps.client))
       // this.props.dispatch({type: 'SET_GLOBAL_DISCOUNT', payload: discount})
       this.props.dispatch({type: 'SET_CLIENT_DEBT', payload: nextProps.client.client.balance})
+
+      // WHEN CLIENT IS UPDATED SEND A REQUEST TO RECALC THE DETAIL DATA THEN DISPATCH IT AND UPDATE THE PRICES
+      const _this = this
+
+      const getNewLineDataPromise = new Promise((resolve, reject) => {
+        const cartItems = _this.props.cartItems
+        const data = cartItems.map(item => {
+          return {
+            code: item.product.code,
+            clientId: nextProps.client.client.id
+          }
+        })
+        const kwargs = {
+          url: '/api/products/getProdPrice/',
+          data: data
+        }
+        if (data.length) {
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          getProductsList(kwargs, resolve, reject)
+        }
+      })
+
+      getNewLineDataPromise.then((data) => {
+        console.log('DATA RESPONSEEE', data)
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log(err)
+      })
 
       // SETS VALUE OF DEFAULT DISCOUNT TO FIELD OR 0
       // if (nextProps.client.pred_discount) {

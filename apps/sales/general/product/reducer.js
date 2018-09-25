@@ -32,7 +32,7 @@ export default function reducer(state = stateConst, action) {
     {
       const newLine = action.payload
       let existentPricesDetails = [...state.pricesDetails]
-      // REMOVE THE ALREADY EXISTENT ITEMS IN CART
+      // REMOVE THE ALREADY EXISTENT ITEM IN CART WITH SAME ID
       existentPricesDetails = existentPricesDetails.filter(item => {
         return item.id !== newLine.id
       })

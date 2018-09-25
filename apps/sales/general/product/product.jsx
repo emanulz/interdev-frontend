@@ -106,8 +106,7 @@ export default class Product extends React.Component {
             url: '/api/products/getProdPrice/',
             data: {
               code: code,
-              clientId: _this.props.client.client.id,
-              other: 'other'
+              clientId: _this.props.client.client.id
             }
           }
 
