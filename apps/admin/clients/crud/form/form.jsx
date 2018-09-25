@@ -335,9 +335,9 @@ class Form extends React.Component {
         <div className='form-group'>
           <label>Tipo</label>
           <Select2
-            name='category_code'
+            name='category_id'
             data={clientCategoriesData}
-            value={this.props.client.category_code}
+            value={this.props.client.category_id}
             className='form-control'
             onSelect={this.handleInputChange.bind(this)}
             options={{

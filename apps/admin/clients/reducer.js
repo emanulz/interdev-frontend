@@ -13,7 +13,7 @@ const clientModel = {
   town: '',
   other_address: '',
   cellphone_number: '',
-  category_code: '',
+  category_id: '',
   code: '',
   credit_days: 30,
   credit_limit: 0,
