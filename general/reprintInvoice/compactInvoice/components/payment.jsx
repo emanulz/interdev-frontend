@@ -67,7 +67,7 @@ export default class Payment extends React.Component {
         <th>Efectivo:</th>
         <td>{symbol} {cashAmount.formatMoney(2, ',', '.')}</td>
       </tr>
-      : ''
+      : <tr />
     // DETERMIN THE CARD AMOUNT
     const cardAmount = this.geyPayCardAmount(payObject)
     const card = cardAmount > 0
@@ -75,7 +75,7 @@ export default class Payment extends React.Component {
         <th>Tarjeta:</th>
         <td>{symbol} {cardAmount.formatMoney(2, ',', '.')}</td>
       </tr>
-      : ''
+      : <tr />
 
     // DETERMIN THE TRANSFER AMOUNT
     const tranAmount = this.geyPayTransferAmount(payObject)
@@ -84,7 +84,7 @@ export default class Payment extends React.Component {
         <th>Transf:</th>
         <td>{symbol} {tranAmount.formatMoney(2, ',', '.')}</td>
       </tr>
-      : ''
+      : <tr />
 
     // DETERMIN THE CREDIT AMOUNT
     const credAmount = this.geyPayCreditAmount(payObject)
@@ -93,7 +93,7 @@ export default class Payment extends React.Component {
         <th>Crédito:</th>
         <td>{symbol} {credAmount.formatMoney(2, ',', '.')}</td>
       </tr>
-      : ''
+      : <tr />
     // DETERMIN THE CHANGE
     const changeAmount = cashAmount + cardAmount + tranAmount + credAmount - total
     const change = changeAmount > 0.01

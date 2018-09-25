@@ -44,8 +44,11 @@ export default class List extends React.Component {
         field: 'name',
         text: 'Nombre'
       }, {
-        field: 'discount',
-        text: 'Descuento %'
+        field: 'pred_discount',
+        text: 'Descuento Predeterminado %'
+      }, {
+        field: 'max_discount',
+        text: 'Descuento Máximo %'
       }
     ]
 

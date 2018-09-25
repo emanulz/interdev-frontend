@@ -448,6 +448,7 @@ export function setProduct(kwargs, resolve, reject) {
     reject()
   })
 }
+
 export function setProductNew(kwargs, resolve, reject) {
   axios({
     method: 'post',
@@ -470,4 +471,34 @@ export function setProductNew(kwargs, resolve, reject) {
       reject(err)
     })
 
+}
+
+export function determinPriceToUse(line) {
+  switch (line.target_price_list) {
+    case 'price1':
+    {
+      console.log('PRICE1')
+      return parseFloat(line.product.price1)
+    } // case
+    case 'price2':
+    {
+      console.log('PRICE2')
+      return parseFloat(line.product.price2)
+    } // case
+    case 'price3':
+    {
+      console.log('PRICE3')
+      return parseFloat(line.product.price3)
+    } // case
+    case 'table':
+    {
+      console.log('TABLE')
+      return parseFloat(line.table_price)
+    } // case
+    default:
+    {
+      console.log('DEFAULT PRICE 1')
+      return parseFloat(line.product.price1)
+    }
+  }
 }

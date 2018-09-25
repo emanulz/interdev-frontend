@@ -133,9 +133,24 @@ class Form extends React.Component {
         </div>
 
         <div className='form-group'>
-          <label>Descuento %</label>
-          <input value={this.props.clientCategory.discount} name='discount' onChange={this.handleInputChange.bind(this)} type='number'
+          <label>Descuento Máximo %</label>
+          <input value={this.props.clientCategory.max_discount} name='max_discount' onChange={this.handleInputChange.bind(this)} type='number'
             className='form-control' />
+        </div>
+        <div className='form-group'>
+          <label>Descuento Predeterminado %</label>
+          <input value={this.props.clientCategory.pred_discount} name='pred_discount' onChange={this.handleInputChange.bind(this)} type='number'
+            className='form-control' />
+        </div>
+
+        <div className='form-group'>
+          <label>Lista de Precios</label>
+          <select onChange={this.handleInputChange.bind(this)} className='form-control' name='pred_price_list'
+            value={this.props.clientCategory.pred_price_list} >
+            <option value='1'>Precio 1</option>
+            <option value='2'>Precio 2</option>
+            <option value='3'>Precio 3</option>
+          </select>
         </div>
 
         <div className='form-group'>

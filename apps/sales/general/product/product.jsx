@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 // import {getItemDispatch} from '../../../../utils/api'
-import {productSelected, setProduct, setProductNew} from './actions.js'
+import {productSelected, setProduct, setProductNew, determinPriceToUse} from './actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -83,21 +83,21 @@ export default class Product extends React.Component {
           ? 1
           : parseFloat(qty) // if no qty sets to 1
 
-        const setProductPromise = new Promise((resolve, reject) => {
-          const kwargs = {
-            lookUpField: 'code',
-            lookUpField2: 'barcode',
-            url: '/api/productslist/',
-            lookUpValue: code,
-            lookUpName: 'código',
-            lookUpName2: 'Código de Barras',
-            modelName: 'Productos',
-            qty: qty
-          }
+        // const setProductPromise = new Promise((resolve, reject) => {
+        //   const kwargs = {
+        //     lookUpField: 'code',
+        //     lookUpField2: 'barcode',
+        //     url: '/api/productslist/',
+        //     lookUpValue: code,
+        //     lookUpName: 'código',
+        //     lookUpName2: 'Código de Barras',
+        //     modelName: 'Productos',
+        //     qty: qty
+        //   }
 
-          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-          setProduct(kwargs, resolve, reject)
-        })
+        //   _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        //   setProduct(kwargs, resolve, reject)
+        // })
 
         const setProductPromiseNew = new Promise((resolve, reject) => {
           const kwargs = {
@@ -115,9 +115,12 @@ export default class Product extends React.Component {
 
         setProductPromiseNew.then((data) => {
           console.log(data)
-          debugger
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-          const product = data.results[0]
+          const product = data[0].product
+          console.log('PRODUCT SELECTED', product)
+          const price = determinPriceToUse(data[0])
+          console.log('PRICE', price)
+          product.price = price
           if (product.code == '00') {
             _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
             _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
@@ -132,6 +135,24 @@ export default class Product extends React.Component {
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
           console.log(err)
         })
+
+        // setProductPromise.then((data) => {
+        //   _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        //   const product = data.results[0]
+        //   if (product.code == '00') {
+        //     _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
+        //     _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
+        //   } else {
+        //     this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart,
+        //       this.props.globalDiscount, this.props.client, this.props.warehouse_id))
+        //     _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+        //     _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+        //   }
+
+        // }).catch((err) => {
+        //   _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        //   console.log(err)
+        // })
 
         // this.props.dispatch(productSelected(code, qty, this.props.products, this.props.itemsInCart,
         //   this.props.globalDiscount, this.props.client, this.props.defaultConfig, this.props.userConfig))
