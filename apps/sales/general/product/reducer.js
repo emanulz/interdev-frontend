@@ -28,6 +28,14 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'SET_PRICES_DETAILS':
+    {
+      return {
+        ...state,
+        pricesDetails: action.payload
+      }
+    }
+
     case 'ADD_TO_PRICES_DETAILS':
     {
       const newLine = action.payload

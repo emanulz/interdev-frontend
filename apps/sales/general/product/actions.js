@@ -38,7 +38,9 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
     // IF THE CLIENT WAS UPDATED USE THE DEFAULT DISCOUNT, ELSE USE THE DISCOUNT ALREADY APPLIED TO ITEM
     let data
     if (clientUpdated) {
-      const predDiscount = detail.default_discount
+      // if the client was updated use the default discount in items list details
+      const predDiscount = parseFloat(detail.default_discount)
+      item.discount = predDiscount
       data = caclSubtotal(item.product, item.qty, predDiscount)
     } else {
       data = caclSubtotal(item.product, item.qty, item.discount)
