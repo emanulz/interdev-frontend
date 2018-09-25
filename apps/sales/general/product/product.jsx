@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 // import {getItemDispatch} from '../../../../utils/api'
-import {productSelected, setProduct} from './actions.js'
+import {productSelected, setProduct, setProductNew} from './actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -99,8 +99,22 @@ export default class Product extends React.Component {
           setProduct(kwargs, resolve, reject)
         })
 
-        setProductPromise.then((data) => {
+        const setProductPromiseNew = new Promise((resolve, reject) => {
+          const kwargs = {
+            url: '/api/products/getProdPrice/',
+            data: {
+              code: code,
+              clientId: this.props.client.id
+            }
+          }
+
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          setProductNew(kwargs, resolve, reject)
+        })
+
+        setProductPromiseNew.then((data) => {
           console.log(data)
+          debugger
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
           const product = data.results[0]
           if (product.code == '00') {
