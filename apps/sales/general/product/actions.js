@@ -21,13 +21,21 @@ const uuidv1 = require('uuid/v1')
 // ------------------------------------------------------------------------------------------
 
 // Function to update the globa; discount of complete storage of items, and reflect it on store, then updating DOME
-export function recalcCart(itemsInCart, predDiscount, client) {
+export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePriceListAsDefault) {
 
   const newCart = itemsInCart.map(item => {
 
-    const newItem = item
+    const detail = pricesDetails.find(line => {
+      return line.id == item.product.id
+    })
+    console.log('DETAIL', detail)
 
-    const data = caclSubtotal(item.product, item.qty, item.discount, predDiscount, client)
+    const newItem = item
+    // DETERMIN THE PRICE TO USE
+    const price = determinPriceToUse(detail, priceListSelected, usePriceListAsDefault)
+    item.product.price = price
+
+    const data = caclSubtotal(item.product, item.qty, item.discount)
 
     newItem.subtotal = data.subtotal
     newItem.totalWithIv = data.totalWithIv
@@ -110,14 +118,14 @@ export function updateItemLote(itemsInCart, code, lote) {
 }
 
 // When item is selected in code field
-export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal) {
+export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal, priceListSelected, usePriceListAsDefault) {
 
   // GET TE DATA FROM THE LINE DATA
   const code = lineData.product.code
   const product = lineData.product
   const predDiscount = lineData.default_discount
   // DETERMIN THE PRICE TO USE
-  const price = determinPriceToUse(lineData)
+  const price = determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault)
   product.price = price
 
   // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
@@ -280,7 +288,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
-  const dataNewProd = caclSubtotal(product, qty, predDiscount, predDiscount, client)
+  const dataNewProd = caclSubtotal(product, qty, predDiscount)
 
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
@@ -336,13 +344,12 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
 }
 
 // calculates the subtotal by line, also the total with iv included, the discount in currency format
-function caclSubtotal(product, qty, productDiscount, predDiscount, client) {
+function caclSubtotal(product, qty, productDiscount) {
 
   // const price = priceToUse(product, client)
   const price = product.price
   const subTotalNoDiscount = price * qty
   const discount = productDiscount ? parseFloat(productDiscount) : 0
-  console.log('DISCOUNT', discount)
   // const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (predDiscount / 100))
   const subTotal = price * qty * (1 - (discount / 100))
   const iv1 = (product.use_taxes)
@@ -379,7 +386,7 @@ function caclSubtotal(product, qty, productDiscount, predDiscount, client) {
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
 function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscount, client, uuid) {
 
-  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, predDiscount, client)
+  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount)
 
   return {
     uuid: uuid,
@@ -484,7 +491,35 @@ export function setProductNew(kwargs, resolve, reject) {
 
 }
 
-export function determinPriceToUse(line) {
+export function determinPriceToUse(line, priceListSelected, usePriceListAsDefault) {
+
+  const listSelected = parseInt(priceListSelected)
+  // case where the price list is selected and use as default checked
+  if (usePriceListAsDefault && line.target_price_list != 'table') {
+    switch (listSelected) {
+      case 1:
+      {
+        console.log('SETTED PRICE1')
+        return parseFloat(line.product.price1)
+      } // case
+      case 2:
+      {
+        console.log('SETTED PRICE2')
+        return parseFloat(line.product.price2)
+      } // case
+      case 3:
+      {
+        console.log('SETTED PRICE3')
+        return parseFloat(line.product.price3)
+      } // case
+      default:
+      {
+        console.log('SETTED DEFAULT PRICE 1')
+        return parseFloat(line.product.price1)
+      }
+    }
+  }
+  // IF THE LIST IS NOT SET IN FRONTEND USE BACKEND DATA
   switch (line.target_price_list) {
     case 'price1':
     {

@@ -4,11 +4,15 @@
 import React from 'react'
 
 import {connect} from 'react-redux'
+import {recalcCart} from '../product/actions.js'
 
 @connect((store) => {
   return {
     listSelected: store.priceList.listSelected,
-    config: store.config
+    useListAsDefault: store.priceList.useAsDefault,
+    config: store.config,
+    cartItems: store.cart.cartItems,
+    pricesDetails: store.products.pricesDetails
   }
 })
 export default class priceList extends React.Component {
@@ -17,6 +21,14 @@ export default class priceList extends React.Component {
     const target = event.target
     const value = target.value
     this.props.dispatch({type: 'SET_PRICE_LIST', payload: value})
+    this.props.dispatch(recalcCart(this.props.cartItems, this.props.pricesDetails, value, this.props.useListAsDefault))
+  }
+
+  toggleUseListAsDefault(event) {
+    const target = event.target
+    const value = target.checked
+    this.props.dispatch({type: 'SET_LIST_AS_DEFAULT', payload: value})
+    this.props.dispatch(recalcCart(this.props.cartItems, this.props.pricesDetails, this.props.listSelected, value))
   }
 
   doNothing() {
@@ -39,7 +51,12 @@ export default class priceList extends React.Component {
               <option value='3'>Precio 3</option>
             </select>
           </div>
-
+          <div className='priceList-container-default'>
+            <h2>Usar Lista</h2>
+            <input checked={this.props.useListAsDefault}
+              onChange={this.toggleUseListAsDefault.bind(this)}
+              type='checkbox' className='form-control' />
+          </div>
         </div>
       }
     } catch (err) { console.log(err) }

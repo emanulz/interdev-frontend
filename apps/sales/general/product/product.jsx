@@ -18,7 +18,9 @@ const Mousetrap = require('mousetrap')
     disabled: store.completed.completed,
     presaleLoaded: store.completed.isPresaleLoaded,
     reserveLoaded: store.completed.isReserveLoaded,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -123,7 +125,8 @@ export default class Product extends React.Component {
             // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
             _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
             this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
-              this.props.client, this.props.warehouse_id))
+              this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
+              this.props.usePriceListAsDefault))
             _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
             _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
           }

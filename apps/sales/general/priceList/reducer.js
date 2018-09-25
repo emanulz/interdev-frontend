@@ -1,5 +1,6 @@
 const stateConst = {
-  listSelected: 1
+  listSelected: 1,
+  useAsDefault: false
 }
 
 export default function reducer(state = stateConst, action) {
@@ -13,6 +14,13 @@ export default function reducer(state = stateConst, action) {
         listSelected: action.payload
       }
     } // case
+    case 'SET_LIST_AS_DEFAULT':
+    {
+      return {
+        ...state,
+        useAsDefault: action.payload
+      }
+    }
 
   } // switch
 
