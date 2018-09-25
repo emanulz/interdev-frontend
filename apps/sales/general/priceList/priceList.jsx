@@ -21,18 +21,17 @@ export default class priceList extends React.Component {
     const target = event.target
     const value = target.value
     this.props.dispatch({type: 'SET_PRICE_LIST', payload: value})
-    this.props.dispatch(recalcCart(this.props.cartItems, this.props.pricesDetails, value, this.props.useListAsDefault))
+    this.props.dispatch(recalcCart(this.props.cartItems, this.props.pricesDetails, value, this.props.useListAsDefault, false))
   }
 
   toggleUseListAsDefault(event) {
     const target = event.target
     const value = target.checked
     this.props.dispatch({type: 'SET_LIST_AS_DEFAULT', payload: value})
-    this.props.dispatch(recalcCart(this.props.cartItems, this.props.pricesDetails, this.props.listSelected, value))
+    this.props.dispatch(recalcCart(this.props.cartItems, this.props.pricesDetails, this.props.listSelected, value, false))
   }
 
   doNothing() {
-
   }
 
   // Main Layout

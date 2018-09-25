@@ -21,7 +21,7 @@ const uuidv1 = require('uuid/v1')
 // ------------------------------------------------------------------------------------------
 
 // Function to update the globa; discount of complete storage of items, and reflect it on store, then updating DOME
-export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePriceListAsDefault) {
+export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePriceListAsDefault, clientUpdated) {
 
   const newCart = itemsInCart.map(item => {
 
@@ -34,8 +34,15 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
     // DETERMIN THE PRICE TO USE
     const price = determinPriceToUse(detail, priceListSelected, usePriceListAsDefault)
     item.product.price = price
-
-    const data = caclSubtotal(item.product, item.qty, item.discount)
+    
+    // IF THE CLIENT WAS UPDATED USE THE DEFAULT DISCOUNT, ELSE USE THE DISCOUNT ALREADY APPLIED TO ITEM
+    let data
+    if (clientUpdated) {
+      const predDiscount = detail.default_discount
+      data = caclSubtotal(item.product, item.qty, predDiscount)
+    } else {
+      data = caclSubtotal(item.product, item.qty, item.discount)
+    }
 
     newItem.subtotal = data.subtotal
     newItem.totalWithIv = data.totalWithIv

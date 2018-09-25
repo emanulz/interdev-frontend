@@ -30,14 +30,18 @@ export default function reducer(state = stateConst, action) {
 
     case 'ADD_TO_PRICES_DETAILS':
     {
-
+      const newLine = action.payload
+      let existentPricesDetails = [...state.pricesDetails]
+      // REMOVE THE ALREADY EXISTENT ITEMS IN CART
+      existentPricesDetails = existentPricesDetails.filter(item => {
+        return item.id !== newLine.id
+      })
+      // ADD IT TO CART
+      existentPricesDetails.push(newLine)
+      // RETURN
       return {
         ...state,
-        pricesDetails: [
-          // action.payload,
-          ...state.pricesDetails,
-          action.payload
-        ]
+        pricesDetails: existentPricesDetails
       }
     } // case
 
