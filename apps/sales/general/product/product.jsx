@@ -114,19 +114,16 @@ export default class Product extends React.Component {
         })
 
         setProductPromiseNew.then((data) => {
-          console.log(data)
           _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
           const product = data[0].product
-          console.log('PRODUCT SELECTED', product)
-          const price = determinPriceToUse(data[0])
-          console.log('PRICE', price)
-          product.price = price
           if (product.code == '00') {
             _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
             _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
           } else {
-            this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart,
-              this.props.globalDiscount, this.props.client, this.props.warehouse_id))
+            // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
+            _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
+            this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
+              this.props.client, this.props.warehouse_id))
             _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
             _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
           }

@@ -109,6 +109,12 @@ export default class CartItems extends React.Component {
   }
 
   discountInputKeyPress(code, ev) {
+    console.log('EVVV TAR', ev.target)
+    const discount = (ev.target.value)
+      ? ev.target.value
+      : 0
+    this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
+      this.props.client))
 
     if (ev.key == 'Enter') {
       ev.preventDefault()
@@ -227,18 +233,19 @@ export default class CartItems extends React.Component {
       const discountField = this.props.client.saleLoaded
         ? <input
           disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
-          onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
+          onChange={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
           type='number' className='form-control'
-          defaultValue={parseFloat(item.discount)}
+          defaultValue={item.discount}
         />
         : <input
           disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
-          onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
+          onChange={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
           type='number' className='form-control'
+          value={item.discount}
         />
 
       return <div className={activeClass}

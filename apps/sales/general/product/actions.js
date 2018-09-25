@@ -21,13 +21,13 @@ const uuidv1 = require('uuid/v1')
 // ------------------------------------------------------------------------------------------
 
 // Function to update the globa; discount of complete storage of items, and reflect it on store, then updating DOME
-export function recalcCart(itemsInCart, globalDiscount, client) {
+export function recalcCart(itemsInCart, predDiscount, client) {
 
   const newCart = itemsInCart.map(item => {
 
     const newItem = item
 
-    const data = caclSubtotal(item.product, item.qty, item.discount, globalDiscount, client)
+    const data = caclSubtotal(item.product, item.qty, item.discount, predDiscount, client)
 
     newItem.subtotal = data.subtotal
     newItem.totalWithIv = data.totalWithIv
@@ -44,11 +44,12 @@ export function recalcCart(itemsInCart, globalDiscount, client) {
 }
 
 // Function to update the inline discount of an item, and reflect it on store
-export function updateItemDiscount(itemsInCart, code, discount, globalDiscount, client) {
+export function updateItemDiscount(itemsInCart, code, discount, predDiscount, client) {
 
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
   const product = itemsInCart[indexInCart].product
   const maxDiscount = determinMaxDiscount(client, product)
+  console.log('DISCOUNT', discount)
   if (maxDiscount >= discount) {
     const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
       ? {
@@ -58,7 +59,7 @@ export function updateItemDiscount(itemsInCart, code, discount, globalDiscount, 
       : {
         type: 'UPDATE_CART',
         payload: {
-          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, globalDiscount, client,
+          item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, predDiscount, client,
             itemsInCart[indexInCart].uuid),
           index: indexInCart
         }
@@ -109,7 +110,15 @@ export function updateItemLote(itemsInCart, code, lote) {
 }
 
 // When item is selected in code field
-export function productSelected(code, qty, product, itemsInCart, globalDiscount, client, warehouseId, perLineVal) {
+export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal) {
+
+  // GET TE DATA FROM THE LINE DATA
+  const code = lineData.product.code
+  const product = lineData.product
+  const predDiscount = lineData.default_discount
+  // DETERMIN THE PRICE TO USE
+  const price = determinPriceToUse(lineData)
+  product.price = price
 
   // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
   if (!product.fractioned && !Number.isInteger(qty)) {
@@ -135,7 +144,7 @@ export function productSelected(code, qty, product, itemsInCart, globalDiscount,
   const inventory = JSON.parse(product.inventory_existent)
   // CHECK THE INVENTORY OF PRODUCT, IF INVENTORY NOT ENABLE OR INVENTORY IS ENOUGHT OR CAN BE NEGATIVE
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
-    const res = checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, perLine)
+    const res = checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine)
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
@@ -146,7 +155,7 @@ export function productSelected(code, qty, product, itemsInCart, globalDiscount,
 
 // Updates Amount based on qty input field
 
-export function updateQty (code, qty, itemsInCart, globalDiscount, client, warehouseId) {
+export function updateQty (code, qty, itemsInCart, predDiscount, client, warehouseId) {
   const qtyNum = parseFloat(qty)
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code)
 
@@ -171,7 +180,7 @@ export function updateQty (code, qty, itemsInCart, globalDiscount, client, wareh
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, globalDiscount, client,
+      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
         itemsInCart[indexInCart].uuid),
       index: indexInCart
     }
@@ -186,7 +195,7 @@ export function updateQty (code, qty, itemsInCart, globalDiscount, client, wareh
   return {type: 'NO_ACTION', payload: ''}
 }
 
-export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client, warehouseId) {
+export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, warehouseId) {
 
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code || item.product.barcode == code)
   const qtyNum = parseFloat(qty)
@@ -212,7 +221,7 @@ export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client, w
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, globalDiscount, client,
+      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
         itemsInCart[indexInCart].uuid),
       index: indexInCart
     }
@@ -229,7 +238,7 @@ export function updateQtyCode (code, qty, itemsInCart, globalDiscount, client, w
 
 // Updates Amount based on qty input field
 
-export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client, warehouseId) {
+export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, warehouseId) {
 
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code)
   const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
@@ -244,7 +253,7 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client, 
   const res = {
     type: 'UPDATE_CART',
     payload: {
-      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, globalDiscount, client,
+      item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
         itemsInCart[indexInCart].uuid),
       index: indexInCart
     }
@@ -266,12 +275,12 @@ export function addSubOne (code, subOrAdd, itemsInCart, globalDiscount, client, 
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, perLine) {
+function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
-  const dataNewProd = caclSubtotal(product, qty, 0, globalDiscount, client)
+  const dataNewProd = caclSubtotal(product, qty, predDiscount, predDiscount, client)
 
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
@@ -283,7 +292,7 @@ function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, 
           uuid: uuid,
           product: product,
           qty: qty,
-          discount: 0,
+          discount: dataNewProd.discount,
           discountCurrency: dataNewProd.discountCurrency,
           subTotalNoDiscount: dataNewProd.subTotalNoDiscount,
           subtotal: dataNewProd.subtotal,
@@ -297,7 +306,7 @@ function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, 
         type: 'UPDATE_CART',
         payload: {
           item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty,
-            itemsInCart[indexInCart].discount, globalDiscount, client, itemsInCart[indexInCart].uuid),
+            itemsInCart[indexInCart].discount, predDiscount, client, itemsInCart[indexInCart].uuid),
           index: indexInCart
         }
       }
@@ -327,14 +336,15 @@ function checkIfInCart(code, qty, product, itemsInCart, globalDiscount, client, 
 }
 
 // calculates the subtotal by line, also the total with iv included, the discount in currency format
-function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
+function caclSubtotal(product, qty, productDiscount, predDiscount, client) {
 
   // const price = priceToUse(product, client)
   const price = product.price
   const subTotalNoDiscount = price * qty
-
-  // const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (globalDiscount / 100))
-  const subTotal = price * qty * (1 - (productDiscount / 100))
+  const discount = productDiscount ? parseFloat(productDiscount) : 0
+  console.log('DISCOUNT', discount)
+  // const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (predDiscount / 100))
+  const subTotal = price * qty * (1 - (discount / 100))
   const iv1 = (product.use_taxes)
     ? subTotal * (product.taxes / 100)
     : 0
@@ -349,8 +359,8 @@ function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
 
   const totalWithIv = subTotal + iv1 + iv2 + iv3
 
-  const discountCurrencyInLine = price * qty * (productDiscount / 100)
-  // const discountCurrencyGlobal = ((price * qty) - discountCurrencyInLine) * (globalDiscount / 100)
+  const discountCurrencyInLine = price * qty * (discount / 100)
+  // const discountCurrencyGlobal = ((price * qty) - discountCurrencyInLine) * (predDiscount / 100)
 
   // const discountCurrency = discountCurrencyInLine + discountCurrencyGlobal
   const discountCurrency = discountCurrencyInLine
@@ -360,22 +370,23 @@ function caclSubtotal(product, qty, productDiscount, globalDiscount, client) {
     totalWithIv: totalWithIv,
     discountCurrency: discountCurrency,
     subTotalNoDiscount: subTotalNoDiscount,
-    priceToUse: price
+    priceToUse: price,
+    discount: discount
   }
 
 }
 
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
-function updatedCartItem(itemsInCart, index, newQty, productDiscount, globalDiscount, client, uuid) {
+function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscount, client, uuid) {
 
-  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, globalDiscount, client)
+  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, predDiscount, client)
 
   return {
     uuid: uuid,
     product: itemsInCart[index].product,
     discountCurrency: data.discountCurrency,
     qty: newQty,
-    discount: productDiscount,
+    discount: data.discount,
     subTotalNoDiscount: data.subTotalNoDiscount,
     subtotal: data.subtotal,
     totalWithIv: data.totalWithIv,

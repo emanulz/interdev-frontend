@@ -8,6 +8,7 @@ import Notes from '../../general/extras/notes.jsx'
 import Totals from '../../general/totals/totals.jsx'
 import Buttons from '../buttons/buttons.jsx'
 import Currency from '../../general/currency/currency.jsx'
+import PriceList from '../../general/priceList/priceList.jsx'
 import {connect} from 'react-redux'
 
 @connect((store) => {
@@ -36,6 +37,7 @@ export default class Aside extends React.Component {
           </div>
         </div> */}
         <Client />
+        <PriceList />
         <Currency />
         <Totals />
         <Notes />

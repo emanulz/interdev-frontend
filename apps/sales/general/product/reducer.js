@@ -3,7 +3,8 @@ const stateConst = {
   inputVal: '',
   singleProductVisible: false,
   singleProductQty: '',
-  sigleProductActive: {}
+  sigleProductActive: {},
+  pricesDetails: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -24,6 +25,19 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         singleProductVisible: false
+      }
+    } // case
+
+    case 'ADD_TO_PRICES_DETAILS':
+    {
+
+      return {
+        ...state,
+        pricesDetails: [
+          // action.payload,
+          ...state.pricesDetails,
+          action.payload
+        ]
       }
     } // case
 
