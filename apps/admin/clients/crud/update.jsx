@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import Form from './form/form.jsx'
+import Form2 from './form/form2.jsx'
 
 import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
@@ -11,6 +12,7 @@ import {Link} from 'react-router-dom'
 import UpdateButtons from './form/updateButtons.jsx'
 import ItemsBar from '../../layout/itemsBar/itemsBar.jsx'
 import {toggleItemsBar} from '../../layout/itemsBar/actions'
+import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
 @connect((store) => {
   return {
@@ -18,7 +20,8 @@ import {toggleItemsBar} from '../../layout/itemsBar/actions'
     client: store.clients.clientActive,
     nextClient: store.clients.nextClient,
     previousClient: store.clients.previousClient,
-    clients: store.clients.clients
+    clients: store.clients.clients,
+    config: store.config.globalConf
   }
 })
 export default class Update extends React.Component {
@@ -61,10 +64,32 @@ export default class Update extends React.Component {
     switch (this.props.permissions.change) {
       case true:
       {
-        content = <div className='heigh100'>
-          <Form key={code} update location={this.props.location} />
-          <UpdateButtons />
-        </div>
+        if (this.props.config.usesClientPriceTable) {
+          content = <div className='heigh100'>
+            <Tabs>
+              <TabList>
+                <Tab className='oneTwo' tabFor='one'>Cliente</Tab>
+                <Tab className='oneTwo' tabFor='two'>Precios</Tab>
+              </TabList>
+
+              <TabPanel tabId='one'>
+                <Form key={`${code}1`} update />
+                <UpdateButtons />
+              </TabPanel>
+
+              <TabPanel tabId='two'>
+                <Form2 key={`${code}2`} update />
+              </TabPanel>
+            </Tabs>
+          </div>
+
+        } else {
+          content = <div className='heigh100'>
+            <Form key={code} update location={this.props.location} />
+            <UpdateButtons />
+          </div>
+        }
+
         break
       } // case
 
