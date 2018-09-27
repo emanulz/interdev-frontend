@@ -26,6 +26,7 @@ export default combineReducers({
   inventoryMovements,
   pagination,
   inventorySearch: search('inventorySearch'),
+  productSearch: search('productSearch'),
   physicalTake,
   takeMovements,
   checkTakeMovements,
