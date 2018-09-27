@@ -36,12 +36,33 @@ const stateConst = {
   clientActiveOld: clientModel,
   nextClient: 0,
   previousClient: 0,
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  clientProds: [],
+  selected_prod: '',
+  clientProdFormVisible: false,
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'CLIENT_PRODUCT_EDIT':
+    {
+      //find the clientproduct line from the clientProds using the
+      //received code
+      const prod = state.clientProds.find((prod)=>{
+        if (prod.product_code == action.payload){
+          return prod
+        }
+      })
+      console.log("I was dispatched from admin on click")
+      console.log("Payload", action.payload)
+      return {
+        ...state,
+        selected_prod: prod ,
+        clientProdFormVisible: true
+      }
+    }
 
     case 'CLEAR_CANTON':
     {
@@ -107,6 +128,20 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'FETCH_CLIENT_PRODS_FULFILLED':
+    {
+      return {
+        ...state,
+        clientProds: action.payload
+      }
+    }
+    case 'FETCH_CLIENT_PRODS_REJECTED':
+    {
+      return {
+        ...state,
+        clientProds: []
+      }
+    }
     case 'FETCH_CLIENTS_FULFILLED':
     {
       return {

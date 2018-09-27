@@ -47,6 +47,7 @@ export default combineReducers({
   pagination,
   Importer,
   adminSearch: search('adminSearch'),
+  clientProductSearch: search('clientProductSearch'),
   clientCategories,
   sales,
   reprintInvoice,
