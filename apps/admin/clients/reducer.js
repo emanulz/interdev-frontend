@@ -39,6 +39,7 @@ const clientProdModel = {
   table_price: 0,
   discount_percent: 0,
   by_price: false,
+  is_edit: true,
   created: '',
   updated: ''
 }
@@ -61,12 +62,26 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    case 'CLIENT_PRODUCT_CREATE':
+    {
+      let new_client_prod = JSON.parse(JSON.stringify(clientProdModel))
+      new_client_prod.product_id = action.payload.product.id
+      new_client_prod.product_description = action.payload.product.description
+      new_client_prod.product_code = action.payload.product.code
+      
+      return {
+        ...state,
+        clientProdFormVisible: true,
+        activeClientProd: new_client_prod
+
+      }
+    }
 
     case 'HIDE_CLIENT_PRODUCT_EDIT':
     {
       return {
         ...state,
-        clientProdFormVisible: false
+        clientProdFormVisible: false,
       }
     }
 
@@ -87,10 +102,11 @@ export default function reducer(state = stateConst, action) {
           return prod
         }
       })
+      prod.is_edit=true
 
       return {
         ...state,
-        activeClientProd: prod ,
+        activeClientProd: prod,
         clientProdFormVisible: true
       }
     }

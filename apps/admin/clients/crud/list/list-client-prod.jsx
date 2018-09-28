@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import AdminTable from '../../../../../general/adminTable/adminTable.jsx'
 import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
+import Search from '../../../../../general/search/search.jsx'
 import { getPaginationItemDispatch } from '../../../../../utils/api.js'
 import FormClientProd from '../form/form-client-prod.jsx'
 
@@ -18,6 +19,7 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
         clientProds: store.clients.clientProds,
         searchResults: store.clientProductSearch.searchResults,
         clientActive: store.clients.clientActive,
+        productsSearcResults: store.productClientCreate.searchResults
     }
 })
 export default class List extends React.Component {
@@ -43,9 +45,30 @@ export default class List extends React.Component {
         console.log("Search panel dispatch")
     }
 
+    productSearchDoubleClick(prod_id, e){
+        console.log("Search double click", prod_id)
+        //find the product by id and dispatch to the reducer to set id
+        const product = this.props.productsSearcResults.find(item=>{
+            if(item.id== prod_id){
+                return item
+            }
+        })
+        const payload = {
+            is_create: true,
+            product: product,
+
+        }
+        this.props.dispatch({type: 'CLIENT_PRODUCT_CREATE', payload:payload})
+        this.props.dispatch({type:'productClientCreate_TOGGLE_SEARCH_PANEL'})
+
+    }
+
+    showProdCreateSearch(){
+        this.props.dispatch({type:'productClientCreate_TOGGLE_SEARCH_PANEL'})
+    }
+
     render(){
 
-        //const a = ()=>{console.log("HERE HERE TADAH")}
         const a = this.showCreateForm
         const headerOrder = [
             {
@@ -81,7 +104,7 @@ export default class List extends React.Component {
         return <div className='list list-container'>
             <div className='admin-list-header'>
                 <h1>Referencia Descuentos Cliente-Producto</h1>
-                <div className='clientProdForm-add'>
+                <div className='clientProdForm-add' onClick={this.showProdCreateSearch.bind(this)}>
                     Agregar entrada
                     <i className='fa fa-plus' />
                 </div>
@@ -90,6 +113,9 @@ export default class List extends React.Component {
             <SearchAdmin model='clientproduct' namespace='clientProductSearch' clientId={this.props.clientActive.id} />
             {content}
             <FormClientProd />
+
+            <Search modelText='Producto' model='product' namespace='productClientCreate' onRowDoubleClick={this.productSearchDoubleClick.bind(this)}
+                onRowClick={() => { return false }} onActiveItem={() => { return false }} sortedBy='code' useImage />
         </div>
     }
 }

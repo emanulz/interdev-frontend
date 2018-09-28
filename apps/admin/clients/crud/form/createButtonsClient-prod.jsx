@@ -16,25 +16,33 @@ import { withRouter } from 'react-router-dom'
 class CreateButtons extends React.Component {
 
   // BUTTONS
-  saveBtn(redirect) {
+  saveBtn() {
+
+    //check if this is a create or edit
     const activeClientProd = this.props.activeClientProd
     const client = this.props.client
+    activeClientProd.client_id= client.id
     const fieldsOk = checkClientProduct(activeClientProd)
+
+    let endpoint = '/api/clientproduct/'
+    if (activeClientProd.is_edit){
+      endpoint =  `/api/clientproduct/custom_update/`
+    }
 
     if (fieldsOk) {
       const kwargs = {
-        url: '/api/clients/',
-        item: client,
-        user: user,
-        itemOld: clientOld,
-        sucessMessage: 'Cliente creado Correctamente.',
-        errorMessage: 'Hubo un error al crear el Cliente, intente de nuevo.',
-        dispatchType: 'CLEAR_CLIENT'
+        url: endpoint,
+        item: activeClientProd,
+        sucessMessage: 'Entrada Cliente-Producto creada correctamente.',
+        errorMessage: 'Hubo un error al crear la entrada Cliente-Producto, intente de nuevo.',
+        dispatchType: ''
       }
 
       this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       this.props.dispatch(saveItem(kwargs))
     }
+
+    this.props.dispatch({type:'HIDE_CLIENT_PRODUCT_EDIT'})
   }
 
   hideEdit(event){
