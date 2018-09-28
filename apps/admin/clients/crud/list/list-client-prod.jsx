@@ -17,6 +17,7 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
         pageSize: store.pagination.pageSize,
         clientProds: store.clients.clientProds,
         searchResults: store.clientProductSearch.searchResults,
+        clientActive: store.clients.clientActive,
     }
 })
 export default class List extends React.Component {
@@ -30,11 +31,16 @@ export default class List extends React.Component {
             successType: 'FETCH_CLIENT_PRODS_FULFILLED',
             errorType: 'FETCH_CLIENT_PRODS_REJECTED'
         }
+        
         this.props.dispatch(getPaginationItemDispatch(client_prodKwargs))
     }
     
     showCreateForm(code, e){
         this.props.dispatch({type: 'CLIENT_PRODUCT_EDIT', payload: code})
+    }
+
+    showProdSearch(){
+        console.log("Search panel dispatch")
     }
 
     render(){
@@ -75,8 +81,13 @@ export default class List extends React.Component {
         return <div className='list list-container'>
             <div className='admin-list-header'>
                 <h1>Referencia Descuentos Cliente-Producto</h1>
+                <div className='clientProdForm-add'>
+                    Agregar entrada
+                    <i className='fa fa-plus' />
+                </div>
             </div>
-            <SearchAdmin model='clientproduct' namespace='clientProductSearch' />
+
+            <SearchAdmin model='clientproduct' namespace='clientProductSearch' clientId={this.props.clientActive.id} />
             {content}
             <FormClientProd />
         </div>

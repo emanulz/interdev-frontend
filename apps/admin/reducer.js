@@ -48,6 +48,7 @@ export default combineReducers({
   Importer,
   adminSearch: search('adminSearch'),
   clientProductSearch: search('clientProductSearch'),
+  productClientCreate: search('productSearchCreate'),
   clientCategories,
   sales,
   reprintInvoice,

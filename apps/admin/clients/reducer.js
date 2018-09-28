@@ -30,6 +30,19 @@ const clientModel = {
   pred_discount: 0
 }
 
+const clientProdModel = {
+  id: '0000',
+  client_id: '0000',
+  product_id: '0000',
+  product_code: '-1',
+  product_description: 'Producto no seleccionado',
+  table_price: 0,
+  discount_percent: 0,
+  by_price: false,
+  created: '',
+  updated: ''
+}
+
 const stateConst = {
   clients: [],
   clientActive: clientModel,
@@ -40,11 +53,30 @@ const stateConst = {
   clientProds: [],
   selected_prod: '',
   clientProdFormVisible: false,
+  activeClientProd: clientProdModel
+  
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+
+    case 'HIDE_CLIENT_PRODUCT_EDIT':
+    {
+      return {
+        ...state,
+        clientProdFormVisible: false
+      }
+    }
+
+    case 'SET_ACTIVE_CLIENTPROD':
+    {
+      return{
+        ...state,
+        activeClientProd: action.payload
+      }
+    }
 
     case 'CLIENT_PRODUCT_EDIT':
     {
@@ -55,11 +87,10 @@ export default function reducer(state = stateConst, action) {
           return prod
         }
       })
-      console.log("I was dispatched from admin on click")
-      console.log("Payload", action.payload)
+
       return {
         ...state,
-        selected_prod: prod ,
+        activeClientProd: prod ,
         clientProdFormVisible: true
       }
     }
