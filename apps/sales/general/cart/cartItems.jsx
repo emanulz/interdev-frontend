@@ -20,7 +20,8 @@ const Mousetrap = require('mousetrap')
     reserveLoaded: store.completed.isReserveLoaded,
     isExempt: store.cart.isExempt,
     config: store.config.globalConf,
-    currencySymbol: store.currency.symbolSelected
+    currencySymbol: store.currency.symbolSelected,
+    pricesDetails: store.products.pricesDetails
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -114,7 +115,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client))
+      this.props.client, this.props.pricesDetails))
 
     if (ev.key == 'Enter') {
       ev.preventDefault()
@@ -122,7 +123,7 @@ export default class CartItems extends React.Component {
         ? ev.target.value
         : 0
       this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-        this.props.client))
+        this.props.client, this.props.pricesDetails))
 
     }
 
@@ -134,7 +135,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client))
+      this.props.client, this.props.pricesDetails))
 
   }
 
@@ -189,6 +190,8 @@ export default class CartItems extends React.Component {
   removeItem(code, ev) {
 
     this.props.dispatch(removeFromCart(this.props.inCart, code))
+    document.getElementById('productCodeInputField').focus()
+    document.getElementById('productCodeInputField').value = ''
 
   }
 

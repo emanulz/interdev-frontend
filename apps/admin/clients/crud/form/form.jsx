@@ -133,6 +133,16 @@ class Form extends React.Component {
     ev.target.select()
   }
 
+  clearClientCategory() {
+    const client = {
+      ...this.props.client
+    }
+
+    client['category_id'] = ''
+
+    this.props.dispatch({type: 'SET_CLIENT', payload: client})
+  }
+
   render() {
 
     // ********************************************************************
@@ -146,7 +156,7 @@ class Form extends React.Component {
 
     // map the provinces and return items to render in Select2
     const clientCategoriesData = clientCategories.map(clientCategory => {
-      return {text: `${clientCategory.code} - ${clientCategory.name}`, id: `${clientCategory.id}`}
+      return {text: `${clientCategory.code} - ${clientCategory.name} (Descuentos: Max: ${clientCategory.max_discount}%, Pred: ${clientCategory.pred_discount}%)`, id: `${clientCategory.id}`}
     })
 
     // map the provinces and return items to render in Select2
@@ -183,6 +193,26 @@ class Form extends React.Component {
     const townsData = filteredTowns.map(town => {
       return {text: `${town.code} - ${town.name}`, id: town.code}
     })
+
+    const maxDiscountGroup = this.props.client.category_id
+      ? ''
+      : <div className='form-group'>
+        <label>Desc Máximo %</label>
+        <input value={this.props.client.max_discount} name='max_discount'
+          onChange={this.handleInputChange.bind(this)}
+          type='number'
+          className='form-control' onFocus={this.fieldFocus.bind(this)} />
+      </div>
+
+    const predDiscountGroup = this.props.client.category_id
+      ? ''
+      : <div className='form-group'>
+        <label>Desc Predet %</label>
+        <input value={this.props.client.pred_discount} name='pred_discount'
+          onChange={this.handleInputChange.bind(this)}
+          type='number'
+          className='form-control' onFocus={this.fieldFocus.bind(this)} />
+      </div>
 
     // ********************************************************************
     // RETURN BLOCK
@@ -333,37 +363,25 @@ class Form extends React.Component {
         <hr />
 
         <div className='form-group'>
-          <label>Tipo</label>
+          <label>Categoría</label>
           <Select2
             name='category_id'
             data={clientCategoriesData}
             value={this.props.client.category_id}
             className='form-control'
             onSelect={this.handleInputChange.bind(this)}
+            onUnselect={this.clearClientCategory.bind(this)}
             options={{
               placeholder: 'Elija una Categoría...',
-              noResultsText: 'Sin elementos'
+              noResultsText: 'Sin elementos',
+              allowClear: true
             }}
           />
         </div>
 
-        <div className='form-group'>
+        {maxDiscountGroup}
 
-          <label>Desc Máximo %</label>
-          <input value={this.props.client.max_discount} name='max_discount'
-            onChange={this.handleInputChange.bind(this)}
-            type='number'
-            className='form-control' onFocus={this.fieldFocus.bind(this)} />
-
-        </div>
-
-        <div className='form-group'>
-          <label>Desc Predet %</label>
-          <input value={this.props.client.pred_discount} name='pred_discount'
-            onChange={this.handleInputChange.bind(this)}
-            type='number'
-            className='form-control' onFocus={this.fieldFocus.bind(this)} />
-        </div>
+        {predDiscountGroup}
 
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>

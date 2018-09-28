@@ -98,6 +98,8 @@ export default class Clients extends React.Component {
       if (ev.target.value) {
         const code = ev.target.value
         getFullClientByCode(code, this.props.dispatch)
+        document.getElementById('productCodeInputField').focus()
+        document.getElementById('productCodeInputField').value = ''
       }
     } else {
       this.props.dispatch({type: 'SET_CLIENT_FIELD_VALUE', payload: ev.target.value})

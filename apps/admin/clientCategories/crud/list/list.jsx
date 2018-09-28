@@ -49,6 +49,9 @@ export default class List extends React.Component {
       }, {
         field: 'max_discount',
         text: 'Descuento Máximo %'
+      }, {
+        field: 'pred_price_list',
+        text: 'Lista de Precios'
       }
     ]
 

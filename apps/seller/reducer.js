@@ -22,6 +22,7 @@ import userProfile from '../../general/userProfile/reducer.js'
 import generalItem from '../sales/general/product/generalItem/reducer.js'
 import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
 import currency from '../../general/currency/reducer.js'
+import priceList from '../sales/general/priceList/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -46,5 +47,6 @@ export default combineReducers({
   userProfile,
   generalItem,
   clientUpdatePanel,
-  currency
+  currency,
+  priceList
 })

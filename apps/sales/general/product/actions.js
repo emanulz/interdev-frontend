@@ -34,7 +34,7 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
     // DETERMIN THE PRICE TO USE
     const price = determinPriceToUse(detail, priceListSelected, usePriceListAsDefault)
     item.product.price = price
-    
+
     // IF THE CLIENT WAS UPDATED USE THE DEFAULT DISCOUNT, ELSE USE THE DISCOUNT ALREADY APPLIED TO ITEM
     let data
     if (clientUpdated) {
@@ -61,11 +61,11 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
 }
 
 // Function to update the inline discount of an item, and reflect it on store
-export function updateItemDiscount(itemsInCart, code, discount, predDiscount, client) {
+export function updateItemDiscount(itemsInCart, code, discount, predDiscount, client, pricesDetails) {
 
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
   const product = itemsInCart[indexInCart].product
-  const maxDiscount = determinMaxDiscount(client, product)
+  const maxDiscount = determinMaxDiscount(product, pricesDetails)
   console.log('DISCOUNT', discount)
   if (maxDiscount >= discount) {
     const res = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
@@ -85,23 +85,33 @@ export function updateItemDiscount(itemsInCart, code, discount, predDiscount, cl
     return res
   }
 
-  alertify.alert('DESCUENTO NO PERMITIDO', `El descuento máximo permitido para el artículo es ${maxDiscount}%.`)
-  return {type: 'NO_ACTION', payload: ''}
+  alertify.alert('DESCUENTO NO PERMITIDO', `El descuento máximo permitido para el artículo es ${maxDiscount}%, se aplicará ese descuento.`)
+  // IF DISCOUNT IS HIGHER APPLY MAXDISCOUNT INSTEAD
+  const res2 = (indexInCart == -1) // if not exists dispatch Not Found, if exists check if already in cart
+    ? {
+      type: 'PRODUCT_IN_CART_NOT_FOUND',
+      payload: -1
+    }
+    : {
+      type: 'UPDATE_CART',
+      payload: {
+        item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, maxDiscount, predDiscount, client,
+          itemsInCart[indexInCart].uuid),
+        index: indexInCart
+      }
+    }
+  return res2
 
 }
 
-function determinMaxDiscount(client, product) {
-  console.log(client)
-  console.log(product)
-  const clientMax = client.client.max_discount
-  const clientCategoryMax = client.category.discount ? client.category.discount : 0
-  const productMax = product.max_regular_discount
-  const productPromo = product.on_sale ? product.max_sale_discount : 0
-  console.log('CLIENT', clientMax)
-  console.log('CLIENT_CATGORY', clientCategoryMax)
-  console.log('PRODUCT', productMax)
-  console.log('PRODUCT_SALE', productPromo)
-  return Math.max(clientMax, clientCategoryMax, productMax, productPromo)
+function determinMaxDiscount(product, pricesDetails) {
+  const detail = pricesDetails.find(line => {
+    return line.id == product.id
+  })
+  if (detail) {
+    return parseFloat(detail.max_discount)
+  }
+  return 0
 }
 
 // Function to update the inline discount of an item, and reflect it on store
