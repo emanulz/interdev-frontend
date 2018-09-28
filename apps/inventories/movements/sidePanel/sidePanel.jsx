@@ -296,8 +296,8 @@ export default class Products extends React.Component {
       return subdepartment.id == product.subdepartment
     })
 
-    const productDepartment = department.length ? `${department[0].code} - ${department[0].name}` : '-'
-    const productSubDepartment = subdepartment.length ? `${subdepartment[0].code} - ${subdepartment[0].name}` : '-'
+    const productDepartment = department.length ? `${department[0].identifier} - ${department[0].name}` : '-'
+    const productSubDepartment = subdepartment.length ? `${subdepartment[0].identifier} - ${subdepartment[0].name}` : '-'
 
     const table = this.props.productActive
       ? <table className='table table-bordered'>

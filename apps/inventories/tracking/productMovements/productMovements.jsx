@@ -16,11 +16,18 @@ import Select2 from 'react-select2-wrapper'
     warehouses: store.warehouses.warehouses,
     warehouseActive: store.warehouses.warehouseActive,
     departments: store.products.departments,
-    subdepartments: store.products.subdepartments
+    subdepartments: store.products.subdepartments,
+    warehouse_id: store.userProfile.salesWarehouse
   }
 })
 
 export default class MovementsList extends React.Component {
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.warehouse_id != this.props.warehouse_id && nextProps.warehouse_id) {
+      this.props.dispatch({type: 'SET_WAREHOUSE', payload: nextProps.warehouse_id})
+    }
+  }
 
   componentWillMount() {
     this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})

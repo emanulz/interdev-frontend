@@ -6,8 +6,10 @@ import {connect} from 'react-redux'
 import Add from './add/add.jsx'
 import Cart from './cart/cart.jsx'
 
+
 @connect((store) => {
   return {
+    takeId: store.takeMovements.physicalTakeId
   }
 })
 export default class Content extends React.Component {
