@@ -6,6 +6,7 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 import axios from 'axios'
+const uuidv1 = require('uuid/v1')
 
 // ------------------------------------------------------------------------------------------
 // CONFIG DEFAULT AXIOS
@@ -17,11 +18,12 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 export function setProduct(kwargs, resolve, reject) {
 
   // REMOVE FIRST ZERO
-  const splittedValue = kwargs.lookUpValue.split('')
-  if (splittedValue[0] == '0') {
-    splittedValue.splice(0, 1)
-  }
-  const lookUpValue = splittedValue.join('')
+  // const splittedValue = kwargs.lookUpValue.split('')
+  // if (splittedValue[0] == '0') {
+  //   splittedValue.splice(0, 1)
+  // }
+  // const lookUpValue = splittedValue.join('')
+  const lookUpValue = kwargs.lookUpValue
   const lookUpField = kwargs.lookUpField
   const url = kwargs.url
   axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {

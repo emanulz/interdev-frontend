@@ -12,9 +12,16 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
+    warehouse_id: store.userProfile.salesWarehouse
   }
 })
 export default class Movements extends React.Component {
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.warehouse_id != this.props.warehouse_id && nextProps.warehouse_id) {
+      this.props.dispatch({type: 'SET_WAREHOUSE', payload: nextProps.warehouse_id})
+    }
+  }
 
   componentWillMount() {
 

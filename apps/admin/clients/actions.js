@@ -3,6 +3,11 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 
+export function checkClientProduct(client_prod){
+  let Ok = true
+  return Ok
+}
+
 export function checkClientData(client, clients) {
   let Ok = true
 

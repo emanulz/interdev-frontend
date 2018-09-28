@@ -29,7 +29,7 @@ export default class SearchPanel extends React.Component {
   searchAction() {
     const text = this.props.searchText
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(searchItem(text, this.props.model, this.props.namespace))
+    this.props.dispatch(searchItem(text, this.props.model, this.props.namespace, this.props.clientId))
   }
 
   render() {
