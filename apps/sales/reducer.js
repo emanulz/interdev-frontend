@@ -8,6 +8,7 @@ import clients from './general/clients/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import products from './general/product/reducer.js'
 import sale from './sale/reducer.js'
+import cashier from './cashier/reducer.js'
 import messages from './messages/reducer.js'
 import searchClients from './general/search/clients/reducer.js'
 import searchProducts from './general/search/products/reducer.js'
@@ -43,6 +44,7 @@ export default combineReducers({
   currency,
   products,
   sale,
+  cashier,
   messages,
   searchClients,
   searchProducts,
