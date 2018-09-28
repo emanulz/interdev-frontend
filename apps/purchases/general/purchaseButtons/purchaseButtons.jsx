@@ -46,12 +46,15 @@ export default class PurchaseButtons extends React.Component {
             this.props.dispatch({type: 'PURCHASE_SAVED', 
             payload:{ id: result.id, consecutive: result.consecutive , is_closed: result.is_closed}})
             let callback = ()=>{}
+            let message = 'Compra Guardada Correctamente. Pendiente su aplicación.'
             if(result.is_closed){
                 callback = ()=>{
                     window.location.href=`/purchases/purchase/${result.consecutive}`
                 }
+                message = "Compra aplicada correctamente."
             }
-            alertify.alert('Éxito', 'Compra Guardada Correctamente. Pendiente su aplicación', callback)
+
+            alertify.alert('Éxito', message, callback)
         })
         
     }
