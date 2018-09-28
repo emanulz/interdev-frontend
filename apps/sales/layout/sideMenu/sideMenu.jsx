@@ -60,9 +60,9 @@ export default class SideMenu extends React.Component {
               Nueva Venta</Link>
           </li> */}
           <li>
-            <Link to='/sales/proforma'>
-              <span className='fa fa-file-text' />
-              Cotización</Link>
+            <Link to='/sales/cashier'>
+              <span className='fa fa-print' />
+              Cajero</Link>
           </li>
           {/* <li>
             <Link to='/sales/presale'>
