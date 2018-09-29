@@ -35,6 +35,16 @@ export default class Clients extends React.Component {
     getFullClientByCode('00', this.props.dispatch)
   }
 
+  determinPriceList(client, category) {
+    if (client.category_id && category.pred_price_list) {
+      return category.pred_price_list
+    }
+    if (!client.category_id && client.pred_price_list) {
+      return client.pred_price_list
+    }
+    return 1
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.clientSelected != this.props.clientSelected) {
       // set the discount: default value or 0
@@ -46,7 +56,8 @@ export default class Clients extends React.Component {
       this.props.dispatch({type: 'SET_CLIENT_DEBT', payload: nextProps.client.client.balance})
 
       // SET THE CLIENT PRICE LIST
-      const priceList = nextProps.client.category.pred_price_list ? nextProps.client.category.pred_price_list : 1
+      // const priceList = nextProps.client.category.pred_price_list ? nextProps.client.category.pred_price_list : 1
+      const priceList = this.determinPriceList(nextProps.client.client, nextProps.client.category)
       this.props.dispatch({type: 'SET_PRICE_LIST', payload: priceList})
 
       // WHEN CLIENT IS UPDATED SEND A REQUEST TO RECALC THE DETAIL DATA THEN DISPATCH IT AND UPDATE THE PRICES
