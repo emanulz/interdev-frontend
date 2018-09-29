@@ -8,9 +8,7 @@ import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
 import Search from '../../../../../general/search/search.jsx'
 import { getPaginationItemDispatch } from '../../../../../utils/api.js'
 import FormClientProd from '../form/form-client-prod.jsx'
-
-import Pagination from '../../../../../general/pagination/pagination.jsx'
-import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
+import {saveItem} from '../../../../../utils/api'
 
 @connect(store=>{
     return {
@@ -29,13 +27,6 @@ export default class List extends React.Component {
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch({type: `clientProductSearch_CLEAR_SEARCH_RESULTS`})
 
-        // const client_prodKwargs = {
-        //     url: `/api/clientproduct/?limit=${this.props.pageSize}&client_id=${this.props.clientActive.id}`,
-        //     successType: 'FETCH_CLIENT_PRODS_FULFILLED',
-        //     errorType: 'FETCH_CLIENT_PRODS_REJECTED'
-        // }
-
-        // this.props.dispatch(getPaginationItemDispatch(client_prodKwargs))
     }
 
     componentWillUpdate(nextProps){
@@ -64,12 +55,7 @@ export default class List extends React.Component {
         this.props.dispatch({type: 'CLIENT_PRODUCT_EDIT', payload: code})
     }
 
-    showProdSearch(){
-        console.log("Search panel dispatch")
-    }
-
     productSearchDoubleClick(prod_id, e){
-        console.log("Search double click", prod_id)
         //find the product by id and dispatch to the reducer to set id
         const product = this.props.productsSearcResults.find(item=>{
             if(item.id== prod_id){
@@ -88,6 +74,39 @@ export default class List extends React.Component {
 
     showProdCreateSearch(){
         this.props.dispatch({type:'productClientCreate_TOGGLE_SEARCH_PANEL'})
+    }
+
+    deleteClientProdEntry(id, event){
+
+        const _this = this
+        let endpoint =  `/api/clientproduct/custom_delete/`
+
+        let kwargs = {
+        url: endpoint,
+        item: {'pk': id},
+        sucessMessage: 'Entrada Cliente-Producto borrada correctamente.',
+        errorMessage: 'Hubo un error al borrar la entrada Cliente-Producto, intente de nuevo.',
+        dispatchType: 'FLAG_REFRESH_CLIENT_PROD'
+        }
+
+        // ALERTIFY CONFIRM
+        alertify.confirm('Eliminar', `Desea Eliminar el registro?
+                                    Esta acción no se puede deshacer.`,
+        function() {
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        _this.props.dispatch(saveItem(kwargs))
+        }, function() {
+        return true
+        }).set('labels', {
+        ok: 'Si',
+        cancel: 'No'
+        })
+
+        // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        // this.props.dispatch(saveItem(kwargs))
+        
+    
+        
     }
 
     render(){
@@ -112,7 +131,15 @@ export default class List extends React.Component {
             }, 
             {
               field: 'updated',
-              text: 'Actualizado'
+              text: 'Actualizado',
+              type: 'date'
+            },
+            {
+                field: 'id',
+                type: 'function_on_click',
+                textToRender: 'Borrar?',
+                href: '',
+                onClickFunction: this.deleteClientProdEntry
             }
           ]
         
