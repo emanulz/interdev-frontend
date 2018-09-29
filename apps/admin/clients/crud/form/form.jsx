@@ -214,6 +214,18 @@ class Form extends React.Component {
           className='form-control' onFocus={this.fieldFocus.bind(this)} />
       </div>
 
+    const predPriceListGroup = this.props.client.category_id
+      ? ''
+      : <div className='form-group'>
+        <label>Lista de Precios</label>
+        <select onChange={this.handleInputChange.bind(this)} className='form-control' name='pred_price_list'
+          value={this.props.client.pred_price_list} >
+          <option value='1'>Precio 1</option>
+          <option value='2'>Precio 2</option>
+          <option value='3'>Precio 3</option>
+        </select>
+      </div>
+
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
@@ -383,16 +395,18 @@ class Form extends React.Component {
 
         {predDiscountGroup}
 
+        {predPriceListGroup}
+
         <div className='form-group row input-block'>
-          <div className='col-xs-6 first'>
+          {/* <div className='col-xs-6 first'>
 
             <label>Paga Impuestos</label>
             <input checked={this.props.client.pays_taxes} name='pays_taxes' onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
 
-          </div>
+          </div> */}
 
-          <div className='col-xs-6 second'>
+          <div className='col-xs-6 first'>
 
             <label>Tiene Crédito</label>
             <input checked={this.props.client.has_credit} name='has_credit' onChange={this.handleInputChange.bind(this)}

@@ -27,7 +27,8 @@ const clientModel = {
   observations: '',
   pays_taxes: true,
   phone_number: '',
-  pred_discount: 0
+  pred_discount: 0,
+  pred_price_list: 1
 }
 
 const clientProdModel = {

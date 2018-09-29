@@ -22,14 +22,14 @@ export default class SearchPanel extends React.Component {
   inputKeyPress(ev) {
     if (ev.key == 'Enter') {
       ev.preventDefault()
-      this.searchClientAction()
+      this.searchAction()
     } else {
       this.props.dispatch({type: `${this.props.namespace}_SET_SEARCH_TEXT`, payload: ev.target.value})
     }
 
   }
 
-  searchClientAction() {
+  searchAction() {
     const text = this.props.searchText
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(searchItem(text, this.props.model, this.props.namespace))
@@ -60,7 +60,7 @@ export default class SearchPanel extends React.Component {
             onChange={this.inputKeyPress.bind(this)}
             onKeyPress={this.inputKeyPress.bind(this)}
           />
-          <i className='fa fa-search' onClick={this.searchClientAction.bind(this)} />
+          <i className='fa fa-search' onClick={this.searchAction.bind(this)} />
         </div>
 
         <div className='search-panel-results'>
