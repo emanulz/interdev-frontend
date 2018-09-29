@@ -9,6 +9,7 @@
     background-color: rgba(145, 145, 145, 0.67)
     background-size: 100% 100%
     transition: all 0.2s ease-in-out
+        
     & input
         color: black
     &.hidden
@@ -17,10 +18,83 @@
         position: absolute
         width: 90%
         left: 5%
-        background-color: rgb(214, 214, 214)
+        background-color: white
         bottom: 0
         top: 0
         height: 100%
+
+        &-header
+            width: 100%
+            height: 50px
+            font-size: 20px
+            text-align: center
+            font-weight: bold
+            color: white
+            background-color: $SECONDARY-COLOR-ACCENT
+            line-height: 50px
+            & i
+                position: absolute
+                right: 5px
+                top: 2px
+                cursor: pointer
+                &:hover
+                    font-size:  25px
+        &-info
+            text-align: center
+            font-family: 'Source Sans Pro', sans-serif
+            font-size: 20px
+            font-weight: bold
+            color: black
+            padding: 1% 
+        &-prodDetails
+            color: black 
+            font-size: 18px
+            font-family: 'Source Sans Pro', sans-serif
+            display: flex
+            flex-direction: column
+            padding-left: 2.9%
+            &-title
+                font-family: 'Source Sans Pro', sans-serif
+                font-size: 25px
+                font-weight: bold
+                color: black
+                text-align: center
+
+
+            &-entry
+                font-family: 'Source Sans Pro', sans-serif
+                font-size: 18px
+                color: black
+                padding-top: 10px
+                padding-bottom: 10px
+
+        &-gridContainer-price
+            display: flex
+            flex-direction: row
+            padding-left: 2% 
+            
+            &-firstForm
+                color: black
+                font-weight: bold
+                font-size: 20px
+                
+                &-text
+                    padding-right: 15px 
+                    padding-left: 15px
+            &-secondForm
+                color: black
+                font-weight: bold
+                font-size: 15px 
+                &-text
+                    padding-right: 10px 
+                    padding-left: 15px  
+            &-thirdForm
+                color: black
+                font-weight: bold
+                font-size: 15px 
+                &-text
+                    padding-right: 10px
+                    padding-left: 15px   
     &-add
         width: 20%
         border-radius: 0.2em
@@ -28,20 +102,11 @@
         font-weight: bold
         color: white
         background-color: $SECONDARY-COLOR-ACCENT
-    &-header
-        width: 100%
-        height: 50px
-        font-size: 20px
-        text-align: center
-        font-weight: bold
-        color: white
-        background-color: $SECONDARY-COLOR-ACCENT
-        line-height: 50px
-        & i
-            position: absolute
-            right: 5px
-            top: 2px
-            cursor: pointer
-            &:hover
-                font-size:  25px
+
+.form-buttons-container
+    display: flex
+    align-content: center
+    margin: 0
+    padding: 0
+
         
