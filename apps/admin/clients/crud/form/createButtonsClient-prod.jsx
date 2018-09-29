@@ -35,7 +35,7 @@ class CreateButtons extends React.Component {
         item: activeClientProd,
         sucessMessage: 'Entrada Cliente-Producto creada correctamente.',
         errorMessage: 'Hubo un error al crear la entrada Cliente-Producto, intente de nuevo.',
-        dispatchType: ''
+        dispatchType: 'FLAG_REFRESH_CLIENT_PROD'
       }
 
       this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})

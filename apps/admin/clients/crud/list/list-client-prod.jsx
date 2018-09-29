@@ -19,7 +19,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
         clientProds: store.clients.clientProds,
         searchResults: store.clientProductSearch.searchResults,
         clientActive: store.clients.clientActive,
-        productsSearcResults: store.productClientCreate.searchResults
+        productsSearcResults: store.productClientCreate.searchResults,
+        requires_refetch: store.clients.requires_refetch,
     }
 })
 export default class List extends React.Component {
@@ -28,13 +29,35 @@ export default class List extends React.Component {
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch({type: `clientProductSearch_CLEAR_SEARCH_RESULTS`})
 
-        const client_prodKwargs = {
-            url: `/api/clientproduct/?limit=${this.props.pageSize}`,
-            successType: 'FETCH_CLIENT_PRODS_FULFILLED',
-            errorType: 'FETCH_CLIENT_PRODS_REJECTED'
+        // const client_prodKwargs = {
+        //     url: `/api/clientproduct/?limit=${this.props.pageSize}&client_id=${this.props.clientActive.id}`,
+        //     successType: 'FETCH_CLIENT_PRODS_FULFILLED',
+        //     errorType: 'FETCH_CLIENT_PRODS_REJECTED'
+        // }
+
+        // this.props.dispatch(getPaginationItemDispatch(client_prodKwargs))
+    }
+
+    componentWillUpdate(nextProps){
+        if(this.props.clientActive.id==="0000000000" && nextProps.clientActive.id!=="0000000000"){
+            const client_prodKwargs = {
+                url: `/api/clientproduct/?limit=${150}&client_id=${nextProps.clientActive.id}`,
+                successType: 'FETCH_CLIENT_PRODS_FULFILLED',
+                errorType: 'FETCH_CLIENT_PRODS_REJECTED'
+            }
+            this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+            this.props.dispatch(getPaginationItemDispatch(client_prodKwargs))
+        }else if(this.props.requires_refetch){
+            const client_prodKwargs = {
+                url: `/api/clientproduct/?limit=${this.props.pageSize}&client_id=${nextProps.clientActive.id}`,
+                successType: 'FETCH_CLIENT_PRODS_FULFILLED',
+                errorType: 'FETCH_CLIENT_PRODS_REJECTED'
+            }
+            this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+            this.props.dispatch(getPaginationItemDispatch(client_prodKwargs))
         }
-        
-        this.props.dispatch(getPaginationItemDispatch(client_prodKwargs))
+
+
     }
     
     showCreateForm(code, e){

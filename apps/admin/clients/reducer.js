@@ -54,7 +54,8 @@ const stateConst = {
   clientProds: [],
   selected_prod: '',
   clientProdFormVisible: false,
-  activeClientProd: clientProdModel
+  activeClientProd: clientProdModel,
+  requires_refetch: false
   
 }
 
@@ -62,12 +63,21 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    case 'FLAG_REFRESH_CLIENT_PROD':
+    {
+      return {
+        ...state, 
+        requires_refetch: true
+      }
+    }
+
     case 'CLIENT_PRODUCT_CREATE':
     {
       let new_client_prod = JSON.parse(JSON.stringify(clientProdModel))
       new_client_prod.product_id = action.payload.product.id
       new_client_prod.product_description = action.payload.product.description
       new_client_prod.product_code = action.payload.product.code
+      new_client_prod.is_edit = false
       
       return {
         ...state,
@@ -179,7 +189,9 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        clientProds: action.payload
+        clientProds: action.payload,
+        requires_refetch: false,
+
       }
     }
     case 'FETCH_CLIENT_PRODS_REJECTED':
