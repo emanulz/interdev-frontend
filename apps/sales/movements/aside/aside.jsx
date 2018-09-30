@@ -18,19 +18,21 @@ export default class Aside extends React.Component {
 
   // Main Layout
   render () {
-    const asideClass = this.props.fullWidth ? 'cashier-aside collapsed' : 'cashier-aside'
+    const asideClass = this.props.fullWidth ? 'register-movements-aside collapsed' : 'register-movements-aside'
     return <div className={asideClass}>
       <h1>TOTALES</h1>
-      <h2>COLONES</h2>
-      <div className='cashier-aside-tag'>
+      <h2>ENTRADAS</h2>
+      <div className='register-movements-aside-tag'>
         ₡ 102.350,00
       </div>
-      <h2>DÓLARES</h2>
-      <div className='cashier-aside-tag'>
-        $ 50,00
+      <h2>SALIDAS</h2>
+      <div className='register-movements-aside-tag'>
+        ₡ 50,00
       </div>
-      <button className='btn btn-success'>ABRIR CAJA</button>
-      <button className='btn btn-danger'>CERRAR CAJA</button>
+      <h2>BALANCE</h2>
+      <div className='register-movements-aside-tag'>
+        ₡ 50,00
+      </div>
     </div>
   }
 

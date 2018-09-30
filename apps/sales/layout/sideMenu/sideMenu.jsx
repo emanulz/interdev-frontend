@@ -62,7 +62,17 @@ export default class SideMenu extends React.Component {
           <li>
             <Link to='/sales/cashier'>
               <span className='fa fa-print' />
-              Cajero</Link>
+              Abrir/Cerrar Caja</Link>
+          </li>
+          <li>
+            <Link to='/sales/singlemovements'>
+              <span className='fa fa-exchange' />
+              Entradas/Salidas Manuales</Link>
+          </li>
+          <li>
+            <Link to='/sales/movements'>
+              <span className='fa fa-list-ol' />
+              Movimientos</Link>
           </li>
           {/* <li>
             <Link to='/sales/presale'>

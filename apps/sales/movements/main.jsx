@@ -13,25 +13,25 @@ import {connect} from 'react-redux'
   return {
   }
 })
-export default class Cashier extends React.Component {
+export default class RegisterMovements extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'CASHIER_PANEL_MOUNTED', payload: ''})
+    this.props.dispatch({type: 'REGISTER_MOVEMENTS_PANEL_MOUNTED', payload: ''})
     const moneyBillsKwargs = {
-      url: `/api/moneybills/?limit=100`,
-      successType: 'FETCH_MONEY_BILLS_FULFILLED',
-      errorType: 'FETCH_MONEY_BILLS_REJECTED'
+      url: `/api/registermovements/?limit=100000`,
+      successType: 'FETCH_REGISTER_MOVEMENTS_FULFILLED',
+      errorType: 'FETCH_REGISTER_MOVEMENTS_REJECTED'
     }
 
-    this.props.dispatch(getItemDispatch(moneyBillsKwargs))
+    // this.props.dispatch(getItemDispatch(moneyBillsKwargs))
 
   }
   // *******************************************************************
   // Main Layout
   render() {
 
-    return <div className='cashier'>
+    return <div className='register-movements'>
       <Content />
       <Aside />
 

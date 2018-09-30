@@ -1,34 +1,25 @@
 const stateConst = {
   fullWidth: false,
-  moneyBills: []
+  registerMovements: []
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'TOGGLE_CASHIER_FULL_WIDTH':
+    case 'FETCH_REGISTER_MOVEMENTS_FULFILLED':
     {
-      const width = !state.fullWidth
       return {
         ...state,
-        fullWidth: width
+        registerMovements: action.payload
       }
     } // case
 
-    case 'FETCH_MONEY_BILLS_FULFILLED':
+    case 'FETCH_REGISTER_MOVEMENTS_REJECTED':
     {
       return {
         ...state,
-        moneyBills: action.payload
-      }
-    } // case
-
-    case 'FETCH_MONEY_BILLS_REJECTED':
-    {
-      return {
-        ...state,
-        moneyBills: []
+        registerMovements: []
       }
     } // case
 
