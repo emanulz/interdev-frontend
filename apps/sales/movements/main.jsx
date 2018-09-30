@@ -18,13 +18,13 @@ export default class RegisterMovements extends React.Component {
   componentWillMount() {
 
     this.props.dispatch({type: 'REGISTER_MOVEMENTS_PANEL_MOUNTED', payload: ''})
-    const moneyBillsKwargs = {
+    const registerMovementsKwargs = {
       url: `/api/registermovements/?limit=100000`,
       successType: 'FETCH_REGISTER_MOVEMENTS_FULFILLED',
       errorType: 'FETCH_REGISTER_MOVEMENTS_REJECTED'
     }
 
-    // this.props.dispatch(getItemDispatch(moneyBillsKwargs))
+    this.props.dispatch(getItemDispatch(registerMovementsKwargs))
 
   }
   // *******************************************************************

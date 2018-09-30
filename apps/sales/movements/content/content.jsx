@@ -40,7 +40,7 @@ export default class Content extends React.Component {
     const content = this.props.fetching ? fetching : list
 
     return <div className='register-movements-content'>
-      <h1>Movimientos de Caja:</h1>
+      <h1>MOVIMIENTOS DE CAJA:</h1>
       {content}
     </div>
 
