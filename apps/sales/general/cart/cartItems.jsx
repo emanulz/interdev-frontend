@@ -188,6 +188,8 @@ export default class CartItems extends React.Component {
 
   fieldFocus(ev) {
     ev.target.select()
+    ev.target.setSelectionRange(0, 9999)
+
   }
 
   showProductPanel(product, ev) {
