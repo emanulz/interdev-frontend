@@ -2,6 +2,8 @@
  * Module dependencies
  */
 import React from 'react'
+import { saveItem } from './actions'
+import alertify from 'alertifyjs'
 
 import {connect} from 'react-redux'
 @connect((store) => {
@@ -60,6 +62,55 @@ export default class Content extends React.Component {
     this.props.dispatch({type: 'SET_SINGLE_REGISTER_MOVEMENT', payload: movement})
   }
 
+  saveMovement() {
+
+    const amount = this.props.movement.amount
+    const symbol = this.props.movement.coin == 'CRC' ? '₡' : '$'
+
+    const _this = this
+    alertify.confirm('ABRIR', `Desea abir la caja con un monto de ${symbol}${parseFloat(amount).formatMoney()}`,
+      function() {
+        _this.saveBtn()
+      }, function() {
+        return true
+      }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+
+  }
+
+  saveBtn() {
+
+    const kwargs = {
+      url: '/api/registerclosure/applymanualpayment/',
+      item: this.props.movement
+    }
+
+    const _this = this
+
+    const openPromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch(saveItem(kwargs, resolve, reject))
+    })
+
+    openPromise.then((data) => {
+      console.log('DATAAAA', data)
+      alertify.alert('COMPLETADO', 'Caja Abierta Correctamente')
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+    }).catch((err) => {
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `Ocurrió un error al abrir la caja, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `Ocurrió un error al abrir la caja, ERROR: ${err}.`)
+      }
+      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
+
   fieldFocus(ev) {
     ev.target.select()
   }
@@ -112,7 +163,7 @@ export default class Content extends React.Component {
             className='form-control' onFocus={this.fieldFocus.bind(this)} />
         </div>
 
-        <button className='btn btn-success'>Registrar</button>
+        <button onClick={this.saveMovement.bind(this)} className='btn btn-success'>Registrar</button>
 
       </div>
 

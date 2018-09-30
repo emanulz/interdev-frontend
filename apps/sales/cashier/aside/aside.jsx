@@ -41,9 +41,9 @@ export default class Aside extends React.Component {
       opening_money_usd: usd,
       open_notes: JSON.stringify(this.props.openBillList)
     }
-    // TODO: HERE API URLLLLLL
+
     const kwargs = {
-      url: '/api/sales/',
+      url: '/api/registerclosure/',
       item: registerOpen
     }
 
