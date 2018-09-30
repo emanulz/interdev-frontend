@@ -1,6 +1,7 @@
 const stateConst = {
   fullWidth: false,
-  moneyBills: []
+  moneyBills: [],
+  openBillList: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -29,6 +30,23 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         moneyBills: []
+      }
+    } // case
+
+    case 'ADD_TO_OPEN_BILLS_LIST':
+    {
+      const newLine = action.payload
+      let existentOpenBillList = [...state.openBillList]
+      // REMOVE THE ALREADY EXISTENT ITEM IN CART WITH SAME ID
+      existentOpenBillList = existentOpenBillList.filter(item => {
+        return item.value !== newLine.value
+      })
+      // ADD IT TO CART
+      existentOpenBillList.push(newLine)
+      // RETURN
+      return {
+        ...state,
+        openBillList: existentOpenBillList
       }
     } // case
 
