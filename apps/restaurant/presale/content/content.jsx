@@ -23,7 +23,10 @@ import { setProduct, productSelected } from '../../../sales/general/product/acti
     reserves_warehouse: store.config.reserves_warehouse,
     extras: store.extras,
     presaleActiveId: store.presale.presaleActiveId,
-    warehouse_id: store.userProfile.salesWarehouse
+    warehouse_id: store.userProfile.salesWarehouse,
+    config: store.config.globalConf,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault
   }
 })
 class Content extends React.Component {
@@ -68,16 +71,26 @@ class Content extends React.Component {
       const product = data.results[0]
       product.price = _this.calc10Percent(_this.props.cart, 1)
       try {
-        _this.props.dispatch(
-          productSelected(
-            product.code,
-            1,
-            product,
-            _this.props.cart.cartItems,
-            0,
-            _this.props.client,
-            _this.props.warehouse_id)
-        )
+        // _this.props.dispatch(
+        //   productSelected(
+        //     product.code,
+        //     1,
+        //     product,
+        //     _this.props.cart.cartItems,
+        //     0,
+        //     _this.props.client,
+        //     _this.props.warehouse_id)
+        // )
+        const percentData = {
+          default_discount: '0',
+          id: product.id,
+          max_discount: '0',
+          product: product,
+          table_price: '0',
+          target_price_list: 'price1'
+        }
+        this.props.dispatch(productSelected(percentData, 1, _this.props.cart.cartItems, _this.props.client,
+          _this.props.warehouse_id, true, _this.props.priceListSelected, _this.props.usePriceListAsDefault))
         // AFTER ADDING THE 10 PERCENT CLOSE ORDER
         this.savePresale(close)
       } catch (err) {

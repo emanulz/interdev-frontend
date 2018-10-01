@@ -32,7 +32,7 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
 
     const newItem = item
     // DETERMIN THE PRICE TO USE
-    const price = item.product.code == '00' ? item.product.price : determinPriceToUse(detail, priceListSelected, usePriceListAsDefault)
+    const price = item.product.code == '00' || item.product.code == '000' ? item.product.price : determinPriceToUse(detail, priceListSelected, usePriceListAsDefault)
     item.product.price = price
 
     // IF THE CLIENT WAS UPDATED USE THE DEFAULT DISCOUNT, ELSE USE THE DISCOUNT ALREADY APPLIED TO ITEM
@@ -144,7 +144,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
   const product = lineData.product
   const predDiscount = lineData.default_discount
   // DETERMIN THE PRICE TO USE
-  const price = product.code == '00' ? product.price : determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault)
+  const price = product.code == '00' || product.code == '000' ? product.price : determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault)
   product.price = price
 
   // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
