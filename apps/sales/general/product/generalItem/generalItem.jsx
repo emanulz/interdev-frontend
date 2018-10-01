@@ -14,7 +14,10 @@ import {productSelected} from '../actions.js'
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
     warehouse_id: store.userProfile.salesWarehouse,
-    disabled: store.completed.completed
+    disabled: store.completed.completed,
+    config: store.config.globalConf,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault
   }
 })
 export default class GenerlItem extends React.Component {
@@ -67,8 +70,19 @@ export default class GenerlItem extends React.Component {
 
   addToCart() {
     const product = this.props.product
-    this.props.dispatch(productSelected(product.code, this.props.qty, product, this.props.itemsInCart,
-      this.props.globalDiscount, this.props.client, this.props.warehouse_id, false))
+    const generalItemDefaultData = {
+      default_discount: '0',
+      id: product.id,
+      max_discount: '0',
+      product: product,
+      table_price: '0',
+      target_price_list: 'price1'
+    }
+    this.props.dispatch(productSelected(generalItemDefaultData, this.props.qty, this.props.itemsInCart,
+      this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
+      this.props.usePriceListAsDefault))
+    // this.props.dispatch(productSelected(product.code, this.props.qty, product, this.props.itemsInCart,
+    //   this.props.globalDiscount, this.props.client, this.props.warehouse_id, false))
     this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
     this.props.dispatch({type: 'CLEAR_GENERAL_ITEM_PRODUCT', payload: 0})
     this.props.dispatch({type: 'HIDE_GENERAL_ITEM_PANEL', payload: -1})
