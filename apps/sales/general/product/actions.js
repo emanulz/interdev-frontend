@@ -62,7 +62,13 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
 
 // Function to update the inline discount of an item, and reflect it on store
 export function updateItemDiscount(itemsInCart, code, discount, predDiscount, client, pricesDetails) {
-
+  if (discount < 0) {
+    alertify.alert('DESCUENTO NO PERMITODO', 'El descuento no puede ser menor a 0')
+    return {
+      type: 'BAD_DISCOUNT',
+      payload: -1
+    }
+  }
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code) // checks if product exists
   const product = itemsInCart[indexInCart].product
   const maxDiscount = determinMaxDiscount(product, pricesDetails)
