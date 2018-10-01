@@ -8,7 +8,8 @@ import {connect} from 'react-redux'
   return {
     fullWidth: store.cashier.fullWidth,
     moneyBills: store.cashier.moneyBills,
-    openBillList: store.cashier.openBillList
+    openBillList: store.cashier.openBillList,
+    registerClosure: store.registerClosure.registerClosure
   }
 })
 export default class Main extends React.Component {
@@ -103,9 +104,12 @@ export default class Main extends React.Component {
       </div>
     })
 
+    const registerClosure = this.props.registerClosure
+    const tittle = registerClosure != null || registerClosure != false ? 'Apertura de Caja' : 'Cierre de Caja'
+
     return <div className={contentClass}>
       <div className='cashier-content-tittle'>
-        Apertura/Cierre de Caja
+        {tittle}
       </div>
       <div className='cashier-content-container'>
         <div className='cashier-content-crc'>
