@@ -16,7 +16,7 @@ import alertify from 'alertifyjs'
 })
 export default class Open extends React.Component {
 
-  openRegister() {
+  closeRegister() {
 
     const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
     const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
@@ -42,7 +42,7 @@ export default class Open extends React.Component {
     }
 
     const kwargs = {
-      url: '/api/registerclosure/',
+      url: '/api/registerclosure/close_register/',
       item: registerClosure
     }
 
@@ -89,7 +89,7 @@ export default class Open extends React.Component {
       <div className='cashier-aside-tag'>
         $ {parseFloat(usdTotals).formatMoney()}
       </div>
-      <button className='btn btn-danger'>CERRAR CAJA</button>
+      <button onClick={this.closeRegister.bind(this)} className='btn btn-danger'>CERRAR CAJA</button>
     </div>
   }
 

@@ -31,10 +31,13 @@ class RegisterMovements extends React.Component {
 
   }
   componentWillUpdate(nextprops) {
+    const lookUp = this.props.location.pathname.split('/').pop()
     if (nextprops.registerClosure != this.props.registerClosure || nextprops.conf != this.props.conf) {
       if (nextprops.registerClosure == false && nextprops.conf.usesRegisterClosure) {
-        alertify.alert('CAJA CERRADA', 'Debe Abrir caja antes de registar movimientos')
-        this.props.history.push('/sales/cashier')
+        if (lookUp != 'cashier') {
+          alertify.alert('CAJA CERRADA', 'Debe Abrir caja antes de registar movimientos')
+          this.props.history.push('/sales/cashier')
+        }
       }
     }
   }

@@ -49,7 +49,9 @@ class Content extends React.Component {
   }
 
   calc10Percent(cart, table) {
-    return cart.cartSubtotal * 0.1
+    console.log(cart)
+    // return parseFloat(cart.cartTotal) * 0.1
+    return parseFloat(cart.subtotal) * 0.1
   }
 
   add10PercentToCart(close) {
