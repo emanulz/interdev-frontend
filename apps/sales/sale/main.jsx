@@ -22,6 +22,7 @@ import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/
 import PrintCashAdvance from '../../../general/printCashAdvance/printCashAdvancePanel/printCashAdvancePanel.jsx'
 import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
 import Search from '../../../general/search/search.jsx'
+import RegisterClosure from '../registerClosure/registerClosure.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../general/search/actions.js'
@@ -60,6 +61,7 @@ export default class Sale extends React.Component {
   render() {
 
     return <div className='sale'>
+      <RegisterClosure />
       <Currency />
       <Content />
       <Aside />

@@ -45,9 +45,9 @@ export default class priceList extends React.Component {
             <h2>Lista de Precios</h2>
             <select onChange={this.priceListSelected.bind(this)} className='form-control'
               value={this.props.listSelected} >
-              <option value='1'>Precio 1</option>
-              <option value='2'>Precio 2</option>
-              <option value='3'>Precio 3</option>
+              <option key='1' value='1'>Precio 1</option>
+              <option key='2' value='2'>Precio 2</option>
+              <option key='3' value='3'>Precio 3</option>
             </select>
           </div>
           <div className='priceList-container-default'>

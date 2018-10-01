@@ -3,11 +3,10 @@
  */
 import React from 'react'
 // import { checkUserPermissions } from '../../utils/checkPermissions'
-import { getItemDispatch } from '../../../utils/api.js'
+import { getItemDispatch, loadGlobalConfig } from '../../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import RegisterClosure from '../registerClosure/registerClosure.jsx'
-
 import {connect} from 'react-redux'
 
 @connect((store) => {
@@ -17,6 +16,7 @@ import {connect} from 'react-redux'
 export default class RegisterMovements extends React.Component {
 
   componentWillMount() {
+    this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
 
     this.props.dispatch({type: 'REGISTER_MOVEMENTS_PANEL_MOUNTED', payload: ''})
     const registerMovementsKwargs = {

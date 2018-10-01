@@ -30,6 +30,14 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_REGISTER_CLOSURE':
+    {
+      return {
+        ...state,
+        registerClosure: null
+      }
+    } // case
+
   } // switch
 
   return state // default return

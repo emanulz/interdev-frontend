@@ -15,7 +15,6 @@ import UserProfile from '../../../general/userProfile/userProfile.jsx'
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
-import RegisterClosure from '../registerClosure/registerClosure.jsx'
 
 // import routes from './routes.js'
 
@@ -39,7 +38,6 @@ export default class Main extends React.Component {
     const content = <Router>
       <div>
         <UserProfile />
-        <RegisterClosure />
         <SideMenu />
         <div id='mainContainer' className={mainContainerClass}>
           <TopBar />
