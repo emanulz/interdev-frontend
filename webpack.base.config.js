@@ -27,7 +27,8 @@ const jsConfig = Object.assign({}, config, {
     payables: './apps/payables/app.js',
     seller: './apps/seller/app.js',
     returns: './apps/returns/app.js',
-    restaurant: './apps/restaurant/app.js'
+    restaurant: './apps/restaurant/app.js',
+    notes: './apps/notes/app.js'
   },
   module: {
     rules: [
@@ -80,7 +81,8 @@ const stylesConfig = Object.assign({}, config, {
     payables: './apps/payables/appstyles/main.sass',
     seller: './apps/seller/appstyles/main.sass',
     returns: './apps/returns/appstyles/main.sass',
-    restaurant: './apps/restaurant/appstyles/main.sass'
+    restaurant: './apps/restaurant/appstyles/main.sass',
+    notes: './apps/notes/appstyles/main.sass'
   },
   module: {
     rules: [
