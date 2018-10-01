@@ -105,7 +105,7 @@ export default class Main extends React.Component {
     })
 
     const registerClosure = this.props.registerClosure
-    const tittle = registerClosure != null || registerClosure != false ? 'Apertura de Caja' : 'Cierre de Caja'
+    const tittle = registerClosure == null || registerClosure == false ? 'Apertura de Caja' : 'Cierre de Caja'
 
     return <div className={contentClass}>
       <div className='cashier-content-tittle'>

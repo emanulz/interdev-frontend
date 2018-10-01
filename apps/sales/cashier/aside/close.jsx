@@ -7,17 +7,14 @@ import {connect} from 'react-redux'
 import {getTotalAmount} from '../content/actions.js'
 import { saveItem } from './actions'
 import alertify from 'alertifyjs'
-import Open from './open.jsx'
-import Closure from './close.jsx'
 
 @connect((store) => {
   return {
-    fullWidth: store.cashier.fullWidth,
     openBillList: store.cashier.openBillList,
     registerClosure: store.registerClosure.registerClosure
   }
 })
-export default class Aside extends React.Component {
+export default class Open extends React.Component {
 
   openRegister() {
 
@@ -25,7 +22,7 @@ export default class Aside extends React.Component {
     const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
 
     const _this = this
-    alertify.confirm('ABRIR', `Desea abir la caja con un monto de ₡${parseFloat(crcTotals).formatMoney()} y $${parseFloat(usdTotals).formatMoney()}`,
+    alertify.confirm('ABRIR', `Desea cerrar la caja con un monto de ₡${parseFloat(crcTotals).formatMoney()} y $${parseFloat(usdTotals).formatMoney()}`,
       function() {
         _this.saveBtn(parseFloat(crcTotals), parseFloat(usdTotals))
       }, function() {
@@ -38,16 +35,15 @@ export default class Aside extends React.Component {
   }
 
   saveBtn(crc, usd) {
-    const registerOpen = {
-      usd_exchange_rate: 570,
-      opening_money_crc: crc,
-      opening_money_usd: usd,
-      open_notes: JSON.stringify(this.props.openBillList)
+    const registerClosure = {
+      closure_money_crc_cashier: crc,
+      closure_money_usd_cashier: usd,
+      closure_notes: JSON.stringify(this.props.openBillList)
     }
 
     const kwargs = {
       url: '/api/registerclosure/',
-      item: registerOpen
+      item: registerClosure
     }
 
     const _this = this
@@ -59,16 +55,16 @@ export default class Aside extends React.Component {
 
     openPromise.then((data) => {
       console.log('DATAAAA', data)
-      alertify.alert('COMPLETADO', 'Caja Abierta Correctamente')
+      alertify.alert('COMPLETADO', 'Caja Cerrada Correctamente')
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch((err) => {
       if (err.response) {
         console.log(err.response.data)
-        alertify.alert('Error', `Ocurrió un error al abrir la caja, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        alertify.alert('Error', `Ocurrió un error al cerrar la caja, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
       } else {
         console.log('NO CUSTOM ERROR')
         console.log(err)
-        alertify.alert('Error', `Ocurrió un error al abrir la caja, ERROR: ${err}.`)
+        alertify.alert('Error', `Ocurrió un error al cerrar la caja, ERROR: ${err}.`)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
@@ -81,14 +77,19 @@ export default class Aside extends React.Component {
   // Main Layout
   render () {
 
-    const registerClosure = this.props.registerClosure
-    const coponent = registerClosure == null || registerClosure == false
-      ? <Open />
-      : <Closure />
-
-    const asideClass = this.props.fullWidth ? 'cashier-aside collapsed' : 'cashier-aside'
-    return <div className={asideClass}>
-      {coponent}
+    const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    return <div>
+      <h1>TOTALES CIERE</h1>
+      <h2>CIERRE CAJERO COLONES</h2>
+      <div className='cashier-aside-tag'>
+        ₡ {parseFloat(crcTotals).formatMoney()}
+      </div>
+      <h2>CIERRE CAJERO  DÓLARES</h2>
+      <div className='cashier-aside-tag'>
+        $ {parseFloat(usdTotals).formatMoney()}
+      </div>
+      <button className='btn btn-danger'>CERRAR CAJA</button>
     </div>
   }
 

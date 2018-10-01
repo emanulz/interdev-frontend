@@ -7,17 +7,14 @@ import {connect} from 'react-redux'
 import {getTotalAmount} from '../content/actions.js'
 import { saveItem } from './actions'
 import alertify from 'alertifyjs'
-import Open from './open.jsx'
-import Closure from './close.jsx'
 
 @connect((store) => {
   return {
-    fullWidth: store.cashier.fullWidth,
     openBillList: store.cashier.openBillList,
     registerClosure: store.registerClosure.registerClosure
   }
 })
-export default class Aside extends React.Component {
+export default class Open extends React.Component {
 
   openRegister() {
 
@@ -81,14 +78,19 @@ export default class Aside extends React.Component {
   // Main Layout
   render () {
 
-    const registerClosure = this.props.registerClosure
-    const coponent = registerClosure == null || registerClosure == false
-      ? <Open />
-      : <Closure />
-
-    const asideClass = this.props.fullWidth ? 'cashier-aside collapsed' : 'cashier-aside'
-    return <div className={asideClass}>
-      {coponent}
+    const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    return <div>
+      <h1>TOTALES APERTURA</h1>
+      <h2> APERTURA COLONES</h2>
+      <div className='cashier-aside-tag'>
+        ₡ {parseFloat(crcTotals).formatMoney()}
+      </div>
+      <h2>APERTURA DÓLARES</h2>
+      <div className='cashier-aside-tag'>
+        $ {parseFloat(usdTotals).formatMoney()}
+      </div>
+      <button onClick={this.openRegister.bind(this)} className='btn btn-success'>ABRIR CAJA</button>
     </div>
   }
 
