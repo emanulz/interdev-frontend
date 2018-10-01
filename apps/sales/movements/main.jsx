@@ -6,6 +6,7 @@ import React from 'react'
 import { getItemDispatch } from '../../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
+import RegisterClosure from '../registerClosure/registerClosure.jsx'
 
 import {connect} from 'react-redux'
 
@@ -32,6 +33,7 @@ export default class RegisterMovements extends React.Component {
   render() {
 
     return <div className='register-movements'>
+      <RegisterClosure />
       <Content />
       <Aside />
 

@@ -20,15 +20,19 @@ export default class Content extends React.Component {
         field: 'id',
         text: 'Consecutivo'
       }, {
-        field: 'type',
-        text: 'Tipo'
+        field: 'is_input',
+        text: 'Es ingreso?',
+        type: 'bool'
       }, {
         field: 'amount',
         text: 'Monto'
+      } , {
+        field: 'coin',
+        text: 'Moneda'
       }, {
         field: 'created',
         text: 'Fecha',
-        type: 'dateTime'
+        type: 'date'
       }
     ]
 

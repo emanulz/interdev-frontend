@@ -8,6 +8,7 @@ import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 
 import {connect} from 'react-redux'
+import RegisterClosure from '../registerClosure/registerClosure.jsx'
 
 @connect((store) => {
   return {
@@ -32,9 +33,9 @@ export default class Cashier extends React.Component {
   render() {
 
     return <div className='cashier'>
+      <RegisterClosure />
       <Content />
       <Aside />
-
     </div>
 
   }

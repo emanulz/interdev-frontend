@@ -66,9 +66,10 @@ export default class Content extends React.Component {
 
     const amount = this.props.movement.amount
     const symbol = this.props.movement.coin == 'CRC' ? '₡' : '$'
+    const type = this.props.movement.is_input ? 'ENTRADA' : 'SALIDA'
 
     const _this = this
-    alertify.confirm('ABRIR', `Desea abir la caja con un monto de ${symbol}${parseFloat(amount).formatMoney()}`,
+    alertify.confirm('ABRIR', `Desea registrar el movimiento de ${type}, por un monto de ${symbol}${parseFloat(amount).formatMoney()}?`,
       function() {
         _this.saveBtn()
       }, function() {
@@ -95,17 +96,16 @@ export default class Content extends React.Component {
     })
 
     openPromise.then((data) => {
-      console.log('DATAAAA', data)
-      alertify.alert('COMPLETADO', 'Caja Abierta Correctamente')
+      alertify.alert('COMPLETADO', 'Movimiento registrado correctamente')
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch((err) => {
       if (err.response) {
         console.log(err.response.data)
-        alertify.alert('Error', `Ocurrió un error al abrir la caja, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        alertify.alert('Error', `Ocurrió un error al registrar el movimiento, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
       } else {
         console.log('NO CUSTOM ERROR')
         console.log(err)
-        alertify.alert('Error', `Ocurrió un error al abrir la caja, ERROR: ${err}.`)
+        alertify.alert('Error', `Ocurrió un error al registrar el movimiento, ERROR: ${err}.`)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })

@@ -36,6 +36,7 @@ import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
 import registerMovements from './movements/reducer.js'
 import singleRegisterMovement from './singleMovement/reducer.js'
+import registerClosure from './registerClosure/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -74,5 +75,6 @@ export default combineReducers({
   clientUpdatePanel,
   priceList,
   registerMovements,
-  singleRegisterMovement
+  singleRegisterMovement,
+  registerClosure
 })
