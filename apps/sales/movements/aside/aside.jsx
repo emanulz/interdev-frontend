@@ -20,9 +20,9 @@ export default class Aside extends React.Component {
   // Main Layout
   render () {
     const asideClass = this.props.fullWidth ? 'register-movements-aside collapsed' : 'register-movements-aside'
-    const registerClosure = this.props.registerClosure
-    const balanceCRC = registerClosure == null || registerClosure == false ? 0 : registerClosure.close_balance_crc
-    const balanceUSD = registerClosure == null || registerClosure == false ? 0 : registerClosure.close_balance_usd
+
+    const clusureCashCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_cash : 0
+    const clusureCashUSD = this.props.registerClosure ? this.props.registerClosure.closure_money_usd_system_cash : 0
 
     return <div className={asideClass}>
       <h1>TOTALES</h1>
@@ -34,13 +34,13 @@ export default class Aside extends React.Component {
       <div className='register-movements-aside-tag'>
         ₡ 50,00
       </div> */}
-      <h2>BALANCE COLONES</h2>
-      <div className='register-movements-aside-tag'>
-        ₡{parseFloat(balanceCRC).formatMoney()}
+      <h2>TOTALES EFECTIVO COLONES</h2>
+      <div className='cashier-aside-tag'>
+        ₡ {parseFloat(clusureCashCRC).formatMoney()}
       </div>
-      <h2>BALANCE DÓLARES</h2>
-      <div className='register-movements-aside-tag'>
-        ${parseFloat(balanceUSD).formatMoney()}
+      <h2>TOTALES EFECTIVO DOLARES</h2>
+      <div className='cashier-aside-tag'>
+        $ {parseFloat(clusureCashUSD).formatMoney()}
       </div>
     </div>
   }

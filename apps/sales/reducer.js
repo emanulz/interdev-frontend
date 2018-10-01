@@ -32,6 +32,7 @@ import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 import generalItem from './general/product/generalItem/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
+import printRegisterClosure from '../../general/printRegisterClosure/reducer.js'
 import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
 import registerMovements from './movements/reducer.js'
@@ -76,5 +77,6 @@ export default combineReducers({
   priceList,
   registerMovements,
   singleRegisterMovement,
-  registerClosure
+  registerClosure,
+  printRegisterClosure
 })

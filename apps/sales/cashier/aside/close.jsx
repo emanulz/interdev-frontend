@@ -5,6 +5,7 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {getTotalAmount} from '../content/actions.js'
+import {loadRegisterClosureToPrint} from '../../../../general/printRegisterClosure/actions.js'
 import { saveItem } from './actions'
 import alertify from 'alertifyjs'
 
@@ -15,6 +16,11 @@ import alertify from 'alertifyjs'
   }
 })
 export default class Open extends React.Component {
+
+  showReceipt() {
+    console.log('CLICKED')
+    this.props.dispatch(loadRegisterClosureToPrint(this.props.registerClosure.id))
+  }
 
   closeRegister() {
 
@@ -79,17 +85,37 @@ export default class Open extends React.Component {
 
     const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
     const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    const clusureCashCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_cash : 0
+    const clusureCashUSD = this.props.registerClosure ? this.props.registerClosure.closure_money_usd_system_cash : 0
     return <div>
-      <h1>TOTALES CIERE</h1>
+      <h1>TOTALES CIERRE</h1>
       <h2>CIERRE CAJERO COLONES</h2>
       <div className='cashier-aside-tag'>
         ₡ {parseFloat(crcTotals).formatMoney()}
       </div>
-      <h2>CIERRE CAJERO  DÓLARES</h2>
+      <h2>CIERRE CAJERO DÓLARES</h2>
       <div className='cashier-aside-tag'>
         $ {parseFloat(usdTotals).formatMoney()}
       </div>
+      <h2>CIERRE SISTEMA EFECTIVO COLONES</h2>
+      <div className='cashier-aside-tag'>
+        ₡ {parseFloat(clusureCashCRC).formatMoney()}
+      </div>
+      <h2>CIERRE SISTEMA EFECTIVO DÓLARES</h2>
+      <div className='cashier-aside-tag'>
+        $ {parseFloat(clusureCashUSD).formatMoney()}
+      </div>
+      <h2>BALANCE EFECTIVO COLONES</h2>
+      <div className='cashier-aside-tag'>
+        ₡ {(parseFloat(crcTotals) - parseFloat(clusureCashCRC)).formatMoney()}
+      </div>
+      <h2>BALANCE EFECTIVO DOLARES</h2>
+      <div className='cashier-aside-tag'>
+        $ {(parseFloat(usdTotals) - parseFloat(clusureCashUSD)).formatMoney()}
+      </div>
       <button onClick={this.closeRegister.bind(this)} className='btn btn-danger'>CERRAR CAJA</button>
+      <br/>
+      <button onClick={this.showReceipt.bind(this)} className='btn btn-primary'>MOSTRAR CIERRE</button>
     </div>
   }
 

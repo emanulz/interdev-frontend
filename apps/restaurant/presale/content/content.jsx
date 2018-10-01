@@ -51,7 +51,7 @@ class Content extends React.Component {
   calc10Percent(cart, table) {
     console.log(cart)
     // return parseFloat(cart.cartTotal) * 0.1
-    return parseFloat(cart.subtotal) * 0.1
+    return parseFloat(cart.cartSubtotal) * 0.1
   }
 
   add10PercentToCart(close) {
@@ -151,6 +151,8 @@ class Content extends React.Component {
     const totalClass = this.props.fullWidth ? 'sale-content-total' : 'sale-content-total collapsed'
     const buttonsClass = this.props.fullWidth ? 'sale-content-buttons' : 'sale-content-buttons collapsed'
 
+    const total = this.props.cart ? this.props.cart.cartTotal : 0
+
     return <div className={contentClass}>
       <div className={buttonsClass} >
         <button onClick={this.goToTableBillList.bind(this)} className='btn btn-primary' >
@@ -167,7 +169,7 @@ class Content extends React.Component {
         <Cart />
       </div>
       <div className={totalClass} >
-        ₡ {this.props.total.formatMoney()}
+        ₡ {total.formatMoney()}
       </div>
     </div>
 

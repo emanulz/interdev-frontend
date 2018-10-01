@@ -26,7 +26,10 @@ export default class Content extends React.Component {
       }, {
         field: 'amount',
         text: 'Monto'
-      } , {
+      }, {
+        field: 'description',
+        text: 'Descripción'
+      }, {
         field: 'coin',
         text: 'Moneda'
       }, {

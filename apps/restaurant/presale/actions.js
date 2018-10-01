@@ -64,10 +64,11 @@ export function loadPresaleItem(id, dispatch) {
       data.extras = null
     }
     // _dispatch({type: 'CLIENT_SELECTED', payload: data.client})
-    getFullClientById(data.client.id, dispatch)
+    dispatch({type: 'SET_PRESALE_ID', payload: data.id})
     dispatch({type: 'LOAD_CART', payload: data.cart})
     dispatch({type: 'SET_PRESALE_USER', payload: data.user})
     dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
+    getFullClientById(data.client.id, dispatch)
   }).catch((err) => {
     if (err.response) {
       alertify.alert('ERROR', `${err.response.data}`)
