@@ -18,8 +18,10 @@ export default class Sale extends React.Component {
 
   // Main Layout
   render() {
-
-    const tableList = this.props.tables.map(table => {
+    const sorted = this.props.tables.sort((a, b) => {
+      return ('' + a.indentifier).localeCompare(b.indentifier)
+    })
+    const tableList = sorted.map(table => {
 
       return <Link key={table.id} className='tables-single' to={`/restaurant/tables/${table.id}`} >
         <div className='tables-single-identifier'>

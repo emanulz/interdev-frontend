@@ -3,6 +3,7 @@ import React from 'react'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
+import {getItemDispatch} from '../../actions.js'
 
 @connect((store) => {
   return {
@@ -12,18 +13,23 @@ import alertify from 'alertifyjs'
     presaleType: store.newBill.presale_type,
     reserves_warehouse: store.config.reserves_warehouse,
     extras: store.extras,
-    tableActive: store.tables.tableActive
+    tables: store.tables.tables,
+    tableActive: store.tables.tableActive,
+    loggedUser: store.user.user
   }
 })
 export default class SaveBtn extends React.Component {
 
   saveBtn() {
     // const sales = this.props.sales
-
+    const extras = this.props.extras
+    const tableSelected = this.props.tables.find(item => item.id == this.props.tableActive)
+    extras.tableName = tableSelected.indentifier
+    console.log('EXTRAS', extras)
     const newBill = {
-      user: JSON.stringify(this.props.user),
+      user: JSON.stringify(this.props.loggedUser),
       client_id: this.props.client.id,
-      extras: JSON.stringify(this.props.extras)
+      extras: JSON.stringify(extras)
     }
 
     const kwargs = {
@@ -41,12 +47,21 @@ export default class SaveBtn extends React.Component {
     })
 
     createPromise.then((data) => {
-      this.props.dispatch({type: 'HIDE_NEW_BILL_PANEL', payload: ''})
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('Completado', 'Cuenta abierta correctamente')
+      _this.props.dispatch({type: 'HIDE_NEW_BILL_PANEL', payload: ''})
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      // AFTER SAVE REFETCH
+      const tableId = _this.props.tableActive
+      if (tableId) {
+        const tableBillsKwargs = {
+          url: `/api/restauranttables/${tableId}/tablebills/`,
+          successType: 'FETCH_TABLE_BILLS_FULFILLED',
+          errorType: 'FETCH_TABLE_BILLS_REJECTED'
+        }
+        _this.props.dispatch(getItemDispatch(tableBillsKwargs))
+      }
     }).catch((err) => {
       console.log(err)
-      alertify.alert('ERROR', 'Error al crear la cuenta, por favor intente de nuevo.')
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
 
   }

@@ -36,11 +36,11 @@ export default class SendPanel extends React.Component {
           <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
         </div>
 
-        <Profile />
+        {/* <Profile /> */}
 
         <div className='newBill-area-container'>
 
-          <SetUser />
+          {/* <SetUser /> */}
 
           <SendSideBar />
 
