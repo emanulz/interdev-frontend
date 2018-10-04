@@ -14,7 +14,8 @@ import { withRouter } from 'react-router-dom'
     warehouse2_id: store.config.workshopWarehouse,
     sale: store.sale.saleActive,
     returnItems: store.returnCart.returnItems,
-    returnCart: store.returnCart
+    returnCart: store.returnCart,
+    returnMethod: store.moneyReturn.return_method
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -52,12 +53,15 @@ class SaveBtn extends React.Component {
     const returnList = this.props.returnItems.map(item => {
       return {uuid: item.uuid, ret_qty: item.qty}
     })
+    const returnMethod = this.props.returnMethod
     const returnItem = {
       'return_list': JSON.stringify(returnList),
-      'return_method': 'VOUCHER',
+      'return_method': returnMethod,
       'destination_warehouse_id': warehouse
     }
 
+    console.log('RETURN', returnItem)
+    debugger
     const kwargs = {
       url: `/api/sales/${saleId}/product_return/`,
       item: returnItem,
