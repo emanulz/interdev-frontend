@@ -14,7 +14,8 @@ import {savePayment} from './actions.js'
     clients: store.clients.clients,
     client: store.clients.clientActive,
     user: store.user.user,
-    clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt
+    clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt,
+    creditPayMethod: store.payments.creditPayMethod
   }
 })
 export default class Update extends React.Component {
@@ -51,6 +52,10 @@ export default class Update extends React.Component {
       this.props.dispatch(getClientPendingSales(kwargs))
     }
 
+  }
+
+  setCreditPayMethod(ev) {
+    this.props.dispatch({type: 'SET_CREDIT_PAY_METHOD', payload: ev.target.value})
   }
 
   selectClient(event) {
@@ -164,6 +169,7 @@ export default class Update extends React.Component {
     // const client = JSON.stringify(this.props.client)
     const sales = JSON.stringify(this.props.paymentArray)
     const clientId = this.props.client.id
+    const creditPayMethod = this.props.creditPayMethod
 
     // const newSales = array.map(sale => {
     //   return {
@@ -183,8 +189,11 @@ export default class Update extends React.Component {
     const payment = {
       sales: sales,
       client_id: clientId,
-      amount: amount
+      amount: amount,
+      pay_method: creditPayMethod
     }
+
+    console.log('PAYMENT', payment)
 
     const kwargs = {
       url: '/api/creditpaymentscreate/',
@@ -296,6 +305,15 @@ export default class Update extends React.Component {
           </div>
 
           <div className='payment-header-container-btn'>
+
+            <h1>Método de Pago</h1>
+            <select onChange={this.setCreditPayMethod.bind(this)} className='form-control' name='pay_method'
+              value={this.props.creditPayMethod} >
+              <option value='CASH'>EFECTIVO</option>
+              <option value='CARD'>TARJETA</option>
+              <option value='TRANSFER'>TRANSFERENCIA</option>
+              {/* <option value='VOUCHER'>VOUCHER DE CRÉDITO</option> */}
+            </select>
 
             <button onClick={this.saveMovements.bind(this)} disabled={!this.props.paymentArray.length} className='form-control'>
               Registrar

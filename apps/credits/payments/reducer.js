@@ -3,7 +3,8 @@ const stateConst = {
   paymentActive: {
     sales: []
   },
-  payments: []
+  payments: [],
+  creditPayMethod: 'CASH'
 }
 
 export default function reducer(state = stateConst, action) {
@@ -31,6 +32,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         payments: []
+      }
+    } // case
+
+    case 'SET_CREDIT_PAY_METHOD':
+    {
+      return {
+        ...state,
+        creditPayMethod: action.payload
       }
     } // case
 

@@ -60,8 +60,6 @@ class SaveBtn extends React.Component {
       'destination_warehouse_id': warehouse
     }
 
-    console.log('RETURN', returnItem)
-    debugger
     const kwargs = {
       url: `/api/sales/${saleId}/product_return/`,
       item: returnItem,
