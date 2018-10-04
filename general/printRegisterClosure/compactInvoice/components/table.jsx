@@ -25,7 +25,7 @@ export default class Table extends React.Component {
     const systemCredCRC = systemCredCRCTotal
       ? <div className='print-register-closure-compact-invoice-table-item'>
         <h1>Créditos Sistema:</h1>
-        <h2>₡{systemCardCRCTotal.formatMoney()}</h2>
+        <h2>₡{systemCredCRCTotal.formatMoney()}</h2>
       </div>
       : ''
 
