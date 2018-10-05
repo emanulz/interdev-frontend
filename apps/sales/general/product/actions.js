@@ -111,6 +111,9 @@ export function updateItemDiscount(itemsInCart, code, discount, predDiscount, cl
 }
 
 function determinMaxDiscount(product, pricesDetails) {
+  if (product.code == '00') {
+    return 100
+  }
   const detail = pricesDetails.find(line => {
     return line.id == product.id
   })
