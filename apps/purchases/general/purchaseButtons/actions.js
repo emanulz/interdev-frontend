@@ -20,7 +20,7 @@ export function savePurchase(kwargs){
     const credit_days = kwargs.credit_days
     const apply = kwargs.apply
     const discount_mode = kwargs.discount_mode
-    console.log("CART --> " +  cart_string)
+    //console.log("CART --> " +  cart_string)
     let method = 'post'
     let url = '/api/purchase/'
     
@@ -56,6 +56,7 @@ export function savePurchase(kwargs){
                 console.log(err.response.data)
             }
             alertify.alert('Error', 'Error guardando Compra en el sistema')
+            console.log(err)
             reject(err)
         })
     })
