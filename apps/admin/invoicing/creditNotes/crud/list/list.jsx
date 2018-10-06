@@ -39,27 +39,51 @@ export default class List extends React.Component {
 
     const getStatus = (item) => {
       function getElementStatus(item) {
-        const splittedHistory = item.process_history.split('_')
-        let text = 'PROCESANDO'
-        let className = 'processing'
-        const accepted = splittedHistory.find((el) => { return el == '4' })
-        const rejected = splittedHistory.find((el) => {
-          const num = parseInt(el)
-          return !accepted && num >= 5
-        })
-        if (accepted) {
-          text = 'ACEPTADO'
-          className = 'accepted'
-        }
+        try {
+          const splittedHistory = item.process_history.split('_')
+          let text = 'PROCESANDO'
+          let className = 'processing'
+          const accepted = splittedHistory.find((el) => { return el == '4' })
+          const rejected = splittedHistory.find((el) => {
+            const num = parseInt(el)
+            return !accepted && num >= 5
+          })
+          if (accepted) {
+            text = 'ACEPTADO'
+            className = 'accepted'
+          }
 
-        if (rejected) {
-          text = 'RECHAZADO'
-          className = 'rejected'
-        }
+          if (rejected) {
+            text = 'RECHAZADO'
+            className = 'rejected'
+          }
 
-        return <span className={className}>{text}</span>
+          return <span className={className}>{text}</span>
+        } catch (err) {
+          return <span className='processing'>PROCESANDO</span>
+        }
       }
       return getElementStatus(item)
+    }
+
+    const getTotal = (item) => {
+      function getTotalToShow(item) {
+        console.log('ITEMM', item)
+        try {
+          const obj = JSON.parse(item)
+          if (obj.currency == 'CRC') {
+            return `₡${parseFloat(obj.total).toFixed(2)}`
+          }
+          if (obj.currency == 'USD') {
+            return `$${parseFloat(obj.total).toFixed(2)}`
+          }
+          return `${parseFloat(obj.total).toFixed(2)}`
+        } catch (err) {
+          console.log('ERRROR', err)
+          return '0'
+        }
+      }
+      return getTotalToShow(item)
     }
 
     const headerOrder = [
@@ -68,9 +92,17 @@ export default class List extends React.Component {
         text: 'Consecutivo',
         type: 'text'
       }, {
-        field: 'updated',
-        text: 'Fecha Modificación',
+        field: 'created',
+        text: 'Fecha Creación',
         type: 'date'
+      }, {
+        field: 'client_name',
+        text: 'Cliente'
+      }, {
+        field: 'sale_total',
+        text: 'Monto',
+        type: 'function_process',
+        worker_method: getTotal
       }, {
         field: 'process_status',
         text: 'Estado del Proceso'

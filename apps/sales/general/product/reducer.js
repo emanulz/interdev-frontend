@@ -3,7 +3,8 @@ const stateConst = {
   inputVal: '',
   singleProductVisible: false,
   singleProductQty: '',
-  sigleProductActive: {}
+  sigleProductActive: {},
+  pricesDetails: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -24,6 +25,31 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         singleProductVisible: false
+      }
+    } // case
+
+    case 'SET_PRICES_DETAILS':
+    {
+      return {
+        ...state,
+        pricesDetails: action.payload
+      }
+    }
+
+    case 'ADD_TO_PRICES_DETAILS':
+    {
+      const newLine = action.payload
+      let existentPricesDetails = [...state.pricesDetails]
+      // REMOVE THE ALREADY EXISTENT ITEM IN CART WITH SAME ID
+      existentPricesDetails = existentPricesDetails.filter(item => {
+        return item.id !== newLine.id
+      })
+      // ADD IT TO CART
+      existentPricesDetails.push(newLine)
+      // RETURN
+      return {
+        ...state,
+        pricesDetails: existentPricesDetails
       }
     } // case
 

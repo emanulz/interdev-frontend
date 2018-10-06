@@ -8,6 +8,7 @@ import clients from './general/clients/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import products from './general/product/reducer.js'
 import sale from './sale/reducer.js'
+import cashier from './cashier/reducer.js'
 import messages from './messages/reducer.js'
 import searchClients from './general/search/clients/reducer.js'
 import searchProducts from './general/search/products/reducer.js'
@@ -31,7 +32,12 @@ import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 import generalItem from './general/product/generalItem/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
+import printRegisterClosure from '../../general/printRegisterClosure/reducer.js'
 import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
+import priceList from '../sales/general/priceList/reducer.js'
+import registerMovements from './movements/reducer.js'
+import singleRegisterMovement from './singleMovement/reducer.js'
+import registerClosure from './registerClosure/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -42,6 +48,7 @@ export default combineReducers({
   currency,
   products,
   sale,
+  cashier,
   messages,
   searchClients,
   searchProducts,
@@ -66,5 +73,10 @@ export default combineReducers({
   generalItem,
   printPresale,
   quotations,
-  clientUpdatePanel
+  clientUpdatePanel,
+  priceList,
+  registerMovements,
+  singleRegisterMovement,
+  registerClosure,
+  printRegisterClosure
 })

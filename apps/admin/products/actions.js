@@ -28,9 +28,9 @@ export function checkProductData(product, products) {
 export function determinAmounts(product, fieldName, value) {
   switch (fieldName) {
 
-    case 'sell_price':
+    case 'sell_price1':
     {
-      product = fromSellPrice(product, value, 'price', 'utility')
+      product = fromSellPrice(product, value, 'price1', 'utility1')
       return product
     }
     case 'sell_price2':
@@ -44,9 +44,9 @@ export function determinAmounts(product, fieldName, value) {
       return product
     }
 
-    case 'price':
+    case 'price1':
     {
-      product = fromPrice(product, value, 'sell_price', 'utility')
+      product = fromPrice(product, value, 'sell_price1', 'utility1')
       return product
     }
     case 'price2':
@@ -100,9 +100,9 @@ export function determinAmounts(product, fieldName, value) {
       product = taxesChanged(product)
       return product
     }
-    case 'utility':
+    case 'utility1':
     {
-      product = fromUtility(product, value, 'price', 'sell_price')
+      product = fromUtility(product, value, 'price1', 'sell_price1')
       return product
     }
     case 'utility2':
@@ -180,8 +180,8 @@ function fromCost(product, cost) {
     const iv3 = (product.use_taxes3 && product.taxes3) ? parseFloat(product.taxes3) / 100 : 0
 
     // const price = cost && product.utility ? parseFloat(cost) * (1 + (parseFloat(product.utility) / 100)) : 0
-    const priceU = cost && product.utility ? parseFloat(cost) / (1 - (parseFloat(product.utility) / 100)) : 0
-    product['price'] = priceU.toFixed(2)
+    const priceU = cost && product.utility1 ? parseFloat(cost) / (1 - (parseFloat(product.utility1) / 100)) : 0
+    product['price1'] = priceU.toFixed(2)
 
     // const price2 = cost && product.utility2 ? parseFloat(cost) * (1 + (parseFloat(product.utility2) / 100)) : 0
     const priceU2 = cost && product.utility2 ? parseFloat(cost) / (1 - (parseFloat(product.utility2) / 100)) : 0
@@ -193,7 +193,7 @@ function fromCost(product, cost) {
 
     // const sellPrice = (price * iv1) + (price * iv2) + (price * iv3) + price
     const sellPriceU = (priceU * iv1) + (priceU * iv2) + (priceU * iv3) + priceU
-    product['sell_price'] = sellPriceU.toFixed(2)
+    product['sell_price1'] = sellPriceU.toFixed(2)
 
     // const sellPrice2 = (price2 * iv1) + (price2 * iv2) + (price2 * iv3) + price2
     const sellPriceU2 = (priceU2 * iv1) + (priceU2 * iv2) + (priceU2 * iv3) + priceU2
@@ -206,8 +206,8 @@ function fromCost(product, cost) {
     return product
 
   } else { // IF PRICE IS FIXED
-    const utility = product.price ? ((parseFloat(product.price) / parseFloat(cost)) - 1) * 100 : 0
-    product['utility'] = utility.toFixed(2)
+    const utility = product.price1 ? ((parseFloat(product.price1) / parseFloat(cost)) - 1) * 100 : 0
+    product['utility1'] = utility.toFixed(2)
 
     const utility2 = product.price2 ? ((parseFloat(product.price2) / parseFloat(cost)) - 1) * 100 : 0
     product['utility2'] = utility2.toFixed(2)
@@ -222,8 +222,6 @@ function fromCost(product, cost) {
 
 function fromUtility(product, utility, priceField, sellPriceField) {
   if (product.cost_based) {
-    console.log('FIELD', priceField)
-    console.log('UTILITY', utility)
     const iv1 = (product.use_taxes && product.taxes) ? parseFloat(product.taxes) / 100 : 0
     const iv2 = (product.use_taxes2 && product.taxes2) ? parseFloat(product.taxes2) / 100 : 0
     const iv3 = (product.use_taxes3 && product.taxes3) ? parseFloat(product.taxes3) / 100 : 0
@@ -249,7 +247,7 @@ function taxesChanged(product) {
     return product
 
   } else {
-    product = fromPrice(product, product.price, 'sell_price', 'utility')
+    product = fromPrice(product, product.price1, 'sell_price1', 'utility1')
     product = fromPrice(product, product.price2, 'sell_price2', 'utility2')
     product = fromPrice(product, product.price3, 'sell_price3', 'utility3')
 

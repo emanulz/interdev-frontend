@@ -181,7 +181,7 @@ export default class AdminTable extends React.Component {
       if (currentIndex == this.props.activeIndex) {
         this.activeItemAction(el)
       }
-      // ADD 1 TO CURRENT INDEX BEFORE CICLE ENDS
+      // ADD 1 TO CURRENT INDEX BEFORE CYCLE ENDS
       currentIndex += 1
       return <tr className={activeClass} key={el[idField]} onDoubleClick={this.rowDoubleClick.bind(this, el[idField])} onClick={this.rowClick.bind(this, currentIndex - 1)} >
         { headerOrder.map(header => {
@@ -389,8 +389,10 @@ export default class AdminTable extends React.Component {
             }
             case 'function_on_click':
             {
+              const visible = header.textToRender ? header.textToRender : itemToRender
+              const ref = header.href ? header.href : '#'
               item = <td key={`${el[idField]}_${header.field}_fclick`}>
-                <a onClick={header.onClickFunction.bind(this, itemToRender)} href='#' >{header.textToRender}</a>
+                <a onClick={header.onClickFunction.bind(this, itemToRender)} href={ref} >{visible}</a>
               </td>
               break
             }

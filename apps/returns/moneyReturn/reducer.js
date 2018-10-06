@@ -1,5 +1,6 @@
 const stateConst = {
-  fullWidth: true
+  fullWidth: true,
+  return_method: 'CASH'
 }
 
 export default function reducer(state = stateConst, action) {
@@ -20,6 +21,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         fullWidth: true
+      }
+    } // case
+
+    case 'SET_RETURN_METHOD':
+    {
+      return {
+        ...state,
+        return_method: action.payload
       }
     } // case
 

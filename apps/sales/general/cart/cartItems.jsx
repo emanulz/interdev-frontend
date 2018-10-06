@@ -20,7 +20,8 @@ const Mousetrap = require('mousetrap')
     reserveLoaded: store.completed.isReserveLoaded,
     isExempt: store.cart.isExempt,
     config: store.config.globalConf,
-    currencySymbol: store.currency.symbolSelected
+    currencySymbol: store.currency.symbolSelected,
+    pricesDetails: store.products.pricesDetails
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -109,6 +110,12 @@ export default class CartItems extends React.Component {
   }
 
   discountInputKeyPress(code, ev) {
+    console.log('EVVV TAR', ev.target)
+    const discount = (ev.target.value)
+      ? ev.target.value
+      : 0
+    this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
+      this.props.client, this.props.pricesDetails))
 
     if (ev.key == 'Enter') {
       ev.preventDefault()
@@ -116,7 +123,7 @@ export default class CartItems extends React.Component {
         ? ev.target.value
         : 0
       this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-        this.props.client))
+        this.props.client, this.props.pricesDetails))
 
     }
 
@@ -128,7 +135,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client))
+      this.props.client, this.props.pricesDetails))
 
   }
 
@@ -183,13 +190,16 @@ export default class CartItems extends React.Component {
   removeItem(code, ev) {
 
     this.props.dispatch(removeFromCart(this.props.inCart, code))
+    document.getElementById('productCodeInputField').focus()
+    document.getElementById('productCodeInputField').value = ''
 
   }
 
   fieldFocus(ev) {
     ev.target.select()
-    ev.target.setSelectionRange(0, 9999)
-
+    try {
+      ev.target.setSelectionRange(0, 9999)
+    } catch (err) {}
   }
 
   showProductPanel(product, ev) {
@@ -229,18 +239,19 @@ export default class CartItems extends React.Component {
       const discountField = this.props.client.saleLoaded
         ? <input
           disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
-          onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
+          onChange={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
           type='number' className='form-control'
-          defaultValue={parseFloat(item.discount)}
+          defaultValue={item.discount}
         />
         : <input
           disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
-          onKeyPress={this.discountInputKeyPress.bind(this, item.uuid)}
+          onChange={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
           type='number' className='form-control'
+          value={item.discount}
         />
 
       return <div className={activeClass}

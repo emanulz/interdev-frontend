@@ -64,15 +64,20 @@ export default class PaySideBar extends React.Component {
     return 'Sin Correo Registrado'
   }
 
+  fieldFocus(ev) {
+    ev.target.select()
+    ev.target.setSelectionRange(0, 9999)
+  }
+
   render() {
 
     const clientName = this.determinClientName()
     const clientLastName = this.determinClientLastName()
     const clientEmail = this.determinClientEmail()
 
-    const clientNameInput = <input type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} />
-    const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} />
-    const clientEmailInput = <input type='text' value={clientEmail} name='email' onChange={this.handleInputChange.bind(this)} />
+    const clientNameInput = <input type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
+    const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
+    const clientEmailInput = <input type='text' value={clientEmail} name='email' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
 
     const nameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientNameInput : <span>{clientName}</span>
     const lastNameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientLastnameInput : <span>{clientLastName}</span>

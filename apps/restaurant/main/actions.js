@@ -4,7 +4,10 @@ export function fecthProfile() {
 
   return function(dispatch) {
     axios.get('/profile/').then(function(response) {
-      dispatch({type: 'FETCH_PROFILE_FULFILLED', payload: {user: response.data[0].fields, profile: response.data[1].fields}})
+      console.log('PROFIILEEEEEE', response.data)
+      const user = response.data[0].fields
+      user.id = response.data[0].pk
+      dispatch({type: 'FETCH_PROFILE_FULFILLED', payload: {user: user, profile: response.data[1].fields}})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {
       dispatch({type: 'FETCH_PROFILE_REJECTED', payload: error})

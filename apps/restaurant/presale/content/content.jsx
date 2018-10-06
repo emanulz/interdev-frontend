@@ -23,7 +23,12 @@ import { setProduct, productSelected } from '../../../sales/general/product/acti
     reserves_warehouse: store.config.reserves_warehouse,
     extras: store.extras,
     presaleActiveId: store.presale.presaleActiveId,
-    warehouse_id: store.userProfile.salesWarehouse
+    warehouse_id: store.userProfile.salesWarehouse,
+    config: store.config.globalConf,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault,
+    tables: store.tables.tables,
+    tableActive: store.tables.tableActive
   }
 })
 class Content extends React.Component {
@@ -45,8 +50,9 @@ class Content extends React.Component {
     })
   }
 
-  calc10Percent(cart, table) {
-    return cart.cartSubtotal * 0.1
+  calc10Percent(cart) {
+    // return parseFloat(cart.cartTotal) * 0.1
+    return parseFloat(cart.cartSubtotal) * 0.1
   }
 
   add10PercentToCart(close) {
@@ -66,22 +72,39 @@ class Content extends React.Component {
       console.log('DATAA', data)
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       const product = data.results[0]
-      product.price = _this.calc10Percent(_this.props.cart, 1)
-      try {
-        _this.props.dispatch(
-          productSelected(
-            product.code,
-            1,
-            product,
-            _this.props.cart.cartItems,
-            0,
-            _this.props.client,
-            _this.props.warehouse_id)
-        )
-        // AFTER ADDING THE 10 PERCENT CLOSE ORDER
-        this.savePresale(close)
-      } catch (err) {
-        console.log(err)
+      const tableId = _this.props.location.pathname.split('/')[3]
+      const tableSelected = _this.props.tables.find(item => item.id == tableId)
+      console.log('TABLE', tableSelected)
+      if (tableSelected.charges_service) {
+        product.price = _this.calc10Percent(_this.props.cart)
+        try {
+          // _this.props.dispatch(
+          //   productSelected(
+          //     product.code,
+          //     1,
+          //     product,
+          //     _this.props.cart.cartItems,
+          //     0,
+          //     _this.props.client,
+          //     _this.props.warehouse_id)
+          // )
+          const percentData = {
+            default_discount: '0',
+            id: product.id,
+            max_discount: '0',
+            product: product,
+            table_price: '0',
+            target_price_list: 'price1'
+          }
+          this.props.dispatch(productSelected(percentData, 1, _this.props.cart.cartItems, _this.props.client,
+            _this.props.warehouse_id, true, _this.props.priceListSelected, _this.props.usePriceListAsDefault))
+          // AFTER ADDING THE 10 PERCENT CLOSE ORDER
+          _this.savePresale(close)
+        } catch (err) {
+          console.log(err)
+        }
+      } else {
+        _this.savePresale(close)
       }
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -136,6 +159,8 @@ class Content extends React.Component {
     const totalClass = this.props.fullWidth ? 'sale-content-total' : 'sale-content-total collapsed'
     const buttonsClass = this.props.fullWidth ? 'sale-content-buttons' : 'sale-content-buttons collapsed'
 
+    const total = this.props.cart ? this.props.cart.cartTotal : 0
+
     return <div className={contentClass}>
       <div className={buttonsClass} >
         <button onClick={this.goToTableBillList.bind(this)} className='btn btn-primary' >
@@ -152,7 +177,7 @@ class Content extends React.Component {
         <Cart />
       </div>
       <div className={totalClass} >
-        ₡ {this.props.total.formatMoney()}
+        ₡ {total.formatMoney()}
       </div>
     </div>
 

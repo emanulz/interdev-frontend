@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {productSelected} from './actions.js'
+import {productSelected, setProductNew} from './actions.js'
 
 @connect((store) => {
   return {
@@ -14,7 +14,10 @@ import {productSelected} from './actions.js'
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
-    warehouse_id: store.userProfile.salesWarehouse
+    warehouse_id: store.userProfile.salesWarehouse,
+    config: store.config.globalConf,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault
   }
 })
 export default class SingleProduct extends React.Component {
@@ -40,8 +43,43 @@ export default class SingleProduct extends React.Component {
     this.props.dispatch({type: 'HIDE_SINGLE_PRODUCT_PANEL', payload: ''})
     this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_QTY', payload: ''})
     this.props.dispatch({type: 'productSearch_HIDE_SEARCH_PANEL', payload: ''})
-    this.props.dispatch(productSelected(this.props.product.code, qty, this.props.product, this.props.itemsInCart,
-      this.props.globalDiscount, this.props.client, this.props.warehouse_id))
+    // this.props.dispatch(productSelected(this.props.product.code, qty, this.props.product, this.props.itemsInCart,
+    //   this.props.globalDiscount, this.props.client, this.props.warehouse_id))
+    const code = this.props.product.code
+    const _this = this
+    const setProductPromiseNew = new Promise((resolve, reject) => {
+      const kwargs = {
+        url: '/api/products/getProdPrice/',
+        data: {
+          code: code,
+          clientId: _this.props.client.client.id
+        }
+      }
+
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      setProductNew(kwargs, resolve, reject)
+    })
+
+    setProductPromiseNew.then((data) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      const product = data[0].product
+      if (product.code == '00') {
+        _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
+        _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
+      } else {
+        // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
+        _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
+        this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
+          this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
+          this.props.usePriceListAsDefault))
+        _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+        _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+      }
+
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      console.log(err)
+    })
   }
   // *******************************************************************
   // Main Layout

@@ -9,7 +9,9 @@ const clientCategoryModel = {
   id: '0000000000',
   code: '',
   name: '',
-  discount: 0,
+  pred_discount: 0,
+  max_discount: 0,
+  pred_price_list: 1,
   observations: ''
 }
 

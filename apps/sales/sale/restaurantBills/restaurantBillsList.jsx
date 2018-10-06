@@ -110,7 +110,8 @@ export default class RestaurantBillsPanel extends React.Component {
         client: {
           last_name: 'General',
           name: 'Cliente',
-          email: ''
+          email: '',
+          tableName: 'Sin Mesa'
         }
       }
       try {
@@ -118,15 +119,13 @@ export default class RestaurantBillsPanel extends React.Component {
       } catch (err) { console.log('ERROR PARSE', err) }
       const clientName = determinClientName(restaurantBill.client, extras.client)
       const clientLastName = determinClientLastName(restaurantBill.client, extras.client)
-      const presellerName = restaurantBill.user.first_name
-        ? `${restaurantBill.user.first_name} ${restaurantBill.user.last_name}`
-        : `${restaurantBill.user.username}`
+      const tableName = extras.tableName ? extras.tableName : '-'
       return <tr key={restaurantBill.id}>
         <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, restaurantBill.id)} className='fa fa-download' /></td>
         <td>{restaurantBill.consecutive}</td>
         <td>{`${formatDateTimeAmPm(restaurantBill.created)}`}</td>
         <td>{`${clientName} ${clientLastName}`}</td>
-        <td>{presellerName}</td>
+        <td>{tableName}</td>
         <td>₡ {parseFloat(restaurantBill.cart.cartTotal).formatMoney(2, ',', '.')}</td>
         <td className='loadRow'><i className='fa fa-print' onClick={this.printPresale.bind(this, restaurantBill.consecutive)} /></td>
         {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, restaurantBill.id, restaurantBill.consecutive)} className='fa fa fa-trash' /></td> */}
@@ -147,7 +146,7 @@ export default class RestaurantBillsPanel extends React.Component {
                 <td>#</td>
                 <td>Fecha</td>
                 <td>Cliente</td>
-                <td>Vendedor</td>
+                <td>Mesa</td>
                 <td>Monto</td>
                 <td>Imprimir</td>
               </tr>

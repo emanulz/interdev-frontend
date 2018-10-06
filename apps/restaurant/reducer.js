@@ -22,6 +22,8 @@ import tableBills from './tableBills/reducer.js'
 import newBill from './tableBills/newBill/reducer.js'
 import actions from './actionList/reducer.js'
 import currency from '../../general/currency/reducer.js'
+import priceList from '../sales/general/priceList/reducer.js'
+import presales from '../sales/sale/presales/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -45,5 +47,7 @@ export default combineReducers({
   tableBills,
   newBill,
   actions,
-  currency
+  currency,
+  priceList,
+  presales
 })

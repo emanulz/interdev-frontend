@@ -5,6 +5,7 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 import {userSelected, getFullClientByCode, determinClientName, determinClientLastName, determinClientEmail} from './actions'
+import {getProductsList, recalcCart} from '../product/actions'
 // import {recalcCart} from '../../general/product/actions'
 const Mousetrap = require('mousetrap')
 
@@ -20,7 +21,12 @@ const Mousetrap = require('mousetrap')
     // movements: store.clientmovements.movements,
     debt: store.clients.clientSelectedDebt,
     disabled: store.completed.completed,
-    extraClient: store.extras.client
+    extraClient: store.extras.client,
+    listSelected: store.priceList.listSelected,
+    useListAsDefault: store.priceList.useAsDefault,
+    cartItems: store.cart.cartItems,
+    pricesDetails: store.products.pricesDetails,
+    presaleId: store.presales.presaleId
   }
 })
 export default class Clients extends React.Component {
@@ -30,8 +36,18 @@ export default class Clients extends React.Component {
     getFullClientByCode('00', this.props.dispatch)
   }
 
+  determinPriceList(client, category) {
+    if (client.category_id && category.pred_price_list) {
+      return category.pred_price_list
+    }
+    if (!client.category_id && client.pred_price_list) {
+      return client.pred_price_list
+    }
+    return 1
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.clientSelected != this.props.clientSelected) {
+    if (nextProps.clientSelected != this.props.clientSelected && !this.props.presaleId) {
       // set the discount: default value or 0
 
       // const discount = nextProps.client.pred_discount ? nextProps.client.pred_discount : 0
@@ -39,6 +55,42 @@ export default class Clients extends React.Component {
       // this.props.dispatch(recalcCart(nextProps.cart, discount, nextProps.client))
       // this.props.dispatch({type: 'SET_GLOBAL_DISCOUNT', payload: discount})
       this.props.dispatch({type: 'SET_CLIENT_DEBT', payload: nextProps.client.client.balance})
+
+      // SET THE CLIENT PRICE LIST
+      // const priceList = nextProps.client.category.pred_price_list ? nextProps.client.category.pred_price_list : 1
+      const priceList = this.determinPriceList(nextProps.client.client, nextProps.client.category)
+      this.props.dispatch({type: 'SET_PRICE_LIST', payload: priceList})
+
+      // WHEN CLIENT IS UPDATED SEND A REQUEST TO RECALC THE DETAIL DATA THEN DISPATCH IT AND UPDATE THE PRICES
+      const _this = this
+
+      const getNewLineDataPromise = new Promise((resolve, reject) => {
+        const cartItems = _this.props.cartItems
+        const codesData = cartItems.map(item => {
+          return item.product.code
+        })
+        const kwargs = {
+          url: '/api/products/getProdPrice/',
+          data: {
+            clientId: nextProps.client.client.id,
+            code: codesData
+          }
+        }
+        if (codesData.length) {
+          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          getProductsList(kwargs, resolve, reject)
+        }
+      })
+
+      getNewLineDataPromise.then((data) => {
+        _this.props.dispatch({type: 'SET_PRICES_DETAILS', payload: data})
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        // DISPATCH THE ACTION TO RECALC THE CART
+        _this.props.dispatch(recalcCart(_this.props.cartItems, data, _this.props.listSelected, _this.props.useListAsDefault, true))
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log(err)
+      })
 
       // SETS VALUE OF DEFAULT DISCOUNT TO FIELD OR 0
       // if (nextProps.client.pred_discount) {
@@ -58,6 +110,8 @@ export default class Clients extends React.Component {
       if (ev.target.value) {
         const code = ev.target.value
         getFullClientByCode(code, this.props.dispatch)
+        document.getElementById('productCodeInputField').focus()
+        document.getElementById('productCodeInputField').value = ''
       }
     } else {
       this.props.dispatch({type: 'SET_CLIENT_FIELD_VALUE', payload: ev.target.value})

@@ -13,7 +13,7 @@ const clientModel = {
   town: '',
   other_address: '',
   cellphone_number: '',
-  category_code: '',
+  category_id: '',
   code: '',
   credit_days: 30,
   credit_limit: 0,
@@ -27,7 +27,22 @@ const clientModel = {
   observations: '',
   pays_taxes: true,
   phone_number: '',
-  pred_discount: 0
+  pred_discount: 0,
+  pred_price_list: 1
+}
+
+const clientProdModel = {
+  id: '0000',
+  client_id: '0000',
+  product_id: '0000',
+  product_code: '-1',
+  product_description: 'Producto no seleccionado',
+  table_price: 0,
+  discount_percent: 0,
+  by_price: false,
+  is_edit: true,
+  created: '',
+  updated: ''
 }
 
 const stateConst = {
@@ -36,12 +51,76 @@ const stateConst = {
   clientActiveOld: clientModel,
   nextClient: 0,
   previousClient: 0,
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  clientProds: [],
+  selected_prod: '',
+  clientProdFormVisible: false,
+  activeClientProd: clientProdModel,
+  requires_refetch: false
+  
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'FLAG_REFRESH_CLIENT_PROD':
+    {
+      return {
+        ...state, 
+        requires_refetch: true
+      }
+    }
+
+    case 'CLIENT_PRODUCT_CREATE':
+    {
+      let new_client_prod = JSON.parse(JSON.stringify(clientProdModel))
+      new_client_prod.product_id = action.payload.product.id
+      new_client_prod.product_description = action.payload.product.description
+      new_client_prod.product_code = action.payload.product.code
+      new_client_prod.is_edit = false
+      
+      return {
+        ...state,
+        clientProdFormVisible: true,
+        activeClientProd: new_client_prod
+
+      }
+    }
+
+    case 'HIDE_CLIENT_PRODUCT_EDIT':
+    {
+      return {
+        ...state,
+        clientProdFormVisible: false,
+      }
+    }
+
+    case 'SET_ACTIVE_CLIENTPROD':
+    {
+      return{
+        ...state,
+        activeClientProd: action.payload
+      }
+    }
+
+    case 'CLIENT_PRODUCT_EDIT':
+    {
+      //find the clientproduct line from the clientProds using the
+      //received code
+      const prod = state.clientProds.find((prod)=>{
+        if (prod.product_code == action.payload){
+          return prod
+        }
+      })
+      prod.is_edit=true
+
+      return {
+        ...state,
+        activeClientProd: prod,
+        clientProdFormVisible: true
+      }
+    }
 
     case 'CLEAR_CANTON':
     {
@@ -107,6 +186,22 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'FETCH_CLIENT_PRODS_FULFILLED':
+    {
+      return {
+        ...state,
+        clientProds: action.payload,
+        requires_refetch: false,
+
+      }
+    }
+    case 'FETCH_CLIENT_PRODS_REJECTED':
+    {
+      return {
+        ...state,
+        clientProds: []
+      }
+    }
     case 'FETCH_CLIENTS_FULFILLED':
     {
       return {
