@@ -1,7 +1,12 @@
 const stateConst = {
   fullWidth: false,
   moneyBills: [],
-  openBillList: []
+  openBillList: [],
+  openTotalCRC: 0,
+  openTotalUSD: 0,
+  openTotalCRCSetted: false,
+  openTotalUSDSetted: false
+
 }
 
 export default function reducer(state = stateConst, action) {
@@ -41,12 +46,40 @@ export default function reducer(state = stateConst, action) {
       existentOpenBillList = existentOpenBillList.filter(item => {
         return item.value !== newLine.value
       })
+      let settedCRC = state.openTotalCRCSetted
+      let settedUSD = state.openTotalUSDSetted
+      if (newLine.currency_code == 'CRC') {
+        settedCRC = false
+      }
+      if (newLine.currency_code == 'USD') {
+        settedUSD = false
+      }
       // ADD IT TO CART
       existentOpenBillList.push(newLine)
       // RETURN
       return {
         ...state,
-        openBillList: existentOpenBillList
+        openBillList: existentOpenBillList,
+        openTotalUSDSetted: settedUSD,
+        openTotalCRCSetted: settedCRC
+      }
+    } // case
+
+    case 'SET_TOTAL_CRC':
+    {
+      return {
+        ...state,
+        openTotalCRCSetted: true,
+        openTotalCRC: action.payload
+      }
+    } // case
+
+    case 'SET_TOTAL_USD':
+    {
+      return {
+        ...state,
+        openTotalUSDSetted: true,
+        openTotalUSD: action.payload
       }
     } // case
 
