@@ -62,7 +62,8 @@ export default class PurchasesVrsSales extends React.Component {
         const s_date = `${start.getFullYear()}-${start.getMonth()+1}-${start.getDate()}`
         const e_date = `${end.getFullYear()}-${end.getMonth()+1}-${end.getDate()}`
 
-        let url = `/api/reporting/getReportVisualizationData/?report=salesvrspurchases&start=`
+        //let url = `/api/reporting/getReportVisualizationData/?report=salesvrspurchases&start=`
+        let url = `/api/reporting/getReportVisualizationData/?report=utilitiesreport&start=`
         url += `${s_date}&end=${e_date}`
         const kwargs = {
             url: url,
