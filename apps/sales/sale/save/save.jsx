@@ -89,9 +89,12 @@ export default class SaveBtn extends React.Component {
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {
-        alertify.alert('ERROR', `${err.response.data[Object.keys(err.response.data)[0]]}`)
+        console.log(err.response.data)
+        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
       } else {
-        alertify.alert('ERROR', `Hubo un error al guardar la venta, error: ${err}`)
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })

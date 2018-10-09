@@ -31,7 +31,6 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(checkUserPermissions(kwargs))
     // ******************************************************************
-
   }
 
   // Main Layout

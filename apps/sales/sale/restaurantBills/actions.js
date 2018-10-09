@@ -33,9 +33,11 @@ export function getPendingRestaurantBills(kwargs) {
   const filterField2 = kwargs.filterField2
   const filter3 = kwargs.filter3
   const filterField3 = kwargs.filterField3
+  const filter4 = kwargs.filter4
+  const filterField4 = kwargs.filterField4
   const ordering = kwargs.ordering
 
-  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&presale_type=RESTAURANT&ordering=${ordering}&limit=200`
+  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&${filterField4}=${filter4}&presale_type=RESTAURANT&ordering=${ordering}&limit=200`
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {
@@ -65,3 +67,4 @@ export function setRestaurantBillNull(id, resolve, reject) {
     reject(err)
   })
 }
+

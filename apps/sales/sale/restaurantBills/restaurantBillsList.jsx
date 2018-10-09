@@ -3,11 +3,16 @@ import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadRestaurantBill, getPendingRestaurantBills, setRestaurantBillNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
+import {getSingleItemDispatch} from '../../../../utils/api.js'
 import alertify from 'alertifyjs'
 import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 
 @connect((store) => {
-  return {restaurantBills: store.restaurantBills.restaurantBills, isVisible: store.restaurantBills.isVisible}
+  return {
+    restaurantBills: store.restaurantBills.restaurantBills,
+    isVisible: store.restaurantBills.isVisible,
+    percent10: store.restaurantBills.percent10
+  }
 })
 export default class RestaurantBillsPanel extends React.Component {
 
@@ -21,6 +26,8 @@ export default class RestaurantBillsPanel extends React.Component {
       filter2: 'False',
       filterField3: 'is_null',
       filter3: 'False',
+      filterField4: 'destroyed',
+      filter4: 'False',
       successType: 'FETCH_RESTAURANT_BILLS_FULFILLED',
       errorType: 'FETCH_RESTAURANT_BILLS_REJECTED'
     }
@@ -93,6 +100,15 @@ export default class RestaurantBillsPanel extends React.Component {
     this.props.dispatch(loadPresaleToPrint(id))
   }
 
+  get10Percent() {
+    const kwargs = {
+      url: '/api/saleslist/getserviceamount',
+      successType: 'SET_PERCENT_10',
+      errorType: 'CLEAR_PERCENT_10'
+    }
+    this.props.dispatch(getSingleItemDispatch(kwargs))
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
@@ -136,6 +152,10 @@ export default class RestaurantBillsPanel extends React.Component {
       <div className='restaurantBills-panel-header'>
         CUENTAS DE RESTAURANTE SIN FACTURAR
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
+      </div>
+      <div className='restaurantBills-panel-percent10'>
+        <button onClick={this.get10Percent.bind(this)}>CALCULAR 10%</button>
+        <span>₡{parseFloat(this.props.percent10).formatMoney()}</span>
       </div>
       <div className='restaurantBills-panel-container'>
         <div className='col-xs-12'>

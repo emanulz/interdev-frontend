@@ -3,12 +3,29 @@ const stateConst = {
   restaurantBills: [],
   isVisible: false,
   restaurantBillId: '',
-  restaurantBillUser: {}
+  restaurantBillUser: {},
+  percent10: 0
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+    case 'SET_PERCENT_10':
+    {
+      return {
+        ...state,
+        percent10: action.payload
+      }
+    } // case
+
+    case 'CLEAR_PERCENT_10':
+    {
+      return {
+        ...state,
+        percent10: 0
+      }
+    } // case
+
     case 'SET_RESTAURANT_BILL_ID':
     {
       return {
