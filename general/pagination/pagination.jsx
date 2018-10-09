@@ -53,8 +53,10 @@ export default class Pagination extends React.Component {
 
   generateButton(index) {
 
-    const firstUrlToLink = `${this.props.url}?limit=${this.props.pageSize}`
-    const urlToLink = `${this.props.url}?limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}`
+    const firstUrlToLink = this.props.url.indexOf('?') != -1 ? `${this.props.url}&limit=${this.props.pageSize}` : `${this.props.url}?limit=${this.props.pageSize}`
+    // const firstUrlToLink = `${this.props.url}?limit=${this.props.pageSize}`
+    const urlToLink = this.props.url.indexOf('?') != -1 ? `${this.props.url}&limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}` : `${this.props.url}?limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}`
+    // const urlToLink = `${this.props.url}?limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}`
     const paginationClass = index == this.props.currentPage ? 'pagination-item paginationActive' : 'pagination-item'
 
     if (index == 1) {

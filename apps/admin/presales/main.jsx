@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    permissions: store.sales.permissions
+    permissions: store.presales.permissions
   }
 })
 export default class List extends React.Component {
@@ -18,15 +18,15 @@ export default class List extends React.Component {
     // When will mount fecth for model permissions and dispatch to reducer
     // *******************************************************************
     const permissions = {
-      add: 'sales.add_sale',
-      change: 'sales.change_sale',
-      list: 'sales.list_sale',
-      delete: 'sales.delete_sale'
+      add: 'presales.add_presale',
+      change: 'presales.change_presale',
+      list: 'presales.list_presale',
+      delete: 'presales.delete_presale'
     }
     const kwargs = {
       permissions: permissions,
-      success: 'FETCH_USER_SALE_PERMISSIONS_FULLFILLED',
-      fail: 'FETCH_USER_SALE_PERMISSIONS_REJECTED'
+      success: 'FETCH_USER_PRESALE_PERMISSIONS_FULLFILLED',
+      fail: 'FETCH_USER_PRESALE_PERMISSIONS_REJECTED'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(checkUserPermissions(kwargs))

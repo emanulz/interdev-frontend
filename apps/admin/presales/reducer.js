@@ -6,7 +6,10 @@ const defaultPermissions = {
 }
 
 const stateConst = {
-  sales: [],
+  presales: [],
+  restaurant: [],
+  quoting: [],
+  reserves: [],
   permissions: defaultPermissions
 }
 
@@ -14,7 +17,7 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'FETCH_USER_SALE_PERMISSIONS_FULLFILLED':
+    case 'FETCH_USER_PRESALE_PERMISSIONS_FULLFILLED':
     {
       return {
         ...state,
@@ -22,7 +25,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'FETCH_USER_SALE_PERMISSIONS_REJECTED':
+    case 'FETCH_USER_PRESALE_PERMISSIONS_REJECTED':
     {
       return {
         ...state,
@@ -30,20 +33,71 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'FETCH_SALES_FULFILLED':
+    case 'FETCH_PRESALES_FULFILLED':
     {
       return {
         ...state,
-        sales: action.payload
+        presales: action.payload
       }
 
     } // case
 
-    case 'FETCH_SALES_REJECTED':
+    case 'FETCH_PRESALES_REJECTED':
     {
       return {
         ...state,
-        sales: []
+        presales: []
+      }
+    } // case
+
+    case 'FETCH_RESTAURANT_PRESALES_FULFILLED':
+    {
+      return {
+        ...state,
+        restaurant: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_RESTAURANT_PRESALES_REJECTED':
+    {
+      return {
+        ...state,
+        restaurant: []
+      }
+    } // case
+
+    case 'FETCH_QUOTING_PRESALES_FULFILLED':
+    {
+      return {
+        ...state,
+        quoting: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_QUOTINGT_PRESALES_REJECTED':
+    {
+      return {
+        ...state,
+        quoting: []
+      }
+    } // case
+
+    case 'FETCH_RESERVES_PRESALES_FULFILLED':
+    {
+      return {
+        ...state,
+        reserves: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_RESERVES_PRESALES_REJECTED':
+    {
+      return {
+        ...state,
+        reserves: []
       }
     } // case
 

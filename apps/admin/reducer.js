@@ -19,6 +19,7 @@ import Importer from './products/importer/reducer.js'
 import search from '../../general/search/reducer.js'
 import clientCategories from './clientCategories/reducer.js'
 import sales from './sales/reducer.js'
+import presales from './presales/reducer.js'
 import reprintInvoice from '../../general/reprintInvoice/reducer.js'
 import generalReports from '../admin/reports/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
@@ -28,6 +29,7 @@ import etickets from './invoicing/tickets/reducer.js'
 import ecreditNotes from './invoicing/creditNotes/reducer.js'
 import config from './config/reducer.js'
 import currency from '../../general/currency/reducer.js'
+import printPresale from '../../general/printPresale/reducer.js'
 
 export default combineReducers({
   users,
@@ -51,6 +53,7 @@ export default combineReducers({
   productClientCreate: search('productClientCreate'),
   clientCategories,
   sales,
+  presales,
   reprintInvoice,
   generalReports,
   userProfile,
@@ -59,5 +62,6 @@ export default combineReducers({
   etickets,
   ecreditNotes,
   config,
-  currency
+  currency,
+  printPresale
 })

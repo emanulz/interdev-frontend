@@ -21,26 +21,6 @@ export default class SideMenu extends React.Component {
   // Main Layout
   render() {
 
-    const childApps = [
-      {
-        text: 'Productos',
-        class: 'fa-gift',
-        href: '/admin/products'
-      }, {
-        text: 'Familias',
-        class: 'fa-list',
-        href: '/admin/productdepartments'
-      }, {
-        text: 'Sub-Familias',
-        class: 'fa-outdent',
-        href: '/admin/productsubdepartments'
-      }, {
-        text: 'Importar',
-        class: 'fa-indent',
-        href: '/admin/products/importproducts'
-      }
-    ]
-
     const childInvoicing = [
       {
         text: 'Facturas Electrónicas',
@@ -58,10 +38,94 @@ export default class SideMenu extends React.Component {
         text: 'Aceptar Compras',
         class: 'fa-upload',
         href: '/admin/invoicing/purchases'
+      }
+    ]
+
+    const childPresales = [
+      {
+        text: 'Listado de preventas',
+        class: 'fa-gift',
+        href: '/admin/presales'
       }, {
+        text: 'Proformas',
+        class: 'fa-envelope-open',
+        href: '/admin/presales/quoting'
+      }, {
+        text: 'Apartados',
+        class: 'fa-cubes',
+        href: '/admin/presales/reserves'
+      }, {
+        text: 'Cuentas Restaurante',
+        class: 'fa-cutlery',
+        href: '/admin/presales/restaurant'
+      }
+    ]
+
+    const childSales = [
+      {
         text: 'Listado de Ventas',
         class: 'fa-gift',
         href: '/admin/sales'
+      },{
+        text: 'Cierres de Caja',
+        class: 'fa-gift',
+        href: '/admins'
+      }
+    ]
+
+    const childProducts = [
+      {
+        text: 'Productos',
+        class: 'fa-database',
+        href: '/admin/products'
+      }, {
+        text: 'Familias de Productos',
+        class: 'fa-tag',
+        href: '/admin/productdepartments'
+      }, {
+        text: 'Sub-Familias de Productos',
+        class: 'fa-tags',
+        href: '/admin/productsubdepartments'
+      }, {
+        text: 'Bodegas',
+        class: 'fa-building',
+        href: '/admin/warehouses'
+      }, {
+        text: 'Proveedores',
+        class: 'fa-truck',
+        href: '/admin/suppliers'
+      }, {
+        text: 'Importar',
+        class: 'fa-indent',
+        href: '/admin/products/importproducts'
+      }
+    ]
+
+    const childAdmin = [
+      {
+        text: 'usuarios',
+        class: 'fa-user-circle',
+        href: '/admin/users'
+      }, {
+        text: 'Permisos',
+        class: 'fa-sitemap',
+        href: '/admin/permissions'
+      }, {
+        text: 'Contribuyente',
+        class: 'fa-user',
+        href: '/admin/taxpayers'
+      }
+    ]
+
+    const chilClients = [
+      {
+        text: 'Clientes',
+        class: 'fa-street-view',
+        href: '/admin/clients'
+      }, {
+        text: 'Categorías de Clientes',
+        class: 'fa-tasks',
+        href: '/admin/clientcategories'
       }
     ]
 
@@ -81,7 +145,9 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-tasks' />
               Reportes Generales</Link>
           </li>
-          <li>
+          <ComposedItem mainTittle='Productos' mainIcon='fa-database' childItems={childProducts} />
+          <ComposedItem mainTittle='Clientes' mainIcon='fa-street-view' childItems={chilClients} />
+          {/* <li>
             <Link to='/admin/users'>
               <span className='fa fa-user-circle' />
               Usuarios</Link>
@@ -90,35 +156,37 @@ export default class SideMenu extends React.Component {
             <Link to='/admin/permissions'>
               <span className='fa fa-sitemap' />
               Permisos</Link>
-          </li>
+          </li> */}
+          <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
+          <ComposedItem mainTittle='Preventas' mainIcon='fa-list-ul' childItems={childPresales} />
           <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} />
-
-          <li>
+          <ComposedItem mainTittle='Administración' mainIcon='fa-tachometer' childItems={childAdmin} />
+          {/* <li>
             <Link to='/admin/products'>
               <span className='fa fa-database' />
               Productos</Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link to='/admin/clients'>
               <span className='fa fa-street-view' />
               Clientes</Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link to='/admin/taxpayers'>
               <span className='fa fa-user' />
               Contribuyentes</Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link to='/admin/clientcategories'>
               <span className='fa fa-tasks' />
               Categorías de clientes</Link>
-          </li>
+          </li> */}
           {/* <li>
             <Link to='/admin/senders'>
               <span className='fa fa-user' />
               Emisores</Link>
           </li> */}
-          <li>
+          {/* <li>
             <Link to='/admin/productdepartments'>
               <span className='fa fa-tag' />
               Familias de Productos</Link>
@@ -127,13 +195,13 @@ export default class SideMenu extends React.Component {
             <Link to='/admin/productsubdepartments'>
               <span className='fa fa-tags' />
               Sub-Familias de Productos</Link>
-          </li>
+          </li> */}
           {/* <li>
             <Link to='/admin/products/importproducts'>
               <span className='fa fa-indent' />
               Importar Productos</Link>
           </li> */}
-          <li>
+          {/* <li>
             <Link to='/admin/suppliers'>
               <span className='fa fa-truck' />
               Proveedores</Link>
@@ -142,8 +210,8 @@ export default class SideMenu extends React.Component {
             <Link to='/admin/warehouses'>
               <span className='fa fa-building' />
               Bodegas</Link>
-          </li>
-          <ComposedItem mainTittle='Otras Aplicaciones' mainIcon='fa-gift' childItems={childApps} />
+          </li> */}
+          {/* <ComposedItem mainTittle='Otras Aplicaciones' mainIcon='fa-gift' childItems={childApps} /> */}
 
         </ul>
       </div>

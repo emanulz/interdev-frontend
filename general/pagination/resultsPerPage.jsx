@@ -13,9 +13,10 @@ import { getPaginationItemDispatch } from '../../utils/api.js'
 export default class ResultsPerPage extends React.Component {
 
   handleChange (ev) {
+    const url = this.props.url.indexOf('?') != -1 ? `${this.props.url}&limit=${ev.target.value}` : `${this.props.url}?limit=${ev.target.value}`
     const size = ev.target.value
     const kwargs = {
-      url: `${this.props.url}?limit=${ev.target.value}`,
+      url: url,
       successType: this.props.successType,
       errorType: this.props.errorType
     }
