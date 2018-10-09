@@ -142,7 +142,13 @@ export default class GenerlItem extends React.Component {
     const isVisible = (this.props.isVisible)
       ? 'general-item is-visible'
       : 'general-item'
-
+    const observations = this.props.config.printProductObservationsInFullInvoice
+      ? <div className='form-group'>
+        <label>Observaciones</label>
+        <input value={this.props.product.observations} name='observations' onChange={this.handleInputChange.bind(this)} type='text'
+          className='form-control' onFocus={this.fieldFocus.bind(this)} />
+      </div>
+      : <div />
     return <div className={isVisible}>
       <div className='general-item-container'>
         <div className='general-item-container-header'>
@@ -158,6 +164,9 @@ export default class GenerlItem extends React.Component {
               <input value={this.props.product.description} name='description' onChange={this.handleInputChange.bind(this)} type='text'
                 className='form-control' onFocus={this.fieldFocus.bind(this)} />
             </div>
+
+            {observations}
+
             <div className='form-group'>
               <label>Es servicio?</label>
               <input checked={this.props.product.is_service} name='is_service'

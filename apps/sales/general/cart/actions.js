@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------
 
 // This function updates totals the cart store item, generates new values according cart item objects, then push the to store
-export function updateTotals(inCart, exempt) {
+export function updateTotals(inCart, exempt, dontRound) {
 
   let subtotal = 0
   let subTotalNoDiscount = 0
@@ -40,7 +40,12 @@ export function updateTotals(inCart, exempt) {
   const exemptAmount = exempt ? taxes : 0
   total = exempt ? subtotal : subtotal + taxes
   // returs a dispatch with a payload of the obtained values
-  const totalRounded = Math.round((total / 5)) * 5
+  let totalRounded = 0
+  if (dontRound) {
+    totalRounded = total
+  } else {
+    totalRounded = Math.round((total / 5)) * 5
+  }
 
   return {
     type: 'UPDATE_CART_TOTALS',

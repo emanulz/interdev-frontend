@@ -2,7 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {sale: store.reprintInvoice.sale, currencySymbol: store.currency.symbolSelected}
+  return {
+    sale: store.reprintInvoice.sale,
+    currencySymbol: store.currency.symbolSelected,
+    config: store.config.globalConf
+  }
 })
 export default class Table extends React.Component {
 
@@ -14,6 +18,16 @@ export default class Table extends React.Component {
     const items = cartItems.length
       ? cartItems.map((item) => {
 
+        const description = this.props.config.printProductObservationsInFullInvoice && item.product.observations
+          ? <td>
+            {item.product.description}
+            <br />
+            {item.product.observations}
+          </td>
+          : <td>
+            {item.product.description}
+          </td>
+
         const taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
           ? `G`
           : `E`
@@ -22,9 +36,7 @@ export default class Table extends React.Component {
           <td>
             {item.product.code}
           </td>
-          <td>
-            {item.product.description}
-          </td>
+          {description}
           <td className='right-in-table'>
             {item.qty}
           </td>
