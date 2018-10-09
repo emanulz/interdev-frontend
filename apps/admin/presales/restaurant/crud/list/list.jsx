@@ -56,7 +56,7 @@ export default class List extends React.Component {
   markAsDestroyedConfirmed(id) {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     const kwargs = {
-      url: `/api/presalespatch/destroy_presale/${id}`,
+      url: `/api/presalespatch/${id}/destroy_presale/`,
       errorMessage: 'Error al marcar la Orden como no satisfecho'
     }
     const _this = this
