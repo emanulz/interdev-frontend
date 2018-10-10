@@ -101,11 +101,6 @@ export default class List extends React.Component {
         ok: 'Si',
         cancel: 'No'
         })
-
-        // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-        // this.props.dispatch(saveItem(kwargs))
-        
-    
         
     }
 

@@ -4,12 +4,14 @@ import {getPaginationItemDispatch} from '../../../../utils/api.js'
 import AdminTable from '../../../../general/adminTable/adminTable.jsx'
 import Pagination from '../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
+import {saveItem} from '../../../../utils/api'
 
 @connect(store=>{
     return {
         purchases: store.purchase.purchasesTableFriendly,
         fetching: store.fetching.fetching,
         pageSize: store.pagination.pageSize,
+        requires_incomplete_refresh: store.purchase.requires_incomplete_refresh,
     }
 })
 export default class ListIncompletePurchases  extends React.Component {
@@ -21,10 +23,47 @@ export default class ListIncompletePurchases  extends React.Component {
         const purchasesKwargs = {
             url : `/api/purchaseincompletelist/?limit=${this.props.pageSize}`,
             successType: 'FETCH_PURCHASES_FULFILLED',
-            errorType: 'FETCH_PURCHASES_REJECTED'
+            errorType: 'FETCH_PURCHASES_REJECTED',
         }
 
         this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
+    }
+
+
+    componentWillUpdate(nextProps){
+        const purchasesKwargs = {
+            url : `/api/purchaseincompletelist/?limit=${this.props.pageSize}`,
+            successType: 'FETCH_PURCHASES_FULFILLED',
+            errorType: 'FETCH_PURCHASES_REJECTED',
+        }
+
+        this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
+    }
+
+    discardPending(id){
+        const _this = this
+        let endpoint =  `/api/purchase/custom_delete/`
+
+        let kwargs = {
+        url: endpoint,
+        item: {'purchase_id': id},
+        sucessMessage: 'Compra borrada correctamente.',
+        errorMessage: 'Hubo un error al borrar la entrada por Compra, intente de nuevo.',
+        dispatchType: 'FLAG_REFRESH_PURCHASES_INCOMPLETE'
+        }
+
+        // ALERTIFY CONFIRM
+        alertify.confirm('Eliminar', `Desea Eliminar el registro?
+                                    Esta acción no se puede deshacer.`,
+        function() {
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        _this.props.dispatch(saveItem(kwargs))
+        }, function() {
+        return true
+        }).set('labels', {
+        ok: 'Si',
+        cancel: 'No'
+        })
     }
 
     render(){
@@ -58,6 +97,14 @@ export default class ListIncompletePurchases  extends React.Component {
                 field:'invoice_number',
                 text:'Número Factura',
                 type: 'text'
+            },
+            {
+                field: 'id',
+                type: 'function_on_click',
+                textToRender: 'Descartar?',
+                href: '',
+                onClickFunction: this.discardPending,
+
             }
         ]
 

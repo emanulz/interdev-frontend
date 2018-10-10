@@ -11,11 +11,19 @@ const stateConst = {
     is_closed: false,
     purchase_id: '',
     old: '',
+    requires_incomplete_refresh: false,
 
   }
 
   export default function reducer(state=stateConst, action){
       switch (action.type){
+          case 'FLAG_REFRESH_PURCHASES_INCOMPLETE':
+          {
+              return{
+                ...state,
+                requires_incomplete_refresh: true
+              }
+          }
           case 'TOGGLE_FULL_WIDTH':
           {
               const width = !state.fullWidth
@@ -87,7 +95,8 @@ const stateConst = {
                   purchases:[
                       action.payload
                   ],
-                  purchasesTableFriendly:tF
+                  purchasesTableFriendly:tF,
+                  requires_incomplete_refresh: false
                   
               }
           }
