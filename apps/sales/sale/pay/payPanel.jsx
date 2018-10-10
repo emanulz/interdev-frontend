@@ -12,7 +12,7 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
-    panelVisible: store.pay.isVisible, 
+    panelVisible: store.pay.isVisible,
     payMethod: store.pay.payMethodActive,
     default_invoice: store.userProfile.activeLocal.default_invoice
   }
