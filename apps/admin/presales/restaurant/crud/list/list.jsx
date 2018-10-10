@@ -11,6 +11,7 @@ import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.
 import {loadSaleToReprint} from '../../../../../../general/reprintInvoice/actions.js'
 import alertify from 'alertifyjs'
 import {destroyPresale} from '../../../actions.js'
+import {loadPresaleToPrint} from '../../../../../../general/printPresale/actions.js'
 
 @connect((store) => {
   return {
@@ -36,8 +37,8 @@ export default class List extends React.Component {
     this.props.dispatch(getPaginationItemDispatch(presaleKwargs))
   }
 
-  reprintInvoice(item) {
-    this.props.dispatch(loadSaleToReprint(item))
+  reprintPresale(item) {
+    this.props.dispatch(loadPresaleToPrint(item))
   }
 
   markAsDestroyed(id) {
@@ -134,6 +135,12 @@ export default class List extends React.Component {
         field: 'id',
         text: 'Cliente No Satisfecho',
         worker_method: determinDestroyAction
+      }, {
+        field: 'consecutive',
+        text: 'Factura',
+        type: 'function_on_click',
+        textToRender: 'Ver',
+        onClickFunction: this.reprintPresale
       }
     ]
 
