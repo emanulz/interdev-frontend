@@ -84,12 +84,18 @@ export default class Product extends React.Component {
       let description = ''
 
       if (ev.target.value) {
-        const fistChar = ev.target.value.charAt(0)
-        if (fistChar == '+') {
+        const firstChar = ev.target.value.charAt(0)
+        if (firstChar == '+' || firstChar == '*') {
           const value = ev.target.value.substr(1)
-          description = value.split('*')[0] // Split val [0] is code [1] is qty
-          qty = value.split('*')[2]
-          price = value.split('*')[1]
+          if (firstChar == '+') {
+            description = value.split('*')[0] // Split val [0] is code [1] is qty
+            qty = value.split('*')[2]
+            price = value.split('*')[1]
+          } else {
+            description = 'Varios' // Split val [0] is code [1] is qty
+            qty = 1
+            price = value
+          }          
 
           qty = (isNaN(qty))
             ? 1
@@ -149,7 +155,10 @@ export default class Product extends React.Component {
             console.log(err)
           })
 
-        } else { // IN CASE IS NOT A PLUS SING
+        } else { 
+          
+          
+          // IN CASE IS NOT A PLUS SING
           code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
           qty = ev.target.value.split('*')[1]
 
