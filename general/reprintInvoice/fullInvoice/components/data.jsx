@@ -8,7 +8,8 @@ import {determinClientName, determinClientLastName} from '../../../../apps/sales
     sale: store.reprintInvoice.sale,
     presale: store.reprintInvoice.presale,
     ticket: store.reprintInvoice.ticket,
-    invoice: store.reprintInvoice.invoice
+    invoice: store.reprintInvoice.invoice,
+    taxPayer: store.userProfile.taxPayer
   }
 })
 export default class Data extends React.Component {
@@ -69,6 +70,27 @@ export default class Data extends React.Component {
       }
     } catch (err) {}
 
+    const docTypeRow = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th>Tipo:</th>
+        <td>{documentType}</td>
+      </tr>
+      : <tr />
+
+    const longConsecRow = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th>Consec:</th>
+        <td>{longConsecutive}</td>
+      </tr>
+      : <tr />
+
+    const numKeyRow = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th>Clave:</th>
+        <td >{numericKey}</td>
+      </tr>
+      : <tr />
+
     return <div className='reprint-full-invoice-data'>
 
       <table className='client-table'>
@@ -93,18 +115,13 @@ export default class Data extends React.Component {
             <th>Factura:</th>
             <td>{('00000' + id).slice(-5)}</td>
           </tr>
+          {docTypeRow}
           <tr>
             <th>Fecha:</th>
             <td>{date}</td>
           </tr>
-          <tr>
-            <th>Consec:</th>
-            <td>{longConsecutive}</td>
-          </tr>
-          <tr>
-            <th>Clave:</th>
-            <td className='numeric-key-full'>{numericKey}</td>
-          </tr>
+          {longConsecRow}
+          {numKeyRow}
         </tbody>
 
       </table>

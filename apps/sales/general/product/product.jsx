@@ -88,8 +88,8 @@ export default class Product extends React.Component {
         if (fistChar == '+') {
           const value = ev.target.value.substr(1)
           description = value.split('*')[0] // Split val [0] is code [1] is qty
-          qty = value.split('*')[1]
-          price = value.split('*')[2]
+          qty = value.split('*')[2]
+          price = value.split('*')[1]
 
           qty = (isNaN(qty))
             ? 1
@@ -99,10 +99,7 @@ export default class Product extends React.Component {
             ? 0
             : parseFloat(price)
 
-          console.log('Is Plus')
-          console.log('DESCRIPTION', description)
-          console.log('QTY', qty)
-          console.log('PRICE', price)
+          const priceNoIV = price / (1 + (13 / 100))
 
           const set00ProductPromiseNew = new Promise((resolve, reject) => {
             const kwargs = {
@@ -120,14 +117,15 @@ export default class Product extends React.Component {
           set00ProductPromiseNew.then((data) => {
             _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
             const product = data[0].product
-            product.price = price
-            product.use_taxes = false
-            product.taxes = 0
+            product.price = priceNoIV
+            product.use_taxes = true
+            product.taxes = 13
             product.use_taxes2 = false
             product.taxes2 = 0
             product.use_taxes3 = false
             product.taxes3 = 0
             product.description = description
+
             if (product.code == '00') {
               const generalItemDefaultData = {
                 default_discount: '0',

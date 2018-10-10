@@ -8,7 +8,8 @@ import {determinClientName, determinClientLastName} from '../../../../apps/sales
     sale: store.reprintInvoice.sale,
     presale: store.reprintInvoice.presale,
     ticket: store.reprintInvoice.ticket,
-    invoice: store.reprintInvoice.invoice
+    invoice: store.reprintInvoice.invoice,
+    taxPayer: store.userProfile.taxPayer
   }
 })
 export default class Data extends React.Component {
@@ -78,6 +79,34 @@ export default class Data extends React.Component {
       }
     } catch (err) {}
 
+    const docTypeRow = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th>Tipo:</th>
+        <td>{documentType}</td>
+      </tr>
+      : <tr />
+
+    const longConsecRow = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th>Consec:</th>
+        <td>{longConsecutive}</td>
+      </tr>
+      : <tr />
+
+    const numKey1Row = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th>Clave:</th>
+        <td >{numericKey1}</td>
+      </tr>
+      : <tr />
+
+    const numKey2Row = this.props.taxPayer.is_digital_invoicing_active
+      ? <tr>
+        <th />
+        <td>{numericKey2}</td>
+      </tr>
+      : <tr />
+
     return <div className='reprint-compact-invoice-data'>
 
       <table className='datenum-table'>
@@ -86,26 +115,14 @@ export default class Data extends React.Component {
             <th>Fecha:</th>
             <td>{date}</td>
           </tr>
-          <tr>
-            <th>Tipo:</th>
-            <td>{documentType}</td>
-          </tr>
+          {docTypeRow}
           <tr>
             <th>Factura:</th>
             <td>{id}</td>
           </tr>
-          <tr>
-            <th>Consec:</th>
-            <td>{longConsecutive}</td>
-          </tr>
-          <tr>
-            <th>Clave:</th>
-            <td >{numericKey1}</td>
-          </tr>
-          <tr>
-            <th />
-            <td>{numericKey2}</td>
-          </tr>
+          {longConsecRow}
+          {numKey1Row}
+          {numKey2Row}
           <tr>
             <th>Cliente:</th>
             <td>{client}</td>

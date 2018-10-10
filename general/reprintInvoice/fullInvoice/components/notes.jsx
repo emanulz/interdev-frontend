@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sale: store.reprintInvoice.sale
+    sale: store.reprintInvoice.sale,
+    config: store.config.globalConf
   }
 })
 export default class Notes extends React.Component {
@@ -44,7 +45,7 @@ export default class Notes extends React.Component {
       <div className='reprint-full-invoice-notes-content'>
         <div>{notes}</div>
 
-        <div>Autorizada mediante la resolucion N DGT-R-48-2016 del 7 de Octubre del 2016.</div>
+        <div>{this.props.config.haciendaStatementText}</div>
       </div>
     </div>
 

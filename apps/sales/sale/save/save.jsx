@@ -103,7 +103,7 @@ export default class SaveBtn extends React.Component {
 
   render() {
 
-    return <div onClick={this.saveBtn.bind(this)} className={this.props.payButtonClass}>
+    return <div onClick={this.saveBtn.bind(this)} className={this.props.payButtonClass} >
       Registrar
       <i className='fa fa-credit-card' aria-hidden='true' />
     </div>

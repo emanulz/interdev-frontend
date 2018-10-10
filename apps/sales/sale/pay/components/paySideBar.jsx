@@ -170,6 +170,10 @@ export default class PaySideBar extends React.Component {
     this.props.dispatch({type: 'SET_IS_INVOICE_VALUE', payload: val})
   }
 
+  saveOnFocus() {
+    console.log('FOCUSSSS')
+  }
+
   render() {
     const symbol = this.props.currencySymbol
     let change = 0
@@ -262,6 +266,7 @@ export default class PaySideBar extends React.Component {
         </div>
         <br />
         <SaveBtn payButtonClass={payButtonClass} />
+        {/* <button id='register-sale-btn' onFocus={this.saveOnFocus.bind(this)}>TEST</button> */}
 
       </div>
 

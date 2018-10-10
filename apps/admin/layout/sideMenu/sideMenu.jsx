@@ -10,6 +10,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
+    taxPayer: store.userProfile.taxPayer,
+    config: store.config.globalConf
   }
 })
 export default class SideMenu extends React.Component {
@@ -130,7 +132,9 @@ export default class SideMenu extends React.Component {
     ]
 
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
-
+    const eInvoicingComponent = this.props.taxPayer.is_digital_invoicing_active
+      ? <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} />
+      : <div />
     return <div id='sideMenu' className='sideMenu'>
 
       {/* <h3 className='sideMenu-header'>{title.toUpperCase()}</h3> */}
@@ -159,7 +163,8 @@ export default class SideMenu extends React.Component {
           </li> */}
           <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
           <ComposedItem mainTittle='Preventas' mainIcon='fa-list-ul' childItems={childPresales} />
-          <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} />
+          {/* <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} /> */}
+          {eInvoicingComponent}
           <ComposedItem mainTittle='Administración' mainIcon='fa-tachometer' childItems={childAdmin} />
           {/* <li>
             <Link to='/admin/products'>

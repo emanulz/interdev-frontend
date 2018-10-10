@@ -24,7 +24,7 @@ class Form extends React.Component {
     // Fetch the elements of the Departments model and dispatch to reducer
     // *******************************************************************
     const productDepartmentKwargs = {
-      url: '/api/productdepartments',
+      url: '/api/productdepartments/?limit=300',
       successType: 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED',
       errorType: 'FETCH_PRODUCT_DEPARTMENTS_REJECTED'
     }
@@ -35,7 +35,7 @@ class Form extends React.Component {
     // Fetch the elements of the Subdepartments model and dispatch to reducer
     // *******************************************************************
     const productSubDepartmentKwargs = {
-      url: '/api/productsubdepartments',
+      url: '/api/productsubdepartments/?limit=300',
       successType: 'FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED',
       errorType: 'FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED'
     }

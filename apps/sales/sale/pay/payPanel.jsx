@@ -8,6 +8,7 @@ import PayCredit from './components/payCredit.jsx'
 import PayVoucher from './components/payVoucher.jsx'
 import PaySideBar from './components/paySideBar.jsx'
 import PayTransfer from './components/payTransfer.jsx'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -21,15 +22,18 @@ export default class PayPanel extends React.Component {
   hidePanel() {
 
     this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
+    Mousetrap.unbind('esc')
+    document.getElementById('productCodeInputField').focus()
+    document.getElementById('productCodeInputField').value = ''
   }
 
-  componentWillUpdate(nextProps){
-    //set the default electronic doc according to the local preference
-    if(this.props.default_invoice == undefined && nextProps.default_invoice !== undefined){
-      this.props.dispatch({type:'SET_IS_INVOICE_VALUE', 
-        payload: nextProps.default_invoice === true ? "FACTURA": "TIQUETE"})
+  componentWillUpdate(nextProps) {
+    // set the default electronic doc according to the local preference
+    if (this.props.default_invoice == undefined && nextProps.default_invoice !== undefined) {
+      this.props.dispatch({type: 'SET_IS_INVOICE_VALUE',
+        payload: nextProps.default_invoice === true ? 'FACTURA' : 'TIQUETE'})
     }
-    
+
   }
 
   render() {

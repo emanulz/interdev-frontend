@@ -69,6 +69,22 @@ export default class Cart extends React.Component {
         Mousetrap.unbind('down')
       })
     })
+    Mousetrap.bind('mod+enter', function(e) {
+      if (e.preventDefault) {
+        e.preventDefault()
+      } else {
+      // internet explorer
+        e.returnValue = false
+      }
+      _this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
+      document.getElementById('pay-cash-input').focus()
+      Mousetrap.bind('esc', function() {
+        _this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
+        document.getElementById('productCodeInputField').focus()
+        document.getElementById('productCodeInputField').value = ''
+        Mousetrap.unbind('esc')
+      })
+    })
   }
 
   // Main Layout
