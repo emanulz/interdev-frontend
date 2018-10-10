@@ -77,88 +77,123 @@ export default class Product extends React.Component {
     // if Key pressed id Enter
     const _this = this
     if (ev.key == 'Enter') {
+
+      let code = ''
+      let qty = 1
+      let price = 0
+      let description = ''
+
       if (ev.target.value) {
-        const code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
-        let qty = ev.target.value.split('*')[1]
+        const fistChar = ev.target.value.charAt(0)
+        if (fistChar == '+') {
+          const value = ev.target.value.substr(1)
+          description = value.split('*')[0] // Split val [0] is code [1] is qty
+          qty = value.split('*')[1]
+          price = value.split('*')[2]
 
-        qty = (isNaN(qty))
-          ? 1
-          : parseFloat(qty) // if no qty sets to 1
+          qty = (isNaN(qty))
+            ? 1
+            : parseFloat(qty)
 
-        // const setProductPromise = new Promise((resolve, reject) => {
-        //   const kwargs = {
-        //     lookUpField: 'code',
-        //     lookUpField2: 'barcode',
-        //     url: '/api/productslist/',
-        //     lookUpValue: code,
-        //     lookUpName: 'código',
-        //     lookUpName2: 'Código de Barras',
-        //     modelName: 'Productos',
-        //     qty: qty
-        //   }
+          price = (isNaN(price))
+            ? 0
+            : parseFloat(price)
 
-        //   _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-        //   setProduct(kwargs, resolve, reject)
-        // })
+          console.log('Is Plus')
+          console.log('DESCRIPTION', description)
+          console.log('QTY', qty)
+          console.log('PRICE', price)
 
-        const setProductPromiseNew = new Promise((resolve, reject) => {
-          const kwargs = {
-            url: '/api/products/getProdPrice/',
-            data: {
-              code: code,
-              clientId: _this.props.client.client.id
+          const set00ProductPromiseNew = new Promise((resolve, reject) => {
+            const kwargs = {
+              url: '/api/products/getProdPrice/',
+              data: {
+                code: '00',
+                clientId: _this.props.client.client.id
+              }
             }
-          }
 
-          _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-          setProductNew(kwargs, resolve, reject)
-        })
+            _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+            setProductNew(kwargs, resolve, reject)
+          })
 
-        setProductPromiseNew.then((data) => {
-          _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-          const product = data[0].product
-          if (product.code == '00') {
-            _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
-            _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
-          } else {
-            // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
-            _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
-            this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
-              this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
-              this.props.usePriceListAsDefault))
-            _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-            _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
-          }
+          set00ProductPromiseNew.then((data) => {
+            _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+            const product = data[0].product
+            product.price = price
+            product.use_taxes = false
+            product.taxes = 0
+            product.use_taxes2 = false
+            product.taxes2 = 0
+            product.use_taxes3 = false
+            product.taxes3 = 0
+            product.description = description
+            if (product.code == '00') {
+              const generalItemDefaultData = {
+                default_discount: '0',
+                id: product.id,
+                max_discount: '0',
+                product: product,
+                table_price: '0',
+                target_price_list: 'price1'
+              }
+              this.props.dispatch(productSelected(generalItemDefaultData, qty, this.props.itemsInCart,
+                this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
+                this.props.usePriceListAsDefault))
 
-        }).catch((err) => {
-          _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-          console.log(err)
-        })
+              this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
 
-        // setProductPromise.then((data) => {
-        //   _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-        //   const product = data.results[0]
-        //   if (product.code == '00') {
-        //     _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
-        //     _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
-        //   } else {
-        //     this.props.dispatch(productSelected(product.code, qty, product, this.props.itemsInCart,
-        //       this.props.globalDiscount, this.props.client, this.props.warehouse_id))
-        //     _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-        //     _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
-        //   }
+            } else {
+            }
 
-        // }).catch((err) => {
-        //   _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-        //   console.log(err)
-        // })
+          }).catch((err) => {
+            _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+            console.log(err)
+          })
 
-        // this.props.dispatch(productSelected(code, qty, this.props.products, this.props.itemsInCart,
-        //   this.props.globalDiscount, this.props.client, this.props.defaultConfig, this.props.userConfig))
-        // // this.props.dispatch(productSelected(code, qty, this.props.products, this.props.itemsInCart,
-        // //   this.props.globalDiscount, this.props.client, this.props.defaultConfig, this.props.userConfig))
-        // this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-        // this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+        } else { // IN CASE IS NOT A PLUS SING
+          code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
+          qty = ev.target.value.split('*')[1]
+
+          qty = (isNaN(qty))
+            ? 1
+            : parseFloat(qty) // if no qty sets to 1
+
+          const setProductPromiseNew = new Promise((resolve, reject) => {
+            const kwargs = {
+              url: '/api/products/getProdPrice/',
+              data: {
+                code: code,
+                clientId: _this.props.client.client.id
+              }
+            }
+
+            _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+            setProductNew(kwargs, resolve, reject)
+          })
+
+          setProductPromiseNew.then((data) => {
+            _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+            const product = data[0].product
+            if (product.code == '00') {
+              _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
+              _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
+            } else {
+              // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
+              _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
+              this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
+                this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
+                this.props.usePriceListAsDefault))
+              _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+              _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+            }
+
+          }).catch((err) => {
+            _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+            console.log(err)
+          })
+        }
+
       }
     } else {
       this.props.dispatch({type: 'SET_PRODUCT_FIELD_VALUE', payload: ev.target.value})
