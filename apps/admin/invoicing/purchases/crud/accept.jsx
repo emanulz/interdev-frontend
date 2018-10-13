@@ -27,7 +27,7 @@ export default class Update extends React.Component {
 
     return <div className='create heigh100'>
       <div className='create-edit-header'>
-        <h1>ACEPTAR FACTURA COMPRA</h1>
+        <h1>ACEPTAR FACTURA DE GASTO/COMPRA</h1>
       </div>
       {content}
 

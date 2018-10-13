@@ -30,6 +30,7 @@ import ecreditNotes from './invoicing/creditNotes/reducer.js'
 import config from './config/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
+import registerclosures from './registerClosures/reducer.js'
 
 export default combineReducers({
   users,
@@ -63,5 +64,7 @@ export default combineReducers({
   ecreditNotes,
   config,
   currency,
-  printPresale
+  printPresale,
+  registerclosures
+
 })

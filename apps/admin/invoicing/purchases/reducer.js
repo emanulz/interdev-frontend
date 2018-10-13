@@ -9,12 +9,21 @@ const stateConst = {
   epurchases: [],
   loadedPurchase: {},
   purchaseToUpload: '',
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  epurchaseType: 'PURCHASE'
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'SET_EPURCHASE_TYPE':
+    {
+      return {
+        ...state,
+        epurchaseType: action.payload
+      }
+    } // case
 
     case 'FETCH_USER_EPURCHASE_PERMISSIONS_FULLFILLED':
     {

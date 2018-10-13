@@ -7,7 +7,8 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     purchaseToUpload: store.epurchases.purchaseToUpload,
-    loadedPurchase: store.epurchases.loadedPurchase
+    loadedPurchase: store.epurchases.loadedPurchase,
+    epurchaseType: store.epurchases.epurchaseType
   }
 })
 
@@ -22,6 +23,7 @@ class Form extends React.Component {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
     formData.append('taxpayer_response', 'ACCEPTED')
+    formData.append('purchase_type', this.props.epurchaseType)
     const kwargs = {
       url: '/api/facturareception/processHaciendaXML/',
       item: formData,
@@ -72,6 +74,11 @@ class Form extends React.Component {
       }, function() { return true })
   }
 
+  setEpurchaseType(ev) {
+    const value = ev.target.value
+    this.props.dispatch({type: 'SET_EPURCHASE_TYPE', payload: value})
+  }
+
   render() {
 
     const item = this.props.loadedPurchase
@@ -95,19 +102,19 @@ class Form extends React.Component {
 
     const body = item.lineas.map(linea => {
       return <div key={linea.NumeroLinea} className='viewInvoice-body-item'>
-        <div>
+        <div className='viewInvoice-body-item-code'>
           {linea.Codigo}
         </div>
-        <div>
+        <div className='viewInvoice-body-item-detail'>
           {linea.Detalle}
         </div>
-        <div>
+        <div className='viewInvoice-body-item-price'>
           {linea.PrecioUnitario}
         </div>
-        <div>
+        <div className='viewInvoice-body-item-qty'>
           {linea.Cantidad}
         </div>
-        <div>
+        <div className='viewInvoice-body-item-total'>
           {linea.MontoTotal}
         </div>
       </div>
@@ -125,6 +132,14 @@ class Form extends React.Component {
         <h2>Clave: {item.header.Clave}</h2>
         <h2>Fecha: {item.header.FechaEmision}</h2>
         <h2>Consecutivo: {item.header.NumeroConsecutivo}</h2>
+      </div>
+      <div className='viewInvoice-type'>
+        <h1>Tipo de Factura:</h1>
+        <select onChange={this.setEpurchaseType.bind(this)} className='form-control'
+          value={this.props.epurchaseType} >
+          <option value='PURCHASE'>Compra</option>
+          <option value='EXPENSE'>Gasto</option>
+        </select>
       </div>
 
       <div className='viewInvoice-data'>
@@ -146,19 +161,19 @@ class Form extends React.Component {
 
       <div className='viewInvoice-body'>
         <div className='viewInvoice-body-header'>
-          <div>
+          <div className='viewInvoice-body-header-code'>
             Código
           </div>
-          <div>
+          <div className='viewInvoice-body-header-detail'>
             Detalle
           </div>
-          <div>
+          <div className='viewInvoice-body-header-price'>
             P.U
           </div>
-          <div>
+          <div className='viewInvoice-body-header-qty'>
             Cantidad
           </div>
-          <div>
+          <div className='viewInvoice-body-header-total'>
             Total
           </div>
         </div>
@@ -168,10 +183,13 @@ class Form extends React.Component {
       <div className='viewInvoice-totals'>
         <div className='viewInvoice-totals-table'>
           <h1>TOTALES</h1>
-          <h2>Subtotal: {item.resumen.TotalVenta}</h2>
+          <h2><span>Moneda:</span> {item.resumen.CodigoMoneda}</h2>
+          <h2>Tipo de Cambio: {item.resumen.TipoCambio}</h2>
+          <h2>Subtotal Exento: {item.resumen.TotalExento}</h2>
+          <h2>Subtotal Gravado: {item.resumen.TotalGravado}</h2>
           <h2>Descuento: {item.resumen.TotalDescuentos}</h2>
-          <h2>IV: {item.resumen.TotalGravado}</h2>
-          <h2>Total: {item.resumen.TotalVentaNeta}</h2>
+          <h2>IV: {item.resumen.TotalImpuesto}</h2>
+          <h2>Total: {item.resumen.TotalComprobante}</h2>
         </div>
       </div>
 

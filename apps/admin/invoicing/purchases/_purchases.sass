@@ -23,13 +23,19 @@
   display: flex
   flex-flow: column
   width: 100%
-  padding-top: 40px
+  padding-top: 20px
   & h1
       font-weight: bold
   &-cantBe
-    margin: 20px 0
+    margin: 10px 0
+  &-type
+    margin-top: 10px
+    width: 380px
+    & select
+      margin-top: 5px
+      font-size: 16px
   &-data
-    margin: 20px 0
+    margin: 10px 0
     display: flex
     flex-flow: row
     justify-content: space-between
@@ -49,24 +55,53 @@
     display: flex
     flex-flow: column
     width: 100%
-    margin-top: 20px
     margin-bottom: 40px
     &-item
       display: flex
       flex-flow: row
       width: 100%
-      justify-content: space-between
-      padding: 5px 20px
+      padding: 10px 20px
+      border-bottom: 1px solid #cacaca
+      &-code
+        text-align: left
+        width: 15%
+      &-detail
+        text-align: left
+        width: 35%
+      &-price
+        text-align: left
+        width: 25%
+      &-qty
+        text-align: left
+        width: 10%
+      &-total
+        text-align: left
+        width: 25%
     &-header
       padding: 0 20px
       display: flex
       flex-flow: row
       width: 100%
-      justify-content: space-between
       height: 40px
       color: white
       background-color: $PRIMARY-COLOR
       line-height: 40px
+      font-size: 18px
+      &-code
+        text-align: left
+        width: 15%
+      &-detail
+        text-align: left
+        width: 35%
+      &-price
+        text-align: left
+        width: 25%
+      &-qty
+        text-align: left
+        width: 10%
+      &-total
+        text-align: left
+        width: 25%
 
   &-totals
     display: flex
@@ -78,6 +113,7 @@
       border-radius: 5px
       width: 380px
   &-buttons
+    margin-top: 20px
     display: flex
     flex-flow: row
     justify-content: space-between
