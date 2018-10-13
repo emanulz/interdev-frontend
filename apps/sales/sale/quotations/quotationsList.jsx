@@ -4,6 +4,7 @@ import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadQuotation, getPendingQuotations, setQuotationNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
+import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 
 @connect((store) => {
   return {quotations: store.quotations.quotations, isVisible: store.quotations.isVisible}
@@ -88,6 +89,11 @@ export default class QuotationsPanel extends React.Component {
     })
   }
 
+  printPresale(id) {
+    this.props.dispatch(loadPresaleToPrint(id))
+    this.props.dispatch({type: 'HIDE_QUOTATIONS_PANEL', payload: -1})
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
@@ -123,7 +129,7 @@ export default class QuotationsPanel extends React.Component {
         <td>{`${clientName} ${clientLastName}`}</td>
         <td>{presellerName}</td>
         <td>₡ {parseFloat(quotation.cart.cartTotal).formatMoney(2, ',', '.')}</td>
-        <td className='loadRow'><i className='fa fa fa-trash' /></td>
+        <td className='loadRow'><i className='fa fa-print' onClick={this.printPresale.bind(this, quotation.consecutive)} /></td>
         {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, quotation.id, quotation.consecutive)} className='fa fa fa-trash' /></td> */}
       </tr>
     })
@@ -144,7 +150,7 @@ export default class QuotationsPanel extends React.Component {
                 <td>Cliente</td>
                 <td>Vendedor</td>
                 <td>Monto</td>
-                <td>Anular</td>
+                <td>Reimprimir</td>
               </tr>
             </thead>
             <tbody>

@@ -15,6 +15,7 @@ import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import Search from '../../../general/search/search.jsx'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../../sales/general/search/actions.js'
+import Quotations from '../../sales/sale/quotations/quotationsList.jsx'
 
 @connect((store) => {
   return {
@@ -46,6 +47,7 @@ export default class Sale extends React.Component {
       <ClientPanel />
       <ClientUpdatePanel />
       <PrintPresale />
+      <Quotations />
 
     </div>
 

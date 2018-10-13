@@ -41,6 +41,9 @@ export default class Buttons extends React.Component {
   showEarnings() {
     getEarmings(this.props.cart)
   }
+  showQuotationsPanel() {
+    this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
+  }
   newSale() {
     // window.location.reload()
     window.location.href = '/seller'
@@ -117,10 +120,28 @@ export default class Buttons extends React.Component {
       </button>
       : ''
 
+    const quotationsBtn = this.props.globalConf.useQuoting
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
+        onClick={this.showQuotationsPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Prof Guardadas
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
     const extraButtons = <div>
       {reserveBtn}
       {proformaBtn}
       {earningsBtn}
+      {quotationsBtn}
     </div>
 
     return <div className='col-xs-12 buttons'>
