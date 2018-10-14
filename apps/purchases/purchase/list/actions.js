@@ -19,7 +19,7 @@ export function makeTableFriendly(purchases){
             id: p.id,
             consecutive: p.consecutive,
             supplier_name: supplier.name ? supplier.name : 'Pendiente Ingreso',
-            payed: p.payed,
+            payed: p.balance > 0.1 ? false : true,
             pay_type: pay_map[p.pay_type],
             invoice_date: p.invoice_date,
             invoice_number: p.invoice_number,

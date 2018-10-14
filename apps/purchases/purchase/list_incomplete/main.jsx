@@ -36,8 +36,10 @@ export default class ListIncompletePurchases  extends React.Component {
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED',
         }
-
-        this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
+        if(this.props.requires_incomplete_refresh==false && nextProps.requires_incomplete_refresh==true){
+            this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
+        }
+        
     }
 
     discardPending(id){
