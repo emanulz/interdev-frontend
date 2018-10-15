@@ -6,7 +6,7 @@ import Pagination from '../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
 import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
 import { makeTableFriendly } from './actions.js';
-
+import {saveItem} from '../../../../utils/api'
 
 @connect(store=>{
     return {
@@ -14,6 +14,7 @@ import { makeTableFriendly } from './actions.js';
         fetching: store.fetching.fetching,
         pageSize: store.pagination.pageSize,
         searchResults: store.purchaseSearch.searchResults,
+        requires_complete_refresh: store.purchase.requires_complete_refresh,
     }
 })
 export default class ListPurchases  extends React.Component {
@@ -32,8 +33,48 @@ export default class ListPurchases  extends React.Component {
         this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
     }
 
+
+    componentWillUpdate(nextProps){
+        const purchasesKwargs = {
+            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}`,
+            successType: 'FETCH_PURCHASES_FULFILLED',
+            errorType: 'FETCH_PURCHASES_REJECTED',
+        }
+
+        if(this.props.requires_complete_refresh==false && nextProps.requires_complete_refresh==true){
+            this.props.dispatch(getPaginationItemDispatch(purchasesKwargs))
+        }
+    }
+
+
     componentWillUnMount() {
         this.props.dispatch({type: `purchaseSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
+    }
+
+    setAsPaid(id){
+        const _this = this
+        let endpoint =  `/api/purchase/apply_payment/`
+
+        let kwargs = {
+        url: endpoint,
+        item: {'purchase_id': id, 'complete_payment': true},
+        sucessMessage: 'Pago completo aplicado correctamente.',
+        errorMessage: 'Hubo un error al aplicar el pago a la compra.',
+        dispatchType: 'FLAG_REFRESH_PURCHASES_COMPLETE'
+        }
+
+        // ALERTIFY CONFIRM
+        alertify.confirm('Eliminar', `Desea marcar como pago el registro?
+                                    Esta acción no se puede deshacer.`,
+        function() {
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        _this.props.dispatch(saveItem(kwargs))
+        }, function() {
+        return true
+        }).set('labels', {
+        ok: 'Si',
+        cancel: 'No'
+        })
     }
 
     render(){
@@ -52,6 +93,14 @@ export default class ListPurchases  extends React.Component {
                 field:'payed',
                 text: 'Pagada?',
                 type:'bool',
+            },
+            {
+                field:'id',
+                text: 'Pagada?',
+                type: 'function_on_click',
+                textToRender: 'Pagar?',
+                href: '',
+                onClickFunction: this.setAsPaid,
             },
             {
                 field: 'pay_type',
@@ -76,7 +125,7 @@ export default class ListPurchases  extends React.Component {
         if(this.props.searchResults.length){
             tableData = makeTableFriendly(tableData)
         }
-        console.log("Make table friendly --> ", tableData)
+
         const list = <AdminTable headerOrder={header} app="purchases" model="purchase" 
             data={tableData} />
 

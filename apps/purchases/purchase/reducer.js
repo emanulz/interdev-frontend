@@ -12,6 +12,7 @@ const stateConst = {
     purchase_id: '',
     old: '',
     requires_incomplete_refresh: false,
+    requires_complete_refresh: false,
 
   }
 
@@ -22,6 +23,13 @@ const stateConst = {
               return{
                 ...state,
                 requires_incomplete_refresh: true
+              }
+          }
+          case 'FLAG_REFRESH_PURCHASES_COMPLETE':
+          {
+              return{
+                ...state,
+                requires_complete_refresh: true
               }
           }
           case 'TOGGLE_FULL_WIDTH':
