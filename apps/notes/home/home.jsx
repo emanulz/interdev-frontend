@@ -19,9 +19,9 @@ export default class Home extends React.Component {
 
   // Main Layout
   render() {
-
+    console.log("Rendering home notes")
     return <div className='Main heigh100'>
-      INICIO APLICACIÓN NOTAS 
+      <h1>INICIO APLICACIÓN NOTAS </h1>
     </div>
 
   }
