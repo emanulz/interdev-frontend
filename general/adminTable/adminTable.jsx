@@ -94,6 +94,34 @@ export default class AdminTable extends React.Component {
     })
   }
 
+  resendMail(id, mails) {
+    console.log(mails)
+    const noSpacesMails = mails.replace(/\s/g, '')
+    const extraMails = noSpacesMails.split(',')
+    const data = {
+      extra_emails: extraMails,
+      doc_consecutive: id
+    }
+    console.log(data)
+    axios({
+      method: 'post',
+      url: `/api/facturareception/resendemails/`,
+      data: data
+    }).then((response) => {
+      alertify.alert('COMPLETADO', 'Correos en proceso de reenvío.')
+    }).catch((err) => {
+      alertify.alert('ERROR', `Error al procesasar el reenvío ${err}`)
+    })
+  }
+
+  resendMailPrompt(id) {
+    const _this = this
+    alertify.prompt('CORREOS ADICIONALES', `El correo se reenviará a los receptores originales, si hay otros receptores
+      digite la lista de correos adicionales a enviar, separados por comas (,)`, '',
+    function(evt, value) { _this.resendMail(id, value) },
+    function(evt, value) { })
+  }
+
   determinClientName(client, extraClient) {
     if (client.client) { client = client.client }
     if (client) {
@@ -206,6 +234,13 @@ export default class AdminTable extends React.Component {
 
           let item
           switch (header.type) {
+            case 'RESEND_MAIL':
+            {
+              item = <td key={`${el[idField]}_${header.field}_resend`}>
+                <button className='btn btn-success' onClick={this.resendMailPrompt.bind(this, itemToRender)} >Reenviar</button>
+              </td>
+              break
+            }
             case 'RESET_HUMAN':
             {
               item = <td key={`${el[idField]}_${header.field}_retry`}>

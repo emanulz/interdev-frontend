@@ -134,6 +134,11 @@ export default class List extends React.Component {
         type: 'RESET_HUMAN',
         idField: 'id',
         text: 'Reintentar'
+      }, {
+        field: 'consecutive_numbering',
+        type: 'RESEND_MAIL',
+        idField: 'id',
+        text: 'Reenviar Correo'
       }
     ]
 
