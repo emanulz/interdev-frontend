@@ -26,7 +26,7 @@ const Mousetrap = require('mousetrap')
     isinvoice: store.sale.isInvoice,
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
-    uuid: store.sale.saleUUID
+    marker: store.sale.saleUUID
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
