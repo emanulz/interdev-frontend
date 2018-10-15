@@ -65,7 +65,7 @@ export default class SaveBtn extends React.Component {
       isinvoice: isinvoice,
       currency_code: this.props.currency,
       exchange_rate: this.props.exchange,
-      uuid: this.props.uuid
+      marker: this.props.marker
     }
 
     console.log('SALEEE', sale)
