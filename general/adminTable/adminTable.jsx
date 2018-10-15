@@ -56,25 +56,25 @@ export default class AdminTable extends React.Component {
     }
   }
 
-  downloadPdf(baseUrl, item) {
-    const url = `${baseUrl}/${item}_signed.pdf`
-    console.log(url)
-    axios.get(url).then(response => {
-      console.log(response)
-    }).catch(err => {
-      console.log(err)
-    })
-  }
+  // TODO READY TO DELETE
+  // downloadPdf(baseUrl, item) {
+  //   const url = `${baseUrl}/${item}_signed.pdf`
+  //   axios.get(url).then(response => {
+  //     console.log(response)
+  //   }).catch(err => {
+  //     console.log(err)
+  //   })
+  // }
 
-  downloadXML(baseUrl, item) {
-    const url = `${baseUrl}/${item}_signed.xml`
-    console.log(url)
-  }
+  // downloadXML(baseUrl, item) {
+  //   const url = `${baseUrl}/${item}_signed.xml`
+  //   console.log(url)
+  // }
 
-  downloadHaciendaResponseXML(baseUrl, item) {
-    const url = `${baseUrl}/${item}_response.xml`
-    console.log(url)
-  }
+  // downloadHaciendaResponseXML(baseUrl, item) {
+  //   const url = `${baseUrl}/${item}_response.xml`
+  //   console.log(url)
+  // }
 
   resetHuman(id) {
     console.log('ID', id)
@@ -95,14 +95,12 @@ export default class AdminTable extends React.Component {
   }
 
   resendMail(id, mails) {
-    console.log(mails)
     const noSpacesMails = mails.replace(/\s/g, '')
     const extraMails = noSpacesMails.split(',')
     const data = {
       extra_emails: extraMails,
       doc_consecutive: id
     }
-    console.log(data)
     axios({
       method: 'post',
       url: `/api/facturareception/resendemails/`,

@@ -64,7 +64,6 @@ export default class List extends React.Component {
 
     const getTotal = (item) => {
       function getTotalToShow(item) {
-        console.log('ITEMM', item)
         try {
           const obj = JSON.parse(item)
           if (obj.currency == 'CRC') {

@@ -66,7 +66,6 @@ export default class List extends React.Component {
 
     const getTotal = (item) => {
       function getTotalToShow(item) {
-        console.log('ITEMM', item)
         try {
           const obj = JSON.parse(item)
           if (obj.currency == 'CRC') {
@@ -136,6 +135,11 @@ export default class List extends React.Component {
         type: 'RESET_HUMAN',
         idField: 'id',
         text: 'Reintentar'
+      }, {
+        field: 'consecutive_numbering',
+        type: 'RESEND_MAIL',
+        idField: 'id',
+        text: 'Reenviar Correo'
       }
 
     ]
