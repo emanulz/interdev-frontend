@@ -25,7 +25,8 @@ const Mousetrap = require('mousetrap')
     extras: store.extras,
     isinvoice: store.sale.isInvoice,
     currency: store.currency.currencySelected,
-    exchange: store.currency.exchangeRateSelected
+    exchange: store.currency.exchangeRateSelected,
+    uuid: store.sale.saleUUID
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -63,8 +64,11 @@ export default class SaveBtn extends React.Component {
       presale_id: this.props.presaleId,
       isinvoice: isinvoice,
       currency_code: this.props.currency,
-      exchange_rate: this.props.exchange
+      exchange_rate: this.props.exchange,
+      uuid: this.props.uuid
     }
+
+    console.log('SALEEE', sale)
 
     const kwargs = {
       url: '/api/sales/',

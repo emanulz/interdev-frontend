@@ -28,6 +28,7 @@ import { socketDispatcher } from './socketDispatcher.js'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../general/search/actions.js'
 
 import {connect} from 'react-redux'
+const uuidv1 = require('uuid/v1')
 
 @connect((store) => {
   return {
@@ -54,6 +55,9 @@ export default class Sale extends React.Component {
       const item = data['item']
       socketDispatcher(message, item, _this.props.dispatch)
     }
+
+    const uuid = uuidv1()
+    this.props.dispatch({type: 'SET_SALE_UUID', payload: uuid})
 
   }
   // *******************************************************************

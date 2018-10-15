@@ -1,6 +1,7 @@
 const stateConst = {
   fullWidth: false,
-  isInvoice: 'TIQUETE'
+  isInvoice: 'TIQUETE',
+  saleUUID: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -21,6 +22,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         isInvoice: action.payload
+      }
+    } // case
+
+    case 'SET_SALE_UUID':
+    {
+      return {
+        ...state,
+        saleUUID: action.payload
       }
     } // case
 

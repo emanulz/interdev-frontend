@@ -56,7 +56,7 @@ export default class AdminTable extends React.Component {
     }
   }
 
-  // TODO READY TO DELETE
+  // FIXME READY TO DELETE
   // downloadPdf(baseUrl, item) {
   //   const url = `${baseUrl}/${item}_signed.pdf`
   //   axios.get(url).then(response => {
