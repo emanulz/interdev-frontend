@@ -41,6 +41,7 @@ export default class Pagination extends React.Component {
   }
 
   paginationPrevAction (url, ev) {
+    console.log('CURRENT PAGE', this.props.currentPage)
     this.props.dispatch({type: 'SET_CURRENT_PAGE', payload: this.props.currentPage - 1})
 
     const productKwargs = {
@@ -55,7 +56,7 @@ export default class Pagination extends React.Component {
 
     const firstUrlToLink = this.props.url.indexOf('?') != -1 ? `${this.props.url}&limit=${this.props.pageSize}` : `${this.props.url}?limit=${this.props.pageSize}`
     // const firstUrlToLink = `${this.props.url}?limit=${this.props.pageSize}`
-    const urlToLink = this.props.url.indexOf('?') != -1 ? `${this.props.url}&limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}` : `${this.props.url}?limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}`
+    const urlToLink = this.props.url.indexOf('?') != -1 ? `${this.props.url}&limit=${this.props.pageSize}&offset=${(index - 1) * this.props.pageSize}` : `${this.props.url}?limit=${this.props.pageSize}&offset=${(index - 1) * this.props.pageSize}`
     // const urlToLink = `${this.props.url}?limit=${this.props.pageSize}&offset=${(index) * this.props.pageSize}`
     const paginationClass = index == this.props.currentPage ? 'pagination-item paginationActive' : 'pagination-item'
 
@@ -112,26 +113,29 @@ export default class Pagination extends React.Component {
       // PUSH THE FIRST ITEM
       renderItem.push(this.generateButton(1))
       controlArray.push(1)
-
+      // IF IM NOT IN THE FIRTS PAGE AND NOR THE SECOND ONE PUSH THE ITEM(THE PREVIOUS ITEM)
       if ((currentPage - 1 > 0) && (controlArray.indexOf(currentPage - 1) == -1)) {
         renderItem.push(this.generateButton(currentPage - 1))
         controlArray.push(currentPage - 1)
       }
-
+      // PUSH THE CURRENT PAGE
       if (controlArray.indexOf(currentPage) == -1) {
         renderItem.push(this.generateButton(currentPage))
         controlArray.push(currentPage)
       }
-
+      // PUSH THE NEXT ONE IF EXISTS AND HAS NOT BEEN PUSHED
       if ((currentPage + 1 <= totalPages) && (controlArray.indexOf(currentPage + 1) == -1)) {
         renderItem.push(this.generateButton(currentPage + 1))
         controlArray.push(currentPage + 1)
       }
-
+      // PUSH THE LAST ONE IF IT HAS NOT BEEN PUSHED YET
       if (controlArray.indexOf(totalPages) == -1) {
         renderItem.push(this.generateButton(totalPages))
         controlArray.push(totalPages)
       }
+      // NOW I HAVE PUSHED ALL ITEMS TO THE ARRAY, THE FIRST THE LAST THE CURRENT AND THE ONE BEFORE CURRENT AND THE NEXT ONE OF CURRENT ITEM
+      // NOW LEST CHANGE THE NECESSARY ITEMS FOR DOTS
+
       // IF IM ON THE FIRST PAGE
       if (controlArray.length == 3 && currentPage == 1 && totalPages > 3) {
         renderItem.splice((controlArray.length - 1), 0, dots2)
