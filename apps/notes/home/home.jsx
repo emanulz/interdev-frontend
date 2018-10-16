@@ -11,8 +11,8 @@ import {connect} from 'react-redux'
 export default class Home extends React.Component {
 
   componentWillMount() {
-
-    this.props.dispatch({type: 'HOME_PANEL_MOUNTED', payload: ''})
+    console.log("Home will mount")
+    this.props.dispatch({type: 'HOME_PANEL_MOUNTED'})
 
   }
   // *******************************************************************
@@ -21,7 +21,7 @@ export default class Home extends React.Component {
   render() {
     console.log("Rendering home notes")
     return <div className='Main heigh100'>
-      <h1>INICIO APLICACIÓN NOTAS </h1>
+      INICIO APLICACIÓN NOTAS
     </div>
 
   }
