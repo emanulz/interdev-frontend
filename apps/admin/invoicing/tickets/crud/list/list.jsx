@@ -147,14 +147,14 @@ export default class List extends React.Component {
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.etickets
     const list = <AdminTable headerOrder={headerOrder} model='ticket' data={tableData}
-      idField='id' />
+      idField='id' defaultDescending defaultSorting='created' />
 
     const content = this.props.fetching ? fetching : list
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/electronicticket/' successType='FETCH_ETICKETS_FULFILLED' errorType='FETCH_ETICKETS_REJECTED' />
-        <Pagination url='/api/electronicticket/' successType='FETCH_ETICKETS_FULFILLED' errorType='FETCH_ETICKETS_REJECTED' />
+        <ResultsPerPage url={`/api/electronicticket/?ordering=-created`} successType='FETCH_ETICKETS_FULFILLED' errorType='FETCH_ETICKETS_REJECTED' />
+        <Pagination url={`/api/electronicticket/?ordering=-created`} successType='FETCH_ETICKETS_FULFILLED' errorType='FETCH_ETICKETS_REJECTED' />
       </div>
       : <div />
 

@@ -94,14 +94,14 @@ export default class List extends React.Component {
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.sales
     const list = <AdminTable headerOrder={headerOrder} model='sales' data={tableData}
-      idField='id' />
+      idField='id' defaultDescending defaultSorting='consecutive' />
 
     const content = this.props.fetching ? fetching : list
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/saleslist/' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
-        <Pagination url='/api/saleslist/' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
+        <ResultsPerPage url='/api/saleslist/?ordering=-consecutive' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
+        <Pagination url='/api/saleslist/?ordering=-consecutive' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
       </div>
       : <div />
 

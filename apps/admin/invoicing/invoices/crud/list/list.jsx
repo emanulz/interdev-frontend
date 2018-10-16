@@ -144,14 +144,14 @@ export default class List extends React.Component {
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.einvoices
     const list = <AdminTable headerOrder={headerOrder} model='invoice' data={tableData}
-      idField='id' />
+      idField='id' defaultDescending defaultSorting='created' />
 
     const content = this.props.fetching ? fetching : list
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/electronicinvoice/' successType='FETCH_EINVOICES_FULFILLED' errorType='FETCH_EINVOICES_REJECTED' />
-        <Pagination url='/api/electronicinvoice/' successType='FETCH_EINVOICES_FULFILLED' errorType='FETCH_EINVOICES_REJECTED' />
+        <ResultsPerPage url='/api/electronicinvoice/?ordering=-created' successType='FETCH_EINVOICES_FULFILLED' errorType='FETCH_EINVOICES_REJECTED' />
+        <Pagination url='/api/electronicinvoice/?ordering=-created' successType='FETCH_EINVOICES_FULFILLED' errorType='FETCH_EINVOICES_REJECTED' />
       </div>
       : <div />
 
