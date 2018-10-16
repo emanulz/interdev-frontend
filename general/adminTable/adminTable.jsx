@@ -21,6 +21,12 @@ export default class AdminTable extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({
+      ascending: !this.props.defaultDescending
+    })
+  }
+
   rowDoubleClick(item, ev) {
     if (this.props.onRowDoubleClick) {
       this.props.onRowDoubleClick(item, this.props.dispatch)
@@ -149,7 +155,7 @@ export default class AdminTable extends React.Component {
     const unsortedData = this.props.data.length
       ? this.props.data
       : []
-    const sortedBy = this.state.sortedBy
+    const sortedBy = this.state.sortedBy ? this.state.sortedBy : this.props.defaultSorting
     const ascending = this.state.ascending
     const data = unsortedData.sort((a, b) => {
       // IF IS ASCENDING SORTING

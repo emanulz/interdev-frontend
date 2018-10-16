@@ -28,7 +28,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const clientKwargs = {
-      url: `/api/receivedelectronicdoc/?limit=${this.props.pageSize}`,
+      url: `/api/receivedelectronicdoc/?limit=${this.props.pageSize}&ordering=-created`,
       successType: 'FETCH_EPURCHASES_FULFILLED',
       errorType: 'FETCH_EPURCHASES_REJECTED'
     }
@@ -104,7 +104,7 @@ export default class List extends React.Component {
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.purchases
     const list = <AdminTable headerOrder={headerOrder} model='clients' data={tableData}
-      idField='id' />
+      idField='id' defaultDescending defaultSorting='created' />
 
     const content = this.props.fetching ? fetching : list
 
@@ -115,8 +115,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
-        <Pagination url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
+        <ResultsPerPage url='/api/receivedelectronicdoc/?ordering=-created' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
+        <Pagination url='/api/receivedelectronicdoc/?ordering=-created' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
       </div>
       : <div />
 
