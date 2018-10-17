@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PurchasesVrsSales from './reports/sales_vrs_purchases.jsx'
 import ExcelFetcher from './reports/excel_downloader.jsx'
+import {loadGlobalConfig} from '../../../utils/api.js'
 
 @connect(store=>{
     return {
