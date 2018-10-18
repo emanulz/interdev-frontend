@@ -9,7 +9,8 @@ import {determinClientName, determinClientLastName} from '../../../../apps/sales
     presale: store.reprintInvoice.presale,
     ticket: store.reprintInvoice.ticket,
     invoice: store.reprintInvoice.invoice,
-    taxPayer: store.userProfile.taxPayer
+    taxPayer: store.userProfile.taxPayer,
+    config: store.config.globalConf
   }
 })
 export default class Data extends React.Component {
@@ -87,7 +88,31 @@ export default class Data extends React.Component {
     const numKeyRow = this.props.taxPayer.is_digital_invoicing_active
       ? <tr>
         <th>Clave:</th>
-        <td >{numericKey}</td>
+        <td className='numeric-key-full'>{numericKey}</td>
+      </tr>
+      : <tr />
+
+    const sellerRow = this.props.config.printSellerInFullInvoice
+      ? <tr>
+        <td>Vendedor: {seller}</td>
+      </tr>
+      : <tr />
+    const clientIDRow = this.props.config.printClientIDInFullInvoice
+      ? <tr>
+        <td>Identif: {sale.client ? sale.client.id_num : ''}</td>
+      </tr>
+      : <tr />
+
+    const clientEmailRow = this.props.config.printClientEmailInFullInvoice
+      ? <tr>
+        <td>Email: {sale.client ? sale.client.email : ''}</td>
+      </tr>
+      : <tr />
+
+    const payMethodRow = this.props.config.printPayMethodInFullInvoice
+      ? <tr>
+        <th>Pago:</th>
+        <td>Transferencia / Depósito Bancario</td>
       </tr>
       : <tr />
 
@@ -103,9 +128,9 @@ export default class Data extends React.Component {
           <tr>
             <td>{client}</td>
           </tr>
-          <tr>
-            <td>Vendedor: {seller}</td>
-          </tr>
+          {clientIDRow}
+          {sellerRow}
+          {clientEmailRow}
         </tbody>
 
       </table>
@@ -122,6 +147,7 @@ export default class Data extends React.Component {
           </tr>
           {longConsecRow}
           {numKeyRow}
+          {payMethodRow}
         </tbody>
 
       </table>
