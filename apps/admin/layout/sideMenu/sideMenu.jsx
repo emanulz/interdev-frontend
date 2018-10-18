@@ -36,12 +36,23 @@ export default class SideMenu extends React.Component {
         text: 'N. de Crédito Electrónicas',
         class: 'fa-outdent',
         href: '/admin/invoicing/creditnotes'
-      }, {
-        text: 'Aceptar Compras',
-        class: 'fa-upload',
-        href: '/admin/invoicing/purchases'
       }
     ]
+    if(this.props.config.useDebitNotes){
+      childInvoicing.push(
+        {
+          text: 'N. de Débito Electrónicas',
+          class: 'fa-outdent',
+          href: '/admin/invoicing/debitnotes'
+        }
+      )
+    }
+    const acceptPurchases = {
+      text: 'Aceptar Compras',
+      class: 'fa-upload',
+      href: '/admin/invoicing/purchases'
+    }
+    childInvoicing.push(acceptPurchases)
 
     const childPresales = [
       {
