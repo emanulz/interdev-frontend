@@ -15,7 +15,8 @@ import {loadSaleToReprint} from '../../../../../general/reprintInvoice/actions.j
     fething: store.fetching.fetching,
     sales: store.sales.sales,
     pageSize: store.pagination.pageSize,
-    searchResults: store.adminSearch.searchResults
+    searchResults: store.adminSearch.searchResults,
+    useDebitNotes: store.config.globalConf.useDebitNotes,
   }
 })
 export default class List extends React.Component {
@@ -90,6 +91,16 @@ export default class List extends React.Component {
         onClickFunction: this.reprintInvoice
       }
     ]
+
+    if(this.props.useDebitNotes){
+      headerOrder.push({
+        field: 'consecutive',
+        text: 'N.D',
+        textToRender: 'N.D',
+        baseLink: '/notes/debit',
+        type: 'link_text'
+      })
+    }
 
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.sales

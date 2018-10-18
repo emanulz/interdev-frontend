@@ -14,6 +14,7 @@ import priceList from '../sales/general/priceList/reducer.js'
 import completed from '../sales/general/completed/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
 import notes from './builder/reducer.js'
+import saleInfo from './general/saleInfo/reducer.js'
 import currency from '../../general/currency/reducer.js'
 
 export default combineReducers({
@@ -31,5 +32,6 @@ export default combineReducers({
     completed,
     notes,
     currency,
-    extras
+    extras,
+    saleInfo
 })

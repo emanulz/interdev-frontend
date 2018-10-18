@@ -3,52 +3,49 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-//import {getEarmings} from './actions.js'
+import {generalSave} from '../../../../utils/api.js'
 
 @connect((store) => {
   return {
     disabled: store.completed.completed,
     globalConf: store.config.globalConf,
-    cart: store.cart
+    cart: store.cart,
+    sale_consecutive: store.notes.saleConsecutive,
   }
 })
 export default class Buttons extends React.Component {
 
   showPayPanel() {
-    this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
+    this.props.dispatch({type: 'SHOW_PAY_PANEL'})
   }
-  showSendPanel() {
-    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'REGULAR'})
-    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
-  }
+
   showInoicePanel() {
-    this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: -1})
+    this.props.dispatch({type: 'SHOW_INVOICE_PANEL'})
   }
   showSalePanel() {
-    this.props.dispatch({type: 'SHOW_SALES_PANEL', payload: -1})
+    this.props.dispatch({type: 'SHOW_SALES_PANEL'})
   }
-  showPresalesPanel() {
-    this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
+
+  registerNote(){
+    console.log("Register Note")
+
+    const kwargs = {
+      url: '/api/additions/makeAddition/',
+      method: 'post',
+      successType: 'NOTE_APPLIED',
+      errorType: 'NOTE_REJECTED',
+      sucessMessage: 'Nota aplicada',
+      errorMessage: 'Nota rechazada',
+      data: {
+        sale_consecutive: this.props.sale_consecutive,
+        cart: JSON.stringify(this.props.cart)
+      }
+    }
+    this.props.dispatch(generalSave(kwargs))
+
+
   }
-  saveReserve() {
-    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'RESERVE'})
-    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
-  }
-  saveProforma() {
-    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'QUOTING'})
-    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
-  }
-  showEarnings() {
-    getEarmings(this.props.cart)
-  }
-  showQuotationsPanel() {
-    this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
-  }
-  newSale() {
-    // window.location.reload()
-    window.location.href = '/seller'
-    // this.props.dispatch({type: 'NEW_SALE', payload: -1})
-  }
+
 
   // Main Layout
   render() {
@@ -70,36 +67,12 @@ export default class Buttons extends React.Component {
         </button>
       </div>
       : ''
-    const reserveBtn = this.props.globalConf.useReserves
-      ? <button
-        disabled={this.props.disabled}
-        onClick={this.saveReserve.bind(this)}
-        style={{
-          'height': '48px',
-          'width': '49%',
-          'marginTop': '10px'
-        }}
-        className='btn btn-default buttons-payButton'>
-        Guardar Apartado
-        <span>
-          <i className='fa fa-save' />
-        </span>
-      </button>
-      : ''
-
-
-    const extraButtons = <div>
-      {/*reserveBtn*/}
-      {/*proformaBtn*/}
-      {/*earningsBtn*/}
-      {/*quotationsBtn*/}
-    </div>
 
     return <div className='col-xs-12 buttons'>
 
       <button
         disabled={this.props.disabled}
-        onClick={this.showSendPanel.bind(this)}
+        onClick={this.registerNote.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
@@ -112,10 +85,9 @@ export default class Buttons extends React.Component {
         </span>
       </button>
 
-      {buttons}
+      {/*buttons*/}
 
-      {extraButtons}
-
+  
     </div>
 
   }

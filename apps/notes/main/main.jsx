@@ -11,7 +11,7 @@ import GeneralItem from '../../sales/general/product/generalItem/generalItem.jsx
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
-
+import {loadGlobalConfig} from '../../../utils/api.js'
 
 @connect(store=>{
     return {
@@ -23,6 +23,7 @@ export default class Main extends React.Component {
 
     componentWillMount(){
       this.props.dispatch(fecthProfile())
+      this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
     }
 
     render(){

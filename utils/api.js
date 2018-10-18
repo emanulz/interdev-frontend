@@ -270,6 +270,47 @@ export function setItem(kwargs) {
 
 }
 
+//-----------------------------------------------------------
+//GENERAL SAVE
+//-----------------------------------------------------------
+export function generalSave(kwargs) {
+  console.log
+  const data = kwargs.data
+  const url = kwargs.url
+  const method = kwargs.method
+  return function(dispatch) {
+    dispatch({type: 'FETCHING_STARTED'})
+    axios({
+      method: method,
+      url: url,
+      data: data
+    })
+      .then((response) => {
+        alertify.alert('Completado', kwargs.sucessMessage)
+          .set('onok', function() {
+            if (kwargs.redirectUrl) {
+              kwargs.history.push(kwargs.redirectUrl)
+            }
+          })
+        dispatch({type: kwargs.successType, payload: response.data})
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+
+      }).catch((err) => {
+        if (err.response) {
+          dispatch({type: kwargs.errorType})
+          console.log(err.response.data)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        }
+        dispatch({type: 'FETCHING_DONE', payload: ''})
+      })
+
+  }
+}
+
 // ------------------------------------------------------------------------------------------
 // SAVE FUNCTION (CREATE)
 // ------------------------------------------------------------------------------------------

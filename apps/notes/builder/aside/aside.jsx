@@ -4,13 +4,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import Client from '../../../sales/general/clients/clients.jsx'
+import Client from '../../general/clients/clients.jsx'
 import Totals from '../../../sales/general/totals/totals.jsx'
 import Notes from '../../../sales/general/extras/notes.jsx'
 import Currency from '../../../sales/general/currency/currency.jsx'
 import PriceList from '../../../sales/general/priceList/priceList.jsx'
 import Buttons from '../buttons/buttons.jsx'
-
+import SaleInfo from '../../general/saleInfo/saleInfo.jsx'
 
 @connect((store) => {
   return {
@@ -32,7 +32,7 @@ export default class Aside extends React.Component {
     const asideContainerClass = this.props.fullWidth ? 'sale-aside-content collapsed' : 'sale-aside-content'
     return <div className={asideClass}>
       <div className={asideContainerClass}>
-
+        <SaleInfo />
         <Client />
         <PriceList />
         <Currency />
