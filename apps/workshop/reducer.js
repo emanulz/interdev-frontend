@@ -16,6 +16,7 @@ import search from '../../general/search/reducer.js'
 import requestPanel from './general/requestsPanel/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
+import pin from '../../general/pin/reducer.js'
 
 export default combineReducers({
     fetching,
@@ -35,5 +36,6 @@ export default combineReducers({
     productSearch: search('productSearch',),
     workorderSearch: search('workorderSearch'),
     pagination,
-    userProfile
+    userProfile, 
+    pin
 })

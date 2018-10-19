@@ -28,7 +28,9 @@ class CreateWorkOrderButtons extends React.Component {
     }
 
     patchWorkOrder(){
+        console.log("patchWorkOrder called")
         let work_order = JSON.parse(JSON.stringify(cleanWorkOrder(this.props.work_order)))
+        console.log("Not here")
         work_order.client_id = this.props.client.id
         work_order.cash_advance = this.props.cashadvance
         //if this is an stock warranty, set the warranty_invoice_number to 'STOCK'
@@ -56,6 +58,11 @@ class CreateWorkOrderButtons extends React.Component {
             this.props.dispatch(createWorkOrder(kwargs))
 
         }
+    }
+
+
+    requestPatchPin(){
+        this.props.dispatch({type: 'SET_PIN_CASE_AND_SHOW', payload: 'workorder_update'})
     }
 
     saveWorkOrder(redirect){
@@ -97,15 +104,31 @@ class CreateWorkOrderButtons extends React.Component {
         }
     }
 
-    
+    componentWillMount(){
+        const _this=this
+        const method  = function do_something(){
+            return _this.patchWorkOrder()
+        }
 
-
+        //register the path action with the PIN panel
+        const pinCase = {
+            case_name: 'workorder_update',
+            headerText: 'Actualizar Orden de Trabajo',
+            actionDescription: 'Actualizar orden de trabajo existente?',
+            dispatchButtonText: 'Actualizar',
+            method: method,
+            actionHeader: 'Actualizar Orden',
+            actionDescription: 'Al actualizar la orden de trabajo el usuario queda asociado como responsable. Revise la consistencia de la información',
+            insert_user: true
+        }
+        this.props.dispatch({type:'REGISTER_ACTION_CASE', payload: pinCase})
+    }
     render(){
 
         const optional_button = this.props.is_edit
         ? 
             <div className='col-xs-12 col-sm-4'>
-                <button onClick={this.patchWorkOrder.bind(this, true)}
+                <button onClick={this.requestPatchPin.bind(this, true)}
                     className='form-buttons-container-save form-control btn-success'>
                     Actualizar Orden
                 </button>
