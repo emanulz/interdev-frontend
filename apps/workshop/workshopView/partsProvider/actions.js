@@ -272,7 +272,7 @@ function partAlreadyInTransactionsList(qty, part, partsRequestList){
                             qty: qty,
                             type:'PART_REQUEST',
                             subTotal: subTotal,
-                            priceToUse: part.sell_price,
+                            priceToUse: part.sell_price1,
                             saved: false
 
                             }
@@ -314,6 +314,6 @@ function calculateUsedPartSubTotal(cost, qty){
 
 //calculates a simple subtotal based only in the price and qty
 function calculatePartSubtotal(part, qty){
-    return part.sell_price * qty
+    return part.sell_price1 * qty
 }
 
