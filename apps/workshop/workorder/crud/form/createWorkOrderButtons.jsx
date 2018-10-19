@@ -78,8 +78,8 @@ class CreateWorkOrderButtons extends React.Component {
         }})
     }
 
-    saveWorkOrder(kwargs){
-        const redirect = kwargs.redirect ? kwargs.redirect : false
+    saveWorkOrder(start_kwargs){
+        const redirect = start_kwargs.redirect ? start_kwargs.redirect : false
         if(this.props.request_saved){
             this.props.dispatch({type: 'ORDER_ALREADY_CREATED'})
             return
@@ -108,7 +108,9 @@ class CreateWorkOrderButtons extends React.Component {
                 errorMessage: 'Hubo un error al crear la orden de trabajo, intente de nuevo.',
                 dispatchType: 'WORK_ORDER_CREATED',
             }
-
+            if(start_kwargs.user_id){
+                kwargs.item['user_id']=start_kwargs.user_id
+            }
             if(redirect){
                 kwargs.redirectUrl = '/workshop/workorder/list'
                 kwargs.history = this.props.history

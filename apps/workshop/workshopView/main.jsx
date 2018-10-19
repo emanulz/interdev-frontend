@@ -99,7 +99,9 @@ export default class WorkshopView extends React.Component {
                 data: data,
                 dispatcher: this.props.dispatch
             }
-    
+            if(kwargs.user_id){
+                saveKwargs.data['user_id'] = kwargs.user_id
+            }
             patchWorkView(saveKwargs)
             return
     
