@@ -24,6 +24,7 @@ import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
 import presales from '../sales/sale/presales/reducer.js'
+import workOrders from '../sales/sale/workOrders/reducer.js'
 import quotations from '../sales/sale/quotations/reducer.js'
 
 export default combineReducers({
@@ -52,5 +53,6 @@ export default combineReducers({
   currency,
   priceList,
   presales,
-  quotations
+  quotations,
+  workOrders
 })
