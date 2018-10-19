@@ -32,6 +32,7 @@ import config from './config/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
 import registerclosures from './registerClosures/reducer.js'
+import printRegisterClosure from '../../general/printRegisterClosure/reducer.js'
 
 export default combineReducers({
   users,
@@ -67,6 +68,7 @@ export default combineReducers({
   config,
   currency,
   printPresale,
-  registerclosures
+  registerclosures,
+  printRegisterClosure
 
 })

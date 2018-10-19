@@ -7,6 +7,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile, fecthIsAdminLocked} from './actions'
 import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/reprintInvoicePanel.jsx'
 import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
+import PrintRegisterClosure from '../../../general/printRegisterClosure/printRegisterClosurePanel/printRegisterClosurePanel.jsx'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import Currency from '../../../general/currency/currency.jsx'
@@ -56,6 +57,7 @@ export default class Main extends React.Component {
         </div>
         <ReprintInvoice />
         <PrintPresale />
+        <PrintRegisterClosure />
       </div>
     </Router>
 

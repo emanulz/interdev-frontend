@@ -66,6 +66,24 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_REGISTER_CLOSURE_ACTIVE':
+    {
+      return {
+        ...state,
+        registerClosureActive: {}
+      }
+
+    } // case
+
+    case 'CLEAR_REGISTER_CLOSURE_ACTIVE_MOVEMENTS':
+    {
+      return {
+        ...state,
+        registerClosureActiveMovements: []
+      }
+
+    } // case
+
     case 'FETCH_REGISTER_CLOSURE_MOVEMENTS_FULFILLED':
     {
       return {

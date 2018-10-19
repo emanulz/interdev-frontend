@@ -58,7 +58,7 @@ export function getHeaderOrder(model, salesWarehouse) {
       field: 'supplier_code',
       text: 'Cod Prov'
     }, {
-      field: 'sell_price',
+      field: 'sell_price1',
       text: 'Precio IVI',
       type: 'price'
     }
