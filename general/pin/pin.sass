@@ -1,17 +1,18 @@
-.send-panel
+.pin-panel
     width: 100%
     height: 100%
     position: absolute
     top: -100%
     left: 0
-    z-index: 1
+    z-index: 50
     background-color: rgba(145, 145, 145, 0.67)
     background-size: 100% 100%
     transition: all 0.2s ease-in-out
+    font-family: 'Source Sans Pro', sans-serif
     &.is-visible
         position: absolute
         top: 0
-        z-index: 1
+        z-index: 50
     &-main
         position: absolute
         width: 80%
@@ -43,8 +44,7 @@
             &:hover
                 font-size: 25px
 
-
-.send-area-container
+.pin-area-container
     position: relative
     top: 200px
     left: 5%
@@ -53,56 +53,7 @@
     min-height: 280px
     display: inline-block
 
-
-.send-method-body
-    display: inline-block
-    position: absolute
-    top: 0
-    left: 0
-    width: 49%
-    height: 100%
-    border: 1px solid gray
-    &-header
-        position: absolute
-        display: block
-        width: 100%
-        top: 0
-        text-align: center
-        height: 30px
-        background-color: #2B3647
-        color: white
-        font-size: 18px
-        line-height: 30px
-    &-content
-        position: relative
-        display: block
-        top: 50px
-        left: 0
-        width: 100%
-        & input
-            height: 50px
-            font-size: 20px
-            margin-left: 20px
-            &.form-control
-                display: inline-block
-        & button
-            float: right
-            margin-right: 20px
-            height: 50px
-            font-size: 16px
-            & i
-                margin-left: 10px
-
-.send-side-bar
-    position: absolute
-    top: 0
-    left: 50%
-    display: inline-block
-    width: 49%
-    height: 100%
-    border: 1px solid gray
-
-.send-tag
+.pin-tag
     display: inline-block
     width: 40%
     height: 50px
@@ -141,26 +92,117 @@
         & .second
             width: 50%
             margin-right: 20px
-    &.tag-button
-        width: 30%
-        float: right
-        margin-right: 8%
-        text-align: center
+.tag-button
+    width: 30%
+    float: right
+    margin-right: 8%
+    text-align: center
+    cursor: pointer
+    border-radius: 5px
+    padding-left: 0
+    font-size: 15px
+    pointer-events: none
+    background-color: #8394ad
+    color: white
+    &.enable
         cursor: pointer
-        border-radius: 5px
-        padding-left: 0
-        font-size: 15px
-        pointer-events: none
-        background-color: #8394ad
-        &.enable
-            cursor: pointer
-            pointer-events: auto
-            background-color: #6F7E95
-        & i
-            margin-left: 10px
+        pointer-events: auto
+        background-color: #6F7E95
+    & i
+        margin-left: 10px
 
+.pin-method-body
+    display: inline-block
+    position: absolute
+    top: 0
+    left: 0
+    width: 49%
+    height: 100%
+    border: 1px solid gray
+    &-header
+        position: absolute
+        display: block
+        width: 100%
+        top: 0
+        text-align: center
+        height: 30px
+        background-color: #2B3647
+        color: white
+        font-size: 18px
+        line-height: 30px
+    &-content
+        position: relative
+        display: block
+        top: 50px
+        left: 0
+        width: 100%
+        & input
+            height: 50px
+            font-size: 20px
+            margin-left: 20px
+            &.form-control
+                display: inline-block
+        & button
+            float: right
+            margin-right: 20px
+            height: 50px
+            font-size: 16px
+            & i
+                margin-left: 10px
 
-.send-profile
+.pin-side-bar
+    position: absolute
+    top: 0
+    left: 50%
+    display: inline-block
+    width: 49%
+    height: 100%
+    border: 1px solid gray
+
+.pin-side-body
+    display: inline-block
+    position: absolute
+    top: 0
+    left: 50%
+    width: 49%
+    height: 100%
+    border: 1px solid gray
+    &-header
+        position: absolute
+        display: block
+        width: 100%
+        top: 0
+        text-align: center
+        height: 30px
+        background-color: #2B3647
+        color: white
+        font-size: 18px
+        line-height: 30px
+    &-content
+        position: relative
+        display: block
+        top: 50px
+        left: 0
+        width: 100%
+        & input
+            height: 50px
+            font-size: 20px
+            margin-left: 20px
+            &.form-control
+                display: inline-block
+        & button
+            float: right
+            margin-right: 20px
+            height: 50px
+            font-size: 16px
+            & i
+                margin-left: 10px
+
+        & p
+            margin: 10px
+            font-size: 16px
+
+.pin-profile
     position: absolute
     top: 60px
     left: 5%
@@ -218,7 +260,3 @@
                 height: 100%
                 line-height: 35px
                 padding-left: 10px
-
-    
-
-

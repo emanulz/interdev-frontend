@@ -11,6 +11,8 @@ import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 
+import Pin from '../../../general/pin/main.jsx'
+
 @connect((store) => {
     return {
       fetching: store.fetching.fetching,
@@ -30,6 +32,7 @@ export default class Main extends React.Component {
         const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer' : 'mainContainer sideHidden'
         const content = <Router>
           <div>
+            <Pin />
             <UserProfile />
             <SideMenu />
             <div id='mainContainer' className={mainContainerClass}>
