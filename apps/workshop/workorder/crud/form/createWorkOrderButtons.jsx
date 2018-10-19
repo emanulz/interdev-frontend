@@ -27,10 +27,8 @@ class CreateWorkOrderButtons extends React.Component {
         this.props.dispatch({type: 'SHOW_RECEIPT_PANEL'})
     }
 
-    patchWorkOrder(){
-        console.log("patchWorkOrder called")
+    patchWorkOrder(start_kwargs){
         let work_order = JSON.parse(JSON.stringify(cleanWorkOrder(this.props.work_order)))
-        console.log("Not here")
         work_order.client_id = this.props.client.id
         work_order.cash_advance = this.props.cashadvance
         //if this is an stock warranty, set the warranty_invoice_number to 'STOCK'
@@ -45,6 +43,8 @@ class CreateWorkOrderButtons extends React.Component {
         work_order.observations_list = JSON.stringify(work_order.observations_list)
         work_order.malfunction_details = JSON.stringify(work_order.malfunction_details)
 
+
+
         if(work_order_ok){
             const kwargs = {
                 url: `/api/workorders/${work_order.id}/patch_workorder/`,
@@ -53,6 +53,9 @@ class CreateWorkOrderButtons extends React.Component {
                 successMessage: 'Orden de trabajo creada Actualizada',
                 errorMessage: 'Hubo un error al actualizar la orden de trabajo, intente de nuevo.',
                 dispatchType: 'WORK_ORDER_EDIT_LOADED',
+            }
+            if(start_kwargs.user_id){
+                kwargs.item['user_id']= start_kwargs.user_id
             }
             this.props.dispatch({type:'FETCHING_STARTED'})
             this.props.dispatch(createWorkOrder(kwargs))
@@ -106,8 +109,8 @@ class CreateWorkOrderButtons extends React.Component {
 
     componentWillMount(){
         const _this=this
-        const method  = function do_something(){
-            return _this.patchWorkOrder()
+        const method  = function do_something(kwargs){
+            return _this.patchWorkOrder(kwargs)
         }
 
         //register the path action with the PIN panel

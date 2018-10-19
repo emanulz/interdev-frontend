@@ -20,12 +20,14 @@ export default class PinAction extends React.Component {
         }
 
         if(this.props.selectedCase.insert_user){
+            console.log("Inserting user marker")
             kwargs['user_id'] = this.props.user.id 
         }
 
         //dispatch the method passing on the kwargs
-        console.log("Call action method!")
+        console.log("Call action method! --> ", kwargs)
         this.props.selectedCase.method(kwargs)
+
         this.props.dispatch({type:'HIDE_PIN_PANEL'})
     }
 
