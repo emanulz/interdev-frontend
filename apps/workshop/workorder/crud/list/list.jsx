@@ -22,7 +22,7 @@ export default class List extends React.Component{
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch({type: 'FETCH_WORKORDERS_REJECTED'})
         const workordersKwargs = {
-            url: `/api/listworkorders/?limit=${this.props.pageSize}`,
+            url: `/api/listworkorders/?limit=${this.props.pageSize}&ordering=-consecutive`,
             successType: 'FETCH_WORKORDERS_FULFILLED',
             errorType: 'FETCH_WORKORDERS_REJECTED'
         }
@@ -78,7 +78,7 @@ export default class List extends React.Component{
         ? makeOrdersTableFriendly(this.props.searchResults) 
         : this.props.table_friendly_orders
 
-        const list = <AdminTable headerOrder={headerOrder} app="workshop" model='workshopview' 
+        const list = <AdminTable defaultSorting='consecutive' defaultDescending headerOrder={headerOrder} app="workshop" model='workshopview' 
             data={table_data}
             addLink='/workshop/workorder/add' idField='id'/>
 
@@ -88,8 +88,8 @@ export default class List extends React.Component{
             <h1>Listado Órdenes de Trabajo: </h1>
             <SearchAdmin model='workorder' namespace='workorderSearch'/>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/listworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
-                <Pagination url='/api/listworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <ResultsPerPage url='/api/listworkorders/?ordering=-consecutive' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <Pagination url='/api/listworkorders/?ordering=-consecutive' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
             </div>
 
             {content}
