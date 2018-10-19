@@ -28,13 +28,14 @@ export default function reducer(state=stateConst, action) {
         case 'SET_PIN_CASE_AND_SHOW':
         {
             const pin_case = state.pinCases.find(a=>{
-                return a.case_name === action.payload
+                return a.case_name === action.payload['case']
             })
-
+            pin_case['kwargs'] = action.payload['kwargs']
             return {
                 ...state,
                 selectedCase: pin_case,
-                isVisible: true
+                isVisible: true,
+
             }
         }
 

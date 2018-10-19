@@ -49,41 +49,18 @@ let inspect = require('util-inspect')
 
 export default class WorkshopView extends React.Component {
 
-    componentWillMount(){
-        
-        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
-        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
-        
-        this.props.dispatch({type:'CLEAR_WORKSHOPVIEW'})
+    saveOrderTransactionsOrPrint(kwargs){
 
-        const work_order_consecutive = this.props.location.pathname.split('/').pop()
-        this.props.dispatch({type: 'CLEAR_GLOBAL_CONFIG'})
-        const kwargs = {
-            lookUpField: 'consecutive',
-            url: '/api/listworkorders/',
-            lookUpValue: work_order_consecutive,
-            dispatchType: 'SET_WORK_ORDER_VIEW_SIMPLE',
-            dispatchErrorType: 'WORK_ORDER_NOT_FOUND',
-            lookUpName: 'consecutivo orden',
-            modelName: 'Orden de trabajo'
+        let close_order = false
+        if(kwargs.close_order){
+            close_order = kwargs['close_order']
         }
 
-        this.props.dispatch({type:'FETCHING_STARTED'})
-        //load work order
-        this.props.dispatch(setItem(kwargs))
-        //load preferences
-        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 
-            'SET_WORKSHOP_WAREHOUSE', 'CLEAR_WORKSHOP_WAREHOUSE'))
-
-        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 
-            'SET_SALES_WAREHOUSE', 'CLEAR_SALES_WAREHOUSE'))
-
-        this.props.dispatch(loadGlobalConfig('inventory', 'blackdecker_warehouse', 
-            'SET_BLACKDECKER_WAREHOUSE', 'CLEAR_BLACKDECKER_WAREHOUSE'))
-
-    }
-
-    saveOrderTransactionsOrPrint(close_order, no_repair, e){
+        let no_repair = false
+        if(kwargs.no_repair){
+            no_repair = kwargs['no_repair']
+        }
+        
         const wo = this.props.work_order
         //check if the order is already closed, if so, print
         if(!wo.is_closed){
@@ -161,6 +138,72 @@ export default class WorkshopView extends React.Component {
         }
     }
 
+    requestPatchPin(close_order, no_repair){
+
+        const kwargs = {
+
+        }
+        if(close_order!==undefined){
+            kwargs['close_order']=close_order
+        }
+        if(no_repair!==undefined){
+            kwargs['no_repair']=no_repair
+        }
+        this.props.dispatch({type: 'SET_PIN_CASE_AND_SHOW', 
+        payload: {case: 'workorderview_update', kwargs: kwargs}})
+    }
+    componentWillMount(){
+        
+        const _this = this
+        const method = function(kwargs){
+            return _this.saveOrderTransactionsOrPrint(kwargs)
+        }
+
+        //register the path action with the PIN panel
+        const pinCase = {
+            case_name: 'workorderview_update',
+            headerText: 'Actualizar Orden de Trabajo',
+            actionDescription: 'Actualizar orden de trabajo existente?',
+            dispatchButtonText: 'Actualizar',
+            method: method,
+            actionHeader: 'Actualizar Orden',
+            actionDescription: 'Al actualizar la orden de trabajo el usuario queda asociado como responsable. Revise la consistencia de la información',
+            insert_user: true
+        }
+        this.props.dispatch({type:'REGISTER_ACTION_CASE', payload: pinCase})
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
+        
+        this.props.dispatch({type:'CLEAR_WORKSHOPVIEW'})
+
+        const work_order_consecutive = this.props.location.pathname.split('/').pop()
+        this.props.dispatch({type: 'CLEAR_GLOBAL_CONFIG'})
+        const kwargs = {
+            lookUpField: 'consecutive',
+            url: '/api/listworkorders/',
+            lookUpValue: work_order_consecutive,
+            dispatchType: 'SET_WORK_ORDER_VIEW_SIMPLE',
+            dispatchErrorType: 'WORK_ORDER_NOT_FOUND',
+            lookUpName: 'consecutivo orden',
+            modelName: 'Orden de trabajo'
+        }
+
+        this.props.dispatch({type:'FETCHING_STARTED'})
+        //load work order
+        this.props.dispatch(setItem(kwargs))
+        //load preferences
+        this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 
+            'SET_WORKSHOP_WAREHOUSE', 'CLEAR_WORKSHOP_WAREHOUSE'))
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 
+            'SET_SALES_WAREHOUSE', 'CLEAR_SALES_WAREHOUSE'))
+
+        this.props.dispatch(loadGlobalConfig('inventory', 'blackdecker_warehouse', 
+            'SET_BLACKDECKER_WAREHOUSE', 'CLEAR_BLACKDECKER_WAREHOUSE'))
+
+    }
+
     showRequestPanel(){
         this.props.dispatch({type: 'SHOW_REQUESTS_PANEL'})
     }
@@ -218,7 +261,6 @@ export default class WorkshopView extends React.Component {
     }
 
     closeNoRepairReceiptOrPrint(){
-        console.log("Printing no repair receipt")
         if(!this.props.work_order.closed_no_repair && !this.props.work_order.is_closed){
             if(this.props.partsRequestList.length>0 || this.props.partsRequestToDelete.length>0){
                 this.props.dispatch({type: 'CANT_CLOSE_NO_REPAIR_WITH_PARTS_REQUEST'})
@@ -229,7 +271,7 @@ export default class WorkshopView extends React.Component {
                 this.props.dispatch({type:'CANT_CLOSE_WITHOUT_MOVES_NO_REPAIR'})
                 return
             }
-            this.saveOrderTransactionsOrPrint(true, true, null)
+            this.requestPatchPin(true, true, null)
             //do the closing process
 
         }else{
@@ -248,7 +290,7 @@ export default class WorkshopView extends React.Component {
         ?''
         :<div className="workshop-view-footer-buttons">
             <button className="form-control btn-success workshop-view-footer-buttons-update"
-                onClick={this.saveOrderTransactionsOrPrint.bind(this, false, false)}
+                onClick={this.requestPatchPin.bind(this, false, false)}
                 disabled={this.props.is_closed}>
                 Guardar Movimientos
             </button>
@@ -267,7 +309,7 @@ export default class WorkshopView extends React.Component {
         if(save_close_print_visible){
             save_close_print = <div className="workshop-view-footer-buttons">
                 <button className="form-control btn-success workshop-view-footer-buttons-update-close"
-                    onClick={this.saveOrderTransactionsOrPrint.bind(this, true, false)}>
+                    onClick={this.requestPatchPin.bind(this, true, false)}>
                     {save_close_print_text}
                 </button>
                 </div>

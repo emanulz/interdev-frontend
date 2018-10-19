@@ -65,10 +65,21 @@ class CreateWorkOrderButtons extends React.Component {
 
 
     requestPatchPin(){
-        this.props.dispatch({type: 'SET_PIN_CASE_AND_SHOW', payload: 'workorder_update'})
+
+        this.props.dispatch({type: 'SET_PIN_CASE_AND_SHOW', 
+            payload: {case: 'workorder_update', kwargs:{}}})
     }
 
-    saveWorkOrder(redirect){
+    requestCreatePin(redirect){
+
+        this.props.dispatch({type: 'SET_PIN_CASE_AND_SHOW', 
+        payload: {case: 'workorder_create', 
+            kwargs:{redirect: redirect ? redirect : false}
+        }})
+    }
+
+    saveWorkOrder(kwargs){
+        const redirect = kwargs.redirect ? kwargs.redirect : false
         if(this.props.request_saved){
             this.props.dispatch({type: 'ORDER_ALREADY_CREATED'})
             return
@@ -113,7 +124,13 @@ class CreateWorkOrderButtons extends React.Component {
             return _this.patchWorkOrder(kwargs)
         }
 
+        const method2 = function do_something_else(kwargs){
+            return _this.saveWorkOrder(kwargs)
+        }
+
         //register the path action with the PIN panel
+
+        //update action
         const pinCase = {
             case_name: 'workorder_update',
             headerText: 'Actualizar Orden de Trabajo',
@@ -125,6 +142,19 @@ class CreateWorkOrderButtons extends React.Component {
             insert_user: true
         }
         this.props.dispatch({type:'REGISTER_ACTION_CASE', payload: pinCase})
+
+        //update action
+        const pinCaseCreate = {
+            case_name: 'workorder_create',
+            headerText: 'Crear Orden de Trabajo',
+            actionDescription: 'Crear una nueva orden de Taller?',
+            dispatchButtonText: 'Crear',
+            method: method2,
+            actionHeader: 'Crear Orden',
+            actionDescription: 'Al crear la orden de trabajo el usuario queda asociado como responsable. Revise la consistencia de la información',
+            insert_user: true
+        }
+        this.props.dispatch({type:'REGISTER_ACTION_CASE', payload: pinCaseCreate})
     }
     render(){
 
@@ -138,7 +168,7 @@ class CreateWorkOrderButtons extends React.Component {
             </div>
         :
             <div className='col-xs-12 col-sm-4'>
-                <button onClick={this.saveWorkOrder.bind(this, true)}
+                <button onClick={this.requestCreatePin.bind(this, true)}
                     className='form-buttons-container-save form-control btn-success'>
                     Crear Orden de Trabajo
                 </button>

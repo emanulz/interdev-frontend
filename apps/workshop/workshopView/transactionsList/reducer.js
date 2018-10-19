@@ -380,13 +380,20 @@ export default function reducer(state=stateConst, action){
             })
 
             const new_parts_request_list = parts_request_objects.map(req=>{
-                console.log("Amount --> ", req.amount )
-                console.log("Price --> ", req.product.sell_price1)
+                let subTotal = ""
+                let priceToUse = ""
+                if(req.product.sell_price1){
+                    subTotal = (parseFloat(req.amount)*parseFloat(req.product.sell_price1)).toFixed(2)
+                    priceToUse = (parseFloat(req.product.sell_price1)).toFixed(2)
+                }else{
+                    subTotal = (parseFloat(req.amount)*parseFloat(req.product.sell_price)).toFixed(2)
+                    priceToUse = (parseFloat(req.product.sell_price)).toFixed(2)
+                }
                 const req_object = {
                     element: req.product,
-                    priceToUse: (parseFloat(req.product.sell_price1)).toFixed(2),
+                    priceToUse: priceToUse,
                     qty: req.amount,
-                    subTotal: (parseFloat(req.amount)*parseFloat(req.product.sell_price1)).toFixed(2),
+                    subTotal: subTotal,
                     type: 'PART_REQUEST',
                     uuid: req.id,
                     saved: true,
