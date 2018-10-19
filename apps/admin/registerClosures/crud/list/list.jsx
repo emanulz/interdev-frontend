@@ -39,7 +39,8 @@ export default class List extends React.Component {
     const headerOrder = [
       {
         field: 'id',
-        text: 'Consecutivo'
+        text: 'Consecutivo',
+        type: 'primaryNoEdit'
       }, {
         field: 'cashier_name',
         text: 'Cajero'
@@ -64,7 +65,7 @@ export default class List extends React.Component {
 
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.closures
-    const list = <AdminTable headerOrder={headerOrder} model='registerclosure' data={tableData}
+    const list = <AdminTable headerOrder={headerOrder} model='registerclosures' data={tableData}
       idField='id' />
 
     const content = this.props.fetching ? fetching : list

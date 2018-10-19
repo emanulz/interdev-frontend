@@ -15,7 +15,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
     fething: store.fetching.fetching,
     products: store.products.products,
     pageSize: store.pagination.pageSize,
-    searchResults: store.adminSearch.searchResults
+    searchResults: store.adminSearch.searchResults,
+    salesWarehouse: store.userProfile.salesWarehouse
   }
 })
 export default class List extends React.Component {
@@ -42,6 +43,19 @@ export default class List extends React.Component {
   }
 
   render() {
+    const salesWarehouse = this.props.salesWarehouse
+
+    const getExistencesClosure = (item) => {
+      function getExistences(item) {
+        if (salesWarehouse === undefined || salesWarehouse === '') {
+          return '0'
+        }
+        const parsedInv = JSON.parse(item)
+        return parsedInv[salesWarehouse] === undefined ? 0 : parsedInv[salesWarehouse]
+      }
+
+      return getExistences(item)
+    }
 
     const headerOrder = [
       {
@@ -57,8 +71,10 @@ export default class List extends React.Component {
         text: 'Usa Impuesto',
         type: 'bool'
       }, {
-        field: 'taxes',
-        text: 'Impuesto'
+        type: 'function_process',
+        field: 'inventory_existent',
+        text: 'Existencias',
+        worker_method: getExistencesClosure
       }, {
         field: 'sell_price1',
         text: 'Precio de Venta',

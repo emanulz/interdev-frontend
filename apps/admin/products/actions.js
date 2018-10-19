@@ -206,13 +206,29 @@ function fromCost(product, cost) {
     return product
 
   } else { // IF PRICE IS FIXED
-    const utility = product.price1 ? ((parseFloat(product.price1) / parseFloat(cost)) - 1) * 100 : 0
+    const utility = product.price1 && parseFloat(product.price1) > 0 ? ((parseFloat(product.price1) / parseFloat(cost)) - 1) * 100 : 0
+
+    // if (!isNaN(utility) && isFinite(utility)) {
+    //   product['utility1'] = utility.toFixed(2)
+    // } else {
+    //   product['utility1'] = 0
+    // }
     product['utility1'] = utility.toFixed(2)
 
-    const utility2 = product.price2 ? ((parseFloat(product.price2) / parseFloat(cost)) - 1) * 100 : 0
+    const utility2 = product.price2 && parseFloat(product.price2) > 0 ? ((parseFloat(product.price2) / parseFloat(cost)) - 1) * 100 : 0
+    // if (!isNaN(utility2 && isFinite(utility2))) {
+    //   product['utility2'] = utility2.toFixed(2)
+    // } else {
+    //   product['utility2'] = 0
+    // }
     product['utility2'] = utility2.toFixed(2)
 
-    const utility3 = product.price3 ? ((parseFloat(product.price3) / parseFloat(cost)) - 1) * 100 : 0
+    const utility3 = product.price3 && parseFloat(product.price3) > 0 ? ((parseFloat(product.price3) / parseFloat(cost)) - 1) * 100 : 0
+    // if (!isNaN(utility3 && isFinite(utility3))) {
+    //   product['utility3'] = utility3.toFixed(2)
+    // } else {
+    //   product['utility3'] = 0
+    // }
     product['utility3'] = utility3.toFixed(2)
 
     return product

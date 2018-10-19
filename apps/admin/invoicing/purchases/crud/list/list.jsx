@@ -63,15 +63,46 @@ export default class List extends React.Component {
       return getElementStatus(item)
     }
 
+    const getTotal = (item) => {
+      function getTotalToShow(item) {
+        try {
+          const obj = JSON.parse(item)
+          if (obj.currency == 'CRC') {
+            return `₡${parseFloat(obj.total_doc).toFixed(2)}`
+          }
+          if (obj.currency == 'USD') {
+            return `$${parseFloat(obj.total_doc).toFixed(2)}`
+          }
+          return `${parseFloat(obj.total_doc).toFixed(2)}`
+        } catch (err) {
+          console.log('ERRROR', err)
+          return '0'
+        }
+      }
+      return getTotalToShow(item)
+    }
+
     const headerOrder = [
       {
         field: 'consecutive_numbering',
         text: 'Consecutivo',
         type: 'text'
       }, {
-        field: 'updated',
-        text: 'Fecha Modificación',
+        field: 'created',
+        text: 'Fecha Aceptado',
         type: 'date'
+      }, {
+        field: 'emisor',
+        text: 'Emisor'
+      }, {
+        field: 'doc_emission_date',
+        text: 'Fecha Emisión',
+        type: 'date'
+      }, {
+        field: 'total_doc',
+        text: 'Monto',
+        type: 'function_process',
+        worker_method: getTotal
       }, {
         field: 'process_status',
         text: 'Estado del Proceso'
