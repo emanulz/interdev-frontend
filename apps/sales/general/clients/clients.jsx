@@ -26,7 +26,8 @@ const Mousetrap = require('mousetrap')
     useListAsDefault: store.priceList.useAsDefault,
     cartItems: store.cart.cartItems,
     pricesDetails: store.products.pricesDetails,
-    presaleId: store.presales.presaleId
+    presaleId: store.presales.presaleId,
+    workOrderId: store.workOrders.workOrderId
   }
 })
 export default class Clients extends React.Component {
@@ -47,7 +48,7 @@ export default class Clients extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.clientSelected != this.props.clientSelected && !this.props.presaleId) {
+    if (nextProps.clientSelected != this.props.clientSelected && !this.props.presaleId && !this.props.workOrderId) {
       // set the discount: default value or 0
 
       // const discount = nextProps.client.pred_discount ? nextProps.client.pred_discount : 0

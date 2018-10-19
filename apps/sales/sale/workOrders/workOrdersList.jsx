@@ -14,7 +14,9 @@ import alertify from 'alertifyjs'
     itemsInCart: store.cart.cartItems,
     inputVal: store.products.inputVal,
     globalDiscount: store.cart.globalDiscount,
-    warehouse_id: store.config.workshopWarehouse
+    warehouse_id: store.config.workshopWarehouse,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault
   }
 })
 export default class WorkOrdersPanel extends React.Component {
@@ -56,12 +58,12 @@ export default class WorkOrdersPanel extends React.Component {
       this.props.dispatch({type: 'HIDE_WORK_ORDERS_PANEL', payload: -1})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'CLEAR_CART', payload: ''})
+      _this.props.dispatch({type: 'SET_WORK_ORDER_ID', payload: data.work_order.id})
       data.work_order.client = JSON.parse(data.work_order.client)
       data.work_order.receiving_employee = JSON.parse(data.work_order.receiving_employee)
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
       _this.props.dispatch({type: 'CLEAR_PAY_OBJECT', payload: ''})
       _this.props.dispatch({type: 'SET_WORK_ORDER_LOADED', payload: data})
-      _this.props.dispatch({type: 'SET_WORK_ORDER_ID', payload: data.work_order.id})
       _this.props.dispatch({type: 'SET_WORK_ORDER_USER', payload: data.work_order.receiving_employee})
       _this.props.dispatch({type: 'PRESALE_LOADED', payload: ''})
       _this.props.dispatch({type: 'WORK_ORDER_LOADED', payload: ''})
@@ -95,7 +97,7 @@ export default class WorkOrdersPanel extends React.Component {
 
   }
 
-  loadPartRequests(partRequest) {
+  loadPartRequestsDEPRECATED(partRequest) {
     const _this = this
     for (const item in partRequest) {
 
@@ -114,6 +116,7 @@ export default class WorkOrdersPanel extends React.Component {
       setProductPromise.then((data) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         const product = data.results[0]
+        console.log('PRODUCTTT', product)
         try {
           _this.props.dispatch(
             productSelected(
@@ -132,6 +135,41 @@ export default class WorkOrdersPanel extends React.Component {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
       })
+
+    }
+  }
+
+  loadPartRequests(partRequest) {
+    const _this = this
+    for (const item in partRequest) {
+
+      const product = JSON.parse(partRequest[item].product)
+      const price1 = product.price1 ? product.price1 : product.price
+      product.price1 = price1
+      const lineData = {
+        default_discount: '0',
+        id: product.id,
+        max_discount: '0',
+        product: product,
+        table_price: '0',
+        target_price_list: 'price1'
+      }
+      try {
+        _this.props.dispatch(
+          productSelected(
+            lineData,
+            parseFloat(partRequest[item].amount),
+            _this.props.itemsInCart,
+            _this.props.client,
+            _this.props.warehouse_id,
+            false,
+            this.props.priceListSelected,
+            this.props.usePriceListAsDefault
+          )
+        )
+      } catch (err) {
+        console.log(err)
+      }
 
     }
   }
@@ -156,19 +194,30 @@ export default class WorkOrdersPanel extends React.Component {
 
       for (const item in laborList) {
         try {
-          const productCopy = product
+          const productCopy = {
+            ...product
+          }
           productCopy.price = laborList[item].amount / 1.13
+          productCopy.price1 = laborList[item].amount / 1.13
           productCopy.description = laborList[item].description
+          const lineData = {
+            default_discount: '0',
+            id: productCopy.id,
+            max_discount: '0',
+            product: productCopy,
+            table_price: '0',
+            target_price_list: 'price1'
+          }
           this.props.dispatch(
             productSelected(
-              productCopy.code,
+              lineData,
               1,
-              productCopy,
-              this.props.itemsInCart,
-              this.props.globalDiscount,
-              this.props.client,
-              this.props.warehouseId,
-              false
+              _this.props.itemsInCart,
+              _this.props.client,
+              _this.props.warehouse_id,
+              false,
+              this.props.priceListSelected,
+              this.props.usePriceListAsDefault
             )
           )
         } catch (err) {
@@ -207,17 +256,26 @@ export default class WorkOrdersPanel extends React.Component {
             ...product
           }
           productCopy.price = usedObjects[item].amount
+          productCopy.price1 = usedObjects[item].amount
           productCopy.description = usedObjects[item].description
+          const lineData = {
+            default_discount: '0',
+            id: productCopy.id,
+            max_discount: '0',
+            product: productCopy,
+            table_price: '0',
+            target_price_list: 'price1'
+          }
           this.props.dispatch(
             productSelected(
-              productCopy.code,
+              lineData,
               1,
-              productCopy,
-              this.props.itemsInCart,
-              this.props.globalDiscount,
-              this.props.client,
-              this.props.warehouseId,
-              false
+              _this.props.itemsInCart,
+              _this.props.client,
+              _this.props.warehouse_id,
+              false,
+              this.props.priceListSelected,
+              this.props.usePriceListAsDefault
             )
           )
         } catch (err) {

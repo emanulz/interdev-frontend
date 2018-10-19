@@ -147,7 +147,6 @@ export function updateItemLote(itemsInCart, code, lote) {
 
 // When item is selected in code field
 export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal, priceListSelected, usePriceListAsDefault) {
-
   // GET TE DATA FROM THE LINE DATA
   const code = lineData.product.code
   const product = lineData.product
