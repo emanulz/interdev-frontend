@@ -7,17 +7,11 @@ import {updateLaborCashAdvanceUsedPartInfoRow} from '../partsProvider/actions'
 @connect((store)=>{
     return {
         cashAdvanceList: store.transactionsList.cashAdvanceList,
-
         partsRequestList: store.transactionsList.partsRequestList,
-
         laborList: store.transactionsList.laborList,
-
         usedPartList: store.transactionsList.usedPartList,
-
         informativeList: store.transactionsList.informativeList,
-
         user: store.user,
-
         is_closed: store.workshopview.work_order.is_closed,
         sales_warehouse: store.transactionsList.sales_warehouse,
     }

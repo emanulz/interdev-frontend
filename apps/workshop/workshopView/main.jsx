@@ -143,24 +143,6 @@ export default class WorkshopView extends React.Component {
 
     }
 
-    // runSequence(all_tasks){
-    //     let result = Promise.resolve()
-    //     all_tasks.forEach(task=>{
-    //         result = result.then(()=>{
-    //             return Promise.all(task.promises).then(result=>{
-    //                 if(task.promises.length>0){
-    //                     this.props.dispatch({type:task.dispatch, payload:result})
-    //                 }
-                    
-    //             })
-    //         })
-
-    //     })
-
-    //     return result
-
-    // }
-
     componentWillUpdate(nextProps){
         if(nextProps.work_order.id !=='000000' && this.props.work_order.id ==='000000'){
 
