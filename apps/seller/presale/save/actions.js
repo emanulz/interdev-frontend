@@ -32,12 +32,16 @@ export function saveItem(kwargs, resolve, reject) {
         dispatch({type: 'SET_PRESALE', payload: response.data})
         resolve(response.data)
       }).catch((err) => {
-        console.log(err)
-        reject()
+        console.log(err.response.data)
         if (err.response) {
           console.log(err.response.data)
+          alertify.alert('Error', `Error al procesar la Preventa, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        } else {
+          console.log('NO CUSTOM ERROR')
+          console.log(err)
+          alertify.alert('Error', `Error al procesar la Preventa, ERROR: ${err}.`)
         }
-        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+        reject()
       })
 
   }

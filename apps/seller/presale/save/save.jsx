@@ -37,6 +37,8 @@ export default class SaveBtn extends React.Component {
       advance_amount: this.props.advanceAmount
     }
 
+    console.log('PRESALEE BEFORE SEND', presale)
+
     const creditMovement = {
       client_id: this.props.client.id,
       movement_type: 'CRED',
