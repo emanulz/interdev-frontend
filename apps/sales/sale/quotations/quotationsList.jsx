@@ -52,19 +52,19 @@ export default class QuotationsPanel extends React.Component {
         _this.props.dispatch({type: 'SET_CURRENCY', payload: data.currency_code})
       } catch (err) { data.extras = null }
       // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
-      getFullClientById(data.client.id, _this.props.dispatch)
-      _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_QUOTATION_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
       _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
+      _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'QUOTATION_LOADED', payload: data.user})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
+      getFullClientById(data.client.id, _this.props.dispatch)
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
       } else {
-        alertify.alert('ERROR', `Hubo un error al cargar el apartado, error: ${err}`)
+        alertify.alert('ERROR', `Hubo un error al cargar la cotización, error: ${err}`)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })

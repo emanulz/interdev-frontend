@@ -12,6 +12,7 @@ import Currency from '../../../general/currency/currency.jsx'
 import ClientUpdatePanel from '../../../general/clientUpdatePanel/clientUpdatePanel.jsx'
 import Presales from './presales/presalesList.jsx'
 import Reserves from './reserves/reservesList.jsx'
+import NSReserves from './nsreserves/nsreservesList.jsx'
 import Quotations from './quotations/quotationsList.jsx'
 import RestaurantBills from './restaurantBills/restaurantBillsList.jsx'
 import WorkOrders from './workOrders/workOrdersList.jsx'
@@ -75,6 +76,7 @@ export default class Sale extends React.Component {
       <PayPanel />
       <Presales />
       <Reserves />
+      <NSReserves />
       <Quotations />
       <ClientPanel />
       <ClientUpdatePanel />

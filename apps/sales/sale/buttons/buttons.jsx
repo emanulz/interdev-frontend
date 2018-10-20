@@ -13,6 +13,7 @@ import {connect} from 'react-redux'
     isReserveLoaded: store.completed.isReserveLoaded,
     isRestaurantBillLoaded: store.completed.isRestaurantBillLoaded,
     useReserves: store.config.globalConf.useReserves,
+    useNSReserves: store.config.globalConf.useNSReserves,
     usePresales: store.config.globalConf.usePresales,
     useQuoting: store.config.globalConf.useQuoting,
     useResrestaurant: store.config.globalConf.useRestaurant,
@@ -39,6 +40,9 @@ export default class Buttons extends React.Component {
   }
   showReservesPanel() {
     this.props.dispatch({type: 'SHOW_RESERVES_PANEL', payload: -1})
+  }
+  showNSReservesPanel() {
+    this.props.dispatch({type: 'SHOW_NSRESERVES_PANEL', payload: -1})
   }
   showQuotationsPanel() {
     this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
@@ -69,7 +73,7 @@ export default class Buttons extends React.Component {
 
     const presalesBtn = this.props.usePresales
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showPresalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -86,7 +90,7 @@ export default class Buttons extends React.Component {
 
     const quotationsBtn = this.props.useQuoting
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showQuotationsPanel.bind(this)}
         style={{
           'height': '48px',
@@ -103,7 +107,7 @@ export default class Buttons extends React.Component {
 
     const restaurantBillsBtn = this.props.useResrestaurant
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showRestaurantBillsPanel.bind(this)}
         style={{
           'height': '48px',
@@ -120,8 +124,25 @@ export default class Buttons extends React.Component {
 
     const reservesBtn = this.props.useReserves
       ? <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showReservesPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Reservas
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
+    const nsreservesBtn = this.props.useReserves
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isReserveLoaded}
+        onClick={this.showNSReservesPanel.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
@@ -137,7 +158,7 @@ export default class Buttons extends React.Component {
 
     const workOrdersBtn = this.props.workshopAppInstalled
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showWorkOrdersPanel.bind(this)}
         style={{
           'height': '48px',
@@ -154,7 +175,7 @@ export default class Buttons extends React.Component {
 
     const cashAdvanceBtn = this.props.acceptCashAdvances
       ? <button
-        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showCashAdvancesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -208,6 +229,7 @@ export default class Buttons extends React.Component {
 
       {presalesBtn}
       {reservesBtn}
+      {nsreservesBtn}
       {cashAdvanceBtn}
       {restaurantBillsBtn}
       {quotationsBtn}
@@ -230,7 +252,7 @@ export default class Buttons extends React.Component {
       {workOrdersBtn}
 
       <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded}
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
         onClick={this.showTodaySalesPanel.bind(this)}
         style={{
           'height': '48px',
@@ -258,8 +280,6 @@ export default class Buttons extends React.Component {
           <i className='fa fa-credit-card' />
         </span>
       </button>
-
-
 
       {/* <button
         disabled={this.props.disabled}
