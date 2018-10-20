@@ -8,10 +8,17 @@ import SaveBtn from '../../save/save.jsx'
     cart: store.cart,
     client: store.clients.clientSelected.client,
     user: store.send.user,
-    currencySymbol: store.currency.symbolSelected
+    currencySymbol: store.currency.symbolSelected,
+    presaleType: store.send.presale_type,
+    advanceAmount: store.send.advance_amount
   }
 })
 export default class PaySideBar extends React.Component {
+
+  updateAdvanceAmount(ev) {
+    const value = ev.target.value
+    this.props.dispatch({type: 'SET_ADVANCE_AMOUNT', payload: value})
+  }
 
   render() {
     const symbol = this.props.currencySymbol
@@ -24,13 +31,22 @@ export default class PaySideBar extends React.Component {
       ? 'send-tag tag-button enable'
       : 'send-tag tag-button'
 
+    const advanceRow = this.props.presaleType == 'NS_RESERVE'
+      ? <div className='send-side-bar-nsadvance'>
+        <div className='send-side-bar-nsadvance-tag'>
+          ADELANTO:
+        </div>
+        <input value={this.props.advanceAmount} onChange={this.updateAdvanceAmount.bind(this)} type='number' className='send-side-bar-nsadvance-input' />
+      </div>
+      : ''
+
     return <div className='send-side-bar'>
       <div className='send-method-body-header'>
         <span>Resumen</span>
       </div>
 
       <div className='send-method-body-content'>
-
+        {advanceRow}
         <div className='send-tag left'>
           TOTAL :</div>
         <div className='send-tag right'>

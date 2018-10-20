@@ -44,6 +44,10 @@ export default class Buttons extends React.Component {
   showQuotationsPanel() {
     this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
   }
+  saveNSReserve() {
+    this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'NS_RESERVE'})
+    this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+  }
   newSale() {
     // window.location.reload()
     window.location.href = '/seller'
@@ -74,6 +78,22 @@ export default class Buttons extends React.Component {
       ? <button
         disabled={this.props.disabled}
         onClick={this.saveReserve.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Guardar Reserva
+        <span>
+          <i className='fa fa-save' />
+        </span>
+      </button>
+      : ''
+    const nsreserveBtn = this.props.globalConf.useNSReserves
+      ? <button
+        disabled={this.props.disabled}
+        onClick={this.saveNSReserve.bind(this)}
         style={{
           'height': '48px',
           'width': '49%',
@@ -139,6 +159,7 @@ export default class Buttons extends React.Component {
 
     const extraButtons = <div>
       {reserveBtn}
+      {nsreserveBtn}
       {proformaBtn}
       {earningsBtn}
       {quotationsBtn}

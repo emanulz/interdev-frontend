@@ -4,12 +4,29 @@ const stateConst = {
   profile: {},
   userCode: '',
   userPin: '',
-  presale_type: 'REGULAR'
+  presale_type: 'REGULAR',
+  advance_amount: ''
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'SET_ADVANCE_AMOUNT':
+    {
+      return {
+        ...state,
+        advance_amount: action.payload
+      }
+    } // case
+
+    case 'CLEAR_ADVANCE_AMOUNT':
+    {
+      return {
+        ...state,
+        advance_amount: ''
+      }
+    } // case
 
     case 'SHOW_SEND_PANEL':
     {

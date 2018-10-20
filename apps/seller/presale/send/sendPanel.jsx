@@ -22,10 +22,13 @@ export default class SendPanel extends React.Component {
       : 'send-panel'
     let presaleTypeText = 'Enviar a Caja'
     if (this.props.presaleType == 'RESERVE') {
-      presaleTypeText = 'Guardar Apartado'
+      presaleTypeText = 'Guardar Reserva'
     }
     if (this.props.presaleType == 'QUOTING') {
       presaleTypeText = 'Guardar Proforma'
+    }
+    if (this.props.presaleType == 'NS_RESERVE') {
+      presaleTypeText = 'Guardar Apartado'
     }
 
     return <div className={isVisible}>
