@@ -59,11 +59,11 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-user' />
               Cuentas por cobrar</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/credits/payment'>
               <span className='fa fa-money' />
               Pago a facturas</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/credits/payments'>
               <span className='fa fa-money' />
