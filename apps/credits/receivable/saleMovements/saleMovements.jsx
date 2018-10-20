@@ -5,15 +5,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { setItem } from '../../../../utils/api'
 import {getSaleMovements} from '../../../../utils/getSaleMovements'
+import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
     movements: store.saleMovements.saleMovements,
-    sale: store.saleMovements.saleActive
+    sale: store.saleMovements.saleActive,
+    presale: store.saleMovements.presaleActive
   }
 })
 
-export default class MovementsList extends React.Component {
+class MovementsList extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'CLEAR_SALE', payload: ''})
@@ -21,23 +23,61 @@ export default class MovementsList extends React.Component {
 
     const lookUp = this.props.location.pathname.split('/').pop()
 
-    const kwargs = {
-      lookUpField: 'consecutive',
-      url: '/api/saleslist/',
-      lookUpValue: lookUp,
-      dispatchType: 'SET_SALE',
-      dispatchType2: 'SET_SALE_OLD',
-      dispatchErrorType: 'SALE_NOT_FOUND',
-      lookUpName: 'Numéro de factura',
-      modelName: 'Ventas'
+    const firstChar = lookUp.charAt(0)
+    const lookUpToGet = lookUp.substr(1)
+    let kwargs = {}
+
+    if (firstChar == 'v') {
+      kwargs = {
+        lookUpField: 'consecutive',
+        url: '/api/saleslist/',
+        lookUpValue: lookUpToGet,
+        dispatchType: 'SET_SALE',
+        dispatchType2: '',
+        dispatchErrorType: 'SALE_NOT_FOUND',
+        history: this.props.history,
+        lookUpName: 'Número de consectivo',
+        modelName: 'Ventas'
+      }
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(setItem(kwargs))
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(setItem(kwargs))
+
+    if (firstChar == 'a') {
+      kwargs = {
+        lookUpField: 'consecutive',
+        url: '/api/presaleslist/',
+        lookUpValue: lookUpToGet,
+        dispatchType: 'SET_PRESALE',
+        dispatchType2: '',
+        dispatchErrorType: 'PRESALE_NOT_FOUND',
+        history: this.props.history,
+        lookUpName: 'Número de consectivo',
+        modelName: 'Apartados'
+      }
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(setItem(kwargs))
+    }
+
   }
 
   componentWillReceiveProps(nextprops) {
 
     if (nextprops.sale.id != '0000000000' && nextprops.sale.id != this.props.sale.id) {
+
+      const id = nextprops.sale.id
+      const kwargs = {
+        url: '/api/creditmovementslist',
+        saleId: id,
+        successType: 'FETCH_SALE_MOVEMENTS_FULFILLED',
+        errorType: 'FETCH_SALE_MOVEMENTS_REJECTED'
+      }
+
+      this.props.dispatch(getSaleMovements(kwargs))
+
+    }
+
+    if (nextprops.presale.id != '0000000000' && nextprops.presale.id != this.props.presale.id) {
 
       const id = nextprops.sale.id
       const kwargs = {
@@ -135,3 +175,6 @@ export default class MovementsList extends React.Component {
     </div>
   }
 }
+
+// EXPORT THE CLASS WITH ROUTER
+export default withRouter(MovementsList)

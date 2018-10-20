@@ -2,9 +2,14 @@ const saleModel = {
   id: '0000000000'
 }
 
+const presaleModel = {
+  id: '0000000000'
+}
+
 const stateConst = {
   sales: [],
   saleActive: saleModel,
+  presaleActive: presaleModel,
   saleMovements: []
 }
 
@@ -42,6 +47,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         saleActive: saleModel
+      }
+    } // case
+
+    case 'SET_PRESALE':
+    {
+      return {
+        ...state,
+        presaleActive: action.payload
+      }
+    } // case
+
+    case 'CLEAR_PRESALE':
+    {
+      return {
+        ...state,
+        presaleActive: presaleModel
       }
     } // case
 

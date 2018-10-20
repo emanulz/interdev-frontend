@@ -23,7 +23,7 @@ export function getSaleMovements(kwargs) {
 
   return function(dispatch) {
     axios.get(`${url}/?bill_id=${saleId}&limit=200`).then(function(response) {
-      console.log(`${url}/?bill_id=${saleId}&limit=200`)
+      // console.log(`${url}/?bill_id=${saleId}&limit=200`)
       dispatch({type: successType, payload: response.data.results})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {

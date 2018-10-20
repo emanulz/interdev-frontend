@@ -63,6 +63,13 @@ export default class List extends React.Component {
         text: 'Facturas Pendientes',
         textToRender: 'Ver Pendientes',
         type: 'textLink'
+      },
+      {
+        field: 'code',
+        text: 'Aplicar Pago',
+        textToRender: 'Pago a Facturas',
+        target: 'payment',
+        type: 'link_mask'
       }
     ]
 
