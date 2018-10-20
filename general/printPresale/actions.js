@@ -5,7 +5,6 @@ import alertify from 'alertifyjs'
 import axios from 'axios'
 
 export function loadPresaleToPrint(consecutive) {
-  console.log('HERRREEEEE PRINT PRESALE')
   const url = `/api/presales/?consecutive=${consecutive}`
 
   return function(dispatch) {

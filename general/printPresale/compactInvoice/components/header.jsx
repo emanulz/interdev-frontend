@@ -24,7 +24,12 @@ export default class Header extends React.Component {
       wasRestaurant = this.props.presale.presale_type == 'RESTAURANT'
     } catch (err) {}
 
-    const headertext = wasReserve ? 'Recibo' : wasQuoting ? 'Factura Proforma' : wasRestaurant ? 'Cuenta de restaurante' : 'Recibo de Preventa'
+    let wasNSReserve = false
+    try {
+      wasNSReserve = this.props.presale.presale_type == 'NS_RESERVE'
+    } catch (err) {}
+
+    const headertext = wasReserve ? 'Recibo' : wasQuoting ? 'Factura Proforma' : wasRestaurant ? 'Cuenta de restaurante' : wasNSReserve ? 'Recibo de Apartado' : 'Recibo de Preventa'
 
     // BILL DATA
     const profile = this.props.userProfile.profile

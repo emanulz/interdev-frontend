@@ -37,8 +37,6 @@ export default class SaveBtn extends React.Component {
       advance_amount: this.props.advanceAmount
     }
 
-    console.log('PRESALEE BEFORE SEND', presale)
-
     const creditMovement = {
       client_id: this.props.client.id,
       movement_type: 'CRED',
@@ -69,7 +67,7 @@ export default class SaveBtn extends React.Component {
       this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
-      if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING') {
+      if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING' || data.presale_type == 'NS_RESERVE') {
         this.props.dispatch(loadPresaleToPrint(data.consecutive))
       } else {
         alertify.alert('COMPLETADO', 'Preventa Enviada a Caja Correctamente')
