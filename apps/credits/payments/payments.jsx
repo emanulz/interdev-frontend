@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
 import alertify from 'alertifyjs'
 // import alertify from 'alertifyjs'
-import {getItemDispatch} from '../../../utils/api'
+import {setItem} from '../../../utils/api'
 import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
 import {savePayment} from './actions.js'
@@ -27,13 +27,22 @@ export default class Update extends React.Component {
 
     // Then fetch the elements of the model and dispatch to reducer
     // *******************************************************************
-    const clientsKwargs = {
-      url: '/api/clients/?limit=10000',
-      successType: 'FETCH_CLIENTS_FULFILLED',
-      errorType: 'FETCH_CLIENTS_REJECTED'
+    const lookUp = this.props.location.pathname.split('/').pop()
+
+    const kwargs = {
+      lookUpField: 'code',
+      url: '/api/clients/',
+      lookUpValue: lookUp,
+      dispatchType: 'SET_CLIENT',
+      dispatchType2: 'SET_CLIENT_OLD',
+      dispatchErrorType: 'CLIENT_NOT_FOUND',
+      lookUpName: 'código',
+      modelName: 'Clientes',
+      redirectUrl: '/admin/clients',
+      history: this.props.history
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(clientsKwargs))
+    this.props.dispatch(setItem(kwargs))
 
     // *******************************************************************
   }
@@ -42,8 +51,9 @@ export default class Update extends React.Component {
     if (nextprops.client.id != '0000000000' && nextprops.client.id != this.props.client.id) {
 
       const id = nextprops.client.id
+      const code = nextprops.client.code
       const kwargs = {
-        url: '/api/saleslist',
+        url: `/api/creditpaymentslist/get_client_bills/?code=${code}`,
         clientId: id,
         successType: 'FETCH_CLIENT_SALES_WITH_DEBT_FULFILLED',
         errorType: 'FETCH_CLIENT_SALES_WITH_DEBT_REJECTED'
@@ -91,7 +101,8 @@ export default class Update extends React.Component {
         bill_id: sale.id,
         sale: sale,
         amount: Math.abs(parseFloat(sale.balance)),
-        complete: true
+        complete: true,
+        type: sale.type
       }
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
 
@@ -111,7 +122,8 @@ export default class Update extends React.Component {
         bill_id: sale.id,
         sale: sale,
         amount: 0,
-        complete: false
+        complete: false,
+        type: sale.type
       }
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
 
@@ -128,38 +140,36 @@ export default class Update extends React.Component {
 
   paymentTableItem(sale) {
 
-    const movClass = sale.type == 'CREDIT' ? 'credit' : 'debit'
     const date = formatDate(sale.created)
-    const balance = Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)) : 0
-    if (balance > 0) {
-      return <tr className={`${movClass}`} key={sale.id}>
-        <td>{sale.consecutive}</td>
-        <td>{date}</td>
-        <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
-        <td>₡ {Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)).formatMoney(2, ',', '.') : 0}</td>
-        <td>
-          <input
-            id={`${sale.id}-checkbox-complete`}
-            type='checkbox'
-            onClick={this.paySaleComplete.bind(this, sale)}
-          />
-        </td>
-        <td>
-          <input
-            id={`${sale.id}-checkbox-partial`}
-            type='checkbox'
-            onClick={this.paySaleAmount.bind(this, sale)}
-          />
-        </td>
-        <td>
-          <input
-            id={`${sale.id}-input-partial`}
-            type='number'
-            onChange={this.setPaySaleAmount.bind(this, sale)}
-          />
-        </td>
-      </tr>
-    }
+    const typeText = sale.type == 'SALE' ? 'FACTURA DE VENTA' : sale.type == 'PRESALE' ? 'APARTADO' : ''
+    return <tr key={`${sale.consecutive}_${sale.type}`}>
+      <td>{sale.consecutive}</td>
+      <td>{date}</td>
+      <td>₡ {sale.sale_total ? parseFloat(sale.sale_total).formatMoney(2, ',', '.') : 0}</td>
+      <td>₡ {Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)).formatMoney(2, ',', '.') : 0}</td>
+      <td>{typeText}</td>
+      <td>
+        <input
+          id={`${sale.id}-checkbox-complete`}
+          type='checkbox'
+          onClick={this.paySaleComplete.bind(this, sale)}
+        />
+      </td>
+      <td>
+        <input
+          id={`${sale.id}-checkbox-partial`}
+          type='checkbox'
+          onClick={this.paySaleAmount.bind(this, sale)}
+        />
+      </td>
+      <td>
+        <input
+          id={`${sale.id}-input-partial`}
+          type='number'
+          onChange={this.setPaySaleAmount.bind(this, sale)}
+        />
+      </td>
+    </tr>
   }
 
   saveMovements() {
@@ -331,6 +341,7 @@ export default class Update extends React.Component {
               <th>Fecha</th>
               <th>Total</th>
               <th>Deuda</th>
+              <th>Tipo</th>
               <th>Completa</th>
               <th>Otro</th>
               <th>Monto</th>

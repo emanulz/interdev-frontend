@@ -13,7 +13,7 @@ const routes = <div className='heigh100'>
 
   <Route exact path='/credits' component={Home} />
   <Route path='/credits/receivable' component={Receivable} />
-  <Route exact path='/credits/payment' component={Payment} />
+  <Route exact path='/credits/payment/:code' component={Payment} />
   <Route exact path='/credits/payments' component={PaymentList} />
   <Route exact path='/credits/payments/:payment' component={PaymentItem} />
 

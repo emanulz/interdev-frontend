@@ -63,7 +63,7 @@ export default class UnpaidSales extends React.Component {
     const date = formatDate(item.created)
     const typeText = item.type == 'SALE' ? 'FACTURA DE VENTA' : item.type == 'PRESALE' ? 'APARTADO' : ''
     const typeChar = item.type == 'SALE' ? 'v' : item.type == 'PRESALE' ? 'a' : ''
-    return <tr key={item.consecutive}>
+    return <tr key={`${item.consecutive}_${item.type}`}>
       <td>{item.consecutive}</td>
       <td>{date}</td>
       <td>₡ {item.sale_total ? parseFloat(item.sale_total).formatMoney(2, ',', '.') : 0}</td>
