@@ -68,7 +68,6 @@ export function getClient(kwargs, resolve, reject) {
   const lookUpValue = kwargs.lookUpValue
   const lookUpField = kwargs.lookUpField
   const url = kwargs.url
-
   axios.get(`${url}?${lookUpField}=${lookUpValue}`).then(function(response) {
 
     if (response.data.count) {
@@ -127,8 +126,11 @@ export function getFullClientByCode(code, dispatch) {
       try {
         if (client.client.code != '00') {
           dispatch({type: 'SET_UPDATE_CLIENT', payload: client.client})
+          dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'FACTURA'})
+
         } else {
           dispatch({type: 'CLEAR_UPDATE_CLIENT', payload: ''})
+          dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'TIQUETE'})
         }
       } catch (err) {}
     }).catch((err) => {
@@ -163,8 +165,10 @@ export function getFullClientById(id, dispatch) {
     try {
       if (client.client.code != '00') {
         dispatch({type: 'SET_UPDATE_CLIENT', payload: client.client})
+        dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'FACTURA'})
       } else {
         dispatch({type: 'CLEAR_UPDATE_CLIENT', payload: ''})
+        dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'TIQUETE'})
       }
     } catch (err) {}
   }).catch((err) => {
