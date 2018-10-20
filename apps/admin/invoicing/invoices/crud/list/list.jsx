@@ -165,7 +165,7 @@ export default class List extends React.Component {
           placeholder='Ingrese un texto para buscar...'
         />
       </div> */}
-      <SearchAdmin model='electronicTicket' namespace='adminSearch' />
+      <SearchAdmin model='electronic_invoice' namespace='adminSearch' />
       {paginationDiv}
       {/* <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/clients/' successType='FETCH_EINVOICES_FULFILLED' errorType='FETCH_EINVOICES_REJECTED' />
