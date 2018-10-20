@@ -68,7 +68,7 @@ export default class Update extends React.Component {
     this.props.dispatch({type: 'SET_CREDIT_PAY_METHOD', payload: ev.target.value})
   }
 
-  selectClient(event) {
+  selectClientDEPRECATED(event) {
     event.preventDefault()
     const target = event.target
     const value = target.value
@@ -240,15 +240,7 @@ export default class Update extends React.Component {
     // ********************************************************************
     // CLIENTS FOR SELECT
     // ********************************************************************
-    const clients = this.props.clients
-
-    const clientsWithCredit = clients.length
-      ? clients.filter(client => client.has_credit)
-      : []
-
-    const clientsSelect = clientsWithCredit.map(client => {
-      return {text: `${client.code} - ${client.name} ${client.last_name}`, id: client.id}
-    })
+    const client = this.props.client
 
     const sales = this.props.clientActiveSalesWithDebt
     sales.sort((a, b) => {
@@ -281,18 +273,8 @@ export default class Update extends React.Component {
       <h1>Registrar pago a Facturas:</h1>
 
       <div className='payment-header'>
-        <div className='payment-header-select'>
-          <Select2
-            data={clientsSelect}
-            onSelect={this.selectClient.bind(this)}
-            value={this.props.client.id}
-            className='form-control'
-            onUnselect={this.unselectClient.bind(this)}
-            options={{
-              placeholder: 'Elija un cliente...',
-              allowClear: true
-            }}
-          />
+        <div className='payment-header-client'>
+          <h1>CLIENTE: {client.code} - {client.name} {client.last_name}</h1>
         </div>
         <div className='payment-header-container'>
           <div className='payment-header-container-totals'>
