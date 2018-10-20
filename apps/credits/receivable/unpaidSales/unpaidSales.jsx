@@ -44,8 +44,9 @@ export default class UnpaidSales extends React.Component {
     if (nextprops.client.id != '0000000000' && nextprops.client.id != this.props.client.id) {
 
       const id = nextprops.client.id
+      const code = nextprops.client.code
       const kwargs = {
-        url: '/api/saleslist',
+        url: `/api/creditpaymentslist/get_client_bills/?code=${code}`,
         clientId: id,
         successType: 'FETCH_CLIENT_SALES_WITH_DEBT_FULFILLED',
         errorType: 'FETCH_CLIENT_SALES_WITH_DEBT_REJECTED'
@@ -57,22 +58,21 @@ export default class UnpaidSales extends React.Component {
 
   }
 
-  statementItem(sale, client) {
+  getPendingItem(item, client) {
 
-    const movClass = sale.type == 'CRED' ? 'credit' : 'debit'
-    // const date = moment(sale.created).format('DD/MM/YYYY')
-    const date = formatDate(sale.created)
-    const balance = sale.balance ? sale.balance : 0
-    if (balance > 0) {
-      return <tr className={`${movClass}`} key={sale.id}>
-        <td>{sale.consecutive}</td>
-        <td>{date}</td>
-        <td>₡ {sale.cart.cartTotal ? sale.cart.cartTotal.formatMoney(2, ',', '.') : 0}</td>
-        {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}
-        <td>₡ {sale.balance ? sale.balance.formatMoney(2, ',', '.') : 0}</td>
-        <td><Link to={`/credits/receivable/${client.code}/${sale.consecutive}`}>Ver Movimientos</Link></td>
-      </tr>
-    }
+    const date = formatDate(item.created)
+    const typeText = item.type == 'SALE' ? 'FACTURA DE VENTA' : item.type == 'PRESALE' ? 'APARTADO' : ''
+    const typeChar = item.type == 'SALE' ? 'v' : item.type == 'PRESALE' ? 'a' : ''
+    return <tr key={item.consecutive}>
+      <td>{item.consecutive}</td>
+      <td>{date}</td>
+      <td>₡ {item.sale_total ? parseFloat(item.sale_total).formatMoney(2, ',', '.') : 0}</td>
+      {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}
+      <td>₡ {item.balance ? parseFloat(item.balance).formatMoney(2, ',', '.') : 0}</td>
+      <td>{typeText}</td>
+      <td><Link to={`/credits/receivable/${client.code}/${typeChar}${item.consecutive}`}>Ver Movimientos</Link></td>
+    </tr>
+
   }
 
   // Render the product
@@ -86,10 +86,10 @@ export default class UnpaidSales extends React.Component {
 
     const rows = sales.length
       ? sales.map(sale => {
-        return this.statementItem(sale, client)
+        return this.getPendingItem(sale, client)
       })
       : <tr>
-        <td>NO HAY MOVIMIENTOS</td>
+        <td>NO HAY PENDIENTES</td>
       </tr>
 
     return <div className='unpaidSales'>
@@ -124,6 +124,7 @@ export default class UnpaidSales extends React.Component {
               <th>Monto</th>
               {/* <th>Abonos</th> */}
               <th>Deuda</th>
+              <th>Tipo</th>
               <th>Movimientos</th>
             </tr>
           </thead>

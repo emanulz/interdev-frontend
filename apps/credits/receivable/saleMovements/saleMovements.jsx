@@ -46,7 +46,7 @@ class MovementsList extends React.Component {
     if (firstChar == 'a') {
       kwargs = {
         lookUpField: 'consecutive',
-        url: '/api/presaleslist/',
+        url: '/api/presales/',
         lookUpValue: lookUpToGet,
         dispatchType: 'SET_PRESALE',
         dispatchType2: '',
@@ -79,7 +79,7 @@ class MovementsList extends React.Component {
 
     if (nextprops.presale.id != '0000000000' && nextprops.presale.id != this.props.presale.id) {
 
-      const id = nextprops.sale.id
+      const id = nextprops.presale.id
       const kwargs = {
         url: '/api/creditmovementslist',
         saleId: id,
@@ -112,9 +112,10 @@ class MovementsList extends React.Component {
     const movements = this.props.movements
 
     const sale = this.props.sale
+    const presale = this.props.presale
     let debits = 0
     let credits = 0
-    const balance = Math.abs(parseFloat(sale.balance)) || 0
+    const balance = sale.balance ? Math.abs(parseFloat(sale.balance)) : presale.balance ? Math.abs(parseFloat(presale.balance)) : 0
 
     const rows = movements.length
       ? movements.map(movement => {
