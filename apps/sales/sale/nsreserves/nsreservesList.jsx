@@ -1,14 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadReserve, getPendingReserves, setReserveNull} from './actions.js'
+import {loadNSReserve, getPendingNSReserves, setNSReserveNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
-  return {reserves: store.reserves.reserves, isVisible: store.reserves.isVisible}
+  return {nsreserves: store.nsreserves.nsreserves, isVisible: store.nsreserves.isVisible}
 })
-export default class PresalesPanel extends React.Component {
+export default class NSReservesPanel extends React.Component {
 
   componentWillMount() {
     const kwargs = {
@@ -20,15 +20,15 @@ export default class PresalesPanel extends React.Component {
       filter2: 'False',
       filterField3: 'is_null',
       filter3: 'False',
-      successType: 'FETCH_RESERVES_FULFILLED',
-      errorType: 'FETCH_RESERVES_REJECTED'
+      successType: 'FETCH_NSRESERVES_FULFILLED',
+      errorType: 'FETCH_NSRESERVES_REJECTED'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getPendingReserves(kwargs))
+    this.props.dispatch(getPendingNSReserves(kwargs))
   }
 
   hidePanel() {
-    this.props.dispatch({type: 'HIDE_RESERVES_PANEL', payload: -1})
+    this.props.dispatch({type: 'HIDE_NSRESERVES_PANEL', payload: -1})
   }
 
   loadPresaleItem(id, ev) {
@@ -37,11 +37,11 @@ export default class PresalesPanel extends React.Component {
     const url = `/api/presales/${id}`
     const loadPromise = new Promise((resolve, reject) => {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      this.props.dispatch(loadReserve(url, resolve, reject))
+      this.props.dispatch(loadNSReserve(url, resolve, reject))
     })
     loadPromise.then((data) => {
       console.log(data)
-      this.props.dispatch({type: 'HIDE_RESERVES_PANEL', payload: -1})
+      this.props.dispatch({type: 'HIDE_NSRESERVES_PANEL', payload: -1})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       data.cart = JSON.parse(data.cart)
       data.client = JSON.parse(data.client)
@@ -54,11 +54,12 @@ export default class PresalesPanel extends React.Component {
       getFullClientById(data.client.id, _this.props.dispatch)
       _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
-      _this.props.dispatch({type: 'SET_RESERVE_ID', payload: data.id})
+      _this.props.dispatch({type: 'SET_NSRESERVE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
       _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
-      _this.props.dispatch({type: 'RESERVE_LOADED', payload: data.user})
+      _this.props.dispatch({type: 'NSRESERVE_LOADED', payload: data.user})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
+      this.loadAdvances(data)
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
@@ -72,7 +73,7 @@ export default class PresalesPanel extends React.Component {
   setNullSinglePresale(id, consecutive) {
     alertify.confirm(`ANULAR PREVENTA #${consecutive}`, `¿Desea Anular la Preventa #${consecutive}? Esta acción no se puede deshacer.`, function() {
       const reopenWOPromise = new Promise((resolve, reject) => {
-        setReserveNull(id, resolve, reject)
+        setNSReserveNull(id, resolve, reject)
       })
       reopenWOPromise.then((data) => {
         alertify.alert('COMPLETADO', `Preventa Anulada correctamente`, function() { location.reload() })
@@ -88,18 +89,25 @@ export default class PresalesPanel extends React.Component {
     })
   }
 
+  loadAdvances(presale) {
+    console.log('PRESALE', presale)
+    const advancesAmount = parseFloat(presale.cart.cartTotal) - parseFloat(presale.balance)
+    const advance = {'type': 'CSHA', 'amount': advancesAmount, 'presaleId': presale.id}
+    this.props.dispatch({type: 'ADD_CASH_ADVANCE', payload: advance})
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
-      ? 'reserves-panel is-visible'
-      : 'reserves-panel'
+      ? 'nsreserves-panel is-visible'
+      : 'nsreserves-panel'
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
-    const reserves = this.props.reserves
+    const nsreserves = this.props.nsreserves
 
-    const itemsToRender = reserves.map(reserve => {
+    const itemsToRender = nsreserves.map(nsreserve => {
       let extras = {
         notes: '',
         client: {
@@ -109,31 +117,31 @@ export default class PresalesPanel extends React.Component {
         }
       }
       try {
-        extras = reserve.extras ? JSON.parse(reserve.extras) : extras
+        extras = nsreserve.extras ? JSON.parse(nsreserve.extras) : extras
       } catch (err) { console.log('ERROR PARSE', err) }
-      const clientName = determinClientName(reserve.client, extras.client)
-      const clientLastName = determinClientLastName(reserve.client, extras.client)
-      const presellerName = reserve.user.first_name
-        ? `${reserve.user.first_name} ${reserve.user.last_name}`
-        : `${reserve.user.username}`
-      return <tr key={reserve.id}>
-        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, reserve.id)} className='fa fa-download' /></td>
-        <td>{reserve.consecutive}</td>
-        <td>{`${formatDateTimeAmPm(reserve.created)}`}</td>
+      const clientName = determinClientName(nsreserve.client, extras.client)
+      const clientLastName = determinClientLastName(nsreserve.client, extras.client)
+      const presellerName = nsreserve.user.first_name
+        ? `${nsreserve.user.first_name} ${nsreserve.user.last_name}`
+        : `${nsreserve.user.username}`
+      return <tr key={nsreserve.id}>
+        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, nsreserve.id)} className='fa fa-download' /></td>
+        <td>{nsreserve.consecutive}</td>
+        <td>{`${formatDateTimeAmPm(nsreserve.created)}`}</td>
         <td>{`${clientName} ${clientLastName}`}</td>
         <td>{presellerName}</td>
-        <td>₡ {parseFloat(reserve.cart.cartTotal).formatMoney(2, ',', '.')}</td>
-        <td className='loadRow'><i className='fa fa fa-trash' /></td>
-        {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, reserve.id, reserve.consecutive)} className='fa fa fa-trash' /></td> */}
+        <td>₡{parseFloat(nsreserve.cart.cartTotal).formatMoney(2, ',', '.')}</td>
+        <td>₡{parseFloat(nsreserve.balance).formatMoney(2, ',', '.')}</td>
+        {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, nsreserve.id, nsreserve.consecutive)} className='fa fa fa-trash' /></td> */}
       </tr>
     })
 
     return <div className={isVisible}>
-      <div className='reserves-panel-header'>
-        RESERVAS SIN FACTURAR
+      <div className='nsreserves-panel-header'>
+        APARTADOS SIN FACTURAR
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
-      <div className='reserves-panel-container'>
+      <div className='nsreserves-panel-container'>
         <div className='col-xs-12'>
           <table className='table'>
             <thead>
@@ -144,7 +152,7 @@ export default class PresalesPanel extends React.Component {
                 <td>Cliente</td>
                 <td>Vendedor</td>
                 <td>Monto</td>
-                <td>Anular</td>
+                <td>Por Pagar</td>
               </tr>
             </thead>
             <tbody>
