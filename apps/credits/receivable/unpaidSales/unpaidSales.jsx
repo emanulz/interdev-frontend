@@ -94,7 +94,7 @@ export default class UnpaidSales extends React.Component {
 
     return <div className='unpaidSales'>
 
-      <h1>REPORTE DE VENTAS PENDIENTES DE PAGO</h1>
+      <h1>REPORTE DE TRANSACCIONES PENDIENTES DE PAGO</h1>
 
       <div className='unpaidSales-header'>
         <div className='unpaidSales-header-tittle'>

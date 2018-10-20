@@ -66,20 +66,32 @@ export default class List extends React.Component {
     const getTotal = (item) => {
       function getTotalToShow(item) {
         try {
-          const obj = JSON.parse(item)
-          if (obj.currency == 'CRC') {
-            return `₡${parseFloat(obj.total_doc).toFixed(2)}`
+          if (item.currency == 'CRC') {
+            return `₡${parseFloat(item.total_doc).toFixed(2)}`
           }
-          if (obj.currency == 'USD') {
-            return `$${parseFloat(obj.total_doc).toFixed(2)}`
+          if (item.currency == 'USD') {
+            return `$${parseFloat(item.total_doc).toFixed(2)}`
           }
-          return `${parseFloat(obj.total_doc).toFixed(2)}`
+          return `${parseFloat(item.total_doc).toFixed(2)}`
         } catch (err) {
           console.log('ERRROR', err)
           return '0'
         }
       }
       return getTotalToShow(item)
+    }
+
+    const getEmiterName = (item) => {
+      function getEmiterNameInner(item) {
+        try {
+          const obj = JSON.parse(item.emisor)
+          return `${obj.Nombre}`
+        } catch (err) {
+          console.log('ERRROR', err)
+          return 'SIN NOMBRE'
+        }
+      }
+      return getEmiterNameInner(item)
     }
 
     const headerOrder = [
@@ -92,7 +104,9 @@ export default class List extends React.Component {
         text: 'Fecha Aceptado',
         type: 'date'
       }, {
+        type: 'function_element',
         field: 'emisor',
+        worker_method: getEmiterName,
         text: 'Emisor'
       }, {
         field: 'doc_emission_date',
@@ -101,7 +115,7 @@ export default class List extends React.Component {
       }, {
         field: 'total_doc',
         text: 'Monto',
-        type: 'function_process',
+        type: 'function_element',
         worker_method: getTotal
       }, {
         field: 'process_status',
