@@ -156,7 +156,7 @@ export default class List extends React.Component {
       <div className='admin-list-header'>
         <h1>Listado de Notas de Crédito Electrónicas:</h1>
       </div>
-      <SearchAdmin model='electronicTicket' namespace='adminSearch' />
+      <SearchAdmin model='electronic_debit_note' namespace='adminSearch' />
       {paginationDiv}
       {content}
     </div>
