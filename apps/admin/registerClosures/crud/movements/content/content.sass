@@ -1,11 +1,31 @@
 .register-movements-content
   padding: 20px
-  & h1
-    font-size: 22px
-    font-weight: bold
-    color: #ffa100
-    height: 20px
+  font-family: 'Source Sans Pro', sans-serif
   & .admin-table
     flex-grow: 1
+    font-family: 'Source Sans Pro', sans-serif
+  &-header
+    & h1
+      font-size: 20px
+      font-weight: bold
+  &-data
+    display: flex
+    flex-flow: row
+    &-table
+      width: 50%
+      & table
+        margin-top: 10px
+        font-size: 18px !important
+        & th
+          background-color: $PRIMARY-COLOR
+          color: white
+          height: 35px
+          line-height: 35px
+          width: 250px
+          padding-left: 10px
+        & td
+          padding-left: 10px
+          height: 35px
+          line-height: 35px
     
 

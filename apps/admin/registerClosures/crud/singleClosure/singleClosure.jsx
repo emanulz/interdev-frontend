@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import { getItemByIDDispatch } from '../../../../../utils/api.js'
 import {loadRegisterClosureToPrint} from '../../../../../general/printRegisterClosure/actions.js'
 import { withRouter } from 'react-router-dom'
+import {formatDateTimeAmPm} from '../../../../../utils/formatDate.js'
 
 @connect((store) => {
   return {
@@ -164,13 +165,28 @@ class SingleClosure extends React.Component {
       } // case
     }
 
-    return <div className='create heigh100'>
-      <div className='create-edit-header'>
+    return <div className='create heigh100 singleClosure'>
+      <div className='singleClosure-header'>
         <h1>CIERRE DE CAJA# {code}</h1>
       </div>
 
-      <div className='create-edit-header'>
-        <h1>CAJERO: {cashierName}</h1>
+      <div className='singleClosure-data'>
+        <div className='singleClosure-data-table'>
+          <table className='table'>
+            <tr>
+              <th>Cajero:</th>
+              <td>{cashierName}</td>
+            </tr>
+            <tr>
+              <th>Apertura:</th>
+              <td>{formatDateTimeAmPm(this.props.registerClosure.created)}</td>
+            </tr>
+            <tr>
+              <th>Último Movimiento:</th>
+              <td>{formatDateTimeAmPm(this.props.registerClosure.updated)}</td>
+            </tr>
+          </table>
+        </div>
       </div>
 
       {content}

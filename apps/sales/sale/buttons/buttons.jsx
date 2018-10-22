@@ -139,7 +139,7 @@ export default class Buttons extends React.Component {
       </button>
       : ''
 
-    const nsreservesBtn = this.props.useReserves
+    const nsreservesBtn = this.props.useNSReserves
       ? <button
         disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isReserveLoaded}
         onClick={this.showNSReservesPanel.bind(this)}

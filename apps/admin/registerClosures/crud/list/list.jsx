@@ -53,6 +53,14 @@ export default class List extends React.Component {
         text: 'Abierta?',
         type: 'bool'
       }, {
+        field: 'created',
+        text: 'Fecha de Apertura',
+        type: 'date'
+      }, {
+        field: 'updated',
+        text: 'Fecha de Último movimiento',
+        type: 'date'
+      }, {
         field: 'closure_money_crc_system_cash',
         text: 'Cierre Sistema Efectivo Colones',
         type: 'price'
