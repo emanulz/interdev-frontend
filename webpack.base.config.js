@@ -52,7 +52,7 @@ const jsConfig = Object.assign({}, config, {
       name: 'vendors',
       // (the commons chunk name)
 
-      filename: 'vendors.js'
+      filename: 'vendors-[hash].js'
       // (the filename of the commons chunk)
 
       // minChunks: 3,
