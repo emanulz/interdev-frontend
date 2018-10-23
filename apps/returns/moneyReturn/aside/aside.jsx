@@ -14,7 +14,8 @@ import {getItemDispatch} from '../../../../utils/api.js'
     returnMethod: store.moneyReturn.return_method,
     registerClosures: store.moneyReturn.registerClosures,
     registerClosureSelected: store.moneyReturn.registerClosureSelected,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    user: store.user.user
   }
 })
 export default class Aside extends React.Component {
@@ -51,7 +52,7 @@ export default class Aside extends React.Component {
       return <option key={item.id} value={item.id}>{`${item.cashier_id} - ${item.cashier_name}`}</option>
     })
     closures.splice(0, 0, <option key='blank' value='' />)
-    const selectRC = this.props.config.AdminsCanChooseRCInReturns
+    const selectRC = this.props.config.AdminsCanChooseRCInReturns && this.props.user.is_superuser
       ? <div className='moneyReturn-aside-content-method'>
         <h1>Cierre de Caja</h1>
         <select onChange={this.changeRegisterClosure.bind(this)} className='form-control' name='return_method'
