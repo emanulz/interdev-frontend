@@ -24,6 +24,7 @@ import actions from './actionList/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
 import presales from '../sales/sale/presales/reducer.js'
+import workOrders from '../sales/sale/workOrders/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -49,5 +50,6 @@ export default combineReducers({
   actions,
   currency,
   priceList,
-  presales
+  presales,
+  workOrders
 })

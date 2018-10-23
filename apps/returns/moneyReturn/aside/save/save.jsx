@@ -15,7 +15,8 @@ import { withRouter } from 'react-router-dom'
     sale: store.sale.saleActive,
     returnItems: store.returnCart.returnItems,
     returnCart: store.returnCart,
-    returnMethod: store.moneyReturn.return_method
+    returnMethod: store.moneyReturn.return_method,
+    registerClosureSelected: store.moneyReturn.registerClosureSelected
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -57,7 +58,8 @@ class SaveBtn extends React.Component {
     const returnItem = {
       'return_list': JSON.stringify(returnList),
       'return_method': returnMethod,
-      'destination_warehouse_id': warehouse
+      'destination_warehouse_id': warehouse,
+      'register_closure_id': this.props.registerClosureSelected
     }
 
     const kwargs = {
@@ -84,13 +86,15 @@ class SaveBtn extends React.Component {
       // NAVIGATE TO THE RETURNS PAGE
       _this.props.history.push('/returns')
     }).catch((err) => {
-      console.log(err.response.data)
       if (err.response) {
-        alertify.alert('ERROR', `Hubo un error al guardar la devolución, error: ${err.response.data}`)
+        console.log(err.response.data)
+        alertify.alert('Error', `Hubo un error al guardar la devolución, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
       } else {
-        alertify.alert('ERROR', `Hubo un error al guardar la devolución, error: ${err}`)
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `Hubo un error al guardar la devolución, ERROR: ${err}.`)
       }
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
 
   }
