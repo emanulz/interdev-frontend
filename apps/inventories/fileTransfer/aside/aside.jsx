@@ -27,15 +27,15 @@ export default class Aside extends React.Component {
 
   // Main Layout
   render () {
-    const symbol = this.props.currencySymbol
+    const symbol = "₡"
     const asideClass = this.props.fullWidth ? 'sale-aside collapsed' : 'sale-aside'
     const asideContainerClass = this.props.fullWidth ? 'sale-aside-content collapsed' : 'sale-aside-content'
     return <div className={asideClass}>
       <div className={asideContainerClass}>
         {/*<SaleInfo />*/}
         <Client />
-        <PriceList />
-        <Currency />
+        {/*<PriceList />*/}
+        {/*<Currency />*/}
         {/*<Totals /> */}
         <Notes />
         {/*<Buttons />*/}

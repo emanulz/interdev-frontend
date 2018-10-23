@@ -1,5 +1,8 @@
 const stateConst = {
-    fullWidth: false
+    fullWidth: false,
+    clientVisible: false,
+    priceListVisible: false,
+    showCurrency: false
 }
 
 export default function reducer(state=stateConst, action) {
