@@ -10,6 +10,7 @@ import Tracking from '../tracking/main.jsx'
 import PhysicalTake from '../physicalTake/main.jsx'
 import TakeMovements from '../takeMovements/main.jsx'
 import CheckTakeMovements from '../checkTakeMovements/main.jsx'
+import MakeMassFileTransfer  from '../fileTransfer/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -20,6 +21,7 @@ const routes = <div className='heigh100'>
   <Route path='/inventories/physical' component={PhysicalTake} />
   <Route path='/inventories/takemovements' component={TakeMovements} />
   <Route path='/inventories/checktakemovements' component={CheckTakeMovements} />
+  <Route path='/inventories/makeFileTransfer' component={MakeMassFileTransfer} />
 
 </div>
 
