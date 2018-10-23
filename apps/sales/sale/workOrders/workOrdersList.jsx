@@ -143,33 +143,79 @@ export default class WorkOrdersPanel extends React.Component {
     const _this = this
     for (const item in partRequest) {
 
-      const product = JSON.parse(partRequest[item].product)
-      const price1 = product.price1 ? product.price1 : product.price
-      product.price1 = price1
-      const lineData = {
-        default_discount: '0',
-        id: product.id,
-        max_discount: '0',
-        product: product,
-        table_price: '0',
-        target_price_list: 'price1'
-      }
-      try {
-        _this.props.dispatch(
-          productSelected(
-            lineData,
-            parseFloat(partRequest[item].amount),
-            _this.props.itemsInCart,
-            _this.props.client,
-            _this.props.warehouse_id,
-            false,
-            _this.props.priceListSelected,
-            _this.props.usePriceListAsDefault
+      const oldProduct = JSON.parse(partRequest[item].product)
+
+      const setProductPromise = new Promise((resolve, reject) => {
+        const kwargs = {
+          lookUpField: 'code',
+          url: '/api/productslist/',
+          lookUpValue: oldProduct.code,
+          lookUpName: 'código',
+          modelName: 'Productos'
+        }
+        setProduct(kwargs, resolve, reject)
+      })
+
+      setProductPromise.then((data) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        const product = data.results[0]
+        const price1 = oldProduct.price1 ? oldProduct.price1 : oldProduct.price
+        product.price1 = price1
+
+        const lineData = {
+          default_discount: '0',
+          id: product.id,
+          max_discount: '0',
+          product: product,
+          table_price: '0',
+          target_price_list: 'price1'
+        }
+
+        try {
+          _this.props.dispatch(
+            productSelected(
+              lineData,
+              parseFloat(partRequest[item].amount),
+              _this.props.itemsInCart,
+              _this.props.client,
+              _this.props.warehouse_id,
+              false,
+              _this.props.priceListSelected,
+              _this.props.usePriceListAsDefault
+            )
           )
-        )
-      } catch (err) {
-        console.log(err)
-      }
+        } catch (err) {
+          console.log(err)
+        }
+      })
+
+      // const product = JSON.parse(partRequest[item].product)
+      // const price1 = product.price1 ? product.price1 : product.price
+      // product.price1 = price1
+      // const lineData = {
+      //   default_discount: '0',
+      //   id: product.id,
+      //   max_discount: '0',
+      //   product: product,
+      //   table_price: '0',
+      //   target_price_list: 'price1'
+      // }
+      // try {
+      //   _this.props.dispatch(
+      //     productSelected(
+      //       lineData,
+      //       parseFloat(partRequest[item].amount),
+      //       _this.props.itemsInCart,
+      //       _this.props.client,
+      //       _this.props.warehouse_id,
+      //       false,
+      //       _this.props.priceListSelected,
+      //       _this.props.usePriceListAsDefault
+      //     )
+      //   )
+      // } catch (err) {
+      //   console.log(err)
+      // }
 
     }
   }
