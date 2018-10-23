@@ -3,7 +3,13 @@
  */
 import alertify from 'alertifyjs'
 import React from 'react'
+import {connect} from 'react-redux'
 
+@connect((store) => {
+  return {
+    local: store.userProfile.activeLocal
+  }
+})
 export default class TopBar extends React.Component {
 
   menuClick(ev) {
@@ -39,12 +45,19 @@ export default class TopBar extends React.Component {
   // Main Layout
   render() {
 
+    const localName = this.props.local ? this.props.local.name : ''
+
     return <div className='topBar'>
       <div onClick={this.menuClick.bind(this)} className='topBar-button topBar-button-collapse not-visible' >
         <span className='fa fa-bars' />
       </div>
-      <div onClick={this.logOut.bind(this)} className='topBar-button topBar-button-logout'>
-        <span className='fa fa-power-off' />
+      <div className='topBar-right'>
+        <div className='topBar-right-local'>
+          {localName}
+        </div>
+        <div onClick={this.logOut.bind(this)} className='topBar-button topBar-button-logout'>
+          <span className='fa fa-power-off' />
+        </div>
       </div>
     </div>
 
