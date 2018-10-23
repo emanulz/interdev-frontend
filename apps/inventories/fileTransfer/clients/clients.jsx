@@ -11,6 +11,7 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
+    clientVisible:store.fileTransfer.clientVisible,
     clients: store.clients.clients,
     clientSelected: store.clients.clientSelected,
     globalDiscount: store.cart.globalDiscount,
@@ -135,7 +136,9 @@ export default class Clients extends React.Component {
   
   // Main Layout
   render() {
-
+    if (!this.props.clientVisible){
+      return ''
+    }
     // ********************************************************************
     // SELECT2 DATA
     // ********************************************************************
