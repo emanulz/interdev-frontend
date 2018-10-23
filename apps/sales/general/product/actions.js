@@ -177,6 +177,8 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
     }
   }
   const inventory = JSON.parse(product.inventory_existent)
+  console.log('INVENTORYYY', inventory)
+  console.log(qtyToCheck)
   // CHECK THE INVENTORY OF PRODUCT, IF INVENTORY NOT ENABLE OR INVENTORY IS ENOUGHT OR CAN BE NEGATIVE
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
     const res = checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine)
@@ -221,6 +223,8 @@ export function updateQty (code, qty, itemsInCart, predDiscount, client, warehou
     }
   }
   const inventory = JSON.parse(product.inventory_existent)
+  console.log('INVENTORYYY', inventory)
+  console.log(qtyToCheck)
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
     return res
   }
@@ -262,6 +266,8 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
     }
   }
   const inventory = JSON.parse(product.inventory_existent)
+  console.log('INVENTORYYY', inventory)
+  console.log(qtyToCheck)
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
     return res
   }
@@ -294,7 +300,7 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
     }
   }
   const inventory = JSON.parse(product.inventory_existent)
-  console.log(inventory)
+  console.log('INVENTORYYY', inventory)
   console.log(qtyToCheck)
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
     return res
