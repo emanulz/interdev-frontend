@@ -7,6 +7,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { checkUserPermissions } from '../../../utils/checkPermissions.js'
+import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
 // COMPONENTS
 
@@ -51,6 +52,7 @@ export default class Main extends React.Component {
 
     const unlocked = <Router>
       <div>
+        <UserProfile />
         <SideMenu />
         <div id='mainContainer' className='mainContainer'>
           <TopBar />

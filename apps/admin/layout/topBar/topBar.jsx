@@ -4,7 +4,13 @@
 import React from 'react'
 import alertify from 'alertifyjs'
 import {toggleLayout, toggleConfigBar} from './actions'
+import {connect} from 'react-redux'
 
+@connect((store) => {
+  return {
+    local: store.userProfile.activeLocal
+  }
+})
 export default class TopBar extends React.Component {
 
   menuClick(ev) {
@@ -45,12 +51,17 @@ export default class TopBar extends React.Component {
   // Main Layout
   render() {
 
+    const localName = this.props.local ? this.props.local.name : ''
+
     return <div className='topBar'>
       <div onClick={this.menuClick.bind(this)} className='topBar-button topBar-button-collapse not-visible' >
         <span className='fa fa-bars' />
       </div>
 
       <div className='topBar-right'>
+        <div className='topBar-right-local'>
+          {localName}
+        </div>
         <div onClick={this.homeClick.bind(this)} className='topBar-item topBar-item-config'>
           <span className='fa fa-home' />
         </div>
