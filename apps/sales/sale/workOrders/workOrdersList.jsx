@@ -163,8 +163,8 @@ export default class WorkOrdersPanel extends React.Component {
             _this.props.client,
             _this.props.warehouse_id,
             false,
-            this.props.priceListSelected,
-            this.props.usePriceListAsDefault
+            _this.props.priceListSelected,
+            _this.props.usePriceListAsDefault
           )
         )
       } catch (err) {
@@ -208,7 +208,7 @@ export default class WorkOrdersPanel extends React.Component {
             table_price: '0',
             target_price_list: 'price1'
           }
-          this.props.dispatch(
+          _this.props.dispatch(
             productSelected(
               lineData,
               1,
@@ -266,7 +266,7 @@ export default class WorkOrdersPanel extends React.Component {
             table_price: '0',
             target_price_list: 'price1'
           }
-          this.props.dispatch(
+          _this.props.dispatch(
             productSelected(
               lineData,
               1,
@@ -274,8 +274,8 @@ export default class WorkOrdersPanel extends React.Component {
               _this.props.client,
               _this.props.warehouse_id,
               false,
-              this.props.priceListSelected,
-              this.props.usePriceListAsDefault
+              _this.props.priceListSelected,
+              _this.props.usePriceListAsDefault
             )
           )
         } catch (err) {

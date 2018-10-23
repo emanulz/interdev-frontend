@@ -157,7 +157,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
 
   // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
   if (!product.fractioned && !Number.isInteger(qty)) {
-    alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
+    alertify.alert('NO FRACIONADO', `El producto seleccionado con el código ${code} solo acepta valores enteros, no acepta fracionados`)
     return {type: 'NOT', payload: -1}
   }
   let perLine = true
@@ -183,8 +183,8 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
-  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
-                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado con el código ${code}, hay
+                 ${inventory[warehouseId]} unidades en la bodega de ventas, con id: ${warehouseId}`)
   return {type: 'NO_ACTION', payload: ''}
 }
 
@@ -225,8 +225,8 @@ export function updateQty (code, qty, itemsInCart, predDiscount, client, warehou
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
-  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
-                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado con el código ${code}, hay
+    ${inventory[warehouseId]} unidades en la bodega de ventas, con id: ${warehouseId}`)
   return {type: 'NO_ACTION', payload: ''}
 }
 
@@ -266,8 +266,8 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
-  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
-                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado con el código ${code}, hay
+    ${inventory[warehouseId]} unidades en la bodega de ventas, con id: ${warehouseId}`)
   return {type: 'NO_ACTION', payload: ''}
 }
 
@@ -300,8 +300,8 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
-  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado, hay
-                 ${inventory[warehouseId]} unidades en la bodega de ventas.`)
+  alertify.alert('BAJO INVENTARIO', `No hay suficiente existencia en bodega para el producto seleccionado con el código ${code}, hay
+    ${inventory[warehouseId]} unidades en la bodega de ventas, con id: ${warehouseId}`)
   return {type: 'NO_ACTION', payload: ''}
 }
 
