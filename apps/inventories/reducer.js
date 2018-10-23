@@ -15,6 +15,19 @@ import takeMovements from './takeMovements/reducer.js'
 import checkTakeMovements from './checkTakeMovements/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 
+//fileTransfer reducers
+import fileTransfer from '../inventories/fileTransfer/reducer.js'
+
+//import products from '../sales/general/product/reducer.js'
+import clients from './fileTransfer/clients/reducer.js'
+import cart from '../sales/general/cart/reducer.js'
+import presales from './presales/reducer.js'
+import completed from '../sales/general/completed/reducer.js'
+import config from '../sales/config/reducer.js'
+import priceList from '../sales/general/priceList/reducer.js'
+import currency from '../../general/currency/reducer.js'
+import extras from '../sales/general/extras/reducer.js'
+
 export default combineReducers({
   fetching,
   layout,
@@ -30,5 +43,15 @@ export default combineReducers({
   physicalTake,
   takeMovements,
   checkTakeMovements,
-  userProfile
+  userProfile,
+  fileTransfer,
+  cart, 
+  clients,
+  presales,
+  completed,
+  config,
+  priceList,
+  currency,
+  extras
+
 })
