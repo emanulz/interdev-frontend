@@ -24,13 +24,16 @@ export function patchWorkView(kwargs){
         dispatcher({type: 'SET_WORK_ORDER_VIEW', payload: response.data})
         dispatcher({type: 'FETCHING_DONE'})
     }).catch(err=>{
-        console.log(err)
-        if(err.response){
+        if (err.response) {
+            dispatch({type: kwargs.errorType})
             console.log(err.response.data)
-        }
-        dispatcher({type:'FETCHING_DONE'})
-        alertify.alert('Error',`Error actualizando orden de tratamiento ${kwargs.work_order_id}`)
-        
+            alertify.alert('Error', `Error al actualizar la orden de trabajo, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+          } else {
+            console.log('NO CUSTOM ERROR')
+            console.log(err)
+            alertify.alert('Error', `Error al actualizar la orden de trabajo, ERROR: ${err}.`)
+          }
+          dispatch({type: 'FETCHING_DONE', payload: ''})
     })
     
 }
