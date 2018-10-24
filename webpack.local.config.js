@@ -9,7 +9,8 @@ config.js.plugins = config.js.plugins.concat([
 ])
 
 config.styles.plugins = config.styles.plugins.concat([
-  new LiveReloadPlugin()
+  new LiveReloadPlugin(),
+  new BundleTracker({filename: '../backend/webpack-stats-css-local.json'})
 ])
 
 module.exports = [config.js, config.styles]
