@@ -4,6 +4,7 @@ import fetching from '../../general/fetching/reducer.js'
 import layout from './layout/reducer.js'
 import user from './user/reducer.js'
 import products from './products/reducer.js'
+import products2 from '../sales/general/product/reducer.js'
 import movements from './movements/reducer.js'
 import warehouses from './warehouses/reducer.js'
 import sidePanel from './movements/sidePanel/reducer.js'
@@ -52,6 +53,8 @@ export default combineReducers({
   config,
   priceList,
   currency,
-  extras
+  extras,
+  products2
+
 
 })
