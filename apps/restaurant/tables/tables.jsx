@@ -19,7 +19,18 @@ export default class Sale extends React.Component {
   // Main Layout
   render() {
     const sorted = this.props.tables.sort((a, b) => {
-      return ('' + a.indentifier).localeCompare(b.indentifier)
+
+      if (a.indentifier == 'Barra') {
+        return false
+      }
+      if (b.indentifier == 'Barra') {
+        return false
+      }
+      const aNum = parseInt(a.indentifier.replace('Mesa ', ''))
+      const bNum = parseInt(b.indentifier.replace('Mesa ', ''))
+
+      return aNum - bNum
+      // return ('' + aString).localeCompare(bString, {numeric: true})
     })
     const tableList = sorted.map(table => {
 
