@@ -4,6 +4,7 @@ import routes from './routes'
 import {fetchProfile} from './actions'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fetchGlobalPreferences} from './actions.js'
+import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
 //components
 import TopBar from '../layout/topBar/topBar.jsx'
@@ -29,6 +30,7 @@ export default class Main extends React.Component {
 
         const content = <Router>
             <div>
+                <UserProfile />
                 <SideMenu/>
                 <div id='mainContainer' className={mainContainerClass} >
                     <TopBar/>
