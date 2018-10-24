@@ -1,6 +1,7 @@
 const stateConst = {
   tables: [],
-  tableActive: ''
+  tableActive: '',
+  filledTables: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -12,6 +13,24 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         tables: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_FILLED_TABLES_FULFILLED':
+    {
+      return {
+        ...state,
+        filledTables: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_FILLED_TABLES_REJECTED':
+    {
+      return {
+        ...state,
+        filledTables: []
       }
 
     } // case

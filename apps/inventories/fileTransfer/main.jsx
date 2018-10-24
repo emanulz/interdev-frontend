@@ -1,4 +1,4 @@
-import React from 'React'
+import React from 'react'
 import {connect} from 'react-redux'
 import Content from './content/content.jsx'
 import Search from '../../../general/search/search.jsx'

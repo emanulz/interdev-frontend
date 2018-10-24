@@ -8,6 +8,10 @@ config.js.output = {
   path: path.resolve('../backend/static/bundles/production/'),
   filename: '[name]-[hash].js'
 }
+config.styles.output = {
+  path: path.resolve('../backend/static/bundles/production/'),
+  filename: '[name]-[hash].css'
+}
 config.js.plugins = config.js.plugins.concat([
   new BundleTracker({filename: '../backend/webpack-stats-production.json'}),
   new webpack.DefinePlugin({
@@ -46,7 +50,8 @@ config.styles.plugins = config.styles.plugins.concat([
       drop_console: true
     }
   }),
-  new webpack.optimize.OccurrenceOrderPlugin()
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new BundleTracker({filename: '../backend/webpack-stats-css-production.json'})
 ])
 
 module.exports = [config.js, config.styles]

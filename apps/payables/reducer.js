@@ -11,6 +11,7 @@ import payments from './payments/reducer.js'
 import makePayment from  './payments/makePayment/reducer.js'
 import messages from './messages/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
+import userProfile from '../../general/userProfile/reducer.js'
 
 
 
@@ -26,4 +27,5 @@ export default combineReducers({
     payments,
     makePayment,
     pagination,
+    userProfile
 })
