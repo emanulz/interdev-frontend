@@ -5,12 +5,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import Client from '../clients/clients.jsx'
-import Totals from '../../../sales/general/totals/totals.jsx'
+import Buttons from '../buttons/button.jsx'
 import Notes from '../../../sales/general/extras/notes.jsx'
-import Currency from '../../../sales/general/currency/currency.jsx'
-import PriceList from '../../../sales/general/priceList/priceList.jsx'
-//import Buttons from '../buttons/buttons.jsx'
-//import SaleInfo from '../../general/saleInfo/saleInfo.jsx'
+
+import Warehouse from '../../../../general/warehouses/warehouse.jsx'
 
 @connect((store) => {
   return {
@@ -32,15 +30,11 @@ export default class Aside extends React.Component {
     const asideContainerClass = this.props.fullWidth ? 'sale-aside-content collapsed' : 'sale-aside-content'
     return <div className={asideClass}>
       <div className={asideContainerClass}>
-        {/*<SaleInfo />*/}
         <Client />
-        {/*<PriceList />*/}
-        {/*<Currency />*/}
-        {/*<Totals /> */}
         <Notes />
-        {/*<Buttons />*/}
+        <Warehouse />
+        <Buttons />
       </div>
-      {/* <Buttons /> */}
       <div className='sale-aside-total' >
         {symbol} {this.props.total.formatMoney()}
         <i className='fa fa-chevron-right' onClick={this.toggleWidth.bind(this)} />

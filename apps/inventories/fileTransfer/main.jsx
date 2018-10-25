@@ -7,6 +7,7 @@ import SingleProduct from './singleProduct.jsx'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../../sales/general/search/actions.js'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {fecthProfile} from './actions'
+const uuidv4 = require('uuid/v4')
 
 @connect(store=>{
     return {
@@ -22,6 +23,8 @@ export default class MakeMassFileTransfer extends React.Component {
             loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 
                 'FETCH_GLOBAL_CONF_REJECTED')
             )
+
+        this.props.dispatch({type:'SET_UNIQUE_ID', payload:uuidv4()})
     }
 
     render() {

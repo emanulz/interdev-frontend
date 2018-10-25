@@ -28,6 +28,7 @@ import config from '../sales/config/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
+import warehouses2 from '../../general/warehouses/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -54,7 +55,8 @@ export default combineReducers({
   priceList,
   currency,
   extras,
-  products2
+  products2,
+  warehouses2
 
 
 })
