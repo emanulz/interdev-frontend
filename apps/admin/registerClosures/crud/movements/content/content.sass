@@ -1,9 +1,8 @@
 .register-movements-content
   padding: 20px
   font-family: 'Source Sans Pro', sans-serif
-  & .admin-table
-    flex-grow: 1
-    font-family: 'Source Sans Pro', sans-serif
+  display: flex
+  flex-flow: column
   &-header
     & h1
       font-size: 20px
@@ -11,6 +10,7 @@
   &-data
     display: flex
     flex-flow: row
+    min-height: 120px
     &-table
       width: 50%
       & table
@@ -27,5 +27,7 @@
           padding-left: 10px
           height: 35px
           line-height: 35px
+  & .admin-table
+    font-family: 'Source Sans Pro', sans-serif
     
 

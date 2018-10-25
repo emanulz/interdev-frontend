@@ -7,7 +7,7 @@ const stateConst = {
     institutionName: '',
     documentDate: '',
     exemptAmount: 0,
-    salePercent: 100
+    salePercent: 1
   },
   isExempt: false
 }

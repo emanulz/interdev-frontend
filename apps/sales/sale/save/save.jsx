@@ -22,6 +22,7 @@ const Mousetrap = require('mousetrap')
     reserveId: store.reserves.reserveId,
     workOrder: store.workOrders.workOrderActive,
     exemptionData: store.taxExemption.exemptionData,
+    isExempt: store.taxExemption.isExempt,
     extras: store.extras,
     isinvoice: store.sale.isInvoice,
     currency: store.currency.currencySelected,
@@ -48,6 +49,7 @@ export default class SaveBtn extends React.Component {
     const exemptionData = this.props.exemptionData
     // the tax Amout for exemption is th exemption total
     exemptionData['exemptAmount'] = cart['cartExemptAmount']
+    exemptionData['isExempt'] = this.props.isExempt
 
     cart['work_order_id'] = this.props.workOrderId
     cart['work_order'] = JSON.stringify(this.props.workOrder)
