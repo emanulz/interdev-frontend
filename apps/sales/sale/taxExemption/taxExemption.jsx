@@ -7,7 +7,7 @@ import {checkExemptionData} from './actions.js'
   return {
     exemptionData: store.taxExemption.exemptionData,
     isVisible: store.taxExemption.isVisible,
-    isExempt: store.cart.isExempt}
+    isExempt: store.taxExemption.isExempt}
 })
 export default class TaxExemptionPanel extends React.Component {
 
@@ -59,8 +59,15 @@ export default class TaxExemptionPanel extends React.Component {
     const validaData = checkExemptionData(this.props.exemptionData)
     if (validaData) {
       this.props.dispatch({type: 'EXEMPT_SALE', payload: true})
+      this.props.dispatch({type: 'SET_SALE_EXEMPT', payload: true})
       this.props.dispatch({type: 'HIDE_EXEMPTION_PANEL', payload: -1})
     }
+  }
+
+  notExemptSale() {
+    this.props.dispatch({type: 'CLEAR_SALE_EXEMPT', payload: false})
+    this.props.dispatch({type: 'CLEAR_EXEMPTION_DATA', payload: false})
+    this.props.dispatch({type: 'HIDE_EXEMPTION_PANEL', payload: -1})
   }
 
   render() {
@@ -77,6 +84,16 @@ export default class TaxExemptionPanel extends React.Component {
       {text: `05 - Zonas Francas`, id: '05'},
       {text: `99 - Otros`, id: '99'}
     ]
+
+    const exemptButton = this.props.isExempt
+      ? <button className='form-control btn btn-danger' onClick={this.notExemptSale.bind(this)} disabled={!this.props.isExempt || !this.props.isVisible}>
+        No-Exonerar
+        <i className='fa fa-map' />
+      </button>
+      : <button className='form-control btn btn-primary' onClick={this.exemptSale.bind(this)} disabled={this.props.isExempt || !this.props.isVisible}>
+        Exonerar
+        <i className='fa fa-map' />
+      </button>
 
     return <div className={isVisible}>
       <div className='exemption-panel-header'>
@@ -114,10 +131,7 @@ export default class TaxExemptionPanel extends React.Component {
             className='form-control' />
         </div>
         <div className='form-group col-xs-8 button-container'>
-          <button className='form-control btn btn-primary' onClick={this.exemptSale.bind(this)} disabled={this.props.isExempt}>
-            Exonerar
-            <i className='fa fa-map' />
-          </button>
+          {exemptButton}
         </div>
       </div>
     </div>

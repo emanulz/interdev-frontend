@@ -70,6 +70,8 @@ export default class SaveBtn extends React.Component {
       marker: this.props.marker
     }
 
+    console.log('SALE', sale)
+
     const kwargs = {
       url: '/api/sales/',
       item: sale,

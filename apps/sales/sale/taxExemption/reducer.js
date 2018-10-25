@@ -44,8 +44,8 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        isExempt: {
-          documentType: '',
+        exemptionData: {
+          documentType: '03',
           documentNumber: '',
           institutionName: '',
           documentDate: '',

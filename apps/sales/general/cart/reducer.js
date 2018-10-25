@@ -165,7 +165,7 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
-    case 'EXEMPT_SALE':
+    case 'SET_SALE_EXEMPT':
     {
 
       return {
@@ -174,7 +174,7 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
-    case 'CLEAR_EXEMPT_SALE':
+    case 'CLEAR_SALE_EXEMPT':
     {
 
       return {
