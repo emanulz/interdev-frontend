@@ -24,7 +24,7 @@ export default class ReprintRegisterClosurePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('print-register-closure-print', ['/static/bundles/css/sales.css'])
+    window.printDiv('print-register-closure-print', ['/static/fixedBundles/css/sales.css'])
   }
 
   render() {

@@ -32,7 +32,7 @@ export default class ReprintInvoicePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('reprint-invoice-print', ['/static/bundles/css/sales.css'])
+    window.printDiv('reprint-invoice-print', ['/static/fixedBundles/css/sales.css'])
   }
 
   calcTotalInPay () {

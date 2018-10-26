@@ -24,7 +24,7 @@ export default class ReprintInvoicePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('print-return-print', ['/static/bundles/css/returns.css'])
+    window.printDiv('print-return-print', ['/static/fixedBundles/css/returns.css'])
   }
 
   render() {

@@ -24,7 +24,7 @@ export default class PrintPresalePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('print-presale-print', ['/static/bundles/css/sales.css'])
+    window.printDiv('print-presale-print', ['/static/fixedBundles/css/sales.css'])
   }
 
   render() {

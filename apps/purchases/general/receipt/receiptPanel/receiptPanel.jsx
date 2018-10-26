@@ -22,7 +22,7 @@ export default class ReceiptPanel  extends React.Component {
     }
 
     printPanel(){
-        window.printDiv('report-print', ['/static/bundles/css/purchases.css'])
+        window.printDiv('report-print', ['/static/fixedBundles/css/purchases.css'])
     }
 
     render(){

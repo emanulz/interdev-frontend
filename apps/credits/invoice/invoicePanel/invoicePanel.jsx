@@ -32,7 +32,7 @@ export default class InvoicePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('invoice-print', ['/static/bundles/css/sales.css'])
+    window.printDiv('invoice-print', ['/static/fixedBundles/css/sales.css'])
   }
 
   render() {

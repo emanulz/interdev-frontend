@@ -24,7 +24,7 @@ export default class PrintCashAdvancePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('cash-advance-print', ['/static/bundles/css/sales.css'])
+    window.printDiv('cash-advance-print', ['/static/fixedBundles/css/sales.css'])
   }
 
   render() {
