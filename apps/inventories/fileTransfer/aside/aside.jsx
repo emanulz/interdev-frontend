@@ -9,6 +9,7 @@ import Buttons from '../buttons/button.jsx'
 import Notes from '../../../sales/general/extras/notes.jsx'
 
 import Warehouse from '../../../../general/warehouses/warehouse.jsx'
+import Picker from '../loadFromFile/picker.jsx'
 
 @connect((store) => {
   return {
@@ -33,6 +34,7 @@ export default class Aside extends React.Component {
         <Client />
         <Notes />
         <Warehouse />
+        <Picker />
         <Buttons />
       </div>
       <div className='sale-aside-total' >
