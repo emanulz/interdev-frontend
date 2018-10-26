@@ -43,20 +43,23 @@ export function savePurchase(kwargs){
         discount_mode: discount_mode,
         apply: apply,
     }
-    return new Promise((resolve, reject)=>{
-        axios({
+    return new Promise((resolve, reject) => {
+        axios( {
             method: method,
             url: url,
             data: data
-        }).then(response=>{
+        }).then(response=> {
             resolve(response.data)
-        }).catch(err=>{
+        }).catch(err=> {
             console.log(err.response)
-            if(err.response){
+            if (err.response) {
                 console.log(err.response.data)
+                alertify.alert('Error', `Error guardando Compra en el sistema, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+            } else {
+                console.log('NO CUSTOM ERROR')
+                console.log(err)
+                alertify.alert('Error', `Error guardando Compra en el sistema, ERROR: ${err}.`)
             }
-            alertify.alert('Error', 'Error guardando Compra en el sistema')
-            console.log(err)
             reject(err)
         })
     })
@@ -129,11 +132,15 @@ export function saveInventoryTransaction(kwargs){
             saveLog(logCode, logModel, old, data, logDescription, kwargs.user)
             resolve(response.data)
         }).catch(err=>{
-            console.log(err)
-            if(err.response){
+            console.log(err.response)
+            if (err.response) {
                 console.log(err.response.data)
+                alertify.alert('Error', `Error guardando movimiento de inventario, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+            } else {
+                console.log('NO CUSTOM ERROR')
+                console.log(err)
+                alertify.alert('Error', `Error guardando movimiento de inventario, ERROR: ${err}.`)
             }
-            alertify.alert('Error', 'Error guardando movimiento de inventario')
         })
     })
 }
@@ -169,10 +176,14 @@ export function saveCreditMovement(kwargs){
             resolve(response.data)
         }).catch(err=>{
             console.log(err)
-            if(err.response){
+            if (err.response) {
                 console.log(err.response.data)
+                alertify.alert('Error', `Error creando Movimiento de Crédito, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+            } else {
+                console.log('NO CUSTOM ERROR')
+                console.log(err)
+                alertify.alert('Error', `Error creando Movimiento de Crédito, ERROR: ${err}.`)
             }
-            alertify.alert('Error', 'Error creando Movimiento de Crédito')
         })
     })
 }
@@ -205,10 +216,14 @@ export function saveCreditPayment(kwargs){
             resolve(response.data)
         }).catch(err=>{
             console.log(err)
-            if(err.response){
+            if (err.response) {
                 console.log(err.response.data)
+                alertify.alert('Error', `Error creando Pago a Crédito, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+            } else {
+                console.log('NO CUSTOM ERROR')
+                console.log(err)
+                alertify.alert('Error', `Error creando Pago a Crédito, ERROR: ${err}.`)
             }
-            alertify.alert('Error', 'Error creando Pago a Crédito')
         })
     })
 }
