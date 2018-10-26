@@ -244,7 +244,7 @@ function checkIfInCart(qty, product, cartItems) {
         target_utility: product.utility * 100,
         transport_cost: 0,
         real_utility: 0,
-        wanted_price_ivi: parseFloat(product.sell_price)
+        wanted_price_ivi: parseFloat(product.sell_price1)
       }
     }
     return res
