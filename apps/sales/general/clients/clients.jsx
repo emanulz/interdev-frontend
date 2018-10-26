@@ -6,6 +6,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {userSelected, getFullClientByCode, determinClientName, determinClientLastName, determinClientEmail} from './actions'
 import {getProductsList, recalcCart} from '../product/actions'
+import { getItemDispatch } from '../../../../utils/api.js'
 // import {recalcCart} from '../../general/product/actions'
 const Mousetrap = require('mousetrap')
 
@@ -27,14 +28,30 @@ const Mousetrap = require('mousetrap')
     cartItems: store.cart.cartItems,
     pricesDetails: store.products.pricesDetails,
     presaleId: store.presales.presaleId,
-    workOrderId: store.workOrders.workOrderId
+    workOrderId: store.workOrders.workOrderId,
+    provinces: store.clientCreatePanel.provinces,
+    cantons: store.clientCreatePanel.cantons,
+    districts: store.clientCreatePanel.districts,
+    towns: store.clientCreatePanel.towns
   }
 })
 export default class Clients extends React.Component {
 
   componentWillMount () {
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    getFullClientByCode('00', this.props.dispatch)
+    // IF THERE IS NO LOCAL STORAGE CLIENT
+    if (!window.sessionStorage.getItem('generalClient')) {
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      getFullClientByCode('00', this.props.dispatch)
+    } else {
+      // IF THERE IS LOAD IT AND IF FAILS LOAD IT FROM BACKEND
+      try {
+        const client = JSON.parse(window.sessionStorage.getItem('generalClient'))
+        this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
+      } catch (err) {
+        this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        getFullClientByCode('00', this.props.dispatch)
+      }
+    }
   }
 
   determinPriceList(client, category) {
@@ -163,11 +180,66 @@ export default class Clients extends React.Component {
   }
 
   showClientPanel() {
+    this.loadAdressData()
     this.props.dispatch({type: 'SHOW_CREATE_CLIENT_PANEL', payload: -1})
   }
 
   showClientUpdatePanel() {
     this.props.dispatch({type: 'SHOW_UPDATE_CLIENT_PANEL', payload: -1})
+  }
+
+  loadAdressData() {
+    // Then fetch provinces of the model and dispatch to reducer
+    // *******************************************************************
+    const provinceKwargs = {
+      url: '/api/provinces/?limit=10000',
+      successType: 'FETCH_PROVINCES_FULFILLED',
+      errorType: 'FETCH_PROVINCES_REJECTED'
+    }
+    if (!this.props.provinces.length) {
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getItemDispatch(provinceKwargs))
+    }
+    // *******************************************************************
+
+    // Then fetch cantons of the model and dispatch to reducer
+    // *******************************************************************
+    const cantonKwargs = {
+      url: '/api/cantons/?limit=10000',
+      successType: 'FETCH_CANTONS_FULFILLED',
+      errorType: 'FETCH_CANTONS_REJECTED'
+    }
+    if (!this.props.cantons.length) {
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getItemDispatch(cantonKwargs))
+    }
+    // *******************************************************************
+
+    // Then fetch districts of the model and dispatch to reducer
+    // *******************************************************************
+    const districtKwargs = {
+      url: '/api/districts/?limit=10000',
+      successType: 'FETCH_DISTRICTS_FULFILLED',
+      errorType: 'FETCH_DISTRICTS_REJECTED'
+    }
+    if (!this.props.districts.length) {
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getItemDispatch(districtKwargs))
+    }
+    // *******************************************************************
+
+    // Then fetch towns of the model and dispatch to reducer
+    // *******************************************************************
+    const townKwargs = {
+      url: '/api/towns/?limit=10000',
+      successType: 'FETCH_TOWNS_FULFILLED',
+      errorType: 'FETCH_TOWNS_REJECTED'
+    }
+    if (!this.props.towns.length) {
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getItemDispatch(townKwargs))
+    }
+
   }
 
   doNothing() {
