@@ -134,7 +134,7 @@ export default class ProductDetail extends React.Component {
 
             current_price_tax = (cart_line.product.sell_price1)
             current_cost = cart_line.product.cost.toFixed(2)
-            current_utility = (cart_line.product.utility*100).toFixed(2)
+            current_utility = (cart_line.product.utility1*100).toFixed(2)
             transport_cost = (cart_line.transport_cost?cart_line.transport_cost:0).toFixed(2)
             new_cost = (cart_line.cost?cart_line.cost:cart_line.subtotal/cart_line.qty).toFixed(2)
             new_utility = cart_line.real_utility
