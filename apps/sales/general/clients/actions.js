@@ -131,6 +131,7 @@ export function getFullClientByCode(code, dispatch) {
         } else {
           dispatch({type: 'CLEAR_UPDATE_CLIENT', payload: ''})
           dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'TIQUETE'})
+          window.sessionStorage.setItem('generalClient', JSON.stringify(client))
         }
       } catch (err) {}
     }).catch((err) => {
