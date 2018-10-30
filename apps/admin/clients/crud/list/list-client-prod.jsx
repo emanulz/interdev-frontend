@@ -121,6 +121,10 @@ export default class List extends React.Component {
               text: 'Nombre',
             }, 
             {
+                field: 'table_price',
+                text: 'Precio Tabla'
+              }, 
+            {
               field: 'discount_percent',
               text: 'Descuento'
             }, 
