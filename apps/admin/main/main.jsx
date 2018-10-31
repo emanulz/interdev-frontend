@@ -35,6 +35,7 @@ export default class Main extends React.Component {
     this.props.dispatch(fecthProfile())
     this.props.dispatch(fecthIsAdminLocked())
     this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
+    this.props.dispatch(loadGlobalConfig('receipt_styles', false, 'FETCH_RECEIPT_STYLES_FULFILLED', 'FETCH_RECEIPT_STYLES_REJECTED'))
   }
 
   // Main Layout
