@@ -10,7 +10,9 @@ import {connect} from 'react-redux'
 export default class Body extends React.Component {
 
   componentDidMount() {
-    document.getElementById('loader').remove()
+    try {
+      document.getElementById('loader').remove()
+    } catch (err) {}
   }
 
   render() {

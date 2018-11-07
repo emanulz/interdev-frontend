@@ -16,3 +16,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Main />
   </Provider>, document.getElementById('app-container'))
+
+if (module.hot) {
+  module.hot.accept()
+}

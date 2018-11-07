@@ -11,7 +11,10 @@
     "prod1": "webpack --display-error-details --config webpack.production.config.js",
     "dev": "npm run removeBundles & npm run dev1",
     "stage": "npm run removeBundles & npm run stage1",
-    "prod": "npm run removeBundles & npm run prod1"
+    "prodOld": "npm run removeBundles & npm run prod1",
+    "devEmanuel": "webpack-dev-server --config webpack.localEmanuel.new.config.js --mode development --hot --inline --colors --host 192.168.9.53 --port 8080",
+    "prod2": "webpack --mode production --config webpack.prod.config.js",
+    "prod": "npm run removeBundles & npm run prod2"
   },
   "author": "Emanuel Zuniga Infante @emanulz",
   "license": "MIT",
@@ -28,7 +31,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "css-loader": "^0.28.9",
+    "css-loader": "^0.28.11",
     "eslint": "^4.16.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-config-standard-jsx": "^4.0.2",
@@ -37,8 +40,8 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-standard": "^3.0.1",
-    "extract-text-webpack-plugin": "^3.0.2",
     "node-sass": "^4.7.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "react": "^16.2.0",
     "react-cookie": "^2.1.2",
     "react-csv-reader": "^0.3.0",
@@ -51,15 +54,17 @@
     "redux": "^3.7.2",
     "redux-devtools": "^3.4.1",
     "sass-loader": "^6.0.6",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "util-inspect": "^0.1.8",
-    "webpack": "^3.10.0",
-    "webpack-bundle-tracker": "^0.2.1",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-cli": "^3.1.2",
+    "webpack-command": "^0.4.2",
+    "webpack-merge": "^4.1.4"
   },
   "dependencies": {
     "axios": "^0.17.1",
     "chart.js": "^2.7.1",
     "datatables.net": "^1.10.16",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "mousetrap": "^1.6.1",
     "react-chartjs-2": "^2.7.0",
     "react-select2-wrapper": "^1.0.4-beta6",
@@ -68,7 +73,11 @@
     "redux-promise-middleware": "^5.0.0",
     "redux-thunk": "^2.2.0",
     "select2": "^4.0.6-rc.1",
+    "style-loader": "^0.23.1",
     "uuid": "^3.2.1",
+    "webpack": "^4.25.1",
+    "webpack-bundle-tracker": "^0.4.2-beta",
+    "webpack-dev-server": "^3.1.10",
     "webpack-livereload-plugin": "^1.0.0"
   }
 }

@@ -15,6 +15,8 @@ import TopBar from '../../../general/layout/topBar/topBar.jsx'
 import SideMenu from '../../../general/layout/sideMenu/sideMenu.jsx'
 import Body from '../body/body.jsx'
 
+// import '../appstyles/main.sass'
+
 @connect((store) => {
   return {
     profile: store.user.profile
