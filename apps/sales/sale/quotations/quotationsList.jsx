@@ -118,50 +118,6 @@ export default class QuotationsPanel extends React.Component {
         console.log(err)
       }
 
-      // const setProductPromise = new Promise((resolve, reject) => {
-      //   const kwargs = {
-      //     lookUpField: 'code',
-      //     url: '/api/productslist/',
-      //     lookUpValue: oldProduct.code,
-      //     lookUpName: 'código',
-      //     modelName: 'Productos'
-      //   }
-      //   setProduct(kwargs, resolve, reject)
-      // })
-
-      // setProductPromise.then((data) => {
-      //   _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      //   const product = data.results[0]
-      //   const price1 = oldProduct.price1 ? oldProduct.price1 : oldProduct.price
-      //   product.price1 = price1
-
-      //   const lineData = {
-      //     default_discount: '0',
-      //     id: product.id,
-      //     max_discount: '100',
-      //     product: product,
-      //     table_price: '0',
-      //     target_price_list: 'price1'
-      //   }
-
-      //   try {
-      //     _this.props.dispatch(
-      //       productSelected(
-      //         lineData,
-      //         parseFloat(cart[item].qty),
-      //         _this.props.itemsInCart,
-      //         _this.props.client,
-      //         _this.props.warehouse_id,
-      //         false,
-      //         _this.props.priceListSelected,
-      //         _this.props.usePriceListAsDefault
-      //       )
-      //     )
-      //   } catch (err) {
-      //     console.log(err)
-      //   }
-      // })
-
     }
 
   }
