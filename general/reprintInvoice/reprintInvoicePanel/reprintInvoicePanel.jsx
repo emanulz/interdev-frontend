@@ -2,13 +2,15 @@ import React from 'react'
 import {connect} from 'react-redux'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
+import SimpleCompactInvoice from '../simpleCompactInvoice/simpleCompactInvoice.jsx'
 
 @connect((store) => {
   return {
     panelVisible: store.reprintInvoice.isVisible,
     isFull: store.reprintInvoice.isFull,
     sale: store.reprintInvoice.sale,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    receiptStyles: store.config.receiptStyles
   }
 })
 export default class ReprintInvoicePanel extends React.Component {
@@ -57,9 +59,11 @@ export default class ReprintInvoicePanel extends React.Component {
       ? ''
       : ' compact-invoice-on'
 
+    const compactInvoice = this.props.receiptStyles.useSimpleCompactInvoice ? <SimpleCompactInvoice /> : <CompactInvoice />
+
     const componentToMount = (this.props.isFull)
       ? <FullInvoice />
-      : <CompactInvoice />
+      : compactInvoice
 
     let change = ''
     try {

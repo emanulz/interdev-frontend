@@ -155,9 +155,7 @@ export default class Product extends React.Component {
             console.log(err)
           })
 
-        } else { 
-          
-          
+        } else {
           // IN CASE IS NOT A PLUS SING
           code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
           qty = ev.target.value.split('*')[1]

@@ -3,11 +3,22 @@ import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadQuotation, getPendingQuotations, setQuotationNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
+import {productSelected, setProduct} from '../../general/product/actions.js'
 import alertify from 'alertifyjs'
 import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 
 @connect((store) => {
-  return {quotations: store.quotations.quotations, isVisible: store.quotations.isVisible}
+  return {
+    quotations: store.quotations.quotations,
+    isVisible: store.quotations.isVisible,
+    client: store.clients.clientSelected,
+    itemsInCart: store.cart.cartItems,
+    inputVal: store.products.inputVal,
+    globalDiscount: store.cart.globalDiscount,
+    warehouse_id: store.userProfile.salesWarehouse,
+    priceListSelected: store.priceList.listSelected,
+    usePriceListAsDefault: store.priceList.useAsDefault
+  }
 })
 export default class QuotationsPanel extends React.Component {
 
@@ -56,10 +67,11 @@ export default class QuotationsPanel extends React.Component {
       _this.props.dispatch({type: 'SET_QUOTATION_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
       _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
-      _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
+      // _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
       _this.props.dispatch({type: 'QUOTATION_LOADED', payload: data.user})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
       getFullClientById(data.client.id, _this.props.dispatch)
+      _this.loadCart(data)
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
@@ -68,6 +80,46 @@ export default class QuotationsPanel extends React.Component {
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
+  }
+
+  loadCart(quotation) {
+    console.log('ELEMENTO', quotation)
+    const cart = quotation.cart.cartItems
+    const _this = this
+    for (const item in cart) {
+
+      console.log('PRODUCT', cart[item].product)
+      const oldProduct = cart[item].product
+      const price1 = oldProduct.price ? oldProduct.price : oldProduct.price1
+      oldProduct.price1 = price1
+      const lineData = {
+        default_discount: cart[item].discount,
+        id: oldProduct.id,
+        max_discount: '100',
+        product: oldProduct,
+        table_price: '0',
+        target_price_list: 'price1'
+      }
+      _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: lineData})
+      try {
+        _this.props.dispatch(
+          productSelected(
+            lineData,
+            parseFloat(cart[item].qty),
+            _this.props.itemsInCart,
+            _this.props.client,
+            _this.props.warehouse_id,
+            true,
+            _this.props.priceListSelected,
+            _this.props.usePriceListAsDefault
+          )
+        )
+      } catch (err) {
+        console.log(err)
+      }
+
+    }
+
   }
 
   setNullSinglePresale(id, consecutive) {
