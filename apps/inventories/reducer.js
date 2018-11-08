@@ -29,6 +29,8 @@ import priceList from '../sales/general/priceList/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
 import warehouses2 from '../../general/warehouses/reducer.js'
+import picker from '../inventories/fileTransferLoad/loadFromFile/reducer.js'
+import transferDataLoad from '../inventories/fileTransferLoad/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -56,7 +58,9 @@ export default combineReducers({
   currency,
   extras,
   products2,
-  warehouses2
+  warehouses2,
+  picker, 
+  transferDataLoad
 
 
 })
