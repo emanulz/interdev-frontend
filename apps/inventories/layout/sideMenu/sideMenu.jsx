@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
+    useFileTransfer: store.config.globalConf.canDoFileTransfer,
     sideMenuVisible: store.layout.sideMenuVisible
   }
 })
@@ -40,12 +41,32 @@ export default class SideMenu extends React.Component {
 
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const sideMenuClass = this.props.sideMenuVisible ? 'sideMenu' : 'sideMenu hiddenByApp'
+    
+    let makeFileTransferMenu = ''
+    let loadFileTransferMenu = ''
+    if(this.props.useFileTransfer){
+      makeFileTransferMenu = <li>
+        <Link to='/inventories/makeFileTransfer'>
+          <span className='fa fa-file' />
+          Crear Transferencia</Link>
+      </li>
+
+      loadFileTransferMenu = <li>
+        <Link to='/inventories/loadFileTransfer'>
+          <span className='fa fa-file' />
+          Cargar Transferencia</Link>
+      </li>
+
+    }
     return <div id='sideMenu' className={sideMenuClass}>
 
       {/* <h3 className='sideMenu-header'>{title.toUpperCase()}</h3> */}
       <User />
 
       <Search />
+
+      
+
 
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
@@ -84,6 +105,8 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-building' />
               Bodegas</Link>
           </li>
+          {makeFileTransferMenu}
+          {loadFileTransferMenu}
           <li>
             <Link to='/inventories/reports'>
               <span className='fa fa-file' />

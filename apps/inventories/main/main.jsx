@@ -7,6 +7,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import routes from './routes'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
+import {loadGlobalConfig} from '../../../utils/api.js'
 
 // COMPONENTS
 
@@ -26,6 +27,7 @@ export default class Main extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(fecthProfile())
+    this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
   }
 
   // Main Layout

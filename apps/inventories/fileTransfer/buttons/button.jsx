@@ -6,7 +6,6 @@ import {generalSave} from '../../../../utils/api.js'
     return {
         note: store.extras.notes,
         cart: store.cart,
-        //pinUser: store.pin,
         sendToEmails: store.extras.client.email,
         uniqueId: store.fileTransfer.uniqueId,
         selectedWarehouse: store.warehouses2.selectedWarehouse.id
