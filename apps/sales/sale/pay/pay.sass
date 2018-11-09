@@ -23,6 +23,9 @@
         overflow-y: auto
         overflow-x: hidden
         min-width: 80%
+        @media screen and (max-width: 768px)
+            width: 100%
+            left: 0
     &-header
         position: absolute
         top: 0
@@ -110,12 +113,18 @@
     color: white
     margin-bottom: 15px
     border-radius: 5px
+    @media screen and (max-width: 768px)
+        font-size: 15px
     &.left
         width: 35%
         font-size: 15px
+        @media screen and (max-width: 768px)
+            font-size: 12px
     &.right
         width: 55%
         margin-left: 2%
+        @media screen and (max-width: 768px)
+            font-size: 12px
     &.tag-button
         width: 30%
         float: right
@@ -127,12 +136,16 @@
         font-size: 15px
         pointer-events: none
         background-color: #8394ad
+        @media screen and (max-width: 768px)
+            font-size: 12px
         &.enable
             cursor: pointer
             pointer-events: auto
             background-color: #6F7E95
         & i
             margin-left: 10px
+            @media screen and (max-width: 768px)
+                margin-left: 5px
 .pay-dropdown
     display: inline-block
     width: 55%
