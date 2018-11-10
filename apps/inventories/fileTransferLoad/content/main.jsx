@@ -35,7 +35,7 @@ export default class TransferContent extends React.Component {
                 return(
                     <div className="transfer-view-content-body-row">
                         <div>{item.code}</div>
-                        <div>Descripción</div>
+                        <div>{item.description}</div>
                         <div>{item.qty}</div>
                         <div>{item.cost}</div>
                         <div>{item.pu1}</div>
