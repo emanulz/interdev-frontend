@@ -22,6 +22,13 @@ export default class Data extends React.Component {
     const user = Object.keys(sale).length > 0 ? sale.user : ''
     const presaleUser = Object.keys(presale).length > 0 ? presale.user : ''
 
+    let wasCredit = false
+    try {
+      wasCredit = this.props.sale.pay.cred[0].amount
+    } catch (err) {}
+
+    const conditionText = wasCredit ? 'Crédito' : 'Contado'
+
     const date = sale.created
       ? `${formatDateTimeAmPm(sale.created)}`
       : `${formatDateTimeAmPm(new Date())}`
@@ -116,6 +123,13 @@ export default class Data extends React.Component {
       </tr>
       : <tr />
 
+    const saleConditionRow = this.props.config.printSaleConditionInFullInvoice
+      ? <tr>
+        <th>Condición:</th>
+        <td>{conditionText}</td>
+      </tr>
+      : <tr />
+
     return <div className='reprint-full-invoice-data'>
 
       <table className='client-table'>
@@ -148,6 +162,7 @@ export default class Data extends React.Component {
           {longConsecRow}
           {numKeyRow}
           {payMethodRow}
+          {saleConditionRow}
         </tbody>
 
       </table>

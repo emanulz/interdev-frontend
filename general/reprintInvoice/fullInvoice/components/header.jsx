@@ -16,8 +16,8 @@ export default class Header extends React.Component {
     try {
       wasCredit = this.props.sale.pay.cred[0].amount
     } catch (err) {}
-    const headertext = wasCredit ? 'Factura de crédito' : 'Factura de contado'
-
+    let headertext = wasCredit ? 'Factura de crédito' : 'Factura de contado'
+    headertext = this.props.conf.printFacturaElectronicaInFullInvoice ? 'Factura Electrónica' : headertext
     // BILL DATA
     const profile = this.props.userProfile.profile
     const tpLocals = this.props.userProfile.tp_locals
