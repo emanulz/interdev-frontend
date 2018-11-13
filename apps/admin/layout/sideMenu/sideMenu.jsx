@@ -11,7 +11,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     taxPayer: store.userProfile.taxPayer,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    user: store.user.user
   }
 })
 export default class SideMenu extends React.Component {
@@ -38,7 +39,7 @@ export default class SideMenu extends React.Component {
         href: '/admin/invoicing/creditnotes'
       }
     ]
-    if(this.props.config.useDebitNotes){
+    if (this.props.config.useDebitNotes) {
       childInvoicing.push(
         {
           text: 'N. de Débito Electrónicas',
@@ -53,6 +54,15 @@ export default class SideMenu extends React.Component {
       href: '/admin/invoicing/purchases'
     }
     childInvoicing.push(acceptPurchases)
+    if (this.props.user.is_staff) {
+      childInvoicing.push(
+        {
+          text: 'Reintento Masivo',
+          class: 'fa-retweet',
+          href: '/admin/invoicing/massiveretry'
+        }
+      )
+    }
 
     const childPresales = [
       {

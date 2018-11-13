@@ -28,6 +28,7 @@ import einvoices from './invoicing/invoices/reducer.js'
 import etickets from './invoicing/tickets/reducer.js'
 import ecreditNotes from './invoicing/creditNotes/reducer.js'
 import edebitNotes from './invoicing/debitNotes/reducer.js'
+import massiveRetry from './invoicing/massiveRetry/reducer.js'
 import config from './config/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
@@ -69,6 +70,7 @@ export default combineReducers({
   currency,
   printPresale,
   registerclosures,
-  printRegisterClosure
+  printRegisterClosure,
+  massiveRetry
 
 })
