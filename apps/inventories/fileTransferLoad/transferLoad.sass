@@ -1,0 +1,39 @@
+.transfer-view
+    font-family: 'Source Sans Pro', sans-serif
+    padding: 20px
+    display: grid
+    grid-template-columns: 80% 20%
+    grid-template-rows: 100px auto
+    &-header
+        grid-column-start: 1
+        grid-column-end: 3
+        grid-row: 1
+        & h1
+            font-size: 25px
+            font-weight: bold
+    &-content
+        grid-column-start: 1
+        grid-column-end: 2
+        grid-row: 2
+        &-header
+            display: grid
+            grid-template-columns: 10% 40% 10% 10% 10%
+            &-item
+        &-body
+            &-row
+                display: grid
+                grid-template-columns: 10% 40% 10% 10% 10%
+    &-aside
+        grid-column-start: 2
+        grid-column-end: 3
+        grid-row: 2
+
+.picker
+    &-label
+        padding-top: 5px
+        font-size: 20px
+        font-weight: bold
+    &-input
+        margin-top: 5px
+
+

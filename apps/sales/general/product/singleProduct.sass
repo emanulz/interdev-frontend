@@ -8,11 +8,12 @@
   transition: all 0.2s ease-in-out
   display: flex
   flex-flow: column
-  z-index: 2000
+  z-index: -1
   box-shadow: -2px 5px 10px 1px rgba(0,0,0,.176)
   background-color: #efefef
   &.visible
     right: 0
+    z-index: 2000
   &-header
     height: 50px
     background-color: $SECONDARY-COLOR-ACCENT

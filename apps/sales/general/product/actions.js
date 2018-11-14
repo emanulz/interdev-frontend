@@ -151,6 +151,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
   const code = lineData.product.code
   const product = lineData.product
   const predDiscount = lineData.default_discount
+  console.log('PRED DISCOUNTTTT', predDiscount)
   // DETERMIN THE PRICE TO USE
   const price = product.code == '00' || product.code == '000' ? product.price : determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault)
   product.price = price
@@ -322,7 +323,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
   const dataNewProd = caclSubtotal(product, qty, predDiscount)
-
+  console.log(dataNewProd)
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
     const uuid = uuidv1()
@@ -378,7 +379,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
 
 // calculates the subtotal by line, also the total with iv included, the discount in currency format
 function caclSubtotal(product, qty, productDiscount) {
-
+  
   // const price = priceToUse(product, client)
   const price = product.price
   const subTotalNoDiscount = price * qty
@@ -404,14 +405,14 @@ function caclSubtotal(product, qty, productDiscount) {
 
   // const discountCurrency = discountCurrencyInLine + discountCurrencyGlobal
   const discountCurrency = discountCurrencyInLine
-
+  console.log('DISCOUNT', discount)
   return {
     subtotal: subTotal,
     totalWithIv: totalWithIv,
     discountCurrency: discountCurrency,
     subTotalNoDiscount: subTotalNoDiscount,
     priceToUse: price,
-    discount: discount
+    discount: discount.toString()
   }
 
 }

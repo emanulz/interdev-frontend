@@ -6,7 +6,6 @@ import {generalSave} from '../../../../utils/api.js'
     return {
         note: store.extras.notes,
         cart: store.cart,
-        //pinUser: store.pin,
         sendToEmails: store.extras.client.email,
         uniqueId: store.fileTransfer.uniqueId,
         selectedWarehouse: store.warehouses2.selectedWarehouse.id
@@ -25,7 +24,7 @@ export default class Buttons extends React.Component {
             sucessMessage: 'Transferencia de inventario a archivo éxitosa',
             errorMessage: 'Error al transferir inventario a archivo',
             data: {
-              notes: this.props.notes,
+              notes: this.props.note,
               cart: JSON.stringify(this.props.cart),
               transfer_id: this.props.uniqueId,
               warehouse: this.props.selectedWarehouse 

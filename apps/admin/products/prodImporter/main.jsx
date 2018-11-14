@@ -1,12 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { loadGlobalConfig } from '../../../../utils/api.js'
-let inspect = require('util-inspect')
+
 import CSVReader from 'react-csv-reader'
 import {joinINV_CAT, saveProdInBatches, saveImportedProduct, importTestProducts, 
     importFakeSuppliers, generateProductInvMovs, imageProdTest, createProdWithImage} from './actions.js'
 
-import alertify from 'alertifyjs'
 
 @connect(store =>{
     return {

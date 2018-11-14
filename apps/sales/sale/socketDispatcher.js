@@ -16,7 +16,7 @@ export function socketDispatcher(message, item, dispatch) {
     {
       const sound = new Audio('/media/sounds/newPresale.mp3')
       alertify.set('notifier', 'position', 'top-right')
-      alertify.notify(`${item.message}`, 'error', 15)
+      alertify.notify(`${item.message}`, 'error', 36000)
       sound.play()
       break
     }
