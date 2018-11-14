@@ -10,6 +10,7 @@ import Select2 from 'react-select2-wrapper'
         warehouses_options: store.warehouses2.warehouses_options,
         selectedWarehouse: store.warehouses2.selectedWarehouse,
         is_disabled: store.warehouses2.is_disabled,
+
     }
 })
 export default class Warehouses extends React.Component {
@@ -45,13 +46,13 @@ export default class Warehouses extends React.Component {
                         data={this.props.warehouses_options}
                         disabled={this.props.is_disabled}
                         options={{
-                            placeholder: this.props.is_disabled?'Deshabilitado':'Elija la bodega de destino..',
+                            placeholder: this.props.is_disabled?'Deshabilitado':this.props.placeholder,
                             noResultsText: 'Sin elementos'
                     }} /> 
 
             </div>
             <div className="warehouses-data-row" >
-                <h3>Bodega de Destino:</h3>
+                <h3>{this.props.label}</h3>
                 <span>{this.props.selectedWarehouse.name}</span>
             </div>
         </div>

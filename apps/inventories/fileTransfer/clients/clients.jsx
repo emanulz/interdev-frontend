@@ -47,12 +47,7 @@ export default class Clients extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.clientSelected != this.props.clientSelected && !this.props.presaleId) {
-      // set the discount: default value or 0
 
-      // const discount = nextProps.client.pred_discount ? nextProps.client.pred_discount : 0
-
-      // this.props.dispatch(recalcCart(nextProps.cart, discount, nextProps.client))
-      // this.props.dispatch({type: 'SET_GLOBAL_DISCOUNT', payload: discount})
       this.props.dispatch({type: 'SET_CLIENT_DEBT', payload: nextProps.client.client.balance})
 
       // SET THE CLIENT PRICE LIST
