@@ -6,8 +6,8 @@ const defaultPermissions = {
 }
 
 const stateConst = {
-  retryStatus: '0',
-  amount: '',
+  retryStatus: '2',
+  amount: "25",
   retryDocType: '1'
 }
 
@@ -33,6 +33,7 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_MASSIVE_RETRY_STATUS':
     {
+      
       return {
         ...state,
         retryStatus: action.payload
@@ -41,6 +42,7 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_MASSIVE_RETRY_DOC_TYPE':
     {
+      console.log("Grrr -> ", action.payload)
       return {
         ...state,
         retryDocType: action.payload
@@ -59,9 +61,9 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        retryStatus: '0',
-        retryDocType: '1',
-        amount: ''
+        retryStatus: stateConst.retryStatus,
+        retryDocType: stateConst.retryDocType,
+        amount: stateConst.amount
       }
     }
 

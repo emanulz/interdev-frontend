@@ -3,12 +3,13 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import {generalSave} from '../../../../../../utils/api.js'
 
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
     retryStatus: store.massiveRetry.retryStatus,
-    retryDocType: store.massiveRetry.setRetryDocType,
+    retryDocType: store.massiveRetry.retryDocType,
     amount: store.massiveRetry.amount
 
   }
@@ -27,7 +28,7 @@ export default class List extends React.Component {
 
   setRetryDocType(ev) {
     const value = ev.target.value
-    this.props.dispatch({type: 'SET_MASSIVE_RETRY_DOCY_TYPE', payload: value})
+    this.props.dispatch({type: 'SET_MASSIVE_RETRY_DOC_TYPE', payload: value})
   }
 
   setRetryAmount(ev) {
@@ -36,7 +37,25 @@ export default class List extends React.Component {
   }
 
   retryDocuments() {
-    
+
+    const retry_kwargs = {
+      url: '/api/facturareception/mass_retry/',
+      method: 'post',
+      data: {
+        retryStatus: this.props.retryStatus,
+        retryDocType: this.props.retryDocType,
+        amount: this.props.amount
+      },
+      sucessMessage: 'Éxito despachando reintentos.',
+      errorMessage: 'Error reintentando documentos.',
+      successType: 'NONE',
+      errorType: 'NONE'
+
+    }
+    this.props.dispatch(
+      generalSave(retry_kwargs)
+    )
+    //prepare a post t
   }
 
   render() {
@@ -78,7 +97,7 @@ export default class List extends React.Component {
             className='form-control' />
         </div>
         <div className='form-group'>
-          <button className='form-control btn btn-success'>Reintentar</button>
+          <button onClick={this.retryDocuments.bind(this)} className='form-control btn btn-success'>Reintentar</button>
         </div>
       </div>
     </div>

@@ -298,7 +298,7 @@ export function setItem(kwargs) {
 //GENERAL SAVE
 //-----------------------------------------------------------
 export function generalSave(kwargs) {
-  console.log
+
   const data = kwargs.data
   const url = kwargs.url
   const method = kwargs.method
