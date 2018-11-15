@@ -13,6 +13,8 @@ import Fetching from '../../../general/fetching/fetching.jsx'
 
 import Pin from '../../../general/pin/main.jsx'
 
+import '../appstyles/main.sass'
+
 @connect((store) => {
     return {
       fetching: store.fetching.fetching,

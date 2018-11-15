@@ -13,6 +13,7 @@ import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 import PrintReturn from '../../../general/printReturn/printReturnPanel/printReturnPanel.jsx'
+import '../appstyles/main.sass'
 
 // import routes from './routes.js'
 

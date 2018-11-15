@@ -14,6 +14,8 @@ import Fetching from '../../../general/fetching/fetching.jsx'
 import Search from '../../../general/search/search.jsx'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 
+import '../appstyles/main.sass'
+
 
 @connect(store=>{
     return {

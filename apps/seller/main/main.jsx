@@ -15,6 +15,7 @@ import GeneralItem from '../../sales/general/product/generalItem/generalItem.jsx
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
+import '../appstyles/main.sass'
 
 // import routes from './routes.js'
 

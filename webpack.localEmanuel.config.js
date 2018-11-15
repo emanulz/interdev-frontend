@@ -31,8 +31,9 @@ config.devServer = {
 config.js.output = {
   path: path.resolve('../backend/static/bundles/local/'),
   filename: '[name]-[hash].js',
-  publicPath: 'http://192.168.9.53:8080/static/bundles/local/' // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
+  publicPath: 'http://192.168.9.56:8080/static/bundles/local/' // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
 }
+
 
 // config.styles.plugins = config.styles.plugins.concat([
 //   new BundleTracker({filename: '../backend/webpack-stats-css-local.json'})

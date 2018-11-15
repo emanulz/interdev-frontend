@@ -23,6 +23,8 @@ import Fetching from '../../../general/fetching/fetching.jsx'
 
 import routes from './routes.js'
 
+import '../appstyles/main.sass'
+
 @connect((store) => {
   return {
     adminLocked: store.lockScreen.adminLocked,

@@ -15,6 +15,8 @@ import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 import Invoice from '../invoice/invoicePanel/invoicePanel.jsx'
 
+import '../appstyles/main.sass'
+
 // import routes from './routes.js'
 
 @connect((store) => {
