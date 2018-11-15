@@ -60,8 +60,9 @@ export default class WorkshopView extends React.Component {
         if(kwargs.no_repair){
             no_repair = kwargs['no_repair']
         }
-        
+
         const wo = this.props.work_order
+
         //check if the order is already closed, if so, print
         if(!wo.is_closed){
             //check if the order has at least a mo or in movement before letting it be closed
@@ -93,7 +94,8 @@ export default class WorkshopView extends React.Component {
                 close_order: close_order,
                 no_repair: no_repair,
             }
-    
+            
+            console.log("Dispatched data --> ", data)
             const saveKwargs = {
                 work_order_id: this.props.work_order.id,
                 data: data,
@@ -102,6 +104,7 @@ export default class WorkshopView extends React.Component {
             if(kwargs.user_id){
                 saveKwargs.data['user_id'] = kwargs.user_id
             }
+            console.log("Sent --> ", wo.consecutive)
             patchWorkView(saveKwargs)
             return
     
@@ -160,6 +163,10 @@ export default class WorkshopView extends React.Component {
         const method = function(kwargs){
             return _this.saveOrderTransactionsOrPrint(kwargs)
         }
+
+        this.props.dispatch({type:'CLEAR_PIN_CASES'})
+
+        this.props.dispatch({type:'CLEAR_WORKSHOPVIEW'})
 
         //register the path action with the PIN panel
         const pinCase = {
@@ -445,7 +452,15 @@ export default class WorkshopView extends React.Component {
 
     buildWorkOrderHeader(){
         const employee = this.props.work_order.receiving_employee
+        let last_updater =  ''
+        try {
+            last_updater = JSON.parse(this.props.work_order.updated_by)
+        } catch (error) {
+            
+        }
+
         let employee_name = `${employee.first_name? employee.first_name : 'Usuario'} ${employee.last_name? employee.last_name: 'Sistema'}`
+        let updater_name = `${last_updater.first_name? last_updater.first_name : 'Usuario'} ${last_updater.last_name? last_updater.last_name: 'Sistema'}`
         const check_class = this.props.work_order.is_warranty ? "fa fa-check-square": "fa fa-square"
         return <div className="workshop-view-right-workorder" >
             <h1 className="workshop-view-right-workorder-section">Orden de trabajo</h1>
@@ -462,6 +477,10 @@ export default class WorkshopView extends React.Component {
             <div className="workshop-view-right-warranty-prop">
                 <h3 className="workshop-view-right-warranty-label">Creada por:</h3>
                 <span className="workshop-view-right-warranty-data">{employee_name}</span>
+            </div>
+            <div className="workshop-view-right-warranty-prop">
+                <h3 className="workshop-view-right-warranty-label">Última Actualización:</h3>
+                <span className="workshop-view-right-warranty-data">{updater_name}</span>
             </div>
 
             <div className="workshop-view-right-warranty-prop">

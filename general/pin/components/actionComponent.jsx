@@ -33,7 +33,6 @@ export default class PinAction extends React.Component {
     render(){
 
         const user_selected = this.props.profile.id ? false:true
-        console.log("User selected ", user_selected)
         const actionHeader = this.props.selectedCase.actionHeader
             ? this.props.selectedCase.actionHeader
             : 'Acción'
