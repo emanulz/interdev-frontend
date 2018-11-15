@@ -5,7 +5,7 @@ const path = require('path')
 const webpack = require('webpack')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const BrotliPlugin = require('brotli-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 
 config.js.plugins = config.js.plugins.concat([
   new ExtractTextPlugin({
@@ -21,10 +21,10 @@ config.js.plugins = config.js.plugins.concat([
       'NODE_ENV': JSON.stringify('production')
     }
   }),
-  new BrotliPlugin({
-    asset: '[path].br[query]',
+  new CompressionPlugin({
+    filename: '[path].gz[query]',
     test: /\.(js|css|html|svg)$/,
-    threshold: 10240,
+    threshold: 8192,
     minRatio: 0.8
   })
 ])
