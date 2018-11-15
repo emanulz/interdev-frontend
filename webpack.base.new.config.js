@@ -1,4 +1,3 @@
-const debug = process.env.NODE_ENV !== 'production'
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const config = {
@@ -8,7 +7,7 @@ const config = {
 
 const jsConfig = Object.assign({}, config, {
   context: __dirname,
-  devtool: debug ? 'inline-sourcemap' : '',
+  devtool: 'inline-sourcemap',
   name: 'js',
   entry: {
     home: './apps/home/app.js',
