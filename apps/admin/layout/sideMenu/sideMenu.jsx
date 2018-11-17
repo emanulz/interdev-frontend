@@ -74,9 +74,13 @@ export default class SideMenu extends React.Component {
         class: 'fa-envelope-open',
         href: '/admin/presales/quoting'
       }, {
-        text: 'Apartados',
+        text: 'Reservas',
         class: 'fa-cubes',
         href: '/admin/presales/reserves'
+      }, {
+        text: 'Apartados',
+        class: 'fa-cubes',
+        href: '/admin/presales/nsreserves'
       }, {
         text: 'Cuentas Restaurante',
         class: 'fa-cutlery',

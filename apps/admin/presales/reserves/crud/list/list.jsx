@@ -8,7 +8,7 @@ import SearchAdmin from '../../../../../../general/search/searchAdmin.jsx'
 import { getPaginationItemDispatch } from '../../../../../../utils/api.js'
 import Pagination from '../../../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.jsx'
-import {loadSaleToReprint} from '../../../../../../general/reprintInvoice/actions.js'
+import {loadPresaleToPrint} from '../../../../../../general/printPresale/actions.js'
 
 @connect((store) => {
   return {
@@ -26,7 +26,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const presaleKwargs = {
-      url: `/api/presales/?presale_type=RESERVES&limit=${this.props.pageSize}&ordering=-consecutive`,
+      url: `/api/presales/?presale_type=RESERVE&limit=${this.props.pageSize}&ordering=-consecutive`,
       successType: 'FETCH_RESERVES_PRESALES_FULFILLED',
       errorType: 'FETCH_RESERVES_PRESALES_REJECTED'
     }
@@ -34,8 +34,8 @@ export default class List extends React.Component {
     this.props.dispatch(getPaginationItemDispatch(presaleKwargs))
   }
 
-  reprintInvoice(item) {
-    this.props.dispatch(loadSaleToReprint(item))
+  reprintPresale(item) {
+    this.props.dispatch(loadPresaleToPrint(item))
   }
 
   render() {
@@ -70,6 +70,12 @@ export default class List extends React.Component {
       }, {
         field: 'presale_type',
         text: 'Tipo de Preventa'
+      }, {
+        field: 'consecutive',
+        text: 'Recibo',
+        type: 'function_on_click',
+        textToRender: 'Ver',
+        onClickFunction: this.reprintPresale
       }
     ]
 
