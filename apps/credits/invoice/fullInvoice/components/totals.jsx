@@ -15,7 +15,7 @@ export default class Totals extends React.Component {
       <table>
         <tbody>
           <tr className='total-row'>
-            <th>Total</th>
+            <th>Total Pago</th>
             <td>₡ {total.formatMoney(2, ',', '.')}</td>
           </tr>
         </tbody>

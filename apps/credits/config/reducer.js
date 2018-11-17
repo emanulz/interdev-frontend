@@ -1,5 +1,6 @@
 const stateConst = {
-  company: {}
+  company: {},
+  globalConf: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -29,6 +30,24 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         [action.payload.section]: action.payload.data
+      }
+
+    } // case
+
+    case 'FETCH_GLOBAL_CONF_FULFILLED':
+    {
+      return {
+        ...state,
+        globalConf: action.payload.data
+      }
+
+    } // case
+
+    case 'FETCH_GLOBAL_CONF_REJECTED':
+    {
+      return {
+        ...state,
+        globalConf: {}
       }
 
     } // case

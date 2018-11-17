@@ -42,6 +42,14 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'SET_INVOICE_PANEL_FULL':
+    {
+      return {
+        ...state,
+        isFull: action.payload
+      }
+    } // case
+
     case 'NEW_SALE':
     {
       state = stateConst

@@ -5,12 +5,23 @@ import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 
 @connect((store) => {
-  return {panelVisible: store.invoice.isVisible, isFull: store.invoice.isFull}
+  return {
+    panelVisible: store.invoice.isVisible,
+    isFull: store.invoice.isFull,
+    config: store.config.globalConf
+  }
 })
 export default class InvoicePanel extends React.Component {
 
   componentWillMount () {
     this.props.dispatch(loadGlobalConfig('company', false, 'FETCH_CONFIG_FULFILLED', 'FETCH_CONFIG_REJECTED'))
+    this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.config != nextProps.config) {
+      this.props.dispatch({type: 'SET_INVOICE_PANEL_FULL', payload: nextProps.config.defaultInvoiceFull})
+    }
   }
 
   hidePanel() {
