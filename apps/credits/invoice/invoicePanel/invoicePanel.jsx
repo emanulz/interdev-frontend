@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {loadGlobalConfig} from '../../../../utils/api.js'
+import {getClientPendingSales} from '../../../../utils/getClientPendingSales'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 
@@ -8,7 +9,8 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
   return {
     panelVisible: store.invoice.isVisible,
     isFull: store.invoice.isFull,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    payment: store.payments.paymentActive
   }
 })
 export default class InvoicePanel extends React.Component {
@@ -21,6 +23,25 @@ export default class InvoicePanel extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.config != nextProps.config) {
       this.props.dispatch({type: 'SET_INVOICE_PANEL_FULL', payload: nextProps.config.defaultInvoiceFull})
+    }
+    const newId = nextProps.payment.client ? nextProps.payment.client.id : '0000000000'
+    const oldId = this.props.payment.client ?  this.props.payment.client.id : '0000000000'
+
+    if (newId != '0000000000' && newId != oldId) {
+
+      this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
+
+      const id = newId
+      const code = nextProps.payment.client.code
+      const kwargs = {
+        url: `/api/creditpaymentslist/get_client_bills/?code=${code}`,
+        clientId: id,
+        successType: 'FETCH_CLIENT_SALES_WITH_DEBT_FULFILLED',
+        errorType: 'FETCH_CLIENT_SALES_WITH_DEBT_REJECTED'
+      }
+
+      this.props.dispatch(getClientPendingSales(kwargs))
+
     }
   }
 
