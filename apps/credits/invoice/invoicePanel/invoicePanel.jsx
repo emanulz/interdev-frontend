@@ -25,7 +25,7 @@ export default class InvoicePanel extends React.Component {
       this.props.dispatch({type: 'SET_INVOICE_PANEL_FULL', payload: nextProps.config.defaultInvoiceFull})
     }
     const newId = nextProps.payment.client ? nextProps.payment.client.id : '0000000000'
-    const oldId = this.props.payment.client ?  this.props.payment.client.id : '0000000000'
+    const oldId = this.props.payment.client ? this.props.payment.client.id : '0000000000'
 
     if (newId != '0000000000' && newId != oldId) {
 
@@ -64,7 +64,7 @@ export default class InvoicePanel extends React.Component {
   }
 
   printPanel() {
-    window.printDiv('invoice-print', ['/static/fixedBundles/css/sales.css'])
+    window.printDiv('invoice-print', ['/static/fixedBundles/css/credits.css'])
   }
 
   render() {
