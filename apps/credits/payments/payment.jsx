@@ -45,7 +45,7 @@ export default class MovementsList extends React.Component {
     return <tr key={sale.sale.id}>
       <td>{sale.sale.consecutive}</td>
       <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
-      <td>₡ {parseFloat(sale.sale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
+      <td>₡ {parseFloat(sale.sale.sale_total).formatMoney(2, ',', '.')}</td>
       <td>₡ {parseFloat(sale.amount).formatMoney(2, ',', '.')}</td>
       <td>₡ {Math.abs(parseFloat(sale.sale.balance)).formatMoney(2, ',', '.')}</td>
       <td>₡ {(Math.abs(parseFloat(sale.sale.balance)) - parseFloat(sale.amount)).formatMoney(2, ',', '.')}</td>
