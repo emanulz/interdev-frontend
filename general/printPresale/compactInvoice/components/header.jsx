@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     presale: store.printPresale.presale,
-    userProfile: store.userProfile
+    userProfile: store.userProfile,
+    config: store.config.globalConf
   }
 })
 export default class Header extends React.Component {
@@ -28,8 +29,8 @@ export default class Header extends React.Component {
     try {
       wasNSReserve = this.props.presale.presale_type == 'NS_RESERVE'
     } catch (err) {}
-
-    const headertext = wasReserve ? 'Recibo' : wasQuoting ? 'Factura Proforma' : wasRestaurant ? 'Cuenta de restaurante' : wasNSReserve ? 'Recibo de Apartado' : 'Recibo de Preventa'
+    const reserveText = this.props.config.reservesReceiptText ? this.props.config.reservesReceiptText : 'Recibo'
+    const headertext = wasReserve ? reserveText : wasQuoting ? 'Factura Proforma' : wasRestaurant ? 'Cuenta de restaurante' : wasNSReserve ? 'Recibo de Apartado' : 'Recibo de Preventa'
 
     // BILL DATA
     const profile = this.props.userProfile.profile

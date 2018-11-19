@@ -1,4 +1,5 @@
 
+
 const defaultPinCase = {
     case_name: 'default',
     headerText: 'Indentifición de Usuario',
@@ -24,6 +25,14 @@ export default function reducer(state=stateConst, action) {
 
 
     switch (action.type){
+
+        case 'CLEAR_PIN_CASES':
+        {
+            return {
+                ...state,
+                pinCases: []
+            }
+        }
 
         case 'SET_PIN_CASE_AND_SHOW':
         {

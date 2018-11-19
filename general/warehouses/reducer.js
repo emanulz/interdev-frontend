@@ -12,12 +12,21 @@ const stateConst = {
     warehouses:[],
     warehouses_options:[],
     selectedWarehouse: warehouseModel,
-    is_disabled: false
+    is_disabled: false,
 }
 
 export default function reducer(state=stateConst, action){
 
     switch(action.type){
+        
+        case 'SET_PLACEHOLDER_MESSAGE':
+        {
+            return {
+                ...state,
+                placeholder: action.payload
+            }
+        }
+
         case 'CLEAR_WAREHOUSES_ALL':
         {
             return {

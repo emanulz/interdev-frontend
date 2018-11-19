@@ -8,6 +8,7 @@ const stateConst = {
 
 export default function reducer(state=stateConst, action) {
     switch(action.type){
+        
         case 'SET_UNIQUE_ID':
         {
             return {

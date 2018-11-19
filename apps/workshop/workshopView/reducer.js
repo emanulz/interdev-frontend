@@ -11,7 +11,8 @@ const work_order_model = {
     id:'000000',
     consecutive:'',
     is_closed : false,
-    receiving_employee : 'Receiving Employee',
+    receiving_employee : 'Receptor',
+    updated_by : 'Actualiza por',
     technician:'Technician',
     client:'Client',
     client_id:'client id',
@@ -130,6 +131,7 @@ export default function reducer(state=stateConst, action){
         case 'SET_WORK_ORDER_VIEW':
         {
             const work_order = action.payload.work_order
+            console.log("Returned consecutive --> ", work_order.consecutive)
             
             const malfunctions = JSON.parse(work_order.malfunction_details)
             const observations = JSON.parse(work_order.observations_list)

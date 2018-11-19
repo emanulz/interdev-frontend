@@ -32,7 +32,7 @@ export default class Aside extends React.Component {
       <div className={asideContainerClass}>
         <Client />
         <Notes />
-        <Warehouse />
+        <Warehouse placeholder='Elija la bodega de origen...' label="Bodega de origen:"/>
         <Buttons />
       </div>
       <div className='sale-aside-total' >

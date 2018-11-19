@@ -28,10 +28,10 @@ export default class Table extends React.Component {
             {date}
           </td>
           <td>
-            ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
+            ₡ {Math.abs(parseFloat(item.sale.balance)).formatMoney(2, ',', '.')}
           </td>
           <td>
-            ₡ {Math.abs(parseFloat(item.sale.balance)).formatMoney(2, ',', '.')}
+            ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
           </td>
           <td>
             ₡ {(Math.abs(parseFloat(item.sale.balance)) - parseFloat(item.amount)).formatMoney(2, ',', '.')}
@@ -51,8 +51,8 @@ export default class Table extends React.Component {
         <tr>
           <th>Factura #</th>
           <th className='description-row'>Fecha Factura</th>
-          <th>Monto</th>
           <th>Saldo Anterior</th>
+          <th>Monto</th>
           <th>Nuevo Saldo</th>
         </tr>
       </thead>

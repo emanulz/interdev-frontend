@@ -8,7 +8,8 @@ import {checkImportData, importData, validateFile} from '../actions.js'
     return {
         file: store.picker.file,
         warehouse: store.warehouses2.selectedWarehouse,
-        load_preview: store.transferDataLoad.load_preview
+        load_preview: store.transferDataLoad.load_preview,
+        requested_by: store.transferDataLoad.transferData.requested_by
     }
 })
 export default class Aside extends React.Component {
@@ -73,12 +74,26 @@ export default class Aside extends React.Component {
             onFailure: onFailure
         }
 
-        console.log("Fire data load request")
         this.props.dispatch(importData(transfer_kwargs))
 
     }
 
     render(){
+
+        let created_by = ""
+        if(this.props.requested_by){
+            console.log("Requested by --> ", this.props.requested_by)
+            let parsed_data = JSON.parse(this.props.requested_by)
+            let first_name = parsed_data.first_name
+            let last_name = parsed_data.last_name
+            console.log(first_name, last_name)
+            if(first_name==="" && last_name===""){
+                created_by = `${parsed_data.username}`
+            }else{
+                created_by = `${first_name} ${last_name}`
+            }
+            
+        }
 
         return <div className="transfer-view-aside">
             <div className="transfer-view-aside-title">
@@ -89,18 +104,18 @@ export default class Aside extends React.Component {
                     Creada por:
                 </div>
                 <div className="transfer-view-aside-value">
-                    Victor M
+                    {created_by}
                 </div>
             </div>
 
-            <div className="transfer-view-aside-origin">
+            {/*<div className="transfer-view-aside-origin">
                 <div className="transfer-view-aside-legend">
                     Local origen:
                 </div>
                 <div className="transfer-view-aside-value">
                     Local 2
                 </div>
-            </div>
+            </div>*/}
 
             <div className="transfer-view-aside-warehouse">
                 <Warehouse />

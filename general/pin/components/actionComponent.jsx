@@ -25,19 +25,21 @@ export default class PinAction extends React.Component {
 
         //dispatch the method passing on the kwargs
         this.props.selectedCase.method(kwargs)
-
+        this.props.dispatch({type: 'CLEAR_PIN_USER'})
+        this.props.dispatch({type: 'CLEAR_PIN_USER_PROFILE'})
         this.props.dispatch({type:'HIDE_PIN_PANEL'})
     }
 
     render(){
 
+        const user_selected = this.props.profile.id ? false:true
         const actionHeader = this.props.selectedCase.actionHeader
             ? this.props.selectedCase.actionHeader
             : 'Acción'
 
         const actionDescription = this.props.selectedCase.actionDescription
             ? this.props.selectedCase.actionDescription
-            : 'Ejeccutar acción?'
+            : 'Ejecutar acción?'
 
         const dispatchButtonIcon = this.props.selectedCase.dispatchButtonIcon
             ? <span><i className={this.props.selectedCase.dispatchButtonIcon}/></span>
@@ -51,6 +53,7 @@ export default class PinAction extends React.Component {
             <div className="pin-side-body-content">
                 <p>{actionDescription}</p>
                 <button
+                    disabled={user_selected}
                     className='btn btn-default tag-button' onClick={this.callActionMethod.bind(this)}>
                     {this.props.selectedCase.dispatchButtonText}
                     {dispatchButtonIcon}

@@ -7,6 +7,8 @@ import alertify from 'alertifyjs'
     return {
         start_date: store.generalReports.start_date,
         end_date: store.generalReports.end_date,
+        useRestaurant: store.config.globalConf.useRestaurant,
+        WorkshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
     }
 })
 export default class ExcelFetcher extends React.Component {
@@ -47,6 +49,16 @@ export default class ExcelFetcher extends React.Component {
         const s = target_date[0]
         const e = target_date[1]
 
+        let rest_report = ''
+        if (this.props.useRestaurant){
+            rest_report = <a href={`/reportsExcel/restservicereport/?start=${s}&end=${e}`}>Servicio Restaurante</a>
+        }
+
+        let bd_report = ''
+        if(this.props.WorkshopAppInstalled){
+            bd_report = <a href={`/reportsExcel/bdwarranty/?start=${s}&end=${e}`}>{"Garantías B&D"}</a>
+        }
+
         return <div className="excel-fetcher" >
             <div className="excel-fetcher-title">
                 <h1>Seleccione el periódo a reportar y descarge el Excel</h1>
@@ -69,10 +81,10 @@ export default class ExcelFetcher extends React.Component {
                 <a href={`/reportsExcel/generalsales/?start=${s}&end=${e}`}>General Ventas</a>
                 <a href={`/reportsExcel/generalpurchases/?start=${s}&end=${e}`}>General Compras</a>
                 <a href="/reportsExcel/invvalue">Valoración de Inventario</a>
-                <a href={`/reportsExcel/bdwarranty/?start=${s}&end=${e}`}>{"Garantías B&D"}</a>
+                {bd_report}
                 <a href={`/reportsExcel/creditstatus`}>General Crédito</a>
                 <a href={`/reportsExcel/topayreport`}>Por Pagar</a>
-                <a href={`/reportsExcel/restservicereport/?start=${s}&end=${e}`}>Servicio Restaurante</a>
+                {rest_report}
             </div>
 
         </div>
