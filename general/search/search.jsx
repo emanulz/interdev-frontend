@@ -8,7 +8,10 @@ const Mousetrap = require('mousetrap')
   return {
     isVisible: store[ownProps.namespace].isVisible,
     searchText: store[ownProps.namespace].searchText,
-    searchResults: store[ownProps.namespace].searchResults}
+    searchResults: store[ownProps.namespace].searchResults,
+    previousSearch: store[ownProps.namespace].previousSearch,
+    activeCode: store[ownProps.namespace].activeCode
+  }
 })
 export default class SearchPanel extends React.Component {
 
@@ -22,7 +25,23 @@ export default class SearchPanel extends React.Component {
   inputKeyPress(ev) {
     if (ev.key == 'Enter') {
       ev.preventDefault()
-      this.searchAction()
+      this.props.dispatch({type: `${this.props.namespace}_SET_PREVIOUS_SEARCH`, payload: ev.target.value})
+      // IF ITS THE SAME SEARCH DO THE SET ACTION
+      if (this.props.previousSearch == ev.target.value) {
+        // HIDE PANEL
+        if (this.props.setAction) {
+          this.props.setAction(this.props.activeCode, this.props.dispatch)
+        }
+        // EXECUTE THE ACTION
+      } else {
+        // IF THE TEXT WAS CLEANED BUT THERE WAS A PREVIOUS SEARCH EXECUTHE THE ACTION
+        if (this.props.previousSearch != '' && ev.target.value == '') {
+          this.props.setAction(this.props.activeCode, this.props.dispatch)
+        // ELSE DO THE SEARCH
+        } else {
+          this.searchAction()
+        }
+      }
     } else {
       this.props.dispatch({type: `${this.props.namespace}_SET_SEARCH_TEXT`, payload: ev.target.value})
     }

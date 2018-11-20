@@ -13,10 +13,17 @@ export function productSearchDoubleClick(item, dispatch) {
 
 export function productSearchClick(index, dispatch) {
   dispatch({type: 'productSearch_SET_ACTIVE_INDEX', payload: index})
+  document.getElementById('productSearch-input-field').focus()
 }
 
 export function productSearchActive(product, dispatch) {
   dispatch({type: 'productSearch_SET_ACTIVE_IMAGE', payload: {name: product.image_name, code: product.code}})
+}
+
+export function productSetAction(code, dispatch) {
+  dispatch({type: 'productSearch_TOGGLE_SEARCH_PANEL', payload: -1})
+  document.getElementById('productCodeInputField').value = code
+  document.getElementById('productCodeInputField').focus()
 }
 
 export function clientSearchDoubleClick(item, dispatch) {

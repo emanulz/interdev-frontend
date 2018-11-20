@@ -26,7 +26,7 @@ import Search from '../../../general/search/search.jsx'
 import RegisterClosure from '../registerClosure/registerClosure.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
-import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../general/search/actions.js'
+import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../general/search/actions.js'
 
 import {connect} from 'react-redux'
 const uuidv1 = require('uuid/v1')
@@ -72,7 +72,7 @@ export default class Sale extends React.Component {
       <Content />
       <Aside />
       <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
-        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage />
+        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <PayPanel />
       <Presales />

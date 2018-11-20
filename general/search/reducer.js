@@ -4,7 +4,9 @@ const stateConst = {
   searchResults: [],
   activeIndex: 0,
   activeImageName: '',
-  activeImageCode: ''
+  activeImageCode: '',
+  previousSearch: '',
+  activeCode: ''
 }
 
 const reducer = (namespace) => (state = stateConst, action) => {
@@ -15,7 +17,8 @@ const reducer = (namespace) => (state = stateConst, action) => {
       return {
         ...state,
         activeImageName: action.payload.name,
-        activeImageCode: action.payload.code
+        activeImageCode: action.payload.code,
+        activeCode: action.payload.code
       }
     }
 
@@ -50,6 +53,14 @@ const reducer = (namespace) => (state = stateConst, action) => {
       return {
         ...state,
         activeIndex: action.payload
+      }
+    } // case
+
+    case `${namespace}_SET_PREVIOUS_SEARCH`:
+    {
+      return {
+        ...state,
+        previousSearch: action.payload
       }
     } // case
 

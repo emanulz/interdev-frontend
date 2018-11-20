@@ -14,7 +14,7 @@ import Currency from '../../../general/currency/currency.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import Search from '../../../general/search/search.jsx'
-import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive} from '../../sales/general/search/actions.js'
+import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../../sales/general/search/actions.js'
 import Quotations from '../../sales/sale/quotations/quotationsList.jsx'
 
 @connect((store) => {
@@ -41,7 +41,7 @@ export default class Sale extends React.Component {
       <Aside />
 
       <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
-        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage />
+        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <Send />
       <ClientPanel />
