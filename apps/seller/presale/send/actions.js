@@ -16,10 +16,15 @@ export function getUserByCode(code, pin) {
       dispatch({type: 'SET_SEND_USER_PROFILE', payload: response.data.profile})
       dispatch({type: 'CLEAR_SEND_USER_INPUTS', payload: ''})
       dispatch({type: 'FETCHING_DONE', payload: ''})
+      document.getElementById('sendPresaleButton').focus()
     }).catch(function(error) {
-      alertify.alert('ERROR', 'La combinación de código de usuario y PIN son incorrectos')
-      dispatch({type: 'CLEAR_SEND_USER', payload: error})
+      console.log('ERROR TRAYENDO PERFILE', error)
       dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('ERROR', 'La combinación de código de usuario y PIN son incorrectos')
+        .set('onok', function(closeEvent) {
+        // document.getElementById('presaleCodeInput').focus()
+          // dispatch({type: 'CLEAR_SEND_USER', payload: -1})
+        })
     })
   }
 }

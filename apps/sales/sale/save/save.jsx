@@ -27,7 +27,8 @@ const Mousetrap = require('mousetrap')
     isinvoice: store.sale.isInvoice,
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
-    marker: store.sale.saleUUID
+    marker: store.sale.saleUUID,
+    conf: store.config.globalConf
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -86,12 +87,20 @@ export default class SaveBtn extends React.Component {
     })
     // SAVE PROCESS
     updatePromise.then((data) => {
+      const __this = _this
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch(loadSaleToReprint(data.consecutive))
       this.props.dispatch({type: 'SET_SALE', payload: data})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       Mousetrap.reset()
+      Mousetrap.bind('enter', function() {
+        window.printDiv('reprint-invoice-print', ['/static/fixedBundles/css/sales.css'])
+        Mousetrap.unbind('enter')
+        if (__this.props.conf.NoF5AfterSendOrPrint) {
+          window.location.href = '/sales'
+        }
+      })
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {

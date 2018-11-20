@@ -15,7 +15,8 @@ import alertify from 'alertifyjs'
     extras: store.extras,
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
-    advanceAmount: store.send.advance_amount
+    advanceAmount: store.send.advance_amount,
+    conf: store.config.globalConf
   }
 })
 export default class SaveBtn extends React.Component {
@@ -70,7 +71,14 @@ export default class SaveBtn extends React.Component {
       if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING' || data.presale_type == 'NS_RESERVE') {
         this.props.dispatch(loadPresaleToPrint(data.consecutive))
       } else {
-        alertify.alert('COMPLETADO', 'Preventa Enviada a Caja Correctamente')
+        if (this.props.conf.NoF5AfterSendOrPrint) {
+          alertify.alert('COMPLETADO', 'Preventa Enviada a Caja Correctamente')
+            .set('onok', function(closeEvent) {
+              window.location.href = '/seller'
+            })
+        } else {
+          alertify.alert('COMPLETADO', 'Preventa Enviada a Caja Correctamente')
+        }
       }
     }).catch((err) => {
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -84,10 +92,15 @@ export default class SaveBtn extends React.Component {
     const btnSendText = this.props.presaleType == 'REGULAR' ? 'Enviar' : 'Guardar'
     const btnSendIcon = this.props.presaleType == 'REGULAR' ? 'fa fa-send' : 'fa fa-save'
 
-    return <div onClick={this.saveBtn.bind(this)} className={this.props.sendButtonClass}>
+    // return <div onClick={this.saveBtn.bind(this)} className={this.props.sendButtonClass}>
+    //   {btnSendText}
+    //   <i className={btnSendIcon} aria-hidden='true' />
+    // </div>
+
+    return <button disabled={this.props.disabledSend} id='sendPresaleButton' onClick={this.saveBtn.bind(this)} className={this.props.sendButtonClass}>
       {btnSendText}
       <i className={btnSendIcon} aria-hidden='true' />
-    </div>
+    </button>
 
   }
 

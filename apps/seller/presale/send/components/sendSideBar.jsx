@@ -30,7 +30,7 @@ export default class PaySideBar extends React.Component {
     sendButtonClass = (total > 0 && this.props.user.username)
       ? 'send-tag tag-button enable'
       : 'send-tag tag-button'
-
+    const disabledSend = !(total > 0 && this.props.user.username)
     const advanceRow = this.props.presaleType == 'NS_RESERVE'
       ? <div className='send-side-bar-nsadvance'>
         <div className='send-side-bar-nsadvance-tag'>
@@ -57,7 +57,7 @@ export default class PaySideBar extends React.Component {
           {clientName}</div>
         <br />
 
-        <SaveBtn sendButtonClass={sendButtonClass} />
+        <SaveBtn disabledSend={disabledSend} sendButtonClass={sendButtonClass} />
 
       </div>
 
