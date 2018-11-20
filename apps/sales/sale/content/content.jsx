@@ -30,7 +30,7 @@ export default class Main extends React.Component {
         <Product />
       </div>
       <div className={cartClass} >
-        <Cart />
+        <Cart caller='sales' />
       </div>
       <div className={totalClass} >
         ₡ {this.props.total.formatMoney()}

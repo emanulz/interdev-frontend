@@ -13,7 +13,7 @@ const jsConfig = Object.assign({}, config, {
     // home: './apps/home/app.js',
     // admin: './apps/admin/app.js',
     sales: './apps/sales/app.js',
-    // seller: './apps/seller/app.js',
+    seller: './apps/seller/app.js',
     // credits: './apps/credits/app.js',
     // workshop: './apps/workshop/app.js',
     // inventories: './apps/inventories/app.js',

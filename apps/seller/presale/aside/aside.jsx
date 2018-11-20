@@ -8,8 +8,10 @@ import Totals from '../../../sales/general/totals/totals.jsx'
 import Notes from '../../../sales/general/extras/notes.jsx'
 import Currency from '../../../sales/general/currency/currency.jsx'
 import PriceList from '../../../sales/general/priceList/priceList.jsx'
-import Buttons from '../buttons/buttons.jsx'
+import ButtonsExtras from '../buttons/buttonsExtras.jsx'
+import MainButtons from '../buttons/buttonsMain.jsx'
 import {connect} from 'react-redux'
+import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
 @connect((store) => {
   return {
@@ -36,12 +38,30 @@ export default class Aside extends React.Component {
             <i className='fa fa-chevron-right' />
           </div>
         </div> */}
-        <Client />
+        <Tabs defaultTab='one'>
+          <TabList>
+            <Tab className='oneTwo' tabFor='one'>General</Tab>
+            <Tab className='oneTwo' tabFor='two'>Extras</Tab>
+            <TabPanel tabId='one'>
+              <Client />
+              <PriceList />
+              <Currency />
+              <Totals />
+              <MainButtons />
+            </TabPanel>
+
+            <TabPanel tabId='two'>
+              <Notes />
+              <ButtonsExtras />
+            </TabPanel>
+          </TabList>
+        </Tabs>
+        {/* <Client />
         <PriceList />
         <Currency />
         <Totals />
         <Notes />
-        <Buttons />
+        <Buttons /> */}
       </div>
       {/* <Buttons /> */}
       <div className='sale-aside-total' >

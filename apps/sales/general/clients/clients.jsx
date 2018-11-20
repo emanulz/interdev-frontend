@@ -287,9 +287,9 @@ export default class Clients extends React.Component {
     const clientLastName = determinClientLastName(this.props.clientSelected, this.props.extraClient)
     const clientEmail = determinClientEmail(this.props.clientSelected, this.props.extraClient)
 
-    const clientNameInput = <input type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} />
-    const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} />
-    const clientEmailInput = <input type='text' value={clientEmail} name='email' onChange={this.handleInputChange.bind(this)} />
+    const clientNameInput = <input className='mousetrap' type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} />
+    const clientLastnameInput = <input className='mousetrap' type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} />
+    const clientEmailInput = <input className='mousetrap' type='text' value={clientEmail} name='email' onChange={this.handleInputChange.bind(this)} />
 
     const nameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientNameInput : <span>{clientName}</span>
     const lastNameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientLastnameInput : <span>{clientLastName}</span>

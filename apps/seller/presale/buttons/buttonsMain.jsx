@@ -218,8 +218,6 @@ export default class Buttons extends React.Component {
 
       {buttons}
 
-      {extraButtons}
-
     </div>
 
   }

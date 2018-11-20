@@ -9,8 +9,12 @@ export default class PayCash extends React.Component {
 
   setCode(ev) {
     ev.preventDefault()
-    const value = ev.target.value
-    this.props.dispatch({type: 'SET_SEND_USER_CODE', payload: value})
+    if (ev.key == 'Enter') {
+      document.getElementById('presaleCodePIN').focus()
+    } else {
+      const value = ev.target.value
+      this.props.dispatch({type: 'SET_SEND_USER_CODE', payload: value})
+    }
   }
 
   setPin(ev) {
@@ -42,12 +46,12 @@ export default class PayCash extends React.Component {
       <div className='send-method-body-content'>
         <div className='send-tag-inline'>
           <div className='first'>CÓDIGO:</div>
-          <input value={this.props.code} onChange={this.setCode.bind(this)} type='Text' className='second' />
+          <input id='presaleCodeInput' value={this.props.code} onChange={this.setCode.bind(this)} onKeyUp={this.setCode.bind(this)} type='Text' className='second' />
         </div>
         <div className='send-tag-inline'>
           <div className='first'>PIN:</div>
           <form className='second' onSubmit={e => { e.preventDefault() }}>
-            <input value={this.props.pin} onChange={this.setPin.bind(this)} onKeyUp={this.setPin.bind(this)} autoComplete='off' type='Password' />
+            <input id='presaleCodePIN' value={this.props.pin} onChange={this.setPin.bind(this)} onKeyUp={this.setPin.bind(this)} autoComplete='off' type='Password' />
           </form>
         </div>
 

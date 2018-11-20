@@ -76,14 +76,26 @@ export default class Cart extends React.Component {
       // internet explorer
         e.returnValue = false
       }
-      _this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
-      document.getElementById('pay-cash-input').focus()
-      Mousetrap.bind('esc', function() {
-        _this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
-        document.getElementById('productCodeInputField').focus()
-        document.getElementById('productCodeInputField').value = ''
-        Mousetrap.unbind('esc')
-      })
+      if (_this.props.caller == 'sales') {
+        _this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
+        document.getElementById('pay-cash-input').focus()
+        Mousetrap.bind('esc', function() {
+          _this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
+          document.getElementById('productCodeInputField').focus()
+          document.getElementById('productCodeInputField').value = ''
+          Mousetrap.unbind('esc')
+        })
+      }
+      if (_this.props.caller == 'presales') {
+        _this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+        document.getElementById('presaleCodeInput').focus()
+        Mousetrap.bind('esc', function() {
+          _this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: -1})
+          document.getElementById('productCodeInputField').focus()
+          document.getElementById('productCodeInputField').value = ''
+          Mousetrap.unbind('esc')
+        })
+      }
     })
   }
 
