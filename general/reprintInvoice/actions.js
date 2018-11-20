@@ -3,6 +3,7 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 import axios from 'axios'
+const Mousetrap = require('mousetrap')
 
 export function OldloadSaleToReprint(consecutive) {
   const url = `/api/saleslist?consecutive=${consecutive}`
@@ -64,7 +65,7 @@ export function OldloadSaleToReprint(consecutive) {
   }
 }
 
-export function loadSaleToReprint(consecutive) {
+export function loadSaleToReprint(consecutive, bind, reload) {
   const url = `/api/saleslist/getsaledata/?consecutive=${consecutive}`
 
   return function(dispatch) {
@@ -106,6 +107,15 @@ export function loadSaleToReprint(consecutive) {
       } else {
         dispatch({type: 'FETCHING_DONE', payload: ''})
         dispatch({type: 'SHOW_REPRINT_INVOICE_PANEL', payload: ''})
+      }
+      if (bind) {
+        Mousetrap.bind('enter', function() {
+          Mousetrap.unbind('enter')
+          window.printDiv('reprint-invoice-print', ['/static/fixedBundles/css/sales.css'])
+          if (reload) {
+            window.location.href = '/sales'
+          }
+        })
       }
 
     }).catch(function(error) { // ON ERROR FETCHING SALE CLEAN ALL

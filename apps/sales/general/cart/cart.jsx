@@ -81,6 +81,7 @@ export default class Cart extends React.Component {
         document.getElementById('pay-cash-input').focus()
         Mousetrap.bind('esc', function() {
           _this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
+          _this.props.dispatch({type: 'CLEAR_PAY_OBJECT', payload: -1})
           document.getElementById('productCodeInputField').focus()
           document.getElementById('productCodeInputField').value = ''
           Mousetrap.unbind('esc')

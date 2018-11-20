@@ -177,17 +177,15 @@ export default function reducer(state = stateConst, action) {
 
     case 'CLEAR_PAY':
     {
-      state = stateConst
-      return {
-        ...state, stateConst
-      }
+      return stateConst
     } // case
 
     case 'CLEAR_PAY_OBJECT':
     {
-      state = stateConst
+      // state = stateConst
       return {
         ...state,
+        payMethodActive: 'CASH',
         payObject: {
           cash: [{'type': 'CASH', 'amount': 0}],
           card: [{'type': 'CARD', 'amount': 0, 'digits': '', 'auth': ''}],

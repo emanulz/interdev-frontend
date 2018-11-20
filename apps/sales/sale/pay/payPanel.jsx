@@ -22,6 +22,7 @@ export default class PayPanel extends React.Component {
   hidePanel() {
 
     this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
+    this.props.dispatch({type: 'CLEAR_PAY_OBJECT', payload: -1})
     Mousetrap.unbind('esc')
     document.getElementById('productCodeInputField').focus()
     document.getElementById('productCodeInputField').value = ''

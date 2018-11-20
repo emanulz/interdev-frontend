@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -24,6 +25,15 @@ import {connect} from 'react-redux'
 export default class Buttons extends React.Component {
 
   showPayPanel() {
+    document.getElementById('pay-cash-input').focus()
+    const _this = this
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: -1})
+      _this.props.dispatch({type: 'CLEAR_PAY_OBJECT', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
     this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
   }
   showInvoicePanel() {

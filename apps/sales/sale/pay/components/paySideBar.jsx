@@ -193,6 +193,7 @@ export default class PaySideBar extends React.Component {
     payButtonClass = (total > 0 && change >= -0.1)
       ? 'pay-tag tag-button enable'
       : 'pay-tag tag-button'
+    const disabledSave = !(total > 0 && change >= -0.1)
     const eDocumentSelectClass = this.props.profile.taxPayer.is_digital_invoicing_active ? 'edocument-visible' : 'edocument-hidden'
     // switch (this.props.payMethod) {
 
@@ -265,7 +266,7 @@ export default class PaySideBar extends React.Component {
           </div>
         </div>
         <br />
-        <SaveBtn payButtonClass={payButtonClass} />
+        <SaveBtn payButtonClass={payButtonClass} disableSave={disabledSave} />
         {/* <button id='register-sale-btn' onFocus={this.saveOnFocus.bind(this)}>TEST</button> */}
 
       </div>

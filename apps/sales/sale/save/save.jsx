@@ -41,6 +41,7 @@ export default class SaveBtn extends React.Component {
     // const sales = this.props.sales
     // const user = this.props.user
     // CHECK IF IS WORKSHOP OR NOT
+    document.getElementById('saveSaleButton').blur()
     const isinvoice = this.props.isinvoice == 'FACTURA'
     console.log('IS INVOICEEE', isinvoice)
     // DETERMIN THE WAREHOUSE WHERE THE PRODUCTS ARE SUBSTRACTED
@@ -87,20 +88,13 @@ export default class SaveBtn extends React.Component {
     })
     // SAVE PROCESS
     updatePromise.then((data) => {
+      Mousetrap.reset()
       const __this = _this
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      this.props.dispatch(loadSaleToReprint(data.consecutive))
+      this.props.dispatch(loadSaleToReprint(data.consecutive, true, __this.props.conf.NoF5AfterSendOrPrint))
       this.props.dispatch({type: 'SET_SALE', payload: data})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
-      Mousetrap.reset()
-      Mousetrap.bind('enter', function() {
-        window.printDiv('reprint-invoice-print', ['/static/fixedBundles/css/sales.css'])
-        Mousetrap.unbind('enter')
-        if (__this.props.conf.NoF5AfterSendOrPrint) {
-          window.location.href = '/sales'
-        }
-      })
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {
@@ -118,10 +112,15 @@ export default class SaveBtn extends React.Component {
 
   render() {
 
-    return <div onClick={this.saveBtn.bind(this)} className={this.props.payButtonClass} >
+    // return <div onClick={this.saveBtn.bind(this)} className={this.props.payButtonClass} >
+    //   Registrar
+    //   <i className='fa fa-credit-card' aria-hidden='true' />
+    // </div>
+
+    return <button disabled={this.props.disableSave} id='saveSaleButton' onClick={this.saveBtn.bind(this)} className={this.props.payButtonClass}>
       Registrar
       <i className='fa fa-credit-card' aria-hidden='true' />
-    </div>
+    </button>
 
   }
 

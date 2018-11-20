@@ -37,6 +37,13 @@ export default class PayCard extends React.Component {
     this.props.dispatch(updateStoreCardDigits(ev.target.value))
   }
 
+  payCardChanged(ev) {
+    // THIS FUNCTION WILL UPDATE THE CASH AMOUNT AND AUTOUPDATE THE CREDIT AMOUNT
+    if (ev.key == 'Enter') {
+      document.getElementById('saveSaleButton').focus()
+    }
+  }
+
   render() {
 
     return <div className='pay-method-body'>
@@ -48,13 +55,13 @@ export default class PayCard extends React.Component {
       <div className='pay-method-body-content'>
 
         <div className='pay-tag left'>MONTO:</div>
-        <input value={this.props.cardAmount} onChange={this.payCardAmountChanged.bind(this)} type='Number' className='form-control' />
+        <input value={this.props.cardAmount} onKeyUp={this.payCardChanged.bind(this)} onChange={this.payCardAmountChanged.bind(this)} type='Number' className='form-control mousetrap' />
 
         <div className='pay-tag left'>4 DIGITOS:</div>
-        <input value={this.props.cardDigits} onChange={this.payCardDigitsChanged.bind(this)} type='Number' className='form-control' />
+        <input value={this.props.cardDigits} onKeyUp={this.payCardChanged.bind(this)} onChange={this.payCardDigitsChanged.bind(this)} type='Number' className='form-control mousetrap' />
 
         <div className='pay-tag left'>AUTORIZACIÓN:</div>
-        <input value={this.props.cardAuth} onChange={this.payCardAuthChanged.bind(this)} type='Number' className='form-control' />
+        <input value={this.props.cardAuth} onKeyUp={this.payCardChanged.bind(this)} onChange={this.payCardAuthChanged.bind(this)} type='Number' className='form-control mousetrap' />
 
         <br />
         <br />

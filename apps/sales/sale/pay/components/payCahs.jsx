@@ -17,7 +17,7 @@ export default class PayCash extends React.Component {
     // THIS FUNCTION WILL UPDATE THE CASH AMOUNT AND AUTOUPDATE THE CREDIT AMOUNT
     if (ev.key == 'Enter') {
       console.log('ENTER')
-      // document.getElementById('register-sale-btn').focus()
+      document.getElementById('saveSaleButton').focus()
     } else {
       console.log('OTHER')
       this.props.dispatch(updateStoreCashAmount(
@@ -42,7 +42,7 @@ export default class PayCash extends React.Component {
       <div className='pay-method-body-content'>
 
         <div className='pay-tag left'>EFECTIVO:</div>
-        <input id='pay-cash-input' value={this.props.cashAmount} onChange={this.payAmountChanged.bind(this)} type='Number' className='form-control mousetrap' />
+        <input id='pay-cash-input' value={this.props.cashAmount} onKeyUp={this.payAmountChanged.bind(this)} onChange={this.payAmountChanged.bind(this)} type='Number' className='form-control mousetrap' />
 
         <br />
         <br />
