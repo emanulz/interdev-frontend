@@ -301,7 +301,7 @@ export default class Clients extends React.Component {
 
     const editClientIcon = this.props.clientSelected.client.code != '0000' && this.props.clientSelected.client.code != '00'
       ? <i disabled={this.props.disabled} className='fa fa-edit' onClick={clientEditOnClick} />
-      : ''
+      : <i disabled className='fa' />
 
     return <div className='client'>
 
@@ -338,6 +338,7 @@ export default class Clients extends React.Component {
           <div className='client-data-second-row-inline'>
             <h3>Email :</h3>
             {emailToShow}
+            <i disabled className='fa' />
           </div>
 
         </div>

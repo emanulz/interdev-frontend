@@ -3,6 +3,7 @@
     display: flex
     flex-flow: row
     justify-content: flex-start
+    margin-right: 10px
     &-img
         & img
             height: 60px
@@ -15,10 +16,11 @@
             display: flex
             flex-flow: row
             &-input
+                flex-grow: 1
                 display: flex
                 flex-flow: row
                 & input
-                    width: 220px
+                    flex-grow: 1
         &-second-row
             display: flex
             flex-flow: column
@@ -27,9 +29,9 @@
                 display: flex
                 flex-flow: row
                 & input
-                    width: 220px
+                    flex-grow: 1
                 & span
-                    width: 220px
+                    flex-grow: 1
         & h3
             width: 70px
             font-weight: bolder
@@ -39,4 +41,5 @@
             padding-left: 10px
             cursor: pointer
             font-size: 20px
+            min-width: 30px
 

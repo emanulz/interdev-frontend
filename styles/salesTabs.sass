@@ -1,0 +1,42 @@
+.sale-aside
+  & .rwt__tabs
+    font-family: 'Source Sans Pro'
+    & .rwt__tablist
+      margin-top: 0
+      margin-bottom: 15px
+      border-bottom: none !important
+      & button
+        position: relative
+        height: 30px
+        transition: top .2s
+        border: none
+        outline: none
+        border-bottom: 1px solid #cacaca
+        color: #bbb
+        font-size: 15px
+        padding: 0 !important
+        &:active
+          outline: none
+          border: none
+        &:focus
+          outline: none
+        &[aria-selected="true"]
+          border: 1px solid #cacaca
+          border-top: 3px solid #283141
+          border-bottom: 2px solid #ffff
+          color: black
+        &.oneThree
+          width: 33.3%
+        &.oneTwo
+          width: 50%
+        &.oneFour
+          width: 25%
+        &.oneFive
+          width: 20%
+      & .rwt__tabpanel
+        padding-top: 20px
+
+  & .rwt__tab
+    &:after
+      content: none !important
+      border-bottom: none

@@ -227,44 +227,10 @@ export default class Buttons extends React.Component {
         <b>Pago:<br /></b>
       </span> */}
 
-      {presalesBtn}
-      {reservesBtn}
+      {/* {reservesBtn}
       {nsreservesBtn}
       {cashAdvanceBtn}
-      {restaurantBillsBtn}
-      {quotationsBtn}
-
-      <button
-        disabled={this.props.disabled}
-        onClick={this.showExemptionPanel.bind(this)}
-        style={{
-          'height': '48px',
-          'width': '49%',
-          'marginTop': '10px'
-        }}
-        className='btn btn-default buttons-payButton'>
-        Exonerar
-        <span>
-          <i className='fa fa-map' />
-        </span>
-      </button>
-
-      {workOrdersBtn}
-
-      <button
-        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
-        onClick={this.showTodaySalesPanel.bind(this)}
-        style={{
-          'height': '48px',
-          'width': '49%',
-          'marginTop': '10px'
-        }}
-        className='btn btn-default buttons-payButton'>
-        Ventas del día
-        <span>
-          <i className='fa fa-list' />
-        </span>
-      </button>
+      {quotationsBtn} */}
 
       <button
         disabled={this.props.disabled}
@@ -281,6 +247,9 @@ export default class Buttons extends React.Component {
         </span>
       </button>
 
+      {presalesBtn}
+      {workOrdersBtn}
+      {restaurantBillsBtn}
       {/* <button
         disabled={this.props.disabled}
         onClick={this.showInoicePanel.bind(this)}
