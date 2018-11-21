@@ -13,7 +13,7 @@
     "stage": "npm run removeBundles & npm run stage1",
     "prodOld": "npm run removeBundles & npm run prod1",
     "devEmanuel": "webpack-dev-server --config webpack.localEmanuel.config.js --mode development --hot --inline --colors --host 192.168.9.56 --port 8080",
-    "devVictor": "webpack-dev-server --config webpack.localVictor.config.js --mode development --hot --inline --colors --host 192.168.9.56 --port 8080",
+    "devVictor": "webpack-dev-server --config webpack.localVictor.config.js --mode development --hot --inline --colors --host dante --port 9000",
     "prod2": "webpack -p --config webpack.production.new.config.js",
     "prod": "npm run removeBundles & npm run prod2"
   },

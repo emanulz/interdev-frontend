@@ -76,6 +76,7 @@ export default class Cart extends React.Component {
       // internet explorer
         e.returnValue = false
       }
+      e.stopPropagation()
       if (_this.props.caller == 'sales') {
         _this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
         document.getElementById('pay-cash-input').focus()
