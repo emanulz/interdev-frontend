@@ -4,9 +4,15 @@ import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadPresale, getPendingPresales, setPresaleNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
-  return {presales: store.presales.presales, isVisible: store.presales.isVisible, extraClient: store.extras.client}
+  return {
+    presales: store.presales.presales,
+    isVisible: store.presales.isVisible,
+    extraClient: store.extras.client,
+    activeIndex: store.presales.activeIndex
+  }
 })
 export default class PresalesPanel extends React.Component {
 
@@ -29,6 +35,9 @@ export default class PresalesPanel extends React.Component {
 
   hidePanel() {
     this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+    Mousetrap.unbind('esc')
+    Mousetrap.unbind('up')
+    Mousetrap.unbind('down')
   }
 
   loadPresaleItem(id, ev) {
@@ -58,6 +67,7 @@ export default class PresalesPanel extends React.Component {
       _this.props.dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
       _this.props.dispatch({type: 'CLEAR_PAY', payload: ''})
       getFullClientById(data.client.id, _this.props.dispatch)
+      document.getElementById('sale-facturar-btn').focus()
     }).catch((err) => {
       if (err.response) {
         alertify.alert('ERROR', `${err.response.data}`)
@@ -87,6 +97,11 @@ export default class PresalesPanel extends React.Component {
     })
   }
 
+  activePresaleAction(presale) {
+    this.props.dispatch({type: 'SET_ACTIVE_PRESALE_ID', payload: presale.id})
+    return true
+  }
+
   render() {
 
     const isVisible = (this.props.isVisible)
@@ -97,7 +112,7 @@ export default class PresalesPanel extends React.Component {
     today.setHours(0, 0, 0, 0)
 
     const presales = this.props.presales
-
+    let currentIndex = 0
     const itemsToRender = presales.map(presale => {
       let extras = {
         notes: '',
@@ -115,7 +130,13 @@ export default class PresalesPanel extends React.Component {
       const presellerName = presale.user.first_name
         ? `${presale.user.first_name} ${presale.user.last_name}`
         : `${presale.user.username}`
-      return <tr key={presale.id}>
+      let activeClass = ''
+      if (currentIndex == this.props.activeIndex) {
+        this.activePresaleAction(presale)
+        activeClass = 'presale-active-in-list'
+      }
+      currentIndex += 1
+      return <tr key={presale.id} className={activeClass}>
         <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, presale.id)} className='fa fa-download' /></td>
         <td>{presale.consecutive}</td>
         <td>{`${formatDateTimeAmPm(presale.created)}`}</td>
@@ -131,6 +152,7 @@ export default class PresalesPanel extends React.Component {
         PREVENTAS SIN FACTURAR
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
+      {/* <Search /> */}
       <div className='presales-panel-container'>
         <div className='col-xs-12'>
           <table className='table'>

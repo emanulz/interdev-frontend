@@ -46,6 +46,25 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_EXEMPTION_PANEL', payload: -1})
   }
   showPresalesPanel() {
+    const _this = this
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+      Mousetrap.unbind('up')
+      Mousetrap.unbind('down')
+      Mousetrap.unbind('enter')
+    })
+    Mousetrap.bind('down', function(e) {
+      _this.props.dispatch({type: 'PRESALES_INCREASE_ACTIVE_INDEX', payload: -1})
+    })
+    Mousetrap.bind('up', function(e) {
+      _this.props.dispatch({type: 'PRESALES_DECREASE_ACTIVE_INDEX', payload: -1})
+    })
+    // Mousetrap.bind('enter', function(e) {
+    //   _this.props.dispatch({type: 'PRESALES_DECREASE_ACTIVE_INDEX', payload: -1})
+    // })
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
   }
   showReservesPanel() {
@@ -243,6 +262,7 @@ export default class Buttons extends React.Component {
       {quotationsBtn} */}
 
       <button
+        id='sale-facturar-btn'
         disabled={this.props.disabled}
         onClick={this.showPayPanel.bind(this)}
         style={{

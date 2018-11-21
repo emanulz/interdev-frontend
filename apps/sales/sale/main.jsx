@@ -30,9 +30,11 @@ import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, p
 
 import {connect} from 'react-redux'
 const uuidv1 = require('uuid/v1')
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
+    conf: store.config.globalConf
   }
 })
 export default class Sale extends React.Component {
@@ -61,6 +63,32 @@ export default class Sale extends React.Component {
     const uuid = uuidv1()
     this.props.dispatch({type: 'SET_SALE_UUID', payload: uuid})
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.conf != this.props.conf) {
+      if (nextProps.conf.openPresalesPanelDefault) {
+
+        const _this = this
+        Mousetrap.bind('esc', function() {
+          _this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+          document.getElementById('productCodeInputField').focus()
+          document.getElementById('productCodeInputField').value = ''
+          Mousetrap.unbind('esc')
+          Mousetrap.unbind('up')
+          Mousetrap.unbind('down')
+          Mousetrap.unbind('enter')
+        })
+        Mousetrap.bind('down', function(e) {
+          _this.props.dispatch({type: 'PRESALES_INCREASE_ACTIVE_INDEX', payload: -1})
+        })
+        Mousetrap.bind('up', function(e) {
+          _this.props.dispatch({type: 'PRESALES_DECREASE_ACTIVE_INDEX', payload: -1})
+        })
+        this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
+
+      }
+    }
   }
   // *******************************************************************
   // Main Layout

@@ -20,6 +20,7 @@
     font-size: 20px
     line-height: 40px
     font-family: 'Source Sans Pro', sans-serif
+    margin-bottom: 10px
     & i
         position: absolute
         right: 5px
@@ -27,8 +28,27 @@
         cursor: pointer
         &:hover
             font-size: 25px
+  &-search
+    width: 100%
+    height: 40px
+    line-height: 40px
+    padding: 0 10px
+    display: flex
+    justify-content: center
+    margin: 10px 0
+    & input
+      flex-grow: 1
+      height: 40px
+      padding-left: 10px
+    & i
+      display: flex
+      justify-content: center
+      align-items: center
+      width: 40px
+      height: 40px
+      background-color: $SECONDARY-COLOR
+      color: white
   &-container
-    margin-top: 15px
     & thead
       & tr
         background-color: $PRIMARY-COLOR
@@ -45,3 +65,7 @@
           color: $PRIMARY-COLOR
       & .loadRow
         padding-left: 20px
+
+.presale-active-in-list
+  background-color: #595d63
+  color: white 
