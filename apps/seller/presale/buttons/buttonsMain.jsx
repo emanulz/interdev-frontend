@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getEarmings} from './actions.js'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
@@ -18,8 +19,16 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_PAY_PANEL', payload: -1})
   }
   showSendPanel() {
+    const _this = this
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'REGULAR'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+    document.getElementById('presaleCodeInput').focus()
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: -1})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
   }
   showInoicePanel() {
     this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: -1})

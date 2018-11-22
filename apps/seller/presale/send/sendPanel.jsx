@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import Profile from './components/profile.jsx'
 import SetUser from './components/setUser.jsx'
 import SendSideBar from './components/sendSideBar.jsx'
+const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {panelVisible: store.send.isVisible, presaleType: store.send.presale_type}
@@ -11,8 +12,10 @@ import SendSideBar from './components/sendSideBar.jsx'
 export default class SendPanel extends React.Component {
 
   hidePanel() {
-
     this.props.dispatch({type: 'HIDE_SEND_PANEL', sendload: -1})
+    document.getElementById('productCodeInputField').focus()
+    document.getElementById('productCodeInputField').value = ''
+    Mousetrap.unbind('esc')
   }
 
   render() {
