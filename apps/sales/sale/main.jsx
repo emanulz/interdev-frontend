@@ -27,6 +27,7 @@ import RegisterClosure from '../registerClosure/registerClosure.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../general/search/actions.js'
+import {loadPresaleItem} from './presales/actions.js'
 
 import {connect} from 'react-redux'
 const uuidv1 = require('uuid/v1')
@@ -34,7 +35,8 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
-    conf: store.config.globalConf
+    conf: store.config.globalConf,
+    activePresaleId: store.presales.activePresaleId
   }
 })
 export default class Sale extends React.Component {
@@ -77,6 +79,10 @@ export default class Sale extends React.Component {
           Mousetrap.unbind('esc')
           Mousetrap.unbind('up')
           Mousetrap.unbind('down')
+          Mousetrap.unbind('enter')
+        })
+        Mousetrap.bind('enter', function(e) {
+          loadPresaleItem(_this.props.activePresaleId, _this.props.dispatch)
           Mousetrap.unbind('enter')
         })
         Mousetrap.bind('down', function(e) {

@@ -3,6 +3,8 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 import axios from 'axios'
+import {getFullClientById} from '../../general/clients/actions.js'
+const Mousetrap = require('mousetrap')
 
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS
@@ -63,5 +65,43 @@ export function setPresaleNull(id, resolve, reject) {
     resolve(response.data)
   }).catch((err) => {
     reject(err)
+  })
+}
+
+export function loadPresaleItem(id, dispatch) {
+
+  Mousetrap.unbind('enter')
+  const url = `/api/presales/${id}`
+  const loadPromise = new Promise((resolve, reject) => {
+    dispatch({type: 'FETCHING_STARTED', payload: ''})
+    dispatch(loadPresale(url, resolve, reject))
+  })
+  loadPromise.then((data) => {
+    dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+    dispatch({type: 'FETCHING_DONE', payload: ''})
+    data.cart = JSON.parse(data.cart)
+    data.client = JSON.parse(data.client)
+    data.user = JSON.parse(data.user)
+    try {
+      data.extras = JSON.parse(data.extras)
+      dispatch({type: 'SET_CURRENCY', payload: data.currency_code})
+    } catch (err) { data.extras = null }
+    // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
+    dispatch({type: 'SET_PRESALE_ID', payload: data.id})
+    dispatch({type: 'LOAD_CART', payload: data.cart})
+    dispatch({type: 'PRESALE_LOADED', payload: data.user})
+    dispatch({type: 'SET_PRESALE_USER', payload: data.user})
+    dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
+    dispatch({type: 'CLEAR_PAY', payload: ''})
+    getFullClientById(data.client.id, dispatch)
+    document.getElementById('sale-facturar-btn').focus()
+    Mousetrap.unbind('enter')
+  }).catch((err) => {
+    if (err.response) {
+      alertify.alert('ERROR', `${err.response.data}`)
+    } else {
+      alertify.alert('ERROR', `Hubo un error al cargar la preventa, error: ${err}`)
+    }
+    dispatch({type: 'FETCHING_DONE', payload: ''})
   })
 }

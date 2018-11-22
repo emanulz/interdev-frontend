@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
+import {loadPresaleItem} from '../presales/actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -19,7 +20,8 @@ const Mousetrap = require('mousetrap')
     useQuoting: store.config.globalConf.useQuoting,
     useResrestaurant: store.config.globalConf.useRestaurant,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
-    workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
+    workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
+    activePresaleId: store.presales.activePresaleId
   }
 })
 export default class Buttons extends React.Component {
@@ -47,6 +49,7 @@ export default class Buttons extends React.Component {
   }
   showPresalesPanel() {
     const _this = this
+    Mousetrap.unbind('enter')
     Mousetrap.bind('esc', function() {
       _this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
       document.getElementById('productCodeInputField').focus()
@@ -61,6 +64,10 @@ export default class Buttons extends React.Component {
     })
     Mousetrap.bind('up', function(e) {
       _this.props.dispatch({type: 'PRESALES_DECREASE_ACTIVE_INDEX', payload: -1})
+    })
+    Mousetrap.bind('enter', function(e) {
+      loadPresaleItem(_this.props.activePresaleId, _this.props.dispatch)
+      Mousetrap.unbind('enter')
     })
     // Mousetrap.bind('enter', function(e) {
     //   _this.props.dispatch({type: 'PRESALES_DECREASE_ACTIVE_INDEX', payload: -1})

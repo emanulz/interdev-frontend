@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadPresale, getPendingPresales, setPresaleNull} from './actions.js'
+import {loadPresale, getPendingPresales, setPresaleNull, loadPresaleItem} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
@@ -34,13 +34,14 @@ export default class PresalesPanel extends React.Component {
   }
 
   hidePanel() {
-    this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
+    Mousetrap.unbind('enter')
     Mousetrap.unbind('esc')
     Mousetrap.unbind('up')
     Mousetrap.unbind('down')
+    this.props.dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
   }
 
-  loadPresaleItem(id, ev) {
+  loadPresaleItemOld(id, ev) {
 
     const _this = this
     const url = `/api/presales/${id}`
@@ -76,6 +77,10 @@ export default class PresalesPanel extends React.Component {
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
+  }
+
+  loadPresaleToCart(id, ev) {
+    loadPresaleItem(id, this.props.dispatch)
   }
 
   setNullSinglePresale(id, consecutive) {
@@ -137,7 +142,7 @@ export default class PresalesPanel extends React.Component {
       }
       currentIndex += 1
       return <tr key={presale.id} className={activeClass}>
-        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, presale.id)} className='fa fa-download' /></td>
+        <td className='loadRow'><i onClick={this.loadPresaleToCart.bind(this, presale.id)} className='fa fa-download' /></td>
         <td>{presale.consecutive}</td>
         <td>{`${formatDateTimeAmPm(presale.created)}`}</td>
         <td>{`${clientName} ${clientLastName}`}</td>
