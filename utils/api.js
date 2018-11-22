@@ -316,6 +316,7 @@ export function generalSave(kwargs) {
               kwargs.history.push(kwargs.redirectUrl)
             }
           })
+          
         dispatch({type: kwargs.successType, payload: response.data})
         dispatch({type: 'FETCHING_DONE', payload: ''})
 

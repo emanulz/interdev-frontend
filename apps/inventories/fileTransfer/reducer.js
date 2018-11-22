@@ -1,9 +1,21 @@
+import {generalSave} from '../../../utils/api.js'
+
+import axios from 'axios'
+
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 const stateConst = {
     fullWidth: false,
     clientVisible: false,
     priceListVisible: false,
     showCurrency: false,
-    uniqueId: ''
+    uniqueId: '',
+    transfer_location: ''
 }
 
 export default function reducer(state=stateConst, action) {
@@ -24,6 +36,27 @@ export default function reducer(state=stateConst, action) {
             ...state,
             fullWidth: width
           }
+        }
+
+        case 'INV_DOWNLOAD_SUCCESFUL':
+        {
+
+            // const get_file = () => {
+            //     try {
+            //     console.log("Go there --> " + `/media/inv_transfers/${action.payload}`)
+            //       return axios.get(`/media/inv_transfers/${action.payload}`)
+            //     } catch (error) {
+            //       console.error(error)
+            //     }
+            //   }
+            // console.log("Call get file")
+            // get_file()
+            // console.log("Get file called")
+              
+            return {
+                ...state,
+                transfer_location: `/media/inv_transfers/${action.payload}`
+            }
         }
     }
 
