@@ -112,6 +112,11 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-file' />
               Reportes</Link>
           </li>
+          <li>
+            <Link to='/inventories/filetransferslist'>
+              <span className='fa fa-file' />
+              Listado Transferencias</Link>
+          </li>
         </ul>
       </div>
 

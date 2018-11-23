@@ -1,5 +1,4 @@
 import {makeTableFriendly} from './list/actions.js'
-import { inspect } from 'util';
 
 const stateConst = {
     fullWidth: false,

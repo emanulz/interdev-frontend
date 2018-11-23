@@ -44,6 +44,7 @@ export default combineReducers({
   pagination,
   inventorySearch: search('inventorySearch'),
   productSearch: search('productSearch'),
+  transferSearch: search('filetransferSearch'),
   physicalTake,
   takeMovements,
   checkTakeMovements,
