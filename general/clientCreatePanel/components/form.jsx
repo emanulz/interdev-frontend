@@ -189,8 +189,8 @@ export default class Form extends React.Component {
               value={this.props.client.id_type} >
               <option value='01'>CÉDULA FÍSICA</option>
               <option value='02'>CÉDULA JURÍDICA</option>
-              <option value='03'>NITE</option>
-              <option value='04'>DIMEX</option>
+              <option value='03'>DIMEX</option>
+              <option value='04'>NITE</option>
               <option value='EXT'>IDENTIFICACIÓN EXTRANJEROS</option>
             </select>
             <i className='fa fa-id-card' />
