@@ -8,7 +8,8 @@ import alertify from 'alertifyjs'
         start_date: store.generalReports.start_date,
         end_date: store.generalReports.end_date,
         useRestaurant: store.config.globalConf.useRestaurant,
-        WorkshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
+        WorkshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
+        useLegacyd151: store.config.globalConf.useLegacyd151,
     }
 })
 export default class ExcelFetcher extends React.Component {
@@ -59,6 +60,11 @@ export default class ExcelFetcher extends React.Component {
             bd_report = <a href={`/reportsExcel/bdwarranty/?start=${s}&end=${e}`}>{"Garantías B&D"}</a>
         }
 
+        let legacy_d151 = ''
+        if(this.props.useLegacyd151){
+            legacy_d151 = <a href={`/reportsExcel/d151legacy/?start=${s}&end=${e}&money_limit=250`}>D151 Legado</a>
+        }
+
         return <div className="excel-fetcher" >
             <div className="excel-fetcher-title">
                 <h1>Seleccione el periódo a reportar y descarge el Excel</h1>
@@ -84,7 +90,8 @@ export default class ExcelFetcher extends React.Component {
                 {bd_report}
                 <a href={`/reportsExcel/creditstatus`}>General Crédito</a>
                 <a href={`/reportsExcel/topayreport`}>Por Pagar</a>
-                <a href={`/reportsExcel/d151/?start=${s}&end=${e}&money_limit=2500000`}>D151</a>
+                <a href={`/reportsExcel/d151/?start=${s}&end=${e}&money_limit=250`}>D151</a>
+                {legacy_d151}
                 {rest_report}
             </div>
 
