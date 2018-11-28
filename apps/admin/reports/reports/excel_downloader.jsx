@@ -84,7 +84,7 @@ export default class ExcelFetcher extends React.Component {
                 {bd_report}
                 <a href={`/reportsExcel/creditstatus`}>General Crédito</a>
                 <a href={`/reportsExcel/topayreport`}>Por Pagar</a>
-                <a href={`/reportsExcel/d151/?start=${s}&end=${e}`}>D151</a>
+                <a href={`/reportsExcel/d151/?start=${s}&end=${e}&money_limit=2500000`}>D151</a>
                 {rest_report}
             </div>
 
