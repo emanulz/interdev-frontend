@@ -82,20 +82,29 @@ export default class Product extends React.Component {
       let qty = 1
       let price = 0
       let description = ''
+      let useTaxes = true
 
       if (ev.target.value) {
         const firstChar = ev.target.value.charAt(0)
-        if (firstChar == '+' || firstChar == '*') {
+        // IF ITS AN ABREVIATE METHOD
+        if (firstChar == '+' || firstChar == '*' || firstChar == '-') {
           const value = ev.target.value.substr(1)
           if (firstChar == '+') {
             description = value.split('*')[0] // Split val [0] is code [1] is qty
             qty = value.split('*')[2]
             price = value.split('*')[1]
-          } else {
+          }
+          if (firstChar == '*') {
             description = 'Varios' // Split val [0] is code [1] is qty
             qty = 1
             price = value
-          }          
+          }
+          if (firstChar == '-') {
+            description = value.split('*')[0] // Split val [0] is code [1] is qty
+            qty = value.split('*')[2]
+            price = value.split('*')[1]
+            useTaxes = false
+          }
 
           qty = (isNaN(qty))
             ? 1
@@ -105,7 +114,11 @@ export default class Product extends React.Component {
             ? 0
             : parseFloat(price)
 
-          const priceNoIV = price / (1 + (13 / 100))
+          let priceNoIV = price / (1 + (13 / 100))
+
+          if (firstChar == '-') {
+            priceNoIV = price
+          }
 
           const set00ProductPromiseNew = new Promise((resolve, reject) => {
             const kwargs = {
@@ -131,6 +144,14 @@ export default class Product extends React.Component {
             product.use_taxes3 = false
             product.taxes3 = 0
             product.description = description
+            try {
+              if (!useTaxes) {
+                product.use_taxes = false
+                product.taxes = 0
+              }
+            } catch (err) {
+              console.log(err)
+            }
 
             if (product.code == '00') {
               const generalItemDefaultData = {
@@ -156,7 +177,7 @@ export default class Product extends React.Component {
           })
 
         } else {
-          // IN CASE IS NOT A PLUS SING
+          // IN CASE IS NOT AN ABREVIATE METHOD
           code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
           qty = ev.target.value.split('*')[1]
 
