@@ -25,7 +25,7 @@ export default class List_NR extends React.Component {
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch({type: 'FETCH_WORKORDERS_REJECTED'})
         const workordersKwargs = {
-            url: `/api/listnrworkorders/?limit=${this.props.pageSize}`,
+            url: `/api/listnrworkorders/?limit=${this.props.pageSize}&ordering=-consecutive`,
             successType: 'FETCH_WORKORDERS_FULFILLED',
             errorType: 'FETCH_WORKORDERS_REJECTED'
         }
@@ -91,8 +91,8 @@ export default class List_NR extends React.Component {
             <h1>Listado de Garantías Sin Reparación</h1>
             <SearchAdmin model='workorder' namespace='workorderSearch'/>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='api/listnrworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
-                <Pagination url='api/listnrworkorders/' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <ResultsPerPage url='api/listnrworkorders/?ordering=-consecutive' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
+                <Pagination url='api/listnrworkorders/?ordering=-consecutive' successType='FETCH_WORKORDERS_FULFILLED' errorType='FETCH_WORKORDERS_REJECTED' />
             </div>
 
             {content}
