@@ -11,6 +11,7 @@ import {productSelected, setProductNew} from './actions.js'
     product: store.products.sigleProductActive,
     salesWarehouse: store.userProfile.salesWarehouse,
     qty: store.products.singleProductQty,
+    price: store.products.singleProductNewPrice,
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
@@ -81,6 +82,16 @@ export default class SingleProduct extends React.Component {
       console.log(err)
     })
   }
+
+  setSingleProductNewPrice(ev) {
+    if (ev.key == 'Enter') {
+      // EXECUTE CHANGE PRICE ACTION
+    } else {
+      const val = parseFloat(ev.target.value)
+      this.props.dispatch({type: 'SET_SINGLE_PRODUCT_NEW_PRICE', payload: val})
+    }
+
+  }
   // *******************************************************************
   // Main Layout
   render() {
@@ -92,11 +103,27 @@ export default class SingleProduct extends React.Component {
 
     const imageUrl = product.image_name !== '' ? `/media/productImages/${product.image_name}` : `/media/Imagenes/${srcCode}.jpg`
 
+    const priceEditDiv = this.props.config.canEditPricesInSales
+      ? <div className='single-product-panel-add'>
+        <button className='btn btn-primary' onClick={this.addItemToCart.bind(this)} >Nuevo Precio</button>
+        <input
+          type='number'
+          className='input'
+          value={this.props.price}
+          onChange={this.setSingleProductQty.bind(this)}
+          onKeyDown={this.setSingleProductQty.bind(this)}
+        />
+      </div>
+      : <div />
+
     return <div className={panelClass}>
       <div className='single-product-panel-header'>
         <span>{productStr}</span>
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
+
+      {priceEditDiv}
+
       <div className='single-product-panel-add'>
         <button className='btn btn-success' onClick={this.addItemToCart.bind(this)} >Agregar</button>
         <input

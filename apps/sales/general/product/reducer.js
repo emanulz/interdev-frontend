@@ -3,6 +3,7 @@ const stateConst = {
   inputVal: '',
   singleProductVisible: false,
   singleProductQty: '',
+  singleProductNewPrice: '',
   sigleProductActive: {},
   pricesDetails: []
 }
