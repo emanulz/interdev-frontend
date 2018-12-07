@@ -86,7 +86,7 @@ export default class ReprintInvoicePanel extends React.Component {
           zpl_link = <a id="link" href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`}></a>
         }
       }
-
+      zpl_link = <a id="link" href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`}></a>
       zpl_button = <i onClick={this.getZpl.bind(this)} className='fa fa-download' aria-hidden='true' />
     }
 
