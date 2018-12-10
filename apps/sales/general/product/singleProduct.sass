@@ -1,10 +1,10 @@
 .single-product-panel
   font-family: 'Source Sans Pro', sans-serif
   height: 100%
-  width: 70%
+  width: 80%
   position: absolute
   top: 60px
-  right: -75%
+  right: -85%
   transition: all 0.2s ease-in-out
   display: flex
   flex-flow: column
@@ -30,24 +30,16 @@
         font-size: 20px
         &:hover
             font-size: 25px
-  &-add
-    padding: 15px 20px
-    display: flex
-    flex-flow: row
-    justify-content: flex-start 
-    & button
-      width: 180px
-    & input
-      padding-left: 10px
-      width: 180px
-      margin-left: 10px
-  &-content
+
+  &-container
     flex-grow: 1
     padding: 0 20px
     display: flex
     flex-flow: row
+    margin-top: 10px
     &-data
-      width: 60%
+      padding: 0 10px
+      width: 30%
       & table
         width: 100%
         & th
@@ -63,6 +55,18 @@
           padding-left: 10px
           font-size: 17px
           vertical-align: middle
+      &-add
+        padding: 15px 0
+        display: flex
+        flex-flow: row
+        justify-content: flex-start 
+        & button
+          width: 180px
+        & input
+          flex-grow: 1
+          padding-left: 10px
+          width: 180px
+          margin-left: 10px
     &-image
       width: 40%
       text-align: center
@@ -71,7 +75,32 @@
       & img
         margin-top: 20px
         max-width: 100%
-
+    &-promos
+      padding: 0 10px
+      width: 30%
+      &-amount
+        display: flex
+        flex-flow: row
+        justify-content: flex-start
+        margin: 15px 0
+        & button
+          width: 180px
+        & input
+          flex-grow: 1
+          padding-right: 10px
+          width: 180px
+          margin-right: 10px
+      &-buttons
+        margin-top: 15px
+        & button
+          &.firstBtn
+            margin-right: 1%
+            margin-bottom: 2%
+            width: 49%
+          &.secondBtn
+            margin-left: 1%
+            margin-bottom: 2%
+            width: 49%
 
 
 

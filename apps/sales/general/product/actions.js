@@ -182,7 +182,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
   console.log(qtyToCheck)
   // CHECK THE INVENTORY OF PRODUCT, IF INVENTORY NOT ENABLE OR INVENTORY IS ENOUGHT OR CAN BE NEGATIVE
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
-    const res = checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine)
+    const res = checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine, lineData)
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
@@ -317,13 +317,16 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
 // ------------------------------------------------------------------------------------------
 
 // checks in cart if item already exists
-function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine) {
+function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine, lineData) {
 
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
   const dataNewProd = caclSubtotal(product, qty, predDiscount)
   console.log(dataNewProd)
+  const promoApplied = lineData.promo_string.length > 0
+  const pricesData = lineData
+  delete pricesData['product']
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
   if (perLine) {
     const uuid = uuidv1()
@@ -340,10 +343,11 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
           subtotal: dataNewProd.subtotal,
           totalWithIv: dataNewProd.totalWithIv,
           lote: '-',
-          priceToUse: dataNewProd.priceToUse
+          priceToUse: dataNewProd.priceToUse,
+          pricesData: pricesData,
+          promoApplied: promoApplied
         }
       }
-
       : {
         type: 'UPDATE_CART',
         payload: {
@@ -605,4 +609,27 @@ export function determinPriceToUse(line, priceListSelected, usePriceListAsDefaul
       return parseFloat(line.product.price1)
     }
   }
+}
+
+export function applyPromoSingleLine(kwargs, resolve, reject) {
+  axios({
+    method: 'post',
+    url: kwargs.url,
+    data: kwargs.data
+  })
+    .then((response) => {
+      console.log(response)
+      resolve(response.data)
+    })
+    .catch((err) => {
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `ERROR: ${err}.`)
+      }
+      reject(err)
+    })
 }

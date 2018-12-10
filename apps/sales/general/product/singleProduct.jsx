@@ -3,7 +3,8 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {productSelected, setProductNew} from './actions.js'
+import {productSelected, setProductNew, applyPromoSingleLine} from './actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -18,7 +19,8 @@ import {productSelected, setProductNew} from './actions.js'
     warehouse_id: store.userProfile.salesWarehouse,
     config: store.config.globalConf,
     priceListSelected: store.priceList.listSelected,
-    usePriceListAsDefault: store.priceList.useAsDefault
+    usePriceListAsDefault: store.priceList.useAsDefault,
+    cart: store.cart.cartItems
   }
 })
 export default class SingleProduct extends React.Component {
@@ -83,6 +85,47 @@ export default class SingleProduct extends React.Component {
     })
   }
 
+  applyCurrencyDiscount() {
+    const code = this.props.product.code
+    const cartItems = this.props.cart
+    const _this = this
+    const indexInCart = cartItems.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
+    if (indexInCart != -1) {
+      const line = cartItems[indexInCart]
+      console.log('LINEEEEEEEE', line)
+      const applyCurrencyDiscountPromise = new Promise((resolve, reject) => {
+        const kwargs = {
+          url: '/api/products/getProdPrice/',
+          data: {
+            clientId: _this.props.client.client.id,
+            prod_data: {
+              code: code,
+              qty: line.qty,
+              promo_string: '2+1',
+              money_discount: 0,
+              current_discount: line.discount,
+              force_list: line.pricesData.force_list,
+              force_price: 600
+            }
+          }
+        }
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        applyPromoSingleLine(kwargs, resolve, reject)
+      })
+
+      applyCurrencyDiscountPromise.then((data) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log('APPLLYYY CURRENCY', data)
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log(err)
+      })
+
+    } else {
+      alertify.alert('ERROR', 'El producto seleccionado no se encuentra agregado.')
+    }
+  }
+
   setSingleProductNewPrice(ev) {
     if (ev.key == 'Enter') {
       // EXECUTE CHANGE PRICE ACTION
@@ -104,15 +147,18 @@ export default class SingleProduct extends React.Component {
     const imageUrl = product.image_name !== '' ? `/media/productImages/${product.image_name}` : `/media/Imagenes/${srcCode}.jpg`
 
     const priceEditDiv = this.props.config.canEditPricesInSales
-      ? <div className='single-product-panel-add'>
-        <button className='btn btn-primary' onClick={this.addItemToCart.bind(this)} >Nuevo Precio</button>
-        <input
-          type='number'
-          className='input'
-          value={this.props.price}
-          onChange={this.setSingleProductQty.bind(this)}
-          onKeyDown={this.setSingleProductQty.bind(this)}
-        />
+      ? <div className='single-product-panel-container-promos-change-price'>
+        <h1>Asignar Precio</h1>
+        <div className='single-product-panel-container-promos-amount'>
+          <input
+            type='number'
+            className='input'
+            value={this.props.price}
+            onChange={this.setSingleProductQty.bind(this)}
+            onKeyDown={this.setSingleProductQty.bind(this)}
+          />
+          <button className='btn btn-primary' onClick={this.addItemToCart.bind(this)} >Nuevo Precio</button>
+        </div>
       </div>
       : <div />
 
@@ -121,21 +167,19 @@ export default class SingleProduct extends React.Component {
         <span>{productStr}</span>
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
-
-      {priceEditDiv}
-
-      <div className='single-product-panel-add'>
-        <button className='btn btn-success' onClick={this.addItemToCart.bind(this)} >Agregar</button>
-        <input
-          type='number'
-          className='input'
-          value={this.props.qty}
-          onChange={this.setSingleProductQty.bind(this)}
-          onKeyDown={this.setSingleProductQty.bind(this)}
-        />
-      </div>
-      <div className='single-product-panel-content'>
-        <div className='single-product-panel-content-data'>
+      <div className='single-product-panel-container'>
+        <div className='single-product-panel-container-data'>
+          <h1>Datos</h1>
+          <div className='single-product-panel-container-data-add'>
+            <button className='btn btn-success' onClick={this.addItemToCart.bind(this)}>Agregar</button>
+            <input
+              type='number'
+              className='input'
+              value={this.props.qty}
+              onChange={this.setSingleProductQty.bind(this)}
+              onKeyDown={this.setSingleProductQty.bind(this)}
+            />
+          </div>
           <table>
             <tbody>
               <tr>
@@ -167,18 +211,39 @@ export default class SingleProduct extends React.Component {
                 <td>{existance}</td>
               </tr>
               <tr>
-                <th>Precio IVI</th>
-                <td>₡{parseFloat(product.sell_price).toFixed(2) || 'N/A'}</td>
-              </tr>
+              <th>Precio IVI</th>
+              <td>₡{parseFloat(product.sell_price).toFixed(2) || 'N/A'}</td>
+            </tr>
             </tbody>
-
           </table>
         </div>
-        <div className='single-product-panel-content-image'>
+        <div className='single-product-panel-container-promos'>
+          {priceEditDiv}
+          <h1>Aplicar descuento en colones</h1>
+          <div className='single-product-panel-container-promos-amount'>
+            <input
+              type='number'
+              className='input'
+              value={this.props.price}
+              onChange={this.setSingleProductQty.bind(this)}
+              onKeyDown={this.setSingleProductQty.bind(this)}
+            />
+            <button className='btn btn-success' onClick={this.applyCurrencyDiscount.bind(this)}>Descuento colones</button>
+          </div>
+          <h1>Aplicar promoción</h1>
+          <div className='single-product-panel-container-promos-buttons'>
+            <button className='btn btn-warning firstBtn' onClick={this.addItemToCart.bind(this)}>2+1</button>
+            <button className='btn btn-warning secondBtn' onClick={this.addItemToCart.bind(this)}>3+1</button>
+            <button className='btn btn-warning firstBtn' onClick={this.addItemToCart.bind(this)}>6+1</button>
+            <button className='btn btn-warning secondBtn' onClick={this.addItemToCart.bind(this)}>12+1</button>
+          </div>
+        </div>
+        <div className='single-product-panel-container-image'>
           <h1>Imagen del Artículo</h1>
           <img src={imageUrl} onError={(e) => { e.target.src = '/media/default/noimage.png' }} />
         </div>
       </div>
+
     </div>
 
   }

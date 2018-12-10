@@ -189,8 +189,10 @@ export default class Product extends React.Component {
             const kwargs = {
               url: '/api/products/getProdPrice/',
               data: {
-                code: code,
-                clientId: _this.props.client.client.id
+                clientId: _this.props.client.client.id,
+                prod_data: {
+                  code: code
+                }
               }
             }
 
