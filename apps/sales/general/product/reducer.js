@@ -4,6 +4,7 @@ const stateConst = {
   singleProductVisible: false,
   singleProductQty: '',
   singleProductNewPrice: '',
+  singleProductPromoString: '',
   singleProductMoneyDiscount: '',
   sigleProductActive: {},
   pricesDetails: []
@@ -103,6 +104,23 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         singleProductMoneyDiscount: ''
+      }
+    } // case
+
+    case 'SET_SINGLE_PRODUCT_PROMO_STRING':
+    {
+      const string = action.payload ? action.payload : ''
+      return {
+        ...state,
+        singleProductPromoString: string
+      }
+    } // case
+
+    case 'CLEAR_SINGLE_PRODUCT_PROMO_STRING':
+    {
+      return {
+        ...state,
+        singleProductPromoString: ''
       }
     } // case
 

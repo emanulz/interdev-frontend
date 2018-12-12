@@ -170,6 +170,48 @@ export default class SingleProduct extends React.Component {
     }
   }
 
+  applyPromoString(string) {
+    const code = this.props.product.code
+    const cartItems = this.props.cart
+    const _this = this
+    const indexInCart = cartItems.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
+    if (indexInCart != -1) {
+      const line = cartItems[indexInCart]
+      console.log('LINEEEEEEEE', line)
+      const applyCurrencyDiscountPromise = new Promise((resolve, reject) => {
+        const kwargs = {
+          url: '/api/products/getProdPrice/',
+          data: {
+            clientId: _this.props.client.client.id,
+            prod_data: {
+              code: code,
+              qty: line.qty,
+              promo_string: string,
+              money_discount: line.pricesData.money_discount,
+              current_discount: line.discount,
+              force_list: line.pricesData.force_list,
+              // THE VARIABLE CHANGED IN THIS METHOD IS THE FORCE PRICING
+              force_pricing: line.pricesData.force_pricing
+            }
+          }
+        }
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        applyPromoSingleLine(kwargs, resolve, reject)
+      })
+
+      applyCurrencyDiscountPromise.then((data) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log('APPLLYYY CURRENCY', data)
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log(err)
+      })
+
+    } else {
+      alertify.alert('ERROR', 'El producto seleccionado no se encuentra agregado.')
+    }
+  }
+
   setSingleProductNewPrice(ev) {
     if (ev.key == 'Enter') {
       // EXECUTE CHANGE PRICE ACTION
@@ -284,10 +326,10 @@ export default class SingleProduct extends React.Component {
           </div>
           <h1>Aplicar promoción</h1>
           <div className='single-product-panel-container-promos-buttons'>
-            <button className='btn btn-warning firstBtn' onClick={this.addItemToCart.bind(this)}>2+1</button>
-            <button className='btn btn-warning secondBtn' onClick={this.addItemToCart.bind(this)}>3+1</button>
-            <button className='btn btn-warning firstBtn' onClick={this.addItemToCart.bind(this)}>6+1</button>
-            <button className='btn btn-warning secondBtn' onClick={this.addItemToCart.bind(this)}>12+1</button>
+            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2+1')}>2+1</button>
+            <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3+1')}>3+1</button>
+            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '6+1')}>6+1</button>
+            <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '12+1')}>12+1</button>
           </div>
         </div>
         <div className='single-product-panel-container-image'>
