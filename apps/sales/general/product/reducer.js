@@ -4,6 +4,7 @@ const stateConst = {
   singleProductVisible: false,
   singleProductQty: '',
   singleProductNewPrice: '',
+  singleProductMoneyDiscount: '',
   sigleProductActive: {},
   pricesDetails: []
 }
@@ -68,6 +69,40 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         singleProductQty: ''
+      }
+    } // case
+
+    case 'SET_SINGLE_PRODUCT_NEW_PRICE':
+    {
+      const price = action.payload ? action.payload : ''
+      return {
+        ...state,
+        singleProductNewPrice: price
+      }
+    } // case
+
+    case 'CLEAR_SINGLE_PRODUCT_NEW_PRICE':
+    {
+      return {
+        ...state,
+        singleProductNewPrice: ''
+      }
+    } // case
+
+    case 'SET_SINGLE_PRODUCT_MONEY_DISCOUNT':
+    {
+      const discount = action.payload ? action.payload : ''
+      return {
+        ...state,
+        singleProductMoneyDiscount: discount
+      }
+    } // case
+
+    case 'CLEAR_SINGLE_PRODUCT_MONEY_DISCOUNT':
+    {
+      return {
+        ...state,
+        singleProductMoneyDiscount: ''
       }
     } // case
 

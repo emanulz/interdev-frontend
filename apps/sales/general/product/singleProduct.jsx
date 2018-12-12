@@ -12,7 +12,8 @@ import alertify from 'alertifyjs'
     product: store.products.sigleProductActive,
     salesWarehouse: store.userProfile.salesWarehouse,
     qty: store.products.singleProductQty,
-    price: store.products.singleProductNewPrice,
+    forcePrice: store.products.singleProductNewPrice,
+    moneyDiscount: store.products.singleProductMoneyDiscount,
     client: store.clients.clientSelected,
     itemsInCart: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
@@ -101,11 +102,54 @@ export default class SingleProduct extends React.Component {
             prod_data: {
               code: code,
               qty: line.qty,
-              promo_string: '2+1',
-              money_discount: 0,
+              promo_string: line.pricesData.promo_string,
+              // THE VARIABLE CHANGED IN THIS METHOD IS THE MONEY DISCOUNT
+              money_discount: _this.props.moneyDiscount,
               current_discount: line.discount,
               force_list: line.pricesData.force_list,
-              force_price: 600
+              force_pricing: line.pricesData.force_pricing
+            }
+          }
+        }
+        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        applyPromoSingleLine(kwargs, resolve, reject)
+      })
+
+      applyCurrencyDiscountPromise.then((data) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log('APPLLYYY CURRENCY', data)
+      }).catch((err) => {
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        console.log(err)
+      })
+
+    } else {
+      alertify.alert('ERROR', 'El producto seleccionado no se encuentra agregado.')
+    }
+  }
+
+  applyForcedPrice() {
+    const code = this.props.product.code
+    const cartItems = this.props.cart
+    const _this = this
+    const indexInCart = cartItems.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
+    if (indexInCart != -1) {
+      const line = cartItems[indexInCart]
+      console.log('LINEEEEEEEE', line)
+      const applyCurrencyDiscountPromise = new Promise((resolve, reject) => {
+        const kwargs = {
+          url: '/api/products/getProdPrice/',
+          data: {
+            clientId: _this.props.client.client.id,
+            prod_data: {
+              code: code,
+              qty: line.qty,
+              promo_string: line.pricesData.promo_string,
+              money_discount: line.pricesData.money_discount,
+              current_discount: line.discount,
+              force_list: line.pricesData.force_list,
+              // THE VARIABLE CHANGED IN THIS METHOD IS THE FORCE PRICING
+              force_pricing: _this.props.forcePrice
             }
           }
         }
@@ -133,7 +177,15 @@ export default class SingleProduct extends React.Component {
       const val = parseFloat(ev.target.value)
       this.props.dispatch({type: 'SET_SINGLE_PRODUCT_NEW_PRICE', payload: val})
     }
+  }
 
+  setSingleProductMoneyDiscount(ev) {
+    if (ev.key == 'Enter') {
+      // EXECUTE CHANGE PRICE ACTION
+    } else {
+      const val = parseFloat(ev.target.value)
+      this.props.dispatch({type: 'SET_SINGLE_PRODUCT_MONEY_DISCOUNT', payload: val})
+    }
   }
   // *******************************************************************
   // Main Layout
@@ -153,11 +205,11 @@ export default class SingleProduct extends React.Component {
           <input
             type='number'
             className='input'
-            value={this.props.price}
-            onChange={this.setSingleProductQty.bind(this)}
-            onKeyDown={this.setSingleProductQty.bind(this)}
+            value={this.props.forcePrice}
+            onChange={this.setSingleProductNewPrice.bind(this)}
+            onKeyDown={this.setSingleProductNewPrice.bind(this)}
           />
-          <button className='btn btn-primary' onClick={this.addItemToCart.bind(this)} >Nuevo Precio</button>
+          <button className='btn btn-primary' onClick={this.applyForcedPrice.bind(this)}>Nuevo Precio</button>
         </div>
       </div>
       : <div />
@@ -224,9 +276,9 @@ export default class SingleProduct extends React.Component {
             <input
               type='number'
               className='input'
-              value={this.props.price}
-              onChange={this.setSingleProductQty.bind(this)}
-              onKeyDown={this.setSingleProductQty.bind(this)}
+              value={this.props.moneyDiscount}
+              onChange={this.setSingleProductMoneyDiscount.bind(this)}
+              onKeyDown={this.setSingleProductMoneyDiscount.bind(this)}
             />
             <button className='btn btn-success' onClick={this.applyCurrencyDiscount.bind(this)}>Descuento colones</button>
           </div>
