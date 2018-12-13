@@ -90,12 +90,12 @@ export default class Clients extends React.Component {
           return {
             code: item.product.code,
             qty: item.qty,
-            promo_string: item.pricesData[0].promo_string,
-            money_discount: item.pricesData[0].money_discount,
+            promo_string: item.pricesData.promo_string,
+            money_discount: item.pricesData.money_discount,
             current_discount: item.discount,
-            force_list: item.pricesData[0].force_list,
+            force_list: item.pricesData.force_list,
             // THE VARIABLE CHANGED IN THIS METHOD IS THE FORCE PRICING
-            force_pricing: item.pricesData[0].force_pricing
+            force_pricing: item.pricesData.force_pricing
           }
         })
         const kwargs = {
@@ -114,10 +114,11 @@ export default class Clients extends React.Component {
 
       getNewLineDataPromise.then((data) => {
         console.log('PRICESS DETAILS AFTER CLIENT UPDATE', data)
-        _this.props.dispatch({type: 'SET_PRICES_DETAILS', payload: data})
+        // _this.props.dispatch({type: 'SET_PRICES_DETAILS', payload: data})
+        _this.props.dispatch({type: 'SET_MASS_PRICES_DATA', payload: data})
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         // DISPATCH THE ACTION TO RECALC THE CART
-        _this.props.dispatch(recalcCart(_this.props.cartItems, data, _this.props.listSelected, _this.props.useListAsDefault, true))
+        // _this.props.dispatch(recalcCart(_this.props.cartItems, data, _this.props.listSelected, _this.props.useListAsDefault, true))
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)

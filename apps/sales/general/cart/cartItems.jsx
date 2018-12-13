@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {updateTotals, removeFromCart} from './actions'
-import {updateItemDiscount, updateItemLote, updateQty, addSubOne, updateQtyCode} from '../product/actions'
+import {updateItemDiscount, updateItemLote, updateQty, addSubOne, updateQtyCode, recalcCart} from '../product/actions'
 import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
@@ -21,7 +21,10 @@ const Mousetrap = require('mousetrap')
     isExempt: store.cart.isExempt,
     config: store.config.globalConf,
     currencySymbol: store.currency.symbolSelected,
-    pricesDetails: store.products.pricesDetails
+    pricesDetails: store.products.pricesDetails,
+    needsRecalc: store.cart.needsRecalc,
+    listSelected: store.priceList.listSelected,
+    useListAsDefault: store.priceList.useAsDefault
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -39,8 +42,13 @@ export default class CartItems extends React.Component {
     this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales))
 
     // Auto Scroll To end of container
-    const elem = document.getElementById('cart-body')
-    elem.scrollTop = elem.scrollHeight
+    // const elem = document.getElementById('cart-body')
+    // elem.scrollTop = elem.scrollHeight
+    if (this.props.needsRecalc) {
+      // alert('NEEDS RECALCCCCC')
+      this.props.dispatch({type: 'SET_CART_NEEDS_RECALC', payload: false})
+      this.props.dispatch(recalcCart(this.props.inCart, [], this.props.listSelected, this.props.useListAsDefault, true))
+    }
 
   }
 

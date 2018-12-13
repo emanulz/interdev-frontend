@@ -208,7 +208,7 @@ export default class Product extends React.Component {
               _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
             } else {
               // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
-              _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
+              // _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
               this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
                 this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
                 this.props.usePriceListAsDefault))

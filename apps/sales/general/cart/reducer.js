@@ -15,7 +15,8 @@ const stateConst = {
   cartItemActive: false,
   totalNotRounded: 0,
   exemptionDocument: '',
-  isExempt: false
+  isExempt: false,
+  needsRecalc: false
 }
 
 export default function reducer(state = stateConst, action) {
@@ -270,6 +271,42 @@ export default function reducer(state = stateConst, action) {
         cartItemActive: action.payload
       }
     } // case
+
+    case 'SET_MASS_PRICES_DATA':
+    {
+      const data = action.payload
+      const items = [...state.cartItems]
+      if (data.constructor === Array) {
+        data.forEach(element => {
+          const index = items.findIndex((item) => item.product.id == element.product.id)
+          console.log('DATA INDEX IN MASS', index)
+          if (index != -1) {
+            items[index].pricesData = element
+            delete items[index].pricesData['product']
+          }
+        })
+      } else {
+        const index = items.findIndex((item) => item.product.id == data.product.id)
+        if (index != -1) {
+          items[index].pricesData = data
+          delete items[index].pricesData['product']
+        }
+      }
+
+      return {
+        ...state,
+        cartItems: items,
+        needsRecalc: true
+      }
+    } // case
+
+    case 'SET_CART_NEEDS_RECALC':
+    {
+      return {
+        ...state,
+        needsRecalc: action.payload
+      }
+    }
 
   } // switch
 

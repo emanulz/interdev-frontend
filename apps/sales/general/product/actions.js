@@ -25,19 +25,20 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
 
   const newCart = itemsInCart.map(item => {
 
-    const detail = pricesDetails.find(line => {
-      return line.id == item.product.id
-    })
+    // const detail = pricesDetails.find(line => {
+    //   return line.id == item.product.id
+    // })
+    const detail = item.pricesData
     console.log('DETAIL', detail)
 
     const newItem = item
     // DETERMIN THE PRICE TO USE
-    const price = item.product.code == '00' || item.product.code == '000' ? item.product.price : determinPriceToUse(detail, priceListSelected, usePriceListAsDefault)
+    const price = item.product.code == '00' || item.product.code == '000' ? item.product.price : determinPriceToUse(detail, priceListSelected, usePriceListAsDefault, item.product)
     item.product.price = price
-
     // IF THE CLIENT WAS UPDATED USE THE DEFAULT DISCOUNT, ELSE USE THE DISCOUNT ALREADY APPLIED TO ITEM
     let data
     if (clientUpdated) {
+      console.log('INSIDE CLIENT UPDATED')
       // if the client was updated use the default discount in items list details
       // const predDiscount = parseFloat(detail.default_discount)
       const currectDiscount = parseFloat(detail.current_discount)
@@ -115,11 +116,8 @@ function determinMaxDiscount(product, pricesDetails) {
   if (product.code == '00') {
     return 100
   }
-  const detail = pricesDetails.find(line => {
-    return line.id == product.id
-  })
-  if (detail) {
-    return parseFloat(detail.max_discount)
+  if (pricesDetails) {
+    return parseFloat(pricesDetails.max_discount)
   }
   return 0
 }
@@ -154,7 +152,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
   const predDiscount = lineData.default_discount
   console.log('PRED DISCOUNTTTT', predDiscount)
   // DETERMIN THE PRICE TO USE
-  const price = product.code == '00' || product.code == '000' ? product.price : determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault)
+  const price = product.code == '00' || product.code == '000' ? product.price : determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault, product)
   product.price = price
 
   // FIRST CHECK: IF FRACTIONED IS FALSE AND IF NUM IS NOT INTEGER
@@ -325,7 +323,10 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
 
   const dataNewProd = caclSubtotal(product, qty, predDiscount)
   console.log(dataNewProd)
-  const promoApplied = lineData.promo_string.length > 0
+  let promoApplied = false
+  try {
+    promoApplied = lineData.promo_string.length > 0 || lineData.money_discount > 0 || lineData.force_pricing > 0
+  } catch (err) { console.log('ERROR EN LA LINEA, NO lineData', err) }
   const pricesData = lineData
   delete pricesData['product']
   // CHECK IF CONFIG ALLOWS MULTIPLE LINES OR NOT
@@ -384,7 +385,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
 
 // calculates the subtotal by line, also the total with iv included, the discount in currency format
 function caclSubtotal(product, qty, productDiscount) {
-  
+
   // const price = priceToUse(product, client)
   const price = product.price
   const subTotalNoDiscount = price * qty
@@ -555,10 +556,15 @@ export function getProductsList(kwargs, resolve, reject) {
 
 }
 
-export function determinPriceToUse(line, priceListSelected, usePriceListAsDefault) {
+export function determinPriceToUse(line, priceListSelected, usePriceListAsDefault, product) {
   console.log('LINEEEEE INDETERMINNN', line)
+  // CALCULATE THE PRICE IF ITS A FIXED ONE
   if (line.force_pricing && line.force_pricing != -1) {
-    return parseFloat(line.force_pricing)
+    const iv1 = product.use_taxes ? parseFloat(product.taxes) : 0
+    const iv2 = product.use_taxes2 ? parseFloat(product.taxes2) : 0
+    const iv3 = product.use_taxes3 ? parseFloat(product.taxes3) : 0
+    const priceFixed = parseFloat(line.force_pricing) / (1 + ((iv1 / 100) + (iv2 / 100) + (iv3 / 100)))
+    return priceFixed
   }
   const listSelected = parseInt(priceListSelected)
   // case where the price list is selected and use as default checked
@@ -567,22 +573,22 @@ export function determinPriceToUse(line, priceListSelected, usePriceListAsDefaul
       case 1:
       {
         console.log('SETTED PRICE1')
-        return parseFloat(line.product.price1)
+        return parseFloat(product.price1)
       } // case
       case 2:
       {
         console.log('SETTED PRICE2')
-        return parseFloat(line.product.price2)
+        return parseFloat(product.price2)
       } // case
       case 3:
       {
         console.log('SETTED PRICE3')
-        return parseFloat(line.product.price3)
+        return parseFloat(product.price3)
       } // case
       default:
       {
         console.log('SETTED DEFAULT PRICE 1')
-        return parseFloat(line.product.price1)
+        return parseFloat(product.price1)
       }
     }
   }
@@ -591,17 +597,17 @@ export function determinPriceToUse(line, priceListSelected, usePriceListAsDefaul
     case 'price1':
     {
       console.log('PRICE1')
-      return parseFloat(line.product.price1)
+      return parseFloat(product.price1)
     } // case
     case 'price2':
     {
       console.log('PRICE2')
-      return parseFloat(line.product.price2)
+      return parseFloat(product.price2)
     } // case
     case 'price3':
     {
       console.log('PRICE3')
-      return parseFloat(line.product.price3)
+      return parseFloat(product.price3)
     } // case
     case 'table':
     {
@@ -611,7 +617,7 @@ export function determinPriceToUse(line, priceListSelected, usePriceListAsDefaul
     default:
     {
       console.log('DEFAULT PRICE 1')
-      return parseFloat(line.product.price1)
+      return parseFloat(product.price1)
     }
   }
 }
