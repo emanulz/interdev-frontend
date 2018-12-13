@@ -85,16 +85,17 @@ export default class Clients extends React.Component {
       const getNewLineDataPromise = new Promise((resolve, reject) => {
         const cartItems = _this.props.cartItems
         const codesData = cartItems.map(item => {
+          console.log('ITEM IN UPDATE', item)
           // return item.product.code
           return {
             code: item.product.code,
             qty: item.qty,
-            promo_string: item.pricesData.promo_string,
-            money_discount: item.pricesData.money_discount,
+            promo_string: item.pricesData[0].promo_string,
+            money_discount: item.pricesData[0].money_discount,
             current_discount: item.discount,
-            force_list: item.pricesData.force_list,
+            force_list: item.pricesData[0].force_list,
             // THE VARIABLE CHANGED IN THIS METHOD IS THE FORCE PRICING
-            force_pricing: item.pricesData.force_pricing
+            force_pricing: item.pricesData[0].force_pricing
           }
         })
         const kwargs = {
@@ -104,6 +105,7 @@ export default class Clients extends React.Component {
             prod_data: codesData
           }
         }
+        console.log('PRICESS DETAILS SENT', kwargs.data)
         if (codesData.length) {
           _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
           getProductsList(kwargs, resolve, reject)
@@ -111,6 +113,7 @@ export default class Clients extends React.Component {
       })
 
       getNewLineDataPromise.then((data) => {
+        console.log('PRICESS DETAILS AFTER CLIENT UPDATE', data)
         _this.props.dispatch({type: 'SET_PRICES_DETAILS', payload: data})
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         // DISPATCH THE ACTION TO RECALC THE CART
