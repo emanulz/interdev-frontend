@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import {productSelected, setProductNew, applyPromoSingleLine} from './actions.js'
+import {productSelected, setProductNew, applyPromoSingleLine, updateItemDiscount} from './actions.js'
 import alertify from 'alertifyjs'
 
 @connect((store) => {
@@ -171,6 +171,7 @@ export default class SingleProduct extends React.Component {
   }
 
   applyPromoString(string) {
+    console.log('INSIDE STRINGGG')
     const code = this.props.product.code
     const cartItems = this.props.cart
     const _this = this
@@ -200,8 +201,13 @@ export default class SingleProduct extends React.Component {
       })
 
       applyCurrencyDiscountPromise.then((data) => {
-        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log('APPLLYYY CURRENCY', data)
+        _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        this.props.dispatch(updateItemDiscount(cartItems, line.uuid, data[0].current_discount, data[0].default_discount, _this.props.client, data))
+        this.props.dispatch({type: 'TOGGLE_SINGLE_PRODUCT_PANEL', payload: ''})
+        this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_QTY', payload: ''})
+        this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_MONEY_DISCOUNT', payload: ''})
+        this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_NEW_PRICE', payload: ''})
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
@@ -330,6 +336,9 @@ export default class SingleProduct extends React.Component {
             <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3+1')}>3+1</button>
             <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '6+1')}>6+1</button>
             <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '12+1')}>12+1</button>
+            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2x1')}>2x1</button>
+            <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3x1')}>3x1</button>
+            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '3x2')}>3x2</button>
           </div>
         </div>
         <div className='single-product-panel-container-image'>

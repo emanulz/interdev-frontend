@@ -62,6 +62,7 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
 
 // Function to update the inline discount of an item, and reflect it on store
 export function updateItemDiscount(itemsInCart, code, discount, predDiscount, client, pricesDetails) {
+  console.log('INSIDE APPLY DISCOUNT')
   if (discount < 0) {
     alertify.alert('DESCUENTO NO PERMITODO', 'El descuento no puede ser menor a 0')
     return {
@@ -83,11 +84,10 @@ export function updateItemDiscount(itemsInCart, code, discount, predDiscount, cl
         type: 'UPDATE_CART',
         payload: {
           item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, predDiscount, client,
-            itemsInCart[indexInCart].uuid),
+            itemsInCart[indexInCart].uuid, pricesDetails),
           index: indexInCart
         }
       }
-
     return res
   }
 
@@ -422,10 +422,10 @@ function caclSubtotal(product, qty, productDiscount) {
 }
 
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
-function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscount, client, uuid) {
-
+function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscount, client, uuid, newPriceDetails) {
   const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount)
-
+  const details = !newPriceDetails ? itemsInCart[index].pricesData : newPriceDetails
+  console.log('after calc cubtotal')
   return {
     uuid: uuid,
     product: itemsInCart[index].product,
@@ -436,7 +436,8 @@ function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscou
     subtotal: data.subtotal,
     totalWithIv: data.totalWithIv,
     lote: itemsInCart[index].lote,
-    priceToUse: data.priceToUse
+    priceToUse: data.priceToUse,
+    pricesData: details
   }
 }
 
