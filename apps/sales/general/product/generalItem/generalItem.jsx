@@ -76,7 +76,13 @@ export default class GenerlItem extends React.Component {
       max_discount: '0',
       product: product,
       table_price: '0',
-      target_price_list: 'price1'
+      target_price_list: 'price1',
+      current_discount: 0,
+      promo_string: '',
+      money_discount: 0,
+      current_discount: 0,
+      force_pricing: -1
+
     }
     this.props.dispatch(productSelected(generalItemDefaultData, this.props.qty, this.props.itemsInCart,
       this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
