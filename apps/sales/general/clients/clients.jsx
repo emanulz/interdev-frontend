@@ -85,13 +85,23 @@ export default class Clients extends React.Component {
       const getNewLineDataPromise = new Promise((resolve, reject) => {
         const cartItems = _this.props.cartItems
         const codesData = cartItems.map(item => {
-          return item.product.code
+          // return item.product.code
+          return {
+            code: item.product.code,
+            qty: item.qty,
+            promo_string: item.pricesData.promo_string,
+            money_discount: item.pricesData.money_discount,
+            current_discount: item.discount,
+            force_list: item.pricesData.force_list,
+            // THE VARIABLE CHANGED IN THIS METHOD IS THE FORCE PRICING
+            force_pricing: item.pricesData.force_pricing
+          }
         })
         const kwargs = {
           url: '/api/products/getProdPrice/',
           data: {
             clientId: nextProps.client.client.id,
-            code: codesData
+            prod_data: codesData
           }
         }
         if (codesData.length) {

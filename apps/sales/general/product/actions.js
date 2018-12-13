@@ -555,7 +555,10 @@ export function getProductsList(kwargs, resolve, reject) {
 }
 
 export function determinPriceToUse(line, priceListSelected, usePriceListAsDefault) {
-
+  console.log('LINEEEEE INDETERMINNN', line)
+  if (line.force_pricing && line.force_pricing != -1) {
+    return parseFloat(line.force_pricing)
+  }
   const listSelected = parseInt(priceListSelected)
   // case where the price list is selected and use as default checked
   if (usePriceListAsDefault && line.target_price_list != 'table') {
