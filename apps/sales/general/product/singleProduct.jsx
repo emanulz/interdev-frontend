@@ -118,6 +118,8 @@ export default class SingleProduct extends React.Component {
       applyCurrencyDiscountPromise.then((data) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log('APPLLYYY CURRENCY', data)
+        // CALL THE APPLY PROMO FUNCTION
+        _this.applyPromo(cartItems, line.uuid, data, _this.props.client)
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
@@ -160,6 +162,8 @@ export default class SingleProduct extends React.Component {
       applyCurrencyDiscountPromise.then((data) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log('APPLLYYY CURRENCY', data)
+        // CALL THE APPLY PROMO FUNCTION
+        _this.applyPromo(cartItems, line.uuid, data, _this.props.client)
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
@@ -203,11 +207,10 @@ export default class SingleProduct extends React.Component {
       applyCurrencyDiscountPromise.then((data) => {
         console.log('APPLLYYY CURRENCY', data)
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-        this.props.dispatch(updateItemDiscount(cartItems, line.uuid, data[0].current_discount, data[0].default_discount, _this.props.client, data))
-        this.props.dispatch({type: 'TOGGLE_SINGLE_PRODUCT_PANEL', payload: ''})
-        this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_QTY', payload: ''})
-        this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_MONEY_DISCOUNT', payload: ''})
-        this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_NEW_PRICE', payload: ''})
+        // this.props.dispatch(updateItemDiscount(cartItems, line.uuid, data[0].current_discount, data[0].default_discount, _this.props.client, data))
+        // CALL THE APPLY PROMO FUNCTION
+        _this.applyPromo(cartItems, line.uuid, data, _this.props.client)
+
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
@@ -216,6 +219,15 @@ export default class SingleProduct extends React.Component {
     } else {
       alertify.alert('ERROR', 'El producto seleccionado no se encuentra agregado.')
     }
+  }
+
+  applyPromo(cartItems, uuid, pricesData, client) {
+    this.props.dispatch(updateItemDiscount(cartItems, uuid, pricesData[0].current_discount.toFixed(5), pricesData[0].default_discount, client, pricesData))
+    this.props.dispatch({type: 'TOGGLE_SINGLE_PRODUCT_PANEL', payload: ''})
+    this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_QTY', payload: ''})
+    this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_MONEY_DISCOUNT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_NEW_PRICE', payload: ''})
+
   }
 
   setSingleProductNewPrice(ev) {
