@@ -123,7 +123,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client, this.props.pricesDetails))
+      this.props.client, false))
 
     if (ev.key == 'Enter') {
       ev.preventDefault()
@@ -131,7 +131,7 @@ export default class CartItems extends React.Component {
         ? ev.target.value
         : 0
       this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-        this.props.client, this.props.pricesDetails))
+        this.props.client, false))
 
     }
 
@@ -143,7 +143,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client, this.props.pricesDetails))
+      this.props.client, false))
 
   }
 
