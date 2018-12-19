@@ -80,7 +80,6 @@ export default class GenerlItem extends React.Component {
       current_discount: 0,
       promo_string: '',
       money_discount: 0,
-      current_discount: 0,
       force_pricing: -1
 
     }

@@ -55,7 +55,9 @@ export default class SingleProduct extends React.Component {
       const kwargs = {
         url: '/api/products/getProdPrice/',
         data: {
-          code: code,
+          prod_data: {
+            code: code
+          },
           clientId: _this.props.client.client.id
         }
       }
@@ -279,6 +281,33 @@ export default class SingleProduct extends React.Component {
       </div>
       : <div />
 
+    const promoDiv = this.props.config.enablePromotionalDiscounts
+      ? <div className='single-product-panel-container-promos'>
+        {priceEditDiv}
+        <h1>Aplicar descuento en colones</h1>
+        <div className='single-product-panel-container-promos-amount'>
+          <input
+            type='number'
+            className='input'
+            value={this.props.moneyDiscount}
+            onChange={this.setSingleProductMoneyDiscount.bind(this)}
+            onKeyDown={this.setSingleProductMoneyDiscount.bind(this)}
+          />
+          <button className='btn btn-success' onClick={this.applyCurrencyDiscount.bind(this)}>Descuento colones</button>
+        </div>
+        <h1>Aplicar promoción</h1>
+        <div className='single-product-panel-container-promos-buttons'>
+          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2+1')}>2+1</button>
+          <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3+1')}>3+1</button>
+          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '6+1')}>6+1</button>
+          <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '12+1')}>12+1</button>
+          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2x1')}>2x1</button>
+          <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3x1')}>3x1</button>
+          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '3x2')}>3x2</button>
+        </div>
+      </div>
+      : <div />
+
     return <div className={panelClass}>
       <div className='single-product-panel-header'>
         <span>{productStr}</span>
@@ -334,30 +363,9 @@ export default class SingleProduct extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className='single-product-panel-container-promos'>
-          {priceEditDiv}
-          <h1>Aplicar descuento en colones</h1>
-          <div className='single-product-panel-container-promos-amount'>
-            <input
-              type='number'
-              className='input'
-              value={this.props.moneyDiscount}
-              onChange={this.setSingleProductMoneyDiscount.bind(this)}
-              onKeyDown={this.setSingleProductMoneyDiscount.bind(this)}
-            />
-            <button className='btn btn-success' onClick={this.applyCurrencyDiscount.bind(this)}>Descuento colones</button>
-          </div>
-          <h1>Aplicar promoción</h1>
-          <div className='single-product-panel-container-promos-buttons'>
-            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2+1')}>2+1</button>
-            <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3+1')}>3+1</button>
-            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '6+1')}>6+1</button>
-            <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '12+1')}>12+1</button>
-            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2x1')}>2x1</button>
-            <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3x1')}>3x1</button>
-            <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '3x2')}>3x2</button>
-          </div>
-        </div>
+
+        {promoDiv}
+
         <div className='single-product-panel-container-image'>
           <h1>Imagen del Artículo</h1>
           <img src={imageUrl} onError={(e) => { e.target.src = '/media/default/noimage.png' }} />
