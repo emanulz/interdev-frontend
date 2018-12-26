@@ -25,7 +25,7 @@ export default class PartRequestData extends React.Component {
                   {item.element.code}
                 </div>
                 <div className='compact-invoice-table-body-item-data-total'>
-                  ₡ {parseFloat(item.element.sell_price).formatMoney(2, ',', '.')}
+                  ₡ {parseFloat(item.element.sell_price1).formatMoney(2, ',', '.')}
                 </div>
               </div>
             </div>
