@@ -10,11 +10,21 @@ import {connect} from 'react-redux'
 export default class Notes extends React.Component {
 
   getSingDiv(wasCredit) {
-    if (wasCredit) {
-      return <div className='reprint-compact-invoice-notes-sing'>
+    const data = this.props.config.useSignatureIdAndNameInCreditReceipt
+      ? <div className='reprint-compact-invoice-notes-sing'>
+        <h1>Firma del Cliente:</h1>
+        <hr />
+        <h1>Nombre:</h1>
+        <hr />
+        <h1>Cédula:</h1>
+        <hr />
+      </div>
+      : <div className='reprint-compact-invoice-notes-sing'>
         <h1>Firma del Cliente:</h1>
         <hr />
       </div>
+    if (wasCredit) {
+      return data
     }
   }
 
