@@ -281,6 +281,23 @@ export default class SingleProduct extends React.Component {
       </div>
       : <div />
 
+    // BASED ON PROMO STRING FROM BACKEND GENETRATES BUTTONS
+    const promoString = this.props.config.promotionsEnabledCommaSeparated ? this.props.config.promotionsEnabledCommaSeparated : ''
+    const promosEnabled = promoString.length ? promoString.split(',') : []
+    const promosBtns = promosEnabled.map((promo, index) => {
+      const classString = parseFloat(index) % 2 ? 'btn btn-warning secondBtn' : 'btn btn-warning firstBtn'
+      return <button className={classString} onClick={this.applyPromoString.bind(this, promo)}>{promo}</button>
+    })
+    // GENERATE THE BUTTONS DIV
+    const buttonsDiv = promosBtns.length
+      ? <div>
+        <h1>Aplicar promoción</h1>
+        <div className='single-product-panel-container-promos-buttons'>
+          {promosBtns}
+        </div>
+      </div>
+      : <div />
+
     const promoDiv = this.props.config.enablePromotionalDiscounts
       ? <div className='single-product-panel-container-promos'>
         {priceEditDiv}
@@ -295,7 +312,8 @@ export default class SingleProduct extends React.Component {
           />
           <button className='btn btn-success' onClick={this.applyCurrencyDiscount.bind(this)}>Descuento colones</button>
         </div>
-        <h1>Aplicar promoción</h1>
+        {buttonsDiv}
+        {/* <h1>Aplicar promoción</h1>
         <div className='single-product-panel-container-promos-buttons'>
           <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2+1')}>2+1</button>
           <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3+1')}>3+1</button>
@@ -304,9 +322,13 @@ export default class SingleProduct extends React.Component {
           <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2x1')}>2x1</button>
           <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3x1')}>3x1</button>
           <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '3x2')}>3x2</button>
-        </div>
+        </div> */}
       </div>
-      : <div />
+      : this.props.config.canEditPricesInSales
+        ? <div className='single-product-panel-container-promos'>
+          {priceEditDiv}
+        </div>
+        : <div />
 
     return <div className={panelClass}>
       <div className='single-product-panel-header'>
