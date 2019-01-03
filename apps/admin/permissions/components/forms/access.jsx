@@ -25,7 +25,8 @@ export default class Access extends React.Component {
       access_purchases: 'administration.access_purchases',
       access_restaurant: 'administration.access_restaurant',
       access_returns: 'administration.access_returns',
-      access_payables: 'administration.access_payables'
+      access_payables: 'administration.access_payables',
+      set_presales_null: 'administration.set_presales_null'
     }
     const kwargs = {
       userId: this.props.user.id,
@@ -70,7 +71,8 @@ export default class Access extends React.Component {
         access_purchases: 'administration.access_purchases',
         access_restaurant: 'administration.access_restaurant',
         access_returns: 'administration.access_returns',
-        access_payables: 'administration.access_payables'
+        access_payables: 'administration.access_payables',
+        set_presales_null: 'administration.set_presales_null'
       }
       const kwargs2 = {
         userId: this.props.user.id,
@@ -162,6 +164,14 @@ export default class Access extends React.Component {
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.access_payables}
             onChange={this.handleInputChange.bind(this, 'access_payables')} />
+        </div>
+      </div>
+
+      <div className='permissions-container-permissions-tab-item'>
+        <div className='permissionName'>Puede Anular Preventas</div>
+        <div className='permissionInput'>
+          <input type='checkbox' checked={this.props.permissions.set_presales_null}
+            onChange={this.handleInputChange.bind(this, 'set_presales_null')} />
         </div>
       </div>
 

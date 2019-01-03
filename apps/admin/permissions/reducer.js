@@ -49,7 +49,8 @@ const permissionsModel = {
     access_purchases: false,
     access_restaurant: false,
     access_returns: false,
-    access_payables: false
+    access_payables: false,
+    set_presales_null: false
   },
   work_orders: {
     list: false,

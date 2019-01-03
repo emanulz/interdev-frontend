@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
+import { checkUserPermissions } from '../../../utils/checkPermissions.js'
 import routes from './routes'
 import SingleProduct from '../general/product/singleProduct.jsx'
 import GeneralItem from '../general/product/generalItem/generalItem.jsx'
@@ -30,6 +31,15 @@ export default class Main extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(fecthProfile())
+    const permissions = {
+      set_presales_null: 'administration.set_presales_null'
+    }
+    const kwargs = {
+      permissions: permissions,
+      success: 'FETCH_USER_ACCESS_PERMISSIONS_FULLFILLED',
+      fail: 'FETCH_USER_ACCESS_PERMISSIONS_REJECTED'
+    }
+    this.props.dispatch(checkUserPermissions(kwargs))
   }
 
   // Main Layout

@@ -11,7 +11,8 @@ const Mousetrap = require('mousetrap')
     presales: store.presales.presales,
     isVisible: store.presales.isVisible,
     extraClient: store.extras.client,
-    activeIndex: store.presales.activeIndex
+    activeIndex: store.presales.activeIndex,
+    permissions: store.permissions.permissions
   }
 })
 export default class PresalesPanel extends React.Component {
@@ -141,6 +142,10 @@ export default class PresalesPanel extends React.Component {
         activeClass = 'presale-active-in-list'
       }
       currentIndex += 1
+      const setNullCell = this.props.permissions.set_presales_null
+        ? <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, presale.id, presale.consecutive)} className='fa fa fa-trash' /></td>
+        : <td />
+
       return <tr key={presale.id} className={activeClass}>
         <td className='loadRow'><i onClick={this.loadPresaleToCart.bind(this, presale.id)} className='fa fa-download' /></td>
         <td>{presale.consecutive}</td>
@@ -148,10 +153,12 @@ export default class PresalesPanel extends React.Component {
         <td>{`${clientName} ${clientLastName}`}</td>
         <td>{presellerName}</td>
         <td>₡ {parseFloat(presale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
-        <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, presale.id, presale.consecutive)} className='fa fa fa-trash' /></td>
+        {setNullCell}
       </tr>
     })
-
+    const setNullHead = this.props.permissions.set_presales_null
+      ? <td>Anular</td>
+      : <td />
     return <div className={isVisible}>
       <div className='presales-panel-header'>
         PREVENTAS SIN FACTURAR
@@ -169,7 +176,7 @@ export default class PresalesPanel extends React.Component {
                 <td>Cliente</td>
                 <td>Vendedor</td>
                 <td>Monto</td>
-                <td>Anular</td>
+                {setNullHead}
               </tr>
             </thead>
             <tbody>
