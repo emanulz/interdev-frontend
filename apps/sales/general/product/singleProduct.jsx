@@ -313,16 +313,6 @@ export default class SingleProduct extends React.Component {
           <button className='btn btn-success' onClick={this.applyCurrencyDiscount.bind(this)}>Descuento colones</button>
         </div>
         {buttonsDiv}
-        {/* <h1>Aplicar promoción</h1>
-        <div className='single-product-panel-container-promos-buttons'>
-          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2+1')}>2+1</button>
-          <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3+1')}>3+1</button>
-          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '6+1')}>6+1</button>
-          <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '12+1')}>12+1</button>
-          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '2x1')}>2x1</button>
-          <button className='btn btn-warning secondBtn' onClick={this.applyPromoString.bind(this, '3x1')}>3x1</button>
-          <button className='btn btn-warning firstBtn' onClick={this.applyPromoString.bind(this, '3x2')}>3x2</button>
-        </div> */}
       </div>
       : this.props.config.canEditPricesInSales
         ? <div className='single-product-panel-container-promos'>
