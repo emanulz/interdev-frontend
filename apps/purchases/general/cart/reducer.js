@@ -119,7 +119,9 @@ export default function reducer(state = stateConst, action) {
         cartItems: [
           ...state.cartItems,
           action.payload
-        ]
+        ],
+        cartItemActive:-1
+
       }
     } // case
 
