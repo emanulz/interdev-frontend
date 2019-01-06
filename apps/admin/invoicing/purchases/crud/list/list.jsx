@@ -148,7 +148,7 @@ export default class List extends React.Component {
     ]
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.purchases
-    const list = <AdminTable headerOrder={headerOrder} model='clients' data={tableData}
+    const list = <AdminTable headerOrder={headerOrder} model='epurchases' data={tableData}
       idField='id' defaultDescending defaultSorting='created' />
 
     const content = this.props.fetching ? fetching : list
@@ -176,7 +176,7 @@ export default class List extends React.Component {
           placeholder='Ingrese un texto para buscar...'
         />
       </div> */}
-      <SearchAdmin model='client' namespace='adminSearch' />
+      <SearchAdmin model='electronic_purchase' namespace='adminSearch' />
       {paginationDiv}
       {/* <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/receivedelectronicdoc/' successType='FETCH_EPURCHASES_FULFILLED' errorType='FETCH_EPURCHASES_REJECTED' />
