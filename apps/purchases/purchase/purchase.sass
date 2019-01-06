@@ -6,24 +6,37 @@
     position: relative
     font-family: 'Source Sans Pro', 'sans-serif'
     &-content
-        padding: 0.5em
-        height: 100%
-        width: 70%
-        transition: width 0.3s ease
+      padding: 0.5em
+      height: 100%
+      width: 70%
+      transition: width 0.3s ease
+      position: absolute
+      left: 0
+
+      &.fullWidth
+        width: 100%
+      &-product
         position: absolute
+        width: 100%
         left: 0
-        &.fullWidth
-            width: 100%
-    &-aside
-        padding: 0.5em
-        height: 100%
-        width: 30%
-        transition: left 0.3s ease
+        top: 5px
+      &-cart
         position: absolute
-        left: 70%
-        display: flex
-        flex-flow: column
-        justify-content: space-between
+        width: 100%
+        left: 0
+        top: 45px
+        height: calc(100% - 65px)
+    &-aside
+      padding: 0.5em
+      height: calc(100% - 10px)
+      width: 30%
+      transition: left 0.3s ease
+      position: absolute
+      left: 70%
+      display: flex
+      flex-flow: column
+      justify-content: space-between
+      overflow-x: auto
 
 .list-container
   font-family: 'Lato', sans-serif

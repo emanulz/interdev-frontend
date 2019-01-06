@@ -24,7 +24,7 @@ export default class Content extends React.Component {
                 <Product/>
             </div>
 
-            <div>
+            <div className="purchase-content-cart">
                 <Cart/>
             </div>
         </div>
