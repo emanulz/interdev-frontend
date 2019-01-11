@@ -43,6 +43,11 @@ export default class SideMenu extends React.Component {
               Ingresar Factura</Link>
           </li>
           <li>
+            <Link to='/purchases/xml_add'>
+              <span className='fa fa-file' />
+              Ingresar Factura XML</Link>
+          </li>
+          <li>
             <Link to='/purchases/completelist'>
               <span className='fa fa-list-alt' />
               Listado Facturas Cerradas</Link>

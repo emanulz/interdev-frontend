@@ -11,15 +11,23 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     openBillList: store.cashier.openBillList,
-    registerClosure: store.registerClosure.registerClosure
+    registerClosure: store.registerClosure.registerClosure,
+    byNotes: store.cashier.byNotes,
+    openTotalCRC: store.cashier.openTotalCRC,
+    openTotalUSD: store.cashier.openTotalUSD,
   }
 })
 export default class Open extends React.Component {
 
   openRegister() {
 
-    const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
-    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    let crcTotals = this.props.openTotalCRC
+    let usdTotals = this.props.openTotalUSD
+    if(this.props.byNotes){
+      crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+      usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    }
+
 
     const _this = this
     alertify.confirm('ABRIR', `Desea abir la caja con un monto de ₡${parseFloat(crcTotals).formatMoney()} y $${parseFloat(usdTotals).formatMoney()}`,
@@ -78,8 +86,14 @@ export default class Open extends React.Component {
   // Main Layout
   render () {
 
-    const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
-    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    let crcTotals = this.props.openTotalCRC
+    let usdTotals = this.props.openTotalUSD
+
+    if(this.props.byNotes){
+      crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+      usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    }
+
     return <div>
       <h1>TOTALES APERTURA</h1>
       <h2> APERTURA COLONES</h2>

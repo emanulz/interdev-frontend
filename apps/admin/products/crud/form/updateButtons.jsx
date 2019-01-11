@@ -25,7 +25,7 @@ class UpdateButtons extends React.Component {
     const productOld = this.props.productOld
     const products = this.props.products
     const fieldsOk = checkProductData(product, products)
-    console.log('OK???', fieldsOk)
+
     if (fieldsOk) {
       const kwargs = {
         url: `/api/products/${product.id}/`,

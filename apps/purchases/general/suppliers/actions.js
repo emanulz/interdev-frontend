@@ -7,7 +7,7 @@ import axios from 'axios'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
-export function supplierSearchDoubleClick(item, dispatch){
+export function  supplierSearchDoubleClick(item, dispatch){
     axios.get(`/api/suppliers/${item}`).then(function(response) {
         dispatch({type: 'SUPPLIER_SELECTED', payload: response.data})
         dispatch({type: 'supplierSearch_TOGGLE_SEARCH_PANEL', payload: response.data})

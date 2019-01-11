@@ -9,7 +9,10 @@ import {connect} from 'react-redux'
     fullWidth: store.cashier.fullWidth,
     moneyBills: store.cashier.moneyBills,
     openBillList: store.cashier.openBillList,
-    registerClosure: store.registerClosure.registerClosure
+    registerClosure: store.registerClosure.registerClosure,
+    byNotes: store.cashier.byNotes,
+    openTotalCRC: store.cashier.openTotalCRC,
+    openTotalUSD: store.cashier.openTotalUSD,
   }
 })
 export default class Main extends React.Component {
@@ -53,6 +56,7 @@ export default class Main extends React.Component {
     }
 
     this.props.dispatch({type: 'ADD_TO_OPEN_BILLS_LIST', payload: element})
+
   }
 
   fieldFocus(ev) {
@@ -75,6 +79,24 @@ export default class Main extends React.Component {
       total += parseFloat(element.value) * parseFloat(element.amount)
     })
     return total
+  }
+
+  //handles the user setting the total instead of the individual notes
+  handleTotalSetCRC(currency_code, e){
+    this.props.dispatch({type:'CLEAR_OPEN_BILLS_LIST'})
+    if(currency_code==='CRC'){
+      let crc_total = parseInt(e.target.value) ? parseInt(e.target.value) : -1
+      if(crc_total===-1){
+        return
+      }
+      this.props.dispatch({type:'SET_TOTAL_CRC', payload: crc_total})
+    }else{
+      let usd_total = parseFloat(e.target.value) ? parseFloat(e.target.value) : -1
+      if(usd_total===-1){
+        return
+      }
+      this.props.dispatch({type:'SET_TOTAL_USD', payload: usd_total})
+    }
   }
 
   // Main Layout
@@ -117,7 +139,10 @@ export default class Main extends React.Component {
           {crcBills}
           <div className='cashier-content-row row-totals'>
             <h2>Total ₡</h2>
-            <input type='number' name='total-crc' />
+            <input 
+            onChange={this.handleTotalSetCRC.bind(this, 'CRC')}
+            value={this.props.openTotalCRC}
+            type='number' name='total-crc' />
           </div>
 
         </div>
@@ -130,7 +155,10 @@ export default class Main extends React.Component {
           </div>
           <div className='cashier-content-row row-totals'>
             <h2>Total $</h2>
-            <input type='number' name='total-usd' />
+            <input 
+            onChange={this.handleTotalSetCRC.bind(this, 'USD')}
+            value={this.props.openTotalUSD}
+            type='number' name='total-usd' />
           </div>
         </div>
       </div>

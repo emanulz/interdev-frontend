@@ -18,6 +18,7 @@ import purchaseReceipt from './general/receipt/reducer.js'
 import config from './general/config/reducer.js'
 import reports  from '../../general/reportsPanel/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
+import smart_purchase from '../purchases/smart_purchase/reducer.js'
 
 export default combineReducers({
     main,
@@ -39,6 +40,8 @@ export default combineReducers({
     purchaseReceipt,
     config,
     reports,
-    userProfile
+    userProfile,
+    smart_purchase,
+    supplierLinker: search('supplierLinker'),
 
 })

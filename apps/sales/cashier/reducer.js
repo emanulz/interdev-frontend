@@ -1,9 +1,12 @@
+import {getTotalAmount} from './content/actions.js'
+
 const stateConst = {
   fullWidth: false,
   moneyBills: [],
   openBillList: [],
   openTotalCRC: 0,
   openTotalUSD: 0,
+  byNotes: true, //if true the opening totals will be obtained from the notes qty
   openTotalCRCSetted: false,
   openTotalUSDSetted: false
 
@@ -38,6 +41,15 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_OPEN_BILLS_LIST':
+    {
+      return {
+        ...state,
+        openBillList: [],
+        byNotes: false
+      }
+    }
+
     case 'ADD_TO_OPEN_BILLS_LIST':
     {
       const newLine = action.payload
@@ -57,11 +69,14 @@ export default function reducer(state = stateConst, action) {
       // ADD IT TO CART
       existentOpenBillList.push(newLine)
       // RETURN
+      
       return {
         ...state,
         openBillList: existentOpenBillList,
         openTotalUSDSetted: settedUSD,
-        openTotalCRCSetted: settedCRC
+        openTotalCRCSetted: settedCRC,
+        openTotalCRC: getTotalAmount(existentOpenBillList, 'CRC'),
+        openTotalUSD: getTotalAmount(existentOpenBillList, 'USD'),
       }
     } // case
 
