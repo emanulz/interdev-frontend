@@ -44,6 +44,15 @@ export default class CartItems extends React.Component {
     // Auto Scroll To end of container
     // const elem = document.getElementById('cart-body')
     // elem.scrollTop = elem.scrollHeight
+    // console.log('PREV CART LENNNN', prevProps.inCart.length)
+    // console.log('CART LENNNN', this.props.inCart.length)
+    const prevLength = prevProps.inCart.length
+    const currentlength = this.props.inCart.length
+    if (currentlength > prevLength) {
+      // Auto Scroll To end of container
+      const elem = document.getElementById('cart-body')
+      elem.scrollTop = elem.scrollHeight
+    }
     if (this.props.needsRecalc) {
       // alert('NEEDS RECALCCCCC')
       this.props.dispatch({type: 'SET_CART_NEEDS_RECALC', payload: false})
