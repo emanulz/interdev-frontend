@@ -1,57 +1,3 @@
-const productModel = {
-    code: '',
-    description: '',
-    short_description: '',
-    unit: 'Unid',
-    fractioned: true,
-    //department: '0000000000',
-    //subdepartment: '0000000000',
-    //barcode: '',
-    //internal_barcode: '',
-    supplier_code: '',
-    //model: '',
-    part_number: '',
-    brand_code: '',
-    inventory_enabled: true,
-    inventory_minimum: 0,
-    inventory_maximum: 0,
-    inventory_negative: false,
-    cost: 0,
-    //cost_based: true,
-    utility1: 0,
-    utility2: 0,
-    utility3: 0,
-    price: 0,
-    price1: 0,
-    price2: 0,
-    price3: 0,
-    sell_price: 0,
-    sell_price1: 0,
-    sell_price2: 0,
-    sell_price3: 0,
-    ask_price: false,
-    use_taxes: false,
-    taxes: 0,
-    tax_code: '00',
-    use_taxes2: false,
-    taxes2: 0,
-    tax_code2: '00',
-    use_taxes3: false,
-    taxes3: 0,
-    tax_code3: '00',
-    pred_discount: 0,
-    is_active: true,
-    consignment: false,
-    generic: false,
-    image: null,
-    observations: '',
-    on_sale: false,
-    max_sale_discount: 0,
-    max_regular_discount: 5,
-    is_service: false,
-    use_coin_round: true
-  }
-
 
 const stateConst = {
     currentStep: "a",
@@ -67,10 +13,63 @@ const stateConst = {
     product_to_link: null
 }
 
+function updateVeryNestedField(state, action) {
+    return {
+      ...state,
+      first: {
+        ...state.first,
+        second: {
+          ...state.first.second,
+          [action.someId]: {
+            ...state.first.second[action.someId],
+            fourth: action.someValue
+          }
+        }
+      }
+    }
+  }
+
 export default function reducer(state=stateConst, action) {
 
     switch(action.type) {
         
+        case 'SMART_PROD_CREATION_COMPLETE':
+        {
+            //find the product in the invoice_to_link and update it
+            //as a found product
+
+            const who_am_i = action.payload.who_am_i
+            //if the supplier code is not empty, search by code
+            let target_item = null
+            if(who_am_i.code !==''){
+                
+                target_item = state.invoice_to_link.items_list.findIndex(item=>{
+                    const first_code = `${item.CodigosMeta[0].type}-${item.CodigosMeta[0].code}`
+                    console.log("First code --> ", first_code)
+                    return first_code===who_am_i.supplier_code
+                })
+            }else{
+                
+                target_item = state.invoice_to_link.items_list.findIndex(item=>{
+                    return item.Detalle===who_am_i.supplier_description
+                })
+            }
+
+            console.log("Target item --> ", target_item)
+            if(target_item==null){
+                console.log("Error matching after link.....????")
+            }
+            const new_items_list = [...state.invoice_to_link.items_list]
+            new_items_list[target_item].linked = action.payload.who_am_i
+
+            return {
+                ...state,
+                invoice_to_link: {
+                    ...state.invoice_to_link,
+                    invoice_to_link: new_items_list
+                }
+            }
+        }
         case 'SET_PRODUCT_TO_LINK':
         {
             let target_prod = null

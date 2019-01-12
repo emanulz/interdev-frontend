@@ -25,7 +25,6 @@ export default class StepB_Header extends React.Component{
 
         this.props.dispatch({type: 'FETCHING_STARTED'})
         
-
         const target_doc = this.props.documents_data.find(item =>{
             return item.header.NumeroConsecutivo === e.target.value
         })

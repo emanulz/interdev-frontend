@@ -6,7 +6,8 @@ import {calculateRealUtility} from '../../general/product/actions.js'
 
 @connect(store=>{
     return {
-        product_to_link: store.smart_purchase.product_to_link
+        product_to_link: store.smart_purchase.product_to_link,
+        invoice_to_link: store.smart_purchase.invoice_to_link,
     }
 })
 export default class ProdLinkingActions extends React.Component {
@@ -116,10 +117,28 @@ export default class ProdLinkingActions extends React.Component {
             5 //round_to_coin
         )
 
-        console.log("Real p1 data --> ", real_p1_Data)
-        console.log("Real p2 data --> ", real_p2_Data)
-        console.log("Real p3 data --> ", real_p3_Data)
+        //console.log("Real p1 data --> ", real_p1_Data)
+        //console.log("Real p2 data --> ", real_p2_Data)
+        //console.log("Real p3 data --> ", real_p3_Data)
         
+        let supplier = this.props.invoice_to_link.proveedor
+        if(supplier===undefined || supplier===null){
+            console.log("Error, can't link products for an invoice with an unlinked supplier")
+            return
+        }
+
+        let sup_code = ""
+        const code_meta = this.props.product_to_link.CodigosMeta
+        if(code_meta.length > 0){
+            sup_code = `${code_meta[0].type}-${code_meta[0].code}`
+        }
+        console.log("Target sup code --> ", sup_code)
+
+        let total_tax_frac = 1
+        if(total_tax > 0.00001){
+            total_tax_frac += total_tax/100.0
+        }
+
         const prod_kwargs = {
             description: prod.Detalle,
             unit: prod.UnidadMedida,
@@ -131,32 +150,46 @@ export default class ProdLinkingActions extends React.Component {
             taxes2: product.taxes2,
             use_taxes3: product.use_taxes3,
             taxes3: product.taxes3,
-            utility1: real_p1_Data.real_utility,
-            utility2: real_p2_Data.real_utility,
-            utility3: real_p3_Data.real_utility,
-            sell_price1: real_p1_Data.new_price,
-            sell_price2: real_p2_Data.new_price,
-            sell_price3: real_p3_Data.new_price,
-            price: real_p1_Data/total_tax,
-            price1: real_p1_Data/total_tax,
-            price2: real_p2_Data/total_tax,
-            price3: real_p3_Data/total_tax,
-            cost: unit_price_no_tax
+            utility1: (real_p1_Data.real_utility*100).toFixed(5),
+            utility2: (real_p2_Data.real_utility*100).toFixed(5),
+            utility3: (real_p3_Data.real_utility*100).toFixed(5),
+            sell_price1: real_p1_Data.new_price.toFixed(5),
+            sell_price2: real_p2_Data.new_price.toFixed(5),
+            sell_price3: real_p3_Data.new_price.toFixed(5),
+            price: (real_p1_Data.new_price/total_tax_frac).toFixed(5),
+            price1: (real_p1_Data.new_price/total_tax_frac).toFixed(5),
+            price2: (real_p2_Data.new_price/total_tax_frac).toFixed(5),
+            price3: (real_p3_Data.new_price/total_tax_frac).toFixed(5),
+            cost: unit_price_no_tax.toFixed(5),
+            barcode:'',
+            code:'',
+            fractioned: true,
+            supplier_code: sup_code,
+            linking_data: {
+                supplier_id: supplier.id,
+                supplier_code: sup_code,
+                supplier_description: prod.Detalle,
+                full_data: false
+            }
+            
         }
 
-        if(len(prod.CodigosMeta)>0){
+        if(prod.CodigosMeta.length>0){
             prod_kwargs["supplier_code"] = prod.CodigosMeta.code
         }
 
         const createKwargs = {
-            url: '/api/facturareception/processHaciendaXML/',
+            url: '/api/products/smart_create/',
             method: 'post',
             successType: 'SMART_PROD_CREATION_COMPLETE',
             errorType: 'SMART_PROD_CREATION_ERROR',
             data: prod_kwargs,
-            succesMessage: "Producto Creado satisfactoriamente",
+            sucessMessage: "Producto Creado satisfactoriamente",
             errorMessage: "Ocurrio un creando el producto"
         }
+
+        console.log("Final create kwargs --> ", createKwargs)
+        this.props.dispatch(generalSave(createKwargs))
 
     }
 
