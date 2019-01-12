@@ -43,5 +43,6 @@ export default combineReducers({
     userProfile,
     smart_purchase,
     supplierLinker: search('supplierLinker'),
+    productLinker: search('productLinker')
 
 })
