@@ -144,7 +144,8 @@ export function updateItem(kwargs){
   return res
 }
 
-function calculateRealUtility(cost, target_utility, target_price, 
+
+export function calculateRealUtility(cost, target_utility, target_price, 
   product, updatePattern,  utility_method, round_to_coin = 5){
   let wanted_price = 0
 
@@ -176,15 +177,14 @@ function calculateRealUtility(cost, target_utility, target_price,
         int_ivi_price = Math.round(int_ivi_price)
       }
 
-
       //round to the nearest usable coin
       let coin_round_modulus = 0
       if(product.use_coin_round){
         coin_round_modulus = int_ivi_price % round_to_coin
       }
        
-
       wanted_price = int_ivi_price - coin_round_modulus
+      console.log("Wanted price --> ", wanted_price)
 
       break
     }
@@ -203,7 +203,6 @@ function calculateRealUtility(cost, target_utility, target_price,
     }
   }
 
-  
   //back calculate new utility
   let real_utility = 0
   if(utility_method === 'cost_based'){

@@ -1,3 +1,57 @@
+const productModel = {
+    code: '',
+    description: '',
+    short_description: '',
+    unit: 'Unid',
+    fractioned: true,
+    //department: '0000000000',
+    //subdepartment: '0000000000',
+    //barcode: '',
+    //internal_barcode: '',
+    supplier_code: '',
+    //model: '',
+    part_number: '',
+    brand_code: '',
+    inventory_enabled: true,
+    inventory_minimum: 0,
+    inventory_maximum: 0,
+    inventory_negative: false,
+    cost: 0,
+    //cost_based: true,
+    utility1: 0,
+    utility2: 0,
+    utility3: 0,
+    price: 0,
+    price1: 0,
+    price2: 0,
+    price3: 0,
+    sell_price: 0,
+    sell_price1: 0,
+    sell_price2: 0,
+    sell_price3: 0,
+    ask_price: false,
+    use_taxes: false,
+    taxes: 0,
+    tax_code: '00',
+    use_taxes2: false,
+    taxes2: 0,
+    tax_code2: '00',
+    use_taxes3: false,
+    taxes3: 0,
+    tax_code3: '00',
+    pred_discount: 0,
+    is_active: true,
+    consignment: false,
+    generic: false,
+    image: null,
+    observations: '',
+    on_sale: false,
+    max_sale_discount: 0,
+    max_regular_discount: 5,
+    is_service: false,
+    use_coin_round: true
+  }
+
 
 const stateConst = {
     currentStep: "a",
@@ -10,14 +64,30 @@ const stateConst = {
     show_sup_link_confirmation: true,
     to_link_supplier: null,
     invoice_to_link: null,
-    products_linked: [],
-    products_to_link: []
+    product_to_link: null
 }
 
 export default function reducer(state=stateConst, action) {
 
     switch(action.type) {
         
+        case 'SET_PRODUCT_TO_LINK':
+        {
+            let target_prod = null
+
+            //find the item from the invoice to link object
+            if(state.invoice_to_link!==null){
+                target_prod = state.invoice_to_link.items_list
+                    .find(item=>{
+                        return item.NumeroLinea === action.payload
+                    })
+            }
+            return {
+                ...state,
+                product_to_link: target_prod
+            }
+        }
+
         case 'SET_INVOICE_TO_LINK':
         {
             let item_data = null

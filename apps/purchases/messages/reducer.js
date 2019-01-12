@@ -7,6 +7,11 @@ const stateConst = {
 export default function reducer(state=stateConst, action) {
     switch(action.type) {
 
+      case 'SMART_PRODUCT_ALREADY_EXISTS':
+      {
+        alertify.alert('Error', `En modo porcentual el descuento no puede ser mayor a 100.`)
+        break 
+      }
       case 'LINE_PERCENT_DISCOUNT_OVER_100':
       {
         alertify.alert('Error', `En modo porcentual el descuento no puede ser mayor a 100.`)

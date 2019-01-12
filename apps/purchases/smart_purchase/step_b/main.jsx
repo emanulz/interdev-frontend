@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 //import user components
 import StepB_Header from '../header_step_b/main.jsx'
 import ProductLinkerList from '../product_linker_list/main.jsx'
+import ProdLinkingActions from '../prod_linking_actions/main.jsx'
 
 @connect(store=>{
     return {
@@ -28,6 +29,9 @@ export default class StepB extends React.Component {
                 <ProductLinkerList class_name="product-linked-list" 
                     name="Productos Enlazados"/>
             </div>
+            
+            <ProdLinkingActions />
+
         </div>
     }
 }

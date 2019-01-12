@@ -14,7 +14,6 @@ export default class SupplierLinkerConfirmation extends React.Component {
 
 
     createSupplierLink(){
-        console.log("Supplier selected on Linking confirmed")
         this.props.dispatch({type: "TOGGLE_SUP_LINK_CONFIRMATION"})
         //patch the supplier to have a matching id with the xml
 
