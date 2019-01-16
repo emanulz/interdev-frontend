@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 import axios from 'axios'
-
+import {generalSave} from '../../../../utils/api.js'
 // ------------------------------------------------------------------------------------------
 // CONFIG DEFAULT AXIOS
 // ------------------------------------------------------------------------------------------
@@ -19,6 +19,60 @@ const uuidv1 = require('uuid/v1')
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
+
+//function to calculate the target discount on all items to  get to a target price
+
+
+export function searchDiscountForTargetPrice(dispatcher, cartItems, pred_discount, client){
+  //prompt the user for the value
+  console.log("Dispatcher --> ", dispatcher)
+  if(cartItems.length < 1){
+    alertify.error("No se puede calcular el descuento de un carrito vacío")
+    //return
+  }
+
+  //create a worker method to process results from the backend
+  const chop_chop = (target_discount)=>{
+    for(let item of cartItems){
+      dispatcher(updateItemDiscount(
+        cartItems,
+        item.uuid,
+        parseFloat(target_discount).toFixed(4),
+        pred_discount,
+        client,
+        false
+      ))
+    }
+  }
+
+  //dispatch = dispatcher
+  const ok = (evt, value) =>{
+    console.log("Event --> ", evt)
+    dispatcher({type:'FETCHING_STARTED'})
+    //build the general save kwargs to dispatch a target price search
+    const kwargs = {
+      data: {
+        cart: cartItems,
+        target_price: value},
+      url: '/api/presales/carttargetprice/',
+      method: 'post',
+      successType: 'YAY',
+      errorType: 'NAY',
+      sucessMessage: "Descuento calculado satisfactoriamente",
+      errorMessage: "Error calculando descuento",
+      workerMethod: chop_chop
+
+    }
+    dispatcher(generalSave(kwargs))
+  }
+
+  const cancel = ()=>{console.log("Target discount search cancelled")}
+  alertify.prompt('Ingrese el precio total deseado',
+    'Se buscará un descuento objetivo común a todos las líneas.',
+    '0', ok, cancel)
+}
+
+
 
 // Function to update the globa; discount of complete storage of items, and reflect it on store, then updating DOME
 export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePriceListAsDefault, clientUpdated) {
@@ -38,7 +92,6 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
     // IF THE CLIENT WAS UPDATED USE THE DEFAULT DISCOUNT, ELSE USE THE DISCOUNT ALREADY APPLIED TO ITEM
     let data
     if (clientUpdated) {
-      console.log('INSIDE CLIENT UPDATED')
       // if the client was updated use the default discount in items list details
       // const predDiscount = parseFloat(detail.default_discount)
       const currectDiscount = parseFloat(detail.current_discount)
@@ -65,7 +118,6 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
 // Function to update the inline discount of an item, and reflect it on store
 export function updateItemDiscount(itemsInCart, code, discount, predDiscount, client, pricesDetails) {
   console.log('PRICES DETAILSSSS', pricesDetails)
-  console.log('INSIDE APPLY DISCOUNT')
   if (discount < 0) {
     alertify.alert('DESCUENTO NO PERMITODO', 'El descuento no puede ser menor a 0')
     return {

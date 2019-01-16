@@ -58,7 +58,6 @@ export default class Aside extends React.Component {
     })
 
     openPromise.then((data) => {
-      console.log('DATAAAA', data)
       alertify.alert('COMPLETADO', 'Caja Abierta Correctamente')
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch((err) => {

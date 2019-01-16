@@ -4,6 +4,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import {searchDiscountForTargetPrice} from '../../general/product/actions.js'
+
 @connect((store) => {
   return {
     disabled: store.completed.completed,
@@ -18,7 +20,11 @@ import {connect} from 'react-redux'
     useQuoting: store.config.globalConf.useQuoting,
     useResrestaurant: store.config.globalConf.useRestaurant,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
-    workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled
+    workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
+    calculatesDiscountForFinalPrice: store.config.globalConf.calculatesDiscountForFinalPrice,
+    cartItems: store.cart.cartItems,
+    globalDiscount: store.cart.globalDiscount,
+    client: store.clients.clientSelected,
   }
 })
 export default class Buttons extends React.Component {
@@ -68,9 +74,38 @@ export default class Buttons extends React.Component {
     // this.props.dispatch({type: 'NEW_SALE', payload: -1})
   }
 
+  searchDiscount(){
+    console.log("Target price!")
+    //shown an alertify input for the wanted target price
+    searchDiscountForTargetPrice(
+      this.props.dispatch, 
+      this.props.cartItems,
+      this.props.globalDiscount,
+      this.props.client
+      )
+
+  }
+
   // Main Layout
   render() {
 
+    const targetPriceBtn = this.props.calculatesDiscountForFinalPrice
+      ? <button
+        disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
+        onClick={this.searchDiscount.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Total Objetivo
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+    /*
     const presalesBtn = this.props.usePresales
       ? <button
         disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
@@ -87,7 +122,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
       : ''
-
+    */
     const quotationsBtn = this.props.useQuoting
       ? <button
         disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
@@ -104,7 +139,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
       : ''
-
+    /*
     const restaurantBillsBtn = this.props.useResrestaurant
       ? <button
         disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
@@ -121,7 +156,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
       : ''
-
+    */
     const reservesBtn = this.props.useReserves
       ? <button
         disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
@@ -155,7 +190,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
       : ''
-
+    /*
     const workOrdersBtn = this.props.workshopAppInstalled
       ? <button
         disabled={this.props.disabled || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded}
@@ -172,6 +207,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
       : ''
+    */
 
     const cashAdvanceBtn = this.props.acceptCashAdvances
       ? <button
@@ -261,6 +297,7 @@ export default class Buttons extends React.Component {
       {reservesBtn}
       {nsreservesBtn}
       {cashAdvanceBtn}
+      {targetPriceBtn}
 
       {/* {workOrdersBtn} */}
 

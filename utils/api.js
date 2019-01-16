@@ -101,7 +101,7 @@ export function getSingleItemDispatch(kwargs) {
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
       if (error.response.status != 403) {
         alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
-        administrador del sistema con el siguiete error: ${error}`)
+        administrador del sistema con el siguiente error: ${error}`)
         dispatch({type: errorType, payload: error})
       }
     })
@@ -316,8 +316,12 @@ export function generalSave(kwargs) {
               kwargs.history.push(kwargs.redirectUrl)
             }
           })
-          
-        dispatch({type: kwargs.successType, payload: response.data})
+        if(kwargs.workerMethod){
+          kwargs.workerMethod(response.data)
+        }else{
+          dispatch({type: kwargs.successType, payload: response.data})
+        }
+        
         dispatch({type: 'FETCHING_DONE', payload: ''})
 
       }).catch((err) => {
