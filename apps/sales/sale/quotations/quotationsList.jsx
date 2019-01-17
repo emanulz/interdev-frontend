@@ -181,8 +181,8 @@ export default class QuotationsPanel extends React.Component {
         <td>{`${clientName} ${clientLastName}`}</td>
         <td>{presellerName}</td>
         <td>₡ {parseFloat(quotation.cart.cartTotal).formatMoney(2, ',', '.')}</td>
+        <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, quotation.id, quotation.consecutive)} className='fa fa fa-trash' /></td>
         <td className='loadRow'><i className='fa fa-print' onClick={this.printPresale.bind(this, quotation.consecutive)} /></td>
-        {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, quotation.id, quotation.consecutive)} className='fa fa fa-trash' /></td> */}
       </tr>
     })
 
@@ -202,6 +202,7 @@ export default class QuotationsPanel extends React.Component {
                 <td>Cliente</td>
                 <td>Vendedor</td>
                 <td>Monto</td>
+                <td>Anular</td>
                 <td>Reimprimir</td>
               </tr>
             </thead>
