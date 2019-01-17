@@ -21,7 +21,9 @@ const Mousetrap = require('mousetrap')
     useResrestaurant: store.config.globalConf.useRestaurant,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
-    activePresaleId: store.presales.activePresaleId
+    activePresaleId: store.presales.activePresaleId,
+    savePresaleAsReserve: store.config.globalConf.savePresaleAsReserve,
+    user: store.user.user
   }
 })
 export default class Buttons extends React.Component {
@@ -96,6 +98,10 @@ export default class Buttons extends React.Component {
 
   showRestaurantBillsPanel() {
     this.props.dispatch({type: 'SHOW_RESTAURANT_BILLS_PANEL', payload: -1})
+  }
+
+  savePresaleAsReserve() {
+    
   }
 
   newSale() {
@@ -226,6 +232,22 @@ export default class Buttons extends React.Component {
       </button>
       : ''
 
+    const saveReserveBtn = this.props.savePresaleAsReserve && this.props.user.is_superuser && (this.props.isPresaleLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded)
+      ? <button
+        onClick={this.savePresaleAsReserve.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Guardar Reserva
+        <span>
+          <i className='fa fa-save' />
+        </span>
+      </button>
+      : ''
+
     const buttons = this.props.disabled
       ? <div>
         <button
@@ -287,6 +309,7 @@ export default class Buttons extends React.Component {
       {presalesBtn}
       {workOrdersBtn}
       {restaurantBillsBtn}
+      {saveReserveBtn}
       {/* <button
         disabled={this.props.disabled}
         onClick={this.showInoicePanel.bind(this)}

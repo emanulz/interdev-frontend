@@ -320,6 +320,18 @@ export default class SingleProduct extends React.Component {
         </div>
         : <div />
 
+    const costRow = this.props.config.showUtilityAndCostOnSales
+      ? <tr>
+        <th>Costo</th>
+        <td>₡{parseFloat(product.cost).toFixed(2) || 'N/A'}</td>
+      </tr>
+      : <tr />
+    const utilityRow = this.props.config.showUtilityAndCostOnSales
+      ? <tr>
+        <th>Utilidad %</th>
+        <td>{product.utility1}</td>
+      </tr>
+      : <tr />
     return <div className={panelClass}>
       <div className='single-product-panel-header'>
         <span>{productStr}</span>
@@ -357,21 +369,15 @@ export default class SingleProduct extends React.Component {
                 <td>{product.supplier_code || 'N/A'}</td>
               </tr>
               <tr>
-                <th>Número de parte</th>
-                <td>{product.part_number || 'N/A'}</td>
-              </tr>
-              <tr>
-                <th>Código de marca</th>
-                <td>{product.brand_code || 'N/A'}</td>
-              </tr>
-              <tr>
                 <th>Existencia en bodega</th>
                 <td>{existance}</td>
               </tr>
+              {costRow}
+              {utilityRow}
               <tr>
-              <th>Precio IVI</th>
-              <td>₡{parseFloat(product.sell_price).toFixed(2) || 'N/A'}</td>
-            </tr>
+                <th>Precio IVI</th>
+                <td>₡{parseFloat(product.sell_price1).toFixed(2) || 'N/A'}</td>
+              </tr>
             </tbody>
           </table>
         </div>

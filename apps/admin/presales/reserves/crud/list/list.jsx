@@ -9,6 +9,8 @@ import { getPaginationItemDispatch } from '../../../../../../utils/api.js'
 import Pagination from '../../../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.jsx'
 import {loadPresaleToPrint} from '../../../../../../general/printPresale/actions.js'
+import {destroyPresale} from '../../../actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -38,6 +40,40 @@ export default class List extends React.Component {
     this.props.dispatch(loadPresaleToPrint(item))
   }
 
+  markAsDestroyed(id) {
+    const _this = this
+    alertify.confirm('Eliminar', `Desea marcar la cuenta de restaurante como no satisfecho? Esta acción no se puede
+    deshacer.`, function() {
+      _this.markAsDestroyedConfirmed(id)
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+  }
+
+  markAsDestroyedConfirmed(id) {
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    const kwargs = {
+      url: `/api/presalespatch/${id}/destroy_presale/`,
+      errorMessage: 'Error al destruir la reserva'
+    }
+    const _this = this
+    const updatePromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      destroyPresale(kwargs, resolve, reject)
+    })
+    // SAVE PROCESS
+    updatePromise.then((data) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('COMPLETADO', 'RESERVA DESTRUIDA CORRECTAMENTE')
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      console.log(err)
+    })
+  }
+
   render() {
 
     const getClientNameClosure = (item) => {
@@ -54,6 +90,32 @@ export default class List extends React.Component {
       return getName(item)
     }
 
+    const determinDestroyAction = (item) => {
+      const _this = this
+      function DestroyAction(item) {
+        if (item.presale_type != 'RESERVE') {
+          return 'NO RESERVA'
+        }
+        if (item.destroyed) {
+          return 'YA MARCADA'
+        }
+        if (item.billed) {
+          return 'COBRADA'
+        }
+        if (item.is_null) {
+          return 'ANULADA'
+        }
+        if (!item.closed) {
+          return 'ORDEN EN PROCESO'
+        }
+        if (!item.destroyed && !item.billed && !item.is_null && item.closed) {
+          return <button onClick={_this.markAsDestroyed.bind(_this, item.id)} className='btn btn-success'>DESTRUIR</button>
+        }
+        return 'ESTADO DESCONOCIDO'
+      }
+      return DestroyAction(item)
+    }
+
     const headerOrder = [
       {
         field: 'consecutive',
@@ -68,8 +130,10 @@ export default class List extends React.Component {
         field: 'client',
         text: 'Nombre en Factura'
       }, {
-        field: 'presale_type',
-        text: 'Tipo de Preventa'
+        type: 'function_element',
+        field: 'id',
+        text: 'Destruir',
+        worker_method: determinDestroyAction
       }, {
         field: 'consecutive',
         text: 'Recibo',
