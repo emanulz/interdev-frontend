@@ -6,6 +6,7 @@ import StepB_Header from '../header_step_b/main.jsx'
 import ProductLinkerList from '../product_linker_list/main.jsx'
 import ProdLinkingActions from '../prod_linking_actions/main.jsx'
 import ProductLinker from '../product_linker/main.jsx'
+import ProductLinkerConfirmation from '../product_linker_confirmation/main.jsx'
 
 @connect(store=>{
     return {
@@ -33,6 +34,7 @@ export default class StepB extends React.Component {
             
             <ProdLinkingActions />
             < ProductLinker />
+            <ProductLinkerConfirmation />
 
         </div>
     }

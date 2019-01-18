@@ -10,30 +10,33 @@ const stateConst = {
     show_sup_link_confirmation: true,
     to_link_supplier: null,
     invoice_to_link: null,
-    product_to_link: null
+    product_to_link: null,
+    internal_product_to_link: null,
+    show_prod_link_confirmation: true,
 }
 
-function updateVeryNestedField(state, action) {
-    return {
-      ...state,
-      first: {
-        ...state.first,
-        second: {
-          ...state.first.second,
-          [action.someId]: {
-            ...state.first.second[action.someId],
-            fourth: action.someValue
-          }
-        }
-      }
-    }
-  }
+// function updateVeryNestedField(state, action) {
+//     return {
+//       ...state,
+//       first: {
+//         ...state.first,
+//         second: {
+//           ...state.first.second,
+//           [action.someId]: {
+//             ...state.first.second[action.someId],
+//             fourth: action.someValue
+//           }
+//         }
+//       }
+//     }
+//   }
 
 export default function reducer(state=stateConst, action) {
 
     switch(action.type) {
         
         case 'SMART_PROD_CREATION_COMPLETE':
+        case 'PRODUCT_LINKED':
         {
             //find the product in the invoice_to_link and update it
             //as a found product
@@ -55,7 +58,6 @@ export default function reducer(state=stateConst, action) {
                 })
             }
 
-            console.log("Target item --> ", target_item)
             if(target_item==null){
                 console.log("Error matching after link.....????")
             }
@@ -105,6 +107,32 @@ export default function reducer(state=stateConst, action) {
             return {
                 ...state,
                 currentStep: action.payload
+            }
+        }
+
+        case 'SET_TO_LINK_INTERNAL_PRODUCT':
+        {
+            return {
+                ...state,
+                internal_product_to_link: action.payload,
+                show_prod_link_confirmation: true
+
+            }
+        }
+
+        case 'CLEAR_TO_LINK_INTERNAL_PRODUCT':
+        {
+            return {
+                ...state,
+                internal_product_to_link: null
+            }
+        }
+
+        case 'TOGGLE_PROD_LINK_CONFIRMATION':
+        {
+            return {
+                ...state,
+                show_prod_link_confirmation: !state.show_prod_link_confirmation
             }
         }
 
@@ -205,11 +233,10 @@ export default function reducer(state=stateConst, action) {
 
         case 'REMOVE_FILE':
         {
-            console.log("State files remove --> ", state.files)
             let index = state.files.findIndex(item=>{
                 return item.name === action.payload.name
             })
-            console.log("Index --> ", index)
+
             let current_selected = state.selectedFile
             let newList = state.files
             if(index >= 0){
@@ -244,7 +271,6 @@ export default function reducer(state=stateConst, action) {
 
         case 'ADD_FILE':
         {
-            console.log("Files payload --> ", action.payload)
             return {
                 ...state, 
 

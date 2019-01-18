@@ -15,10 +15,10 @@ export default class ProductLinker extends React.Component {
     onProductSelected(item_id, dispatch){
 
         dispatch({type:'productLinker_TOGGLE_SEARCH_PANEL'})
-        //get the selected supplier
+        //get the selected product
         const kwargs = {
-            url: `/api/suppliers/${item_id}`,
-            successType: 'SET_TO_LINK_PRODUCT',
+            url: `/api/productslist/${item_id}`,
+            successType: 'SET_TO_LINK_INTERNAL_PRODUCT',
             errorType: 'ERROR_GETTING_PRODUCT'
         }
         dispatch(getSingleItemDispatch(kwargs))

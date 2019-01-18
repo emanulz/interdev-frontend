@@ -13,11 +13,11 @@ import {generalSave} from '../../../../utils/api.js'
 export default class SupplierLinkerConfirmation extends React.Component {
 
 
-    createSupplierLink(){
-        this.props.dispatch({type: "TOGGLE_SUP_LINK_CONFIRMATION"})
-        //patch the supplier to have a matching id with the xml
+    // createSupplierLink(){
+    //     this.props.dispatch({type: "TOGGLE_SUP_LINK_CONFIRMATION"})
+    //     //patch the supplier to have a matching id with the xml
 
-    }
+    // }
 
     abortLinking(){
         this.props.dispatch({type: "TOGGLE_SUP_LINK_CONFIRMATION"})
@@ -42,7 +42,7 @@ export default class SupplierLinkerConfirmation extends React.Component {
             data: sup_data,
             successType: 'SUPPLIER_LINKED',
             errorType: 'ERROR_LINKING_SUPPLIER',
-            sucessMessage: 'Proveedor enlazado correctamente'
+            sucessMessage: 'Proveedor enlazado correctamente.'
         }
 
         this.props.dispatch(generalSave(kwargs))
@@ -144,5 +144,5 @@ export default class SupplierLinkerConfirmation extends React.Component {
                 </div>
             </div>
         </div>
-    }
+    } //render end
 }

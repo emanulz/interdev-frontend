@@ -194,7 +194,6 @@ export default class ProdLinkingActions extends React.Component {
     }
 
     displayProductSearch(){
-        console.log("Display product search for linking")
         this.props.dispatch({type:'productLinker_TOGGLE_SEARCH_PANEL'})
     }
 
