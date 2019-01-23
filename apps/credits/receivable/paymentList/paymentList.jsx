@@ -71,6 +71,10 @@ export default class PaymentList extends React.Component {
 
   }
 
+  printList() {
+    window.printDiv('print-payments-div', ['/static/fixedBundles/css/credits.css'])
+  }
+
   // Render the product
   render() {
 
@@ -89,45 +93,47 @@ export default class PaymentList extends React.Component {
       </tr>
 
     return <div className='unpaidSales'>
+      <div id='print-payments-div'>
+        <h1>REPORTE DE PAGOS REALIZADOS POR CLIENTE</h1>
 
-      <h1>REPORTE DE PAGOS REALIZADOS POR CLIENTE</h1>
-
-      <div className='unpaidSales-header'>
-        <div className='unpaidSales-header-tittle'>
-          <div>
-            Cliente
+        <div className='unpaidSales-header'>
+          <div className='unpaidSales-header-tittle'>
+            <div>
+              Cliente
+            </div>
+            {/* <div>
+            Saldo Adeudado:
+            </div> */}
           </div>
-          {/* <div>
-          Saldo Adeudado:
-          </div> */}
+          <div className='unpaidSales-header-data'>
+            <div>
+              {`${this.props.client.code} - ${this.props.client.name} ${this.props.client.last_name}`}
+            </div>
+            {/* <div>
+              ₡ {Math.abs(parseFloat(this.props.client.balance)).formatMoney(2, ',', '.')}
+            </div> */}
+          </div>
         </div>
-        <div className='unpaidSales-header-data'>
-          <div>
-            {`${this.props.client.code} - ${this.props.client.name} ${this.props.client.last_name}`}
-          </div>
-          {/* <div>
-            ₡ {Math.abs(parseFloat(this.props.client.balance)).formatMoney(2, ',', '.')}
-          </div> */}
+
+        <div className='unpaidSales-body'>
+          <table className='table table-bordered'>
+            <thead>
+              <tr>
+                <th>Pago #</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Descripción</th>
+                <th>Ver Pago</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div className='unpaidSales-body'>
-        <table className='table table-bordered'>
-          <thead>
-            <tr>
-              <th>Pago #</th>
-              <th>Fecha</th>
-              <th>Monto</th>
-              <th>Descripción</th>
-              <th>Ver Pago</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows}
-          </tbody>
-        </table>
-      </div>
-
+      <button onClick={this.printList.bind(this)} className='btn btn-primary print-payments-btn' >Imprimir</button>
     </div>
 
   }
