@@ -70,6 +70,13 @@ export default class List extends React.Component {
         textToRender: 'Pago a Facturas',
         target: 'payment',
         type: 'link_mask'
+      },
+      {
+        field: 'code',
+        text: 'Listado de Pagos',
+        textToRender: 'Listado de Pagos',
+        target: 'receivable/payments/list',
+        type: 'link_mask'
       }
     ]
 

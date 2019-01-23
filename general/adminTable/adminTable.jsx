@@ -458,7 +458,21 @@ export default class AdminTable extends React.Component {
               </td>
               break
             }
+            case 'link_mask_target2':
+            {
 
+              item = <td key={`${el[idField]}_${header.field}_link_mask_target2`}>
+                {/* <Link to={`/admin/${model}/edit#${itemToRender}`}>
+                                              {itemToRender}
+                                          </Link> */}
+                <Link to={{
+                  pathname: `/${app}/${header.target}/${itemToRender}/${header.target2}`
+                }}>
+                  {header.textToRender}
+                </Link>
+              </td>
+              break
+            }
             case 'textLink':
             {
 

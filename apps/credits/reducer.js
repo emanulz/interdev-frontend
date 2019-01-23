@@ -5,6 +5,7 @@ import layout from './layout/reducer.js'
 import user from './user/reducer.js'
 import clients from './clients/reducer.js'
 import unpaidSales from './receivable/unpaidSales/reducer.js'
+import clientCreditPayments from './receivable/paymentList/reducer.js'
 import saleMovements from './receivable/saleMovements/reducer.js'
 import payments from './payments/reducer.js'
 import invoice from './invoice/reducer.js'
@@ -24,6 +25,7 @@ export default combineReducers({
   invoice,
   config,
   pagination,
+  clientCreditPayments,
   receivableSearch: search('receivableSearch'),
   userProfile
 })
