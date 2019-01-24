@@ -23,7 +23,15 @@ export default class SaveBtn extends React.Component {
 
   saveBtn() {
     // const sales = this.props.sales
+    document.getElementById('sendPresaleButton').disabled = true
     document.getElementById('sendPresaleButton').blur()
+
+    const start = Date.now()
+    let now = start
+    while (now - start < 100) {
+      now = Date.now()
+    }
+
     const user = this.props.user
 
     const presale = {
