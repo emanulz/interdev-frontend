@@ -28,7 +28,7 @@ export default class SaveBtn extends React.Component {
 
     const start = Date.now()
     let now = start
-    while (now - start < 100) {
+    while (now - start < 200) {
       now = Date.now()
     }
 
