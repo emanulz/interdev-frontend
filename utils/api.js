@@ -93,7 +93,6 @@ export function getSingleItemDispatch(kwargs) {
 
   return function(dispatch) {
     axios.get(url).then(function(response) {
-      console.log(response.data)
       dispatch({type: successType, payload: response.data})
       dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch(function(error) {

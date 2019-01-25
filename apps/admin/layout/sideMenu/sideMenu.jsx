@@ -97,6 +97,10 @@ export default class SideMenu extends React.Component {
         text: 'Cierres de Caja',
         class: 'fa-gift',
         href: '/admin/registerclosures'
+      },{
+        text: 'Vendedores',
+        class: 'fa-gift',
+        href: '/admin/salesclerks'
       }
     ]
 

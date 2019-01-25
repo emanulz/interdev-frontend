@@ -34,6 +34,7 @@ import currency from '../../general/currency/reducer.js'
 import printPresale from '../../general/printPresale/reducer.js'
 import registerclosures from './registerClosures/reducer.js'
 import printRegisterClosure from '../../general/printRegisterClosure/reducer.js'
+import salesclerks from './salesclerks/reducer.js'
 
 export default combineReducers({
   users,
@@ -71,6 +72,7 @@ export default combineReducers({
   printPresale,
   registerclosures,
   printRegisterClosure,
-  massiveRetry
+  massiveRetry,
+  salesclerks
 
 })
