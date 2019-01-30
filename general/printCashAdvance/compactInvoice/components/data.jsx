@@ -26,6 +26,16 @@ export default class Data extends React.Component {
     const consecutive = cashAdvance.consecutive ? cashAdvance.consecutive : '0001'
     const voucherConsecutive = voucher.consecutive ? voucher.consecutive : 'SIN VALE'
 
+    const workOrderOrVoucher = cashAdvance.work_order_id
+      ? <tr>
+        <th>Origen:</th>
+        <td>ORDEN DE TALLER</td>
+      </tr>
+      : <tr>
+        <th>Vale #:</th>
+        <td>{voucherConsecutive}</td>
+      </tr>
+
     const seller = Object.keys(user).length !== 0
       ? cashierName
       : 'Cajero Por Defecto'
@@ -41,10 +51,7 @@ export default class Data extends React.Component {
             <th>Adel #:</th>
             <td>{consecutive}</td>
           </tr>
-          <tr>
-            <th>Vale #:</th>
-            <td>{voucherConsecutive}</td>
-          </tr>
+          {workOrderOrVoucher}
           <tr>
             <th>Cliente:</th>
             <td>{client}</td>

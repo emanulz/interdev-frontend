@@ -55,6 +55,16 @@ export default class List extends React.Component {
       return getName(item)
     }
 
+    const getAdvanceTypeClosure = (item) => {
+      function getType(item) {
+        if (item) {
+          return 'ORDEN DE TALLER'
+        }
+        return 'ADELANTO EN CAJA'
+      }
+      return getType(item)
+    }
+
     const headerOrder = [
       {
         field: 'consecutive',
@@ -71,6 +81,11 @@ export default class List extends React.Component {
       }, {
         field: 'description',
         text: 'Descripción'
+      }, {
+        type: 'function_process',
+        field: 'work_order_id',
+        text: 'Tipo',
+        worker_method: getAdvanceTypeClosure
       }, {
         field: 'consecutive',
         text: 'Factura',
