@@ -49,7 +49,7 @@ export default class PrintCashAdvancePanel extends React.Component {
           </div>
           <div>
             <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
-            <i onClick={this.togglePanel.bind(this)} className='fa fa-file-text-o' aria-hidden='true' />
+            {/* <i onClick={this.togglePanel.bind(this)} className='fa fa-file-text-o' aria-hidden='true' /> */}
             <i onClick={this.printPanel.bind(this)} className='fa fa-print' aria-hidden='true' />
             {/* <i onClick={this.toggleInvoice.bind(this)} className='fa fa-coffee' aria-hidden='true' /> */}
           </div>
