@@ -35,6 +35,8 @@ import printPresale from '../../general/printPresale/reducer.js'
 import registerclosures from './registerClosures/reducer.js'
 import printRegisterClosure from '../../general/printRegisterClosure/reducer.js'
 import salesclerks from './salesclerks/reducer.js'
+import cashAdvances from './cashAdvances/reducer.js'
+import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 
 export default combineReducers({
   users,
@@ -73,6 +75,7 @@ export default combineReducers({
   registerclosures,
   printRegisterClosure,
   massiveRetry,
-  salesclerks
-
+  salesclerks,
+  cashAdvances,
+  printCashAdvance
 })

@@ -157,6 +157,10 @@ export default class SideMenu extends React.Component {
         text: 'Categorías de Clientes',
         class: 'fa-tasks',
         href: '/admin/clientcategories'
+      }, {
+        text: 'Adelantos de Efectivo',
+        class: 'fa-money',
+        href: '/admin/cashadvances'
       }
     ]
 
