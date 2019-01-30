@@ -16,6 +16,7 @@ import {connect} from 'react-redux'
 import Search from '../../../general/search/search.jsx'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../../sales/general/search/actions.js'
 import Quotations from '../../sales/sale/quotations/quotationsList.jsx'
+import TaxExemptionPanel from '../../sales/sale/taxExemption/taxExemption.jsx'
 
 @connect((store) => {
   return {
@@ -48,6 +49,7 @@ export default class Sale extends React.Component {
       <ClientUpdatePanel />
       <PrintPresale />
       <Quotations />
+      <TaxExemptionPanel />
 
     </div>
 

@@ -48,6 +48,9 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'NS_RESERVE'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
   }
+  showExemptionPanel() {
+    this.props.dispatch({type: 'SHOW_EXEMPTION_PANEL', payload: -1})
+  }
   newSale() {
     // window.location.reload()
     window.location.href = '/seller'
@@ -157,7 +160,25 @@ export default class Buttons extends React.Component {
       </button>
       : ''
 
+    const exemptionBtn = this.props.globalConf.canTaxExemptPresales
+      ? <button
+        disabled={this.props.disabled}
+        onClick={this.showExemptionPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Exonerar
+        <span>
+          <i className='fa fa-map' />
+        </span>
+      </button>
+      : ''
+
     const extraButtons = <div>
+      {exemptionBtn}
       {reserveBtn}
       {nsreserveBtn}
       {proformaBtn}

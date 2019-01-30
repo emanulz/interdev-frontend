@@ -38,13 +38,19 @@ export default class Notes extends React.Component {
     try {
       extras = sale.extras ? JSON.parse(sale.extras) : extras
     } catch (err) { console.log('EXTRAS ERROR PARSE', err) }
-    const notes = extras.notes
+    const notes = extras.notes ? <div>{extras.notes}</div> : ''
+    const _this = this
+
+    const defaultNotes = this.props.config.useDefaultNotes
+      ? <div dangerouslySetInnerHTML={{__html: _this.props.config.defaultNotes}} />
+      // ? <div>{this.props.config.defaultNotes}</div>
+      : ''
     return <div className='reprint-full-invoice-notes'>
       {sing}
       <h1>Notas:</h1>
       <div className='reprint-full-invoice-notes-content'>
-        <div>{notes}</div>
-
+        {notes}
+        {defaultNotes}
         <div>{this.props.config.haciendaStatementText}</div>
       </div>
     </div>
