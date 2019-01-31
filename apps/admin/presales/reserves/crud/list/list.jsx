@@ -57,7 +57,7 @@ export default class List extends React.Component {
     const _this = this
     alertify.confirm('Anular', `Desea Anuar la reserva #${consecutive}? Esta acción no se puede
     deshacer.`, function() {
-      // _this.markAsNullConfirmed(id)
+      _this.markAsNullConfirmed(id)
     }, function() {
       return true
     }).set('labels', {
@@ -90,12 +90,13 @@ export default class List extends React.Component {
   markAsNullConfirmed(id) {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     const kwargs = {
-      url: `/api/presalespatch/${id}/null_reserve/`,
+      url: `/api/presalespatch/${id}/set_null/`,
       errorMessage: 'Error al Anular la reserva'
     }
     const _this = this
     const updatePromise = new Promise((resolve, reject) => {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      // USES THE SAME METHOD FOR DESTROY, AS THE FUNCTION ONLY NEEDS AN ENDPOINT TO WORK
       destroyPresale(kwargs, resolve, reject)
     })
     // SAVE PROCESS
