@@ -131,7 +131,6 @@ export default class ProductDetail extends React.Component {
                 product_existence = cart_line.product.inventory_existent[selected_warehouse]
             }
             
-
             current_price_tax = (cart_line.product.sell_price1)
             current_cost = cart_line.product.cost.toFixed(2)
             current_utility = (cart_line.product.utility1*100).toFixed(2)

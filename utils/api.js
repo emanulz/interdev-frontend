@@ -650,39 +650,6 @@ export function loadGlobalConfig(section, name, success, fail) {
   }
 }
 
-// ------------------------------------------------------------------------------------------
-// SAVE LOG FUNCTION (CREATE LOG)
-// ------------------------------------------------------------------------------------------
-// export function saveLog (code, model, oldObject, object, description, user) {
-
-//   const prevObject = JSON.stringify(oldObject)
-//   const newObject = JSON.stringify(object)
-//   const user2 = JSON.stringify(user)
-
-//   const item = {
-//     code: code,
-//     model: model,
-//     prev_object: prevObject,
-//     new_object: newObject,
-//     description: description,
-//     user: user2
-//   }
-
-//   axios({
-//     method: 'post',
-//     url: '/api/logs/',
-//     data: item
-//   })
-//     .then((response) => {
-
-//     }).catch((err) => {
-//       console.log(err)
-//       if (err.response) {
-//         console.log(err.response.data)
-//       }
-//       alertify.alert('Error', `Error al crear el Log del movimiento, ERROR: ${err}.`)
-//     })
-// }
 
 // ------------------------------------------------------------------------------------------
 // AUX FUNCTIONS

@@ -1,0 +1,117 @@
+.purchase-prod-adjuster
+    height: 50%
+
+    &-body
+        width: 100%
+        display: flex
+        flex-flow: row
+        flex-wrap: wrap
+        justify-content: space-between
+        align-items: center
+        &-price
+            padding: 4px
+            border: 1px solid black
+            border-radius: 6px
+            align-content: center
+            margin: auto
+            width: 30%
+            &-detail
+                display: flex
+                flex-flow: row
+                &-money
+                    width: 30%
+                &-label
+                    width: 35%
+                &-percent
+                    width: 30%
+                &-arrow
+                    width: 10%
+                &-input
+                    width: 30%
+                    & input
+                        width: 100%
+
+
+
+    &-summary
+        width: 100%
+        display: flex
+        flex-flow: row
+        flex-wrap: wrap
+        align-content: stretch
+        margin-bottom: 10px
+        &-warehouses
+            width: 20%
+            margin-right: 22px
+        &-field
+            padding-right: 8px
+            display: flex
+            align-items: center
+            &-label
+                font-weight: bold
+            &-value
+                font-style: italic
+
+
+.purchase-prod-cart
+    height: 50%
+    &-cont
+        margin: 3px
+        height: 90%
+        &-items
+            height: calc(100% - 65px)
+            overflow: auto
+        &-header
+            border: 1px solid #cacaca
+            display: flex
+            flex-flow: row
+            flex-wrap: wrap
+            justify-content: flex-start
+            color: white
+            background-color: $PRIMARY-COLOR
+            height: 40px
+            font-size: 13px
+            text-transform: uppercase
+            & div
+                font-weight: bold
+        &-item
+            display: flex
+            flex-flow: row
+            flex-wrap: wrap
+        &-code
+            padding-left: 2px
+            display: flex
+            align-items: center
+            width: 12%
+
+        &-desc
+            display: flex
+            align-items: center
+            width: 25%
+        &-qty
+            display: flex
+            align-items: center
+            width: 10%
+        &-costund
+            display: flex
+            align-items: center
+            width: 15%
+        
+        &-discount
+            display: flex
+            align-items: center
+            width: 10%
+
+        &-tax
+            display: flex
+            align-items: center
+            width: 13%
+
+        &-subtotal
+            display: flex
+            align-items: center
+            width: 15%
+
+
+.prod-cart-active
+    border: 2px solid green

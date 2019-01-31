@@ -15,26 +15,34 @@ const stateConst = {
     show_prod_link_confirmation: true,
 }
 
-// function updateVeryNestedField(state, action) {
-//     return {
-//       ...state,
-//       first: {
-//         ...state.first,
-//         second: {
-//           ...state.first.second,
-//           [action.someId]: {
-//             ...state.first.second[action.someId],
-//             fourth: action.someValue
-//           }
-//         }
-//       }
-//     }
-//   }
+
 
 export default function reducer(state=stateConst, action) {
 
     switch(action.type) {
         
+
+        case 'UPDATE_PROD_PRICING':
+        {
+            console.log("update prod pricing")
+            const newItems = [...state.invoice_to_link.items_list]
+            const target_index = newItems.findIndex(item=>{
+                return item.NumeroLinea === action.payload.NumeroLinea
+            })
+
+            console.log("target  index --> ", target_index)
+            newItems[target_index] = action.payload
+            console.log("Payload updated item --> ", action.payload)
+            console.log("newItems --> ", newItems)
+            return {
+                ...state,
+                invoice_to_link:{
+                    ...state.invoice_to_link,
+                    items_list: newItems
+                }
+            }
+        }
+
         case 'SMART_PROD_CREATION_COMPLETE':
         case 'PRODUCT_LINKED':
         {

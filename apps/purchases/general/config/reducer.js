@@ -2,6 +2,7 @@ const stateConst = {
     company: {},
     salesWarehouse: '',
     workshopWarehouse: '',
+    globalConf: {},
   }
   
   export default function reducer(state = stateConst, action) {
@@ -70,9 +71,24 @@ const stateConst = {
         }
   
       } // case
+      case 'FETCH_GLOBAL_CONF_FULFILLED':
+      {
+        return {
+          ...state,
+          globalConf: action.payload.data
+        }
+  
+      } // case
+  
+      case 'FETCH_GLOBAL_CONF_REJECTED':
+      {
+        return {
+          ...state,
+          globalConf: {}
+        }
   
     }
-  
+  }
     return state // default return
   }
   

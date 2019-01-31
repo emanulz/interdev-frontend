@@ -1,9 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {generalSave} from '../../../../utils/api.js'
-
-
 
 @connect(store=>{
     return{
@@ -14,7 +11,6 @@ import {generalSave} from '../../../../utils/api.js'
 export default class ProductLinkerList extends React.Component{
 
     setProductActive(item, e){
-        console.log("Selected item --> ", item)
         return this.props.dispatch({type:'SET_PRODUCT_TO_LINK', payload: item})
     }
 

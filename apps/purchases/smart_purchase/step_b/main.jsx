@@ -33,7 +33,7 @@ export default class StepB extends React.Component {
             </div>
             
             <ProdLinkingActions />
-            < ProductLinker />
+            <ProductLinker />
             <ProductLinkerConfirmation />
 
         </div>

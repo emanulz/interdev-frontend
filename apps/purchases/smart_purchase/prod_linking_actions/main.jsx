@@ -24,8 +24,6 @@ export default class ProdLinkingActions extends React.Component {
         //create a new product from the currently active product, granted it is not
         //linked, meaning there is already a product representing it
 
-        console.log("Create a new product from XML data")
-
         if(this.props.product_to_link.linked !== "not-found"){
             this.props.dispatch({type:"SMART_PRODUCT_ALREADY_EXISTS"})
         }
