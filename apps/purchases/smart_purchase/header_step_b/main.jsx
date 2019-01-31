@@ -15,11 +15,7 @@ import {uploadXmlForProcessing} from '../actions.js'
 })
 export default class StepB_Header extends React.Component{
 
-    componentWillMount(){
-        
-    }
-
-
+ 
     onDropDownSelection(e){
         //dispatch an XML upload where the full data of the xml will be parsed
 
@@ -52,6 +48,10 @@ export default class StepB_Header extends React.Component{
         this.props.dispatch({type: 'GO_TO_STEP', payload: 'a'})
     }
 
+    goToStepC(){
+        this.props.dispatch({type: 'GO_TO_STEP', payload: 'c'})
+    }
+
     render(){
 
         //build the dropdown options from the available documents
@@ -76,6 +76,8 @@ export default class StepB_Header extends React.Component{
                 <i className="fa fa-arrow-left fa2x"
                  onClick={this.goToStepA.bind(this)}></i>
                 <h1>Asociación de códigos de Producto para Proveedor</h1>
+                <i className="fa fa-arrow-right fa2x"
+                 onClick={this.goToStepC.bind(this)}></i>
             </div>
             
             <div className="stepb-header-dropdown">

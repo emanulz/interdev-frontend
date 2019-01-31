@@ -19,6 +19,7 @@ import config from './general/config/reducer.js'
 import reports  from '../../general/reportsPanel/reducer.js'
 import userProfile from '../../general/userProfile/reducer.js'
 import smart_purchase from '../purchases/smart_purchase/reducer.js'
+import smart_cart from '../purchases/smart_purchase/step_c/reducer.js'
 
 export default combineReducers({
     main,
@@ -42,6 +43,7 @@ export default combineReducers({
     reports,
     userProfile,
     smart_purchase,
+    smart_cart,
     supplierLinker: search('supplierLinker'),
     productLinker: search('productLinker')
 

@@ -9,7 +9,7 @@ const stateConst = {
     isEdit: false,
     is_closed: false,
     purchase_id: '',
-    old: '',
+    //old: '',
     requires_incomplete_refresh: false,
     requires_complete_refresh: false,
 
