@@ -40,11 +40,24 @@ export default class List extends React.Component {
     this.props.dispatch(loadPresaleToPrint(item))
   }
 
-  markAsDestroyed(id) {
+  markAsDestroyed(id, consecutive) {
     const _this = this
-    alertify.confirm('Eliminar', `Desea marcar la cuenta de restaurante como no satisfecho? Esta acción no se puede
+    alertify.confirm('Descartar', `Desea descartar la reserva #${consecutive}? Esta acción no se puede
     deshacer.`, function() {
       _this.markAsDestroyedConfirmed(id)
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+  }
+
+  markAsNull(id, consecutive) {
+    const _this = this
+    alertify.confirm('Anular', `Desea Anuar la reserva #${consecutive}? Esta acción no se puede
+    deshacer.`, function() {
+      // _this.markAsNullConfirmed(id)
     }, function() {
       return true
     }).set('labels', {
@@ -57,7 +70,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     const kwargs = {
       url: `/api/presalespatch/${id}/destroy_presale/`,
-      errorMessage: 'Error al destruir la reserva'
+      errorMessage: 'Error al descartar la reserva'
     }
     const _this = this
     const updatePromise = new Promise((resolve, reject) => {
@@ -67,7 +80,28 @@ export default class List extends React.Component {
     // SAVE PROCESS
     updatePromise.then((data) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('COMPLETADO', 'RESERVA DESTRUIDA CORRECTAMENTE')
+      alertify.alert('COMPLETADO', 'RESERVA DESCARTADA CORRECTAMENTE')
+    }).catch((err) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      console.log(err)
+    })
+  }
+
+  markAsNullConfirmed(id) {
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    const kwargs = {
+      url: `/api/presalespatch/${id}/null_reserve/`,
+      errorMessage: 'Error al Anular la reserva'
+    }
+    const _this = this
+    const updatePromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      destroyPresale(kwargs, resolve, reject)
+    })
+    // SAVE PROCESS
+    updatePromise.then((data) => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('COMPLETADO', 'RESERVA ANULADA CORRECTAMENTE')
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
@@ -109,11 +143,37 @@ export default class List extends React.Component {
           return 'ORDEN EN PROCESO'
         }
         if (!item.destroyed && !item.billed && !item.is_null && item.closed) {
-          return <button onClick={_this.markAsDestroyed.bind(_this, item.id)} className='btn btn-success'>DESTRUIR</button>
+          return <button onClick={_this.markAsDestroyed.bind(_this, item.id, item.consecutive)} className='btn btn-success'>DESCARTAR</button>
         }
         return 'ESTADO DESCONOCIDO'
       }
       return DestroyAction(item)
+    }
+
+    const determinNullAction = (item) => {
+      const _this = this
+      function NullAction(item) {
+        if (item.presale_type != 'RESERVE') {
+          return 'NO RESERVA'
+        }
+        if (item.destroyed) {
+          return 'DESCARTADA'
+        }
+        if (item.billed) {
+          return 'COBRADA'
+        }
+        if (item.is_null) {
+          return 'YA ANULADA'
+        }
+        if (!item.closed) {
+          return 'ORDEN EN PROCESO'
+        }
+        if (!item.destroyed && !item.billed && !item.is_null && item.closed) {
+          return <button onClick={_this.markAsNull.bind(_this, item.id, item.consecutive)} className='btn btn-success'>ANULAR</button>
+        }
+        return 'ESTADO DESCONOCIDO'
+      }
+      return NullAction(item)
     }
 
     const headerOrder = [
@@ -132,8 +192,13 @@ export default class List extends React.Component {
       }, {
         type: 'function_element',
         field: 'id',
-        text: 'Destruir',
+        text: 'Descartar',
         worker_method: determinDestroyAction
+      }, {
+        type: 'function_element',
+        field: 'id',
+        text: 'Anular',
+        worker_method: determinNullAction
       }, {
         field: 'consecutive',
         text: 'Recibo',
@@ -159,7 +224,7 @@ export default class List extends React.Component {
 
     return <div className='list list-container'>
       <div className='admin-list-header'>
-        <h1>Listado de Apartados:</h1>
+        <h1>Listado de Reservas:</h1>
       </div>
       {/* <SearchAdmin model='presale' namespace='adminSearch' /> */}
       {paginationDiv}

@@ -12,7 +12,8 @@ import {connect} from 'react-redux'
   return {
     taxPayer: store.userProfile.taxPayer,
     config: store.config.globalConf,
-    user: store.user.user
+    user: store.user.user,
+    installedApps: store.config.installed_apps
   }
 })
 export default class SideMenu extends React.Component {
@@ -69,40 +70,70 @@ export default class SideMenu extends React.Component {
         text: 'Listado de preventas',
         class: 'fa-gift',
         href: '/admin/presales'
-      }, {
-        text: 'Proformas',
-        class: 'fa-envelope-open',
-        href: '/admin/presales/quoting'
-      }, {
-        text: 'Reservas',
-        class: 'fa-cubes',
-        href: '/admin/presales/reserves'
-      }, {
-        text: 'Apartados',
-        class: 'fa-cubes',
-        href: '/admin/presales/nsreserves'
-      }, {
-        text: 'Cuentas Restaurante',
-        class: 'fa-cutlery',
-        href: '/admin/presales/restaurant'
       }
     ]
+
+    if (this.props.config.useQuoting) {
+      childPresales.push(
+        {
+          text: 'Proformas',
+          class: 'fa-envelope-open',
+          href: '/admin/presales/quoting'
+        }
+      )
+    }
+
+    if (this.props.config.useReserves) {
+      childPresales.push(
+        {
+          text: 'Reservas',
+          class: 'fa-cubes',
+          href: '/admin/presales/reserves'
+        }
+      )
+    }
+
+    if (this.props.config.useNSReserves) {
+      childPresales.push(
+        {
+          text: 'Apartados',
+          class: 'fa-cubes',
+          href: '/admin/presales/nsreserves'
+        }
+      )
+    }
+
+    if (this.props.installedApps.RestaurantAppInstalled) {
+      childPresales.push(
+        {
+          text: 'Cuentas Restaurante',
+          class: 'fa-cutlery',
+          href: '/admin/presales/restaurant'
+        }
+      )
+    }
 
     const childSales = [
       {
         text: 'Listado de Ventas',
         class: 'fa-gift',
         href: '/admin/sales'
-      },{
+      }, {
         text: 'Cierres de Caja',
         class: 'fa-gift',
         href: '/admin/registerclosures'
-      },{
-        text: 'Vendedores',
-        class: 'fa-gift',
-        href: '/admin/salesclerks'
       }
     ]
+
+    if (this.props.config.tracksPerEmployeeSales) {
+      childSales.push(
+        {
+          text: 'Vendedores',
+          class: 'fa-gift',
+          href: '/admin/salesclerks'
+        }
+      )
+    }
 
     const childProducts = [
       {
