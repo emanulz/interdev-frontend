@@ -10,18 +10,18 @@ const jsConfig = Object.assign({}, config, {
   devtool: 'inline-sourcemap',
   name: 'js',
   entry: {
-    // home: './apps/home/app.js',
+    home: './apps/home/app.js',
     admin: './apps/admin/app.js',
     sales: './apps/sales/app.js',
     seller: './apps/seller/app.js',
-    // credits: './apps/credits/app.js',
-    // workshop: './apps/workshop/app.js',
-    // inventories: './apps/inventories/app.js',
-    // purchases: './apps/purchases/app.js',
-    // payables: './apps/payables/app.js',
-    // returns: './apps/returns/app.js',
-    // restaurant: './apps/restaurant/app.js',
-    // notes: './apps/notes/app.js'
+    credits: './apps/credits/app.js',
+    workshop: './apps/workshop/app.js',
+    inventories: './apps/inventories/app.js',
+    purchases: './apps/purchases/app.js',
+    payables: './apps/payables/app.js',
+    returns: './apps/returns/app.js',
+    restaurant: './apps/restaurant/app.js',
+    notes: './apps/notes/app.js'
   },
   module: {
     rules: [
