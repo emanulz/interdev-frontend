@@ -102,20 +102,19 @@ export default class Summary_Actions extends React.Component {
         this.props.dispatch({type: "GO_TO_STEP", payload: "b"})
     }
     render(){
-        return <div className="doc-actions">
-            <h1 className="section_header">Acciones Disponibles</h1>
-            <hr/>
-            <div className="doc-actions-action"
-                onClick={this.acceptPurchase.bind(this)}>
-                <div className="doc-actions-action-row">
-                    <div>Aceptar Factura</div>
-                    <i className="fa fa-check"></i>
-                </div>
-                <div className="doc-actions-action-row">
-                    <p>Aceptar compra ante Hacienda</p>
-                </div>
-            </div>
-            <div className="doc-actions-action"
+
+
+
+        let acceptDocument = ''
+        let rejectDocument = ''
+        let associateSupplier = ''
+        let createSupplier = ''
+
+        const doc = this.props.document_data_selected
+        if( doc !=null){
+
+            //show the reject document
+            rejectDocument = <div className="doc-actions-action"
                 onClick={this.rejectPurchase.bind(this)}>
                 <div className="doc-actions-action-row">
                     <div>Rechazar Factura</div>
@@ -125,17 +124,35 @@ export default class Summary_Actions extends React.Component {
                     <p>Rechazar compra ante Hacienda</p>
                 </div>
             </div>
-            <div className="doc-actions-action"
-                onClick={this.displaySupplierSearch.bind(this)}>
+
+            //make the accept conditional to the invoice
+            //not having been accepted
+            if(!doc.already_accepted){
+                acceptDocument = <div className="doc-actions-action"
+                onClick={this.acceptPurchase.bind(this)}>
                 <div className="doc-actions-action-row">
-                    <div>Asociar Proveedor</div>
-                    <i className="fa fa-link"></i>
+                    <div>Aceptar Factura</div>
+                    <i className="fa fa-check"></i>
                 </div>
                 <div className="doc-actions-action-row">
-                <p>Asociar un proveedor con uno ya existente en el sistema</p>
+                    <p>Aceptar compra ante Hacienda</p>
                 </div>
             </div>
-            <div className="doc-actions-action"
+            }
+
+            if(doc.proveedor=="not_found"){
+                associateSupplier = <div className="doc-actions-action"
+                    onClick={this.displaySupplierSearch.bind(this)}>
+                    <div className="doc-actions-action-row">
+                        <div>Asociar Proveedor</div>
+                        <i className="fa fa-link"></i>
+                    </div>
+                    <div className="doc-actions-action-row">
+                    <p>Asociar un proveedor con uno ya existente en el sistema</p>
+                    </div>
+            </div>
+
+            createSupplier = <div className="doc-actions-action"
                 onClick={this.createNewSupplier.bind(this)}>
                 <div className="doc-actions-action-row">
                     <div>Crear Proveedor</div>
@@ -145,6 +162,23 @@ export default class Summary_Actions extends React.Component {
                 <p>Crear un nuevo proveedor con los datos de la factura</p>
                 </div>
             </div>
+
+            }
+        }
+
+
+
+
+
+        return <div className="doc-actions">
+            <h1 className="section_header">Acciones Disponibles</h1>
+            <hr/>
+            {acceptDocument}
+            {rejectDocument}
+            
+            {associateSupplier}
+            {createSupplier}
+
             <div className="doc-actions-action"
                 onClick={this.goToStepB.bind(this)}>
                 <div className="doc-actions-action-row">
