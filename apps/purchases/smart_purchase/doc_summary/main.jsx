@@ -114,6 +114,14 @@ export default class Doc_Summary extends React.Component {
                 <h2>Información Factura</h2>
                 <div className="doc-summary-section-row">
                     <div className="doc-summary-section-row-legend">
+                        Tipo:
+                    </div>
+                    <div className="doc-summary-section-row-value">
+                        {data.header.DocType ? data.header.DocType : "Inválido"}
+                    </div>
+                </div>
+                <div className="doc-summary-section-row">
+                    <div className="doc-summary-section-row-legend">
                         Aceptada ante Hacienda:
                     </div>
                     <div className="doc-summary-section-row-value">
