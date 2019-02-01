@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 import {loadQuotation, getPendingQuotations, setQuotationNull} from './actions.js'
+import {loadPresaleItem} from '../presales/actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import {productSelected, setProduct} from '../../general/product/actions.js'
 import alertify from 'alertifyjs'
@@ -43,7 +44,8 @@ export default class QuotationsPanel extends React.Component {
     this.props.dispatch({type: 'HIDE_QUOTATIONS_PANEL', payload: -1})
   }
 
-  loadPresaleItem(id, ev) {
+  // THIS FUNCTION IS NOT ON USE SINCE FEB 1st 2019
+  loadPresaleItemDEPRECATED(id, ev) {
 
     const _this = this
     const url = `/api/presales/${id}`
@@ -80,6 +82,10 @@ export default class QuotationsPanel extends React.Component {
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
+  }
+
+  loadPresaleToCart(id, ev) {
+    loadPresaleItem(id, this.props.dispatch)
   }
 
   loadCart(quotation) {
@@ -175,7 +181,7 @@ export default class QuotationsPanel extends React.Component {
         ? `${quotation.user.first_name} ${quotation.user.last_name}`
         : `${quotation.user.username}`
       return <tr key={quotation.id}>
-        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, quotation.id)} className='fa fa-download' /></td>
+        <td className='loadRow'><i onClick={this.loadPresaleToCart.bind(this, quotation.id)} className='fa fa-download' /></td>
         <td>{quotation.consecutive}</td>
         <td>{`${formatDateTimeAmPm(quotation.created)}`}</td>
         <td>{`${clientName} ${clientLastName}`}</td>
