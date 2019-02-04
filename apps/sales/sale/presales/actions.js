@@ -77,6 +77,7 @@ export function loadPresaleItem(id, dispatch) {
     dispatch(loadPresale(url, resolve, reject))
   })
   loadPromise.then((data) => {
+    console.log('PRESALEEE', data)
     dispatch({type: 'HIDE_PRESALES_PANEL', payload: -1})
     dispatch({type: 'FETCHING_DONE', payload: ''})
     data.cart = JSON.parse(data.cart)
@@ -88,11 +89,28 @@ export function loadPresaleItem(id, dispatch) {
     } catch (err) { data.extras = null }
     // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
     dispatch({type: 'SET_PRESALE_ID', payload: data.id})
+    // IF it is quotation do as needed
     dispatch({type: 'LOAD_CART', payload: data.cart})
     dispatch({type: 'PRESALE_LOADED', payload: data.user})
     dispatch({type: 'SET_PRESALE_USER', payload: data.user})
     dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
     dispatch({type: 'CLEAR_PAY', payload: ''})
+    if (data.presale_type == 'QUOTING') {
+      dispatch({type: 'SET_QUOTATION_ID', payload: data.id})
+      dispatch({type: 'HIDE_QUOTATIONS_PANEL', payload: -1})
+      dispatch({type: 'QUOTATION_LOADED', payload: data.user})
+    }
+    if (data.cart.isExempt) {
+      // alert('EXONERADAAAA')
+      // console.log('EXEMP DATA', data.cart.exemption_data)
+      try {
+        dispatch({type: 'SET_EXEMPTION_DATA', payload: data.cart.exemption_data})
+        dispatch({type: 'EXEMPT_SALE', payload: true})
+        dispatch({type: 'SET_SALE_EXEMPT', payload: true})
+      } catch (err) {
+        alertify.alert('ERROR', 'Error al cargar la exoneración del Elemento, por favor exonere de manera manual.')
+      }
+    }
     getFullClientById(data.client.id, dispatch)
     document.getElementById('sale-facturar-btn').focus()
     Mousetrap.unbind('enter')
@@ -100,7 +118,7 @@ export function loadPresaleItem(id, dispatch) {
     if (err.response) {
       alertify.alert('ERROR', `${err.response.data}`)
     } else {
-      alertify.alert('ERROR', `Hubo un error al cargar la preventa, error: ${err}`)
+      alertify.alert('ERROR', `Hubo un error al cargar el elemento, error: ${err}`)
     }
     dispatch({type: 'FETCHING_DONE', payload: ''})
   })

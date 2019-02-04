@@ -16,7 +16,9 @@ import alertify from 'alertifyjs'
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
     advanceAmount: store.send.advance_amount,
-    conf: store.config.globalConf
+    conf: store.config.globalConf,
+    exemptionData: store.taxExemption.exemptionData,
+    isExempt: store.taxExemption.isExempt
   }
 })
 export default class SaveBtn extends React.Component {
@@ -34,8 +36,15 @@ export default class SaveBtn extends React.Component {
 
     const user = this.props.user
 
+    const cart = this.props.cart
+    const exemptionData = this.props.exemptionData
+    // the tax Amout for exemption is th exemption total
+    exemptionData['exemptAmount'] = cart['cartExemptAmount']
+    exemptionData['isExempt'] = this.props.isExempt
+    cart['exemption_data'] = exemptionData
+
     const presale = {
-      cart: JSON.stringify(this.props.cart),
+      cart: JSON.stringify(cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       client_id: this.props.client.id,
