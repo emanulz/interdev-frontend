@@ -14,9 +14,6 @@ import WorkshopTotal from './total/main.jsx'
 
 
 
-let inspect = require('util-inspect')
-
-
 @connect((store)=>{
     return{
         work_order: store.workshopview.work_order,
