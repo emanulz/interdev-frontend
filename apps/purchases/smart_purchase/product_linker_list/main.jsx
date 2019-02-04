@@ -26,9 +26,9 @@ export default class ProductLinkerList extends React.Component{
             }
              
 
-            return <div className="product-list-body-item" key={key}
+            return <div className={"product-list-body-item" + active_class} key={key}
                 onClick={this.setProductActive.bind(this, key)}>
-                <div className={"product-list-body-item-pcode" + active_class}>
+                <div className={"product-list-body-item-pcode"}>
                     {pcode !==""?pcode:"Sin Código"}
                 </div>
                 <div className="product-list-body-item-pdesc">{pdesc}</div>
@@ -76,10 +76,10 @@ export default class ProductLinkerList extends React.Component{
             <h1>{this.props.name}</h1>
             <div className="product-list">
                 <div className="product-list-header">
-                    <div className="product-list-header-item">Código Proveedor</div>
-                    <div className="product-list-header-item">Descripción Proveedor</div>
-                    <div className="product-list-header-item">Código Interno</div>
-                    <div className="product-list-header-item">Descripción Interna</div>
+                    <div className="product-list-header-item-pcode">Código Proveedor</div>
+                    <div className="product-list-header-item-pdesc">Descripción Proveedor</div>
+                    <div className="product-list-header-item-code">Código Interno</div>
+                    <div className="product-list-header-item-desc">Descripción Interna</div>
                 </div>
 
                 {body_items}

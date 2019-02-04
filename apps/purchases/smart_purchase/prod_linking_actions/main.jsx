@@ -114,10 +114,6 @@ export default class ProdLinkingActions extends React.Component {
             'cost_based', //utility_method
             5 //round_to_coin
         )
-
-        //console.log("Real p1 data --> ", real_p1_Data)
-        //console.log("Real p2 data --> ", real_p2_Data)
-        //console.log("Real p3 data --> ", real_p3_Data)
         
         let supplier = this.props.invoice_to_link.proveedor
         if(supplier===undefined || supplier===null){
@@ -204,51 +200,78 @@ export default class ProdLinkingActions extends React.Component {
     }
 
     render() {
+
+
+        //render actions conditionally to the selected product
+        const selected_prod = this.props.product_to_link
+
+        let link_prod = ''
+        let create_prod = ''
+        let show_prod = ''
+        let break_link = ''
+
+        if(selected_prod!=null){
+            console.log("There is a produrt selected")
+            show_prod = <div className="prod-actions-action"
+                    onClick={this.openProductDetail.bind(this)}>
+                    <div className="prod-actions-action-row">
+                        <div>Mostrar producto</div>
+                        <i className="fa fa-link"></i>
+                    </div>
+                    <div className="doc-actions-action-row">
+                        <p>Muestra el detalle del producto en la página de administración.</p>
+                    </div>
+                </div>
+            if(selected_prod.linked==="not-found"){
+                console.log("Prod Not linked")
+                link_prod = <div className="prod-actions-action"
+                        onClick={this.displayProductSearch.bind(this)}>
+                        <div className="prod-actions-action-row">
+                            <div>Enlazar Producto</div>
+                            <i className="fa fa-link"></i>
+                        </div>
+                        <div className="doc-actions-action-row">
+                            <p>Vincular producto de proveedor con producto en el sistema</p>
+                        </div>
+                    </div>
+
+                create_prod = <div className="prod-actions-action"
+                         onClick={this.createNewProduct.bind(this)}>
+                        <div className="prod-actions-action-row">
+                            <div>Crear Producto</div>
+                            <i className="fa fa-link"></i>
+                        </div>
+                        <div className="doc-actions-action-row">
+                            <p>Crear un nuevo producto con la información en el XML. 
+                                Se vinculará automáticamente.</p>
+                        </div>
+                    </div>
+            }else{
+                console.log("Product already linked")
+
+                break_link = <div className="prod-actions-action"
+                        onClick={this.unlinkProduct.bind(this)}>
+                        <div className="prod-actions-action-row">
+                            <div>Desenlazar Producto</div>
+                            <i className="fa fa-link"></i>
+                        </div>
+                        <div className="doc-actions-action-row">
+                            <p>Romper vínculo entre producto de proveedor y el interno.</p>
+                        </div>
+                    </div>
+            }
+        }
+
+
         return <div className="prod-actions">
             <h1 className="section_header">Acciones Disponibles</h1>
             <hr/>
-            <div className="prod-actions-action"
-                onClick={this.displayProductSearch.bind(this)}>
-                <div className="prod-actions-action-row">
-                    <div>Enlazar Producto</div>
-                    <i className="fa fa-link"></i>
-                </div>
-                <div className="doc-actions-action-row">
-                    <p>Vincular producto de proveedor con producto en el sistema</p>
-                </div>
-            </div>
-            <div className="prod-actions-action"
-                onClick={this.createNewProduct.bind(this)}>
-                <div className="prod-actions-action-row">
-                    <div>Crear Producto</div>
-                    <i className="fa fa-link"></i>
-                </div>
-                <div className="doc-actions-action-row">
-                    <p>Crear un nuevo producto con la información en el XML. 
-                        Se vinculará automáticamente.</p>
-                </div>
-            </div>
-            <div className="prod-actions-action"
-                onClick={this.unlinkProduct.bind(this)}>
-                <div className="prod-actions-action-row">
-                    <div>Desenlazar Producto</div>
-                    <i className="fa fa-link"></i>
-                </div>
-                <div className="doc-actions-action-row">
-                    <p>Romper vínculo entre producto de proveedor y el interno.</p>
-                </div>
-            </div>
+            {link_prod}
+            {create_prod}
 
-            <div className="prod-actions-action"
-                onClick={this.openProductDetail.bind(this)}>
-                <div className="prod-actions-action-row">
-                    <div>Mostrar producto</div>
-                    <i className="fa fa-link"></i>
-                </div>
-                <div className="doc-actions-action-row">
-                    <p>Muestra el detalle del producto en la página de administración.</p>
-                </div>
-            </div>
+            {break_link}
+
+            {show_prod}
 
         </div>
     }

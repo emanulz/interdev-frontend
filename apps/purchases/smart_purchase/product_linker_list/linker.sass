@@ -5,8 +5,17 @@
         flex-wrap: nowrap
         justify-content: space-between
         align-items: center
+        font-weight: bold
         &-item
-
+            
+            &-pdesc
+                width: 25%
+            &-pcode 
+                width: 15%
+            &-code
+                width: 15%
+            &-desc
+                width: 25%
     &-body
         &-item
             display: flex
@@ -15,7 +24,6 @@
             align-items: center
             margin: 4px
             & > div
-                width: 
 
             &-pdesc
                 width: 25%
@@ -25,3 +33,21 @@
                 width: 15%
             &-desc
                 width: 25%
+.linker-item-active
+    border: 2px solid green
+
+.product-pending-list
+    margin-top: 8px
+    & h1
+        font-size: 18px
+        font-weight: bold
+        text-align: center
+        margin-bottom: 8px
+    
+.product-linked-list
+    margin-top: 8px
+    & h1
+        font-size: 18px
+        font-weight: bold
+        text-align: center
+        margin-bottom: 8px
