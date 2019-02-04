@@ -101,6 +101,7 @@ export function getSingleItemDispatch(kwargs) {
       if (error.response.status != 403) {
         alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
         administrador del sistema con el siguiente error: ${error}`)
+        dispatch({type: 'FETCHING_DONE'})
         dispatch({type: errorType, payload: error})
       }
     })
