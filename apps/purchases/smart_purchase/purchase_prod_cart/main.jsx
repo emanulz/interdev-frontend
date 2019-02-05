@@ -19,16 +19,17 @@ export default class Purchase_Prod_Cart extends React.Component {
     }
 
     setItemActive(line_number, e){
-        console.log("Set cart item active --> ", line_number, e)
         this.props.dispatch({type:"SET_PRODUCT_ACTIVE_IN_CART", payload: line_number})
     }
 
     buildCartItems(){
 
         const items = this.props.invoice_to_link !==null ? this.props.invoice_to_link.items_list : []
-        const disp_items = items.map((item, index)=>{
+        const disp_items = items.map(item=>{
             const qty = parseFloat(item.Cantidad).toFixed(2)
-            const unit_price = (parseFloat(item.PrecioUnitario)-parseFloat(item.MontoDescuento)/qty).toFixed(5)
+            console.log("Fucking discount --> ", item.MontoDescuento)
+            const discount = item.MontoDescuento!==null?parseFloat(item.MontoDescuento):0
+            const unit_price = (parseFloat(item.PrecioUnitario)-discount/qty).toFixed(5)
 
             let line_class = "purchase-prod-cart-cont-item"
             if (item.NumeroLinea === this.props.active_line){
@@ -50,7 +51,7 @@ export default class Purchase_Prod_Cart extends React.Component {
                             {unit_price}
                         </div>
                         <div className="purchase-prod-cart-cont-discount">
-                            {parseFloat(item.MontoDescuento)}
+                            {item.MontoDescuento!==null?parseFloat(item.MontoDescuento):0}
                         </div>
                         <div className="purchase-prod-cart-cont-tax">
                             {parseFloat(item.Impuesto)}   

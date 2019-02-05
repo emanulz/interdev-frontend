@@ -1,3 +1,5 @@
+import alertify from 'alertifyjs'
+
 
 const stateConst = {
     currentStep: "a",
@@ -42,9 +44,39 @@ export default function reducer(state=stateConst, action) {
                 }
             }
         }
+        case 'SMART_PRODUCT_CANT_SHOW_UNLINKED':
+        {
+            console.log("Reducer show alert")
+            alertify.alert('Error', 'No se puede visualizar un producto no enlazado.')
+            return state
+        }
+
+        case 'SMART_PROD_UNLINKED':
+        {
+            console.log("Payload code --> ", action.payload)
+            const target_item = state.invoice_to_link.items_list.findIndex(item=>{
+                if(item.linked==="not-found"){
+                    return false
+                }else{
+                    return item.linked.code===action.payload
+                }})
+
+            console.log("target item in unlinking --> ", target_item)
+            const new_items_list = [...state.invoice_to_link.items_list]
+            new_items_list[target_item].linked = "not-found"
+            
+            return {
+                ...state,
+                invoice_to_link: {
+                    ...state.invoice_to_link,
+                    invoice_to_link: new_items_list
+                }
+            }
+        }
 
         case 'SMART_PROD_CREATION_COMPLETE':
         case 'PRODUCT_LINKED':
+        
         {
             //find the product in the invoice_to_link and update it
             //as a found product

@@ -328,7 +328,16 @@ export function generalSave(kwargs) {
         if (err.response) {
           dispatch({type: kwargs.errorType})
           console.log(err.response.data)
-          alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+          let error_message = "Algo salio mal!!"
+          if(err.response.data.friendly_errors.length > 0){
+            error_message = `${kwargs.errorMessage} Razón: ${err.response.data.friendly_errors}. ` 
+          }
+          
+          if(err.response.data.system_errors.length>0){
+            console.log("Error de sistema --> ", )
+            error_message += `ERROR DE SISTEMA: ${err.response.data.system_errors}`
+          }
+          alertify.alert('Error', error_message)
         } else {
           console.log('NO CUSTOM ERROR')
           console.log(err)

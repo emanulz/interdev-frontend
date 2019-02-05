@@ -18,6 +18,7 @@ export default class ProdLinkingActions extends React.Component {
 
     goToStepC(){
         this.props.dispatch({type: "GO_TO_STEP", payload: "c"})
+        this.props.dispatch({type:"FORCE_GLOBAL_UTILITY_RECALC"})
     }
 
     createNewProduct(){
@@ -167,6 +168,10 @@ export default class ProdLinkingActions extends React.Component {
             
         }
 
+        // console.log("COST OF PRODUCT --> ", unit_price_no_tax.toFixed(5))
+        // let a = 5;
+        // a.FUCKOGG()
+        
         if(prod.CodigosMeta.length>0){
             prod_kwargs["supplier_code"] = prod.CodigosMeta.code
         }
@@ -221,7 +226,13 @@ export default class ProdLinkingActions extends React.Component {
 
     openProductDetail(){
         console.log("Show product detail in new window")
-        window.open("http://www.google.com")
+        if(this.props.product_to_link.linked === "not-found"){
+            this.props.dispatch({type:"SMART_PRODUCT_CANT_SHOW_UNLINKED"})
+            return
+        }
+
+        window.open(`/admin/products/edit/${this.props.product_to_link.linked.code}`)
+        
     }
 
     render() {
@@ -234,9 +245,32 @@ export default class ProdLinkingActions extends React.Component {
         let create_prod = ''
         let show_prod = ''
         let break_link = ''
+        let jump_to_apply = ''
+
+        let can_jump_to_apply = true
+        if(this.props.invoice_to_link!=null){
+            for(var item of this.props.invoice_to_link.items_list){
+                if(item.linked==="not-found"){
+                    can_jump_to_apply = false
+                    break
+                }
+            }
+        }
+
+        if(can_jump_to_apply === true){
+            jump_to_apply = <div className="prod-actions-action"
+                    onClick={this.goToStepC.bind(this)}>
+                    <div className="prod-actions-action-row">
+                        <div>Cargar Inventario</div>
+                        <i className="fa fa-link"></i>
+                    </div>
+                    <div className="doc-actions-action-row">
+                        <p>Proseguir al paso de ingreso de inventario y ajuste de mercaderia.</p>
+                    </div>
+                </div>
+        }
 
         if(selected_prod!=null){
-            console.log("There is a produrt selected")
             show_prod = <div className="prod-actions-action"
                     onClick={this.openProductDetail.bind(this)}>
                     <div className="prod-actions-action-row">
@@ -248,7 +282,7 @@ export default class ProdLinkingActions extends React.Component {
                     </div>
                 </div>
             if(selected_prod.linked==="not-found"){
-                console.log("Prod Not linked")
+
                 link_prod = <div className="prod-actions-action"
                         onClick={this.displayProductSearch.bind(this)}>
                         <div className="prod-actions-action-row">
@@ -272,8 +306,7 @@ export default class ProdLinkingActions extends React.Component {
                         </div>
                     </div>
             }else{
-                console.log("Product already linked")
-
+                
                 break_link = <div className="prod-actions-action"
                         onClick={this.unlinkProduct.bind(this)}>
                         <div className="prod-actions-action-row">
@@ -291,6 +324,7 @@ export default class ProdLinkingActions extends React.Component {
         return <div className="prod-actions">
             <h1 className="section_header">Acciones Disponibles</h1>
             <hr/>
+            {jump_to_apply}
             {link_prod}
             {create_prod}
 

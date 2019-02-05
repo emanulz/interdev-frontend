@@ -11,14 +11,42 @@ import {generalSave} from '../../../../utils/api.js'
         invoice_to_link: store.smart_purchase.invoice_to_link,
         active_line: store.smart_cart.cartItemActive,
         selectedWarehouse: store.warehouses.selectedWarehouse,
+        current_step: store.smart_purchase.currentStep,
+        do_global_price_calc: store.smart_cart.do_global_price_calc,
     }
 })
 export default class Purchase_PriceAdjuster extends React.Component {
 
 
     componentWillMount() {
-
+        
     }
+
+    componentWillReceiveProps(nextProps){
+        
+        if(this.props.do_global_price_calc===false && nextProps.do_global_price_calc ===true){
+            console.log("Component did mount, initial set of utilities")
+            this.props.dispatch({type: "FETCHING_STARTED"})
+            if(this.props.invoice_to_link !==null){
+                for(var item of this.props.invoice_to_link.items_list){
+                    console.log("item in mount ", item)
+                    this.updateUtility(
+                        {
+                            group: 4,
+                            line: item.NumeroLinea,
+                            multi: true,
+                            utility1: Math.round(parseFloat(item.linked.utility1), 3),
+                            utility2: Math.round(parseFloat(item.linked.utility2), 3),
+                            utility3: Math.round(parseFloat(item.linked.utility3), 3)
+                        })
+                        
+                }
+                this.props.dispatch({type: "FORCE_GLOBAL_UTILITY_RECALC"})
+            }
+            this.props.dispatch({type: "FETCHING_DONE"})
+        }
+    }
+
 
     goToStepB(){
         this.props.dispatch({type: 'GO_TO_STEP', payload: 'b'})
@@ -95,37 +123,64 @@ export default class Purchase_PriceAdjuster extends React.Component {
       
       }
 
-    updateUtility(price_group, e){
+    updateUtility(update_data, e){
 
         //return when typing numbers, only process on Enter
-        if(e.key!=="Enter"){
-            return
+        if(e!==undefined){
+            if(e.key!=="Enter"){
+                return
+            }
         }
 
-        console.log("Updating line byutility data for line --> ", this.props.active_line)
-        console.log("Pricing group --> ", price_group)
-        const newUtility = parseFloat(e.target.value)
+        let newUtility = -1
+        let utility1= undefined
+        let utility2= undefined
+        let utility3= undefined
+
+        if(update_data.multi===false){
+            newUtility = parseFloat(e.target.value)
             ? parseFloat(e.target.value)
             : -1
-        console.log("Value --> ", newUtility)
-        if (newUtility === -1){
-            console.log("Invalid utility")
-            return
+        }
+        
+        //inject the target utility from the parameter for the mass initial set
+        if(update_data.multi===true){
+            utility1 = update_data.utility1
+            utility2 = update_data.utility2
+            utility3 = update_data.utility3
+            if(utility1===-1 || utility2 === -1 || utility3===-1){
+                console.log("Invalid utility")
+                return
+            }
+        }else{
+            if (newUtility === -1){
+                console.log("Invalid utility single prorcess")
+                return
+            }
         }
 
+
+
+        //{group:1, line:0, utility: -1, multi:false},
         //make a deep copy of the current selected line
         let active_line = undefined
-        if(this.props.invoice_to_link){
+        if(update_data.line!==0){
             active_line = this.props.invoice_to_link.items_list.find(item=>{
-                return item.NumeroLinea === this.props.active_line
+                return item.NumeroLinea === update_data.line
             })
+        }else{
+            if(this.props.invoice_to_link){
+                active_line = this.props.invoice_to_link.items_list.find(item=>{
+                    return item.NumeroLinea === this.props.active_line
+                })
+            }
         }
-        const new_line = JSON.parse(JSON.stringify(active_line))
-        console.log("Scorching new line --> ", new_line)
-        
-        const unit_price = (parseFloat(new_line.PrecioUnitario)-parseFloat(new_line.MontoDescuento)/parseFloat(new_line.Cantidad)).toFixed(5)
 
-        switch(price_group){
+        const new_line = JSON.parse(JSON.stringify(active_line))
+        const discount = new_line.MontoDescuento!==null ? parseFloat(new_line.MontoDescuento) : 0
+        const unit_price = (parseFloat(new_line.PrecioUnitario)-discount/parseFloat(new_line.Cantidad)).toFixed(5)
+
+        switch(update_data.group){
             case 1:
             {
                 const new_pricing = this.calculateRealUtility(
@@ -177,6 +232,51 @@ export default class Purchase_PriceAdjuster extends React.Component {
                 this.props.dispatch({type:"UPDATE_PROD_PRICING", payload: new_line})
                 break
             }
+            case 4:
+            {
+                //calculate the new price for all the three prices and to a dispatch
+                const new_pricing_1 = this.calculateRealUtility(
+                    unit_price,
+                    utility1,
+                    0,
+                    new_line.linked,
+                    'byUtility',
+                    'cost_based'
+
+                )
+
+                const new_pricing_2 = this.calculateRealUtility(
+                    unit_price,
+                    utility2,
+                    0,
+                    new_line.linked,
+                    'byUtility',
+                    'cost_based'
+
+                )
+
+                const new_pricing_3 = this.calculateRealUtility(
+                    unit_price,
+                    utility3,
+                    0,
+                    new_line.linked,
+                    'byUtility',
+                    'cost_based'
+
+                )
+
+                new_line.target_utility_1 = new_pricing_1['real_utility']
+                new_line.wanted_price_1 = new_pricing_1['new_price']
+
+                new_line.target_utility_2 = new_pricing_2['real_utility']
+                new_line.wanted_price_2 = new_pricing_2['new_price']
+
+                new_line.target_utility_3 = new_pricing_3['real_utility']
+                new_line.wanted_price_3 = new_pricing_3['new_price']
+
+                this.props.dispatch({type:"UPDATE_PROD_PRICING", payload: new_line})
+                break
+            }
             default:
                 console.log("Utility group invalid")
         }
@@ -189,12 +289,11 @@ export default class Purchase_PriceAdjuster extends React.Component {
         if(e.key!=="Enter"){
             return
         }
-        console.log("Updating line byPrice data for line --> ", this.props.active_line)
-        console.log("Pricing group --> ", price_group)
+
         const newPrice = parseFloat(e.target.value)
             ? parseFloat(e.target.value)
             : -1
-        console.log("Value --> ", newPrice)
+        
         if (newPrice === -1){
             console.log("Invalid price")
             return
@@ -209,8 +308,8 @@ export default class Purchase_PriceAdjuster extends React.Component {
         }
         const new_line = JSON.parse(JSON.stringify(active_line))
         console.log("Scorching new line --> ", new_line)
-        
-        const unit_price = (parseFloat(new_line.PrecioUnitario)-parseFloat(new_line.MontoDescuento)/parseFloat(new_line.Cantidad)).toFixed(5)
+        const discount = new_line.MontoDescuento!==null ? parseFloat(new_line.MontoDescuento) : 0
+        const unit_price = (parseFloat(new_line.PrecioUnitario)-discount/parseFloat(new_line.Cantidad)).toFixed(5)
 
         switch(price_group){
             case 1:
@@ -275,11 +374,12 @@ export default class Purchase_PriceAdjuster extends React.Component {
         const items = this.props.invoice_to_link.items_list.map(item=>{
             
             const qty = parseFloat(item.Cantidad)
-            const cost = parseFloat(item.PrecioUnitario)-parseFloat(item.MontoDescuento)/qty>0?qty:1
+            const discount = item.MontoDescuento!==null ? parseFloat(item.MontoDescuento) : 0
+            const cost = parseFloat(item.PrecioUnitario)-discount/(qty>0?qty:1)
             return {
                 applyToClient: true,
                 cost: cost,
-                discount: parseFloat(item.MontoDescuento),
+                discount: discount,
                 qty: qty,
                 subtotal: cost * qty,
                 product: item.linked,
@@ -313,8 +413,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                 cartSubtotal: parseFloat(this.props.invoice_to_link.summary.TotalVentaNeta)
                 
         }
-        
-        console.log("cart Like json object --> ", cart)
+
         return JSON.stringify(cart)
     }
 
@@ -337,14 +436,11 @@ export default class Purchase_PriceAdjuster extends React.Component {
     }
 
     applyPurchase(){
-        console.log("Yay, save it all!")
         //build the kwargs to save the purchase
         const cart = this.buildDuckCart()
         const pay_data = this.buildPayData()
         const pay = this.buildPay()
-
-        
-        
+               
         const data = {
             id: '',
             update_purchase: false,
@@ -358,7 +454,8 @@ export default class Purchase_PriceAdjuster extends React.Component {
             invoice_date: this.props.invoice_to_link.header.FechaEmision.split("T")[0],
             credit_days: 0,
             update_pattern: 'byPrice',
-            discount_mode: 'money_based'
+            discount_mode: 'money_based',
+            is_smart: true
         }
 
         const kwargs = {
@@ -424,8 +521,19 @@ export default class Purchase_PriceAdjuster extends React.Component {
             wanted_price_3 = active_line.wanted_price_3 ? active_line.wanted_price_3 : wanted_price_3
         }
         
+        let applyPurchase = ''
+        if(this.props.selectedWarehouse.id!=="00000000-0000-0000-0000-000000000000"){
+            applyPurchase = <div className="purchase-prod-adjuster-actions">
+            <button className='purchase-buttons-normal'
+                onClick={this.applyPurchase.bind(this)}>
+                Aplicar Compra
+                <span> <i className='fa fa-save' /> </span>
+            </button>
+        </div>
+        }
+
         return <div className="purchase-prod-adjuster">
-            <h2>YAY, SET ALL THE PRICES!!!</h2>
+            <h2>Ajuste de Precios</h2>
             <div className="purchase-prod-adjuster-summary">
                 <div className="purchase-prod-adjuster-summary-warehouses">
                     <Warehouses/>
@@ -450,7 +558,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                 <div className="purchase-prod-adjuster-summary-field">
                     <div className="purchase-prod-adjuster-summary-field-label">Consecutivo:</div>
                     <div className="purchase-prod-adjuster-summary-field-value">
-                        {this.props.invoice_to_link?this.props.invoice_to_link.header.CondicionVenta : "Indefinida"}
+                        {this.props.invoice_to_link?this.props.invoice_to_link.header.NumeroConsecutivo : "Indefinida"}
                     </div>
                 </div>
                 <div className="purchase-prod-adjuster-summary-field">
@@ -494,7 +602,9 @@ export default class Purchase_PriceAdjuster extends React.Component {
                             <div className="purchase-prod-adjuster-body-price-detail-input">
                                 <input name="utility_input1" type="number" 
                                     defaultValue={target_utility_1.toFixed(2)}
-                                    onKeyPress={this.updateUtility.bind(this, 1)}/>
+                                    onKeyPress={this.updateUtility.bind(this, 
+                                    {group:1, line:0, utility: -1, multi:false},
+                                    )}/>
                             </div>
                     </div>
 
@@ -528,7 +638,9 @@ export default class Purchase_PriceAdjuster extends React.Component {
                             <div className="purchase-prod-adjuster-body-price-detail-input">
                                 <input name="utility_input2" type="number" 
                                     defaultValue={target_utility_2.toFixed(2)}
-                                    onKeyPress={this.updateUtility.bind(this, 2)}/>
+                                    onKeyPress={this.updateUtility.bind(this, 
+                                        {group:2, line:0, utility: -1, multi:false},
+                                    )}/>
                             </div>
                     </div>
 
@@ -563,7 +675,9 @@ export default class Purchase_PriceAdjuster extends React.Component {
                             <div className="purchase-prod-adjuster-body-price-detail-input">
                                 <input name="utility_input3" type="number" 
                                     defaultValue={target_utility_3.toFixed(2)}
-                                    onKeyPress={this.updateUtility.bind(this, 3)}/>
+                                    onKeyPress={this.updateUtility.bind(this,
+                                        {group:3, line:0, utility: -1, multi:false},
+                                        )}/>
                             </div>
                     </div>
 
@@ -571,13 +685,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             
             </div>
 
-            <div className="purchase-prod-adjuster-actions">
-                <button className='purchase-buttons-normal'
-                    onClick={this.applyPurchase.bind(this)}>
-                    Aplicar Compra
-                    <span> <i className='fa fa-save' /> </span>
-                </button>
-            </div>
+            {applyPurchase}
         </div>
     }
 }
