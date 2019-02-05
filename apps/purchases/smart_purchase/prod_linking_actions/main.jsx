@@ -30,7 +30,6 @@ export default class ProdLinkingActions extends React.Component {
 
         const  prod = this.props.product_to_link
         //get the tax data
-        console.log("Meta --> ", prod.ImpuestoMeta)
         const total_tax = prod.ImpuestoMeta.reduce((acu, item)=>{
             return acu + parseFloat(item.Tarifa)
         }, 0)
@@ -73,10 +72,10 @@ export default class ProdLinkingActions extends React.Component {
                         
             }
         }
-        console.log("Total tax --> ", total_tax)
-        console.log("Prod --> ", prod)
+        //console.log("Total tax --> ", total_tax)
+        //console.log("Prod --> ", prod)
         const unit_price_no_tax = parseFloat(prod.PrecioUnitario) / (1+total_tax/100.0)
-        console.log("Unit price no tax --> ", unit_price_no_tax)
+        //console.log("Unit price no tax --> ", unit_price_no_tax)
         const def_utility_p1 = 40
         const def_utility_p2 = 35
         const def_utility_p3 = 30
@@ -126,7 +125,7 @@ export default class ProdLinkingActions extends React.Component {
         if(code_meta.length > 0){
             sup_code = `${code_meta[0].type}-${code_meta[0].code}`
         }
-        console.log("Target sup code --> ", sup_code)
+        //console.log("Target sup code --> ", sup_code)
 
         let total_tax_frac = 1
         if(total_tax > 0.00001){
@@ -187,16 +186,42 @@ export default class ProdLinkingActions extends React.Component {
 
     }
 
+    unlinkProduct(){
+        
+        if(this.props.product_to_link.linked === "not-found"){
+            this.props.dispatch({type:"SMART_PRODUCT_NOT_LINKED"})
+            console.log("bye bye")
+            return
+        }
+
+        let supplier = this.props.invoice_to_link.proveedor
+        const data = {
+            product_code: this.props.product_to_link.linked.code,
+            supplier_code: supplier.code
+        }
+        const unlinkKwargs = {
+            url: '/api/products/smart_unlink/',
+            method: 'post',
+            successType: 'SMART_PROD_UNLINKED',
+            errorType: 'SMART_PROD_UNLINK_ERROR',
+            data: data,
+            sucessMessage: "Producto Desenlazado satisfactoriamente",
+            errorMessage: "Ocurrio un rompiendo el enlaze del producto"
+        }
+
+        console.log("Final unlink kwargs --> ", unlinkKwargs)
+        this.props.dispatch(generalSave(unlinkKwargs))
+
+    }
+
     displayProductSearch(){
         this.props.dispatch({type:'productLinker_TOGGLE_SEARCH_PANEL'})
     }
 
-    unlinkProduct(){
-        console.log("Unlink product")
-    }
 
     openProductDetail(){
         console.log("Show product detail in new window")
+        window.open("http://www.google.com")
     }
 
     render() {

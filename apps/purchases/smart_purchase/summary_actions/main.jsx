@@ -22,7 +22,7 @@ export default class Summary_Actions extends React.Component {
         let sup = this.props.document_data_selected.emisor
         const supplier_data = {
             name: sup.Nombre,
-            id_type: sup.Tipo_raw, 
+            id_type: sup.Tipo_raw =="02" ? "JUR": "PER", 
             id_num: sup.Numero, 
             phone_number: sup.Telefono, 
             email: sup.CorreoElectronico,
@@ -109,6 +109,7 @@ export default class Summary_Actions extends React.Component {
         let rejectDocument = ''
         let associateSupplier = ''
         let createSupplier = ''
+        let associateCodes = ''
 
         const doc = this.props.document_data_selected
         if( doc !=null){
@@ -163,6 +164,17 @@ export default class Summary_Actions extends React.Component {
                 </div>
             </div>
 
+            }else{
+                associateCodes = <div className="doc-actions-action"
+                    onClick={this.goToStepB.bind(this)}>
+                    <div className="doc-actions-action-row">
+                        <div>Asociar Códigos</div>
+        <               i className="fa fa-upload"></i>
+                    </div>
+                    <div className="doc-actions-action-row">
+                        <p>Relacionar códigos de proveedor con internos</p>
+                    </div>
+                </div>
             }
         }
 
@@ -178,17 +190,8 @@ export default class Summary_Actions extends React.Component {
             
             {associateSupplier}
             {createSupplier}
+            {associateCodes}
 
-            <div className="doc-actions-action"
-                onClick={this.goToStepB.bind(this)}>
-                <div className="doc-actions-action-row">
-                    <div>Asociar Códigos</div>
-    <               i className="fa fa-upload"></i>
-                </div>
-                <div className="doc-actions-action-row">
-                    <p>Relacionar códigos de proveedor con internos</p>
-                </div>
-            </div>
         </div>
     }
 }
