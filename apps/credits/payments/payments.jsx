@@ -6,7 +6,7 @@ import alertify from 'alertifyjs'
 import {setItem} from '../../../utils/api'
 import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
-import {savePayment} from './actions.js'
+import {savePayment, getClientVouchers} from './actions.js'
 
 @connect((store) => {
   return {
@@ -15,7 +15,8 @@ import {savePayment} from './actions.js'
     client: store.clients.clientActive,
     user: store.user.user,
     clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt,
-    creditPayMethod: store.payments.creditPayMethod
+    creditPayMethod: store.payments.creditPayMethod,
+    clientVouchers: store.payments.clientVouchers
   }
 })
 export default class Update extends React.Component {
@@ -66,6 +67,18 @@ export default class Update extends React.Component {
 
   setCreditPayMethod(ev) {
     this.props.dispatch({type: 'SET_CREDIT_PAY_METHOD', payload: ev.target.value})
+    this.props.dispatch({type: 'CLEAR_CLIENT_VOUCHERS', payload: ''})
+
+    if (ev.target.value == 'VOUCHER') {
+      const id = this.props.client.id
+      const kwargs = {
+        url: `/api/clients/${id}`,
+        successType: 'FETCH_CLIENT_VOUCHERS_FULFILLED',
+        errorType: 'FETCH_CLIENT_VOUCHERS_REJECTED'
+      }
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(getClientVouchers(kwargs))
+    }
   }
 
   selectClientDEPRECATED(event) {
@@ -268,6 +281,18 @@ export default class Update extends React.Component {
     })
 
     const amountLeft = clientDebt - paymentTotal
+    let voucherAmount = 0
+    if (this.props.clientVouchers.length) {
+      this.props.clientVouchers.forEach(item => {
+        voucherAmount += parseFloat(item.amount)
+      })
+    }
+    const availableVouchersDiv = this.props.creditPayMethod == 'VOUCHER'
+      ? <div className='vouchers-available'>
+        <h3>Disponible: ₡{voucherAmount.formatMoney(2, ',', '.')}</h3>
+        <h3>Restante: ₡{(voucherAmount - paymentTotal).formatMoney(2, ',', '.')}</h3>
+      </div>
+      : <div />
 
     return <div className='payment'>
       <h1>Registrar pago a Facturas:</h1>
@@ -304,8 +329,9 @@ export default class Update extends React.Component {
               <option value='CASH'>EFECTIVO</option>
               <option value='CARD'>TARJETA</option>
               <option value='TRANSFER'>TRANSFERENCIA</option>
-              {/* <option value='VOUCHER'>VOUCHER DE CRÉDITO</option> */}
+              <option value='VOUCHER'>VOUCHER DE CRÉDITO</option>
             </select>
+            {availableVouchersDiv}
 
             <button onClick={this.saveMovements.bind(this)} disabled={!this.props.paymentArray.length} className='form-control'>
               Registrar

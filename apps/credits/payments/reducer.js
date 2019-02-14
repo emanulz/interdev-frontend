@@ -4,7 +4,8 @@ const stateConst = {
     sales: []
   },
   payments: [],
-  creditPayMethod: 'CASH'
+  creditPayMethod: 'CASH',
+  clientVouchers: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -32,6 +33,32 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         payments: []
+      }
+    } // case
+
+    case 'FETCH_CLIENT_VOUCHERS_FULFILLED':
+    {
+      return {
+        ...state,
+        clientVouchers: action.payload
+      }
+
+    } // case
+
+    case 'CLEAR_CLIENT_VOUCHERS':
+    {
+      return {
+        ...state,
+        clientVouchers: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_CLIENT_VOUCHERS_REJECTED':
+    {
+      return {
+        ...state,
+        clientVouchers: []
       }
     } // case
 
