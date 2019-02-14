@@ -82,7 +82,7 @@ export default function reducer(state=stateConst, action) {
             const who_am_i = action.payload.who_am_i
             //if the supplier code is not empty, search by code
             let target_item = null
-            if(who_am_i.code !==''){
+            if(who_am_i.code !=='' && who_am_i.length >0) {
                 
                 target_item = state.invoice_to_link.items_list.findIndex(item=>{
                     const first_code = `${item.CodigosMeta[0].type}-${item.CodigosMeta[0].code}`
@@ -100,13 +100,13 @@ export default function reducer(state=stateConst, action) {
                 console.log("Error matching after link.....????")
             }
             const new_items_list = [...state.invoice_to_link.items_list]
-            new_items_list[target_item].linked = action.payload.who_am_i
+            new_items_list[target_item].linked = action.payload.product
 
             return {
                 ...state,
                 invoice_to_link: {
                     ...state.invoice_to_link,
-                    invoice_to_link: new_items_list
+                    new_items_list: new_items_list
                 }
             }
         }
