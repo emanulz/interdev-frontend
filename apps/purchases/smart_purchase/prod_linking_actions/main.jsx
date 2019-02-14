@@ -72,6 +72,7 @@ export default class ProdLinkingActions extends React.Component {
                 }
                         
             }
+
         }
         //console.log("Total tax --> ", total_tax)
         //console.log("Prod --> ", prod)
@@ -81,9 +82,6 @@ export default class ProdLinkingActions extends React.Component {
         const def_utility_p2 = 35
         const def_utility_p3 = 30
 
-        let ballpark = (cost, utility, total_tax)=>{
-            return 0
-        }
         const t_p1 = 0
         //calculate pricing data for the three target pricepoints
         const real_p1_Data = calculateRealUtility(
@@ -168,9 +166,6 @@ export default class ProdLinkingActions extends React.Component {
             
         }
 
-        // console.log("COST OF PRODUCT --> ", unit_price_no_tax.toFixed(5))
-        // let a = 5;
-        // a.FUCKOGG()
         
         if(prod.CodigosMeta.length>0){
             prod_kwargs["supplier_code"] = prod.CodigosMeta.code
@@ -187,6 +182,10 @@ export default class ProdLinkingActions extends React.Component {
         }
 
         console.log("Final create kwargs --> ", createKwargs)
+
+        //let a = 5;
+        //a.FUCKOGG()
+
         this.props.dispatch(generalSave(createKwargs))
 
     }
@@ -195,7 +194,6 @@ export default class ProdLinkingActions extends React.Component {
         
         if(this.props.product_to_link.linked === "not-found"){
             this.props.dispatch({type:"SMART_PRODUCT_NOT_LINKED"})
-            console.log("bye bye")
             return
         }
 

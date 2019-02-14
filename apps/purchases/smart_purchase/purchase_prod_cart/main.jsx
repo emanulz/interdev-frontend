@@ -27,7 +27,6 @@ export default class Purchase_Prod_Cart extends React.Component {
         const items = this.props.invoice_to_link !==null ? this.props.invoice_to_link.items_list : []
         const disp_items = items.map(item=>{
             const qty = parseFloat(item.Cantidad).toFixed(2)
-            console.log("Fucking discount --> ", item.MontoDescuento)
             const discount = item.MontoDescuento!==null?parseFloat(item.MontoDescuento):0
             const unit_price = (parseFloat(item.PrecioUnitario)-discount/qty).toFixed(5)
 

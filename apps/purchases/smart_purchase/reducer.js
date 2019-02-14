@@ -26,7 +26,6 @@ export default function reducer(state=stateConst, action) {
 
         case 'UPDATE_PROD_PRICING':
         {
-            console.log("update prod pricing")
             const newItems = [...state.invoice_to_link.items_list]
             const target_index = newItems.findIndex(item=>{
                 return item.NumeroLinea === action.payload.NumeroLinea
@@ -46,7 +45,6 @@ export default function reducer(state=stateConst, action) {
         }
         case 'SMART_PRODUCT_CANT_SHOW_UNLINKED':
         {
-            console.log("Reducer show alert")
             alertify.alert('Error', 'No se puede visualizar un producto no enlazado.')
             return state
         }
