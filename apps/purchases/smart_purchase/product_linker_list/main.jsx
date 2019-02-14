@@ -21,7 +21,7 @@ export default class ProductLinkerList extends React.Component{
         let buildItem = (code, desc, pcode, pdesc, key, active_line) => {
             //add the active class accordingly 
             let active_class = ""
-            if (active_line !== undefined && active_class !== null ){
+            if (active_line !== undefined && active_line !== null ){
                 if(key===active_line.NumeroLinea)
                     active_class = " linker-item-active"
             }

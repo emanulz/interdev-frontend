@@ -51,6 +51,11 @@ export default function reducer(state=stateConst, action) {
             }
         }
 
+        case 'SMART_PURCHASE_SAVED_CORRECTLY':
+        {
+            window.location.reload()
+        }
+
     }
 
     return state
