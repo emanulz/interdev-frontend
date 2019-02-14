@@ -467,7 +467,6 @@ export default class Purchase_PriceAdjuster extends React.Component {
             sucessMessage: "Ingreso de compra satisfactorio.",
             errorMessage: "Error aplicando la compra."
         }
-        console.log("Kwargs to go to war --> ", kwargs)
         this.props.dispatch(generalSave(kwargs))
     }
 

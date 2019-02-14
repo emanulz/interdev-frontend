@@ -17,12 +17,13 @@ export default class ProductLinkerList extends React.Component{
 
     //builds a product graphical representation 
     buildProductItem(data, active_line, list_linked=true){
-
+        
         let buildItem = (code, desc, pcode, pdesc, key, active_line) => {
             //add the active class accordingly 
             let active_class = ""
-            if (active_line !== undefined && active_class !== null){
-                active_class = " linker-item-active"
+            if (active_line !== undefined && active_class !== null ){
+                if(key===active_line.NumeroLinea)
+                    active_class = " linker-item-active"
             }
              
 
