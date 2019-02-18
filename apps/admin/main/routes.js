@@ -22,6 +22,7 @@ import GeneralReports from '../reports/main.jsx'
 import Invoicing from '../invoicing/main.jsx'
 import SalesClerks from '../salesclerks/main.jsx'
 import CashAdvances from '../cashAdvances/main.jsx'
+import CreditVouchers from '../vouchers/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -44,6 +45,7 @@ const routes = <div className='heigh100'>
   <Route path='/admin/invoicing' component={Invoicing} />
   <Route path='/admin/salesclerks' component={SalesClerks} />
   <Route path='/admin/cashadvances' component={CashAdvances} />
+  <Route path='/admin/vouchers' component={CreditVouchers} />
 
 </div>
 

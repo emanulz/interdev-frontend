@@ -191,14 +191,16 @@ export default class List extends React.Component {
         field: 'client',
         text: 'Nombre en Factura'
       }, {
-        type: 'function_element',
+        type: 'function_element_double',
         field: 'id',
         text: 'Descartar',
+        number: '1',
         worker_method: determinDestroyAction
       }, {
-        type: 'function_element',
+        type: 'function_element_double',
         field: 'id',
         text: 'Anular',
+        number: '2',
         worker_method: determinNullAction
       }, {
         field: 'consecutive',

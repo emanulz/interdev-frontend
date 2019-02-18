@@ -192,6 +192,10 @@ export default class SideMenu extends React.Component {
         text: 'Adelantos de Efectivo',
         class: 'fa-money',
         href: '/admin/cashadvances'
+      }, {
+        text: 'Vouchers',
+        class: 'fa-money',
+        href: '/admin/vouchers'
       }
     ]
 

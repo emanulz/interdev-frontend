@@ -7,6 +7,7 @@ import {formatDateTimeAmPm} from '../../utils/formatDate.js'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
+const uuidv1 = require('uuid/v1')
 
 @connect((store) => {
   return {
@@ -190,7 +191,7 @@ export default class AdminTable extends React.Component {
         ? <th
           className={orderingClass}
           style={itemStyle}
-          key={`${item.field}_${item.type}`}
+          key={uuidv1()}
           onClick={this.changeSortBy.bind(this, item.field)}
         >
           {item.text}
@@ -199,7 +200,7 @@ export default class AdminTable extends React.Component {
           className={orderingClass}
           onClick={this.changeSortBy.bind(this, item.field)}
           style={itemStyleBool}
-          key={`${item.field}_${item.type}`}>
+          key={uuidv1()}>
           {item.text}
         </th>
       return ret
@@ -439,6 +440,14 @@ export default class AdminTable extends React.Component {
             {
               const element = header.worker_method(el)
               item = <td className='functionElement' key={`${el[idField]}_${header.field}`}>
+                {element}
+              </td>
+              break
+            }
+            case 'function_element_double':
+            {
+              const element = header.worker_method(el)
+              item = <td className='functionElement' key={`${el[idField]}_${header.field}_${header.number}`}>
                 {element}
               </td>
               break
