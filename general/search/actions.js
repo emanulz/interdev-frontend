@@ -12,7 +12,7 @@ export function searchItem(text, model, namespace, clientId, presaleType) {
       dispatch({type: `${namespace}_CLEAR_SEARCH_RESULTS`, payload: ''})
     }
   }
-  const presaleTypeInner = presaleType.length ? presaleType : ''
+  const presaleTypeInner = presaleType ? presaleType : ''
   console.log('PRESALEEEEE TYPE', presaleTypeInner)
   const newstr = text.replace(/%/g, '&').replace('+', '!', 'gi').replace('*', '$', 'gi')
   const data = {
