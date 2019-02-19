@@ -4,7 +4,7 @@
 import alertify from 'alertifyjs'
 import axios from 'axios'
 
-export function searchItem(text, model, namespace, clientId) {
+export function searchItem(text, model, namespace, clientId, presaleType) {
   if (!text.length) {
     alertify.alert('ERROR', `Debe digitar una búsqueda válida.`)
     return function(dispatch) {
@@ -12,13 +12,15 @@ export function searchItem(text, model, namespace, clientId) {
       dispatch({type: `${namespace}_CLEAR_SEARCH_RESULTS`, payload: ''})
     }
   }
+  const presaleTypeInner = presaleType.length ? presaleType : ''
+  console.log('PRESALEEEEE TYPE', presaleTypeInner)
   const newstr = text.replace(/%/g, '&').replace('+', '!', 'gi').replace('*', '$', 'gi')
   const data = {
     model: model,
     max_results: 100,
     search_key: newstr,
-    clientId: clientId
-
+    clientId: clientId,
+    presale_type: presaleTypeInner
   }
   console.log('DATAAAA', data)
   return function(dispatch) {

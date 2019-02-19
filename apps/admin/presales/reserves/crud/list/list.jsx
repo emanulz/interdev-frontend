@@ -230,6 +230,7 @@ export default class List extends React.Component {
         <h1>Listado de Reservas:</h1>
       </div>
       {/* <SearchAdmin model='presale' namespace='adminSearch' /> */}
+      <SearchAdmin model='presale' namespace='adminSearch' presale_type='RESERVE' />
       {paginationDiv}
       {content}
     </div>
