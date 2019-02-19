@@ -71,8 +71,9 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     // TODO INSERT THE PATH TO MARK AS APPLIED
     const kwargs = {
-      url: `/markAsAppliedPath`,
-      errorMessage: 'Error al marcar el voucer como aplicado'
+      url: `/api/creditvoucherslist/set_paid/`,
+      errorMessage: 'Error al marcar el voucer como aplicado',
+      voucher_id: id
     }
     const _this = this
     const updatePromise = new Promise((resolve, reject) => {
@@ -93,8 +94,9 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     // TODO INSERT THE PATH TO MARK AS NULL
     const kwargs = {
-      url: `/nullVoucherPath`,
-      errorMessage: 'Error al Anular el Voucher'
+      url: `/api/creditvoucherslist/null_voucher/`,
+      errorMessage: 'Error al Anular el Voucher',
+      voucher_id: id
     }
     const _this = this
     const updatePromise = new Promise((resolve, reject) => {

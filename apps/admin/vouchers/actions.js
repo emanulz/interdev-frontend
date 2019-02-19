@@ -17,7 +17,10 @@ export function markVoucher(kwargs, resolve, reject) {
 
   axios({
     method: 'post',
-    url: url
+    url: url,
+    data: {
+      voucher_id: kwargs.voucher_id
+    }
   })
     .then((response) => {
       resolve(response.data)
