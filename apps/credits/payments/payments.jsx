@@ -109,7 +109,30 @@ export default class Update extends React.Component {
     document.getElementById(`${sale.id}-checkbox-partial`).checked = false
     document.getElementById(`${sale.id}-input-partial`).value = ''
 
+    // CALC THE EXISTENT PAYMENT
+    const array = [...this.props.paymentArray]
+    let prevAmount = 0
+    // CALC THE TOTAL AMOUNT OF PAYMENT
+    array.map(item => {
+      prevAmount = prevAmount + item.amount
+    })
+    // VOUCHER AMOUNT CALC
+    let voucherAmount = 0
+    if (this.props.clientVouchers.length) {
+      this.props.clientVouchers.forEach(item => {
+        voucherAmount += parseFloat(item.amount)
+      })
+    }
+
     if (event.target.checked) {
+      if (this.props.creditPayMethod == 'VOUCHER') {
+        const voucherBalance = voucherAmount - prevAmount - Math.abs(parseFloat(sale.balance))
+        if (voucherBalance < -1) {
+          alertify.alert('ERROR', 'El monto a pagar es mayor que el disponible en vouchers.')
+          document.getElementById(`${sale.id}-checkbox-complete`).checked = false
+          return false
+        }
+      }
       const item = {
         bill_id: sale.id,
         sale: sale,
@@ -146,8 +169,38 @@ export default class Update extends React.Component {
   }
 
   setPaySaleAmount(sale, event) {
+
+    // CALC THE EXISTENT PAYMENT
+    const array = [...this.props.paymentArray]
+    let prevAmountNoThisSale = 0
+    // CALC THE TOTAL AMOUNT OF PAYMENT NOT INCLUDING THIS SALE
+    array.map(item => {
+      if (item.bill_id != sale.id) {
+        prevAmountNoThisSale = prevAmountNoThisSale + item.amount
+      }
+    })
+    // VOUCHER AMOUNT CALC
+    let voucherAmount = 0
+    if (this.props.clientVouchers.length) {
+      this.props.clientVouchers.forEach(item => {
+        voucherAmount += parseFloat(item.amount)
+      })
+    }
+
     const target = event.target
     const value = parseFloat(target.value)
+
+    if (this.props.creditPayMethod == 'VOUCHER') {
+      const voucherBalance = voucherAmount - prevAmountNoThisSale - value
+      if (voucherBalance < -1) {
+        alertify.alert('ERROR', 'El monto a pagar es mayor que el disponible en vouchers.')
+        document.getElementById(`${sale.id}-checkbox-partial`).checked = false
+        document.getElementById(`${sale.id}-input-partial`).value = ''
+        this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+        return false
+      }
+    }
+
     this.props.dispatch({type: 'SET_AMOUNT_PAYMENT_ARRAY', payload: {amount: value, sale: sale}})
   }
 
