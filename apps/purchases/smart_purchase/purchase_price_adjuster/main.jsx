@@ -113,9 +113,14 @@ export default class Purchase_PriceAdjuster extends React.Component {
       
         //back calculate new utility
         let real_utility = 0
-        if(utility_method === 'cost_based'){
+        if(cost<0.0001)
+        {
+            real_utility=1
+        }else if(utility_method === 'cost_based')
+        {
           real_utility = (wanted_price/(total_tax_factor*default_discount))/cost - 1
-        }else{
+        }else
+        {
           real_utility = 1- cost/(wanted_price/(total_tax_factor*default_discount))
         }
       
@@ -159,9 +164,6 @@ export default class Purchase_PriceAdjuster extends React.Component {
             }
         }
 
-
-
-        //{group:1, line:0, utility: -1, multi:false},
         //make a deep copy of the current selected line
         let active_line = undefined
         if(update_data.line!==0){
