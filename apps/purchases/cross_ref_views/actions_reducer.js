@@ -4,7 +4,8 @@ const stateConst = {
     product_code: '',
     records_limit: 80,
     records_to_fetch: 20,
-    target_supplier: ''
+    target_supplier: '',
+    price_chart_visible: true
 
 }
 
@@ -30,6 +31,14 @@ export default function reducer(state=stateConst, action){
             return {
                 ...state,
                 records_to_fetch: action.payload 
+            }
+        }
+        case 'TOGGLE_PRICE_CHART':
+        {
+            const next_state = !state.price_chart_visible
+            return {
+                ...state,
+                price_chart_visible: next_state
             }
         }
     }

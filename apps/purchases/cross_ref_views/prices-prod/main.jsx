@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {getSingleItemDispatch} from '../../../../utils/api.js'
 import General_Chart from '../general_chart/main.jsx'
+import AdminTable from '../../../../general/adminTable/adminTable.jsx'
 
 @connect(store=>{
     return {
@@ -15,13 +16,12 @@ export default class Prices_Prod extends React.Component {
     
 
     fetchProductInsight(e){
-        console.log("Fetch product insight")
         if(this.props.product_code ===''){
             this.props.dispatch({type: 'PRODUCT_CODE_NOT_SET'})
             return
         }
         const kwargs = {
-            url: `/api/cross_reference/getProductInsight/?product_code=${this.props.product_code}&${this.props.records_to_fetch}`,
+            url: `/api/cross_reference/getProductInsight/?product_code=${this.props.product_code}&historic_purchase_count=${this.props.records_to_fetch}`,
             successType: 'PRODUCT_INSIGHT_SUCCESS',
             errorType: 'PRODUCT_INSIGHT_REJECTED',
 
@@ -31,17 +31,13 @@ export default class Prices_Prod extends React.Component {
     }
 
     setFilters(source, e){
-        console.log("Source --> ", source)
-        console.log("Event value --> ", e.target.value)
         switch(source){
             case 'product_code':
             {
-                console.log("Set product code")
                 this.props.dispatch({type:'SET_PRODUCT_CODE', payload: e.target.value})
                 break
             }
             case 'records_limit':{
-                console.log("Setting limit of records")
                 const new_limit = parseInt(e.target.value)
                 if (isNaN(new_limit)){
                     this.props.dispatch({type:'IS_NAN', payload: e.target.value})
@@ -113,9 +109,148 @@ export default class Prices_Prod extends React.Component {
         }
     }
 
+
+    openSupplierInNewWindow(bound){
+        window.open(`/admin/suppliers/edit/${bound}`)
+    }
+
+    openPurchaseInNewWindow(bound){
+        window.open(`/purchases/purchase/${bound}`)
+    }
+
+    buildSuppliersTable(){
+        if(this.props.product_insight==null){
+            return ''
+        }
+        const header = [
+            {
+                field: 'code',
+                text: 'Código',
+                onClickFunction: this.openSupplierInNewWindow,
+                type: 'function_on_click'
+            },
+            {
+                field: 'name',
+                text: 'Nombre',
+                type: 'text'
+            }, 
+            {
+                field: 'phone',
+                text: 'Teléfono',
+                type: 'text'
+            },  
+            {
+                field: 'email',
+                text: 'Código',
+                type: 'text'
+            },
+            {
+                field: 'last_purchase',
+                text: 'Última compra',
+                type: 'date'
+            },
+            {
+                field: 'last_cost',
+                text: 'Último costo',
+                type: 'price'
+            },
+
+        ]
+
+        //preprocess the table data
+        const table_data = this.props.product_insight.suppliers.map(item=>{
+            //find the last purchase made by this supplier
+            const last_purchase = this.props.product_insight.price_series.cost.find(sup=>{
+                return sup.supplier_id===item.id
+            })
+            return {
+                code: item.code,
+                email: item.email,
+                id_num: item.id_num,
+                id_type: item._id_type=="02"? 'JURÍDICA': 'FISICA',
+                name: item.name,
+                phone: item.phone,
+                last_purchase: last_purchase ? last_purchase.raw_date: 'No definida',
+                last_cost: last_purchase.cost ? last_purchase.cost : -1
+
+            }
+        })
+
+        const table = <AdminTable headerOrder={header} data={table_data} app="admin" model="suppliers"/>
+
+        return table
+    }
+
+    buildPurchasesTable(){
+        if(this.props.product_insight==null){
+            return ''
+        }
+        const header = [
+            {
+                field: 'consecutive',
+                text: 'Consecutivo',
+                onClickFunction: this.openPurchaseInNewWindow,
+                type: 'function_on_click'
+            },
+            {
+                field: 'supplier_name',
+                text: 'Proveedor',
+                type: 'text'
+            },
+            {
+                field: 'purchase_total',
+                text: 'Monto compra',
+                type: 'price'
+            },
+            {
+                field: 'numeric_key',
+                text: 'Consecutivo Hacienda',
+                type: 'text'
+            },
+            {
+                field: 'warehouse',
+                text: 'Bodega de Ingreso',
+                type: 'text'
+            },
+            {
+                field: 'created',
+                text: 'Fecha',
+                type: 'date'
+            },
+        ]
+
+        const table_data = this.props.product_insight.purchases_data.map(item=>{
+            const supplier = this.props.product_insight.suppliers.find(sup=>{
+                return sup.id === item.supplier_id
+            })
+
+            return {
+                consecutive: item.consecutive,
+                supplier_name: supplier ? supplier.name : 'No disponible',
+                purchase_total: item.purchase_total,
+                numeric_key: item.numeric_key===""? item.invoice_number: item.numeric_key,
+                warehouse: item.warehouse.name,
+                created: item.created
+            }
+        })
+
+        const table = <AdminTable headerOrder={header} data={table_data}/>
+        return table
+    }
+
     render(){
 
         const prices_chart_data = this.buildPriceChart()
+        const options = {
+            title: "Historico de Costos y Precios",
+            yAxisLegend: "Precio",
+            xAxisLegend: "Fecha"
+        }
+
+        const sups_table = this.buildSuppliersTable()
+
+        const purchases_table = this.buildPurchasesTable()
+
         return <div>
             <div className='cross-header'>
                 <h1>Información de precios</h1>
@@ -130,14 +265,43 @@ export default class Prices_Prod extends React.Component {
                 type='text' className='form-control'
                 value={this.props.records_to_fetch} 
                  />
+                <div className="cross-header-actions">
 
+
+                </div>
                 <button onClick={this.fetchProductInsight.bind(this, false)}
                 className='form-control btn-primary'>
                     Obtener Datos
                 </button>
             </div>
+            <div className="cross-zone zone-1">
+                <div className="cross-zone-title">
+                    <h1>Historico de precios</h1>
+                </div>
+                <div className="cross-zone-content">
+                    <General_Chart chart_data={prices_chart_data} options={options}/>
+                </div>
+                
+            </div>
 
-            <General_Chart chart_data={prices_chart_data}/>
+            <div className="cross-zone zone-2">
+                <div className="cross-zone-title">
+                    <h1>Proveedores de este Producto</h1>
+                </div>
+                <div className="cross-zone-content">
+                    {sups_table}
+                </div>
+            </div>
+            
+            <div className="cross-zone- zone-3">
+                <div className="cross-zone-title">
+                    <h1>Compras de este Producto</h1>
+                </div>
+                <div className="cross-zone-content">
+                    {purchases_table}
+                </div>
+                
+            </div>
         </div>
     }
 }
