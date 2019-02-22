@@ -31,10 +31,8 @@ export default function reducer(state=stateConst, action) {
                 return item.NumeroLinea === action.payload.NumeroLinea
             })
 
-            console.log("target  index --> ", target_index)
             newItems[target_index] = action.payload
-            console.log("Payload updated item --> ", action.payload)
-            console.log("newItems --> ", newItems)
+
             return {
                 ...state,
                 invoice_to_link:{
