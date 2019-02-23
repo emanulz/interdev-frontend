@@ -13,7 +13,7 @@ export function loadRegisterClosureToPrint(id) {
       dispatch({type: 'CLEAR_PRINT_REGISTER_CLOSURE_REGISTER_CLOSURE', payload: ''})
 
       if (response.data) {
-        // IF THERE IS MORE THAN ONE ELEMENT FILTERE
+        // IF THERE IS MORE THAN ONE ELEMENT FILTER
         dispatch({type: 'SET_PRINT_REGISTER_CLOSURE_REGISTER_CLOSURE', payload: response.data})
         dispatch({type: 'FETCHING_DONE', payload: ''})
         dispatch({type: 'SHOW_PRINT_REGISTER_CLOSURE_PANEL', payload: ''})

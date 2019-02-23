@@ -6,7 +6,9 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 @connect((store) => {
   return {
     panelVisible: store.printRegisterClosure.isVisible,
-    isFull: store.printRegisterClosure.isFull
+    isFull: store.printRegisterClosure.isFull,
+    registerClosure: store.printRegisterClosure.registerClosure,
+    config: store.config.globalConf,
   }
 })
 export default class ReprintRegisterClosurePanel extends React.Component {
@@ -27,6 +29,12 @@ export default class ReprintRegisterClosurePanel extends React.Component {
     window.printDiv('print-register-closure-print', ['/static/fixedBundles/css/sales.css'])
   }
 
+
+  getZpl(){
+    document.getElementById('link').click()
+  }
+
+
   render() {
 
     const isVisible = (this.props.panelVisible)
@@ -40,18 +48,35 @@ export default class ReprintRegisterClosurePanel extends React.Component {
       ? <FullInvoice />
       : <CompactInvoice />
 
+
+
+    let zpl_button = ''
+    let zpl_link = ''
+    if(this.props.config){
+      if(this.props.config.EnableZplDownloads){
+        if(this.props.registerClosure){
+          zpl_link = <a id="link" href={`/api/saleslist/get_zpl_closure/?closure_id=${this.props.registerClosure.id}`}></a>
+          zpl_button = <i onClick={this.getZpl.bind(this)} className='fa fa-download' aria-hidden='true' />
+        }
+      }
+      zpl_link = <a id="link" href={`/api/saleslist/get_zpl_closure/?closure_id=${this.props.registerClosure.id}`}></a>
+      
+    }
+
     return <div className={isVisible}>
 
       <div className={'print-register-closure-panel-main' + isFullClass}>
         <div className='print-register-closure-panel-header'>
           <div>
-            RECIBO CIERRE DE CAJA
+            CIERRE CAJA
           </div>
           <div>
             <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
             <i onClick={this.togglePanel.bind(this)} className='fa fa-file-text-o' aria-hidden='true' />
             <i onClick={this.printPanel.bind(this)} className='fa fa-print' aria-hidden='true' />
             {/* <i onClick={this.toggleInvoice.bind(this)} className='fa fa-coffee' aria-hidden='true' /> */}
+            {zpl_button}
+            {zpl_link}
           </div>
         </div>
 

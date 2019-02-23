@@ -27,7 +27,6 @@ export default class Data extends React.Component {
     const saleId = returnObject.sale_consecutive ? returnObject.sale_consecutive : '0001'
     const returnId = returnObject.consecutive ? returnObject.consecutive : '0001'
     const creditNoteId = creditNote.consecutive ? creditNote.consecutive : '0001'
-    const seller = cashierName
 
     return <div className='print-return-full-invoice-data'>
       <table className='client-table'>
