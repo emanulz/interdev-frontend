@@ -20,8 +20,10 @@ export default class Prices_Prod extends React.Component {
             this.props.dispatch({type: 'PRODUCT_CODE_NOT_SET'})
             return
         }
+        let url = `/api/cross_reference/getProductInsight/?product_code=${this.props.product_code}&historic_purchase_count=${this.props.records_to_fetch}`
+        url = `${url}`
         const kwargs = {
-            url: `/api/cross_reference/getProductInsight/?product_code=${this.props.product_code}&historic_purchase_count=${this.props.records_to_fetch}`,
+            url: url,
             successType: 'PRODUCT_INSIGHT_SUCCESS',
             errorType: 'PRODUCT_INSIGHT_REJECTED',
 
@@ -244,7 +246,8 @@ export default class Prices_Prod extends React.Component {
         const options = {
             title: "Historico de Costos y Precios",
             yAxisLegend: "Precio",
-            xAxisLegend: "Fecha"
+            xAxisLegend: "Fecha",
+            chart_type: 'bar'
         }
 
         const sups_table = this.buildSuppliersTable()

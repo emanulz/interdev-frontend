@@ -58,9 +58,6 @@ export default class General_Chart extends React.Component {
 
     configureChartOptions(chart){
         
-        //chart.options.title.display=true
-        //chart.options.title.text="MAHALO"
-
         if(this.props.chart_data.datasets === undefined){
             return
         }
@@ -108,7 +105,19 @@ export default class General_Chart extends React.Component {
         const chart_data = this.customizeChartData()
         const chart_options = this.configureChartOptions()
 
-        const price_chart = <Bar data={chart_data} options={chart_options}/>
+        let price_chart  = undefined
+        switch(this.props.options.chart_type){
+            case 'bar':
+            {
+                price_chart = <Bar data={chart_data} options={chart_options}/>
+                break
+            }
+            case 'line':
+            {
+                price_chart = <Line data={chart_data} options={chart_options}/>
+            }
+        }
+        
         this.configureChartOptions(price_chart)
 
         console.log("Modified data --> ", chart_data)
