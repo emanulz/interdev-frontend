@@ -31,7 +31,7 @@ export default class ReprintRegisterClosurePanel extends React.Component {
 
 
   getZpl(){
-    document.getElementById('link').click()
+    document.getElementById('link_closure').click()
   }
 
 
@@ -55,11 +55,11 @@ export default class ReprintRegisterClosurePanel extends React.Component {
     if(this.props.config){
       if(this.props.config.EnableZplDownloads){
         if(this.props.registerClosure){
-          zpl_link = <a id="link" href={`/api/saleslist/get_zpl_closure/?closure_id=${this.props.registerClosure.id}`}></a>
+          zpl_link = <a id="link_closure" href={`/api/saleslist/get_zpl_closure/?closure_id=${this.props.registerClosure.id}`}></a>
           zpl_button = <i onClick={this.getZpl.bind(this)} className='fa fa-download' aria-hidden='true' />
         }
       }
-      zpl_link = <a id="link" href={`/api/saleslist/get_zpl_closure/?closure_id=${this.props.registerClosure.id}`}></a>
+      zpl_link = <a id="link_closure" href={`/api/saleslist/get_zpl_closure/?closure_id=${this.props.registerClosure.id}`}></a>
       
     }
 
