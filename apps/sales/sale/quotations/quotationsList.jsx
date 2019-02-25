@@ -7,6 +7,7 @@ import {getFullClientById, determinClientName, determinClientLastName} from '../
 import {productSelected, setProduct} from '../../general/product/actions.js'
 import alertify from 'alertifyjs'
 import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
+import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
 
 @connect((store) => {
   return {
@@ -18,7 +19,8 @@ import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
     globalDiscount: store.cart.globalDiscount,
     warehouse_id: store.userProfile.salesWarehouse,
     priceListSelected: store.priceList.listSelected,
-    usePriceListAsDefault: store.priceList.useAsDefault
+    usePriceListAsDefault: store.priceList.useAsDefault,
+    searchResults: store.presaleSearch.searchResults
   }
 })
 export default class QuotationsPanel extends React.Component {
@@ -160,8 +162,8 @@ export default class QuotationsPanel extends React.Component {
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-
-    const quotations = this.props.quotations
+    const quotations = this.props.searchResults.length ? this.props.searchResults : this.props.quotations
+    // const quotations = this.props.quotations
 
     const itemsToRender = quotations.map(quotation => {
       let extras = {
@@ -172,9 +174,20 @@ export default class QuotationsPanel extends React.Component {
           email: ''
         }
       }
+
       try {
         extras = quotation.extras ? JSON.parse(quotation.extras) : extras
       } catch (err) { console.log('ERROR PARSE', err) }
+      try {
+        quotation.user = JSON.parse(quotation.user)
+      } catch (err) { }
+      try {
+        quotation.cart = JSON.parse(quotation.cart)
+      } catch (err) { }
+      try {
+        quotation.client = JSON.parse(quotation.client)
+      } catch (err) { }
+
       const clientName = determinClientName(quotation.client, extras.client)
       const clientLastName = determinClientLastName(quotation.client, extras.client)
       const presellerName = quotation.user.first_name
@@ -197,7 +210,11 @@ export default class QuotationsPanel extends React.Component {
         COTIZACIONES SIN FACTURAR
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
+      <div className='quotations-panel-search'>
+        <SearchAdmin model='presale' namespace='presaleSearch' presale_type='QUOTING' />
+      </div>
       <div className='quotations-panel-container'>
+
         <div className='col-xs-12'>
           <table className='table'>
             <thead>

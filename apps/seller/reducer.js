@@ -45,6 +45,7 @@ export default combineReducers({
   clientCreatePanel,
   productSearch: search('productSearch'),
   clientSearch: search('clientSearch'),
+  presaleSearch: search('presaleSearch'),
   completed,
   printPresale,
   extras,
