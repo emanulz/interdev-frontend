@@ -116,14 +116,155 @@ export default class Sups_Prod extends React.Component {
     }
 
     buildPerMonthMoneyChartOrTable(){
-
+        if(this.props.supplier_insight==null){
+            return ''
+        }
         
         if(this.state.per_month_is_table){
+            const header = [
+                {
+                    field: 'month',
+                    text: 'Periódo'
+                },
+                {
+                    field: 'total_money',
+                    text: 'Monto',
+                    type: 'price'
+                },
+                {
+                    field: 'purchases_count',
+                    text: 'Facturas'
+                }
+            ]
+            const keys = Object.keys(this.props.supplier_insight.per_month_money)
+            console.log("KEYS --> ", keys)
+            const data = keys.map(key=>{
+                let target = this.props.supplier_insight.per_month_money[key]
+                return {
+                    month: key,
+                    total_money: target.total_money,
+                    purchases_count: target.month_purchases.length
+                }
+            })
             console.log("Building a table")
+            return {
+                header: header,
+                data: data
+            }
         }else{
             console.log("Build a chart of type: ", this.state.per_month_chart_type)
         }
     }
+
+    openPurchaseInNewWindow(bound){
+        window.open(`/purchases/purchase/${bound}`)
+    }
+
+    exploreNumericKey(key){
+        let data = {
+            consecutivo: '',
+            fecha_emision: '',
+            emisor: '',
+
+        }
+        if(key.length ===50){
+            
+            data = {
+                consecutivo: `${key.substring(21, 41)}`,
+                fecha_emision: `${key.substring(3,5)}-${key.substring(5,7)}-${key.substring(7,9)}`,
+                emisor: `${key.substring(9, 21)}`,
+    
+            }
+            const type_code = data['consecutivo'].substring(8,10)
+
+            let type_string = ''
+            switch(type_code){
+                case '01':
+                {
+                    type_string = "FE"
+                    break
+                }
+                case '02':
+                {
+                    type_string = "NC"
+                    break
+                }
+                case '03':
+                {
+                    type_string = "ND"
+                    break
+                }
+                case '05':
+                {
+                    type_string = "TE"
+                    break
+                }
+            }
+            data['doc_type'] = type_string
+        }
+        return data
+    }
+
+    buildPurchasesListTable(){
+        if(this.props.supplier_insight==null){
+            return ''
+        }
+        const header = [
+            {
+                field: 'consecutive',
+                text: 'Consecutivo',
+                onClickFunction: this.openPurchaseInNewWindow,
+                type: 'function_on_click'
+            },
+            {
+                field: 'consecutive_hacienda',
+                text: 'Consecutivo',
+            },
+            {
+                field: 'money',
+                text: 'Monto Factura',
+                type: 'price'
+            },
+            {
+                field: 'balance',
+                text: 'Pendiente Pago',
+                type: 'price'
+            },
+            {
+                field: 'warehouse_name',
+                text: 'Bodega Ingreso',
+            },
+            {
+                field: 'purchase_type',
+                text: 'Tipo Pago',
+            },
+            {
+                field: 'doc_type',
+                text: 'Tipo Comprobante'
+            }
+
+        ]
+
+        const data = this.props.supplier_insight.individual_purchases.map(pur=>{
+            const explore_key = this.exploreNumericKey(pur.numeric_key)
+            return {
+                consecutive: pur.consecutive,
+                consecutive_hacienda: explore_key.consecutivo,
+                money: pur.money,
+                balance: pur.balance,
+                warehouse_name: pur.warehouse.name,
+                purchase_type: pur.purchase_type,
+                doc_type: explore_key.doc_type
+
+            }
+        })
+        return {
+            header: header,
+            data: data
+        }
+
+    }
+
 
     render(){
 
@@ -137,11 +278,23 @@ export default class Sups_Prod extends React.Component {
         //build the data for the per month sales
         const per_month_data = this.buildPerMonthMoneyChartOrTable()
         let per_month_display = ''
-        if(this.state.per_month_is_table){
-            per_month_display = <AdminTable />
-        }else{
-            per_month_display = <General_Chart/>
+
+        const purchases_list_table_data =this.buildPurchasesListTable()
+        let purchases_list_table = ''
+
+        if(this.props.supplier_insight != null){
+            if(this.state.per_month_is_table){
+                per_month_display = <AdminTable headerOrder={per_month_data.header}
+                    data={per_month_data.data} />
+            }else{
+                per_month_display = <General_Chart/>
+            }
+            
+            purchases_list_table = <AdminTable headerOrder={purchases_list_table_data.header}
+            data={purchases_list_table_data.data} />
+
         }
+
 
         return <div >
             <div className='cross-header'>
@@ -201,7 +354,21 @@ export default class Sups_Prod extends React.Component {
                         className='form-control btn-primary'>
                             {this.state.per_month_is_table? 'Mostrar Gráfico': 'Mostrar Tabla'}
                         </button>
+                </div>
+                <div className="cross-zone-per-month-container">
+                    {per_month_display}
+                </div>
+                
+            </div>
 
+            <div className="cross-zone zone-3"> 
+
+                <div className="cross-zone-title">
+                    <h1>Detalle de Facturas</h1>
+                </div>
+
+                <div className="cross-zone-purchases-detail">
+                    {purchases_list_table}
                 </div>
 
             </div>

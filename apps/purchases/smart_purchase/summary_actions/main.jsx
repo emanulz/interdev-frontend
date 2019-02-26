@@ -165,7 +165,7 @@ export default class Summary_Actions extends React.Component {
             </div>
 
             }
-            if(!doc.already_loaded){
+            if(!doc.already_loaded && doc.proveedor !=="not_found"){
                 associateCodes = <div className="doc-actions-action"
                     onClick={this.goToStepB.bind(this)}>
                     <div className="doc-actions-action-row">
