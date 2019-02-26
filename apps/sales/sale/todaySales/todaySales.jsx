@@ -53,7 +53,7 @@ export default class TodaySalesPanel extends React.Component {
         <td>{presale.consecutive}</td>
         <td>{`${formatDateTimeAmPm(presale.created)}`}</td>
         <td>{`${presale.client.name} ${presale.client.last_name}`}</td>
-        <td>{presellerName}</td>
+        <td className='preseller'>{presellerName}</td>
         <td>₡ {parseFloat(presale.cart.cartTotal).formatMoney(2, ',', '.')}</td>
       </tr>
     })
@@ -72,7 +72,7 @@ export default class TodaySalesPanel extends React.Component {
                 <td>#</td>
                 <td>Fecha</td>
                 <td>Cliente</td>
-                <td>Cajero</td>
+                <td className='preseller'>Cajero</td>
                 <td>Monto</td>
               </tr>
             </thead>

@@ -14,12 +14,21 @@
   &-container
     display: flex
     flex-flow: row
+    @media screen and (max-width: 900px)
+      flex-flow: column
   &-crc
     width: 50%
     padding: 0 60px
+    @media screen and (max-width: 900px)
+      width: 100%
+      padding: 10px 0
   &-usd
     width: 50%
     padding: 0 60px
+    @media screen and (max-width: 900px)
+      width: 100%
+      padding: 0
+      padding: 10px 0
   &-row
     width: 100%
     display: flex

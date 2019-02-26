@@ -8,6 +8,11 @@
   box-shadow: -2px 5px 10px 1px rgba(0,0,0,.176)
   transition: all 0.3s ease-in-out
   overflow-y: auto
+  @media screen and (max-width: 900px)
+    width: 100%
+    right: -100%
+    & .preseller
+      display: none
   &.is-visible
       right: 0
       z-index: 15

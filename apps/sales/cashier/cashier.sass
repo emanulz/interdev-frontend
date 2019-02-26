@@ -5,12 +5,18 @@
   height: 100%
   position: relative
   font-family: 'Source Sans Pro', sans-serif
+  @media screen and (max-width: 900px)
+      flex-flow: column
+      height: auto
   &-content
     height: 100%
     width: 70%
     transition: width 0.3s ease
     position: absolute
     left: 0
+    @media screen and (max-width: 900px)
+      width: 100%
+      position: relative
     &.fullWidth
       width: 100%
     &-total
@@ -39,6 +45,11 @@
     left: 70%
     display: flex
     flex-flow: column
+    @media screen and (max-width: 900px)
+      width: 100%
+      position: relative
+      left: 0
+    left: 70%
     &.collapsed
       left: 100%
     &-arrow

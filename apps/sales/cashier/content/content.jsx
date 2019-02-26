@@ -139,10 +139,10 @@ export default class Main extends React.Component {
           {crcBills}
           <div className='cashier-content-row row-totals'>
             <h2>Total ₡</h2>
-            <input 
-            onChange={this.handleTotalSetCRC.bind(this, 'CRC')}
-            value={this.props.openTotalCRC}
-            type='number' name='total-crc' />
+            <input
+              onChange={this.handleTotalSetCRC.bind(this, 'CRC')}
+              value={this.props.openTotalCRC}
+              type='number' name='total-crc' />
           </div>
 
         </div>
@@ -155,10 +155,10 @@ export default class Main extends React.Component {
           </div>
           <div className='cashier-content-row row-totals'>
             <h2>Total $</h2>
-            <input 
-            onChange={this.handleTotalSetCRC.bind(this, 'USD')}
-            value={this.props.openTotalUSD}
-            type='number' name='total-usd' />
+            <input
+              onChange={this.handleTotalSetCRC.bind(this, 'USD')}
+              value={this.props.openTotalUSD}
+              type='number' name='total-usd' />
           </div>
         </div>
       </div>
