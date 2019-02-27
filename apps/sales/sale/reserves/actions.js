@@ -35,7 +35,7 @@ export function getPendingReserves(kwargs) {
   const filterField3 = kwargs.filterField3
   const ordering = kwargs.ordering
 
-  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&presale_type=RESERVE&ordering=${ordering}&limit=50`
+  const urltoFetch = `${url}/?${filterField}=${filter}&${filterField2}=${filter2}&${filterField3}=${filter3}&destroyed=False&presale_type=RESERVE&ordering=${ordering}&limit=50`
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {

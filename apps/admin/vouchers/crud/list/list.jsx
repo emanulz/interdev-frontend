@@ -197,6 +197,10 @@ export default class List extends React.Component {
         text: 'Monto',
         type: 'price'
       }, {
+        field: 'created',
+        text: 'Fecha',
+        type: 'date'
+      }, {
         field: 'description',
         text: 'Descripción'
       }, {
