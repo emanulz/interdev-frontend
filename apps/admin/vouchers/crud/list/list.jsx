@@ -114,6 +114,10 @@ export default class List extends React.Component {
     })
   }
 
+  reprintElement(item) {
+    console.log('ITEM IN VOUCHER', item)
+  }
+
   render() {
 
     const getClientNameClosure = (item) => {
@@ -220,6 +224,12 @@ export default class List extends React.Component {
         text: 'Anular',
         number: '2',
         worker_method: determinNullAction
+      }, {
+        field: 'id',
+        text: 'Factura',
+        type: 'function_on_click_pass_element',
+        textToRender: 'Ver',
+        onClickFunction: this.reprintElement
       }
     ]
 

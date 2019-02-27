@@ -436,6 +436,15 @@ export default class AdminTable extends React.Component {
               </td>
               break
             }
+            case 'function_on_click_pass_element':
+            {
+              const visible = header.textToRender ? header.textToRender : itemToRender
+              const ref = header.href ? header.href : '#'
+              item = <td key={`${el[idField]}_${header.field}_fclick_pass`}>
+                <a onClick={header.onClickFunction.bind(this, el)} href={ref} >{visible}</a>
+              </td>
+              break
+            }
             case 'function_element':
             {
               const element = header.worker_method(el)
