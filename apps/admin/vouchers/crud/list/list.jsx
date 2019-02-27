@@ -8,7 +8,8 @@ import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
 import { getPaginationItemDispatch } from '../../../../../utils/api.js'
 import Pagination from '../../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
-import {loadCashAdvanceToPrint} from '../../../../../general/printCashAdvance/actions.js'
+import {loadCashAdvanceToPrintId} from '../../../../../general/printCashAdvance/actions.js'
+import {loadReturnToPrintID} from '../../../../../general/printReturn/actions.js'
 import alertify from 'alertifyjs'
 import {markVoucher} from '../../actions.js'
 
@@ -35,10 +36,6 @@ export default class List extends React.Component {
     }
 
     this.props.dispatch(getPaginationItemDispatch(cashAdvanceKwargs))
-  }
-
-  reprintCashAdvance(item) {
-    this.props.dispatch(loadCashAdvanceToPrint(item))
   }
 
   markAsApplied(id, consecutive) {
@@ -115,7 +112,16 @@ export default class List extends React.Component {
   }
 
   reprintElement(item) {
-    console.log('ITEM IN VOUCHER', item)
+    if (item.voucher_type == 'CREDIT_NOTE') {
+      this.props.dispatch(loadReturnToPrintID(item.return_id))
+    } else {
+      if (item.voucher_type == 'CASH_ADVANCE') {
+        this.props.dispatch(loadCashAdvanceToPrintId(item.cash_advance_id))
+      } else {
+        alertify.alert('ERROR AL REIMPRIMIR', `El voucher seleccionado #${item.consecutive},
+        con el tipo ${item.voucher_type}, no posee ningun tipo conocido, por favor cominiquese con el administrador del sistema.`)
+      }
+    }
   }
 
   render() {

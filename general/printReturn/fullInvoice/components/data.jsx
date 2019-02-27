@@ -5,7 +5,8 @@ import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 @connect((store) => {
   return {
     returnObject: store.printReturn.return_object,
-    creditNote: store.printReturn.credit_note
+    creditNote: store.printReturn.credit_note,
+    voucher: store.printReturn.voucher
   }
 })
 export default class Data extends React.Component {
@@ -15,6 +16,7 @@ export default class Data extends React.Component {
     const returnObject = this.props.returnObject
     const creditNote = this.props.creditNote
     const user = returnObject.user ? returnObject.user : ''
+    const voucher = this.props.voucher
 
     const date = returnObject.created
       ? `${formatDateTimeAmPm(returnObject.created)}`
@@ -27,6 +29,13 @@ export default class Data extends React.Component {
     const saleId = returnObject.sale_consecutive ? returnObject.sale_consecutive : '0001'
     const returnId = returnObject.consecutive ? returnObject.consecutive : '0001'
     const creditNoteId = creditNote.consecutive ? creditNote.consecutive : '0001'
+
+    const voucherRow = this.props.voucher.consecutive
+      ? <tr>
+        <th>Vale #:</th>
+        <td>{voucher.consecutive}</td>
+      </tr>
+      : <tr />
 
     return <div className='print-return-full-invoice-data'>
       <table className='client-table'>
@@ -45,13 +54,10 @@ export default class Data extends React.Component {
       <table className='datenum-table'>
         <tbody>
           <tr>
-            <th>N. de Devolución:</th>
-            <td>{returnId}</td>
-          </tr>
-          <tr>
             <th>N. de Nota:</th>
             <td>{creditNoteId}</td>
           </tr>
+          {voucherRow}
           <tr>
             <th>Fecha:</th>
             <td>{date}</td>

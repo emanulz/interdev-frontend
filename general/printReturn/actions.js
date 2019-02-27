@@ -55,3 +55,23 @@ export function loadReturnToPrint(consecutive) {
     })
   }
 }
+
+export function loadReturnToPrintID(returnId) {
+  return function(dispatch) {
+    dispatch({type: 'CLEAR_PRINT_RETURN_RETURN', payload: ''})
+    const url = `/api/returns/${returnId}`
+    axios.get(url).then(function(response) {
+
+      dispatch({type: 'SET_PRINT_RETURN_RETURN', payload: response.data})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+      dispatch({type: 'SHOW_PRINT_RETURN_PANEL', payload: ''})
+
+    }).catch(function(error) { // ON ERROR FETCHING PRERETURN CLEAN ALL
+      dispatch({type: 'CLEAR_PRINT_RETURN_RETURN', payload: ''})
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+      alertify.alert('ERROR', `Error al obtener el valor de la devolución del API, por favor intente de nuevo o comuníquese con el
+      administrador del sistema con el siguiete error: ${error}`)
+    })
+    // GET THE RETURN AND DISPATCH
+  }
+}

@@ -9,6 +9,7 @@ import ReprintInvoice from '../../../general/reprintInvoice/reprintInvoicePanel/
 import PrintPresale from '../../../general/printPresale/printPresalePanel/printPresalePanel.jsx'
 import PrintRegisterClosure from '../../../general/printRegisterClosure/printRegisterClosurePanel/printRegisterClosurePanel.jsx'
 import PrintCashAdvance from '../../../general/printCashAdvance/printCashAdvancePanel/printCashAdvancePanel.jsx'
+import PrintReturn from '../../../general/printReturn/printReturnPanel/printReturnPanel.jsx'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import Currency from '../../../general/currency/currency.jsx'
@@ -64,6 +65,7 @@ export default class Main extends React.Component {
         <PrintPresale />
         <PrintRegisterClosure />
         <PrintCashAdvance />
+        <PrintReturn />
       </div>
     </Router>
 
