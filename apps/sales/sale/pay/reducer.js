@@ -9,7 +9,8 @@ const stateConst = {
     tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
     csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
   },
-  isCredit: false
+  isCredit: false,
+  extraVouchers: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -109,7 +110,7 @@ export default function reducer(state = stateConst, action) {
     {
       const newState = {...state}
       newState.payObject.tran[0].amount = action.payload
-      return newState
+      return {newState}
     }
 
     case 'UPDATE_TRANSFER_BANK':
@@ -129,6 +130,16 @@ export default function reducer(state = stateConst, action) {
     // ************************************
     // **************VOUCCHER**************
     // ************************************
+
+    case 'ADD_TO_EXTRA_VOUCHER_ARRAY':
+    {
+      const array = [...state.extraVouchers]
+      array.push(action.payload)
+      return {
+        ...state,
+        extraVouchers: array
+      }
+    }
 
     case 'ADD_TO_VOUCHER_ARRAY':
     {

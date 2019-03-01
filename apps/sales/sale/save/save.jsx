@@ -92,8 +92,8 @@ export default class SaveBtn extends React.Component {
       const __this = _this
       this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      this.props.dispatch(loadSaleToReprint(data.consecutive, true, __this.props.conf.NoF5AfterSendOrPrint))
-      this.props.dispatch({type: 'SET_SALE', payload: data})
+      this.props.dispatch(loadSaleToReprint(data.sale.consecutive, true, __this.props.conf.NoF5AfterSendOrPrint))
+      this.props.dispatch({type: 'SET_SALE', payload: data.sale})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
     }).catch((err) => {
       console.log(err.response.data)

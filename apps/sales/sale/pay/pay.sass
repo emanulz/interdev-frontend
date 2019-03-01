@@ -78,6 +78,13 @@
         color: white
         font-size: 18px
         line-height: 30px
+    & .add-voucher-btn
+        position: absolute
+        right: 15px
+        top: 7px
+        cursor: pointer
+        &:hover
+            color: #cacaca
     &-content
         position: relative
         display: block
@@ -250,16 +257,19 @@ input:focus + label
     background-color: $PRIMARY-COLOR
     color: white
     &-consecutive
-        width: 20%
+        width: 10%
     &-date
-        width: 25%
+        width: 20%
         text-align: center
+    &-client
+        width: 30%
+        text-align: left
     &-amount
-        width: 40%
+        width: 30%
         text-align: center
     &-checkbox
         text-align: center
-        width: 15%
+        width: 10%
 
 .voucher-item
     display: flex
@@ -268,15 +278,18 @@ input:focus + label
     padding: 5px
     line-height: 40px
     &-consecutive
-        width: 20%
+        width: 10%
     &-date
-        width: 25%
+        width: 20%
         text-align: center
+    &-client
+        width: 30%
+        text-align: left
     &-amount
-        width: 40%
+        width: 30%
         text-align: center
     &-checkbox
-        width: 15%
+        width: 10%
         text-align: center
         & input
             margin: 0
