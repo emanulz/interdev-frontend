@@ -30,7 +30,9 @@ export default class PayOther extends React.Component {
   //     this.props.dispatch({type: 'REMOVE_FROM_VOUCHER_ARRAY', payload: payload})
   //   }
   // }
-
+  componentWillMount() {
+    this.props.dispatch({type: 'CLEAR_PAY_OBJECT_MANTAIN_METHOD', payload: ''})
+  }
   addVoucherToExtra() {
     const _this = this
     alertify.prompt('Usar Vale Existente', 'Ingrese el número de vale a utilizar', ''
