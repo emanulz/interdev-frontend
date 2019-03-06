@@ -15,19 +15,19 @@ export default class Data extends React.Component {
 
     const returnObject = this.props.returnObject
     const creditNote = this.props.creditNote
-    const user = returnObject.user ? returnObject.user : ''
+    // const user = returnObject.user ? returnObject.user : ''
     const voucher = this.props.voucher
 
     const date = returnObject.created
       ? `${formatDateTimeAmPm(returnObject.created)}`
       : `${formatDateTimeAmPm(new Date())}`
-    const cashierName = user.first_name
-      ? `${user.first_name} ${user.last_name}`
-      : user.length ? `${user.username}` : ''
+    // const cashierName = user.first_name
+    //   ? `${user.first_name} ${user.last_name}`
+    //   : user.length ? `${user.username}` : ''
 
     const client = returnObject.client ? `${returnObject.client.code} - ${returnObject.client.name} ${returnObject.client.last_name}` : '00 - Cliente de Contado'
     const saleId = returnObject.sale_consecutive ? returnObject.sale_consecutive : '0001'
-    const returnId = returnObject.consecutive ? returnObject.consecutive : '0001'
+    // const returnId = returnObject.consecutive ? returnObject.consecutive : '0001'
     const creditNoteId = creditNote.consecutive ? creditNote.consecutive : '0001'
 
     const voucherRow = this.props.voucher.consecutive

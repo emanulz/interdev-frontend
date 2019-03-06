@@ -1,7 +1,15 @@
 // ------------------------------------------------------------------------------------------
 // MODULE IMPORTS
 // ------------------------------------------------------------------------------------------
-// import alertify from 'alertifyjs'
+import alertify from 'alertifyjs'
+import axios from 'axios'
+
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 // Finds a code in the cart and sends a dispatch to remove it from cart based on index
 export function updateStoreCashAmount(amount, saleTotal, client, payObject, dispatch, isCredit) {
@@ -136,9 +144,15 @@ export function updateStoreTransferNumber(number) {
 
 export function updateStoreVoucherAmount(checked, id, amount, saleTotal, client, payObject, dispatch, isCredit) {
 
+  let amountToSpend = 0
+
+  if (checked) {
+    amountToSpend = determinVoucherAmountToSpend(payObject, saleTotal, parseFloat(amount))
+  }
+
   const payload = {
     voucherNumber: id,
-    amount: parseFloat(amount),
+    amount: parseFloat(amountToSpend),
     type: 'VOUC'
   }
 
@@ -241,4 +255,73 @@ function getPayVouchers(payObject) {
     total += payObject.vouc[item].amount
   }
   return total
+}
+
+function determinVoucherAmountToSpend(payObject, saleTotal, voucherTotalAmount) {
+  const vouchersSpent = getPayVouchers(payObject)
+  if ((saleTotal - vouchersSpent) >= voucherTotalAmount) {
+    return voucherTotalAmount
+  }
+  if ((saleTotal - vouchersSpent) < voucherTotalAmount) {
+    return saleTotal - vouchersSpent
+  }
+}
+
+export function updatePayObject(method, amount, saleTotal, client, payObject, dispatch) {
+  switch (method) {
+    case 'CASH':
+    {
+    } // case
+  }
+}
+
+export function addToExtraVoucher(voucher) {
+
+  const url = `/api/creditvoucherslist/?consecutive=${voucher}`
+
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      if (response.data.results.length > 0) {
+        if (response.data.results.length > 1) {
+          alertify.alert('ATENCIÓN', `Se encontraron mas de un Vale con el consecutivo #${voucher}, esto es un comportamiento anormal, se utilizará el primero de la lista, verifique los datos.`)
+        }
+        if (response.data.results[0].is_null) {
+          alertify.alert('ERROR', `El Vale con el consecutivo #${voucher} se encuentra en estado ANULADO, por favor verifique los datos o consulte con los administradores.`)
+          dispatch({type: 'FETCHING_DONE', payload: ''})
+          return false
+        }
+
+        if (response.data.results[0].expired) {
+          alertify.alert('ERROR', `El Vale con el consecutivo #${voucher} se encuentra en estado EXPIRADO, por favor verifique los datos o consulte con los administradores.`)
+          dispatch({type: 'FETCHING_DONE', payload: ''})
+          return false
+        }
+
+        if (response.data.results[0].voucher_applied) {
+          alertify.alert('ERROR', `El Vale con el consecutivo #${voucher} se encuentra en estado APLICADO, por favor verifique los datos o consulte con los administradores.`)
+          dispatch({type: 'FETCHING_DONE', payload: ''})
+          return false
+        }
+
+        dispatch({type: 'ADD_TO_EXTRA_VOUCHER_ARRAY', payload: response.data.results[0]})
+      } else {
+        alertify.alert('ERROR', `No se encontraron Vales con el consecutivo #${voucher}, asegurese de no estar utilizando el número de nota de crédito o adelanto.`)
+      }
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    }).catch(function(err) {
+      console.log(err.response.status)
+      // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `Error al Obtener el Vale, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `Error al Obtener el Vale, ERROR: ${err}.`)
+      }
+      dispatch({type: 'ADD_TO_EXTRA_VOUCHER_ARRAY_ERROR', payload: err})
+
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
 }

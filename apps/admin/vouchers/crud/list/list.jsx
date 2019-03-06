@@ -232,7 +232,7 @@ export default class List extends React.Component {
         worker_method: determinNullAction
       }, {
         field: 'id',
-        text: 'Factura',
+        text: 'Doc',
         type: 'function_on_click_pass_element',
         textToRender: 'Ver',
         onClickFunction: this.reprintElement

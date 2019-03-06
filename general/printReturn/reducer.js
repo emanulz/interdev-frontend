@@ -3,7 +3,8 @@ const stateConst = {
   isFull: false,
   return_object: {},
   credit_note: {},
-  voucher: {}
+  voucher: {},
+  electronic_note: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -49,6 +50,7 @@ export default function reducer(state = stateConst, action) {
       const returnObject = action.payload.return_object
       const creditNote = action.payload.credit_note
       const voucher = action.payload.voucher
+      const electronicNote = action.payload.electronic_note
       try {
         returnObject.client = JSON.parse(returnObject.client)
         returnObject.sale_cart = JSON.parse(returnObject.sale_cart)
@@ -59,7 +61,8 @@ export default function reducer(state = stateConst, action) {
         ...state,
         return_object: returnObject,
         credit_note: creditNote,
-        voucher: voucher
+        voucher: voucher,
+        electronic_note: electronicNote
       }
     } // case
 
