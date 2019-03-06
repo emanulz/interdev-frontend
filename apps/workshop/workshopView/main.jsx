@@ -101,7 +101,6 @@ export default class WorkshopView extends React.Component {
             if(kwargs.user_id){
                 saveKwargs.data['user_id'] = kwargs.user_id
             }
-            console.log("Sent --> ", wo.consecutive)
             patchWorkView(saveKwargs)
             return
     
@@ -456,8 +455,10 @@ export default class WorkshopView extends React.Component {
             
         }
 
+        const close_date = formatDate(this.props.work_order.close_date) !== "31/12/1969" ? formatDate(this.props.work_order.close_date) : 'Pendiente'
         let employee_name = `${employee.first_name? employee.first_name : 'Usuario'} ${employee.last_name? employee.last_name: 'Sistema'}`
         let updater_name = `${last_updater.first_name? last_updater.first_name : 'Usuario'} ${last_updater.last_name? last_updater.last_name: 'Sistema'}`
+
         const check_class = this.props.work_order.is_warranty ? "fa fa-check-square": "fa fa-square"
         return <div className="workshop-view-right-workorder" >
             <h1 className="workshop-view-right-workorder-section">Orden de trabajo</h1>
@@ -469,6 +470,10 @@ export default class WorkshopView extends React.Component {
             <div className="workshop-view-right-warranty-prop">
                 <h3 className="workshop-view-right-warranty-label">Fecha Creación:</h3>
                 <span className="workshop-view-right-warranty-data">{formatDate(this.props.work_order.created)}</span>
+            </div>
+            <div className="workshop-view-right-warranty-prop">
+                <h3 className="workshop-view-right-warranty-label">Fecha Cierre:</h3>
+                <span className="workshop-view-right-warranty-data">{close_date}</span>
             </div>
 
             <div className="workshop-view-right-warranty-prop">
