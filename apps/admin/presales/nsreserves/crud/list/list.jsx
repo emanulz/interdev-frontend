@@ -15,7 +15,7 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    presales: store.presales.reserves,
+    presales: store.presales.nsreserves,
     pageSize: store.pagination.pageSize,
     searchResults: store.adminSearch.searchResults
   }
@@ -28,9 +28,9 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const presaleKwargs = {
-      url: `/api/presales/?presale_type=RESERVE&limit=${this.props.pageSize}&ordering=-consecutive`,
-      successType: 'FETCH_RESERVES_PRESALES_FULFILLED',
-      errorType: 'FETCH_RESERVES_PRESALES_REJECTED'
+      url: `/api/presales/?presale_type=NSRESERVE&limit=${this.props.pageSize}&ordering=-consecutive`,
+      successType: 'FETCH_NSRESERVES_PRESALES_FULFILLED',
+      errorType: 'FETCH_NSRESERVES_PRESALES_REJECTED'
     }
 
     this.props.dispatch(getPaginationItemDispatch(presaleKwargs))
@@ -42,7 +42,7 @@ export default class List extends React.Component {
 
   markAsDestroyed(id, consecutive) {
     const _this = this
-    alertify.confirm('Descartar', `Desea descartar la reserva #${consecutive}? Esta acción no se puede
+    alertify.confirm('Descartar', `Desea descartar el apartado #${consecutive}? Esta acción no se puede
     deshacer.`, function() {
       _this.markAsDestroyedConfirmed(id)
     }, function() {
@@ -55,7 +55,7 @@ export default class List extends React.Component {
 
   markAsNull(id, consecutive) {
     const _this = this
-    alertify.confirm('Anular', `Desea Anuar la reserva #${consecutive}? Esta acción no se puede
+    alertify.confirm('Anular', `Desea Anuar el apartado #${consecutive}? Esta acción no se puede
     deshacer.`, function() {
       _this.markAsNullConfirmed(id)
     }, function() {
@@ -128,17 +128,17 @@ export default class List extends React.Component {
     const determinDestroyAction = (item) => {
       const _this = this
       function DestroyAction(item) {
-        if (item.presale_type != 'RESERVE') {
-          return 'NO RESERVA'
+        if (item.presale_type != 'NSRESERVE') {
+          return 'NO APARTADO'
         }
         if (item.destroyed) {
-          return 'YA MARCADA'
+          return 'YA MARCADO'
         }
         if (item.billed) {
-          return 'COBRADA'
+          return 'COBRADO'
         }
         if (item.is_null) {
-          return 'ANULADA'
+          return 'ANULADO'
         }
         if (!item.closed) {
           return 'EN CAJA'
@@ -154,17 +154,17 @@ export default class List extends React.Component {
     const determinNullAction = (item) => {
       const _this = this
       function NullAction(item) {
-        if (item.presale_type != 'RESERVE') {
-          return 'NO RESERVA'
+        if (item.presale_type != 'NSRESERVE') {
+          return 'NO APARTADO'
         }
         if (item.destroyed) {
-          return 'DESCARTADA'
+          return 'DESCARTADO'
         }
         if (item.billed) {
-          return 'COBRADA'
+          return 'COBRADO'
         }
         if (item.is_null) {
-          return 'YA ANULADA'
+          return 'YA ANULADO'
         }
         if (!item.closed) {
           return 'EN CAJA'
@@ -220,17 +220,17 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/presales/?presale_type=RESERVE' successType='FETCH_RESERVES_PRESALES_FULFILLED' errorType='FETCH_RESERVES_PRESALES_REJECTED' />
-        <Pagination url='/api/presales/?presale_type=RESERVE' successType='FETCH_RESERVES_PRESALES_FULFILLED' errorType='FETCH_RESERVES_PRESALES_REJECTED' />
+        <ResultsPerPage url='/api/presales/?presale_type=NSRESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
+        <Pagination url='/api/presales/?presale_type=NSRESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
       </div>
       : <div />
 
     return <div className='list list-container'>
       <div className='admin-list-header'>
-        <h1>Listado de Reservas:</h1>
+        <h1>Listado de Apartados:</h1>
       </div>
       {/* <SearchAdmin model='presale' namespace='adminSearch' /> */}
-      <SearchAdmin model='presale' namespace='adminSearch' presale_type='RESERVE' />
+      <SearchAdmin model='presale' namespace='adminSearch' presale_type='NSRESERVE' />
       {paginationDiv}
       {content}
     </div>

@@ -10,6 +10,7 @@ const stateConst = {
   restaurant: [],
   quoting: [],
   reserves: [],
+  nsreserves: [],
   permissions: defaultPermissions
 }
 
@@ -98,6 +99,23 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         reserves: []
+      }
+    } // case
+
+    case 'FETCH_NSRESERVES_PRESALES_FULFILLED':
+    {
+      return {
+        ...state,
+        nsreserves: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_NSRESERVES_PRESALES_REJECTED':
+    {
+      return {
+        ...state,
+        nsreserves: []
       }
     } // case
 
