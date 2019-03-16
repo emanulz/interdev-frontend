@@ -15,6 +15,7 @@ import Access from './forms/access.jsx'
 import WorkOrder from './forms/workOrders.jsx'
 import CashAdvances from './forms/cashAdvances.jsx'
 import CreditVouchers from './forms/creditVouchers.jsx'
+import CreditPayments from './forms/creditPayments.jsx'
 
 @connect((store) => {
   return {
@@ -39,6 +40,7 @@ export default class Permissions extends React.Component {
           <Tab tabFor='eight'>Ordenes de Trabajo</Tab>
           <Tab tabFor='nine'>Adelantos de Efectivo</Tab>
           <Tab tabFor='ten'>Vales de Crédito</Tab>
+          <Tab tabFor='eleven'>Pagos de Crédito</Tab>
         </TabList>
 
         <TabPanel tabId='one'>
@@ -79,6 +81,9 @@ export default class Permissions extends React.Component {
 
         <TabPanel tabId='ten'>
           <CreditVouchers />
+        </TabPanel>
+        <TabPanel tabId='eleven'>
+          <CreditPayments />
         </TabPanel>
 
       </Tabs>
