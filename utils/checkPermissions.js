@@ -52,7 +52,7 @@ export function checkSingleUserPermissions(kwargs) {
 export function assingUserPermission(kwargs, resolve, reject) {
   return function(dispatch) {
     const data = JSON.stringify(
-      {permission: kwargs.permission, userId: kwargs.userId, add: kwargs.add}
+      {permission: kwargs.permission, userId: kwargs.userId, add: kwargs.add, app_label: kwargs.app_label, backend_model: kwargs.backend_model}
     )
     console.log(data)
     // calls the function in backend to check permissions

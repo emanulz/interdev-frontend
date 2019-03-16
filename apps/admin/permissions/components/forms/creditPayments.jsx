@@ -7,23 +7,23 @@ import {assingUserPermission, checkSingleUserPermissions} from '../../../../../u
 
 @connect((store) => {
   return {
-    permissions: store.permissions.permissionsActive.credit_vouchers,
+    permissions: store.permissions.permissionsActive.credit_payments,
     user: store.users.userActive
   }
 })
-export default class CashAdvances extends React.Component {
+export default class CreditPayments extends React.Component {
 
   componentWillMount () {
 
     const permissions = {
-      add: 'money_returns.add_credit_voucher',
-      change: 'money_returns.change_credit_voucher',
-      list: 'money_returns.list_credit_voucher',
-      delete: 'money_returns.delete_credit_voucher'
+      add: 'credits.add_credit_payment',
+      change: 'credits.change_credit_payment',
+      list: 'credits.list_credit_payment',
+      delete: 'credits.delete_credit_payment'
     }
     const kwargs = {
       userId: this.props.user.id,
-      model: 'credit_vouchers',
+      model: 'credit_payments',
       permissions: permissions,
       success: 'SET_PERMISSIONS',
       fail: 'CLEAR_PERMISSIONS'
@@ -41,11 +41,11 @@ export default class CashAdvances extends React.Component {
     // add is the variable to see if is checked or not
     const kwargs = {
       userId: this.props.user.id,
-      model: 'credit_vouchers',
+      model: 'credit_payments',
       add: value,
       permission: permission,
-      app_label: 'money_returns',
-      backend_model: 'credit_voucher'
+      app_label: 'credits',
+      backend_model: 'credit_payment'
     }
 
     const _this = this
@@ -57,14 +57,14 @@ export default class CashAdvances extends React.Component {
 
     updatePromise.then(() => {
       const permissions = {
-        add: 'money_returns.add_credit_voucher',
-        change: 'money_returns.change_credit_voucher',
-        list: 'money_returns.list_credit_voucher',
-        delete: 'money_returns.delete_credit_voucher'
+        add: 'credits.add_credit_payment',
+        change: 'credits.change_credit_payment',
+        list: 'credits.list_credit_payment',
+        delete: 'credits.delete_credit_payment'
       }
       const kwargs2 = {
         userId: this.props.user.id,
-        model: 'credit_vouchers',
+        model: 'credit_payments',
         permissions: permissions,
         success: 'SET_PERMISSIONS',
         fail: 'CLEAR_PERMISSIONS'
@@ -84,34 +84,34 @@ export default class CashAdvances extends React.Component {
     return <div className='permissions-container-permissions-tab'>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Listar Vales de Crédito</div>
+        <div className='permissionName'>Listar Pagos de Crédito</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.list}
-            onChange={this.handleInputChange.bind(this, 'list_credit_voucher')} />
+            onChange={this.handleInputChange.bind(this, 'list_credit_payment')} />
         </div>
       </div>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Crear Vale de Crédito</div>
+        <div className='permissionName'>Crear Pago de Crédito</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.add}
-            onChange={this.handleInputChange.bind(this, 'add_credit_voucher')} />
+            onChange={this.handleInputChange.bind(this, 'add_credit_payment')} />
         </div>
       </div>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Modificar Vale de Crédito</div>
+        <div className='permissionName'>Modificar Pago de Crédito</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.change}
-            onChange={this.handleInputChange.bind(this, 'change_credit_voucher')} />
+            onChange={this.handleInputChange.bind(this, 'change_credit_payment')} />
         </div>
       </div>
 
       <div className='permissions-container-permissions-tab-item'>
-        <div className='permissionName'>Eliminar Vale de Crédito</div>
+        <div className='permissionName'>Eliminar Pago de Crédito</div>
         <div className='permissionInput'>
           <input type='checkbox' checked={this.props.permissions.delete}
-            onChange={this.handleInputChange.bind(this, 'delete_credit_voucher')} />
+            onChange={this.handleInputChange.bind(this, 'delete_credit_payment')} />
         </div>
       </div>
 

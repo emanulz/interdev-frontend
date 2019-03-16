@@ -69,6 +69,12 @@ const permissionsModel = {
     add: false,
     change: false,
     delete: false
+  },
+  credit_payments: {
+    list: false,
+    add: false,
+    change: false,
+    delete: false
   }
 }
 
