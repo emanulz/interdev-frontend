@@ -1,12 +1,25 @@
 import {makeTableFriendly} from './actions.js'
 
+// const defaultDepartment = {
+//     consecutive: 0,
+//     id: "0000",
+//     identifier: "GG",
+//     name: 'Por defecto',
+
+// }
+
+const defaultDepartment = "0000"
+
+
 const stateConst = {
     reportData: [],
     reportHeader: [],
     reportPrettyData: [],
     start_date: '',
     end_date: '',
-    selected_section: 'purchases_sales'
+    selected_section: 'purchases_sales',
+    departments: [],
+    selectedDepartment: defaultDepartment
   }
   
 
@@ -33,6 +46,21 @@ export default function reducer(state=stateConst, action){
             return {
                 ...state,
                 end_date: action.payload
+            }
+        }
+
+        case 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED':
+        {
+            return {
+                ...state,
+                departments: action.payload
+            }
+        }
+        case 'FETCH_PRODUCT_DEPARTMENTS_REJECTED':
+        {
+            return {
+                ...state,
+                departments: []
             }
         }
         case 'PURCHASES_VRS_SALES_FETCHED':

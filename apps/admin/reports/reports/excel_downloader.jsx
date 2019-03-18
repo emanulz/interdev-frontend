@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getSingleItemDispatch} from '../../../../utils/api.js'
+import {getSingleItemDispatch, getItemReturn} from '../../../../utils/api.js'
 import alertify from 'alertifyjs'
+import Select2 from 'react-select2-wrapper'
 
 @connect(store =>{
     return {
@@ -10,9 +11,12 @@ import alertify from 'alertifyjs'
         useRestaurant: store.config.globalConf.useRestaurant,
         WorkshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
         useLegacyd151: store.config.globalConf.useLegacyd151,
+        departments: store.generalReports.departments,
+        selectedDepartment: store.generalReports.selectedDepartment,
     }
 })
 export default class ExcelFetcher extends React.Component {
+
 
     onStartDateChange(e){
         this.props.dispatch({type: 'SET_START_DATE', payload:e.target.value})
@@ -43,6 +47,86 @@ export default class ExcelFetcher extends React.Component {
         return [s_date, e_date]
 
     }
+
+    onFamilySelected(e){
+        console.log("Family selected --> ", e.target.value)
+        if(e.target.value == "0000"){
+            return //just the case where there are no families or was released on the default starting option
+        }
+        const target_date = this.getReportStartEnd()
+        const start = target_date[0]
+        const end = target_date[1]
+        
+        const url = `/reportsExcel/utilitiesfamily/?start=${start}&end=${end}&department=${e.target.value}`
+        window.location.href = url
+    }
+
+    onFamilySelectedInventory(e){
+        console.log("Family selected Utility--> ", e.target.value)
+        if(e.target.value == "0000"){
+            return //just the case where there are no families or was released on the default starting option
+        }
+       
+        const url = `/reportsExcel/invvalue/?department=${e.target.value}`
+        window.location.href = url
+    }
+
+    buildFamilyUtilityRequester(){
+
+        const departmentData = this.props.departments.map(department => {
+            return {text: `${department.identifier} - ${department.name}`, id: `${department.id}`}
+          })
+
+        return <div className="excel-fetcher-utility">
+            <div className="excel-fetcher-utility-family">
+                <div className="excel-fetcher-utility-family-label">
+                    Seleccione la familia:
+                </div>
+                <div className="excel-fetcher-utility-family-label">
+                    <Select2
+                        name='department'
+                        value={this.props.selectedDepartment}
+                        className='form-control'
+                        onSelect={this.onFamilySelected.bind(this)}
+                        data={departmentData}
+                        options={{
+                            placeholder: 'Elija una Familia...',
+                            noResultsText: 'Sin elementos'
+                        }}
+                    />
+                </div>
+            </div>
+        </div>
+    }
+
+    buildFamilyinventoryRequester(){
+
+        const departmentData = this.props.departments.map(department => {
+            return {text: `${department.identifier} - ${department.name}`, id: `${department.id}`}
+          })
+
+        return <div className="excel-fetcher-utility">
+            <div className="excel-fetcher-utility-family">
+                <div className="excel-fetcher-utility-family-label">
+                    Seleccione la familia:
+                </div>
+                <div className="excel-fetcher-utility-family-label">
+                    <Select2
+                        name='department'
+                        value={this.props.selectedDepartment}
+                        className='form-control'
+                        onSelect={this.onFamilySelectedInventory.bind(this)}
+                        data={departmentData}
+                        options={{
+                            placeholder: 'Elija una Familia...',
+                            noResultsText: 'Sin elementos'
+                        }}
+                    />
+                </div>
+            </div>
+        </div>
+    }
+
 
     render(){
 
@@ -95,7 +179,18 @@ export default class ExcelFetcher extends React.Component {
                 {rest_report}
                 <a href={`/reportsExcel/reservesdestroyed/?start=${s}&end=${e}`}>Reservas Descartadas</a>
             </div>
+            
+            <div className="excel-fetcher-title">
+                <h1>Reporte de Utilidad Por Familia</h1>
+            </div>
+            {this.buildFamilyUtilityRequester()}
 
+
+            <div className="excel-fetcher-title">
+                <h1>Reporte de Existencias Por Familia</h1>
+            </div>
+
+            {this.buildFamilyinventoryRequester()}
         </div>
     }
 }
