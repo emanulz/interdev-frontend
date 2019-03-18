@@ -60,7 +60,7 @@ export default class PayTransfer extends React.Component {
         <div className='pay-tag left'>MONTO:</div>
         <input value={this.props.tranferAmount} onChange={this.transferAmountChanged.bind(this)} type='Number' className='form-control' />
         <div className='pay-tag left'>BANCO:</div>
-        <input value={this.props.tranferBank} onChange={this.transferBankChanged.bind(this)} type='Number' className='form-control' />
+        <input value={this.props.tranferBank} onChange={this.transferBankChanged.bind(this)} type='Text' className='form-control' />
         <div className='pay-tag left'>REFERENCIA:</div>
         <input value={this.props.transferNumber} onChange={this.transferNumberChanged.bind(this)} type='Number' className='form-control' />
 
