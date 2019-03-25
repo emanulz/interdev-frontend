@@ -24,7 +24,7 @@ import {searchDiscountForTargetPrice} from '../../general/product/actions.js'
     calculatesDiscountForFinalPrice: store.config.globalConf.calculatesDiscountForFinalPrice,
     cartItems: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
-    client: store.clients.clientSelected,
+    client: store.clients.clientSelected
   }
 })
 export default class Buttons extends React.Component {

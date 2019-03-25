@@ -6,7 +6,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    client: store.clientUpdatePanel.clientActive
+    client: store.clientUpdatePanel.clientActive,
+    canAssingCreditInSales: store.config.globalConf.canAssingCreditInSales
   }
 })
 export default class Form extends React.Component {
@@ -53,6 +54,30 @@ export default class Form extends React.Component {
 
   render() {
 
+    const canAssingCreditInSales = this.props.canAssingCreditInSales
+
+    const creditDiv = canAssingCreditInSales
+      ? <div className='clientCreatePanel-content-form-inline'>
+        <div className='form-group'>
+          <label>Tiene Crédito</label>
+          <div className='insideIcon'>
+            <input checked={this.props.client.has_credit} name='has_credit' onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control creditCheckbox' />
+            <i className='fa fa-credit-card' />
+          </div>
+        </div>
+
+        <div className='form-group'>
+          <label>Limite de Crédito</label>
+          <div className='insideIcon'>
+            <input value={this.props.client.credit_limit} name='credit_limit' onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' />
+            <i className='fa fa-money' />
+          </div>
+        </div>
+      </div>
+      : <div />
+
     return <div className='clientUpdatePanel-content-form'>
 
       <div className='clientUpdatePanel-content-form-inline'>
@@ -95,6 +120,7 @@ export default class Form extends React.Component {
           </div>
         </div>
       </div>
+      {creditDiv}
       <div className='clientUpdatePanel-content-form-inline'>
         <div className='form-group'>
           <label>Tipo de Identificación</label>

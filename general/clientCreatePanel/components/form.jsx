@@ -12,7 +12,8 @@ import Select2 from 'react-select2-wrapper'
     provinces: store.clientCreatePanel.provinces,
     cantons: store.clientCreatePanel.cantons,
     districts: store.clientCreatePanel.districts,
-    towns: store.clientCreatePanel.towns
+    towns: store.clientCreatePanel.towns,
+    canAssingCreditInSales: store.config.globalConf.canAssingCreditInSales
   }
 })
 export default class Form extends React.Component {
@@ -124,6 +125,30 @@ export default class Form extends React.Component {
       return {text: `${town.code} - ${town.name}`, id: town.code}
     })
 
+    const canAssingCreditInSales = this.props.canAssingCreditInSales
+
+    const creditDiv = canAssingCreditInSales
+      ? <div className='clientCreatePanel-content-form-inline'>
+        <div className='form-group'>
+          <label>Tiene Crédito</label>
+          <div className='insideIcon'>
+            <input checked={this.props.client.has_credit} name='has_credit' onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control creditCheckbox' />
+            <i className='fa fa-credit-card' />
+          </div>
+        </div>
+
+        <div className='form-group'>
+          <label>Limite de Crédito</label>
+          <div className='insideIcon'>
+            <input value={this.props.client.credit_limit} name='credit_limit' onChange={this.handleInputChange.bind(this)}
+              type='number' className='form-control' />
+            <i className='fa fa-money' />
+          </div>
+        </div>
+      </div>
+      : <div />
+
     return <div className='clientCreatePanel-content-form'>
       <div className='clientCreatePanel-content-form-inline'>
         <div className='form-group'>
@@ -181,6 +206,7 @@ export default class Form extends React.Component {
           </div>
         </div>
       </div>
+      {creditDiv}
       <div className='clientCreatePanel-content-form-inline'>
         <div className='form-group'>
           <label>Tipo de Identificación</label>
