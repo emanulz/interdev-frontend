@@ -28,7 +28,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const presaleKwargs = {
-      url: `/api/presales/?presale_type=NSRESERVE&limit=${this.props.pageSize}&ordering=-consecutive`,
+      url: `/api/presales/?presale_type=NS_RESERVE&limit=${this.props.pageSize}&ordering=-consecutive`,
       successType: 'FETCH_NSRESERVES_PRESALES_FULFILLED',
       errorType: 'FETCH_NSRESERVES_PRESALES_REJECTED'
     }
@@ -220,8 +220,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/presales/?presale_type=NSRESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
-        <Pagination url='/api/presales/?presale_type=NSRESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
+        <ResultsPerPage url='/api/presales/?presale_type=NS_RESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
+        <Pagination url='/api/presales/?presale_type=NS_RESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
       </div>
       : <div />
 

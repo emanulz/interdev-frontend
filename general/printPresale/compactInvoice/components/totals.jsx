@@ -31,7 +31,25 @@ export default class Totals extends React.Component {
       discountTotal = sale.cart.discountTotal
       subTotalNoDiscount = sale.cart.cartSubtotalNoDiscount
     }
+    let wasNSReserve = false
+    try {
+      wasNSReserve = this.props.sale.presale_type == 'NS_RESERVE'
+    } catch (err) {}
 
+    const payments = parseFloat(total) - parseFloat(this.props.sale.balance)
+    const debt = total - payments
+    const extraRow1 = wasNSReserve
+      ? <tr>
+        <th>Abonos</th>
+        <td>₡ {payments.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+    const extraRow2 = wasNSReserve
+      ? <tr>
+        <th>Adeudado</th>
+        <td>₡ {debt.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
     return <div className='print-compact-presale-totals'>
 
       <table>
@@ -53,6 +71,8 @@ export default class Totals extends React.Component {
             <th>Total</th>
             <td>₡ {total.formatMoney(2, ',', '.')}</td>
           </tr>
+          {extraRow1}
+          {extraRow2}
         </tbody>
       </table>
 

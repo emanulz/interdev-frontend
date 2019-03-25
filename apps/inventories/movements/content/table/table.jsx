@@ -78,6 +78,7 @@ export default class Table extends React.Component {
         <td className='code-row'>Código</td>
         <td className='description-row'>Descripción</td>
         <td className='existence-row center'>{warehouseText}</td>
+        <td className='existence-row center'>Precio Venta</td>
         <td className='input-row center'>Movimiento</td>
       </tr>
 
@@ -90,11 +91,12 @@ export default class Table extends React.Component {
       const inventory = this.props.warehouseActive
         ? product.inventory_existent[this.props.warehouseActive]
         : product.inventory_existent.total
-
+      const productSellPrice = product.sell_price ? parseFloat(product.sell_price) : 0
       return <tr key={product.id}>
         <td>{product.code}</td>
         <td>{product.description}</td>
         <td className='center'>{inventory}</td>
+        <td className='center'>₡ {productSellPrice.formatMoney(2, ',', '.')}</td>
         <td className='center'>{movementBtn}</td>
       </tr>
     })
