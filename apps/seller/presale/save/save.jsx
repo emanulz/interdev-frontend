@@ -101,6 +101,7 @@ export default class SaveBtn extends React.Component {
     }).catch((err) => {
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
+      document.getElementById('sendPresaleButton').disabled = false
     })
 
   }

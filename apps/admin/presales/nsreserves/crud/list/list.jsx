@@ -154,7 +154,7 @@ export default class List extends React.Component {
     const determinNullAction = (item) => {
       const _this = this
       function NullAction(item) {
-        if (item.presale_type != 'NSRESERVE') {
+        if (item.presale_type != 'NS_RESERVE') {
           return 'NO APARTADO'
         }
         if (item.destroyed) {
@@ -230,7 +230,7 @@ export default class List extends React.Component {
         <h1>Listado de Apartados:</h1>
       </div>
       {/* <SearchAdmin model='presale' namespace='adminSearch' /> */}
-      <SearchAdmin model='presale' namespace='adminSearch' presale_type='NSRESERVE' />
+      <SearchAdmin model='presale' namespace='adminSearch' presale_type='NS_RESERVE' />
       {paginationDiv}
       {content}
     </div>
