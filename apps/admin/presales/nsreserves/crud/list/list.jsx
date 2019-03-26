@@ -128,7 +128,7 @@ export default class List extends React.Component {
     const determinDestroyAction = (item) => {
       const _this = this
       function DestroyAction(item) {
-        if (item.presale_type != 'NSRESERVE') {
+        if (item.presale_type != 'NS_RESERVE') {
           return 'NO APARTADO'
         }
         if (item.destroyed) {
