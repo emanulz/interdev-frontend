@@ -39,6 +39,7 @@ import cashAdvances from './cashAdvances/reducer.js'
 import creditVouchers from './vouchers/reducer.js'
 import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 import printReturn from '../../general/printReturn/reducer.js'
+import helpers from './helpers/reducer.js'
 
 export default combineReducers({
   users,
@@ -81,5 +82,6 @@ export default combineReducers({
   cashAdvances,
   printCashAdvance,
   creditVouchers,
-  printReturn
+  printReturn,
+  helpers
 })
