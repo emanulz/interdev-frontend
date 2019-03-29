@@ -143,13 +143,14 @@ export function getSearchDispatch(kwargs){
 export function getItemDispatch(kwargs) {
 
   const url = kwargs.url
+  console.log("GET THIS --> ", url)
   const successType = kwargs.successType
   const errorType = kwargs.errorType
 
   return function(dispatch) {
     axios.get(url).then(function(response) {
       dispatch({type: successType, payload: response.data.results})
-      dispatch({type: 'FETCHING_DONE', payload: ''})
+      dispatch({type: 'FETCHING_DONE'})
     }).catch(function(error) {
       console.log(error.response.status)
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
@@ -551,10 +552,7 @@ export function patchItems(kwargs, kwargs2) {
 // ------------------------------------------------------------------------------------------
 export function deleteItem(kwargs) {
 
-  const item = kwargs.item
   const url = kwargs.url
-  const model = kwargs.modelName
-  const user = kwargs.user
 
   return function(dispatch) {
 

@@ -13,7 +13,8 @@ import {connect} from 'react-redux'
     taxPayer: store.userProfile.taxPayer,
     config: store.config.globalConf,
     user: store.user.user,
-    installedApps: store.config.installed_apps
+    installedApps: store.config.installed_apps,
+    
   }
 })
 export default class SideMenu extends React.Component {
@@ -199,6 +200,55 @@ export default class SideMenu extends React.Component {
       }
     ]
 
+    //create the helpers menu only if there are any enabled
+    let collections_menu = ''
+    const helpModelsInUse = this.props.config.helpModelsInUse
+    console.log("help models in use --> ", helpModelsInUse)
+    if(helpModelsInUse != '' && helpModelsInUse != undefined){
+      const collection_names = helpModelsInUse.split(',')
+      if(collection_names.length>0){
+        const collection_childs = []
+        for(let item of collection_names){
+          if(item == ''){
+            continue
+          }
+          const item_capitalized =  item.charAt(0).toUpperCase() + item.slice(1)
+
+          collection_childs.push({
+            text: item_capitalized,
+            class: 'fa-truck',
+            href: `/admin/helpers/${item.trim()}`
+          })
+        }
+        if(collection_childs.length>0){
+          collections_menu = <ComposedItem mainTittle='Colecciones' mainIcon='fa-database' childItems={collection_childs} />
+        }
+        
+        //build the root component of the category
+      }
+      // const childCollections = [
+      //   {
+      //     text: 'Marcas',
+      //     class: 'fa-truck',
+      //     href: '/admin/helpers/marcas'
+      //   }, {
+      //     text: 'Colores',
+      //     class: 'fa-truck',
+      //     href: '/admin/helpers/colores'
+      //   }, {
+      //     text: 'Aparatos',
+      //     class: 'fa-truck',
+      //     href: '/admin/helpers/aparatos'
+      //   }, {
+      //     text: 'Desperfectos',
+      //     class: 'fa-truck',
+      //     href: '/admin/helpers/desperfectos'
+      //   }
+      // ]
+    }
+
+    
+
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const eInvoicingComponent = this.props.taxPayer.is_digital_invoicing_active
       ? <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} />
@@ -219,73 +269,13 @@ export default class SideMenu extends React.Component {
           </li>
           <ComposedItem mainTittle='Productos' mainIcon='fa-database' childItems={childProducts} />
           <ComposedItem mainTittle='Clientes' mainIcon='fa-street-view' childItems={chilClients} />
-          {/* <li>
-            <Link to='/admin/users'>
-              <span className='fa fa-user-circle' />
-              Usuarios</Link>
-          </li>
-          <li>
-            <Link to='/admin/permissions'>
-              <span className='fa fa-sitemap' />
-              Permisos</Link>
-          </li> */}
+  
           <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
           <ComposedItem mainTittle='Preventas' mainIcon='fa-list-ul' childItems={childPresales} />
-          {/* <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} /> */}
+          
           {eInvoicingComponent}
           <ComposedItem mainTittle='Administración' mainIcon='fa-tachometer' childItems={childAdmin} />
-          {/* <li>
-            <Link to='/admin/products'>
-              <span className='fa fa-database' />
-              Productos</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/clients'>
-              <span className='fa fa-street-view' />
-              Clientes</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/taxpayers'>
-              <span className='fa fa-user' />
-              Contribuyentes</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/clientcategories'>
-              <span className='fa fa-tasks' />
-              Categorías de clientes</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/senders'>
-              <span className='fa fa-user' />
-              Emisores</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/productdepartments'>
-              <span className='fa fa-tag' />
-              Familias de Productos</Link>
-          </li>
-          <li>
-            <Link to='/admin/productsubdepartments'>
-              <span className='fa fa-tags' />
-              Sub-Familias de Productos</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/products/importproducts'>
-              <span className='fa fa-indent' />
-              Importar Productos</Link>
-          </li> */}
-          {/* <li>
-            <Link to='/admin/suppliers'>
-              <span className='fa fa-truck' />
-              Proveedores</Link>
-          </li>
-          <li>
-            <Link to='/admin/warehouses'>
-              <span className='fa fa-building' />
-              Bodegas</Link>
-          </li> */}
-          {/* <ComposedItem mainTittle='Otras Aplicaciones' mainIcon='fa-gift' childItems={childApps} /> */}
-
+          {collections_menu}
         </ul>
       </div>
 
