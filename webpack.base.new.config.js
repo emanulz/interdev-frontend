@@ -18,7 +18,7 @@ const jsConfig = Object.assign({}, config, {
     workshop: './apps/workshop/app.js',
     inventories: './apps/inventories/app.js',
     purchases: './apps/purchases/app.js',
-    payables: './apps/payables/app.js',
+    // payables: './apps/payables/app.js',
     returns: './apps/returns/app.js',
     restaurant: './apps/restaurant/app.js',
     notes: './apps/notes/app.js'
