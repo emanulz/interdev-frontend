@@ -84,38 +84,102 @@ export default class Open extends React.Component {
   render () {
 
     const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
-    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
     const clusureCashCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_cash : 0
+    const crcBalance = parseFloat(crcTotals) - parseFloat(clusureCashCRC)
+    const crcBalanceTag = crcBalance >= 0 ? 'green' : 'red'
+
+    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
     const clusureCashUSD = this.props.registerClosure ? this.props.registerClosure.closure_money_usd_system_cash : 0
+    const usdBalance = parseFloat(usdTotals) - parseFloat(clusureCashUSD)
+    const usdBalanceTag = usdBalance >= 0 ? 'green' : 'red'
+    // logic to hide dolars if not present
+    const hideItemUSD = (usdTotals == 0 && clusureCashUSD == 0) ? 'hideTag' : ''
+
+    const cardTotals = 0
+    const clusureCardCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_card : 0
+    const crcCardBalance = parseFloat(cardTotals) - parseFloat(clusureCardCRC)
+    const crcCardBalanceTag = crcCardBalance >= 0 ? 'green' : 'red'
+
+    const transferTotals = 0
+    const clusureTransferCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_transfer : 0
+    const crcTransferBalance = parseFloat(cardTotals) - parseFloat(clusureTransferCRC)
+    const crcTransferBalanceTag = crcTransferBalance >= 0 ? 'green' : 'red'
+    // logic to hide dolars if not present
+    const hideItemTransfer = (transferTotals == 0 && clusureTransferCRC == 0) ? 'hideTag' : ''
+
     return <div>
-      <h1>TOTALES CIERRE</h1>
-      <h2>CIERRE CAJERO COLONES</h2>
-      <div className='cashier-aside-tag'>
-        ₡ {parseFloat(crcTotals).formatMoney()}
+      <h1>TOTALES:</h1>
+      <h2>EFECTIVO COLONES</h2>
+      <div className='cashier-aside-group'>
+        <div className='cashier-aside-group-tag'>
+          <h2>Sistema</h2>
+          <h1>₡ {parseFloat(clusureCashCRC).formatMoney()}</h1>
+        </div>
+        <div className='cashier-aside-group-tag'>
+          <h2>Cajero</h2>
+          <h1>₡ {parseFloat(crcTotals).formatMoney()}</h1>
+        </div>
+        <div className={`cashier-aside-group-tag ${crcBalanceTag}`}>
+          <h2>Balance</h2>
+          <h1>₡ {parseFloat(crcBalance).formatMoney()}</h1>
+        </div>
       </div>
-      <h2>CIERRE CAJERO DÓLARES</h2>
-      <div className='cashier-aside-tag'>
-        $ {parseFloat(usdTotals).formatMoney()}
+      <hr />
+
+      <h2 className={`${hideItemUSD}`}>SISTEMA EFECTIVO DÓLARES</h2>
+      <div className={`cashier-aside-group ${hideItemUSD}`}>
+        <div className={`cashier-aside-group-tag ${hideItemUSD}`}>
+          <h2>Sistema</h2>
+          <h1>$ {parseFloat(clusureCashUSD).formatMoney()}</h1>
+        </div>
+        <div className='cashier-aside-group-tag'>
+          <h2>Cajero</h2>
+          <h1>$ {parseFloat(usdTotals).formatMoney()}</h1>
+        </div>
+        <div className={`cashier-aside-group-tag ${usdBalanceTag}`}>
+          <h2>Balance</h2>
+          <h1>$ {parseFloat(usdBalance).formatMoney()}</h1>
+        </div>
       </div>
-      <h2>CIERRE SISTEMA EFECTIVO COLONES</h2>
-      <div className='cashier-aside-tag'>
-        ₡ {parseFloat(clusureCashCRC).formatMoney()}
+      <hr className={`${hideItemUSD}`} />
+
+      <h2 className={`${hideItemTransfer}`}>SISTEMA TARJETAS COLONES</h2>
+      <div className='cashier-aside-group'>
+        <div className='cashier-aside-group-tag'>
+          <h2>Sistema</h2>
+          <h1>₡ {parseFloat(clusureCardCRC).formatMoney()}</h1>
+        </div>
+        <div className='cashier-aside-group-tag'>
+          <h2>Cajero</h2>
+          <h1>₡ {parseFloat(cardTotals).formatMoney()}</h1>
+        </div>
+        <div className={`cashier-aside-group-tag ${crcCardBalanceTag}`}>
+          <h2>Balance</h2>
+          <h1>₡ {parseFloat(crcCardBalance).formatMoney()}</h1>
+        </div>
       </div>
-      <h2>CIERRE SISTEMA EFECTIVO DÓLARES</h2>
-      <div className='cashier-aside-tag'>
-        $ {parseFloat(clusureCashUSD).formatMoney()}
+      <hr className={`${hideItemTransfer}`} />
+
+      <h2>SISTEMA TRANSFERENCIAS COLONES</h2>
+      <div className={`cashier-aside-group ${hideItemTransfer}`}>
+        <div className='cashier-aside-group-tag'>
+          <h2>Sistema</h2>
+          <h1>₡ {parseFloat(clusureTransferCRC).formatMoney()}</h1>
+        </div>
+        <div className='cashier-aside-group-tag'>
+          <h2>Cajero</h2>
+          <h1>₡ {parseFloat(transferTotals).formatMoney()}</h1>
+        </div>
+        <div className={`cashier-aside-group-tag ${crcTransferBalanceTag}`}>
+          <h2>Balance</h2>
+          <h1>₡ {parseFloat(crcTransferBalance).formatMoney()}</h1>
+        </div>
       </div>
-      <h2>BALANCE EFECTIVO COLONES</h2>
-      <div className='cashier-aside-tag'>
-        ₡ {(parseFloat(crcTotals) - parseFloat(clusureCashCRC)).formatMoney()}
+      <div className='cashier-aside-buttons'>
+        <button onClick={this.closeRegister.bind(this)} className='btn btn-danger'>CERRAR CAJA</button>
+        <button onClick={this.showReceipt.bind(this)} className='btn btn-primary'>MOSTRAR CIERRE</button>
       </div>
-      <h2>BALANCE EFECTIVO DOLARES</h2>
-      <div className='cashier-aside-tag'>
-        $ {(parseFloat(usdTotals) - parseFloat(clusureCashUSD)).formatMoney()}
-      </div>
-      <button onClick={this.closeRegister.bind(this)} className='btn btn-danger'>CERRAR CAJA</button>
-      <br/>
-      <button onClick={this.showReceipt.bind(this)} className='btn btn-primary'>MOSTRAR CIERRE</button>
+      <br />
     </div>
   }
 

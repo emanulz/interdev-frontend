@@ -1,0 +1,86 @@
+.payment
+  font-family: 'Lato', sans-serif
+  & h1
+    font-size: 20px
+    font-weight: bold
+    margin-bottom: 20px
+  &-header
+    &-select
+      width: 350px
+      margin-bottom: 20px
+      
+    &-container
+      display: flex
+      flex-flow: row
+      justify-content: space-between
+      &-totals
+        width: 55%
+        & th
+          background-color: $PRIMARY-COLOR
+          color: white
+        & td
+          font-weight: bold
+      &-btn
+        width: 30%
+        display: flex
+        flex-flow: column
+        justify-content: flex-end
+        padding-bottom: 20px
+        & h1
+          padding-bottom: 2px
+          margin-bottom: 2px !important
+        & select
+          margin-bottom: 10px
+        & button
+          background-color: $PRIMARY-COLOR
+          color: white
+          &[disabled]
+            background-color: $SECONDARY-COLOR
+            color: white
+
+  &-table
+    & th
+        background-color: $PRIMARY-COLOR
+        color: white
+        font-size: 16px
+    & tbody
+      font-size: 15px
+    
+
+  & .select2
+    font-family: 'Lato', sans-serif !important
+  
+  & .select2-selection__clear
+    padding-right: 10px 
+    font-size: 22px !important
+  
+.payment-single
+  font-family: 'Lato', sans-serif
+  padding-top: 20px
+  & table
+    font-size: 13px
+    & thead tr
+      font-size: 15px
+      background-color: $PRIMARY-COLOR
+      color: white
+    & tbody tr
+      font-weight: bold
+  &-sidebar
+    & th
+      width: 50%
+      height: 35px
+      background-color: $PRIMARY-COLOR
+      color: white
+      line-height: 35px
+      font-size: 15px
+      padding-left: 10px
+    & td
+      font-size: 15px
+      padding-left: 10px
+    & i
+      margin-left: 10px
+    & .btnPaymentNull
+      margin-top: 15px
+.vouchers-available
+  & h3
+    margin-bottom: 10px

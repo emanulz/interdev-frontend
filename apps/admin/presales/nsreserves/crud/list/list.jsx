@@ -193,12 +193,6 @@ export default class List extends React.Component {
       }, {
         type: 'function_element_double',
         field: 'id',
-        text: 'Descartar',
-        number: '1',
-        worker_method: determinDestroyAction
-      }, {
-        type: 'function_element_double',
-        field: 'id',
         text: 'Anular',
         number: '2',
         worker_method: determinNullAction
