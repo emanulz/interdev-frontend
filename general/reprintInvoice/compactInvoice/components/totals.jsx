@@ -44,11 +44,11 @@ export default class Totals extends React.Component {
     const advances = this.getPayCashAdvances(payObject)
     if (advances > 0) {
       advance = <tr className='total-row'>
-        <th>Adelanto</th>
-        <td>{symbol} {advances.formatMoney(2, ',', '.')}</td>
+        <th>Adelantos</th>
+        <td>{symbol} {(advances * -1).formatMoney(2, ',', '.')}</td>
       </tr>
       total2 = <tr className='total-row'>
-        <th>Pago</th>
+        <th>Este Pago</th>
         <td>{symbol} {(total - advances).formatMoney(2, ',', '.')}</td>
       </tr>
     }

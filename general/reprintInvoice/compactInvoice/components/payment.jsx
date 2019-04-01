@@ -49,6 +49,19 @@ export default class Payment extends React.Component {
     return total
   }
 
+  calcTotalInPay () {
+    const pay = this.props.sale.pay
+    let total = 0
+    for (const item in pay) {
+      let innerAmount = 0
+      for (const innerItem in pay[item]) {
+        innerAmount += pay[item][innerItem].amount
+      }
+      total += innerAmount
+    }
+    return total
+  }
+
   render() {
     const symbol = this.props.currencySymbol
     const sale = this.props.sale
@@ -94,8 +107,20 @@ export default class Payment extends React.Component {
         <td>{symbol} {credAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr style={{display: 'none'}} />
+
+    // DETERMIN THE ADVANCES AMOUNT
+    // const advancesAmount = this.getPayCashAdvances(payObject)
+    // const changeAmount = cashAmount + cardAmount + tranAmount + credAmount - advancesAmount - total
+
     // DETERMIN THE CHANGE
-    const changeAmount = cashAmount + cardAmount + tranAmount + credAmount - total
+    let changeAmount = ''
+    try {
+      const total = parseFloat(this.props.sale.cart.cartTotal)
+      const totalInPay = this.calcTotalInPay()
+      changeAmount = totalInPay - total
+    } catch (err) {
+      console.log(err)
+    }
     const change = changeAmount > 0.01
       ? <tr className='change-row' >
         <th>Vuelto:</th>
