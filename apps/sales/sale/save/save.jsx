@@ -18,6 +18,7 @@ const Mousetrap = require('mousetrap')
     warehouse2_id: store.config.workshopWarehouse,
     warehouse3_id: store.userProfile.reservesWarehouse,
     presaleId: store.presales.presaleId,
+    nsreserveId: store.nsreserves.nsreserveId,
     workOrderId: store.workOrders.workOrderId,
     reserveId: store.reserves.reserveId,
     workOrder: store.workOrders.workOrderActive,
@@ -45,7 +46,13 @@ export default class SaveBtn extends React.Component {
     const isinvoice = this.props.isinvoice == 'FACTURA'
     console.log('IS INVOICEEE', isinvoice)
     // DETERMIN THE WAREHOUSE WHERE THE PRODUCTS ARE SUBSTRACTED
-    const warehouse = this.props.workOrderId.length ? this.props.warehouse2_id : this.props.reserveId.length ? this.props.warehouse3_id : this.props.warehouse_id
+
+    const warehouse = this.props.workOrderId.length // IF ITS WORKSHOP
+      ? this.props.warehouse2_id
+      : this.props.reserveId.length || this.props.nsreserveId.length // IF ITS RESERVE OR NS RESERVE
+        ? this.props.warehouse3_id
+        : this.props.warehouse_id // REGULAR PRESALE
+
     // ADD WORKSHOP ITEMS TO CART
     const cart = this.props.cart
     const exemptionData = this.props.exemptionData
