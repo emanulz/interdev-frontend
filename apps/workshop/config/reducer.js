@@ -2,6 +2,7 @@ const stateConst = {
     company: {},
     salesWarehouse: '',
     workshopWarehouse: '',
+    globalConf: {}
   }
   
   export default function reducer(state = stateConst, action) {
