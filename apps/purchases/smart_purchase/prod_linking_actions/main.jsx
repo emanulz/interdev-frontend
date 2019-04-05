@@ -90,7 +90,7 @@ export default class ProdLinkingActions extends React.Component {
             t_p1, //target_price
             product, //QUACK QUACK
             'byUtility', //updatePattern
-            'cost_based', //utility_method
+            'not_cost_based', //utility_method
             5 //round_to_coin
         )
 
@@ -100,7 +100,7 @@ export default class ProdLinkingActions extends React.Component {
             0, //target_price
             product, //QUACK QUACK
             'byUtility', //updatePattern
-            'cost_based', //utility_method
+            'not_cost_based', //utility_method
             5 //round_to_coin
         )
         const real_p3_Data = calculateRealUtility(
@@ -109,7 +109,7 @@ export default class ProdLinkingActions extends React.Component {
             0, //target_price
             product, //QUACK QUACK
             'byUtility', //updatePattern
-            'cost_based', //utility_method
+            'not_cost_based', //utility_method
             5 //round_to_coin
         )
         
