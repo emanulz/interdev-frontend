@@ -378,6 +378,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             const qty = parseFloat(item.Cantidad)
             const discount = item.MontoDescuento!==null ? parseFloat(item.MontoDescuento) : 0
             const cost = parseFloat(item.PrecioUnitario)-discount/(qty>0?qty:1)
+            console.log("Line cost --> ", cost)
             return {
                 applyToClient: true,
                 cost: cost,
@@ -398,6 +399,8 @@ export default class Purchase_PriceAdjuster extends React.Component {
             }
         })
 
+        // const fuck_it_here = 3
+        // return fuck_it_here;
         let cart = {
                 cartHasItems: false, // var to check if cart has items
                 cartItemActive: false,
