@@ -52,7 +52,7 @@ export default class Table extends React.Component {
     // BALANCE
     const balanceCRC = parseFloat(closure.close_balance_crc)
     const registerBalanceCRC = <div className='print-register-closure-compact-invoice-table-item'>
-      <h1>Balance Colones:</h1>
+      <h1>Balance Efectivo Colones:</h1>
       <h2>₡{balanceCRC.formatMoney()}</h2>
     </div>
 

@@ -16,7 +16,7 @@ export default class Data extends React.Component {
       ? `${formatDateTimeAmPm(registerClosure.created)}`
       : `${formatDateTimeAmPm(new Date())}`
     const date2 = registerClosure.updated
-      ? `${formatDateTimeAmPm(registerClosure.created)}`
+      ? `${formatDateTimeAmPm(registerClosure.updated)}`
       : `${formatDateTimeAmPm(new Date())}`
     const cashierName = registerClosure.cashier_name
 

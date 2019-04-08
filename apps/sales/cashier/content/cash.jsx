@@ -81,20 +81,14 @@ export default class Main extends React.Component {
   }
 
   // handles the user setting the total instead of the individual notes
-  handleTotalSetCRC(currency_code, e) {
+  handleTotalSetCRC(currencyCode, e) {
     this.props.dispatch({type: 'CLEAR_OPEN_BILLS_LIST'})
-    if (currency_code === 'CRC') {
-      let crc_total = parseInt(e.target.value) ? parseInt(e.target.value) : -1
-      if (crc_total===-1) {
-        return
-      }
-      this.props.dispatch({type:'SET_TOTAL_CRC', payload: crc_total})
+    if (currencyCode === 'CRC') {
+      const crcTotal = parseFloat(e.target.value) ? parseFloat(e.target.value) : 0
+      this.props.dispatch({type: 'SET_TOTAL_CRC', payload: crcTotal})
     } else {
-      let usd_total = parseFloat(e.target.value) ? parseFloat(e.target.value) : -1
-      if (usd_total === -1) {
-        return
-      }
-      this.props.dispatch({type: 'SET_TOTAL_USD', payload: usd_total})
+      const usdTotal = parseFloat(e.target.value) ? parseFloat(e.target.value) : 0
+      this.props.dispatch({type: 'SET_TOTAL_USD', payload: usdTotal})
     }
   }
 
@@ -133,7 +127,7 @@ export default class Main extends React.Component {
           <input
             onChange={this.handleTotalSetCRC.bind(this, 'CRC')}
             value={this.props.openTotalCRC}
-            type='number' name='total-crc' />
+            type='number' name='total-crc' onFocus={this.fieldFocus.bind(this)} />
         </div>
 
       </div>
@@ -149,7 +143,7 @@ export default class Main extends React.Component {
           <input
             onChange={this.handleTotalSetCRC.bind(this, 'USD')}
             value={this.props.openTotalUSD}
-            type='number' name='total-usd' />
+            type='number' name='total-usd' onFocus={this.fieldFocus.bind(this)} />
         </div>
       </div>
     </div>

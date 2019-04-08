@@ -143,7 +143,7 @@ export default class Open extends React.Component {
       </div>
       <hr className={`${hideItemUSD}`} />
 
-      <h2 className={`${hideItemTransfer}`}>SISTEMA TARJETAS COLONES</h2>
+      <h2>TARJETAS COLONES</h2>
       <div className='cashier-aside-group'>
         <div className='cashier-aside-group-tag'>
           <h2>Sistema</h2>
@@ -160,7 +160,7 @@ export default class Open extends React.Component {
       </div>
       <hr className={`${hideItemTransfer}`} />
 
-      <h2>SISTEMA TRANSFERENCIAS COLONES</h2>
+      <h2 className={`${hideItemTransfer}`}>SISTEMA TRANSFERENCIAS COLONES</h2>
       <div className={`cashier-aside-group ${hideItemTransfer}`}>
         <div className='cashier-aside-group-tag'>
           <h2>Sistema</h2>
