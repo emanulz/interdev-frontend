@@ -25,11 +25,11 @@ export default class Purchase_PriceAdjuster extends React.Component {
     componentWillReceiveProps(nextProps){
         
         if(this.props.do_global_price_calc===false && nextProps.do_global_price_calc ===true){
-            console.log("Component did mount, initial set of utilities")
+            
             this.props.dispatch({type: "FETCHING_STARTED"})
             if(this.props.invoice_to_link !==null){
                 for(var item of this.props.invoice_to_link.items_list){
-                    console.log("item in mount ", item)
+                    // console.log("item in mount ", item)
                     this.updateUtility(
                         {
                             group: 4,
@@ -55,7 +55,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
     calculateRealUtility(cost, target_utility, target_price, 
         product, updatePattern,  utility_method, round_to_coin = 5){
         
-            let wanted_price = 0
+        let wanted_price = 0
       
         //determine all taxes to be applied to the product, if any
         let total_tax_fraction = 0
@@ -191,7 +191,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     0,
                     new_line.linked,
                     'byUtility',
-                    'cost_based'
+                    'not_cost_based'
 
                 )
                 console.log("updating utility 1 --> ", new_pricing)
@@ -208,7 +208,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     0,
                     new_line.linked,
                     'byUtility',
-                    'cost_based'
+                    'not_cost_based'
 
                 )
                 console.log("updating utility 2 --> ", new_pricing)
@@ -225,7 +225,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     0,
                     new_line.linked,
                     'byUtility',
-                    'cost_based'
+                    'not_cost_based'
 
                 )
                 console.log("updating utility 3 --> ", new_pricing)
@@ -243,7 +243,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     0,
                     new_line.linked,
                     'byUtility',
-                    'cost_based'
+                    'not_cost_based'
 
                 )
 
@@ -253,7 +253,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     0,
                     new_line.linked,
                     'byUtility',
-                    'cost_based'
+                    'not_cost_based'
 
                 )
 
@@ -263,7 +263,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     0,
                     new_line.linked,
                     'byUtility',
-                    'cost_based'
+                    'not_cost_based'
 
                 )
 
@@ -378,6 +378,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             const qty = parseFloat(item.Cantidad)
             const discount = item.MontoDescuento!==null ? parseFloat(item.MontoDescuento) : 0
             const cost = parseFloat(item.PrecioUnitario)-discount/(qty>0?qty:1)
+            console.log("Line cost --> ", cost)
             return {
                 applyToClient: true,
                 cost: cost,
@@ -398,6 +399,8 @@ export default class Purchase_PriceAdjuster extends React.Component {
             }
         })
 
+        // const fuck_it_here = 3
+        // return fuck_it_here;
         let cart = {
                 cartHasItems: false, // var to check if cart has items
                 cartItemActive: false,
@@ -533,7 +536,131 @@ export default class Purchase_PriceAdjuster extends React.Component {
         </div>
         }
 
+
+        let price_setter_1 = <div className="purchase-prod-adjuster-body-price">
+        <div className="purchase-prod-adjuster-body-price-detail">
+            <div className="purchase-prod-adjuster-body-price-detail-label">Precio</div>
+            <div className="purchase-prod-adjuster-body-price-detail-money">₡ {sell_price_1.formatMoney(3, ',', '.')}</div>
+            <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
+            <div className="purchase-prod-adjuster-body-price-detail-money">
+                ₡ {wanted_price_1.formatMoney(0, ',', '.')}
+            </div>
+        </div>
+
+        <div className="purchase-prod-adjuster-body-price-detail">
+            <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad</div>
+            <div className="purchase-prod-adjuster-body-price-detail-percent">{utility_1} %</div>
+            <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
+            <div className="purchase-prod-adjuster-body-price-detail-percent">
+                {target_utility_1.toFixed(3)}
+            </div>
+        </div>
+
+        <div className="purchase-prod-adjuster-body-price-detail">
+            <div className="purchase-prod-adjuster-body-price-detail-label">Precio deseado</div>
+                <div className="purchase-prod-adjuster-body-price-detail-input">
+                    <input name="price_input1" type="number"
+                        defaultValue={wanted_price_1} 
+                        onKeyPress={this.updatePrice.bind(this, 1)}/>
+                </div>
+        </div>
+
+        <div className="purchase-prod-adjuster-body-price-detail">
+            <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad deseada</div>
+                <div className="purchase-prod-adjuster-body-price-detail-input">
+                    <input name="utility_input1" type="number" 
+                        defaultValue={target_utility_1.toFixed(2)}
+                        onKeyPress={this.updateUtility.bind(this, 
+                        {group:1, line:0, utility: -1, multi:false},
+                        )}/>
+                </div>
+        </div>
+
+    </div>;
+        let price_setter_2 = '';
+        let price_setter_3 = '';
+        console.log("uses multiprice --> ", this.props.usesMultiprice)
+        if(this.props.usesMultiprice){
+            price_setter_2 = <div className="purchase-prod-adjuster-body-price">
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Precio 2</div>
+                <div className="purchase-prod-adjuster-body-price-detail-money">₡ {sell_price_2.formatMoney(3, ',', '.')}</div>
+                <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
+                <div className="purchase-prod-adjuster-body-price-detail-money">₡ {wanted_price_2.formatMoney(0, ',', '.')}</div>
+                <div></div>
+            </div>
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad 2</div>
+                <div className="purchase-prod-adjuster-body-price-detail-percent">{utility_2} %</div>
+                <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
+                <div className="purchase-prod-adjuster-body-price-detail-percent">{target_utility_2.toFixed(3)}</div>
+            </div>
+
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Precio deseado 2</div>
+                    <div className="purchase-prod-adjuster-body-price-detail-input">
+                        <input name="price_input2" type="number"
+                            defaultValue={wanted_price_2} 
+                            onKeyPress={this.updatePrice.bind(this, 2)}/>
+                    </div>
+            </div>
+
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad deseada 2</div>
+                    <div className="purchase-prod-adjuster-body-price-detail-input">
+                        <input name="utility_input2" type="number" 
+                            defaultValue={target_utility_2.toFixed(2)}
+                            onKeyPress={this.updateUtility.bind(this, 
+                                {group:2, line:0, utility: -1, multi:false},
+                            )}/>
+                    </div>
+            </div>
+
+
+        </div>
+            price_setter_3 =  <div className="purchase-prod-adjuster-body-price">
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Precio 3</div>
+                <div className="purchase-prod-adjuster-body-price-detail-money">₡ {sell_price_3.formatMoney(3, ',', '.')}</div>
+                <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
+                <div className="purchase-prod-adjuster-body-price-detail-money">₡ {wanted_price_3.formatMoney(0, ',', '.')}</div>
+            </div>
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad 3</div>
+                <div className="purchase-prod-adjuster-body-price-detail-percent">{utility_3} %</div>
+                <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
+                <div className="purchase-prod-adjuster-body-price-detail-percent">{target_utility_3.toFixed(2)}</div>
+            </div>
+
+
+            <div className="purchase-prod-adjuster-body-price-detail">
+            <div className="purchase-prod-adjuster-body-price-detail-label">Precio deseado 3</div>
+                <div className="purchase-prod-adjuster-body-price-detail-input">
+                    <input name="price_input3" type="number"
+                        defaultValue={wanted_price_3} 
+                        onKeyPress={this.updatePrice.bind(this, 3)}/>
+                </div>
+            </div>
+
+            <div className="purchase-prod-adjuster-body-price-detail">
+                <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad deseada 3</div>
+                    <div className="purchase-prod-adjuster-body-price-detail-input">
+                        <input name="utility_input3" type="number" 
+                            defaultValue={target_utility_3.toFixed(2)}
+                            onKeyPress={this.updateUtility.bind(this,
+                                {group:3, line:0, utility: -1, multi:false},
+                                )}/>
+                    </div>
+            </div>
+
+        </div>
+        }
+
+
         return <div className="purchase-prod-adjuster">
+
+            
+
             <h2>Ajuste de Precios</h2>
             <div className="purchase-prod-adjuster-summary">
                 <div className="purchase-prod-adjuster-summary-warehouses">
@@ -570,120 +697,11 @@ export default class Purchase_PriceAdjuster extends React.Component {
                 </div>
             </div>
             <div className="purchase-prod-adjuster-body">
-                <div className="purchase-prod-adjuster-body-price">
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Precio</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-money">₡ {sell_price_1.formatMoney(3, ',', '.')}</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
-                        <div className="purchase-prod-adjuster-body-price-detail-money">
-                            ₡ {wanted_price_1.formatMoney(0, ',', '.')}
-                        </div>
-                    </div>
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-percent">{utility_1} %</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
-                        <div className="purchase-prod-adjuster-body-price-detail-percent">
-                            {target_utility_1.toFixed(3)}
-                        </div>
-                    </div>
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Precio deseado</div>
-                            <div className="purchase-prod-adjuster-body-price-detail-input">
-                                <input name="price_input1" type="number"
-                                    defaultValue={wanted_price_1} 
-                                    onKeyPress={this.updatePrice.bind(this, 1)}/>
-                            </div>
-                    </div>
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad deseada</div>
-                            <div className="purchase-prod-adjuster-body-price-detail-input">
-                                <input name="utility_input1" type="number" 
-                                    defaultValue={target_utility_1.toFixed(2)}
-                                    onKeyPress={this.updateUtility.bind(this, 
-                                    {group:1, line:0, utility: -1, multi:false},
-                                    )}/>
-                            </div>
-                    </div>
-
-                </div>
-                <div className="purchase-prod-adjuster-body-price">
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Precio 2</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-money">₡ {sell_price_2.formatMoney(3, ',', '.')}</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
-                        <div className="purchase-prod-adjuster-body-price-detail-money">₡ {wanted_price_2.formatMoney(0, ',', '.')}</div>
-                        <div></div>
-                    </div>
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad 2</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-percent">{utility_2} %</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
-                        <div className="purchase-prod-adjuster-body-price-detail-percent">{target_utility_2.toFixed(3)}</div>
-                    </div>
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Precio deseado 2</div>
-                            <div className="purchase-prod-adjuster-body-price-detail-input">
-                                <input name="price_input2" type="number"
-                                    defaultValue={wanted_price_2} 
-                                    onKeyPress={this.updatePrice.bind(this, 2)}/>
-                            </div>
-                    </div>
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad deseada 2</div>
-                            <div className="purchase-prod-adjuster-body-price-detail-input">
-                                <input name="utility_input2" type="number" 
-                                    defaultValue={target_utility_2.toFixed(2)}
-                                    onKeyPress={this.updateUtility.bind(this, 
-                                        {group:2, line:0, utility: -1, multi:false},
-                                    )}/>
-                            </div>
-                    </div>
-
-
-                </div>
-                <div className="purchase-prod-adjuster-body-price">
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Precio 3</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-money">₡ {sell_price_3.formatMoney(3, ',', '.')}</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
-                        <div className="purchase-prod-adjuster-body-price-detail-money">₡ {wanted_price_3.formatMoney(0, ',', '.')}</div>
-                    </div>
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad 3</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-percent">{utility_3} %</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-arrow">>></div>
-                        <div className="purchase-prod-adjuster-body-price-detail-percent">{target_utility_3.toFixed(2)}</div>
-                    </div>
-
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                    <div className="purchase-prod-adjuster-body-price-detail-label">Precio deseado 3</div>
-                        <div className="purchase-prod-adjuster-body-price-detail-input">
-                            <input name="price_input3" type="number"
-                                defaultValue={wanted_price_3} 
-                                onKeyPress={this.updatePrice.bind(this, 3)}/>
-                        </div>
-                    </div>
-
-                    <div className="purchase-prod-adjuster-body-price-detail">
-                        <div className="purchase-prod-adjuster-body-price-detail-label">Utilidad deseada 3</div>
-                            <div className="purchase-prod-adjuster-body-price-detail-input">
-                                <input name="utility_input3" type="number" 
-                                    defaultValue={target_utility_3.toFixed(2)}
-                                    onKeyPress={this.updateUtility.bind(this,
-                                        {group:3, line:0, utility: -1, multi:false},
-                                        )}/>
-                            </div>
-                    </div>
-
-                </div>
-            
+                
+                {price_setter_1}
+                {price_setter_2}
+                {price_setter_3}
+                
             </div>
 
             {applyPurchase}
