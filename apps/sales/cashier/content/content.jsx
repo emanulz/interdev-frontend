@@ -4,6 +4,8 @@
 import React from 'react'
 import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 import Cash from './cash.jsx'
+import Card from './card.jsx'
+import Transfer from './transfer.jsx'
 import {connect} from 'react-redux'
 @connect((store) => {
   return {
@@ -41,11 +43,11 @@ export default class Main extends React.Component {
           </TabPanel>
 
           <TabPanel tabId='two'>
-            EN IMPLEMENTACION
+            <Card />
           </TabPanel>
 
           <TabPanel tabId='three'>
-            EN IMPLEMENTACION
+            <Transfer />
           </TabPanel>
         </Tabs>
       </div>

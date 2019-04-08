@@ -11,7 +11,9 @@ import {connect} from 'react-redux'
     registerClosure: store.registerClosure.registerClosure,
     byNotes: store.cashier.byNotes,
     openTotalCRC: store.cashier.openTotalCRC,
-    openTotalUSD: store.cashier.openTotalUSD
+    openTotalUSD: store.cashier.openTotalUSD,
+    closureTotalCRC: store.cashier.closureTotalCRC,
+    closureTotalUSD: store.cashier.closureTotalUSD
   }
 })
 export default class Main extends React.Component {
