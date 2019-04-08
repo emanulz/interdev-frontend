@@ -11,6 +11,34 @@ import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 export default class Data extends React.Component {
 
   render() {
+    // STYLES
+    const fontFamily = 'Arial, sans-serif !important'
+    const fontSize = '13px'
+
+    const dataStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold'
+    }
+
+    const trStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold'
+    }
+
+    const thStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold'
+    }
+
+    const tdStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold'
+    }
+
     const cashAdvance = this.props.cashAdvance
     const voucher = this.props.voucher
     const user = Object.keys(cashAdvance).length > 0 ? cashAdvance.user : ''
@@ -39,7 +67,7 @@ export default class Data extends React.Component {
     const seller = Object.keys(user).length !== 0
       ? cashierName
       : 'Cajero Por Defecto'
-    return <div className='cash-advance-compact-invoice-data'>
+    return <div style={dataStyles} className='cash-advance-compact-invoice-data'>
 
       <table className='datenum-table'>
         <tbody>
