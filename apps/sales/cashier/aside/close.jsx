@@ -11,6 +11,10 @@ import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
+    openTotalCRC: store.cashier.openTotalCRC,
+    openTotalUSD: store.cashier.openTotalUSD,
+    openTotalCRCSetted: store.cashier.openTotalCRCSetted,
+    openTotalUSDSetted: store.cashier.openTotalUSDSetted,
     openBillList: store.cashier.openBillList,
     registerClosure: store.registerClosure.registerClosure,
     closureCardTotalCRC: store.cashier.closureCardTotalCRC,
@@ -25,9 +29,20 @@ export default class Open extends React.Component {
   }
 
   closeRegister() {
+    // HERE CALCULATE DEPENDS OF WETHER IS AMOUNT SETED OR BILLS USED
+    let crcTotals = 0
+    let usdTotals = 0
 
-    const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
-    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    if (this.props.openTotalCRCSetted) {
+      crcTotals = this.props.openTotalCRC
+    } else {
+      crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+    }
+    if (this.props.openTotalUSDSetted) {
+      usdTotals = this.props.openTotalUSD
+    } else {
+      usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    }
 
     const _this = this
     alertify.confirm('CERRAR', `Desea cerrar la caja con un monto de Efectivo de ₡${parseFloat(crcTotals).formatMoney()} y $${parseFloat(usdTotals).formatMoney()}`,
@@ -89,12 +104,24 @@ export default class Open extends React.Component {
   // Main Layout
   render () {
 
-    const crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+    let crcTotals = 0
+    let usdTotals = 0
+
+    if (this.props.openTotalCRCSetted) {
+      crcTotals = this.props.openTotalCRC
+    } else {
+      crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
+    }
+    if (this.props.openTotalUSDSetted) {
+      usdTotals = this.props.openTotalUSD
+    } else {
+      usdTotals = getTotalAmount(this.props.openBillList, 'USD')
+    }
+
     const clusureCashCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_cash : 0
     const crcBalance = parseFloat(crcTotals) - parseFloat(clusureCashCRC)
     const crcBalanceTag = crcBalance >= 0 ? 'green' : 'red'
 
-    const usdTotals = getTotalAmount(this.props.openBillList, 'USD')
     const clusureCashUSD = this.props.registerClosure ? this.props.registerClosure.closure_money_usd_system_cash : 0
     const usdBalance = parseFloat(usdTotals) - parseFloat(clusureCashUSD)
     const usdBalanceTag = usdBalance >= 0 ? 'green' : 'red'

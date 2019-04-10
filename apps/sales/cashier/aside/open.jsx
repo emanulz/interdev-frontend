@@ -14,7 +14,7 @@ import alertify from 'alertifyjs'
     registerClosure: store.registerClosure.registerClosure,
     byNotes: store.cashier.byNotes,
     openTotalCRC: store.cashier.openTotalCRC,
-    openTotalUSD: store.cashier.openTotalUSD,
+    openTotalUSD: store.cashier.openTotalUSD
   }
 })
 export default class Open extends React.Component {
@@ -27,8 +27,6 @@ export default class Open extends React.Component {
       crcTotals = getTotalAmount(this.props.openBillList, 'CRC')
       usdTotals = getTotalAmount(this.props.openBillList, 'USD')
     }
-
-
     const _this = this
     alertify.confirm('ABRIR', `Desea abir la caja con un monto de ₡${parseFloat(crcTotals).formatMoney()} y $${parseFloat(usdTotals).formatMoney()}`,
       function() {
