@@ -53,7 +53,7 @@ export default class Data extends React.Component {
             <td>{date}</td>
           </tr>
           <tr>
-            <th>Factura:</th>
+            <th>Consec:</th>
             <td>{id}</td>
 
           </tr>
