@@ -80,7 +80,7 @@ export default class List extends React.Component {
     // SAVE PROCESS
     updatePromise.then((data) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('COMPLETADO', 'RESERVA DESCARTADA CORRECTAMENTE')
+      alertify.alert('COMPLETADO', 'APARTADO DESCARTADO CORRECTAMENTE')
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
@@ -102,7 +102,7 @@ export default class List extends React.Component {
     // SAVE PROCESS
     updatePromise.then((data) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('COMPLETADO', 'RESERVA ANULADA CORRECTAMENTE')
+      alertify.alert('COMPLETADO', 'APARTADO ANULADO CORRECTAMENTE')
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
@@ -182,6 +182,10 @@ export default class List extends React.Component {
         field: 'consecutive',
         text: 'Consecutivo'
       }, {
+        field: 'created',
+        text: 'Fecha',
+        type: 'date'
+      }, {
         type: 'function_process',
         field: 'client',
         text: 'Cliente Hacienda',
@@ -214,8 +218,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/presales/?presale_type=NS_RESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
-        <Pagination url='/api/presales/?presale_type=NS_RESERVE' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
+        <ResultsPerPage url='/api/presales/?presale_type=NS_RESERVE&ordering=-consecutive' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
+        <Pagination url='/api/presales/?presale_type=NS_RESERVE&ordering=-consecutive' successType='FETCH_NSRESERVES_PRESALES_FULFILLED' errorType='FETCH_NSRESERVES_PRESALES_REJECTED' />
       </div>
       : <div />
 

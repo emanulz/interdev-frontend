@@ -6,9 +6,15 @@ const stateConst = {
   openBillList: [],
   openTotalCRC: 0,
   openTotalUSD: 0,
-  byNotes: true, //if true the opening totals will be obtained from the notes qty
+  closureTotalCRC: 0,
+  closureTotalUSD: 0,
+  byNotes: true, // if true the opening totals will be obtained from the notes qty
   openTotalCRCSetted: false,
-  openTotalUSDSetted: false
+  openTotalUSDSetted: false,
+  closureTotalCRCSetted: false,
+  closureTotalUSDSetted: false,
+  closureCardTotalCRC: 0,
+  closureTransferTotalCRC: 0
 
 }
 
@@ -60,23 +66,30 @@ export default function reducer(state = stateConst, action) {
       })
       let settedCRC = state.openTotalCRCSetted
       let settedUSD = state.openTotalUSDSetted
+      let settedClosureCRC = state.closureTotalCRCSetted
+      let settedClosureUSD = state.closureTotalUSDSetted
+
       if (newLine.currency_code == 'CRC') {
         settedCRC = false
+        settedClosureCRC = false
       }
       if (newLine.currency_code == 'USD') {
         settedUSD = false
+        settedClosureUSD = false
       }
       // ADD IT TO CART
       existentOpenBillList.push(newLine)
       // RETURN
-      
+
       return {
         ...state,
         openBillList: existentOpenBillList,
         openTotalUSDSetted: settedUSD,
         openTotalCRCSetted: settedCRC,
+        closureTotalCRCSetted: settedClosureCRC,
+        closureTotalUSDSetted: settedClosureUSD,
         openTotalCRC: getTotalAmount(existentOpenBillList, 'CRC'),
-        openTotalUSD: getTotalAmount(existentOpenBillList, 'USD'),
+        openTotalUSD: getTotalAmount(existentOpenBillList, 'USD')
       }
     } // case
 
@@ -95,6 +108,40 @@ export default function reducer(state = stateConst, action) {
         ...state,
         openTotalUSDSetted: true,
         openTotalUSD: action.payload
+      }
+    } // case
+
+    case 'SET_CLOSURE_TOTAL_CRC':
+    {
+      return {
+        ...state,
+        closureTotalCRCSetted: true,
+        closureTotalCRC: action.payload
+      }
+    } // case
+
+    case 'SET_CLOSURE_TOTAL_USD':
+    {
+      return {
+        ...state,
+        closureTotalUSDSetted: true,
+        closureTotalUSD: action.payload
+      }
+    } // case
+
+    case 'SET_CLOSURE_CARD_TOTAL_CRC':
+    {
+      return {
+        ...state,
+        closureCardTotalCRC: action.payload
+      }
+    } // case
+
+    case 'SET_CLOSURE_TRANSFER_TOTAL_CRC':
+    {
+      return {
+        ...state,
+        closureTransferTotalCRC: action.payload
       }
     } // case
 

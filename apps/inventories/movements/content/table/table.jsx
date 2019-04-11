@@ -91,7 +91,7 @@ export default class Table extends React.Component {
       const inventory = this.props.warehouseActive
         ? product.inventory_existent[this.props.warehouseActive]
         : product.inventory_existent.total
-      const productSellPrice = product.sell_price ? parseFloat(product.sell_price) : 0
+      const productSellPrice = product.sell_price1 ? parseFloat(product.sell_price1) : 0
       return <tr key={product.id}>
         <td>{product.code}</td>
         <td>{product.description}</td>

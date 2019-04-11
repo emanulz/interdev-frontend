@@ -182,6 +182,10 @@ export default class List extends React.Component {
         field: 'consecutive',
         text: 'Consecutivo'
       }, {
+        field: 'created',
+        text: 'Fecha',
+        type: 'date'
+      }, {
         type: 'function_process',
         field: 'client',
         text: 'Cliente Hacienda',
@@ -220,8 +224,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/presales/?presale_type=RESERVE' successType='FETCH_RESERVES_PRESALES_FULFILLED' errorType='FETCH_RESERVES_PRESALES_REJECTED' />
-        <Pagination url='/api/presales/?presale_type=RESERVE' successType='FETCH_RESERVES_PRESALES_FULFILLED' errorType='FETCH_RESERVES_PRESALES_REJECTED' />
+        <ResultsPerPage url='/api/presales/?presale_type=RESERVE&ordering=-consecutive' successType='FETCH_RESERVES_PRESALES_FULFILLED' errorType='FETCH_RESERVES_PRESALES_REJECTED' />
+        <Pagination url='/api/presales/?presale_type=RESERVE&ordering=-consecutive' successType='FETCH_RESERVES_PRESALES_FULFILLED' errorType='FETCH_RESERVES_PRESALES_REJECTED' />
       </div>
       : <div />
 
