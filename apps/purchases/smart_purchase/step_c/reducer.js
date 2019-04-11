@@ -20,13 +20,22 @@ const stateConst = {
     cartItemActive: false,
     orderTransport: 0, //the amount of transport invoiced
     discount_mode: 'money_based',
-    do_global_price_calc: false
+    do_global_price_calc: false,
+    credit_period: 0,
 
 }
 
 
 export default function reducer(state=stateConst, action) {
     switch (action.type) {
+        case 'SET_CREDIT_PERIOD':
+        {
+            return {
+                ...state,
+                credit_period: action.payload
+            }
+        }
+
         case 'FORCE_GLOBAL_UTILITY_RECALC':
         {
             return{

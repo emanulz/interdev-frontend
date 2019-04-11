@@ -13,13 +13,14 @@ import {generalSave} from '../../../../utils/api.js'
         selectedWarehouse: store.warehouses.selectedWarehouse,
         current_step: store.smart_purchase.currentStep,
         do_global_price_calc: store.smart_cart.do_global_price_calc,
+        credit_period: store.smart_cart.credit_period
     }
 })
 export default class Purchase_PriceAdjuster extends React.Component {
 
 
     componentWillMount() {
-        
+
     }
 
     componentWillReceiveProps(nextProps){
@@ -45,8 +46,13 @@ export default class Purchase_PriceAdjuster extends React.Component {
             }
             this.props.dispatch({type: "FETCHING_DONE"})
         }
-    }
 
+        if(!this.props.invoice_to_link && nextProps.invoice_to_link){
+            console.log("invoice to link 0---> ", this.props.invoice_to_link)
+            this.props.dispatch({type:"SET_CREDIT_PERIOD", 
+            payload: nextProps.invoice_to_link.header.PlazoCredito})
+        }
+    }
 
     goToStepB(){
         this.props.dispatch({type: 'GO_TO_STEP', payload: 'b'})
@@ -371,6 +377,24 @@ export default class Purchase_PriceAdjuster extends React.Component {
 
     }
 
+    updateCreditPeriod(e){
+        // if(e.key!=="Enter"){
+        //     return
+        // }
+
+        const newPeriod = parseFloat(e.target.value)
+        ? parseFloat(e.target.value)
+        : -1
+    
+        if (newPeriod === -1){
+            console.log("Invalid price")
+            return
+        }
+
+        this.props.dispatch({type: 'SET_CREDIT_PERIOD', payload: newPeriod})
+    }
+
+
     buildDuckCart(){
         console.log("Build cart like json object")
         const items = this.props.invoice_to_link.items_list.map(item=>{
@@ -378,7 +402,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             const qty = parseFloat(item.Cantidad)
             const discount = item.MontoDescuento!==null ? parseFloat(item.MontoDescuento) : 0
             const cost = parseFloat(item.PrecioUnitario)-discount/(qty>0?qty:1)
-            console.log("Line cost --> ", cost)
+
             return {
                 applyToClient: true,
                 cost: cost,
@@ -424,8 +448,19 @@ export default class Purchase_PriceAdjuster extends React.Component {
 
     buildPayData(){
         console.log("Building pay data")
-        const pay_data = {
+        let pay_data = {
 
+        }
+        if(this.props.invoice_to_link.CondicionVenta === "CREDITO" || this.props.credit_period > 0){
+            pay_data["CRED"] = [{
+                type: "CRED",
+                amount: 0
+            }]
+        }else{
+            pay_data["CASH"] = [{
+                type: "CASH",
+                amount: parseFloat(this.props.invoice_to_link.summary.TotalVenta)+0.2
+            }]
         }
         console.log("pay data --> ", pay_data)
         return JSON.stringify(pay_data)
@@ -457,7 +492,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             pay: pay,
             invoice_number: this.props.invoice_to_link.header.Clave,
             invoice_date: this.props.invoice_to_link.header.FechaEmision.split("T")[0],
-            credit_days: 0,
+            credit_days: this.props.credit_period,
             update_pattern: 'byPrice',
             discount_mode: 'money_based',
             is_smart: true
@@ -472,6 +507,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             sucessMessage: "Ingreso de compra satisfactorio.",
             errorMessage: "Error aplicando la compra."
         }
+        console.log("Credit period --> ", this.props.credit_period)
         this.props.dispatch(generalSave(kwargs))
     }
 
@@ -483,14 +519,13 @@ export default class Purchase_PriceAdjuster extends React.Component {
                 return item.NumeroLinea === this.props.active_line
             })
         }
-        console.log("Active line --> ", active_line)
         const prod = active_line !== undefined ? active_line.linked : undefined
-        console.log("Prod in line --> ", prod)
+
         let inventory = {}
         if(prod!==undefined){
             inventory = JSON.parse(prod.inventory_existent)
         }
-        console.log("product inventory --> ", inventory)
+
         const inv_on_warehouse = inventory[this.props.selectedWarehouse.id] === undefined ? 0 :inventory[this.props.selectedWarehouse.id]
         
         //get product current pricing data
@@ -579,7 +614,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
     </div>;
         let price_setter_2 = '';
         let price_setter_3 = '';
-        console.log("uses multiprice --> ", this.props.usesMultiprice)
+
         if(this.props.usesMultiprice){
             price_setter_2 = <div className="purchase-prod-adjuster-body-price">
             <div className="purchase-prod-adjuster-body-price-detail">
@@ -656,10 +691,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
         </div>
         }
 
-
         return <div className="purchase-prod-adjuster">
-
-            
 
             <h2>Ajuste de Precios</h2>
             <div className="purchase-prod-adjuster-summary">
@@ -680,15 +712,20 @@ export default class Purchase_PriceAdjuster extends React.Component {
                 <div className="purchase-prod-adjuster-summary-field">
                     <div className="purchase-prod-adjuster-summary-field-label">Plazo Crédito:</div>
                     <div className="purchase-prod-adjuster-summary-field-value">
-                        {this.props.invoice_to_link?this.props.invoice_to_link.header.PlazoCredito : "Indefinido"}
+                        <input name="credit_period" type="number"
+                                value={this.props.credit_period} 
+                                onChange={this.updateCreditPeriod.bind(this)}/>
                     </div>
+                        {/* {this.props.invoice_to_link?this.props.invoice_to_link.header.PlazoCredito : "Indefinido"*/}
                 </div>
+
                 <div className="purchase-prod-adjuster-summary-field">
                     <div className="purchase-prod-adjuster-summary-field-label">Consecutivo:</div>
                     <div className="purchase-prod-adjuster-summary-field-value">
                         {this.props.invoice_to_link?this.props.invoice_to_link.header.NumeroConsecutivo : "Indefinida"}
                     </div>
                 </div>
+
                 <div className="purchase-prod-adjuster-summary-field">
                     <div className="purchase-prod-adjuster-summary-field-label">Proveedor</div>
                     <div className="purchase-prod-adjuster-summary-field-value">
