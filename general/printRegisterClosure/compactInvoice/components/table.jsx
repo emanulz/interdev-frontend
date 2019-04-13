@@ -17,12 +17,13 @@ export default class Table extends React.Component {
     const cashierTransferCRCTotal = parseFloat(closure.closure_money_crc_cashier_transfer)
     const systemRecoveryCRCTotal = parseFloat(closure.credit_recovery_money_crc_sub) + parseFloat(closure.credit_recovery_card_crc_sub) + parseFloat(closure.credit_recovery_transfer_crc_sub)
     const systemCreditNoteCRCTotal = parseFloat(closure.credit_note_money_crc_sub)
+    const openingMoneyCRC = parseFloat(closure.opening_money_crc)
 
     const systemCashCRCTotal = parseFloat(closure.closure_money_crc_system_cash)
     const systemCredCRCTotal = parseFloat(closure.closure_money_crc_system_credits)
 
     // CALCIULATES THE TOTAL AMOUNT OF CASH SALES
-    const totalCashSalesCRC = systemCashCRCTotal + systemTransferCRCTotal + systemCardCRCTotal - systemRecoveryCRCTotal + systemCreditNoteCRCTotal
+    const totalCashSalesCRC = systemCashCRCTotal + systemTransferCRCTotal + systemCardCRCTotal - systemRecoveryCRCTotal + systemCreditNoteCRCTotal - openingMoneyCRC
 
     const systemCardCRC = systemCardCRCTotal || cashierCardCRCTotal
       ? <div>
@@ -94,18 +95,25 @@ export default class Table extends React.Component {
       <h2>₡{systemRecoveryCRCTotal.formatMoney()}</h2>
     </div>
 
+    const openingMoneyCRCDiv = <div className='print-register-closure-compact-invoice-table-item'>
+      <h1>Monto de apertura:</h1>
+      <h2>₡{openingMoneyCRC.formatMoney()}</h2>
+    </div>
+
     return <div className='print-register-closure-compact-invoice-table'>
       <div className='print-register-closure-compact-invoice-table-body'>
+        <hr />
+        {openingMoneyCRCDiv}
         <hr />
         {systemCashSalesCRC}
         {systemCredSalesCRC}
         {systemTotalSalesCRC}
         <hr />
+        RESUMEN:
+        <hr />
         {systemCNCRC}
         <hr />
         {systemRecoveryCRC}
-        <hr />
-        RESUMEN:
         <hr />
         {systemCardCRC}
         <hr />
