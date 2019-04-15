@@ -25,8 +25,11 @@ export default class ProductLinkerConfirmation extends React.Component {
         console.log("Prod linking invoice --> ", this.props.invoice_to_link)
         console.log("Prod linking to link prod --> ", this.props.to_link_product)
         console.log("Internal prod to link --> ", this.props.internal_product_to_link)
-
-        const xml_code = `${this.props.to_link_product.CodigosMeta[0].type}-${this.props.to_link_product.CodigosMeta[0].code}`
+        let xml_code = null;
+        if(this.props.to_link_product.CodigosMeta.length>0){
+            xml_code = `${this.props.to_link_product.CodigosMeta[0].type}-${this.props.to_link_product.CodigosMeta[0].code}`
+        }
+        
 
         const linking_data = {
             supplier_id: this.props.invoice_to_link.proveedor.id,
