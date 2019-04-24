@@ -5,7 +5,8 @@ const stateConst = {
   userCode: '',
   userPin: '',
   presale_type: 'REGULAR',
-  advance_amount: ''
+  advance_amount: '',
+  pay_method: 'CASH'
 }
 
 export default function reducer(state = stateConst, action) {
@@ -101,6 +102,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         presale_type: action.payload
+      }
+    } // case
+
+    case 'SET_SEND_PAY_METHOD':
+    {
+      return {
+        ...state,
+        pay_method: action.payload
       }
     } // case
 

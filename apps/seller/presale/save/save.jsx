@@ -16,6 +16,7 @@ import alertify from 'alertifyjs'
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
     advanceAmount: store.send.advance_amount,
+    payMethod: store.send.pay_method,
     conf: store.config.globalConf,
     exemptionData: store.taxExemption.exemptionData,
     isExempt: store.taxExemption.isExempt
@@ -53,7 +54,8 @@ export default class SaveBtn extends React.Component {
       presale_type: this.props.presaleType,
       currency_code: this.props.currency,
       exchange_rate: this.props.exchange,
-      advance_amount: this.props.advanceAmount
+      advance_amount: this.props.advanceAmount,
+      pay_method: this.props.payMethod
     }
 
     const creditMovement = {
