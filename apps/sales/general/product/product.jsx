@@ -90,19 +90,19 @@ export default class Product extends React.Component {
         if (firstChar == '+' || firstChar == '*' || firstChar == '-') {
           const value = ev.target.value.substr(1)
           if (firstChar == '+') {
-            description = value.split('*')[0] // Split val [0] is code [1] is qty
-            qty = value.split('*')[2]
-            price = value.split('*')[1]
+            description = value.split('*')[0]
+            qty = Math.abs(value.split('*')[2])
+            price = Math.abs(value.split('*')[1])
           }
           if (firstChar == '*') {
-            description = 'Varios' // Split val [0] is code [1] is qty
+            description = 'Varios'
             qty = 1
-            price = value
+            price = Math.abs(value)
           }
           if (firstChar == '-') {
-            description = value.split('*')[0] // Split val [0] is code [1] is qty
-            qty = value.split('*')[2]
-            price = value.split('*')[1]
+            description = value.split('*')[0]
+            qty = Math.abs(value.split('*')[2])
+            price = Math.abs(value.split('*')[1])
             useTaxes = false
           }
 
@@ -185,7 +185,7 @@ export default class Product extends React.Component {
         } else {
           // IN CASE IS NOT AN ABREVIATE METHOD
           code = ev.target.value.split('*')[0] // Split val [0] is code [1] is qty
-          qty = ev.target.value.split('*')[1]
+          qty = Math.abs(ev.target.value.split('*')[1])
 
           qty = (isNaN(qty))
             ? 1

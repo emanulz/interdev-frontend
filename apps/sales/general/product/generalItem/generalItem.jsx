@@ -44,7 +44,7 @@ export default class GenerlItem extends React.Component {
       case 'number':
       {
         value = parseFloat(target.value)
-          ? parseFloat(target.value)
+          ? Math.abs(parseFloat(target.value))
           : 0
         break
       }
@@ -95,12 +95,12 @@ export default class GenerlItem extends React.Component {
   }
 
   updateQty(ev) {
-    const value = ev.target.value
+    const value = Math.abs(ev.target.value)
     this.props.dispatch({type: 'SET_GENERAL_ITEM_QTY', payload: value})
   }
 
   updatePrice(ev) {
-    const value = ev.target.value
+    const value = Math.abs(ev.target.value)
     const product = {
       ...this.props.product
     }
