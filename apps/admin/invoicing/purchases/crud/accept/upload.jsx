@@ -72,6 +72,8 @@ class Form extends React.Component {
     reader.onloadend = () => {
 
       this.props.dispatch({type: 'SET_EPURCHASE_FILE', payload: file})
+      this.race_token = uuidv4()
+      console.log("New transaction token -->", this.race_token);
     }
 
     reader.readAsDataURL(file)
