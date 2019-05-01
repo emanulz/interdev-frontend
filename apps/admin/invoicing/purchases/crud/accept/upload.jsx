@@ -83,7 +83,11 @@ class Form extends React.Component {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
     console.log("Appending the marker --> ", this.race_token)
+    if(this.race_token === ""){
+      this.race_token = uuidv4()
+    }
     formData.append('marker', this.race_token)
+    
     const kwargs = {
       url: '/api/facturareception/processHaciendaXML/',
       item: formData,
