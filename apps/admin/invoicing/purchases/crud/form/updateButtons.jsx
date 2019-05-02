@@ -54,7 +54,6 @@ class UpdateButtons extends React.Component {
       })
 
       updatePromise.then(() => {
-        console.log('THENNN')
         const clientKwargs = {
           url: '/api/clients',
           successType: 'FETCH_CLIENTS_FULFILLED',

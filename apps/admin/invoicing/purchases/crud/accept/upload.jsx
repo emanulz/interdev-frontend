@@ -16,6 +16,7 @@ class Form extends React.Component {
   constructor(){
     super();
     this.race_token = uuidv4()
+    
   }
   // HANDLE INPUT CHANGE
   handleInputChange(event) {
@@ -64,6 +65,7 @@ class Form extends React.Component {
   }
 
   handleFileChange(e) {
+    
     e.preventDefault()
 
     const reader = new FileReader()
@@ -72,8 +74,8 @@ class Form extends React.Component {
     reader.onloadend = () => {
 
       this.props.dispatch({type: 'SET_EPURCHASE_FILE', payload: file})
-      this.race_token = uuidv4()
-      console.log("New transaction token -->", this.race_token);
+      this.props.dispatch({type: 'SET_EPURCHASE_TOKEN', payload: uuidv4()})
+
     }
 
     reader.readAsDataURL(file)
@@ -86,7 +88,7 @@ class Form extends React.Component {
     if(this.race_token === ""){
       this.race_token = uuidv4()
     }
-    formData.append('marker', this.race_token)
+    formData.append('token', this.race_token)
     
     const kwargs = {
       url: '/api/facturareception/processHaciendaXML/',
