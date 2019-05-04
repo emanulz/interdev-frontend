@@ -66,12 +66,14 @@ export default class Purchase_PriceAdjuster extends React.Component {
         //determine all taxes to be applied to the product, if any
         let total_tax_fraction = 0
         if(product.use_taxes){
-          total_tax_fraction += product.taxes
+            total_tax_fraction += parseFloat(product.taxes)
         }
         if(product.use_taxes2){
-          total_tax_fraction += product.taxes2
+            total_tax_fraction += parseFloat(product.taxes2  )
         }
+
         const total_tax_factor = 1 + total_tax_fraction / 100.0
+        console.log("Total tax fraction shit--> ", total_tax_factor)
         const default_discount = 1 - parseFloat(product.pred_discount)/100.0
       
         switch(updatePattern){

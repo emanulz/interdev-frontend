@@ -86,11 +86,13 @@ export function updateItem(kwargs){
   ?itemsInCart.findIndex(item=> item.uuid==kwargs.id)
   :itemsInCart.findIndex(item=> item.product.code == kwargs.id || item.product.barcode == kwargs.id)
   const ele = itemsInCart[index]
+
   const qtyNum = kwargs.qty==undefined?ele.qty:kwargs.qty //if -1 was received, keep the current qty
 
   const subtotalNum = kwargs.subtotal==undefined?ele.subtotal:kwargs.subtotal
   //const newTu = kwargs.target_utility==undefined?ele.target_utility:kwargs.target_utility
   const  newTu = kwargs.target_utility
+
   const newTp = kwargs.target_price==undefined?ele.wanted_price_ivi:kwargs.target_price
 
   const updatePattern = newTu !== undefined ? 'byUtility' : 'byPrice'
@@ -152,10 +154,10 @@ export function calculateRealUtility(cost, target_utility, target_price,
   //determine all taxes to be applied to the product, if any
   let total_tax_fraction = 0
   if(product.use_taxes){
-    total_tax_fraction += product.taxes
+    total_tax_fraction += parseFloat(product.taxes)
   }
   if(product.use_taxes2){
-    total_tax_fraction += product.taxes2
+    total_tax_fraction += parseFloat(product.taxes2)
   }
   const total_tax_factor = 1 + total_tax_fraction / 100.0
   const default_discount = 1 - parseFloat(product.pred_discount)/100.0
@@ -257,6 +259,7 @@ function updatedCartItem(kwargs) {
   //calculate the price data as needed
   const price_data = calculateRealUtility(kwargs.unit_cost, kwargs.newTUtility, kwargs.newTPrice, 
     kwargs.itemsInCart[kwargs.index].product, kwargs.updatePattern, 'price_based')
+  console.log("Price data final calcs --> ", price_data)
   //keep the subtotal the same
   const uuid = kwargs.itemsInCart[kwargs.index].uuid
   let prod = kwargs.itemsInCart[kwargs.index].product
