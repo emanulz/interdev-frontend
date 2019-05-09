@@ -40,6 +40,8 @@ import creditVouchers from './vouchers/reducer.js'
 import printCashAdvance from '../../general/printCashAdvance/reducer.js'
 import printReturn from '../../general/printReturn/reducer.js'
 import helpers from './helpers/reducer.js'
+import projects from './projects/reducer.js'
+import activities from './activities/reducer.js'
 
 export default combineReducers({
   users,
@@ -61,6 +63,8 @@ export default combineReducers({
   adminSearch: search('adminSearch'),
   clientProductSearch: search('clientProductSearch'),
   productClientCreate: search('productClientCreate'),
+  clientSearch: search('clientSearch'),
+  activitySearch: search('activitySearch'),
   clientCategories,
   sales,
   presales,
@@ -83,5 +87,7 @@ export default combineReducers({
   printCashAdvance,
   creditVouchers,
   printReturn,
-  helpers
+  helpers,
+  projects,
+  activities
 })

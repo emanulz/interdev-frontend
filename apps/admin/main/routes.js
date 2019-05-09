@@ -24,6 +24,8 @@ import SalesClerks from '../salesclerks/main.jsx'
 import CashAdvances from '../cashAdvances/main.jsx'
 import CreditVouchers from '../vouchers/main.jsx'
 import Helpers from '../helpers/main.jsx'
+import Projects from '../projects/main.jsx'
+import Activities from '../activities/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -48,7 +50,8 @@ const routes = <div className='heigh100'>
   <Route path='/admin/cashadvances' component={CashAdvances} />
   <Route path='/admin/vouchers' component={CreditVouchers} />
   <Route path='/admin/helpers' component={Helpers} />
-
+  <Route path='/admin/projects' component={Projects} />
+  <Route path='/admin/activities' component={Activities} />
 </div>
 
 export default routes

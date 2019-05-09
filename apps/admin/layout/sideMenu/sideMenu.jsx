@@ -5,8 +5,8 @@ import React from 'react'
 import Search from './components/search/search.jsx'
 import User from './components/user/user.jsx'
 import ComposedItem from './components/items/composed.jsx'
-import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 @connect((store) => {
   return {
@@ -14,7 +14,7 @@ import {connect} from 'react-redux'
     config: store.config.globalConf,
     user: store.user.user,
     installedApps: store.config.installed_apps,
-    
+
   }
 })
 export default class SideMenu extends React.Component {
@@ -200,19 +200,31 @@ export default class SideMenu extends React.Component {
       }
     ]
 
+    const childConstruction = [
+      {
+        text: 'Proyectos',
+        class: 'fa-gift',
+        href: '/admin/projects'
+      }, {
+        text: 'Actividades',
+        class: 'fa-gift',
+        href: '/admin/activities'
+      }
+    ]
+
     //create the helpers menu only if there are any enabled
     let collections_menu = ''
     const helpModelsInUse = this.props.config.helpModelsInUse
     console.log("help models in use --> ", helpModelsInUse)
-    if(helpModelsInUse != '' && helpModelsInUse != undefined){
+    if (helpModelsInUse != '' && helpModelsInUse != undefined) {
       const collection_names = helpModelsInUse.split(',')
-      if(collection_names.length>0){
+      if (collection_names.length > 0) {
         const collection_childs = []
-        for(let item of collection_names){
-          if(item == ''){
+        for (let item of collection_names) {
+          if (item == '') {
             continue
           }
-          const item_capitalized =  item.charAt(0).toUpperCase() + item.slice(1)
+          const item_capitalized = item.charAt(0).toUpperCase() + item.slice(1)
 
           collection_childs.push({
             text: item_capitalized,
@@ -220,11 +232,11 @@ export default class SideMenu extends React.Component {
             href: `/admin/helpers/${item.trim()}`
           })
         }
-        if(collection_childs.length>0){
+        if (collection_childs.length > 0) {
           collections_menu = <ComposedItem mainTittle='Colecciones' mainIcon='fa-database' childItems={collection_childs} />
         }
-        
-        //build the root component of the category
+
+        // build the root component of the category
       }
       // const childCollections = [
       //   {
@@ -247,11 +259,21 @@ export default class SideMenu extends React.Component {
       // ]
     }
 
-    
-
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const eInvoicingComponent = this.props.taxPayer.is_digital_invoicing_active
       ? <ComposedItem mainTittle='Facturación Electrónica' mainIcon='fa-gift' childItems={childInvoicing} />
+      : <div />
+
+    const constructionInstalled = this.props.installedApps.ConstructionAppInstalled
+      ? <ComposedItem mainTittle='Constructora' mainIcon='fa-building' childItems={childConstruction} />
+      : <div />
+
+    const presalesInstalled = this.props.installedApps.PresalesAppInstalled
+      ? <ComposedItem mainTittle='Preventas' mainIcon='fa-list-ul' childItems={childPresales} />
+      : <div />
+
+    const salesInstalled = this.props.installedApps.SalesAppInstalled
+      ? <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
       : <div />
     return <div id='sideMenu' className='sideMenu'>
 
@@ -269,10 +291,10 @@ export default class SideMenu extends React.Component {
           </li>
           <ComposedItem mainTittle='Productos' mainIcon='fa-database' childItems={childProducts} />
           <ComposedItem mainTittle='Clientes' mainIcon='fa-street-view' childItems={chilClients} />
-  
-          <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
-          <ComposedItem mainTittle='Preventas' mainIcon='fa-list-ul' childItems={childPresales} />
-          
+
+          {salesInstalled}
+          {presalesInstalled}
+          {constructionInstalled}
           {eInvoicingComponent}
           <ComposedItem mainTittle='Administración' mainIcon='fa-tachometer' childItems={childAdmin} />
           {collections_menu}

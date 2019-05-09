@@ -112,3 +112,61 @@
 .selection
   .select2-selection__clear
     font-size: 32px !important
+
+.projectCreate-client
+  display: flex
+  flex-flow: row
+  align-items: center
+  font-size: 12px
+  &-name
+    padding: 11px
+    background-color: $PRIMARY-COLOR-ACCENT
+    color: white
+    display: flex
+    justify-content: center
+    border-radius: 5px
+    min-width: 60%
+  &-search
+    padding: 11px
+    background-color: $PRIMARY-COLOR
+    color: white
+    display: flex
+    justify-content: center
+    margin: 0 10px
+    border-radius: 5px
+    cursor: pointer
+    & span
+      font-size: 12px !important
+  &-add
+    padding: 11px
+    background-color: $SECONDARY-COLOR
+    color: white
+    display: flex
+    justify-content: center
+    border-radius: 5px
+    cursor: pointer
+    & span
+      font-size: 12px !important
+
+.projectCreate-activities
+  width: 60%
+  height: 250px
+  border: 1px solid #cacaca
+  overflow-y: auto
+  border-radius: 5px
+  padding: 5px
+  &-element
+    width: 100%
+    padding: 10px 5px
+    display: flex
+    flex-flow: row
+    align-items: center
+    background-color: $SECONDARY-COLOR
+    color: white
+    border-radius: 5px
+    margin-bottom: 10px
+    justify-content: space-between
+    &-remove
+      cursor: pointer
+    & span
+      font-size: 13px

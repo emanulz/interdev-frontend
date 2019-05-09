@@ -64,6 +64,24 @@ export function getHeaderOrder(model, salesWarehouse) {
     }
   ]
 
+  const activityHeader = [
+    {
+      field: 'id',
+      text: 'Código',
+      width: '150px'
+    }, {
+      field: 'name',
+      text: 'Nombre'
+    }, {
+      field: 'description',
+      text: 'Descripción'
+    }, {
+      field: 'is_active',
+      text: 'Activa?',
+      type: 'bool'
+    }
+  ]
+
   const supplierHeader = [
     {
       field: 'code',
@@ -97,6 +115,9 @@ export function getHeaderOrder(model, salesWarehouse) {
     }
     case 'supplier': {
       return supplierHeader
+    }
+    case 'activity': {
+      return activityHeader
     }
   }
 
