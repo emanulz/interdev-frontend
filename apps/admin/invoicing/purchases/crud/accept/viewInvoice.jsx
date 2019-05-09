@@ -4,17 +4,20 @@ import { withRouter } from 'react-router-dom'
 import {acceptEPurchase} from '../../actions.js'
 import alertify from 'alertifyjs'
 
+
 @connect((store) => {
   return {
     purchaseToUpload: store.epurchases.purchaseToUpload,
     loadedPurchase: store.epurchases.loadedPurchase,
-    epurchaseType: store.epurchases.epurchaseType
+    epurchaseType: store.epurchases.epurchaseType,
+    token: store.epurchases.token,
   }
 })
 
 class Form extends React.Component {
-  // REACT METHODS
 
+
+  // REACT METHODS
   fieldFocus(ev) {
     ev.target.select()
   }
@@ -24,6 +27,7 @@ class Form extends React.Component {
     formData.append('file', this.props.purchaseToUpload)
     formData.append('taxpayer_response', 'ACCEPTED')
     formData.append('purchase_type', this.props.epurchaseType)
+    formData.append('token', this.props.token)
     const kwargs = {
       url: '/api/facturareception/processHaciendaXML/',
       item: formData,
@@ -47,6 +51,7 @@ class Form extends React.Component {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
     formData.append('taxpayer_response', 'REJECTED')
+    formData.append('token', this.props.token)
     const _this = this
     alertify.prompt('Rechazar', 'Ingrese la razón del rechazo', '',
       function(evt, value) {

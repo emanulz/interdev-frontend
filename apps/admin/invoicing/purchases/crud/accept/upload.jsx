@@ -2,6 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { uploadEPurchase } from '../../actions.js'
+ 
+const uuidv4 = require('uuid/v4')
 
 @connect((store) => {
   return {
@@ -11,7 +13,11 @@ import { uploadEPurchase } from '../../actions.js'
 
 class Form extends React.Component {
   // REACT METHODS
-
+  constructor(){
+    super();
+    this.race_token = uuidv4()
+    
+  }
   // HANDLE INPUT CHANGE
   handleInputChange(event) {
 
@@ -59,6 +65,7 @@ class Form extends React.Component {
   }
 
   handleFileChange(e) {
+    
     e.preventDefault()
 
     const reader = new FileReader()
@@ -67,6 +74,8 @@ class Form extends React.Component {
     reader.onloadend = () => {
 
       this.props.dispatch({type: 'SET_EPURCHASE_FILE', payload: file})
+      this.props.dispatch({type: 'SET_EPURCHASE_TOKEN', payload: uuidv4()})
+
     }
 
     reader.readAsDataURL(file)
@@ -75,6 +84,12 @@ class Form extends React.Component {
   uploadFile() {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
+    console.log("Appending the marker --> ", this.race_token)
+    if(this.race_token === ""){
+      this.race_token = uuidv4()
+    }
+    formData.append('token', this.race_token)
+    
     const kwargs = {
       url: '/api/facturareception/processHaciendaXML/',
       item: formData,
@@ -96,7 +111,7 @@ class Form extends React.Component {
 
         <div className='form-group'>
           <div className='form-group-content'>
-            <label>CARGAR FACTURA</label>
+            <label>CARGAR FACTURA !</label>
             <input name='code' onChange={this.handleFileChange.bind(this)} type='file'
               className='form-control' accept='application/xml' />
             <button onClick={this.uploadFile.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>

@@ -10,12 +10,21 @@ const stateConst = {
   loadedPurchase: {},
   purchaseToUpload: '',
   permissions: defaultPermissions,
-  epurchaseType: 'PURCHASE'
+  epurchaseType: 'PURCHASE',
+  token: ""
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'SET_EPURCHASE_TOKEN':
+    {
+      return {
+        ...state,
+        token: action.payload
+      }
+    } 
 
     case 'SET_EPURCHASE_TYPE':
     {
