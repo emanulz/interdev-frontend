@@ -13,8 +13,7 @@ import { connect } from 'react-redux'
     taxPayer: store.userProfile.taxPayer,
     config: store.config.globalConf,
     user: store.user.user,
-    installedApps: store.config.installed_apps,
-
+    installedApps: store.config.installed_apps
   }
 })
 export default class SideMenu extends React.Component {

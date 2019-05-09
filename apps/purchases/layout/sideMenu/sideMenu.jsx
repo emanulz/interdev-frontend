@@ -10,7 +10,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    sideMenuVisible: store.layout.sideMenuVisible
+    sideMenuVisible: store.layout.sideMenuVisible,
+    globalConf: store.config.globalConf
   }
 })
 export default class SideMenu extends React.Component {
@@ -45,6 +46,31 @@ export default class SideMenu extends React.Component {
       }
     ]
 
+    const childOrders = []
+
+    if (this.props.globalConf.CanCreateRequests) {
+      childOrders.push(
+        {
+          text: 'Pedidos',
+          class: 'fa-gift',
+          href: '/purchases/requests'
+        }
+      )
+    }
+    if (this.props.globalConf.CanCreateOrders) {
+      childOrders.push(
+        {
+          text: 'Ordenes',
+          class: 'fa-gift',
+          href: '/purchases/orders'
+        }
+      )
+    }
+
+    const ordersComponent = this.props.globalConf.CanCreateOrders || this.props.globalConf.CanCreateRequests
+      ? <ComposedItem mainTittle='Ordendes de Compra' mainIcon='fa-gift' childItems={childOrders} />
+      : <div />
+
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const sideMenuClass = this.props.sideMenuVisible ? 'sideMenu' : 'sideMenu hiddenByApp'
     return <div id='sideMenu' className={sideMenuClass}>
@@ -59,6 +85,7 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-area-chart' />
               Inicio</Link>
           </li>
+          {ordersComponent}
           <li>
             <Link to='/purchases/add'>
               <span className='fa fa-file' />

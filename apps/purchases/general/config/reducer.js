@@ -3,6 +3,7 @@ const stateConst = {
     salesWarehouse: '',
     workshopWarehouse: '',
     globalConf: {},
+    installed_apps: {}
   }
   
   export default function reducer(state = stateConst, action) {
@@ -88,6 +89,23 @@ const stateConst = {
         }
   
     }
+    case 'FETCH_INSTALLED_APPS_FULFILLED':
+    {
+      return {
+        ...state,
+        installed_apps: action.payload.data
+      }
+
+    } // case
+
+    case 'FETCH_INSTALLED_APPS_REJECTED':
+    {
+      return {
+        ...state,
+        installed_apps: {}
+      }
+
+    } // case
   }
     return state // default return
   }

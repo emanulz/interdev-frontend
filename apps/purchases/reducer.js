@@ -48,5 +48,4 @@ export default combineReducers({
     supplierLinker: search('supplierLinker'),
     productLinker: search('productLinker'),
     cross_ref
-
 })
