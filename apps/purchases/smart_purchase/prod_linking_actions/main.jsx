@@ -202,11 +202,13 @@ export default class ProdLinkingActions extends React.Component {
             this.props.dispatch({type:"SMART_PRODUCT_NOT_LINKED"})
             return
         }
-
+        console.log("Product to link --> ",  this.props.product_to_link);
         let supplier = this.props.invoice_to_link.proveedor
         const data = {
             product_code: this.props.product_to_link.linked.code,
-            supplier_code: supplier.code
+            supplier_code: supplier.code,
+            supplier_product_code: this.props.product_to_link.CodigosMeta,
+            supplier_description: this.props.product_to_link.CodigosMeta.Detalle
         }
         const unlinkKwargs = {
             url: '/api/products/smart_unlink/',
