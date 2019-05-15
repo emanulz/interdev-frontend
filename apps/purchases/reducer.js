@@ -39,6 +39,7 @@ export default combineReducers({
     productSearch: search('productSearch'),
     supplierSearch: search('supplierSearch'),
     purchaseSearch: search('purchaseSearch'),
+    requestSearch: search('requestSearch'),
     purchaseReceipt,
     config,
     reports,
