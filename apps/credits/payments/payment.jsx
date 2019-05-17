@@ -3,7 +3,8 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import { setItem } from '../../../utils/api.js'
+import { setItem,  generalSave} from '../../../utils/api.js'
+
 
 @connect((store) => {
   return {
@@ -36,6 +37,21 @@ export default class MovementsList extends React.Component {
 
   showInvoice() {
     this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
+  }
+
+  nullPayment(){
+    const kwargs = {
+      url: '/api/creditpaymentscreate/nullpayment/',
+      data: {id: this.props.payment.id},
+      method: 'post',
+      sucessMessage: `Pago anulado Correctamente.`,
+      errorMessage: `Hubo un error al anular el pago.`,
+      successType: 'FETCHING_DONE',
+      errorType: 'FETCHING_DONE'
+    }
+
+    this.props.dispatch({type: 'FETCHING_STARTED'})
+    this.props.dispatch(generalSave(kwargs))
   }
 
   saleItem(sale) {
@@ -107,7 +123,8 @@ export default class MovementsList extends React.Component {
               Mostar recibo
               <i className='fa fa-credit-card' />
             </button>
-            <button disabled={this.props.payment.is_null} className='btnPaymentNull form-control btn btn-danger' >
+            <button disabled={this.props.payment.is_null} className='btnPaymentNull form-control btn btn-danger' 
+              onClick={this.nullPayment.bind(this)}>
               Anular Pago
               <i className='fa fa-minus-circle' />
             </button>
