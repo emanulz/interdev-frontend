@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-
+import {generalSave} from '../../../utils/api'
 // components
 import AdminTable from '../../../general/adminTable/adminTable.jsx'
 import { getPaginationItemDispatch } from '../../../utils/api.js'
@@ -30,6 +30,38 @@ export default class List extends React.Component {
     }
 
     this.props.dispatch(getPaginationItemDispatch(paymentKwargs))
+
+  }
+
+  nullPayment(consecutive){
+    let payments = this.props.payments
+    let dispatch = this.props.dispatch
+    return (consecutive) => {
+      const index = payments.findIndex(a => {
+        return a.consecutive === consecutive
+      })
+      let payment = null;
+      if(index !== -1){
+        payment = payments[index]
+      }
+      console.log("Payment --> ", payment);
+
+      if(payment !== null){
+
+        const kwargs = {
+          url: '/api/creditpaymentscreate/nullpayment/',
+          data: {id: payment.id},
+          method: 'post',
+          sucessMessage: `Pago anulado Correctamente.`,
+          errorMessage: `Hubo un error al anular el pago.`,
+          successType: 'FETCHING_DONE',
+          errorType: 'FETCHING_DONE'
+        }
+
+        dispatch({type: 'FETCHING_STARTED'})
+        dispatch(generalSave(kwargs))
+      }
+    }
 
   }
 
@@ -71,6 +103,13 @@ export default class List extends React.Component {
         text: 'Pago',
         textToRender: 'Ver Pago',
         type: 'textLink'
+      },
+      {
+        field: 'consecutive',
+        text: 'Anular',
+        textToRender: 'Anular',
+        type: 'function_on_click',
+        onClickFunction: this.nullPayment()
       }
     ]
 
