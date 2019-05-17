@@ -97,12 +97,13 @@ class MovementsList extends React.Component {
     const movClass = movement.movement_type == 'CRED' ? 'credit' : 'debit'
     const typeText = movement.movement_type == 'CRED' ? 'Crédito' : 'Débito'
     const date = new Date(movement.created)
-
+    const statusText = movement.is_null ? 'ANULADO' : 'APLICADO'
     return <tr className={`${movClass}`} key={movement.id}>
       <td>{movement.consecutive}</td>
       <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
       <td>{typeText}</td>
       <td>₡ {Math.abs(parseFloat(movement.amount)).formatMoney(2, ',', '.')}</td>
+      <td>{statusText}</td>
       <td>{movement.description}</td>
     </tr>
   }
@@ -119,10 +120,10 @@ class MovementsList extends React.Component {
 
     const rows = movements.length
       ? movements.map(movement => {
-        if (movement.movement_type == 'CRED') {
+        if (movement.movement_type == 'CRED' && !movement.is_null) {
           credits += Math.abs(parseFloat(movement.amount))
         }
-        if (movement.movement_type == 'DEBI') {
+        if (movement.movement_type == 'DEBI' && !movement.is_null) {
           debits += Math.abs(parseFloat(movement.amount))
         }
         return this.movementItem(movement)
@@ -143,6 +144,7 @@ class MovementsList extends React.Component {
                 <th>Fecha</th>
                 <th>Tipo</th>
                 <th>Monto</th>
+                <th>Estado</th>
                 <th>Detalle</th>
               </tr>
             </thead>

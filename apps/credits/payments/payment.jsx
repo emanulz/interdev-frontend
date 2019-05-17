@@ -67,7 +67,7 @@ export default class MovementsList extends React.Component {
       </tr>
 
     const amount = this.props.payment.amount ? parseFloat(this.props.payment.amount) : 0
-    const statusText = this.props.payment.is_null ? 'Anulado' : 'Aplicado'
+    const statusText = this.props.payment.is_null ? 'ANULADO' : 'APLICADO'
     return <div className='list-container'>
 
       <h1>Pago a facturas #{payment.consecutive}</h1>
@@ -107,7 +107,7 @@ export default class MovementsList extends React.Component {
               Mostar recibo
               <i className='fa fa-credit-card' />
             </button>
-            <button className='btnPaymentNull form-control btn btn-danger' >
+            <button disabled={this.props.payment.is_null} className='btnPaymentNull form-control btn btn-danger' >
               Anular Pago
               <i className='fa fa-minus-circle' />
             </button>

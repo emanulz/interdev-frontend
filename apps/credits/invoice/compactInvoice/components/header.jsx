@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    userProfile: store.userProfile
+    userProfile: store.userProfile,
+    payment: store.payments.paymentActive
   }
 })
 export default class Header extends React.Component {
@@ -36,6 +37,10 @@ export default class Header extends React.Component {
     const email = local && local.email ? local.email : ''
     const emailTag = email ? <h3>{email}</h3> : ''
 
+    const isNull = this.props.payment ? this.props.payment.is_null : false
+
+    const headerText = isNull ? 'PAGO ANULADO' : 'RECIBO POR PAGO A FACTURAS'
+
     return <div>
 
       <div className='compact-invoice-header'>
@@ -55,7 +60,7 @@ export default class Header extends React.Component {
       <div className='compact-invoice-separator'>
         <span />
 
-        <h1>RECIBO POR PAGO A FACTURAS</h1>
+        <h1>{headerText}</h1>
 
         <span />
       </div>

@@ -61,11 +61,13 @@ export default class PaymentList extends React.Component {
   getPendingItem(item, client) {
 
     const date = formatDate(item.created)
+    const nulledText = item.is_null ? 'ANULADO' : 'APLICADO'
     return <tr key={`${item.consecutive}_${item.type}`}>
       <td>{item.consecutive}</td>
       <td>{date}</td>
       <td>₡ {item.amount ? parseFloat(item.amount).formatMoney(2, ',', '.') : 0}</td>
       <td>{item.description}</td>
+      <td>{nulledText}</td>
       <td><Link to={`/credits/payments/${item.consecutive}`}>Ver Pago</Link></td>
     </tr>
 
@@ -123,6 +125,7 @@ export default class PaymentList extends React.Component {
                 <th>Fecha</th>
                 <th>Monto</th>
                 <th>Descripción</th>
+                <th>Estado</th>
                 <th>Ver Pago</th>
               </tr>
             </thead>
