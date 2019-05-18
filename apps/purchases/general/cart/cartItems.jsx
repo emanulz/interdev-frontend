@@ -29,8 +29,12 @@ export default class CartItems extends React.Component {
     this.props.dispatch(updateTotals(this.props.inCart, this.props.cartTaxes, this.props.orderTransport, this.props.discount_mode))
 
     // Auto Scroll To end of container
-    const elem = document.getElementById('cart-body')
-    elem.scrollTop = elem.scrollHeight
+    console.log("prev qty --> ", prevProps.inCart.length, this.props.inCart.length)
+    if(prevProps.inCart.length < this.props.inCart.length){
+      const elem = document.getElementById('cart-body')
+      elem.scrollTop = elem.scrollHeight
+    }
+
 
   }
 
