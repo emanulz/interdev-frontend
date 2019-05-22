@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
+const uuidv4 = require('uuid/v4')
 
 import {generalSave} from '../../../../utils/api.js'
 
@@ -50,13 +51,13 @@ export default class Summary_Actions extends React.Component {
 
     
     acceptRejectPurchase(response){
-        console.log("Accepting/Rejecting purchase --> ", response)
 
         this.props.dispatch({type:'FETCHING_STARTED'})
 
         const formData = new FormData()
         formData.append('file', this.props.selectedFile)
         formData.append('taxpayer_response', response)
+        formData.append('token', uuidv4())
 
         const kwargs = {
             url: '/api/facturareception/processHaciendaXML/',
