@@ -94,6 +94,15 @@ export default class ListMassInv extends React.Component {
                 field: 'created',
                 text: 'Creación',
                 type: 'date'
+            },
+            {
+                field: 'id',
+                text: 'Imprimible',
+                textToRender: 'Imprimible',
+                baseLink: '/reportsExcel/massinvload',
+                type: 'link_params',
+                fieldAsParams: [{field: 'id', name:'massinvid'}],
+                extraParams: []
             }
 
 

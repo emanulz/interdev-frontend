@@ -49,7 +49,6 @@ export default class ExcelFetcher extends React.Component {
     }
 
     onFamilySelected(e){
-        console.log("Family selected --> ", e.target.value)
         if(e.target.value == "0000"){
             return //just the case where there are no families or was released on the default starting option
         }
@@ -62,7 +61,6 @@ export default class ExcelFetcher extends React.Component {
     }
 
     onFamilySelectedInventory(e){
-        console.log("Family selected Utility--> ", e.target.value)
         if(e.target.value == "0000"){
             return //just the case where there are no families or was released on the default starting option
         }

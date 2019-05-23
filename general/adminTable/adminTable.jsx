@@ -395,16 +395,62 @@ export default class AdminTable extends React.Component {
             {
 
               item = <td key={`${el[idField]}_${header.field}`}>
-                {/* <Link to={`/admin/${model}/edit#${itemToRender}`}>
-                                              {itemToRender}
-                                          </Link> */}
+
                 <a target='_blank' href={`${header.baseLink}/${itemToRender}`}>
                   {itemToRender}
                 </a>
               </td>
               break
             }
+            case 'link_params':
+            {
+              let anchor;
 
+              let params = []
+              // console.log("El --> ", el)
+              if(header.fieldAsParams){
+                header.fieldAsParams.forEach(param => {
+                  console.log("Get this key from el ", param.field)
+                  params.push(
+                    {
+                      paramName: param.name,
+                      value: el[param.field]
+                    }
+                  )
+                })
+              }
+
+              if(header.extraParams){
+                header.extraParams.forEach(element => {
+                  params.push(
+                    {
+                      paramName: element.name,
+                      value: element.value
+                    }
+                  )
+                });
+              }
+
+              if(params.length < 1){
+                anchor = <a target='_blank' href={`${header.baseLink}`}>
+                    {header.textToRender}
+                  </a>
+              }else{
+                let href = '/?'
+                params.forEach(param => {
+                  href += `${param.paramName}=${param.value}&`
+                })
+                href = href.substring(0, href.length-1)
+                anchor = <a target='_blank' href={`${header.baseLink}${href}`}>
+                  {header.textToRender}
+                </a>
+              }
+
+              item = <td key={`${el[idField]}_${header.field}`}>
+                {anchor}
+              </td>
+              break
+            }
             case 'link_text':
             {
 
