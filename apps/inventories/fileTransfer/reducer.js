@@ -40,7 +40,7 @@ export default function reducer(state=stateConst, action) {
 
         case 'INV_LOAD_SUCCESFUL':
         {
-             return window.location.href = "/inventories/filetransferslist"
+             return window.location.href = "/inventories/invloadlist"
         }
 
         case ' INV_LOAD_REJECTED':

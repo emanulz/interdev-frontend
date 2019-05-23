@@ -37,7 +37,7 @@ export default class List extends React.Component {
       } // case
     }
 
-    return <div className='List'>
+    return <div>
       {content}
     </div>
 

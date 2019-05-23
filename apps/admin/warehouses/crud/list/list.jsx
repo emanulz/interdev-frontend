@@ -46,7 +46,16 @@ export default class List extends React.Component {
       }, {
         field: 'description',
         text: 'Descripción'
-      }
+      },
+      {
+        field: 'id',
+        text: 'Existencias',
+        textToRender: 'Existencias',
+        baseLink: '/reportsExcel/warehouseinv',
+        type: 'link_params',
+        fieldAsParams: [{field: 'id', name:'warehouseinvid'}],
+        extraParams: []
+    }
     ]
 
     const fetching = <div />
@@ -64,12 +73,12 @@ export default class List extends React.Component {
         <h1>Mantenimiento de Bodegas:</h1>
         {addLink}
       </div>
-      <div className='admin-list-search'>
+      {/* <div className='admin-list-search'>
         <input
           type='text'
           placeholder='Ingrese un texto para buscar...'
         />
-      </div>
+      </div> */}
       <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/warehouses/' successType='FETCH_WAREHOUSES_FULFILLED' errorType='FETCH_WAREHOUSES_REJECTED' />
         <Pagination url='/api/warehouses/' successType='FETCH_WAREHOUSES_FULFILLED' errorType='FETCH_WAREHOUSES_REJECTED' />
