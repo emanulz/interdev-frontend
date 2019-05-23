@@ -108,9 +108,9 @@ export default class SideMenu extends React.Component {
           {makeFileTransferMenu}
           {loadFileTransferMenu}
           <li>
-            <Link to='/inventories/reports'>
+            <Link to='/inventories/invloadlist'>
               <span className='fa fa-file' />
-              Reportes</Link>
+              Listado Ingresos Inventario</Link>
           </li>
           <li>
             <Link to='/inventories/filetransferslist'>

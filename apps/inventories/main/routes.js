@@ -13,6 +13,7 @@ import CheckTakeMovements from '../checkTakeMovements/main.jsx'
 import MakeMassFileTransfer  from '../fileTransfer/main.jsx'
 import FileTransferLoader from '../fileTransferLoad/main.jsx'
 import ListFileTransfers from '../fileTransfer/list/main.jsx'
+import ListMassInv from '../fileTransfer/list-mass/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -26,6 +27,7 @@ const routes = <div className='heigh100'>
   <Route path='/inventories/makeFileTransfer' component={MakeMassFileTransfer} />
   <Route path='/inventories/loadFileTransfer' component={FileTransferLoader} />
   <Route path='/inventories/filetransferslist' component={ListFileTransfers} />
+  <Route path='/inventories/invloadlist' component={ListMassInv} />
   
 </div>
 

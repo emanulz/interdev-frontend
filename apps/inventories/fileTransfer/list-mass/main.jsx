@@ -15,7 +15,7 @@ import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
         ftransfers: store.fileTransfer.transfers
     }
 })
-export default class ListFileTransfers extends React.Component {
+export default class ListMassInv extends React.Component {
 
 
     componentWillMount(){
@@ -23,7 +23,7 @@ export default class ListFileTransfers extends React.Component {
         this.props.dispatch({type: `transferSearch_CLEAR_SEARCH_RESULTS`})
 
         const transferKwargs = {
-            url : `/api/filetransferslist/?limit=${this.props.pageSize}&ordering=-created&is_mass_input=3`,
+            url : `/api/filetransferslist/?limit=${this.props.pageSize}&ordering=-created&is_mass_input=2`,
             successType: 'FETCH_FTRANSFERS_FULFILLED',
             errorType: 'FETCH_FTRANSFERS_REJECTED'
         }
@@ -89,12 +89,7 @@ export default class ListFileTransfers extends React.Component {
                 type: 'function_element',
                 worker_method: get_name
             },
-            {
-                field: 'transfer_file',
-                text: 'Archivo Transferencia',
-                type: 'function_element',
-                worker_method: get_file
-            },
+
             {
                 field: 'created',
                 text: 'Creación',
@@ -115,15 +110,15 @@ export default class ListFileTransfers extends React.Component {
 
         const paginationDiv = !this.props.searchResults.length
             ? <div className='admin-list-results-pagination' >
-            <ResultsPerPage url='/api/filetransferslist/?ordering=-created&is_mass_input=3' successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
-            <Pagination url='/api/filetransferslist/?ordering=-created&is_mass_input=3' successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
+            <ResultsPerPage url='/api/filetransferslist/?ordering=-created&is_mass_input=2' successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
+            <Pagination url='/api/filetransferslist/?ordering=-created&is_mass_input=2' successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
             </div>
             : <div />
 
             return <div className='list list-container'>
             
             <div className='admin-list-header'>
-                <h1>Listado Transferencias</h1>
+                <h1>Listado Ingresos Inventario</h1>
             </div>
 
             <SearchAdmin model='filetransfer' namespace='transferSearch' />
