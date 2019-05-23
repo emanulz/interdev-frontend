@@ -1,5 +1,3 @@
-import {generalSave} from '../../../utils/api.js'
-
 import axios from 'axios'
 
 // ------------------------------------------------------------------------------------------
@@ -16,7 +14,8 @@ const stateConst = {
     showCurrency: false,
     uniqueId: '',
     transfer_location: '',
-    transfers: []
+    transfers: [],
+    mass_load_complete: false,
 }
 
 export default function reducer(state=stateConst, action) {
@@ -37,6 +36,20 @@ export default function reducer(state=stateConst, action) {
             ...state,
             fullWidth: width
           }
+        }
+
+        case 'INV_LOAD_SUCCESFUL':
+        {
+             return window.location.href = "/inventories/filetransferslist"
+        }
+
+        case ' INV_LOAD_REJECTED':
+        {
+            let message = `Error ingresando inventario ${action.payload}`
+            alertify.alert("Error", message)
+            return {
+                ...state
+            }
         }
 
         case 'INV_DOWNLOAD_SUCCESFUL':

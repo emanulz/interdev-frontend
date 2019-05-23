@@ -47,17 +47,22 @@ export default class SingleProduct extends React.Component {
     //   this.props.globalDiscount, this.props.client, this.props.warehouse_id))
     const code = this.props.product.code
     const _this = this
+    console.log("Blow me away here!")
     const setProductPromiseNew = new Promise((resolve, reject) => {
       const kwargs = {
         url: '/api/products/getProdPrice/',
         data: {
-          code: code,
+          prod_data: {
+            code: code
+          },
           clientId: _this.props.client.client.id
         }
       }
 
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       setProductNew(kwargs, resolve, reject)
+    }).catch(err => {
+      console.log("HERE FACK")
     })
 
     setProductPromiseNew.then((data) => {

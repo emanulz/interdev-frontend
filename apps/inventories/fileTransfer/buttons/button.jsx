@@ -9,13 +9,14 @@ import {generalSave} from '../../../../utils/api.js'
         sendToEmails: store.extras.client.email,
         uniqueId: store.fileTransfer.uniqueId,
         selectedWarehouse: store.warehouses2.selectedWarehouse.id,
-        transfer_location: store.fileTransfer.transfer_location
+        transfer_location: store.fileTransfer.transfer_location,
     }
 })
 export default class Buttons extends React.Component {
 
 
     generateTransfer(){
+
         const kwargs = {
             url: '/api/inventorymovementslist/transferInv/',
             method: 'post',
@@ -23,6 +24,34 @@ export default class Buttons extends React.Component {
             errorType: 'INV_DOWNLOAD_REJECTED',
             sucessMessage: 'Transferencia de inventario a archivo éxitosa',
             errorMessage: 'Error al transferir inventario a archivo',
+            data: {
+              notes: this.props.note,
+              cart: JSON.stringify(this.props.cart),
+              transfer_id: this.props.uniqueId,
+              warehouse: this.props.selectedWarehouse 
+            }
+          }
+          this.props.dispatch(generalSave(kwargs))
+    }
+
+    massLoadInv(){
+        if(this.props.selectedWarehouse === "00000000-0000-0000-0000-000000000000"){
+            alertify.alert("Error", "Se debe seleccionar la bodega.")
+            return
+        }
+        if(!this.props.cart.cartHasItems){
+            alertify.alert("Error", "No hay artículos en el carrito.")
+            return  
+        }
+
+
+        const kwargs = {
+            url: '/api/inventorymovementslist/massLoadInv/',
+            method: 'post',
+            successType: 'INV_LOAD_SUCCESFUL',
+            errorType: 'INV_LOAD_REJECTED',
+            sucessMessage: 'Ingreso a inventario exitoso',
+            errorMessage: 'Error ingresando mercadería',
             data: {
               notes: this.props.note,
               cart: JSON.stringify(this.props.cart),
@@ -42,6 +71,17 @@ export default class Buttons extends React.Component {
     render() {
         let download_button = ''
         let generate_button =''
+
+        let mass_load_button  = <button
+        onClick={this.massLoadInv.bind(this)} 
+        style={{
+            'height': '48px',
+            'width': '49%',
+            'marginTop': '10px'
+            }}
+        className='btn btn-default'>
+            Cargar Inventario
+        </button>
 
         let proposed_file_name =''
         if(this.props.transfer_location !== "")
@@ -79,6 +119,7 @@ export default class Buttons extends React.Component {
         return <div className="col-xs-12 buttons">
             {generate_button}
             {download_button}
+            {mass_load_button}
         </div>
     }
 }
