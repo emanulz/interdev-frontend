@@ -62,12 +62,15 @@ export default class Sale extends React.Component {
     })
     const filled = this.props.filledTables
     const tableList = sorted.map(table => {
-      const filledClass = filled.indexOf(table.id) != -1 ? 'filled' : ''
+      let filledClass = filled.indexOf(table.id) != -1 ? 'filled' : ''
       // return <Link key={table.id} className={`tables-single ${filledClass}`} to={`/restaurant/tables/${table.id}`} >
       //   <div className='tables-single-identifier'>
       //     {table.indentifier}
       //   </div>
       // </Link>
+      if (table.id == this.props.tableActive) {
+        filledClass = `${filledClass} activeTable`
+      }
       return <div key={table.id} className={`tables-single ${filledClass}`} onClick={this.setTableActive.bind(this, table.id)}>
         {table.indentifier}
       </div>

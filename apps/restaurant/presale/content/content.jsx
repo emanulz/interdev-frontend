@@ -149,6 +149,7 @@ class Content extends React.Component {
   goToTableBillList() {
     // const lookUp = this.props.location.pathname.split('/')
     // const table = lookUp[lookUp.length - 2]
+    this.props.dispatch({type: 'CLEAR_CART', payload: ''})
     this.props.history.push(`/restaurant/tables`)
   }
 

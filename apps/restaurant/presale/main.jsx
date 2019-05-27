@@ -47,6 +47,7 @@ class Presale extends React.Component {
     const lookUp = this.props.location.pathname.split('/').pop()
     this.props.dispatch({type: 'SET_PRESALE_ACTIVE_ID', payload: lookUp})
     if (lookUp) { this.loadPresaleItem(lookUp) }
+    // document.getElementById('productCodeInputField').focus()
   }
 
   loadPresaleItem(id) {
