@@ -30,6 +30,7 @@ export default class PaySideBar extends React.Component {
     }
 
     client[name] = value
+    client['last_name'] = ''
 
     this.props.dispatch({type: 'SET_EXTRAS_CLIENT', payload: client})
   }
@@ -72,15 +73,15 @@ export default class PaySideBar extends React.Component {
   render() {
 
     const clientName = this.determinClientName()
-    const clientLastName = this.determinClientLastName()
+    // const clientLastName = this.determinClientLastName()
     const clientEmail = this.determinClientEmail()
 
-    const clientNameInput = <input type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
-    const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
+    const clientNameInput = <input id='newBillName' type='text' value={clientName} name='name' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
+    // const clientLastnameInput = <input type='text' value={clientLastName} name='last_name' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
     const clientEmailInput = <input type='text' value={clientEmail} name='email' onChange={this.handleInputChange.bind(this)} onFocus={this.fieldFocus.bind(this)} />
 
     const nameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientNameInput : <span>{clientName}</span>
-    const lastNameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientLastnameInput : <span>{clientLastName}</span>
+    // const lastNameToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientLastnameInput : <span>{clientLastName}</span>
     const emailToShow = this.props.clientSelected && this.props.clientSelected.client.code == '00' ? clientEmailInput : <span>{clientEmail}</span>
 
     let newBillButtonClass = 'newBill-tag tag-button'
@@ -99,12 +100,12 @@ export default class PaySideBar extends React.Component {
           </div>
           {nameToShow}
         </div>
-        <div className='newBill-side-bar-body-content-row'>
+        {/* <div className='newBill-side-bar-body-content-row'>
           <div className='left'>
             Apellido :
           </div>
           {lastNameToShow}
-        </div>
+        </div> */}
         <div className='newBill-side-bar-body-content-row'>
           <div className='left'>
             Email :

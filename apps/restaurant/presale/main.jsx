@@ -115,7 +115,6 @@ class Presale extends React.Component {
       <Currency />
       <Content />
       <Aside />
-
       {/* <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage /> */}
       {/* <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} /> */}

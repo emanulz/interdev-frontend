@@ -110,7 +110,6 @@ export default class Cart extends React.Component {
     // const loteField = useLote
     //   ? <th>Lote</th>
     //   : <th />
-
     return <div className='cart'>
       <div className='cart-header'>
         <div className='cart-header-code'>

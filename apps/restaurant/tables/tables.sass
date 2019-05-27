@@ -22,7 +22,7 @@
 .tables
   height: 100%
   width: 100%
-  padding: 20px
+  padding: 20px 60px
   font-family: 'Source Sans Pro', sans-serif
   display: flex
   flex-flow: row
@@ -63,12 +63,27 @@
     width: 100%
     &-bill
       width: 100%
+      height: 40px
       margin: 10px 0
       background-color: #dddddd
       text-align: center
       cursor: pointer
-      padding: 10px
       text-transform: uppercase
+      &.noClickable
+        cursor: none
+        pointer-events: none
+        background-color:	#d9534f
+        color: white
+        display: flex
+        flex-flow: column
+        justify-content: center
+      & a
+        display: flex
+        flex-flow: column
+        justify-content: center
+        width: 100%
+        height: 100%
+        text-decoration: none
   &-add
     width: 100%
     text-align: center

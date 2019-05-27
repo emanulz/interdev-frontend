@@ -4,14 +4,17 @@
     position: absolute
     top: -100%
     left: 0
-    z-index: 15
+    z-index: -15
     background-color: rgba(145, 145, 145, 0.67)
     background-size: 100% 100%
     transition: all 0.2s ease-in-out
+    max-height: 100%
+    display: none
     &.is-visible
         position: absolute
         top: 0
         z-index: 15
+        display: block
     &-main
         position: absolute
         width: 100%

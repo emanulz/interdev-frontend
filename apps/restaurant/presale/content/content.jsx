@@ -147,9 +147,9 @@ class Content extends React.Component {
   }
 
   goToTableBillList() {
-    const lookUp = this.props.location.pathname.split('/')
-    const table = lookUp[lookUp.length - 2]
-    this.props.history.push(`/restaurant/tables/${table}`)
+    // const lookUp = this.props.location.pathname.split('/')
+    // const table = lookUp[lookUp.length - 2]
+    this.props.history.push(`/restaurant/tables`)
   }
 
   // Main Layout

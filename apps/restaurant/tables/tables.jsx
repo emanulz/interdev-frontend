@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 // import {Link} from 'react-router-dom'
 import {getItemDispatch} from './actions.js'
 import { getSingleItemDispatch } from '../../../utils/api.js'
+import NewBillPanel from '../tableBills/newBill/newBillPanel.jsx'
 
 @connect((store) => {
   return {
@@ -77,6 +78,7 @@ export default class Sale extends React.Component {
         {tableList}
       </div>
       <BillList />
+      <NewBillPanel />
     </div>
 
   }
