@@ -24,6 +24,8 @@
   width: 100%
   padding: 20px
   font-family: 'Source Sans Pro', sans-serif
+  display: flex
+  flex-flow: row
   &-single
     margin-right: 20px
     margin-top: 20px
@@ -38,4 +40,49 @@
     text-align: center
     &.filled
       background-color: #0AA89E
-    
+.tables-tables
+  height: 100%
+  width: 70%
+.tables-bill-list
+  height: 100%
+  width: 30%
+  border: 1px solid #cacaca
+  display: flex
+  flex-flow: column
+  & h1
+    width: 100%
+    text-align: center
+    padding: 10px
+    background-color: $PRIMARY-COLOR
+    color: white
+    font-size: 15px
+    text-transform: uppercase
+  &-body
+    flex-grow: 1
+    overflow-x: hidden
+    width: 100%
+    &-bill
+      width: 100%
+      margin: 10px 0
+      background-color: #dddddd
+      text-align: center
+      cursor: pointer
+      padding: 10px
+      text-transform: uppercase
+  &-add
+    width: 100%
+    text-align: center
+    padding: 20px
+    background-color: #407343
+    color: white
+    font-size: 18px
+    cursor: pointer
+    &:hover
+      background-color: #6CC070
+    &.disabled
+      cursor: none
+      pointer-events: none
+      background-color: #7ac67e
+      &:hover
+        background-color: #7ac67e
+  

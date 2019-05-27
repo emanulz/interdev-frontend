@@ -27,7 +27,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
 
     const clientKwargs = {
-      url: `/api/clients/?limit=${this.props.pageSize}`,
+      url: `/api/clients/?has_credit=True&limit=${this.props.pageSize}`,
       successType: 'FETCH_CLIENTS_FULFILLED',
       errorType: 'FETCH_CLIENTS_REJECTED'
     }
@@ -84,9 +84,9 @@ export default class List extends React.Component {
 
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.clients
 
-    const dataFiltered = tableData.filter(el => el.balance > 0 || el.has_credit)
+    // const dataFiltered = tableData.filter(el => el.balance > 0 || el.has_credit)
 
-    const list = <AdminTable headerOrder={headerOrder} model='receivable' data={dataFiltered}
+    const list = <AdminTable headerOrder={headerOrder} model='receivable' data={tableData}
       idField='id' app='credits' />
 
     const content = this.props.fetching ? fetching : list
@@ -103,8 +103,8 @@ export default class List extends React.Component {
       </div> */}
       <SearchAdmin model='client' namespace='receivableSearch' />
       <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
-        <Pagination url='/api/clients/' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+        <ResultsPerPage url='/api/clients/?has_credit=True' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
+        <Pagination url='/api/clients/?has_credit=True' successType='FETCH_CLIENTS_FULFILLED' errorType='FETCH_CLIENTS_REJECTED' />
       </div>
       {content}
     </div>

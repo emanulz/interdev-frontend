@@ -9,6 +9,7 @@ import AdminTable from '../../../general/adminTable/adminTable.jsx'
 import { getPaginationItemDispatch } from '../../../utils/api.js'
 import Pagination from '../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -33,21 +34,33 @@ export default class List extends React.Component {
 
   }
 
-  nullPayment(consecutive){
-    let payments = this.props.payments
-    let dispatch = this.props.dispatch
+  markAsNull(consecutive) {
+    const _this = this
+    alertify.confirm('ANULAR', `Desea Anular el pago #${consecutive}? Esta acción no se puede
+    deshacer.`, function() {
+      _this.nullPayment(consecutive)
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+  }
+
+  nullPayment(consecutive) {
+    const payments = this.props.payments
+    const dispatch = this.props.dispatch
     return (consecutive) => {
       const index = payments.findIndex(a => {
         return a.consecutive === consecutive
       })
-      let payment = null;
-      if(index !== -1){
+      let payment = null
+      if (index !== -1) {
         payment = payments[index]
       }
-      console.log("Payment --> ", payment);
+      console.log('Payment -->', payment)
 
-      if(payment !== null){
-
+      if (payment !== null) {
         const kwargs = {
           url: '/api/creditpaymentscreate/nullpayment/',
           data: {id: payment.id},
@@ -62,7 +75,6 @@ export default class List extends React.Component {
         dispatch(generalSave(kwargs))
       }
     }
-
   }
 
   // Render the product

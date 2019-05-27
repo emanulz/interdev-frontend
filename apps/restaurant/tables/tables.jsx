@@ -2,14 +2,17 @@
  * Module dependencies
  */
 import React from 'react'
+import BillList from './billsList.jsx'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+// import {Link} from 'react-router-dom'
+import {getItemDispatch} from './actions.js'
 import { getSingleItemDispatch } from '../../../utils/api.js'
 
 @connect((store) => {
   return {
     tables: store.tables.tables,
-    filledTables: store.tables.filledTables
+    filledTables: store.tables.filledTables,
+    tableActive: store.tables.tableActive
   }
 })
 export default class Sale extends React.Component {
@@ -25,6 +28,19 @@ export default class Sale extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getSingleItemDispatch(provinceKwargs))
 
+  }
+
+  setTableActive(tableId) {
+    this.props.dispatch({type: 'CLEAR_TABLE_BILLS', payload: ''})
+
+    this.props.dispatch({type: 'SET_TABLE_ACTIVE', payload: tableId})
+    const tableBillsKwargs = {
+      url: `/api/restauranttables/${tableId}/tablebills/`,
+      successType: 'FETCH_TABLE_BILLS_FULFILLED',
+      errorType: 'FETCH_TABLE_BILLS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(tableBillsKwargs))
   }
 
   // Main Layout
@@ -46,15 +62,21 @@ export default class Sale extends React.Component {
     const filled = this.props.filledTables
     const tableList = sorted.map(table => {
       const filledClass = filled.indexOf(table.id) != -1 ? 'filled' : ''
-      return <Link key={table.id} className={`tables-single ${filledClass}`} to={`/restaurant/tables/${table.id}`} >
-        <div className='tables-single-identifier'>
-          {table.indentifier}
-        </div>
-      </Link>
+      // return <Link key={table.id} className={`tables-single ${filledClass}`} to={`/restaurant/tables/${table.id}`} >
+      //   <div className='tables-single-identifier'>
+      //     {table.indentifier}
+      //   </div>
+      // </Link>
+      return <div key={table.id} className={`tables-single ${filledClass}`} onClick={this.setTableActive.bind(this, table.id)}>
+        {table.indentifier}
+      </div>
     })
 
     return <div className='tables'>
-      {tableList}
+      <div className='tables-tables'>
+        {tableList}
+      </div>
+      <BillList />
     </div>
 
   }
