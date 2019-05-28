@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
@@ -8,11 +9,32 @@ import Select2 from 'react-select2-wrapper'
     product: store.products.productActive,
     products: store.products.products,
     file: store.products.file,
-    taxes: store.products.taxes
+    taxes: store.products.taxes,
+    IVARates: store.products.IVARates,
+    IVACodes: store.products.IVACodes
   }
 })
 
 class Form3 extends React.Component {
+
+  componentWillMount() {
+    const IVARatesKwargs = {
+      url: `/api/administration/?group=IVA_RATES`,
+      successType: 'FETCH_IVA_RATES_FULFILLED',
+      errorType: 'FETCH_IVA_RATES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(IVARatesKwargs))
+
+    const IVACodesKwargs = {
+      url: `/api/administration/?group=IVA_CODES`,
+      successType: 'FETCH_IVA_CODES_FULFILLED',
+      errorType: 'FETCH_IVA_CODES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(IVACodesKwargs))
+
+  }
 
   // HANDLE INPUT CHANGE
   handleInputChange(event) {
@@ -50,6 +72,28 @@ class Form3 extends React.Component {
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
+  handleRateChange(event) {
+    let rateValue = 0
+    const value = event.target.value
+    const rateIndex = this.props.IVARates.findIndex(element => {
+      return element.code == value
+    })
+    if (rateIndex != -1) {
+      rateValue = this.props.IVARates[rateIndex].value
+    } else {
+      alert('NOT RATE FOUND')
+    }
+
+    const product = {
+      ...this.props.product
+    }
+
+    product['rate_code_IVA'] = value
+    product['taxes_IVA'] = rateValue
+
+    this.props.dispatch({type: 'SET_PRODUCT', payload: product})
+  }
+
   fieldFocus(ev) {
     ev.target.select()
   }
@@ -63,6 +107,26 @@ class Form3 extends React.Component {
     const taxesData = this.props.taxes.map(tax => {
       return {text: `${tax.code} - ${tax.name}`, id: `${tax.code}`}
     })
+
+    const sortedRates = this.props.IVARates.sort((a, b) => {
+      if (parseFloat(a.code) > parseFloat(b.code)) { return 1 }
+      if (parseFloat(a.code) < parseFloat(b.code)) { return -1 }
+      return 0
+    })
+    const IVARatesList = sortedRates.map(rate => {
+      return {text: `${rate.code} - ${rate.name}`, id: `${rate.code}`}
+    })
+
+    const sortedCodes = this.props.IVACodes.sort((a, b) => {
+      if (parseFloat(a.code) > parseFloat(b.code)) { return 1 }
+      if (parseFloat(a.code) < parseFloat(b.code)) { return -1 }
+      return 0
+    })
+    const IVACodesList = sortedCodes.map(rate => {
+      return {text: `${rate.code} - ${rate.name}`, id: `${rate.code}`}
+    })
+
+    // IVARatesList = IVARatesList.sort
 
     // ********************************************************************
     // RETURN BLOCK
@@ -116,7 +180,7 @@ class Form3 extends React.Component {
             <Select2
               name='tax_code_IVA'
               value={this.props.product.tax_code_IVA}
-              data={taxesData}
+              data={IVACodesList}
               className='form-control'
               onSelect={this.handleInputChange.bind(this)}
               options={{
@@ -133,9 +197,9 @@ class Form3 extends React.Component {
             <Select2
               name='rate_code_IVA'
               value={this.props.product.rate_code_IVA}
-              data={taxesData}
+              data={IVARatesList}
               className='form-control'
-              onSelect={this.handleInputChange.bind(this)}
+              onSelect={this.handleRateChange.bind(this)}
               options={{
                 placeholder: 'Elija una Tarifa...',
                 noResultsText: 'Sin elementos'
@@ -145,7 +209,7 @@ class Form3 extends React.Component {
 
           <div className='col-xs-2'>
             <label>Valor IVA</label>
-            <input value={this.props.product.taxes_IVA} name='taxes_IVA' onChange={this.handleInputChange.bind(this)}
+            <input disabled value={this.props.product.taxes_IVA} name='taxes_IVA' onChange={this.handleInputChange.bind(this)}
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 

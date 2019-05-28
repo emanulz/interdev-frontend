@@ -56,6 +56,7 @@ export default function reducer(state = stateConst, action) {
           group: state.model,
           name: '',
           code: '',
+          value: 0,
           description: '',
           is_active: true
         }

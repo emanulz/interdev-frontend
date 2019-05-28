@@ -73,6 +73,9 @@ const stateConst = {
   previousProduct: 0,
   permissions: defaultPermissions,
   taxes: [],
+  IVARates: [],
+  IVACodes: [],
+  IVAFactors: [],
   file: ''
 }
 
@@ -185,6 +188,57 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         taxes: []
+      }
+    } // case
+
+    case 'FETCH_IVA_CODES_FULFILLED':
+    {
+      return {
+        ...state,
+        IVACodes: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_IVA_CODES_REJECTED':
+    {
+      return {
+        ...state,
+        IVACodes: []
+      }
+    } // case
+
+    case 'FETCH_IVA_RATES_FULFILLED':
+    {
+      return {
+        ...state,
+        IVARates: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_IVA_RATES_REJECTED':
+    {
+      return {
+        ...state,
+        IVARates: []
+      }
+    } // case
+
+    case 'FETCH_IVA_FACTORS_FULFILLED':
+    {
+      return {
+        ...state,
+        IVAFactors: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_IVA_FACTORS_REJECTED':
+    {
+      return {
+        ...state,
+        IVAFactors: []
       }
     } // case
 

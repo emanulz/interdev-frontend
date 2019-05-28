@@ -16,7 +16,7 @@ class Form extends React.Component {
   componentWillMount() {
 
     this.props.dispatch({type: 'CLEAR_HELPER'})
-    
+
     if (this.props.update) {
 
       const lookUp = this.props.location.pathname.split('/').pop()
