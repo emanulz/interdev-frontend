@@ -6,7 +6,8 @@ import { getSingleItemDispatch } from '../../../../../utils/api'
 @connect((store) => {
   return {
     helper: store.helpers.helperActive,
-    helpers: store.helpers.helpers
+    helpers: store.helpers.helpers,
+    user: store.user.user
   }
 })
 
@@ -82,7 +83,7 @@ class Form extends React.Component {
     }
 
     const name = target.name
-    
+
     const helper = {
       ...this.props.helper
     }
@@ -97,7 +98,13 @@ class Form extends React.Component {
   }
 
   render() {
-
+    const valueField = this.props.user.is_staff
+      ? <div className='form-group'>
+        <label>Valor</label>
+        <input value={this.props.helper.value} name='value' onChange={this.handleInputChange.bind(this)} type='number'
+          className='form-control' onFocus={this.fieldFocus.bind(this)} />
+      </div>
+      : <div />
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
@@ -119,6 +126,8 @@ class Form extends React.Component {
           <input value={this.props.helper.code} name='code' onChange={this.handleInputChange.bind(this)} type='text'
             className='form-control' />
         </div>
+
+        {valueField}
 
         <div className='form-group'>
           <label>Observaciones</label>

@@ -10,6 +10,7 @@ const helperModel = {
   group: 'colores',
   name: '',
   code: '',
+  value: 0,
   description: '',
   is_active: true
 }

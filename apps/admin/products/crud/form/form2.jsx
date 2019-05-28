@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {determinAmounts} from '../../actions.js'
-import Select2 from 'react-select2-wrapper'
+// import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
@@ -227,9 +227,9 @@ class Form2 extends React.Component {
 
       <div className='col-xs-12 col-sm-4 fields-container second'>
 
-        <span>Impuestos e Inventarios</span>
+        <span>Inventarios</span>
         <hr />
-
+        {/*
         <div className='form-group row input-block'>
 
           <div className='col-xs-6 first'>
@@ -292,37 +292,36 @@ class Form2 extends React.Component {
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
+        </div> */}
+        {/* <div className='form-group row input-block'>
+        <div className='col-xs-6 first'>
+          <label>Impuesto 3</label>
+          <Select2
+            name='taxes_code3'
+            value={this.props.product.taxes_code3}
+            data={taxesData}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija un Impuesto...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
         </div>
 
-        {/* <div className='form-group row input-block'>
-          <div className='col-xs-6 first'>
-            <label>Impuesto 3</label>
-            <Select2
-              name='taxes_code3'
-              value={this.props.product.taxes_code3}
-              data={taxesData}
-              className='form-control'
-              onSelect={this.handleInputChange.bind(this)}
-              options={{
-                placeholder: 'Elija un Impuesto...',
-                noResultsText: 'Sin elementos'
-              }}
-            />
-          </div>
+        <div className='col-xs-4'>
+          <label>Valor 3 %</label>
+          <input value={this.props.product.taxes3} name='taxes3' onChange={this.handleInputChange.bind(this)}
+            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+        </div>
 
-          <div className='col-xs-4'>
-            <label>Valor 3 %</label>
-            <input value={this.props.product.taxes3} name='taxes3' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-
-          <div className='col-xs-2 second'>
-            <label>Activo?</label>
-            <input checked={this.props.product.use_taxes3} name='use_taxes3'
-              onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
-        </div> */}
+        <div className='col-xs-2 second'>
+          <label>Activo?</label>
+          <input checked={this.props.product.use_taxes3} name='use_taxes3'
+            onChange={this.handleInputChange.bind(this)}
+            type='checkbox' className='form-control' />
+        </div>
+      </div> */}
 
         <div className='form-group row input-block'>
 
@@ -339,7 +338,6 @@ class Form2 extends React.Component {
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
-
         </div>
 
         <div className='form-group row input-block'>

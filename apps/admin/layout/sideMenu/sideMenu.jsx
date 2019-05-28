@@ -211,16 +211,19 @@ export default class SideMenu extends React.Component {
       }
     ]
 
-    //create the helpers menu only if there are any enabled
+    // create the helpers menu only if there are any enabled
     let collections_menu = ''
     const helpModelsInUse = this.props.config.helpModelsInUse
-    console.log("help models in use --> ", helpModelsInUse)
+    console.log('help models in use --> ', helpModelsInUse)
     if (helpModelsInUse != '' && helpModelsInUse != undefined) {
       const collection_names = helpModelsInUse.split(',')
       if (collection_names.length > 0) {
         const collection_childs = []
         for (let item of collection_names) {
           if (item == '') {
+            continue
+          }
+          if ((item == 'IVA_RATES' || item == 'IVA_CODES' || item == 'IVA_FACTORS') && !this.props.user.is_staff) {
             continue
           }
           const item_capitalized = item.charAt(0).toUpperCase() + item.slice(1)

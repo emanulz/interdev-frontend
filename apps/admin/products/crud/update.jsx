@@ -69,9 +69,9 @@ export default class Update extends React.Component {
           <Tabs>
             <TabList>
               <Tab className='oneFour' tabFor='one'>General</Tab>
-              <Tab className='oneFour' tabFor='two'>Precios</Tab>
+              <Tab className='oneFour' tabFor='two'>Precios e Inventarios</Tab>
+              <Tab className='oneFour' tabFor='four'>Impuestos y Extras</Tab>
               <Tab className='oneFour' tabFor='three'>Existencias</Tab>
-              <Tab className='oneFour' tabFor='four'>Extras</Tab>
             </TabList>
 
             <TabPanel tabId='one'>
@@ -82,12 +82,12 @@ export default class Update extends React.Component {
               <Form2 key={`${code}2`} update />
             </TabPanel>
 
-            <TabPanel tabId='three'>
-              <Inventories key={`${code}3`} update />
-            </TabPanel>
-
             <TabPanel tabId='four'>
               <Form3 key={`${code}4`} update />
+            </TabPanel>
+
+            <TabPanel tabId='three'>
+              <Inventories key={`${code}3`} update />
             </TabPanel>
 
           </Tabs>

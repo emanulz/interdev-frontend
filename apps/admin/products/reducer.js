@@ -57,7 +57,12 @@ const productModel = {
   max_sale_discount: 0,
   max_regular_discount: 5,
   is_service: false,
-  use_coin_round: true
+  use_coin_round: true,
+  is_used: false,
+  factor_IVA: 1,
+  rate_code_IVA: '08',
+  tax_code_IVA: '01',
+  taxes_IVA: 13
 }
 
 const stateConst = {
