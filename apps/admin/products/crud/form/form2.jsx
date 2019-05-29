@@ -8,7 +8,7 @@ import {determinAmounts} from '../../actions.js'
   return {
     product: store.products.productActive,
     taxes: store.products.taxes,
-    config: store.config
+    config: store.config.globalConf
   }
 })
 
@@ -48,7 +48,7 @@ class Form2 extends React.Component {
 
     product[name] = value
 
-    product = determinAmounts(product, name, value)
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
 
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
@@ -58,10 +58,8 @@ class Form2 extends React.Component {
   }
 
   render() {
-    const taxesData = this.props.taxes.map(tax => {
-      return {text: `${tax.code} - ${tax.name}`, id: `${tax.code}`}
-    })
-    const prices2Fields = this.props.config.globalConf.usesMultiplePrices
+
+    const prices2Fields = this.props.config.usesMultiplePrices
       ? <div className='form-group row input-block'>
         <div className='col-xs-4 first'>
 
@@ -90,7 +88,7 @@ class Form2 extends React.Component {
       </div>
       : ''
 
-    const prices3Fields = this.props.config.globalConf.usesMultiplePrices
+    const prices3Fields = this.props.config.usesMultiplePrices
       ? <div className='form-group row input-block'>
         <div className='col-xs-4 first'>
 

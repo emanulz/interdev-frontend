@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { getItemDispatch } from '../../../../../utils/api'
+import {determinAmounts} from '../../actions.js'
 import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
@@ -12,7 +13,8 @@ import Select2 from 'react-select2-wrapper'
     taxes: store.products.taxes,
     IVARates: store.products.IVARates,
     IVACodes: store.products.IVACodes,
-    IVAFactors: store.products.IVAFactors
+    IVAFactors: store.products.IVAFactors,
+    config: store.config.globalConf
   }
 })
 
@@ -71,18 +73,19 @@ class Form3 extends React.Component {
 
     const name = target.name
 
-    const product = {
+    let product = {
       ...this.props.product
     }
 
     product[name] = value
-
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
   handleRateChange(event) {
     let rateValue = 0
     const value = event.target.value
+    const name = event.target.name
     const rateIndex = this.props.IVARates.findIndex(element => {
       return element.code == value
     })
@@ -92,21 +95,23 @@ class Form3 extends React.Component {
       alert('NOT RATE FOUND')
     }
 
-    const product = {
+    let product = {
       ...this.props.product
     }
-
+    product['tax_code_IVA'] = '01'
     product['rate_code_IVA'] = value
     product['taxes_IVA'] = rateValue
     product['is_used'] = false
 
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
   handleIsUsedChange(event) {
 
     const isUsed = event.target.checked
-    const product = {
+    const name = event.target.name
+    let product = {
       ...this.props.product
     }
 
@@ -128,20 +133,20 @@ class Form3 extends React.Component {
       product['rate_code_IVA'] = '08'
       product['taxes_IVA'] = 13
     }
-
+    product = determinAmounts(product, name, isUsed, this.props.config.overrideXMLversion)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
   handleFactorChange(event) {
     const value = event.target.value
-
-    const product = {
+    const name = event.target.name
+    let product = {
       ...this.props.product
     }
 
     product['factor_IVA'] = (parseFloat(value).toFixed(5))
     product['taxes_IVA'] = ((parseFloat(value) - 1) * 100).toFixed(2)
-
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
