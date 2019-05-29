@@ -467,10 +467,16 @@ export function updateItem(kwargs) {
         if (err.response) {
           console.log(err.response.data)
           alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+            .set('onok', function() {
+              return true
+            })
         } else {
           console.log('NO CUSTOM ERROR')
           console.log(err)
           alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+            .set('onok', function() {
+              return true
+            })
         }
         dispatch({type: 'FETCHING_DONE', payload: ''})
       })
