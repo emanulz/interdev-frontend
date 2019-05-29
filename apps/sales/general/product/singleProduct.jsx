@@ -121,7 +121,7 @@ export default class SingleProduct extends React.Component {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log('APPLLYYY CURRENCY', data)
         // CALL THE APPLY PROMO FUNCTION
-        _this.applyPromo(cartItems, line.uuid, data, _this.props.client)
+        _this.applyPromo(cartItems, line.uuid, data, _this.props.client, this.props.config.overrideXMLversion)
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         console.log(err)
@@ -216,7 +216,7 @@ export default class SingleProduct extends React.Component {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
         // this.props.dispatch(updateItemDiscount(cartItems, line.uuid, data[0].current_discount, data[0].default_discount, _this.props.client, data))
         // CALL THE APPLY PROMO FUNCTION
-        _this.applyPromo(cartItems, line.uuid, data, _this.props.client)
+        _this.applyPromo(cartItems, line.uuid, data, _this.props.client, this.props.config.overrideXMLversion)
 
       }).catch((err) => {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -228,8 +228,8 @@ export default class SingleProduct extends React.Component {
     }
   }
 
-  applyPromo(cartItems, uuid, pricesData, client) {
-    this.props.dispatch(updateItemDiscount(cartItems, uuid, pricesData[0].current_discount.toFixed(5), pricesData[0].default_discount, client, pricesData[0]))
+  applyPromo(cartItems, uuid, pricesData, client, XMLVersion) {
+    this.props.dispatch(updateItemDiscount(cartItems, uuid, pricesData[0].current_discount.toFixed(5), pricesData[0].default_discount, client, pricesData[0], XMLVersion))
     this.props.dispatch({type: 'TOGGLE_SINGLE_PRODUCT_PANEL', payload: ''})
     this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_QTY', payload: ''})
     this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_MONEY_DISCOUNT', payload: ''})

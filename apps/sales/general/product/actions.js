@@ -409,7 +409,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
         type: 'UPDATE_CART',
         payload: {
           item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty,
-            itemsInCart[indexInCart].discount, predDiscount, client, itemsInCart[indexInCart].uuid, XMLVersion),
+            itemsInCart[indexInCart].discount, predDiscount, client, itemsInCart[indexInCart].uuid, false, XMLVersion),
           index: indexInCart
         }
       }
