@@ -39,7 +39,7 @@ export default class CartItems extends React.Component {
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
 
-    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales, this.props.config.overrideXMLversion))
 
     // Auto Scroll To end of container
     // const elem = document.getElementById('cart-body')
@@ -56,7 +56,7 @@ export default class CartItems extends React.Component {
     if (this.props.needsRecalc) {
       // alert('NEEDS RECALCCCCC')
       this.props.dispatch({type: 'SET_CART_NEEDS_RECALC', payload: false})
-      this.props.dispatch(recalcCart(this.props.inCart, [], this.props.listSelected, this.props.useListAsDefault, true))
+      this.props.dispatch(recalcCart(this.props.inCart, [], this.props.listSelected, this.props.useListAsDefault, true, this.props.config.overrideXMLversion))
     }
 
   }
@@ -103,7 +103,7 @@ export default class CartItems extends React.Component {
         e.returnValue = false
       }
       _this.props.dispatch(addSubOne(_this.props.cartItemActive, false, _this.props.inCart, _this.props.globalDiscount,
-        _this.props.client))
+        _this.props.client, this.props.config.overrideXMLversion))
     })
 
     Mousetrap.bind('mod+*', function(e) {
@@ -119,7 +119,7 @@ export default class CartItems extends React.Component {
       alertify.prompt(`Nueva cantidad para el producto seleccionado`, 'Ingrese la nueva cantidad para el producto seleccionado', ''
         , function(evt, value) {
           __this.props.dispatch(updateQtyCode(__this.props.cartItemActive, value, __this.props.inCart,
-            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id))
+            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id, this.props.config.overrideXMLversion))
         }
         , function() {})
         .set('labels', {ok: 'Ok', cancel: 'Cancelar'})
@@ -132,7 +132,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client, false))
+      this.props.client, false, this.props.config.overrideXMLversion))
 
     if (ev.key == 'Enter') {
       ev.preventDefault()
@@ -140,7 +140,7 @@ export default class CartItems extends React.Component {
         ? ev.target.value
         : 0
       this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-        this.props.client, false))
+        this.props.client, false, this.props.config.overrideXMLversion))
 
     }
 
@@ -152,7 +152,7 @@ export default class CartItems extends React.Component {
       ? ev.target.value
       : 0
     this.props.dispatch(updateItemDiscount(this.props.inCart, code, discount, this.props.globalDiscount,
-      this.props.client, false))
+      this.props.client, false, this.props.config.overrideXMLversion))
 
   }
 
@@ -163,7 +163,7 @@ export default class CartItems extends React.Component {
       : -1
     // this.state.qtyField = qty
     if (qty == -1) { return }
-    this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client, this.props.warehouse_id))
+    this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client, this.props.warehouse_id, this.props.config.overrideXMLversion))
 
   }
 
@@ -242,6 +242,22 @@ export default class CartItems extends React.Component {
         ? item.product.taxes
         : 0
 
+      const taxesIVA = (parseFloat(item.product.taxes_IVA) > 0)
+        ? item.product.taxes_IVA
+        : 0
+      const XMLVersion = this.props.config.overrideXMLversion
+      let taxesToUse = 0
+      // PREVIOUS VERSIONS USES OLD CODE
+      if (XMLVersion == '4.2' || XMLVersion == '') {
+        taxesToUse = taxes1
+      // XML 4.3
+      } else if (XMLVersion == '4.3') {
+        taxesToUse = taxesIVA
+      // NOT FOUND
+      } else {
+        alertify.alert('ERROR', `No se pudo leer la version activa del formato XML, en el producto ${item.product.description}, se mostrará CERO, lo que puede ser un valor erroneo.`)
+      }
+
       const qtyField = <input
         id={`qty${item.product.code}`}
         disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) || this.props.reserveLoaded}
@@ -297,7 +313,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className='cart-body-item-iva'>
           <h5>IV</h5>
-          {taxes1}
+          {taxesToUse}
         </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>

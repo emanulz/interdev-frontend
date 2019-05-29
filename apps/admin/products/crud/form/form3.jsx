@@ -11,7 +11,8 @@ import Select2 from 'react-select2-wrapper'
     file: store.products.file,
     taxes: store.products.taxes,
     IVARates: store.products.IVARates,
-    IVACodes: store.products.IVACodes
+    IVACodes: store.products.IVACodes,
+    IVAFactors: store.products.IVAFactors
   }
 })
 
@@ -34,6 +35,13 @@ class Form3 extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getItemDispatch(IVACodesKwargs))
 
+    const IVAFactorsKwargs = {
+      url: `/api/administration/?group=IVA_FACTORS`,
+      successType: 'FETCH_IVA_FACTORS_FULFILLED',
+      errorType: 'FETCH_IVA_FACTORS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(IVAFactorsKwargs))
   }
 
   // HANDLE INPUT CHANGE
@@ -90,6 +98,49 @@ class Form3 extends React.Component {
 
     product['rate_code_IVA'] = value
     product['taxes_IVA'] = rateValue
+    product['is_used'] = false
+
+    this.props.dispatch({type: 'SET_PRODUCT', payload: product})
+  }
+
+  handleIsUsedChange(event) {
+
+    const isUsed = event.target.checked
+    const product = {
+      ...this.props.product
+    }
+
+    const sortedFactors = this.props.IVAFactors.sort((a, b) => {
+      if (parseFloat(a.value) < parseFloat(b.value)) { return 1 }
+      if (parseFloat(a.value) > parseFloat(b.value)) { return -1 }
+      return 0
+    })
+
+    product['is_used'] = isUsed
+    if (isUsed) {
+      product['tax_code_IVA'] = '08'
+      product['factor_IVA'] = (parseFloat(sortedFactors[0].value).toFixed(5))
+      product['rate_code_IVA'] = '08'
+      product['taxes_IVA'] = ((parseFloat(sortedFactors[0].value) - 1) * 100).toFixed(2)
+    } else {
+      product['tax_code_IVA'] = '01'
+      product['factor_IVA'] = 1
+      product['rate_code_IVA'] = '08'
+      product['taxes_IVA'] = 13
+    }
+
+    this.props.dispatch({type: 'SET_PRODUCT', payload: product})
+  }
+
+  handleFactorChange(event) {
+    const value = event.target.value
+
+    const product = {
+      ...this.props.product
+    }
+
+    product['factor_IVA'] = (parseFloat(value).toFixed(5))
+    product['taxes_IVA'] = ((parseFloat(value) - 1) * 100).toFixed(2)
 
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
@@ -125,6 +176,34 @@ class Form3 extends React.Component {
     const IVACodesList = sortedCodes.map(rate => {
       return {text: `${rate.code} - ${rate.name}`, id: `${rate.code}`}
     })
+
+    const sortedFactors = this.props.IVAFactors.sort((a, b) => {
+      if (parseFloat(a.value) < parseFloat(b.value)) { return 1 }
+      if (parseFloat(a.value) > parseFloat(b.value)) { return -1 }
+      return 0
+    })
+    const IVAFactorsList = sortedFactors.map(factor => {
+      return {text: `${factor.name} - ${factor.value}`, id: `${factor.value}`}
+    })
+
+    const IVAFactorSelector = this.props.product.is_used
+      ? <div className='col-xs-6 second'>
+        <label>Factor IVA</label>
+        <Select2
+          name='factor_IVA'
+          value={this.props.product.factor_IVA}
+          data={IVAFactorsList}
+          className='form-control'
+          onSelect={this.handleFactorChange.bind(this)}
+          options={{
+            placeholder: 'Elija un Factor...',
+            noResultsText: 'Sin elementos'
+          }}
+        />
+        {/* <input value={this.props.product.factor_IVA} name='factor_IVA' onChange={this.handleInputChange.bind(this)}
+          type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} /> */}
+      </div>
+      : <div />
 
     // IVARatesList = IVARatesList.sort
 
@@ -215,17 +294,16 @@ class Form3 extends React.Component {
 
         </div>
         <div className='form-group row input-block'>
+
           <div className='col-xs-6 first'>
-            <label>Factor IVA</label>
-            <input value={this.props.product.factor_IVA} name='factor_IVA' onChange={this.handleInputChange.bind(this)}
-              type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-          <div className='col-xs-2'>
             <label>Es Usado?</label>
             <input checked={this.props.product.is_used} name='is_used'
-              onChange={this.handleInputChange.bind(this)}
+              onChange={this.handleIsUsedChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
+
+          {IVAFactorSelector}
+
         </div>
       </div>
 
