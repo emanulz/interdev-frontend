@@ -16,7 +16,8 @@ const stateConst = {
   totalNotRounded: 0,
   exemptionDocument: '',
   isExempt: false,
-  needsRecalc: false
+  needsRecalc: false,
+  otherCharges: [] // the other charges array
 }
 
 export default function reducer(state = stateConst, action) {
@@ -41,7 +42,8 @@ export default function reducer(state = stateConst, action) {
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
         cartItemActive: false,
-        totalNotRounded: 0
+        totalNotRounded: 0,
+        otherCharges: []
       }
     }
 
@@ -63,7 +65,8 @@ export default function reducer(state = stateConst, action) {
         globalDiscount: 0, // discount %
         discountTotal: 0, // discount in currency
         cartItemActive: false,
-        totalNotRounded: 0
+        totalNotRounded: 0,
+        otherCharges: []
       }
     }
 
@@ -218,7 +221,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.cart.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.cart.globalDiscount, // discount %
         discountTotal: action.payload.cart.discountTotal, // discount in currency
-        totalNotRounded: action.payload.cart.totalNotRounded
+        totalNotRounded: action.payload.cart.totalNotRounded,
+        otherCharges: action.payload.cart.otherCharges ? action.payload.cart.otherCharges : []
       }
     }
 
@@ -236,7 +240,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.cart.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.cart.globalDiscount, // discount %
         discountTotal: action.payload.cart.discountTotal, // discount in currency
-        totalNotNotRounded: action.payload.cart.totalNotNotRounded
+        totalNotNotRounded: action.payload.cart.totalNotNotRounded,
+        otherCharges: action.payload.cart.otherCharges ? action.payload.cart.otherCharges : []
       }
     }
 
@@ -254,7 +259,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.cart.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.cart.globalDiscount, // discount %
         discountTotal: action.payload.cart.discountTotal, // discount in currency
-        totalNotRounded: action.payload.cart.totalNotRounded
+        totalNotRounded: action.payload.cart.totalNotRounded,
+        otherCharges: action.payload.cart.otherCharges ? action.payload.cart.otherCharges : []
       }
     }
 
@@ -271,8 +277,8 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.globalDiscount, // discount %
         discountTotal: action.payload.discountTotal, // discount in currency
-        totalNotRounded: action.payload.totalNotRounded
-
+        totalNotRounded: action.payload.totalNotRounded,
+        otherCharges: action.payload.otherCharges ? action.payload.otherCharges : []
       }
     }
 
@@ -317,6 +323,19 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         needsRecalc: action.payload
+      }
+    }
+
+    case 'ADD_OTHER_CHARGE':
+    {
+      const item = action.payload
+      return {
+        ...state,
+        otherCharges: [
+          // action.payload,
+          ...state.otherCharges,
+          item
+        ]
       }
     }
 

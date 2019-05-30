@@ -41,7 +41,14 @@ class Content extends React.Component {
     // ALERTIFY CONFIRM
     const _this = this
     alertify.confirm('Cerrar Orden', `¿Desea Cerrar la orden y calcular la cuenta? Esta acción no se puede deshacer`, function() {
-      _this.add10PercentToCart(true)
+      const XMLVersion = _this.props.config.overrideXMLversion
+      if (XMLVersion == '4.2' || XMLVersion == '') {
+        _this.add10PercentToCart(true)
+      } else if (XMLVersion == '4.3') {
+        _this.add10PercentToCartNew(true)
+      } else {
+        alertify.alert('ERROR', `No se ha podido leer la version de XML correctamente, no se puede agregar el 10% de servicio, ni cerrar la orden.`)
+      }
     }, function() {
       return true
     }).set('labels', {
@@ -78,16 +85,6 @@ class Content extends React.Component {
       if (tableSelected.charges_service) {
         product.price = _this.calc10Percent(_this.props.cart)
         try {
-          // _this.props.dispatch(
-          //   productSelected(
-          //     product.code,
-          //     1,
-          //     product,
-          //     _this.props.cart.cartItems,
-          //     0,
-          //     _this.props.client,
-          //     _this.props.warehouse_id)
-          // )
           const percentData = {
             default_discount: '0',
             id: product.id,
@@ -110,6 +107,25 @@ class Content extends React.Component {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
     })
+
+  }
+
+  // Adds 10 percet to cart for new hacienda scheme XML 4.3
+  add10PercentToCartNew(close) {
+    const tableId = this.props.location.pathname.split('/')[3]
+    const tableSelected = this.props.tables.find(item => item.id == tableId)
+    if (tableSelected.charges_service) {
+      const percentAmount = this.calc10Percent(this.props.cart)
+      const item = {
+        type: '06',
+        percentage: 10,
+        amount: percentAmount
+      }
+      this.props.dispatch({type: 'ADD_OTHER_CHARGE', payload: item})
+      this.savePresale(close)
+    } else {
+      this.savePresale(close)
+    }
 
   }
 
