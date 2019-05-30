@@ -69,14 +69,16 @@ export default function reducer(state = stateConst, action) {
 
     case 'ADD_TO_CART':
     {
-
+      // ADD THE EXEMPTION AMOUNT BASED ON THE CURRENT STATUS
+      const item = action.payload
+      item['exempt_percentage'] = state.isExempt ? 100 : 0
       return {
         ...state,
         cartHasItems: true,
         cartItems: [
           // action.payload,
           ...state.cartItems,
-          action.payload
+          item
         ]
       }
     } // case
@@ -104,7 +106,7 @@ export default function reducer(state = stateConst, action) {
 
       const newCart = [...state.cartItems]
       newCart[action.payload.index] = action.payload.item
-
+      newCart[action.payload.index]['exempt_percentage'] = state.isExempt ? 100 : 0
       return {
         ...state,
         cartItems: newCart
@@ -116,7 +118,7 @@ export default function reducer(state = stateConst, action) {
 
       const newCart = [...state.cartItems]
       newCart[action.payload.index]['lote'] = action.payload.lote
-
+      newCart[action.payload.index]['exempt_percentage'] = state.isExempt ? 100 : 0
       return {
         ...state,
         cartItems: newCart
@@ -168,19 +170,29 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_SALE_EXEMPT':
     {
-
+      const cartItems = [...state.cartItems]
+      const newCartItems = cartItems.map(item => {
+        item['exempt_percentage'] = 100
+        return item
+      })
       return {
         ...state,
-        isExempt: true
+        isExempt: true,
+        cartItems: newCartItems
       }
     }
 
     case 'CLEAR_SALE_EXEMPT':
     {
-
+      const cartItems = [...state.cartItems]
+      const newCartItems = cartItems.map(item => {
+        item['exempt_percentage'] = 0
+        return item
+      })
       return {
         ...state,
-        isExempt: false
+        isExempt: false,
+        cartItems: newCartItems
       }
     }
 
