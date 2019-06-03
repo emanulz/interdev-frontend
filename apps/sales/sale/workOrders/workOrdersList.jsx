@@ -16,7 +16,8 @@ import alertify from 'alertifyjs'
     globalDiscount: store.cart.globalDiscount,
     warehouse_id: store.config.workshopWarehouse,
     priceListSelected: store.priceList.listSelected,
-    usePriceListAsDefault: store.priceList.useAsDefault
+    usePriceListAsDefault: store.priceList.useAsDefault,
+    config: store.config.globalConf
   }
 })
 export default class WorkOrdersPanel extends React.Component {
@@ -181,7 +182,8 @@ export default class WorkOrdersPanel extends React.Component {
               _this.props.warehouse_id,
               false,
               _this.props.priceListSelected,
-              _this.props.usePriceListAsDefault
+              _this.props.usePriceListAsDefault,
+              this.props.config.overrideXMLversion
             )
           )
         } catch (err) {
@@ -263,7 +265,8 @@ export default class WorkOrdersPanel extends React.Component {
               _this.props.warehouse_id,
               false,
               this.props.priceListSelected,
-              this.props.usePriceListAsDefault
+              this.props.usePriceListAsDefault,
+              this.props.config.overrideXMLversion
             )
           )
         } catch (err) {
@@ -321,7 +324,8 @@ export default class WorkOrdersPanel extends React.Component {
               _this.props.warehouse_id,
               false,
               _this.props.priceListSelected,
-              _this.props.usePriceListAsDefault
+              _this.props.usePriceListAsDefault,
+              this.props.config.overrideXMLversion
             )
           )
         } catch (err) {
