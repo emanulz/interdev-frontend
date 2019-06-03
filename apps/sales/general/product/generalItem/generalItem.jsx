@@ -85,7 +85,7 @@ export default class GenerlItem extends React.Component {
     }
     this.props.dispatch(productSelected(generalItemDefaultData, this.props.qty, this.props.itemsInCart,
       this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
-      this.props.usePriceListAsDefault))
+      this.props.usePriceListAsDefault, this.props.config.overrideXMLversion))
     // this.props.dispatch(productSelected(product.code, this.props.qty, product, this.props.itemsInCart,
     //   this.props.globalDiscount, this.props.client, this.props.warehouse_id, false))
     this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
