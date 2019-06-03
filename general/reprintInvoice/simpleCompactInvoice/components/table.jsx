@@ -5,7 +5,8 @@ import {connect} from 'react-redux'
   return {
     sale: store.reprintInvoice.sale,
     currencySymbol: store.currency.symbolSelected,
-    receiptStyles: store.config.receiptStyles
+    receiptStyles: store.config.receiptStyles,
+    config: store.config.globalConf
   }
 })
 export default class Table extends React.Component {
@@ -13,6 +14,7 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
     const symbol = this.props.currencySymbol
+    const XMLVersion = this.props.config.overrideXMLversion
 
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
@@ -73,11 +75,28 @@ export default class Table extends React.Component {
       marginTop: '3px'
     }
 
+    // TAXES HEADER TEXT
+    let taxesHeader = ''
+    if (XMLVersion == '4.2' || XMLVersion == '') {
+      taxesHeader = 'IV'
+    } else if (XMLVersion == '4.3') {
+      taxesHeader = 'IVA %'
+    } else {
+      taxesHeader = ''
+    }
+
     const items = cartItems.map((item) => {
 
-      const taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
-        ? `G`
-        : `E`
+      let taxesText = ''
+      if (XMLVersion == '4.2' || XMLVersion == '') {
+        taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
+          ? `G`
+          : `E`
+      } else if (XMLVersion == '4.3') {
+        taxesText = item.product.taxes_IVA ? `${item.product.taxes_IVA}%` : '%'
+      } else {
+        taxesText = '%'
+      }
 
       return <div style={itemStyles} key={item.uuid}>
         <div style={descriptionStyles}>
@@ -104,7 +123,7 @@ export default class Table extends React.Component {
       <div style={headerStyles}>
         <div style={{width: '25%'}}>Cant</div>
         <div style={{width: '25%', textAlign: 'left'}}>Código</div>
-        <div style={{width: '20%', textAlign: 'center'}}>IV</div>
+        <div style={{width: '20%', textAlign: 'center'}}>{taxesHeader}</div>
         <div style={{width: '30%', textAlign: 'right'}}>Total</div>
       </div>
       <div style={bodyStyles}>

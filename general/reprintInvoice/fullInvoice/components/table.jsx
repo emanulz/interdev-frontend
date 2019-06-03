@@ -16,6 +16,16 @@ export default class Table extends React.Component {
     const XMLVersion = this.props.config.overrideXMLversion
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
+    // TAXES HEADER TEXT
+    let taxesHeader = ''
+    if (XMLVersion == '4.2' || XMLVersion == '') {
+      taxesHeader = 'IV'
+    } else if (XMLVersion == '4.3') {
+      taxesHeader = 'IVA %'
+    } else {
+      taxesHeader = ''
+    }
+
     const items = cartItems.length
       ? cartItems.map((item) => {
 
@@ -31,13 +41,14 @@ export default class Table extends React.Component {
 
         let taxesText = ''
         if (XMLVersion == '4.2' || XMLVersion == '') {
+          taxesHeader = 'IV'
           taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
             ? `G`
             : `E`
         } else if (XMLVersion == '4.3') {
-          taxesText = item.product.taxes_IVA ? `${item.product.taxes_IVA}%` : '%'
+          taxesText = item.product.taxes_IVA ? `${item.product.taxes_IVA}` : ''
         } else {
-          taxesText = '%'
+          taxesText = ''
         }
 
         return <tr key={item.uuid}>
@@ -80,7 +91,7 @@ export default class Table extends React.Component {
           <th className='right-in-table'>Cantidad</th>
           <th className='right-in-table'>P.U</th>
           <th className='right-in-table'>Des%</th>
-          <th className='right-in-table'>IV</th>
+          <th className='right-in-table'>{taxesHeader}</th>
           <th className='right-in-table'>Precio</th>
         </tr>
       </thead>

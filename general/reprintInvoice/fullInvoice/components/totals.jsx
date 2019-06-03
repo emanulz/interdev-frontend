@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     sale: store.reprintInvoice.sale,
-    currencySymbol: store.currency.symbolSelected
+    currencySymbol: store.currency.symbolSelected,
+    config: store.config.globalConf
   }
 })
 export default class Totals extends React.Component {
@@ -60,6 +61,15 @@ export default class Totals extends React.Component {
       </tr>
       : <tr />
 
+    const XMLVersion = this.props.config.overrideXMLversion
+    let taxesLine = ''
+    if (XMLVersion == '4.2' || XMLVersion == '') {
+      taxesLine = 'IV'
+    } else if (XMLVersion == '4.3') {
+      taxesLine = 'IVA'
+    } else {
+      taxesLine = ''
+    }
     return <div className='reprint-full-invoice-totals'>
 
       <table>
@@ -67,14 +77,13 @@ export default class Totals extends React.Component {
           <tr>
             <th>Sub-total</th>
             <td>{symbol} {subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
-
           </tr>
           <tr>
             <th>Descuento</th>
             <td>{symbol} {discountTotal.formatMoney(2, ',', '.')}</td>
           </tr>
           <tr>
-            <th>IV</th>
+            <th>{taxesLine}</th>
             <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
           {ExemptTotal}

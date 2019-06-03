@@ -15,6 +15,16 @@ export default class Table extends React.Component {
     const symbol = this.props.currencySymbol
     const XMLVersion = this.props.config.overrideXMLversion
 
+    // TAXES HEADER TEXT
+    let taxesHeader = ''
+    if (XMLVersion == '4.2' || XMLVersion == '') {
+      taxesHeader = 'IV'
+    } else if (XMLVersion == '4.3') {
+      taxesHeader = 'IVA %'
+    } else {
+      taxesHeader = ''
+    }
+
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
     const items = cartItems.map((item) => {
       let taxesText = ''
@@ -53,7 +63,7 @@ export default class Table extends React.Component {
       <div className='reprint-compact-invoice-table-header'>
         <div className='reprint-compact-invoice-table-header-qty'>Cant</div>
         <div className='reprint-compact-invoice-table-header-code'>Código</div>
-        <div className='reprint-compact-invoice-table-header-iv'>IV</div>
+        <div className='reprint-compact-invoice-table-header-iv'>{taxesHeader}</div>
         <div className='reprint-compact-invoice-table-header-total'>Total</div>
       </div>
       <div className='reprint-compact-invoice-table-body'>
