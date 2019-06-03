@@ -95,7 +95,6 @@ export default class SingleProduct extends React.Component {
     const indexInCart = cartItems.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
     if (indexInCart != -1) {
       const line = cartItems[indexInCart]
-      console.log('LINEEEEEEEE', line)
       const applyCurrencyDiscountPromise = new Promise((resolve, reject) => {
         const kwargs = {
           url: '/api/products/getProdPrice/',
@@ -139,7 +138,6 @@ export default class SingleProduct extends React.Component {
     const indexInCart = cartItems.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
     if (indexInCart != -1) {
       const line = cartItems[indexInCart]
-      console.log('LINEEEEEEEE', line)
       const applyCurrencyDiscountPromise = new Promise((resolve, reject) => {
         const kwargs = {
           url: '/api/products/getProdPrice/',
@@ -189,7 +187,6 @@ export default class SingleProduct extends React.Component {
     const indexInCart = cartItems.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
     if (indexInCart != -1) {
       const line = cartItems[indexInCart]
-      console.log('LINEEEEEEEE', line)
       const applyCurrencyDiscountPromise = new Promise((resolve, reject) => {
         const kwargs = {
           url: '/api/products/getProdPrice/',
@@ -286,7 +283,7 @@ export default class SingleProduct extends React.Component {
     const promosEnabled = promoString.length ? promoString.split(',') : []
     const promosBtns = promosEnabled.map((promo, index) => {
       const classString = parseFloat(index) % 2 ? 'btn btn-warning secondBtn' : 'btn btn-warning firstBtn'
-      return <button className={classString} onClick={this.applyPromoString.bind(this, promo)}>{promo}</button>
+      return <button key={index} className={classString} onClick={this.applyPromoString.bind(this, promo)}>{promo}</button>
     })
     // GENERATE THE BUTTONS DIV
     const buttonsDiv = promosBtns.length
