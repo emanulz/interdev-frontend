@@ -7,7 +7,8 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    local: store.userProfile.activeLocal
+    local: store.userProfile.activeLocal,
+    config: store.config.globalConf
   }
 })
 export default class TopBar extends React.Component {
@@ -46,7 +47,7 @@ export default class TopBar extends React.Component {
   render() {
 
     const localName = this.props.local ? this.props.local.name : ''
-
+    const XMLVersionText = this.props.config ? this.props.config.overrideXMLversion : ''
     return <div className='topBar'>
       <div onClick={this.menuClick.bind(this)} className='topBar-button topBar-button-collapse not-visible' >
         <span className='fa fa-bars' />
@@ -54,6 +55,7 @@ export default class TopBar extends React.Component {
       <div className='topBar-right'>
         <div className='topBar-right-local'>
           {localName}
+          <span>{` XML v${XMLVersionText}`}</span>
         </div>
         <div onClick={this.logOut.bind(this)} className='topBar-button topBar-button-logout'>
           <span className='fa fa-power-off' />
