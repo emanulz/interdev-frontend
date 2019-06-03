@@ -13,6 +13,7 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
     const symbol = this.props.currencySymbol
+    const XMLVersion = this.props.config.overrideXMLversion
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
     const items = cartItems.length
@@ -28,9 +29,16 @@ export default class Table extends React.Component {
             {item.product.description}
           </td>
 
-        const taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
-          ? `G`
-          : `E`
+        let taxesText = ''
+        if (XMLVersion == '4.2' || XMLVersion == '') {
+          taxesText = (item.product.use_taxes || item.product.use_taxes2 || item.product.use_taxes3)
+            ? `G`
+            : `E`
+        } else if (XMLVersion == '4.3') {
+          taxesText = item.product.taxes_IVA ? `${item.product.taxes_IVA}%` : '%'
+        } else {
+          taxesText = '%'
+        }
 
         return <tr key={item.uuid}>
           <td>
