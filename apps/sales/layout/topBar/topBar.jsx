@@ -9,7 +9,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     topBarToggleVisible: store.layout.topBarToggleVisible,
-    local: store.userProfile.activeLocal
+    local: store.userProfile.activeLocal,
+    config: store.config.globalConf
   }
 })
 export default class TopBar extends React.Component {
@@ -50,7 +51,7 @@ export default class TopBar extends React.Component {
     const localName = this.props.local ? this.props.local.name : ''
     const buttonClass = this.props.topBarToggleVisible
       ? 'topBar-button topBar-button-collapse visible' : 'topBar-button topBar-button-collapse'
-
+    const XMLVersionText = this.props.config ? this.props.config.overrideXMLversion : ''
     return <div className='topBar'>
       <div onClick={this.menuClick.bind(this)} className={buttonClass} >
         <span className='fa fa-bars' />
@@ -58,6 +59,7 @@ export default class TopBar extends React.Component {
       <div className='topBar-right'>
         <div className='topBar-right-local'>
           {localName}
+          <span>{` XML v${XMLVersionText}`}</span>
         </div>
         <div onClick={this.homeClick.bind(this)} className='topBar-item topBar-item-config'>
           <span className='fa fa-home' />
