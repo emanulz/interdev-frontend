@@ -16,13 +16,21 @@ const productModel = {
   use_taxes: false,
   taxes: 0,
   taxes_code: '00',
-  is_service: false
+  is_service: false,
+  is_used: false,
+  factor_IVA: 1,
+  rate_code_IVA: '08',
+  tax_code_IVA: '01',
+  taxes_IVA: 13
 }
 
 const stateConst = {
   isVisible: false,
   product: productModel,
-  qty: 1
+  qty: 1,
+  IVARates: [],
+  IVACodes: [],
+  IVAFactors: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -76,6 +84,57 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         qty: action.payload
+      }
+    } // case
+
+    case 'FETCH_IVA_CODES_FULFILLED':
+    {
+      return {
+        ...state,
+        IVACodes: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_IVA_CODES_REJECTED':
+    {
+      return {
+        ...state,
+        IVACodes: []
+      }
+    } // case
+
+    case 'FETCH_IVA_RATES_FULFILLED':
+    {
+      return {
+        ...state,
+        IVARates: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_IVA_RATES_REJECTED':
+    {
+      return {
+        ...state,
+        IVARates: []
+      }
+    } // case
+
+    case 'FETCH_IVA_FACTORS_FULFILLED':
+    {
+      return {
+        ...state,
+        IVAFactors: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_IVA_FACTORS_REJECTED':
+    {
+      return {
+        ...state,
+        IVAFactors: []
       }
     } // case
 

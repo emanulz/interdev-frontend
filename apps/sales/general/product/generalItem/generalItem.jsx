@@ -4,6 +4,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {productSelected} from '../actions.js'
+import { getItemDispatch } from '../../../../../utils/api'
+import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
@@ -17,10 +19,39 @@ import {productSelected} from '../actions.js'
     disabled: store.completed.completed,
     config: store.config.globalConf,
     priceListSelected: store.priceList.listSelected,
-    usePriceListAsDefault: store.priceList.useAsDefault
+    usePriceListAsDefault: store.priceList.useAsDefault,
+    IVARates: store.generalItem.IVARates,
+    IVACodes: store.generalItem.IVACodes,
+    IVAFactors: store.generalItem.IVAFactors
   }
 })
 export default class GenerlItem extends React.Component {
+
+  componentWillMount() {
+    const IVARatesKwargs = {
+      url: `/api/administration/?group=IVA_RATES`,
+      successType: 'FETCH_IVA_RATES_FULFILLED',
+      errorType: 'FETCH_IVA_RATES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(IVARatesKwargs))
+
+    const IVACodesKwargs = {
+      url: `/api/administration/?group=IVA_CODES`,
+      successType: 'FETCH_IVA_CODES_FULFILLED',
+      errorType: 'FETCH_IVA_CODES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(IVACodesKwargs))
+
+    const IVAFactorsKwargs = {
+      url: `/api/administration/?group=IVA_FACTORS`,
+      successType: 'FETCH_IVA_FACTORS_FULFILLED',
+      errorType: 'FETCH_IVA_FACTORS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getItemDispatch(IVAFactorsKwargs))
+  }
 
   hidePanel() {
     this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
@@ -61,6 +92,68 @@ export default class GenerlItem extends React.Component {
     }
     product[name] = value
 
+    this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
+  }
+
+  handleRateChange(event) {
+    let rateValue = 0
+    const value = event.target.value
+    const rateIndex = this.props.IVARates.findIndex(element => {
+      return element.code == value
+    })
+    if (rateIndex != -1) {
+      rateValue = this.props.IVARates[rateIndex].value
+    } else {
+      alert('NOT RATE FOUND')
+    }
+
+    const product = {
+      ...this.props.product
+    }
+    product['tax_code_IVA'] = '01'
+    product['rate_code_IVA'] = value
+    product['taxes_IVA'] = rateValue
+    product['is_used'] = false
+
+    this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
+  }
+
+  handleIsUsedChange(event) {
+
+    const isUsed = event.target.checked
+    const product = {
+      ...this.props.product
+    }
+
+    const sortedFactors = this.props.IVAFactors.sort((a, b) => {
+      if (parseFloat(a.value) < parseFloat(b.value)) { return 1 }
+      if (parseFloat(a.value) > parseFloat(b.value)) { return -1 }
+      return 0
+    })
+
+    product['is_used'] = isUsed
+    if (isUsed) {
+      product['tax_code_IVA'] = '08'
+      product['factor_IVA'] = (parseFloat(sortedFactors[0].value).toFixed(5))
+      product['rate_code_IVA'] = '08'
+      product['taxes_IVA'] = ((parseFloat(sortedFactors[0].value) - 1) * 100).toFixed(2)
+    } else {
+      product['tax_code_IVA'] = '01'
+      product['factor_IVA'] = 1
+      product['rate_code_IVA'] = '08'
+      product['taxes_IVA'] = 13
+    }
+    this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
+  }
+
+  handleFactorChange(event) {
+    const value = event.target.value
+    const product = {
+      ...this.props.product
+    }
+
+    product['factor_IVA'] = (parseFloat(value).toFixed(5))
+    product['taxes_IVA'] = ((parseFloat(value) - 1) * 100).toFixed(2)
     this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
   }
 
@@ -141,6 +234,79 @@ export default class GenerlItem extends React.Component {
     this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
   }
 
+  generateIVADiv(IVACodesList, IVARatesList, IVAFactorSelector) {
+    return <div>
+      <h3>IVA</h3>
+      <div className='general-item-row'>
+        <div className='form-group row-50 first'>
+          <label>Código de Impuesto</label>
+          <Select2
+            name='tax_code_IVA'
+            value={this.props.product.tax_code_IVA}
+            data={IVACodesList}
+            className='form-control'
+            onSelect={this.handleInputChange.bind(this)}
+            options={{
+              placeholder: 'Elija un Código...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+        <div className='form-group row-50 last'>
+          <label>Código de Tarifa</label>
+          <Select2
+            name='rate_code_IVA'
+            value={this.props.product.rate_code_IVA}
+            data={IVARatesList}
+            className='form-control'
+            onSelect={this.handleRateChange.bind(this)}
+            options={{
+              placeholder: 'Elija una Tarifa...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+      </div>
+      <div className='general-item-row'>
+        <div className='form-group row-50 first'>
+          <label>Es usado?</label>
+          <input checked={this.props.product.is_used} name='is_used'
+            onChange={this.handleIsUsedChange.bind(this)}
+            type='checkbox' className='form-control' />
+        </div>
+        <div className='form-group row-50 last'>
+          {IVAFactorSelector}
+        </div>
+      </div>
+      <div className='general-item-row'>
+        <div className='form-group row-50 first'>
+          <label>Tarifa a aplicar %</label>
+          <input disabled value={this.props.product.taxes_IVA} name='taxes_IVA' type='text'
+            className='form-control' onFocus={this.fieldFocus.bind(this)} />
+        </div>
+      </div>
+    </div>
+  }
+
+  generateOLDIVDiv() {
+    return <div>
+      <h3>Impuestos</h3>
+      <div className='general-item-row'>
+        <div className='form-group row-20 first'>
+          <label>Usa Impuestos?</label>
+          <input checked={this.props.product.use_taxes} name='use_taxes'
+            onChange={this.updateUseTaxes.bind(this)}
+            type='checkbox' className='form-control' />
+        </div>
+        <div className='form-group row-80 last'>
+          <label>Impuestos %</label>
+          <input value={this.props.product.taxes} name='taxes' onChange={this.updateTaxesAmount.bind(this)} type='number'
+            className='form-control' onFocus={this.fieldFocus.bind(this)} />
+        </div>
+      </div>
+    </div>
+  }
+
   // Render the product
   render() {
 
@@ -154,6 +320,56 @@ export default class GenerlItem extends React.Component {
           className='form-control' onFocus={this.fieldFocus.bind(this)} />
       </div>
       : <div />
+
+    const sortedRates = this.props.IVARates.sort((a, b) => {
+      if (parseFloat(a.code) > parseFloat(b.code)) { return 1 }
+      if (parseFloat(a.code) < parseFloat(b.code)) { return -1 }
+      return 0
+    })
+    const IVARatesList = sortedRates.map(rate => {
+      return {text: `${rate.code} - ${rate.name}`, id: `${rate.code}`}
+    })
+
+    const sortedCodes = this.props.IVACodes.sort((a, b) => {
+      if (parseFloat(a.code) > parseFloat(b.code)) { return 1 }
+      if (parseFloat(a.code) < parseFloat(b.code)) { return -1 }
+      return 0
+    })
+    const IVACodesList = sortedCodes.map(rate => {
+      return {text: `${rate.code} - ${rate.name}`, id: `${rate.code}`}
+    })
+
+    const sortedFactors = this.props.IVAFactors.sort((a, b) => {
+      if (parseFloat(a.value) < parseFloat(b.value)) { return 1 }
+      if (parseFloat(a.value) > parseFloat(b.value)) { return -1 }
+      return 0
+    })
+    const IVAFactorsList = sortedFactors.map(factor => {
+      return {text: `${factor.name} - ${factor.value}`, id: `${factor.value}`}
+    })
+
+    const IVAFactorSelector = this.props.product.is_used
+      ? <div>
+        <label>Factor IVA</label>
+        <Select2
+          name='factor_IVA'
+          value={this.props.product.factor_IVA}
+          data={IVAFactorsList}
+          className='form-control'
+          onSelect={this.handleFactorChange.bind(this)}
+          options={{
+            placeholder: 'Elija un Factor...',
+            noResultsText: 'Sin elementos'
+          }}
+        />
+        {/* <input value={this.props.product.factor_IVA} name='factor_IVA' onChange={this.handleInputChange.bind(this)}
+          type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} /> */}
+      </div>
+      : <div />
+    const taxesToShow = this.props.config.overrideXMLversion == '4.3'
+      ? this.generateIVADiv(IVACodesList, IVARatesList, IVAFactorSelector)
+      : this.generateOLDIVDiv()
+
     return <div className={isVisible}>
       <div className='general-item-container'>
         <div className='general-item-container-header'>
@@ -178,23 +394,27 @@ export default class GenerlItem extends React.Component {
                 onChange={this.handleInputChange.bind(this)}
                 type='checkbox' className='form-control' />
             </div>
-            <div className='form-group'>
-              <label>Usa Impuestos?</label>
-              <input checked={this.props.product.use_taxes} name='use_taxes'
-                onChange={this.updateUseTaxes.bind(this)}
-                type='checkbox' className='form-control' />
-            </div>
-            <div className='form-group'>
-              <label>Impuestos %</label>
-              <input value={this.props.product.taxes} name='taxes' onChange={this.updateTaxesAmount.bind(this)} type='number'
-                className='form-control' onFocus={this.fieldFocus.bind(this)} />
+
+            <h3>Precio</h3>
+            <div className='general-item-row'>
+              <div className='form-group row-30 first'>
+                <label>Cantidad</label>
+                <input value={this.props.qty} name='qty'
+                  onChange={this.updateQty.bind(this)}
+                  type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              </div>
+              <div className='form-group row-70 last'>
+                <label>Precio IVI</label>
+                <input value={this.props.product.sell_price} name='sell_price' onChange={this.updatePrice.bind(this)}
+                  type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              </div>
             </div>
           </div>
 
           <div className='general-item-container-content-right'>
-            <h3>Precio</h3>
+            {taxesToShow}
 
-            <div className='form-group'>
+            {/* <div className='form-group'>
               <label>Cantidad</label>
               <input value={this.props.qty} name='qty'
                 onChange={this.updateQty.bind(this)}
@@ -205,9 +425,9 @@ export default class GenerlItem extends React.Component {
               <label>Precio IVI</label>
               <input value={this.props.product.sell_price} name='sell_price' onChange={this.updatePrice.bind(this)}
                 type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-            </div>
+            </div> */}
 
-            <button onClick={this.addToCart.bind(this)} >Agregar</button>
+            <button className='general-item-button' onClick={this.addToCart.bind(this)} >Agregar</button>
 
           </div>
         </div>
