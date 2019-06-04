@@ -2,9 +2,9 @@
  * Module dependencies
  */
 import React from 'react'
-import {connect} from 'react-redux'
-import {updateTotals, removeFromCart} from './actions'
-import {addSubOne, updateItem} from '../product/actions'
+import { connect } from 'react-redux'
+import { updateTotals, removeFromCart } from './actions'
+import { addSubOne, updateItem } from '../product/actions'
 import alertify from 'alertifyjs'
 
 const Mousetrap = require('mousetrap')
@@ -19,6 +19,7 @@ const Mousetrap = require('mousetrap')
     orderTransport: store.cart.orderTransport,
     cartSubtotal: store.cart.cartSubtotal,
     discount_mode: store.cart.discount_mode,
+    config: store.config.globalConf
   }
 })
 export default class CartItems extends React.Component {
@@ -30,7 +31,7 @@ export default class CartItems extends React.Component {
 
     // Auto Scroll To end of container
     console.log("prev qty --> ", prevProps.inCart.length, this.props.inCart.length)
-    if(prevProps.inCart.length < this.props.inCart.length){
+    if (prevProps.inCart.length < this.props.inCart.length) {
       const elem = document.getElementById('cart-body')
       elem.scrollTop = elem.scrollHeight
     }
@@ -41,12 +42,12 @@ export default class CartItems extends React.Component {
   componentWillMount() {
 
     const _this = this
-    Mousetrap.bind('mod+plus', function(e) {
+    Mousetrap.bind('mod+plus', function (e) {
 
       if (e.preventDefault) {
         e.preventDefault()
       } else {
-      // internet explorer
+        // internet explorer
         e.returnValue = false
       }
 
@@ -54,83 +55,85 @@ export default class CartItems extends React.Component {
         _this.props.client))
     })
 
-    Mousetrap.bind('mod+f', function(e) {
+    Mousetrap.bind('mod+f', function (e) {
 
       if (e.preventDefault) {
         e.preventDefault()
       } else {
-      // internet explorer
+        // internet explorer
         e.returnValue = false
       }
 
       document.getElementById(`qty${_this.props.cartItemActive}`).focus()
     })
 
-    Mousetrap.bind('mod+-', function(e) {
+    Mousetrap.bind('mod+-', function (e) {
       if (e.preventDefault) {
         e.preventDefault()
       } else {
-      // internet explorer
+        // internet explorer
         e.returnValue = false
       }
       _this.props.dispatch(addSubOne(_this.props.cartItemActive, false, _this.props.inCart, _this.props.globalDiscount,
         _this.props.client))
     })
 
-    Mousetrap.bind('mod+*', function(e) {
+    Mousetrap.bind('mod+*', function (e) {
 
       if (e.preventDefault) {
         e.preventDefault()
       } else {
-      // internet explorer
+        // internet explorer
         e.returnValue = false
       }
 
       const __this = _this
       alertify.prompt(`Nueva cantidad para el producto seleccionado`, 'Ingrese la nueva cantidad para el producto seleccionado', ''
-        , function(evt, value) {
+        , function (evt, value) {
           __this.props.dispatch(updateQtyCode(__this.props.cartItemActive, value, __this.props.inCart,
             __this.props.globalDiscount, __this.props.client))
         }
-        , function() {})
-        .set('labels', {ok: 'Ok', cancel: 'Cancelar'})
+        , function () { })
+        .set('labels', { ok: 'Ok', cancel: 'Cancelar' })
     })
   }
 
-  subTotalChange(code, ev){
+  subTotalChange(code, ev) {
     const subTotal = parseFloat((ev.target.value))
-    ? parseFloat(ev.target.value)
-    : -1
-    if(subTotal==-1){return}
+      ? parseFloat(ev.target.value)
+      : -1
+    if (subTotal == -1) { return }
     const kwargs = {
-      id: code, 
-      is_search_uuid: true, 
+      id: code,
+      is_search_uuid: true,
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
       discount_mode: this.props.discount_mode,
-      //what changed
+      // what changed
       subtotal: subTotal,
-      
+      XMLVersion: this.props.config.overrideXMLversion
+
     }
     this.props.dispatch(updateItem(kwargs))
 
   }
 
-  qtyInputChange(code, ev){
+  qtyInputChange(code, ev) {
     const qty = parseFloat(ev.target.value)
-    ? parseFloat(ev.target.value)
-    : -1
-    if(qty==-1){return}
+      ? parseFloat(ev.target.value)
+      : -1
+    if (qty == -1) { return }
     const kwargs = {
-      id: code, 
-      is_search_uuid: true, 
+      id: code,
+      is_search_uuid: true,
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
       discount_mode: this.props.discount_mode,
       //what changed
       qty: qty,
+      XMLVersion: this.props.config.overrideXMLversion
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -151,14 +154,15 @@ export default class CartItems extends React.Component {
     if (tUtility == -1) { return }
 
     const kwargs = {
-      id: id, 
-      is_search_uuid: true, 
+      id: id,
+      is_search_uuid: true,
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
       discount_mode: this.props.discount_mode,
       //what changed
       target_utility: tUtility,
+      XMLVersion: this.props.config.overrideXMLversion
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -167,29 +171,30 @@ export default class CartItems extends React.Component {
   discountFieldChange(id, e) {
     // DISCOUNT
 
-    let discount= parseFloat(e.target.value)
-    ? parseFloat(e.target.value)
-    : 0
-    if(this.props.discount_mode =='percent_based'){
-      if(discount>100){
-        this.props.dispatch({type: 'LINE_PERCENT_DISCOUNT_OVER_100'})
+    let discount = parseFloat(e.target.value)
+      ? parseFloat(e.target.value)
+      : 0
+    if (this.props.discount_mode == 'percent_based') {
+      if (discount > 100) {
+        this.props.dispatch({ type: 'LINE_PERCENT_DISCOUNT_OVER_100' })
         discount = 100
       }
 
-      if(discount>75){
-        this.props.dispatch({type: 'LINE_DISCOUNT_TOO_HIGH'})
+      if (discount > 75) {
+        this.props.dispatch({ type: 'LINE_DISCOUNT_TOO_HIGH' })
       }
     }
-    if(discount==-1){return}
+    if (discount == -1) { return }
     const kwargs = {
-      id: id, 
-      is_search_uuid: true, 
+      id: id,
+      is_search_uuid: true,
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
       discount_mode: this.props.discount_mode,
-      //what changed
+      // what changed
       discount: discount,
+      XMLVersion: this.props.config.overrideXMLversion
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -198,21 +203,22 @@ export default class CartItems extends React.Component {
     // TO CLIENT
     const apply = e.target.checked
     const kwargs = {
-      id: id, 
-      is_search_uuid: true, 
+      id: id,
+      is_search_uuid: true,
       itemsInCart: this.props.inCart,
       orderTransport: this.props.orderTransport,
       cartSubtotal: this.props.cartSubtotal,
       discount_mode: this.props.discount_mode,
       //what changed
       applyToClient: apply,
+      XMLVersion: this.props.config.overrideXMLversion
     }
     this.props.dispatch(updateItem(kwargs))
-  
+
   }
 
   setCartItemActive(code, ev) {
-    this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+    this.props.dispatch({ type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code })
   }
 
   removeItem(code, ev) {
@@ -247,13 +253,13 @@ export default class CartItems extends React.Component {
         value={item.qty}
       />
 
-      const subTotalField = <input 
+      const subTotalField = <input
         id={`sub${item.product.code}`}
         disabled={this.props.is_closed}
         onChange={this.subTotalChange.bind(this, item.uuid)}
         className='form-control'
         value={item.subtotal}
-        type="number"/>
+        type="number" />
 
       const discountField = <input
         id={`tu${item.product.code}`}
@@ -291,7 +297,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className="cart-body-item-cost">
           <h5>Costo</h5>
-          {(item.cost?item.cost:item.subtotal/item.qty).toFixed(2)}
+          {(item.cost ? item.cost : item.subtotal / item.qty).toFixed(2)}
         </div>
         <div className='cart-body-item-discount'>
           <h5>Descuento</h5>

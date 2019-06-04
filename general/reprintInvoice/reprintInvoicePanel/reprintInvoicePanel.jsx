@@ -1,5 +1,5 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 import SimpleCompactInvoice from '../simpleCompactInvoice/simpleCompactInvoice.jsx'
@@ -17,19 +17,19 @@ export default class ReprintInvoicePanel extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.config != nextProps.config) {
-      this.props.dispatch({type: 'SET_REPRINT_INVOICE_PANEL_FULL', payload: nextProps.config.defaultInvoiceFull})
+      this.props.dispatch({ type: 'SET_REPRINT_INVOICE_PANEL_FULL', payload: nextProps.config.defaultInvoiceFull })
     }
   }
 
   hidePanel() {
 
-    this.props.dispatch({type: 'HIDE_REPRINT_INVOICE_PANEL', payload: -1})
+    this.props.dispatch({ type: 'HIDE_REPRINT_INVOICE_PANEL', payload: -1 })
     // printDiv('full-invoice-print')
   }
 
   togglePanel() {
 
-    this.props.dispatch({type: 'TOGGLE_REPRINT_INVOICE_PANEL_FULL', payload: -1})
+    this.props.dispatch({ type: 'TOGGLE_REPRINT_INVOICE_PANEL_FULL', payload: -1 })
 
   }
 
@@ -37,7 +37,7 @@ export default class ReprintInvoicePanel extends React.Component {
     window.printDiv('reprint-invoice-print', ['/static/fixedBundles/css/sales.css'])
   }
 
-  calcTotalInPay () {
+  calcTotalInPay() {
     const pay = this.props.sale.pay
     let total = 0
     for (const item in pay) {
@@ -50,7 +50,7 @@ export default class ReprintInvoicePanel extends React.Component {
     return total
   }
 
-  getZpl(){
+  getZpl() {
     document.getElementById('link').click()
   }
 
@@ -80,15 +80,14 @@ export default class ReprintInvoicePanel extends React.Component {
 
     let zpl_button = ''
     let zpl_link = ''
-    if(this.props.config){
-      if(this.props.config.EnableZplDownloads){
-        if(this.props.sale){
-          zpl_link = <a id="link" href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`}></a>
+    if (this.props.config) {
+      if (this.props.config.EnableZplDownloads) {
+        if (this.props.sale) {
+          zpl_link = <a id='link' href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`} />
           zpl_button = <i onClick={this.getZpl.bind(this)} className='fa fa-download' aria-hidden='true' />
         }
       }
-      zpl_link = <a id="link" href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`}></a>
-      
+      zpl_link = <a id='link' href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`} />
     }
 
     return <div className={isVisible}>

@@ -5,7 +5,7 @@ import React from 'react'
 import alertify from 'alertifyjs'
 import {connect} from 'react-redux'
 // import {getItemDispatch} from '../../../../utils/api'
-import {productSelected, setProduct, setProductNew, determinPriceToUse} from './actions.js'
+import {productSelected, setProductNew} from './actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
