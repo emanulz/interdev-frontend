@@ -198,8 +198,9 @@ export function updateItemLote(itemsInCart, code, lote) {
 }
 
 // When item is selected in code field
-export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal, priceListSelected, usePriceListAsDefault, XMLVersion) {
+export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal, priceListSelected, usePriceListAsDefault, XMLVersion, dontCheckInv = false) {
   console.log('XML VERSION productSelected: ', XMLVersion)
+  console.log('dontCheckInv productSelected: ', dontCheckInv)
   // GET TE DATA FROM THE LINE DATA
   const code = lineData.product.code
   const product = lineData.product
@@ -234,7 +235,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
   console.log('INVENTORYYY', inventory)
   console.log(qtyToCheck)
   // CHECK THE INVENTORY OF PRODUCT, IF INVENTORY NOT ENABLE OR INVENTORY IS ENOUGHT OR CAN BE NEGATIVE
-  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative || dontCheckInv) {
     const res = checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, perLine, lineData, XMLVersion)
     return res
   }
@@ -246,8 +247,9 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
 
 // Updates Amount based on qty input field
 
-export function updateQty (code, qty, itemsInCart, predDiscount, client, warehouseId, XMLVersion) {
+export function updateQty (code, qty, itemsInCart, predDiscount, client, warehouseId, XMLVersion, dontCheckInv = false) {
   console.log('XML VERSION updateQty: ', XMLVersion)
+  console.log('dontCheckInv updateQty: ', dontCheckInv)
   const qtyNum = parseFloat(qty)
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code)
 
@@ -280,7 +282,7 @@ export function updateQty (code, qty, itemsInCart, predDiscount, client, warehou
   const inventory = JSON.parse(product.inventory_existent)
   console.log('INVENTORYYY', inventory)
   console.log(qtyToCheck)
-  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative || dontCheckInv) {
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART
@@ -289,8 +291,9 @@ export function updateQty (code, qty, itemsInCart, predDiscount, client, warehou
   return {type: 'NO_ACTION', payload: ''}
 }
 
-export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, warehouseId, XMLVersion) {
+export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, warehouseId, XMLVersion, dontCheckInv = false) {
   console.log('XML VERSION updateQtyCode: ', XMLVersion)
+  console.log('dontCheckInv updateQtyCode: ', dontCheckInv)
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code || item.product.barcode == code)
   const qtyNum = parseFloat(qty)
 
@@ -323,7 +326,7 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
   const inventory = JSON.parse(product.inventory_existent)
   console.log('INVENTORYYY', inventory)
   console.log(qtyToCheck)
-  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
+  if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative || dontCheckInv) {
     return res
   }
   // OTHERWISE RAISE ERROR AND DO NOT ADD TO CART

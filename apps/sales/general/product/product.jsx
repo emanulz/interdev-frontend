@@ -218,9 +218,10 @@ export default class Product extends React.Component {
                 money_discount: 0,
                 force_pricing: -1
               }
+              console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
               this.props.dispatch(productSelected(generalItemDefaultData, qty, this.props.itemsInCart,
                 this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
-                this.props.usePriceListAsDefault, this.props.config.overrideXMLversion))
+                this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
 
               this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
 
@@ -265,9 +266,10 @@ export default class Product extends React.Component {
             } else {
               // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
               // _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
+              console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
               this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
                 this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
-                this.props.usePriceListAsDefault, this.props.config.overrideXMLversion))
+                this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
               _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
               _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
             }
