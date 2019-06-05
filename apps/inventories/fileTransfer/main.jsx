@@ -27,6 +27,21 @@ export default class MakeMassFileTransfer extends React.Component {
         this.props.dispatch({type:'NEW_SALE'})
 
         this.props.dispatch({type:'SET_UNIQUE_ID', payload:uuidv4()})
+        if(this.props.match.params.mode !== undefined){
+            this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: this.props.match.params.mode.toUpperCase()})
+        }else{
+            this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: "FILE"})
+        }
+    }
+
+    componentWillReceiveProps(next_props){
+        if(this.props.match.params.mode != next_props.match.params.mode){
+            if(next_props.match.params.mode !== undefined){
+                this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: next_props.match.params.mode.toUpperCase()})
+            }else{
+                this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: "FILE"})
+            }
+        }
     }
 
     render() {

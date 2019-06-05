@@ -8,14 +8,57 @@ import {generalSave} from '../../../../utils/api.js'
         cart: store.cart,
         sendToEmails: store.extras.client.email,
         uniqueId: store.fileTransfer.uniqueId,
-        selectedWarehouse: store.warehouses2.selectedWarehouse.id,
+        selectedWarehouseData: store.warehouse_multi.selectedWarehouse,
         transfer_location: store.fileTransfer.transfer_location,
+        transfer_mode: store.fileTransfer.transfer_mode
     }
 })
 export default class Buttons extends React.Component {
 
 
-    generateTransfer(){
+    generateTransfer(type_flag){
+        console.log("Type flag --> ", type_flag)
+        console.log("Selected warehouse data --> ", this.props.selectedWarehouseData)
+        warehouse = this.props.selectedWarehouse["transfer_origin"]
+        destination_warehouse = this.props.selectedWarehouse["transfer_destiny"]
+
+        let is_input = "INPUT"
+        switch(this.props.transfer_mode){
+            case "INPUT":
+                {
+                    if(warehouse.id === '00000000-0000-0000-0000-000000000000' 
+                        || warehouse === undefined){
+                        console.log("Origin warehouse not selected")
+                    }
+                }
+                return
+
+            case "OUTPUT": 
+            {
+                is_input = "OUTPUT"
+                if(destination_warehouse.id === '00000000-0000-0000-0000-000000000000' 
+                    || destination_warehouse === undefined){
+                    console.log("Destination warehouse not selected")
+                }
+                return
+            }
+
+            case "TRANSFER":
+            {
+                if(destination_warehouse.id === warehouse.id){
+                    console.log("On a transfer both warehouses must be different")
+                    return
+                }
+
+                if(destination_warehouse.id === '00000000-0000-0000-0000-000000000000' 
+                    || warehouse.id === '00000000-0000-0000-0000-000000000000'){
+                        console.log("Se deben seleccionar ambas bodegas en una transferencia")
+                    }
+            }
+        }
+
+        
+
 
         const kwargs = {
             url: '/api/inventorymovementslist/transferInv/',
@@ -28,7 +71,9 @@ export default class Buttons extends React.Component {
               notes: this.props.note,
               cart: JSON.stringify(this.props.cart),
               transfer_id: this.props.uniqueId,
-              warehouse: this.props.selectedWarehouse 
+              warehouse: warehouse,
+              destination_warehouse: destination_warehouse,
+              is_input: is_input
             }
           }
           this.props.dispatch(generalSave(kwargs))
@@ -70,18 +115,48 @@ export default class Buttons extends React.Component {
 
     render() {
         let download_button = ''
-        let generate_button =''
+        let generate_button = ''
+        let mass_load_button = ''
+        let mass_download_button = ''
+        let mass_transfer_button = ''
+        if(this.props.transfer_mode === "INPUT"){
+            mass_load_button  = <button
+            onClick={this.massLoadInv.bind(this, 'INPUT')} 
+            style={{
+                'height': '48px',
+                'width': '49%',
+                'marginTop': '10px'
+                }}
+            className='btn btn-default'>
+                Cargar Inventario
+            </button>
+        }
+        
+        if(this.props.transfer_mode === "OUTPUT"){
+            mass_download_button  = <button
+            onClick={this.massLoadInv.bind(this, 'OUTPUT')} 
+            style={{
+                'height': '48px',
+                'width': '49%',
+                'marginTop': '10px'
+                }}
+            className='btn btn-default'>
+                Descargar Inventario
+            </button>
+        }
 
-        let mass_load_button  = <button
-        onClick={this.massLoadInv.bind(this)} 
-        style={{
-            'height': '48px',
-            'width': '49%',
-            'marginTop': '10px'
-            }}
-        className='btn btn-default'>
-            Cargar Inventario
-        </button>
+        if(this.props.transfer_mode === "TRANSFER"){
+            mass_download_button  = <button
+            onClick={this.massLoadInv.bind(this, 'TRANSFER')} 
+            style={{
+                'height': '48px',
+                'width': '49%',
+                'marginTop': '10px'
+                }}
+            className='btn btn-default'>
+                Transferir Inventario
+            </button>
+        }
 
         let proposed_file_name =''
         if(this.props.transfer_location !== "")
@@ -105,21 +180,26 @@ export default class Buttons extends React.Component {
         </button>
 
         }else{
-            generate_button = <button
-            onClick={this.generateTransfer.bind(this)}
-            style={{
-            'height': '48px',
-            'width': '49%',
-            'marginTop': '10px'
-            }}
-            className='btn btn-default'>
-            Generar Transferencia
-        </button>
+            if(this.props.transfer_mode === "FILE"){
+                generate_button = <button
+                onClick={this.generateTransfer.bind(this)}
+                style={{
+                'height': '48px',
+                'width': '49%',
+                'marginTop': '10px'
+                }}
+                className='btn btn-default'>
+                Generar Transferencia
+            </button>
+            }
+
         }
         return <div className="col-xs-12 buttons">
             {generate_button}
             {download_button}
             {mass_load_button}
+            {mass_download_button}
+            {mass_transfer_button}
         </div>
     }
 }

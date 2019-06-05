@@ -23,22 +23,6 @@ export default class SideMenu extends React.Component {
   // Main Layout
   render() {
 
-    // const childProducts = [
-    //   {
-    //     text: 'Productos',
-    //     class: 'fa-gift',
-    //     href: '/admin/products'
-    //   }, {
-    //     text: 'Familias',
-    //     class: 'fa-list',
-    //     href: '/admin/productdepartments'
-    //   }, {
-    //     text: 'Sub-Familias',
-    //     class: 'fa-outdent',
-    //     href: '/admin/productsubdepartments'
-    //   }
-    // ]
-
     // const title = this.props.userCompanyConfig.comercialName || this.props.defaultCompanyConfig.comercialName || 'APP'
     const sideMenuClass = this.props.sideMenuVisible ? 'sideMenu' : 'sideMenu hiddenByApp'
     
@@ -70,11 +54,11 @@ export default class SideMenu extends React.Component {
 
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
-          <li>
+          {/* <li>
             <Link to='/inventories'>
               <span className='fa fa-area-chart' />
               Inicio</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/inventories/movements'>
               <span className='fa fa-exchange' />
@@ -108,9 +92,34 @@ export default class SideMenu extends React.Component {
           {makeFileTransferMenu}
           {loadFileTransferMenu}
           <li>
-            <Link to='/inventories/invloadlist'>
+            <Link to='/inventories/masstransfer/output'>
               <span className='fa fa-file' />
-              Listado Ingresos Inventario</Link>
+              Crear Salida Masiva</Link>
+          </li>
+          <li>
+            <Link to='/inventories/masstransfer/input'>
+              <span className='fa fa-file' />
+              Crear Ingreso Masivo</Link>
+          </li>
+          <li>
+            <Link to='/inventories/masstransfer/transfer'>
+              <span className='fa fa-file' />
+              Crear Transferencia Masiva</Link>
+          </li>
+          <li>
+            <Link to='/inventories/massloadlist/input'>
+              <span className='fa fa-file' />
+              Listado Ingresos Masivos</Link>
+          </li>
+          <li>
+            <Link to='/inventories/massloadlist/output'>
+              <span className='fa fa-file' />
+              Listado Salidas Masivas</Link>
+          </li>
+          <li>
+            <Link to='/inventories/massloadlist/transfer'>
+              <span className='fa fa-file' />
+              Listado Transferencias Masivas</Link>
           </li>
           <li>
             <Link to='/inventories/filetransferslist'>

@@ -47,7 +47,7 @@ export default class SingleProduct extends React.Component {
     //   this.props.globalDiscount, this.props.client, this.props.warehouse_id))
     const code = this.props.product.code
     const _this = this
-    console.log("Blow me away here!")
+    console.log("MADE IT HERE 1")
     const setProductPromiseNew = new Promise((resolve, reject) => {
       const kwargs = {
         url: '/api/products/getProdPrice/',
@@ -62,10 +62,11 @@ export default class SingleProduct extends React.Component {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       setProductNew(kwargs, resolve, reject)
     }).catch(err => {
-      console.log("HERE FACK")
+      console.log("HERE FACK --> ", err)
     })
 
     setProductPromiseNew.then((data) => {
+      console.log("THIS IS DATA 0 --> ", data[0])
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       const product = data[0].product
       if (product.code == '00') {
@@ -73,6 +74,7 @@ export default class SingleProduct extends React.Component {
         _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
       } else {
         // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
+        
         _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
         this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
           this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,

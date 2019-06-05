@@ -7,6 +7,7 @@ import products from './products/reducer.js'
 import products2 from '../sales/general/product/reducer.js'
 import movements from './movements/reducer.js'
 import warehouses from './warehouses/reducer.js'
+
 import sidePanel from './movements/sidePanel/reducer.js'
 import inventoryMovements from './tracking/productMovements/reducer.js'
 import pagination from '../../general/pagination/reducer.js'
@@ -31,6 +32,7 @@ import extras from '../sales/general/extras/reducer.js'
 import warehouses2 from '../../general/warehouses/reducer.js'
 import picker from '../inventories/fileTransferLoad/loadFromFile/reducer.js'
 import transferDataLoad from '../inventories/fileTransferLoad/reducer.js'
+import warehouse_multi from '../../general/warehouse_multi/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -61,7 +63,8 @@ export default combineReducers({
   products2,
   warehouses2,
   picker, 
-  transferDataLoad
+  transferDataLoad,
+  warehouse_multi
 
 
 })

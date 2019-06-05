@@ -16,11 +16,20 @@ const stateConst = {
     transfer_location: '',
     transfers: [],
     mass_load_complete: false,
+    transfer_mode: "FILE"
 }
 
 export default function reducer(state=stateConst, action) {
     switch(action.type){
         
+        case 'SET_TRANSFER_MODE':
+        {
+            return {
+                ...state,
+                transfer_mode: action.payload
+            }
+        }
+
         case 'SET_UNIQUE_ID':
         {
             return {

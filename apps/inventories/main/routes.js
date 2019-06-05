@@ -24,10 +24,18 @@ const routes = <div className='heigh100'>
   <Route path='/inventories/physical' component={PhysicalTake} />
   <Route path='/inventories/takemovements' component={TakeMovements} />
   <Route path='/inventories/checktakemovements' component={CheckTakeMovements} />
+
   <Route path='/inventories/makeFileTransfer' component={MakeMassFileTransfer} />
   <Route path='/inventories/loadFileTransfer' component={FileTransferLoader} />
   <Route path='/inventories/filetransferslist' component={ListFileTransfers} />
-  <Route path='/inventories/invloadlist' component={ListMassInv} />
+
+  <Route path='/inventories/masstransfer/:mode' component={MakeMassFileTransfer} />
+  {/* <Route path='/inventories/makeFileTransfer/:mode' component={MakeMassFileTransfer} />
+  <Route path='/inventories/makeFileTransfer/:mode' component={MakeMassFileTransfer} /> */}
+
+  <Route path='/inventories/massloadlist/:mode' component={ListMassInv}/>
+  {/* <Route path='/inventories/invloadlist/:mode' component={ListMassInv} />
+  <Route path='/inventories/invloadlist/:mdoe' component={ListMassInv} /> */}
   
 </div>
 

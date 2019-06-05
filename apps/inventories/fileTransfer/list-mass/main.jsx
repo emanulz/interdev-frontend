@@ -38,6 +38,31 @@ export default class ListMassInv extends React.Component {
 
 
     render(){
+        let title = ""
+        switch(this.props.match.params.mode){
+            case "input":
+                {
+                    title = "Listado de Ingresos Masivos"
+                    break
+                }
+                case "output":
+                {
+                    title = "Listado de Salidas Masivas"
+                    break 
+                }
+                case "transfer":
+                {
+                    title = "Listado Transferencias de Bodega Masivas"
+                    break 
+                }
+                default:
+                {
+                    title="Listado"
+                    break
+                }
+
+                
+        }
 
         let get_name = (el)=>{
 
@@ -127,7 +152,7 @@ export default class ListMassInv extends React.Component {
             return <div className='list list-container'>
             
             <div className='admin-list-header'>
-                <h1>Listado Ingresos Inventario</h1>
+                <h1>{title}</h1>
             </div>
 
             <SearchAdmin model='filetransfer' namespace='transferSearch' />
