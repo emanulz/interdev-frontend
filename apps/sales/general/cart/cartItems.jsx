@@ -119,7 +119,7 @@ export default class CartItems extends React.Component {
       alertify.prompt(`Nueva cantidad para el producto seleccionado`, 'Ingrese la nueva cantidad para el producto seleccionado', ''
         , function(evt, value) {
           __this.props.dispatch(updateQtyCode(__this.props.cartItemActive, value, __this.props.inCart,
-            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id, this.props.config.overrideXMLversion))
+            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id, this.props.config.overrideXMLversion, this.props.dontCheckInv))
         }
         , function() {})
         .set('labels', {ok: 'Ok', cancel: 'Cancelar'})
@@ -163,7 +163,12 @@ export default class CartItems extends React.Component {
       : -1
     // this.state.qtyField = qty
     if (qty == -1) { return }
-    this.props.dispatch(updateQty(code, qty, this.props.inCart, this.props.globalDiscount, this.props.client, this.props.warehouse_id, this.props.config.overrideXMLversion))
+    this.props.dispatch(updateQty(
+      code, qty, this.props.inCart, this.props.globalDiscount,
+      this.props.client, this.props.warehouse_id,
+      this.props.config.overrideXMLversion,
+      this.props.dontCheckInv
+    ))
 
   }
 
