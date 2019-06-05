@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     sale: store.reprintInvoice.sale,
+    document: store.reprintInvoice.invoice,
     currencySymbol: store.currency.symbolSelected,
     receiptStyles: store.config.receiptStyles,
     config: store.config.globalConf
@@ -14,7 +15,7 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
     const symbol = this.props.currencySymbol
-    const XMLVersion = this.props.config.overrideXMLversion
+    const XMLVersion = this.props.document.hacienda_resolution
 
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
