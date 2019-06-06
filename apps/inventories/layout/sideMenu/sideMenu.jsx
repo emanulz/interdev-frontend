@@ -92,40 +92,41 @@ export default class SideMenu extends React.Component {
           {makeFileTransferMenu}
           {loadFileTransferMenu}
           <li>
-            <Link to='/inventories/masstransfer/output'>
-              <span className='fa fa-file' />
-              Crear Salida Masiva</Link>
-          </li>
-          <li>
-            <Link to='/inventories/masstransfer/input'>
-              <span className='fa fa-file' />
-              Crear Ingreso Masivo</Link>
-          </li>
-          <li>
-            <Link to='/inventories/masstransfer/transfer'>
-              <span className='fa fa-file' />
-              Crear Transferencia Masiva</Link>
-          </li>
-          <li>
-            <Link to='/inventories/massloadlist/input'>
-              <span className='fa fa-file' />
-              Listado Ingresos Masivos</Link>
-          </li>
-          <li>
-            <Link to='/inventories/massloadlist/output'>
-              <span className='fa fa-file' />
-              Listado Salidas Masivas</Link>
-          </li>
-          <li>
-            <Link to='/inventories/massloadlist/transfer'>
-              <span className='fa fa-file' />
-              Listado Transferencias Masivas</Link>
-          </li>
-          <li>
             <Link to='/inventories/filetransferslist'>
               <span className='fa fa-file' />
               Listado Transferencias</Link>
           </li>
+          <li>
+            <Link to='/inventories/masstransfer/output'>
+              <span className='fa fa-arrow-left' />
+              Crear Salida Masiva</Link>
+          </li>
+          <li>
+            <Link to='/inventories/masstransfer/input'>
+              <span className='fa fa-arrow-right' />
+              Crear Ingreso Masivo</Link>
+          </li>
+          <li>
+            <Link to='/inventories/masstransfer/transfer'>
+              <span className='fa fa-arrows-h' />
+              Crear Transferencia Masiva</Link>
+          </li>
+          <li>
+            <Link to='/inventories/massloadlist/input'>
+              <span className='fa fa-arrow-right' />
+              Listado Ingresos Masivos</Link>
+          </li>
+          <li>
+            <Link to='/inventories/massloadlist/output'>
+              <span className='fa fa-arrow-left' />
+              Listado Salidas Masivas</Link>
+          </li>
+          <li>
+            <Link to='/inventories/massloadlist/transfer'>
+              <span className='fa fa-arrows-h' />
+              Listado Transferencias Masivas</Link>
+          </li>
+
         </ul>
       </div>
 
