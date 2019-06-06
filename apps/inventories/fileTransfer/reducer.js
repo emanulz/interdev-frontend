@@ -49,7 +49,14 @@ export default function reducer(state=stateConst, action) {
 
         case 'INV_LOAD_SUCCESFUL':
         {
-             return window.location.href = "/inventories/invloadlist"
+            let path_final = "input"
+            if(state.transfer_mode === "OUTPUT"){
+                path_final = "output"
+            }else if(state.transfer_mode === "OUTPUT"){
+                path_final ="transfer"
+            }
+            return window.location.href = "/inventories/massloadlist/" + path_final
+   
         }
 
         case ' INV_LOAD_REJECTED':

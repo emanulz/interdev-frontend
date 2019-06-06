@@ -38,6 +38,7 @@ export default class MakeMassFileTransfer extends React.Component {
         if(this.props.match.params.mode != next_props.match.params.mode){
             if(next_props.match.params.mode !== undefined){
                 this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: next_props.match.params.mode.toUpperCase()})
+                this.props.dispatch({type: "CLEAR_ALL"})
             }else{
                 this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: "FILE"})
             }

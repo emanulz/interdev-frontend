@@ -22,12 +22,13 @@ export default class Main extends React.Component {
       const contentClass = this.props.fullWidth ? 'sale-content fullWidth' : 'sale-content'
       const cartClass = this.props.fullWidth ? 'sale-content-cart' : 'sale-content-cart fullHeight'
       const totalClass = this.props.fullWidth ? 'sale-content-total' : 'sale-content-total collapsed'
-
+      let checkInv = true
       let section_title = "DESCARGA INVENTARIO A ARCHIVO"
       switch(this.props.transfer_mode){
         case "INPUT":
           {
             section_title = "INGRESO DE INVENTARIO EN MASA"
+            checkInv = false
             break
           }
         case "OUTPUT":
@@ -37,6 +38,7 @@ export default class Main extends React.Component {
           }
         case "TRANSFER":
           {
+            checkInv = false
             section_title = "TRANSFERENCIA ENTRE BODEGAS EN MASA"
             break
           }
@@ -46,16 +48,29 @@ export default class Main extends React.Component {
             break
           }
       }
+
+      let prod = ''
+      let cart = ''
+      if(checkInv){
+        prod = <Product />
+        cart = <Cart  />
+      }else{
+        prod = <Product dontCheckInv/>
+        cart = <Cart dontCheckInv/>
+      }
+
+
+
       return <div className={contentClass}>
       <div className="admin-list-header">
       <h1>{section_title}</h1>
       </div>
       
       <div className='sale-content-product' >
-        <Product />
+        {prod}
       </div>
       <div className={cartClass} >
-        <Cart />
+        {cart}
       </div>
       <div className={totalClass} >
         ₡ {this.props.total.formatMoney()}

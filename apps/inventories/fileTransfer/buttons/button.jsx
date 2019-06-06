@@ -16,49 +16,10 @@ import {generalSave} from '../../../../utils/api.js'
 export default class Buttons extends React.Component {
 
 
-    generateTransfer(type_flag){
-        console.log("Type flag --> ", type_flag)
-        console.log("Selected warehouse data --> ", this.props.selectedWarehouseData)
-        warehouse = this.props.selectedWarehouse["transfer_origin"]
-        destination_warehouse = this.props.selectedWarehouse["transfer_destiny"]
-
-        let is_input = "INPUT"
-        switch(this.props.transfer_mode){
-            case "INPUT":
-                {
-                    if(warehouse.id === '00000000-0000-0000-0000-000000000000' 
-                        || warehouse === undefined){
-                        console.log("Origin warehouse not selected")
-                    }
-                }
-                return
-
-            case "OUTPUT": 
-            {
-                is_input = "OUTPUT"
-                if(destination_warehouse.id === '00000000-0000-0000-0000-000000000000' 
-                    || destination_warehouse === undefined){
-                    console.log("Destination warehouse not selected")
-                }
-                return
-            }
-
-            case "TRANSFER":
-            {
-                if(destination_warehouse.id === warehouse.id){
-                    console.log("On a transfer both warehouses must be different")
-                    return
-                }
-
-                if(destination_warehouse.id === '00000000-0000-0000-0000-000000000000' 
-                    || warehouse.id === '00000000-0000-0000-0000-000000000000'){
-                        console.log("Se deben seleccionar ambas bodegas en una transferencia")
-                    }
-            }
-        }
-
+    generateTransfer(){
         
-
+        console.log("Selected warehouse data --> ", this.props.selectedWarehouseData)
+        let warehouse = this.props.selectedWarehouseData["transfer_origin"]
 
         const kwargs = {
             url: '/api/inventorymovementslist/transferInv/',
@@ -71,24 +32,59 @@ export default class Buttons extends React.Component {
               notes: this.props.note,
               cart: JSON.stringify(this.props.cart),
               transfer_id: this.props.uniqueId,
-              warehouse: warehouse,
-              destination_warehouse: destination_warehouse,
-              is_input: is_input
+              warehouse: warehouse.id
             }
           }
           this.props.dispatch(generalSave(kwargs))
     }
 
-    massLoadInv(){
-        if(this.props.selectedWarehouse === "00000000-0000-0000-0000-000000000000"){
-            alertify.alert("Error", "Se debe seleccionar la bodega.")
-            return
-        }
-        if(!this.props.cart.cartHasItems){
-            alertify.alert("Error", "No hay artículos en el carrito.")
-            return  
-        }
+    massLoadInv(type_flag){
 
+        let destination_warehouse = this.props.selectedWarehouseData["transfer_destiny"]
+        let warehouse = this.props.selectedWarehouseData["transfer_origin"]
+
+        let is_input = "INPUT"
+        switch(this.props.transfer_mode){
+            case "OUTPUT":
+                {
+                    is_input = "OUTPUT"
+                    console.log("FRONTEND DO INPUT --> ", is_input)
+                    if(warehouse.id === '00000000-0000-0000-0000-000000000000' 
+                        || warehouse === undefined){
+                        console.log("Origin warehouse not selected")
+                        return
+                    }
+                    break
+                }
+                
+
+            case "INPUT": 
+            {
+                
+                if(destination_warehouse.id === '00000000-0000-0000-0000-000000000000' 
+                    || destination_warehouse === undefined){
+                    console.log("Destination warehouse not selected")
+                    return
+                }
+                break
+                
+            }
+
+            case "TRANSFER":
+            {
+                if(destination_warehouse.id === warehouse.id){
+                    console.log("On a transfer both warehouses must be different")
+                    return
+                }
+
+                if(destination_warehouse.id === '00000000-0000-0000-0000-000000000000' 
+                    || warehouse.id === '00000000-0000-0000-0000-000000000000'){
+                        console.log("Se deben seleccionar ambas bodegas en una transferencia")
+                        return
+                }
+                break
+            }
+        }
 
         const kwargs = {
             url: '/api/inventorymovementslist/massLoadInv/',
@@ -101,9 +97,12 @@ export default class Buttons extends React.Component {
               notes: this.props.note,
               cart: JSON.stringify(this.props.cart),
               transfer_id: this.props.uniqueId,
-              warehouse: this.props.selectedWarehouse 
+              warehouse: warehouse ? warehouse.id: undefined,
+              destination_warehouse: destination_warehouse ? destination_warehouse.id: undefined,
+              is_input: is_input
             }
           }
+          console.log("After KWARGS")
           this.props.dispatch(generalSave(kwargs))
     }
 

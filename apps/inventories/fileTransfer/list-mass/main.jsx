@@ -12,7 +12,9 @@ import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
         fetching: store.fetching.fetching,
         pageSize: store.pagination.pageSize,
         searchResults: store.transferSearch.searchResults,  
-        ftransfers: store.fileTransfer.transfers
+        ftransfers: store.fileTransfer.transfers,
+        transfer_mode: store.fileTransfer.transfer_mode
+
     }
 })
 export default class ListMassInv extends React.Component {
@@ -21,9 +23,17 @@ export default class ListMassInv extends React.Component {
     componentWillMount(){
         this.props.dispatch({type: 'FETCHING_STARTED'})
         this.props.dispatch({type: `transferSearch_CLEAR_SEARCH_RESULTS`})
+        
+        let transfer_type="INPUT"
 
+        if(this.props.match.params.mode === "output"){
+            transfer_type = "OUTPUT"
+        }else if(this.props.match.params.mode  ==="transfer"){
+            transfer_type = "TRANSFER"
+        }
+        this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: transfer_type})
         const transferKwargs = {
-            url : `/api/filetransferslist/?limit=${this.props.pageSize}&ordering=-created&is_mass_input=2`,
+            url : `/api/filetransferslist/?limit=${this.props.pageSize}&ordering=-created&is_mass_input=2&transfer_type=${transfer_type}`,
             successType: 'FETCH_FTRANSFERS_FULFILLED',
             errorType: 'FETCH_FTRANSFERS_REJECTED'
         }
@@ -31,14 +41,30 @@ export default class ListMassInv extends React.Component {
         this.props.dispatch(getPaginationItemDispatch(transferKwargs))
     }
 
-
-    componentWillUpdate(nextProps){
-
+    componentWillReceiveProps(nextProps){
+        if(this.props.match.params.mode!== nextProps.match.params.mode){
+            
+            if(nextProps.match.params.mode !== undefined){
+                this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: nextProps.match.params.mode.toUpperCase()})
+            }else{
+                this.props.dispatch({type: 'SET_TRANSFER_MODE', payload: "FILE"})
+            }
+        
+            const transferKwargs = {
+                url : `/api/filetransferslist/?limit=${this.props.pageSize}&ordering=-created&is_mass_input=2&transfer_type=${nextProps.match.params.mode.toUpperCase()}`,
+                successType: 'FETCH_FTRANSFERS_FULFILLED',
+                errorType: 'FETCH_FTRANSFERS_REJECTED'
+            }
+            this.props.dispatch({type: 'FETCHING_STARTED'})
+            this.props.dispatch(getPaginationItemDispatch(transferKwargs))
+        }
     }
+
 
 
     render(){
         let title = ""
+        let transfer_type="INPUT"
         switch(this.props.match.params.mode){
             case "input":
                 {
@@ -47,11 +73,13 @@ export default class ListMassInv extends React.Component {
                 }
                 case "output":
                 {
+                    transfer_type = "OUTPUT"
                     title = "Listado de Salidas Masivas"
                     break 
                 }
                 case "transfer":
                 {
+                    transfer_type = "TRANSFER"
                     title = "Listado Transferencias de Bodega Masivas"
                     break 
                 }
@@ -63,6 +91,7 @@ export default class ListMassInv extends React.Component {
 
                 
         }
+
 
         let get_name = (el)=>{
 
@@ -80,16 +109,6 @@ export default class ListMassInv extends React.Component {
             }
             return `${first_name} ${last_name} / ${user_name}`
 
-        }
-
-        let get_file = (el)=>{
-            let file_name = el.transfer_file
-            if(file_name === ""){
-                return "No Disponible"
-            }
-
-            let target_file = `/media/inv_transfers/${file_name}`
-            return <a download={file_name} href={target_file}>Descargar</a>
         }
 
         const headerOrder = [
@@ -127,7 +146,7 @@ export default class ListMassInv extends React.Component {
                 baseLink: '/reportsExcel/massinvload',
                 type: 'link_params',
                 fieldAsParams: [{field: 'id', name:'massinvid'}],
-                extraParams: []
+                extraParams: [{name: "transfer_type", value: transfer_type}]
             }
 
 
@@ -137,15 +156,21 @@ export default class ListMassInv extends React.Component {
         const  fetching = <div/>
 
         let tableData = this.props.searchResults.length ? this.props.searchResults : this.props.ftransfers
-        const list = <AdminTable headerOrder={headerOrder} model='clients' data={tableData}
+        const list = <AdminTable headerOrder={headerOrder} model='not-used' data={tableData}
             idField='id' />
 
         const content = this.props.fetching ? fetching : list
 
+        
+
+        
+
+        let url = `/api/filetransferslist/?ordering=-created&is_mass_input=2&transfer_type=${transfer_type}`
+
         const paginationDiv = !this.props.searchResults.length
             ? <div className='admin-list-results-pagination' >
-            <ResultsPerPage url='/api/filetransferslist/?ordering=-created&is_mass_input=2' successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
-            <Pagination url='/api/filetransferslist/?ordering=-created&is_mass_input=2' successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
+            <ResultsPerPage url={url} successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
+            <Pagination url={url} successType='FETCH_FTRANSFERS_FULFILLED' errorType='FETCH_FTRANSFERS_REJECTED' />
             </div>
             : <div />
 

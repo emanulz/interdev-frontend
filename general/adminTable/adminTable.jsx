@@ -410,7 +410,6 @@ export default class AdminTable extends React.Component {
               // console.log("El --> ", el)
               if(header.fieldAsParams){
                 header.fieldAsParams.forEach(param => {
-                  console.log("Get this key from el ", param.field)
                   params.push(
                     {
                       paramName: param.name,
