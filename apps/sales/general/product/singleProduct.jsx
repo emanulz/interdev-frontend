@@ -85,6 +85,7 @@ export default class SingleProduct extends React.Component {
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
+      console.log(err)
     })
   }
 
