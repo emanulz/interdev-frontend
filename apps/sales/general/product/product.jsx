@@ -75,6 +75,9 @@ export default class Product extends React.Component {
   }
 
   getModifier(str) {
+    if (str.charAt(0) != '*' && str.charAt(0) != '+' && str.charAt(0) != '-') {
+      return ''
+    }
     const firstTwo = str.charAt(0) + str.charAt(1)
     const modifier = firstTwo.replace(/[^+\-*]/ig, '')
     // const modifier = firstTwo.match(regex)
