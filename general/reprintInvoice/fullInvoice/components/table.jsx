@@ -14,7 +14,7 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
     const symbol = this.props.currencySymbol
-    const XMLVersion = this.props.document.hacienda_resolution
+    const XMLVersion = this.props.document ? this.props.document.hacienda_resolution : ''
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
     // TAXES HEADER TEXT

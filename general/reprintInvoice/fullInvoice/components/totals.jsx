@@ -62,7 +62,7 @@ export default class Totals extends React.Component {
       </tr>
       : <tr />
 
-    const XMLVersion = this.props.document.hacienda_resolution
+    const XMLVersion = this.props.document ? this.props.document.hacienda_resolution : ''
     let taxesLine = ''
     if (XMLVersion == '4.2' || XMLVersion == '') {
       taxesLine = 'IV'
