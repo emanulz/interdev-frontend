@@ -22,7 +22,7 @@ export default class Buttons extends React.Component {
         let warehouse = this.props.selectedWarehouseData["transfer_origin"]
 
         const kwargs = {
-            url: '/api/inventorymovementslist/transferInv/',
+            url: '/api/filetransfers/transferInv/',
             method: 'post',
             successType: 'INV_DOWNLOAD_SUCCESFUL',
             errorType: 'INV_DOWNLOAD_REJECTED',
@@ -87,7 +87,7 @@ export default class Buttons extends React.Component {
         }
 
         const kwargs = {
-            url: '/api/inventorymovementslist/massLoadInv/',
+            url: '/api/filetransfers/massLoadInv/',
             method: 'post',
             successType: 'INV_LOAD_SUCCESFUL',
             errorType: 'INV_LOAD_REJECTED',
