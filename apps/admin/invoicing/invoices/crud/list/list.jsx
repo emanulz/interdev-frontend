@@ -138,6 +138,13 @@ export default class List extends React.Component {
         type: 'RESEND_MAIL',
         idField: 'id',
         text: 'Reenviar Correo'
+      }, {
+        field: 'consecutive_numbering',
+        type: 'link_mask',
+        target: 'invoicing/detail/invoice',
+        idField: 'id',
+        textToRender: 'Detalle',
+        text: 'Detalle'
       }
     ]
 
