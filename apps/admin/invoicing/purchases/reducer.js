@@ -11,12 +11,25 @@ const stateConst = {
   purchaseToUpload: '',
   permissions: defaultPermissions,
   epurchaseType: 'PURCHASE',
-  token: ""
+  token: "",
+  //extra states for multi upload
+  multi_accept_files: ''
+
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    //multi accept cases
+    case 'SET_DOCUMENTS_SELECTED':
+    {
+      return {
+        ...state,
+        multi_accept_files: action.payload
+      }
+    }
+
 
     case 'SET_EPURCHASE_TOKEN':
     {

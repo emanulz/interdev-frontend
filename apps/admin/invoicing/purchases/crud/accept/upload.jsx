@@ -2,12 +2,14 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { uploadEPurchase } from '../../actions.js'
+import { generalSave } from '../../../../../../utils/api.js'
  
 const uuidv4 = require('uuid/v4')
 
 @connect((store) => {
   return {
-    purchaseToUpload: store.epurchases.purchaseToUpload
+    purchaseToUpload: store.epurchases.purchaseToUpload,
+    multi_accept_files: store.epurchases.multi_accept_files
   }
 })
 
@@ -81,10 +83,11 @@ class Form extends React.Component {
     reader.readAsDataURL(file)
   }
 
+
+
   uploadFile() {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
-    console.log("Appending the marker --> ", this.race_token)
     if(this.race_token === ""){
       this.race_token = uuidv4()
     }
@@ -96,8 +99,85 @@ class Form extends React.Component {
       sucessMessage: 'Compra Cargada Correctamente.',
       errorMessage: 'Hubo un error al cargar la compra, intente de nuevo.'
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch(uploadEPurchase(kwargs))
+  }
+
+
+
+  handleMultiFilesInput(e){
+    console.log("handle multi files input change --> ")
+    e.preventDefault()
+
+    //dispatch several promises to read the files as needed and await them all
+    //console.log(e.target.files)
+
+    let read_promises = []
+    for(let file of e.target.files){
+      //this is crap, if the extension is tampered it will fool us, but will
+      //do ok for normal usage, might write a validator later that check the alignment octetes
+      //of the file to figure real format
+      if(file.type === "text/xml"){ 
+        if(file.size > 25000){
+          console.log("File seems to large...skip, over 2.5 MB")
+          continue
+        }
+
+        //create a promise for the file reading
+        const promise = new Promise((resolve, reject) => {
+          console.log("Creating promise")
+          const tempReader = new FileReader()
+          tempReader.onloadend = () => {
+            console.log("File loaded, resolving promise --> ", file.name)
+            resolve(file)
+          }
+          tempReader.readAsDataURL(file)
+        })
+
+        //stack the promise
+        read_promises.push(promise)
+
+
+      }else{
+        console.log("Ignore file because of extension --> ", file.name)
+      }
+
+    }
+
+    //wait for all promises to fulfill and dispatch an array of results to the reducer
+    Promise.all(read_promises).then(results =>{
+      console.log("All promises resolved --> ", results)
+      this.props.dispatch({type: "SET_DOCUMENTS_SELECTED", payload: results})
+    })
+
+  }
+
+
+  uploadMultipleFiles(){
+    console.log("Handle multi file upload")
+    const formData = new FormData()
+    //append all files to the request
+    let counter = 0
+    for(let file of this.props.multi_accept_files){
+      formData.append(
+        `file_${counter}`,
+        file
+      )
+      counter += 1
+    }
+
+    const kwargs = {
+      url: '/api/facturareception/massProcessHaciendaXML/',
+      method: 'post',
+      data: formData,
+      sucessMessage: 'Archivos pre procesados correctamente.',
+      errorMessage: 'Hubo un error al procesar los archivos.',
+      successType: 'MULTI_PURCHASES_PROCESS_COMPLETE',
+      errorType: 'MULTI_PURCHASES_PROCESS_REJECTED',
+    }
+
+    this.props.dispatch({type: 'FETCHING_STARTED'})
+    this.props.dispatch(generalSave(kwargs))
   }
 
   render() {
@@ -112,9 +192,27 @@ class Form extends React.Component {
         <div className='form-group'>
           <div className='form-group-content'>
             <label>CARGAR FACTURA !</label>
-            <input name='code' onChange={this.handleFileChange.bind(this)} type='file'
+            <input name='code' handleMultiFilesInput={this.handleFileChange.bind(this)} type='file'
               className='form-control' accept='application/xml' />
-            <button onClick={this.uploadFile.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>
+            <button onClick={this.uploadMultipleFiles.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div className='col-xs-12 fields-container first'>
+
+        <span>SELECCIONAR CARPETA CONTENEDORA DOCUMENTOS</span>
+        <hr />
+        <p>Explore y seleccione el folder que contiene todas los documentos electrónicos por aceptar. De la carpeta serán procesados
+          Tiquetes Electrónicos, Facturas Electrónicas, Notas de Crédito, Notas de Débito, Respuestas de Hacienda. Otros archivos serán ignorados.</p>
+        <div className='form-group'>
+          <div className='form-group-content'>
+            <label>CARGAR MULTIPLES DOCUMENTOS ELECTRÓNICOS</label>
+            <input name='multi-file-input' onChange={this.handleMultiFilesInput.bind(this)} type='file'
+              className='form-control' accept='file' webkitdirectory mozdirectory msdirectory odirectory directory multiple />
+            <button onClick={this.uploadMultipleFiles.bind(this)} className='btn btn-primary uploadButton'> Procesar </button>
           </div>
         </div>
 

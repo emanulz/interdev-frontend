@@ -445,7 +445,7 @@ export default class AdminTable extends React.Component {
                 </a>
               }
 
-              item = <td key={`${el[idField]}_${header.field}`}>
+              item = <td key={`${el[idField]}_${header.field}_lp`}>
                 {anchor}
               </td>
               break
