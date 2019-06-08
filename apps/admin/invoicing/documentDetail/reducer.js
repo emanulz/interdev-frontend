@@ -7,6 +7,8 @@ const defaultPermissions = {
 
 const stateConst = {
   activeDocument: {},
+  relatedCreditNotes: [],
+  relatedDebitNotes: [],
   permissions: defaultPermissions
 }
 
@@ -27,6 +29,38 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         activeDocument: {}
+      }
+    } // case
+
+    case 'FETCH_RELATED_CREDIT_NOTES_FULFILLED':
+    {
+      return {
+        ...state,
+        relatedCreditNotes: action.payload
+      }
+    } // case
+
+    case 'FETCH_RELATED_CREDIT_NOTES_REJECTED':
+    {
+      return {
+        ...state,
+        relatedCreditNotes: []
+      }
+    } // case
+
+    case 'FETCH_RELATED_DEBIT_NOTES_FULFILLED':
+    {
+      return {
+        ...state,
+        relatedDebitNotes: action.payload
+      }
+    } // case
+
+    case 'FETCH_RELATED_DEBIT_NOTES_REJECTED':
+    {
+      return {
+        ...state,
+        relatedDebitNotes: []
       }
     } // case
 

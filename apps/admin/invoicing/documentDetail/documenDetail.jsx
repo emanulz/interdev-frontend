@@ -4,7 +4,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { setItem } from '../../../../utils/api'
-import SaleSummary from './components/saleSummary.jsx'
+import Summary from './components/summary.jsx'
+import Documents from './components/documents.jsx'
+import Actions from './components/actions.jsx'
+import Related from './components/relatedDocs.jsx'
 
 @connect((store) => {
   return {
@@ -42,7 +45,17 @@ export default class Main extends React.Component {
       }
       case 'ticket':
       {
-        break
+        return {
+          lookUpField: 'consecutive_numbering',
+          url: '/api/electronicticket/',
+          lookUpValue: id,
+          dispatchType: 'FETCH_DOCUMENT_DETAIL_FULFILLED',
+          dispatchErrorType: 'FETCH_DOCUMENT_DETAIL_REJECTED',
+          lookUpName: 'Consecutivo',
+          modelName: 'Tiquete Electrónico',
+          redirectUrl: '/admin/invoicing/tickets',
+          history: this.props.history
+        }
       }
       case 'creditnote':
       {
@@ -56,20 +69,53 @@ export default class Main extends React.Component {
 
   }
 
-  determinSummary(model) {
+  determinBody(model) {
 
     switch (model) {
       case 'invoice':
       {
-        return <SaleSummary modelText='FACTURA ELECTRÓNICA' />
+        return <div className='admin-invoicing-detail-body'>
+          <div className='admin-invoicing-detail-body-first'>
+            <Summary modelText='FACTURA ELECTRÓNICA' />
+            <Documents model={this.props.match.params.model} />
+          </div>
+          <div className='admin-invoicing-detail-body-second'>
+            <Actions />
+          </div>
+          <div className='admin-invoicing-detail-body-last'>
+            <Related />
+          </div>
+        </div>
       }
       case 'ticket':
       {
-        break
+        return <div className='admin-invoicing-detail-body'>
+          <div className='admin-invoicing-detail-body-first'>
+            <Summary modelText='TIQUETE ELECTRÓNICO' />
+            <Documents model={this.props.match.params.model} />
+          </div>
+          <div className='admin-invoicing-detail-body-second'>
+            <Actions />
+          </div>
+          <div className='admin-invoicing-detail-body-last'>
+            <Related />
+          </div>
+        </div>
       }
       case 'creditnote':
       {
-        break
+        return <div className='admin-invoicing-detail-body'>
+          <div className='admin-invoicing-detail-body-first'>
+            <Summary modelText='NOTA DE CRÉDITO ELECTRÓNICA' />
+            <Documents model={this.props.match.params.model} />
+          </div>
+          <div className='admin-invoicing-detail-body-second'>
+            <Actions />
+          </div>
+          <div className='admin-invoicing-detail-body-last'>
+            <Related />
+          </div>
+        </div>
       }
       case 'purchase':
       {
@@ -83,13 +129,11 @@ export default class Main extends React.Component {
   render() {
     const model = this.props.match.params.model
     const id = this.props.match.params.id
-    const summary = this.determinSummary(model)
+    const body = this.determinBody(model)
 
     return <div id={id} className='admin-invoicing-detail'>
       <h1>DETALLES DEL DOCUMENTO ELECTRÓNICO #{id}</h1>
-      <div className='admin-invoicing-detail-body'>
-        {summary}
-      </div>
+      {body}
     </div>
 
   }
