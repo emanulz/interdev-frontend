@@ -84,7 +84,6 @@ export default class AdminTable extends React.Component {
   // }
 
   resetHuman(id) {
-    console.log('ID', id)
     const docList = []
     docList.push(id)
     const data = {

@@ -5,15 +5,6 @@
   & h1
     font-size: 20px
     font-weight: bold
-  &-body
-    display: flex
-    flex-flow: row
-    justify-content: space-between
-    margin-top: 20px
-
-.documentDetail-sumary
-  width: 33%
-  // border: 1px solid $TABLE-BORDER-COLOR
   &-header
     height: 40px
     width: 100%
@@ -23,6 +14,54 @@
     display: flex
     flex-flow: column
     justify-content: center
+  &-body
+    display: flex
+    flex-flow: row
+    margin-top: 20px
+    @media screen and (max-width: $BREAK-SMALL)
+      flex-flow: column
+    &-first
+      width: 40%
+      @media screen and (max-width: $BREAK-SMALL)
+        width: 100%
+    &-second
+      width: 25%
+      padding: 0 10px
+      @media screen and (max-width: $BREAK-SMALL)
+        width: 100%
+    &-last
+      width: 35%
+      padding: 0
+      margin-bottom: 10px
+      @media screen and (max-width: $BREAK-SMALL)
+        width: 100%
+.documentDetail-sumary
+  width: 100%
+  // border: 1px solid $TABLE-BORDER-COLOR
+  &-table
+    margin-top: 15px
+    & th
+      background-color: $PRIMARY-COLOR
+      color: white
+      width: 40% !important
+      font-size: 14px
+    & td
+      width: 60% !important
+      border: 1px solid $TABLE-BORDER-COLOR
+      font-size: 14px
+      &.accepted
+        background-color: #16a085
+        color: white
+      &.rejected
+        background-color: #c0392b
+        color: white
+      &.processing
+        background-color: #f0ad4e
+        color: white
+  
+.documentDetail-documents
+  width: 100%
+  // border: 1px solid $TABLE-BORDER-COLOR
   &-table
     margin-top: 15px
     & th
@@ -36,24 +75,92 @@
       & a
         font-size: 14px !important
         padding-left: 0
+        display: block
+        width: 100%
+        height: 100%
+        text-decoration: none
+        color: $PRIMARY-COLOR-ACCENT
+        padding-left: 10px
+        &:hover
+          background-color: #ecf0f1
       &.invoiceRow
         font-size: 14px
+        padding: 0 !important
+        font-weight: bold
+        height: 50px
         & i
           margin-right: 10px
           font-size: 30px
       &.xmlRow
+        padding: 0
         & i
           margin-right: 10px
           color: blue
           font-size: 30px
       &.pdfRow
+        padding: 0
         & i
           margin-right: 10px
           color: red
           font-size: 30px
       &.responseRow
+        padding: 0
         & i
           margin-right: 10px
           color: green
           font-size: 30px
-  
+
+            font-size: 30px
+
+.invoiceRow-container
+  width: 100%
+  height: 100%
+  color: $PRIMARY-COLOR-ACCENT
+  padding-left: 10px
+  line-height: 50px
+  cursor: pointer
+  &:hover
+    background-color: #ecf0f1
+
+
+.documentDetail-actions
+  width: 100%
+  margin-bottom: 20px
+  &-body
+    display: flex
+    flex-flow: column
+    justify-content: flex-start
+    padding-top: 15px
+    & .btn-resend
+      margin-bottom: 34px
+      width: 100%
+      height: 40px
+      border: 1px solid #cacaca
+      background-color: #16a085
+      color: white
+      @media screen and (max-width: $BREAK-SMALL)
+        margin-bottom: 5px
+      &:hover
+        background-color: #27ae60
+    & .btn-retry
+      margin-bottom: 34px
+      width: 100%
+      height: 40px
+      border: 1px solid #cacaca
+      background-color: #2980b9
+      color: white
+      @media screen and (max-width: $BREAK-SMALL)
+        margin-bottom: 5px
+      &:hover
+        background-color: #3498db
+    & .btn-creditnote
+      margin-bottom: 34px
+      width: 100%
+      height: 40px
+      border: 1px solid #cacaca
+      background-color: #d35400
+      color: white
+      @media screen and (max-width: $BREAK-SMALL)
+        margin-bottom: 5px
+      &:hover
+        background-color: #c0392b
