@@ -14,7 +14,8 @@ const stateConst = {
   token: "",
   //extra states for multi upload
   multi_accept_files: '',
-  accepted_queued_tasks: []
+  accepted_queued_tasks: [],
+  refetch_queued_tasks: false
 
 }
 
@@ -23,7 +24,24 @@ export default function reducer(state = stateConst, action) {
   switch (action.type) {
 
 
+
     //multi accept cases
+    case 'QUEUED_TASK_PROCESSED':
+    {
+      return {
+        ...state,
+        refetch_queued_tasks: true
+      }
+    }
+    
+    case 'RESET_REFETCH_QUEUED':
+    {
+      return {
+        ...state,
+        refetch_queued_tasks: false
+      }
+    }
+
     case 'PURCHASE_RECEPTION_TASKS_FULFILLED':
     {
       return {

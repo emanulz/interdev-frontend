@@ -499,10 +499,37 @@ export default class AdminTable extends React.Component {
             }
             case 'select2':
             {
-              console.log("Frack --> ", el[header['value']])
               const element = header['builder'](el[header['value']], header.handler, el[idField])
 
                item = <td className="select2-container" key={`${el[idField]}_select2-container`}>
+              {element}
+              </td>
+              break
+            }
+            case 'button':
+            {
+              let onclickMeta = header.onClick
+              let click_handler = undefined
+              let click_kwargs = {}
+              if(onclickMeta){
+                click_handler = onclickMeta.method
+                for(let param of onclickMeta.method_params){
+                  if(param.type === "raw"){
+                    click_kwargs[param.name] = param.value
+                  }else{
+                    click_kwargs[param.name] = el[param.key]
+                  }
+                }
+              }
+
+              const element = header['builder'](
+                header['text'], //button text
+                header['class_names'], //css classes to apply
+                click_handler, //click handler
+                click_kwargs //dictionary with params passed to the handler
+                )
+
+              item = <td className="button-container" key={`${el[idField]}${header['text']}_b-container`}>
               {element}
               </td>
               break
