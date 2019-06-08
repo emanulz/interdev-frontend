@@ -498,6 +498,16 @@ export default class AdminTable extends React.Component {
               </td>
               break
             }
+            case 'select2':
+            {
+              console.log("Frack --> ", el[header['value']])
+              const element = header['builder'](el[header['value']], header.handler, el[idField])
+
+               item = <td className="select2-container" key={`${el[idField]}_select2-container`}>
+              {element}
+              </td>
+              break
+            }
             case 'function_element_double':
             {
               const element = header.worker_method(el)
