@@ -75,7 +75,7 @@ export default class ReprintInvoicePanel extends React.Component {
       const totalInPay = this.calcTotalInPay()
       change = totalInPay - total
     } catch (err) {
-      console.log(err)
+      //console.log(err)
     }
 
     let zpl_button = ''

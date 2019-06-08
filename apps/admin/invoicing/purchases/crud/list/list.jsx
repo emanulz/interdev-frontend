@@ -23,9 +23,9 @@ export default class List extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch({type: 'CLEAR_EPURCHASES', payload: ''})
-    this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
+    this.props.dispatch({type: 'CLEAR_EPURCHASES'})
+    this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`})
 
     const clientKwargs = {
       url: `/api/receivedelectronicdoc/?limit=${this.props.pageSize}&ordering=-created`,

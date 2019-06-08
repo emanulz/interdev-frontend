@@ -13,7 +13,8 @@ const stateConst = {
   epurchaseType: 'PURCHASE',
   token: "",
   //extra states for multi upload
-  multi_accept_files: ''
+  multi_accept_files: '',
+  accepted_queued_tasks: []
 
 }
 
@@ -21,7 +22,15 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+
     //multi accept cases
+    case 'PURCHASE_RECEPTION_TASKS_FULFILLED':
+    {
+      return {
+        ...state,
+        accepted_queued_tasks: action.payload
+      }
+    }
     case 'SET_DOCUMENTS_SELECTED':
     {
       return {

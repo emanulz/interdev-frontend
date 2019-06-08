@@ -5,11 +5,14 @@ import {Route} from 'react-router-dom'
 
 import List from './crud/list.jsx'
 import Accept from './crud/accept.jsx'
+import AcceptQueue from './crud/accept_queue/accept_queue.jsx'
 
 const routes = <div className='heigh100'>
 
+  <Route exact path='/admin/invoicing/purchases/accept_queue' component={AcceptQueue} />
   <Route exact path='/admin/invoicing/purchases' component={List} />
   <Route exact path='/admin/invoicing/purchases/accept' component={Accept} />
+  
 
 </div>
 
