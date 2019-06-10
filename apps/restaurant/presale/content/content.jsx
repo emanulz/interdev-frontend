@@ -11,6 +11,7 @@ import alertify from 'alertifyjs'
 import {loadPresaleItem} from '../actions.js'
 import { withRouter } from 'react-router-dom'
 import { setProduct, productSelected } from '../../../sales/general/product/actions.js'
+import {updateTotals} from '../../../sales/general/cart/actions.js'
 
 @connect((store) => {
   return {
@@ -36,16 +37,25 @@ class Content extends React.Component {
   toggleWidth () {
     this.props.dispatch({type: 'TOGGLE_FULL_WIDTH', payload: ''})
   }
+  componentWillUpdate(nextProps) {
+    if (nextProps.tables.length && !this.props.cart.pays10Setted) {
+      const tableId = this.props.location.pathname.split('/')[3]
+      const tableSelected = nextProps.tables.find(item => item.id == tableId)
+      const pays10 = tableSelected ? tableSelected.charges_service : false
+      this.props.dispatch({type: 'SET_PAYS_10_PERCENT', payload: pays10})
+    }
+  }
 
   closePresale() {
     // ALERTIFY CONFIRM
     const _this = this
     alertify.confirm('Cerrar Orden', `¿Desea Cerrar la orden y calcular la cuenta? Esta acción no se puede deshacer`, function() {
+      _this.props.dispatch(updateTotals(_this.props.cart.cartItems, _this.props.cart.isExempt, _this.props.config.dontRoundInSales, _this.props.config.overrideXMLversion))
       const XMLVersion = _this.props.config.overrideXMLversion
       if (XMLVersion == '4.2' || XMLVersion == '') {
         _this.add10PercentToCart(true)
       } else if (XMLVersion == '4.3') {
-        _this.add10PercentToCartNew(true)
+        _this.savePresale(true)
       } else {
         alertify.alert('ERROR', `No se ha podido leer la version de XML correctamente, no se puede agregar el 10% de servicio, ni cerrar la orden.`)
       }
@@ -111,23 +121,23 @@ class Content extends React.Component {
   }
 
   // Adds 10 percet to cart for new hacienda scheme XML 4.3
-  add10PercentToCartNew(close) {
-    const tableId = this.props.location.pathname.split('/')[3]
-    const tableSelected = this.props.tables.find(item => item.id == tableId)
-    if (tableSelected.charges_service) {
-      const percentAmount = this.calc10Percent(this.props.cart)
-      const item = {
-        type: '06',
-        percentage: 10,
-        amount: percentAmount
-      }
-      this.props.dispatch({type: 'ADD_OTHER_CHARGE', payload: item})
-      this.savePresale(close)
-    } else {
-      this.savePresale(close)
-    }
+  // add10PercentToCartNew(close) {
+  //   const tableId = this.props.location.pathname.split('/')[3]
+  //   const tableSelected = this.props.tables.find(item => item.id == tableId)
+  //   if (tableSelected.charges_service) {
+  //     const percentAmount = this.calc10Percent(this.props.cart)
+  //     const item = {
+  //       type: '06',
+  //       percentage: 10,
+  //       amount: percentAmount
+  //     }
+  //     this.props.dispatch({type: 'ADD_OTHER_CHARGE', payload: item})
+  //     this.savePresale(close)
+  //   } else {
+  //     this.savePresale(close)
+  //   }
 
-  }
+  // }
 
   savePresale(close) {
 
@@ -192,6 +202,9 @@ class Content extends React.Component {
       </div>
       <div className={cartClass} >
         <Cart />
+      </div>
+      <div className={totalClass} >
+        ₡ {total.formatMoney()}
       </div>
       <div className={totalClass} >
         ₡ {total.formatMoney()}

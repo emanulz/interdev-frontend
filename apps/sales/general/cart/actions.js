@@ -68,12 +68,13 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
   const exemptAmount = exempt ? taxes : 0
   total = exempt ? subtotal : subtotal + taxes
   // returs a dispatch with a payload of the obtained values
-  let totalRounded = 0
-  if (dontRound) {
-    totalRounded = total
-  } else {
-    totalRounded = Math.round((total / 5)) * 5
-  }
+
+  const totalRounded = total
+  // if (dontRound) {
+  //   totalRounded = total
+  // } else {
+  //   totalRounded = Math.round((total / 5)) * 5
+  // }
 
   return {
     type: 'UPDATE_CART_TOTALS',
@@ -84,7 +85,8 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
       total: totalRounded,
       discountTotal: discountTotal,
       subTotalNoDiscount: subTotalNoDiscount,
-      totalNotRounded: total
+      totalNotRounded: total,
+      dontRound: dontRound
     }
   }
 }
