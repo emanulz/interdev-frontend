@@ -69,7 +69,11 @@ class Presale extends React.Component {
       cartItemActive: false,
       totalNotRounded: 0,
       exemptionDocument: '',
-      isExempt: false
+      isExempt: false,
+      otherCharges: [],
+      otherChargesTotal: 0,
+      pays10Percent: false,
+      pays10Setted: false
     }
 
     const _this = this

@@ -29,7 +29,7 @@ export default class BillList extends React.Component {
     //       </Link>
     const billList = this.props.tableBills.length
       ? this.props.tableBills.map(bill => {
-        return <div className='tables-bill-list-body-bill'>
+        return <div key={bill.id_presale} className='tables-bill-list-body-bill'>
           <Link to={`/restaurant/tables/${this.props.tableActive}/${bill.id_presale}`} key={bill.id} className='tables-bill-list-body-bill-link'>
             {bill.client_name}
           </Link>

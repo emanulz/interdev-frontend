@@ -307,7 +307,9 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.globalDiscount, // discount %
         discountTotal: action.payload.discountTotal, // discount in currency
-        totalNotRounded: action.payload.totalNotRounded
+        totalNotRounded: action.payload.totalNotRounded,
+        pays10Percent: action.payload.pays10Percent,
+        pays10Setted: action.payload.pays10Setted
       }
     }
 
