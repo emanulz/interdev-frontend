@@ -37,6 +37,11 @@ class Content extends React.Component {
   toggleWidth () {
     this.props.dispatch({type: 'TOGGLE_FULL_WIDTH', payload: ''})
   }
+
+  componentWillMount() {
+    this.props.dispatch({type: 'CLEAR_PAYS_10_PERCENT', payload: false})
+  }
+
   componentWillUpdate(nextProps) {
     if (nextProps.tables.length && !this.props.cart.pays10Setted) {
       const tableId = this.props.location.pathname.split('/')[3]

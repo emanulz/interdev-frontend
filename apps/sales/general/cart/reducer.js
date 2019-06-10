@@ -307,9 +307,7 @@ export default function reducer(state = stateConst, action) {
         cartTotal: action.payload.cartTotal, // cart total after discount and taxes
         globalDiscount: action.payload.globalDiscount, // discount %
         discountTotal: action.payload.discountTotal, // discount in currency
-        totalNotRounded: action.payload.totalNotRounded,
-        otherCharges: action.payload.otherCharges ? action.payload.otherCharges : [],
-        pays10Percent: action.payload.pays10Percent
+        totalNotRounded: action.payload.totalNotRounded
       }
     }
 
@@ -327,6 +325,15 @@ export default function reducer(state = stateConst, action) {
         ...state,
         pays10Percent: action.payload,
         pays10Setted: true
+      }
+    } // case
+
+    case 'CLEAR_PAYS_10_PERCENT':
+    {
+      return {
+        ...state,
+        pays10Percent: false,
+        pays10Setted: false
       }
     } // case
 
