@@ -223,9 +223,6 @@ class Content extends React.Component {
       <div className={totalClass} >
         ₡ {total.formatMoney()}
       </div>
-      <div className={totalClass} >
-        ₡ {total.formatMoney()}
-      </div>
     </div>
 
   }
