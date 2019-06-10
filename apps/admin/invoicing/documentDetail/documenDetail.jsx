@@ -26,6 +26,8 @@ export default class Main extends React.Component {
     this.props.dispatch(setItem(kwargs))
   }
 
+  compo
+
   determinKwargs(model, id) {
 
     switch (model) {

@@ -27,7 +27,7 @@ export function updatePresale(kwargs, resolve, reject) {
         if (err.response) {
           console.log(err.response.data)
         }
-        reject()
+        reject(err)
       })
 
   }

@@ -12,7 +12,7 @@ import SendSideBar from './components/newBillSideBar.jsx'
     tables: store.tables.tables,
     tableActive: store.tables.tableActive}
 })
-export default class SendPanel extends React.Component {
+export default class NewBillPanel extends React.Component {
 
   hidePanel() {
 

@@ -43,11 +43,16 @@ class Content extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    if (nextProps.tables.length && !this.props.cart.pays10Setted) {
-      const tableId = this.props.location.pathname.split('/')[3]
-      const tableSelected = nextProps.tables.find(item => item.id == tableId)
-      const pays10 = tableSelected ? tableSelected.charges_service : false
-      this.props.dispatch({type: 'SET_PAYS_10_PERCENT', payload: pays10})
+    const XMLVersion = this.props.config.overrideXMLversion
+    if (XMLVersion && XMLVersion == '4.3') {
+      if (nextProps.tables.length && !this.props.cart.pays10Setted) {
+        const tableId = this.props.location.pathname.split('/')[3]
+        const tableSelected = nextProps.tables.find(item => item.id == tableId)
+        const pays10 = tableSelected ? tableSelected.charges_service : false
+        this.props.dispatch({type: 'SET_PAYS_10_PERCENT', payload: pays10})
+      }
+    } else if (XMLVersion && XMLVersion != '4.2' && XMLVersion != '') {
+      this.props.dispatch({type: 'SET_PAYS_10_PERCENT', payload: false})
     }
   }
 
@@ -167,12 +172,19 @@ class Content extends React.Component {
     updatePromise.then((data) => {
       console.log(data)
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      alertify.alert('Completado', 'Orden Actualizada Correctamente')
-      loadPresaleItem(data.id, _this.props.dispatch)
+      if (close) {
+        const __this = _this
+        alertify.alert('Proceso Exitoso', 'Orden Cerrada Correctamente').set('onok', function() {
+          __this.props.history.push('/restaurant/tables')
+        })
+      } else {
+        alertify.alert('Completado', 'Orden Actualizada Correctamente')
+        loadPresaleItem(data.id, _this.props.dispatch).set('onok', function() {})
+      }
     }).catch((err) => {
       console.log(err)
       _this.props.dispatch({type: 'FETCHING_DONE'})
-      alertify.alert('ERROR', 'Error al actualizar la orden')
+      alertify.alert('ERROR', `Error al actualizar la orden ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
     })
 
   }

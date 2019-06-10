@@ -20,6 +20,8 @@ export default class Sale extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'PRESALE_PANEL_MOUNTED', payload: ''})
+    this.props.dispatch({type: 'CLEAR_TABLE_BILLS', payload: ''})
+    this.props.dispatch({type: 'CLEAR_TABLE_ACTIVE', payload: ''})
 
     const provinceKwargs = {
       url: '/api/restauranttables/tableswithbills/',
