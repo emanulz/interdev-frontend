@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import { setItem } from '../../../../utils/api'
+import { setItem, getItemByIDDispatch } from '../../../../utils/api'
 import Summary from './components/summary.jsx'
 import Documents from './components/documents.jsx'
 import Actions from './components/actions.jsx'
@@ -11,7 +11,10 @@ import Related from './components/relatedDocs.jsx'
 
 @connect((store) => {
   return {
-    permissions: store.etickets.permissions
+    permissions: store.etickets.permissions,
+    document: store.documentDetail.activeDocument,
+    relatedFetched: store.documentDetail.relatedFetched,
+    relatedFetchig: store.documentDetail.relatedFetchig
   }
 })
 export default class Main extends React.Component {
@@ -21,12 +24,36 @@ export default class Main extends React.Component {
     const id = this.props.match.params.id
 
     const kwargs = this.determinKwargs(model, id)
-
+    this.props.dispatch({type: 'CLEAR_DOCUMENT_DETAIL_RELATED', payload: ''})
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(setItem(kwargs))
   }
 
-  compo
+  componentDidUpdate() {
+    // const model = this.props.match.params.model
+    if (this.props.document.hasOwnProperty('related_credit_notes') && !this.props.relatedFetched && !this.props.relatedFetchig) {
+
+      console.log('FETCH RELATED TRIGGERED---->', this.props.document)
+
+      const relatedCN = JSON.parse(this.props.document.related_credit_notes)
+      const relatedDB = JSON.parse(this.props.document.related_debit_notes)
+
+      if (relatedCN.length || relatedDB.length) {
+        this.props.dispatch({type: 'SET_DOCUMENT_DETAIL_RELATED_FETCHING', payload: ''})
+        const kwarg = {
+          lookUpField: 'consecutive_numbering',
+          url: `/api/electronicticketcreate/getRelatedDocs/?doc_id=${this.props.document.id}&doc_type=FE`,
+          successType: 'FETCH_DOCUMENT_DETAIL_RELATED_FULFILLED',
+          errorType: 'FETCH_DOCUMENT_DETAIL_RELATED_REJECTED'
+        }
+
+        this.props.dispatch(getItemByIDDispatch(kwarg))
+
+      }
+    } else {
+      console.log('FETCH RELATED NOT NEEDED---->', this.props.document)
+    }
+  }
 
   determinKwargs(model, id) {
 

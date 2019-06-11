@@ -60,6 +60,11 @@ export default class List extends React.Component {
           className = 'rejected'
         }
 
+        const relatedCN = JSON.parse(item.related_credit_notes)
+        if (relatedCN.length) {
+          className = `${className} CNApplied`
+        }
+
         return <span className={className}>{text}</span>
       }
       return getElementStatus(item)

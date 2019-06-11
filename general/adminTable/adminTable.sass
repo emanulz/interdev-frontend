@@ -80,6 +80,17 @@
     color: white
     text-align: center
     padding-top: 12px
+    position: relative
+    &.CNApplied
+      &::after
+        content: ""
+        width: 8px
+        background-color: orange
+        height: 100%
+        z-index: 200
+        position: absolute
+        top: 0
+        right: 0
   & .rejected
     display: block
     width: 80%
@@ -88,6 +99,16 @@
     color: white
     text-align: center
     padding-top: 12px
+    &.CNApplied
+      &::after
+        content: ""
+        width: 8px
+        background-color: orange
+        height: 100%
+        z-index: 200
+        position: absolute
+        top: 0
+        right: 0
   & .processing
     display: block
     width: 80%

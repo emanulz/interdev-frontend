@@ -9,6 +9,10 @@ const stateConst = {
   activeDocument: {},
   relatedCreditNotes: [],
   relatedDebitNotes: [],
+  relatedInvoices: [],
+  relatedTickets: [],
+  relatedFetched: false,
+  relatedFetchig: false,
   permissions: defaultPermissions
 }
 
@@ -32,35 +36,50 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'FETCH_RELATED_CREDIT_NOTES_FULFILLED':
+    case 'FETCH_DOCUMENT_DETAIL_RELATED_FULFILLED':
     {
       return {
         ...state,
-        relatedCreditNotes: action.payload
+        relatedCreditNotes: action.payload.related_credits,
+        relatedDebitNotes: action.payload.related_debits,
+        relatedInvoices: action.payload.related_invoices,
+        relatedTickets: action.payload.related_tickets,
+        relatedFetched: true,
+        relatedFetchig: false
       }
     } // case
 
-    case 'FETCH_RELATED_CREDIT_NOTES_REJECTED':
+    case 'FETCH_DOCUMENT_DETAIL_RELATED_REJECTED':
     {
       return {
         ...state,
-        relatedCreditNotes: []
+        relatedCreditNotes: [],
+        relatedDebitNotes: [],
+        relatedInvoices: [],
+        relatedTickets: [],
+        relatedFetched: false,
+        relatedFetchig: false
       }
     } // case
 
-    case 'FETCH_RELATED_DEBIT_NOTES_FULFILLED':
+    case 'CLEAR_DOCUMENT_DETAIL_RELATED':
     {
       return {
         ...state,
-        relatedDebitNotes: action.payload
+        relatedCreditNotes: [],
+        relatedDebitNotes: [],
+        relatedInvoices: [],
+        relatedTickets: [],
+        relatedFetched: false,
+        relatedFetchig: false
       }
     } // case
 
-    case 'FETCH_RELATED_DEBIT_NOTES_REJECTED':
+    case 'SET_DOCUMENT_DETAIL_RELATED_FETCHING':
     {
       return {
         ...state,
-        relatedDebitNotes: []
+        relatedFetchig: true
       }
     } // case
 
