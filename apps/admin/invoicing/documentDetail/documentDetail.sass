@@ -25,12 +25,12 @@
       @media screen and (max-width: $BREAK-SMALL)
         width: 100%
     &-second
-      width: 25%
+      width: 40%
       padding: 0 10px
       @media screen and (max-width: $BREAK-SMALL)
         width: 100%
     &-last
-      width: 35%
+      width: 20%
       padding: 0
       margin-bottom: 10px
       @media screen and (max-width: $BREAK-SMALL)
@@ -39,7 +39,7 @@
   width: 100%
   // border: 1px solid $TABLE-BORDER-COLOR
   &-table
-    margin-top: 15px
+    margin-top: 10px
     & th
       background-color: $PRIMARY-COLOR
       color: white
@@ -63,7 +63,7 @@
   width: 100%
   // border: 1px solid $TABLE-BORDER-COLOR
   &-table
-    margin-top: 15px
+    margin-top: 10px
     & th
       background-color: $PRIMARY-COLOR
       color: white
@@ -122,17 +122,16 @@
   &:hover
     background-color: #ecf0f1
 
-
 .documentDetail-actions
   width: 100%
-  margin-bottom: 20px
+  margin-bottom: 10px
   &-body
     display: flex
     flex-flow: column
     justify-content: flex-start
-    padding-top: 15px
+    padding-top: 10px
     & .btn-resend
-      margin-bottom: 34px
+      margin-bottom: 10px
       width: 100%
       height: 40px
       border: 1px solid #cacaca
@@ -143,7 +142,7 @@
       &:hover
         background-color: #27ae60
     & .btn-retry
-      margin-bottom: 34px
+      margin-bottom: 10px
       width: 100%
       height: 40px
       border: 1px solid #cacaca
@@ -154,7 +153,7 @@
       &:hover
         background-color: #3498db
     & .btn-creditnote
-      margin-bottom: 34px
+      margin-bottom: 15px
       width: 100%
       height: 40px
       border: 1px solid #cacaca
@@ -164,3 +163,51 @@
         margin-bottom: 5px
       &:hover
         background-color: #c0392b
+
+.documentDetail-related
+  &-body
+    margin: 10px 0
+
+.relatedDoc
+  display: flex
+  flex-flow: column
+  width: 100%
+  margin-bottom: 10px
+  &-tittle
+    width: 100%
+    text-align: center
+    height: 30px
+    background-color: $SECONDARY-COLOR
+    color: white
+    display: flex
+    flex-flow: column
+    justify-content: center
+  &-body
+    width: 100%
+    max-width: 100&
+    display: flex
+    flex-flow: row
+    &-link
+      width: 100px
+      background-color: $SECONDARY-COLOR-ACCENT
+      & a
+        display: block
+        padding-top: 40%
+        text-align: center
+        height: 100%
+        width: 100%
+        color: white
+        font-size: 15px !important
+        text-decoration: none
+    &-data
+      flex-grow: 1
+      font-size: 14px
+      & span
+        display: flex
+        flex-flow: row
+        width: 100%
+        padding: 5px 0
+        & b
+          width: 30%
+          height: 100%
+          font-weight: bolder

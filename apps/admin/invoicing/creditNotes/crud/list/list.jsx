@@ -15,7 +15,8 @@ import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.
     ecreditNotes: store.ecreditNotes.ecreditNotes,
     pageSize: store.pagination.pageSize,
     searchResults: store.adminSearch.searchResults,
-    userProfile: store.userProfile.profile
+    userProfile: store.userProfile.profile,
+    user: store.user.user
   }
 })
 export default class List extends React.Component {
@@ -104,39 +105,55 @@ export default class List extends React.Component {
         type: 'function_process',
         worker_method: getTotal
       }, {
-        field: 'process_status',
-        text: 'Estado del Proceso'
-      }, {
         field: 'id',
         type: 'function_element',
         idField: 'id',
         worker_method: getStatus,
         text: 'Estado Hacienda'
-      }, {
-        field: 'numeric_key',
-        text: 'PDF',
-        type: 'PDF',
-        base_url: `/media/electronic_credit_notes/signed/${this.props.userProfile.tax_payer_id}`,
-        idField: 'consecutive_numbering'
-      }, {
-        field: 'numeric_key',
-        text: 'XML',
-        type: 'XML',
-        base_url: `/media/electronic_credit_notes/signed/${this.props.userProfile.tax_payer_id}`,
-        idField: 'consecutive_numbering'
-      }, {
-        field: 'numeric_key',
-        text: 'Respuesta',
-        type: 'XML_HACIENDA',
-        base_url: `/media/electronic_credit_notes/signed/${this.props.userProfile.tax_payer_id}`,
-        idField: 'consecutive_numbering'
-      }, {
+      },
+      // {
+      //   field: 'numeric_key',
+      //   text: 'PDF',
+      //   type: 'PDF',
+      //   base_url: `/media/electronic_credit_notes/signed/${this.props.userProfile.tax_payer_id}`,
+      //   idField: 'consecutive_numbering'
+      // }, {
+      //   field: 'numeric_key',
+      //   text: 'XML',
+      //   type: 'XML',
+      //   base_url: `/media/electronic_credit_notes/signed/${this.props.userProfile.tax_payer_id}`,
+      //   idField: 'consecutive_numbering'
+      // }, {
+      //   field: 'numeric_key',
+      //   text: 'Respuesta',
+      //   type: 'XML_HACIENDA',
+      //   base_url: `/media/electronic_credit_notes/signed/${this.props.userProfile.tax_payer_id}`,
+      //   idField: 'consecutive_numbering'
+      // },
+      {
         field: 'id',
         type: 'RESET_HUMAN',
         idField: 'id',
         text: 'Reintentar'
+      },
+      {
+        field: 'consecutive_numbering',
+        type: 'link_mask',
+        target: 'invoicing/detail/creditnote',
+        idField: 'id',
+        textToRender: 'Ver',
+        text: 'Detalles'
       }
     ]
+
+    if (this.props.user.is_staff) {
+      headerOrder.push(
+        {
+          field: 'process_status',
+          text: 'Estado del Proceso'
+        }
+      )
+    }
 
     const fetching = <div />
     const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.ecreditNotes

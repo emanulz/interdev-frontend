@@ -36,6 +36,16 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'CLEAR_ACTIVE_DOCUMENT':
+    {
+      return {
+        ...state,
+        activeDocument: {},
+        relatedFetched: false,
+        relatedFetchig: false
+      }
+    } // case
+
     case 'FETCH_DOCUMENT_DETAIL_RELATED_FULFILLED':
     {
       return {

@@ -13,10 +13,29 @@ import {getElementStatus} from './actions.js'
 })
 export default class Summary extends React.Component {
 
+  determinModelSaleText(model) {
+    switch (model) {
+      case 'invoice':
+      case 'ticket':
+      {
+        return 'Venta Interna #'
+      }
+      case 'creditnote':
+      {
+        return 'NC Interna #'
+      }
+      case 'purchase':
+      {
+        return 'Compra Interna #'
+      }
+    }
+  }
+
   // Main Layout
   render() {
 
     const modelText = this.props.modelText
+    const model = this.props.model
     let totalObject = {}
 
     try {
@@ -38,6 +57,9 @@ export default class Summary extends React.Component {
         <td>MIRAR XML RESPUESTA</td>
       </tr>
       : <tr />
+
+    const saleText = this.determinModelSaleText(model)
+
     return <div className='documentDetail-sumary'>
       <div className='admin-invoicing-detail-header'>
         RESUMEN
@@ -54,7 +76,7 @@ export default class Summary extends React.Component {
             <td>{this.props.document.consecutive_numbering}</td>
           </tr>
           <tr>
-            <th>Venta Interna #:</th>
+            <th>{saleText}:</th>
             <td>{this.props.document.sale_consecutive}</td>
           </tr>
           <tr>
@@ -62,7 +84,7 @@ export default class Summary extends React.Component {
             <td>{client}</td>
           </tr>
           <tr>
-            <th>Total Venta:</th>
+            <th>Monto:</th>
             <td className='price'>{symbol} {saleTotal.formatMoney(2, ',', '.')}</td>
           </tr>
           <tr>
