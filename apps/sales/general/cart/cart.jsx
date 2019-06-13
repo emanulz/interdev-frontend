@@ -3,7 +3,9 @@
  */
 import React from 'react'
 import CartItems from './cartItems.jsx'
+import {callDoomsdayCheck} from './actions.js'
 import {connect} from 'react-redux'
+import alertify from 'alertifyjs'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -16,6 +18,21 @@ const Mousetrap = require('mousetrap')
 export default class Cart extends React.Component {
 
   componentWillMount() {
+
+    const callDoomsDay = new Promise((resolve, reject) => {
+      callDoomsdayCheck(resolve, reject)
+    })
+
+    callDoomsDay.then((data) => {
+      console.log('DATA', data)
+      if (data == 'UPGRADED') {
+        location.reload()
+      }
+    }).catch((err) => {
+      alertify.alert('ERROR', `No se pudo comprobar que la versión de XML sea 4.3, despues del 1ero de Julio
+        del 2019 se debe únicamente usar esta versión, por favor verifique manualmene que la versión sea correcta. 
+        ERROR ${err}`)
+    })
 
     const _this = this
     Mousetrap.bind('f1', function(e) {

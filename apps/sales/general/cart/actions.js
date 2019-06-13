@@ -1,4 +1,11 @@
 import alertify from 'alertifyjs'
+import axios from 'axios'
+// ------------------------------------------------------------------------------------------
+// CONFIG DEFAULT AXIOS
+// ------------------------------------------------------------------------------------------
+
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // ------------------------------------------------------------------------------------------
 // EXPORT FUNCTIONS USED IN COMPONENTS
 // ------------------------------------------------------------------------------------------
@@ -107,4 +114,14 @@ export function removeFromCart(itemsInCart, code) {
     }
 
   return res
+}
+
+export function callDoomsdayCheck(resolve, reject) {
+  axios.get('/api/administration/helpertasks/checkUpgrade/').then(function(response) {
+    resolve(response.data)
+  }).catch(function(error) {
+    console.log(error)
+    reject(error)
+  }
+  )
 }
