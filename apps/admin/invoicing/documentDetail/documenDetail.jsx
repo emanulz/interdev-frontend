@@ -32,6 +32,7 @@ export default class Main extends React.Component {
   componentDidMount() {
     this.props.dispatch({type: 'CLEAR_ACTIVE_DOCUMENT', payload: ''})
     this.props.dispatch({type: 'CLEAR_DOCUMENT_DETAIL_RELATED', payload: ''})
+    this.props.dispatch({type: 'CLEAR_REJECT_REASON', payload: ''})
 
     const model = this.props.match.params.model
     const id = this.props.match.params.id
@@ -44,6 +45,7 @@ export default class Main extends React.Component {
   componentWillUnmount() {
     this.props.dispatch({type: 'CLEAR_ACTIVE_DOCUMENT', payload: ''})
     this.props.dispatch({type: 'CLEAR_DOCUMENT_DETAIL_RELATED', payload: ''})
+    this.props.dispatch({type: 'CLEAR_REJECT_REASON', payload: ''})
   }
 
   componentDidUpdate() {

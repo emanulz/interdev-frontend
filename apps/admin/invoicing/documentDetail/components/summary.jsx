@@ -4,11 +4,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getElementStatus} from './actions.js'
+import {formatDateTimeAmPm} from '../../../../../utils/formatDate.js'
+import axios from 'axios'
 
 @connect((store) => {
   return {
     document: store.documentDetail.activeDocument,
-    userProfile: store.userProfile.profile
+    userProfile: store.userProfile.profile,
+    rejectReason: store.documentDetail.rejectReason
   }
 })
 export default class Summary extends React.Component {
@@ -27,6 +30,40 @@ export default class Summary extends React.Component {
       case 'purchase':
       {
         return 'Compra Interna #'
+      }
+    }
+  }
+
+  getRejectReason() {
+    const _this = this
+    const modelIdentifier = this.determinModelID(this.props.model)
+    axios.get(`/api/facturareception/whyyounoaccepted/?key=${_this.props.document.numeric_key}&type=${modelIdentifier}`).then(function(response) {
+      _this.props.dispatch({type: 'SET_REJECT_REASON', payload: response.data.RAZON})
+    }).catch(function(error) {
+      console.log(error)
+      _this.props.dispatch({type: 'CLEAR_REJECT_REASON', payload: ''})
+    }
+    )
+
+  }
+
+  determinModelID(model) {
+    switch (model) {
+      case 'invoice':
+      {
+        return 'FE'
+      }
+      case 'ticket':
+      {
+        return 'TE'
+      }
+      case 'creditnote':
+      {
+        return 'NC'
+      }
+      case 'purchase':
+      {
+        return 'ND'
       }
     }
   }
@@ -51,10 +88,15 @@ export default class Summary extends React.Component {
       : 0
     const status = getElementStatus(this.props.document)
     const cell = <td className={status.className}>{status.text}</td>
+
+    const rejectContent = this.props.rejectReason.length
+      ? <td>{this.props.rejectReason}</td>
+      : <td className='rejectReasonRow' onClick={this.getRejectReason.bind(this)}>VER RAZÓN</td>
+
     const rejectReasonRow = status.className == 'rejected'
       ? <tr>
         <th>Razón de Rechazo:</th>
-        <td>MIRAR XML RESPUESTA</td>
+        {rejectContent}
       </tr>
       : <tr />
 
@@ -78,6 +120,10 @@ export default class Summary extends React.Component {
           <tr>
             <th>{saleText}:</th>
             <td>{this.props.document.sale_consecutive}</td>
+          </tr>
+          <tr>
+            <th>Fecha:</th>
+            <td>{formatDateTimeAmPm(this.props.document.created)}</td>
           </tr>
           <tr>
             <th>Cliente:</th>

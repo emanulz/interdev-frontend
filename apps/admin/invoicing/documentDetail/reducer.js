@@ -13,7 +13,8 @@ const stateConst = {
   relatedTickets: [],
   relatedFetched: false,
   relatedFetchig: false,
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  rejectReason: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -90,6 +91,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         relatedFetchig: true
+      }
+    } // case
+
+    case 'SET_REJECT_REASON':
+    {
+      return {
+        ...state,
+        rejectReason: action.payload
+      }
+    } // case
+
+    case 'CLEAR_REJECT_REASON':
+    {
+      return {
+        ...state,
+        rejectReason: ''
       }
     } // case
 
