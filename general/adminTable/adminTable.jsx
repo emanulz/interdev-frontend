@@ -118,12 +118,32 @@ export default class AdminTable extends React.Component {
     })
   }
 
+  sendQuotingMail(id, mails) {
+    const noSpacesMails = mails.replace(/\s/g, '')
+    const extraMails = noSpacesMails.split(',')
+    axios({
+      method: 'get',
+      url: `/api/presales/buildAndEmailQuotation/?presale=${id}&to=${extraMails}`
+    }).then((response) => {
+      alertify.alert('COMPLETADO', 'Correos en proceso de envío.')
+    }).catch((err) => {
+      alertify.alert('ERROR', `Error al procesasar el envío ${err}`)
+    })
+  }
+
   resendMailPrompt(id) {
     const _this = this
     alertify.prompt('CORREOS ADICIONALES', `El correo se reenviará a los receptores originales, si hay otros receptores
       digite la lista de correos adicionales a enviar, separados por comas (,)`, '',
     function(evt, value) { _this.resendMail(id, value) },
     function(evt, value) { })
+  }
+
+  sendQuotingMailPrompt(id) {
+    const _this = this
+    alertify.prompt('CORREOS ADICIONALES', `Digite la lista de correos a los cuales necesite enviar la proforma, separados por comas (,)`, '',
+      function(evt, value) { _this.sendQuotingMail(id, value) },
+      function(evt, value) { })
   }
 
   determinClientName(client, extraClient) {
@@ -238,6 +258,13 @@ export default class AdminTable extends React.Component {
 
           let item
           switch (header.type) {
+            case 'SEND_QUOTING_MAIL':
+            {
+              item = <td key={`${el[idField]}_${header.field}_resend`}>
+                <button className='btn btn-success' onClick={this.sendQuotingMailPrompt.bind(this, itemToRender)}>Enviar</button>
+              </td>
+              break
+            }
             case 'RESEND_MAIL':
             {
               item = <td key={`${el[idField]}_${header.field}_resend`}>
