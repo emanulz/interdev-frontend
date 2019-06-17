@@ -192,9 +192,9 @@ class Form extends React.Component {
         <div className='form-group'>
           <div className='form-group-content'>
             <label>CARGAR FACTURA !</label>
-            <input name='code' handleMultiFilesInput={this.handleFileChange.bind(this)} type='file'
+            <input name='code' onChange={this.handleFileChange.bind(this)} type='file'
               className='form-control' accept='application/xml' />
-            <button onClick={this.uploadMultipleFiles.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>
+            <button onClick={this.uploadFile.bind(this)} className='btn btn-primary uploadButton'> Cargar </button>
           </div>
         </div>
 
