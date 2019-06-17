@@ -160,12 +160,18 @@ export default class SideMenu extends React.Component {
         text: 'Proveedores',
         class: 'fa-truck',
         href: '/admin/suppliers'
-      }, {
-        text: 'Importar',
-        class: 'fa-indent',
-        href: '/admin/products/importproducts'
       }
     ]
+
+    if (this.props.user.is_staff) {
+      childProducts.push(
+        {
+          text: 'Importar',
+          class: 'fa-indent',
+          href: '/admin/products/importproducts'
+        }
+      )
+    }
 
     const childAdmin = [
       {
@@ -218,12 +224,12 @@ export default class SideMenu extends React.Component {
     // create the helpers menu only if there are any enabled
     let collections_menu = ''
     const helpModelsInUse = this.props.config.helpModelsInUse
-    //console.log('help models in use --> ', helpModelsInUse)
+    // console.log('help models in use --> ', helpModelsInUse)
     if (helpModelsInUse != '' && helpModelsInUse != undefined) {
       const collection_names = helpModelsInUse.split(',')
       if (collection_names.length > 0) {
         const collection_childs = []
-        for (let item of collection_names) {
+        for (const item of collection_names) {
           if (item == '') {
             continue
           }

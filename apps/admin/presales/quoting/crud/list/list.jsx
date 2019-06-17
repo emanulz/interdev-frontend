@@ -76,6 +76,11 @@ export default class List extends React.Component {
         type: 'function_on_click',
         textToRender: 'Ver',
         onClickFunction: this.reprintPresale
+      }, {
+        field: 'id',
+        type: 'SEND_QUOTING_MAIL',
+        idField: 'id',
+        text: 'Enviar Correo'
       }
     ]
 

@@ -17,7 +17,7 @@ const stateConst = {
     reportPrettyData: [],
     start_date: '',
     end_date: '',
-    selected_section: 'purchases_sales',
+    selected_section: 'downloadables',
     departments: [],
     selectedDepartment: defaultDepartment
   }

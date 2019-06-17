@@ -1,37 +1,85 @@
+.admin-reports
+  font-family: 'Lato', sans-serif
+  &-header
+    display: flex
+    flex-flow: row
+    & button
+      width: 50%
+      &.first
+        margin-right: 10px
+      &.second  
+        margin-left: 10px
+
 .sales-purchases
-    font-family: 'Source Sans Pro', sans-serif
-    &-title
-        padding: 12px
-        & h1
-            font-size: 25px
-            font-weight: bold
-
-    &-dates
-        padding: 8px
-        &-item
-            padding: 8px
-
+  &-title
+    padding: 12px
+    & h1
+      font-size: 25px
+      font-weight: bold
+  &-dates
+    padding: 8px
+    &-item
+      padding: 8px
 .button
-    font-family: 'Source Sans Pro', sans-serif !important
-    font-weight: 200 !important
-    font-size: 14px !important
-    padding: 4px
-    margin: 8px
-
+  font-weight: 200 !important
+  font-size: 14px !important
+  padding: 4px
+  margin: 8px
 a
-    padding: 10px
-    font-weight: bold
-    font-size: 18px
-
+  padding: 10px
+  font-weight: bold
+  font-size: 18px
 .excel-fetcher
-    font-family: 'Source Sans Pro', sans-serif
-    &-title
-        padding: 12px
-        & h1
-            font-size: 25px
-            font-weight: bold
+  font-family: 'Lato', sans-serif
+  margin-top: 20px
+  &-title
+    & h1
+      font-size: 25px
+      font-weight: bold
+      padding: 0
+  &-dates
+    margin-top: 20px
+    display: flex
+    flex-flow: row
+    &-item
+      padding: 10px 0
+      margin-right: 20px
+      & label
+        margin-right: 5px
+  &-reports
+    margin-top: 20px
+    display: flex
+    flex-flow: row
+    flex-wrap: wrap
+    // grid-gap: 20px 20px
+    // grid-template-columns: auto auto auto auto
+    // grid-auto-flow: row dense
+    & a
+      display: flex
+      flex-flow: column
+      justify-content: center
+      margin-bottom: 20px
+      margin-right: 20px
+      height: 75px
+      width: 125px
+      border: 1px solid #cacaca
+      text-align: center
+      text-decoration: none
+      font-size: 14px
+      &:hover
+        background-color: $PRIMARY-COLOR
+        color: white
+  &-byfamily
+    margin-top: 20px
+    display: flex
+    flex-flow: row
+    &-item
+      width: 50%
+      &.first
+        padding-right: 10px
+      &.second
+        padding-left: 10px
 
-    &-dates
-        padding: 8px
-        &-item
-            padding: 8px
+.excel-fetcher-utility-family
+  &-label
+    margin: 10px 0

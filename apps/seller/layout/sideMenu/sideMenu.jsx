@@ -53,26 +53,11 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-area-chart' />
               Preventa</Link>
           </li>
-          <li>
-            <Link to='/seller/proforma'>
-              <span className='fa fa-user' />
-              Cotización</Link>
-          </li>
           {/* <li>
             <Link to='/seller/proforma'>
               <span className='fa fa-user' />
               Nueva Proforma</Link>
           </li> */}
-          <li>
-            <Link to='/seller/workshop'>
-              <span className='fa fa-user' />
-             Taller</Link>
-          </li>
-          <li>
-            <Link to='/seller/workshoplist'>
-              <span className='fa fa-user' />
-             Ordenes de taller</Link>
-          </li>
 
         </ul>
       </div>
