@@ -82,7 +82,7 @@ export default class Documents extends React.Component {
           <tr>
             <th>XML</th>
             <td className='xmlRow'>
-              <a download={`${this.props.document.consecutive_numbering}.pdf`} href={urls.xmlURL}>
+              <a download={`${this.props.document.consecutive_numbering}.xml`} href={urls.xmlURL}>
                 <i className='fa fa-file-code-o' />
                 Descargar
               </a>
@@ -91,7 +91,7 @@ export default class Documents extends React.Component {
           <tr>
             <th>Respuesta Hacienda</th>
             <td className='responseRow'>
-              <a download={`${this.props.document.consecutive_numbering}.pdf`} href={urls.responseURL}>
+              <a download={`${this.props.document.consecutive_numbering}.xml`} href={urls.responseURL}>
                 <i className='fa fa-file-code-o' />
                 Descargar
               </a>
