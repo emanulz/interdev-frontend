@@ -135,7 +135,7 @@ export default class Open extends React.Component {
 
     const transferTotals = this.props.closureTransferTotalCRC
     const clusureTransferCRC = this.props.registerClosure ? this.props.registerClosure.closure_money_crc_system_transfer : 0
-    const crcTransferBalance = parseFloat(cardTotals) - parseFloat(clusureTransferCRC)
+    const crcTransferBalance = parseFloat(transferTotals) - parseFloat(clusureTransferCRC)
     const crcTransferBalanceTag = crcTransferBalance >= 0 ? 'green' : 'red'
     // logic to hide dolars if not present
     const hideItemTransfer = (transferTotals == 0 && clusureTransferCRC == 0) ? 'hideTag' : ''
