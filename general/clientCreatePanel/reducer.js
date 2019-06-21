@@ -30,6 +30,45 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    case 'CLIENT_SIC_DATA_FETCHED':
+    {
+      
+      //if the payload includes a code is an already existent code
+      
+      if(!action.payload){
+        return {
+          ...state
+        }
+      }
+      const client = action.payload.client
+      if(client){
+        return {
+          ...state,
+          isVisible: false
+        }
+      }
+
+      //case where it is a new client, set the properties for creation
+      const new_client = JSON.parse(JSON.stringify(state.clientActive))
+      const data = action.payload
+      new_client.id_type = data.id_type
+      new_client.name = data.name
+      new_client.id_num = data.id_num
+      if(data.last_name){
+        new_client.last_name = data.last_name
+      }else{
+        new_client.last_name = ""
+      }
+      return {
+        ...state,
+        clientActive: new_client
+      }
+
+
+      break
+
+    }
+
     case 'SHOW_CREATE_CLIENT_PANEL':
     {
       return {

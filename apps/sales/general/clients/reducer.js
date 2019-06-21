@@ -73,7 +73,27 @@ export default function reducer(state = stateConst, action) {
         clients: action.payload
       }
     } // case
+    case 'CLIENT_SIC_DATA_FETCHED':
+    {
+      if(!action.payload){
+        return {
+          ...state
+        }
+      }
+      if(!action.payload.client){
+        return {
+          ...state
+        }
+      }
+      if(action.payload.client.code){
+        return {
+          ...state,
+          clientSelected: action.payload
+        }
+      }
 
+      break
+    }
     case 'CLIENT_SELECTED':
     {
       return {
