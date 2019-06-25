@@ -194,15 +194,22 @@ export default class GenerlItem extends React.Component {
 
   updatePrice(ev) {
     const value = Math.abs(ev.target.value)
+    //console.log("Target value general item --> ", value)
     const product = {
       ...this.props.product
     }
     product.sell_price = value
-    if (product.use_taxes) {
-      product.price = value / (1 + (product.taxes / 100))
-    } else {
-      product.price = value
+    if(this.props.config.overrideXMLversion === "4.3"){
+      product.price = value / (1 + (parseFloat(product.taxes_IVA) / 100))
+    }else{
+      if (product.use_taxes) {
+        product.price = value / (1 + (product.taxes / 100))
+        //console.log("Product Price --> ", product.price)
+      } else {
+        product.price = value
+      }
     }
+
     this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
   }
 

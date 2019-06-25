@@ -5,7 +5,7 @@ import React from 'react'
 import alertify from 'alertifyjs'
 import {connect} from 'react-redux'
 // import {getItemDispatch} from '../../../../utils/api'
-import {productSelected, setProductNew} from './actions.js'
+import {productSelected, setProductNew, handleWaterPricing} from './actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -84,11 +84,39 @@ export default class Product extends React.Component {
     return modifier
   }
 
+
+    //   // _this.props.dispatch({type: 'FETCHING_STARTED'})
+
+    //   setProductNew(kwargs, resolve, reject)
+    // })
+    // if (product.code == '00') {
+    //   const generalItemDefaultData = {
+    //     default_discount: '0',
+    //     id: product.id,
+    //     max_discount: '0',
+    //     product: product,
+    //     table_price: '0',
+    //     target_price_list: 'price1',
+    //     current_discount: 0,
+    //     promo_string: '',
+    //     money_discount: 0,
+    //     force_pricing: -1
+    //   }
+    //   console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
+    //   this.props.dispatch(productSelected(generalItemDefaultData, qty, this.props.itemsInCart,
+    //     this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
+    //     this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+
+    //   this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+
+    // }
+  
+
   inputKeyPress(ev) {
     // if Key pressed id Enter
     const _this = this
     if (ev.key == 'Enter') {
-
+      console.log("Settings --> ", this.props.config)
       let code = ''
       let qty = 1
       let price = 0
@@ -106,6 +134,100 @@ export default class Product extends React.Component {
         if (modifier.length) {
           const value = ev.target.value.substr(modifier.length)
           if (modifier == '+') {
+            //handle special case for + and water provider
+            if(this.props.config.isWaterProvider){
+              const _this = this
+              //pass down the volume
+              _this.props.dispatch({type: "FETCHING_STARTED"})
+              let water_data = handleWaterPricing(value.split('*')[0])
+              water_data.then(water_result => {
+                console.log("I got the pricing data --> ", water_result)
+                //if data was received, iterate along the keys
+                
+                const set00ProductPromiseNew = new Promise((resolve, reject) => {
+                  const kwargs = {
+                    url: '/api/products/getProdPrice/',
+                    data: {
+                      prod_data: {
+                        code: '00'
+                      },
+                      clientId: _this.props.client.client.id
+                    }
+                  }
+      
+                  _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+                  setProductNew(kwargs, resolve, reject)
+                })
+
+                set00ProductPromiseNew.then((data) => {
+                  _this.props.dispatch({type: 'FETCHING_DONE'})
+                  //Set multiple 00 as per the keys in  water pricing
+                  for(let key in water_result){
+                    let description = key
+                    if(water_result[key]['taxes'] > 0){
+                      description += " (Gravado)"
+                    }else{
+                      description += " (Exento)"
+                    }
+                    const product = data[0].product
+                    product.price = water_result[key]['price_no_ivi']
+                    product.use_taxes = water_result[key]['taxes']
+                    product.taxes = water_result[key]['taxes']
+                    product.use_taxes2 = false
+                    product.taxes2 = 0
+                    product.use_taxes3 = false
+                    product.taxes3 = 0
+                    product.description = description
+                    product.taxes_IVA = water_result[key]['IVA_VALUE']
+                    product.tax_code_IVA = water_result[key]['IVA_CODE']
+                    product.rate_code_IVA = water_result[key]['IVA_RATE']
+                    product.factor_IVA = factorIVA
+                    try {
+                      if (!useTaxes) {
+                        product.use_taxes = false
+                        product.taxes = 0
+                      }
+                    } catch (err) {
+                      console.log(err)
+                    }
+        
+                    if (product.code == '00') {
+                      const generalItemDefaultData = {
+                        default_discount: '0',
+                        id: product.id,
+                        max_discount: '0',
+                        product: JSON.parse(JSON.stringify(product)),
+                        table_price: '0',
+                        target_price_list: 'price1',
+                        current_discount: 0,
+                        promo_string: '',
+                        money_discount: 0,
+                        force_pricing: -1
+                      }
+                      
+                      this.props.dispatch(productSelected(generalItemDefaultData, water_result[key]['volume'], this.props.itemsInCart,
+                        this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
+                        this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+        
+                      this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+        
+                    }
+  
+                  }
+      
+                }).catch((err) => {
+                  _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+                  console.log(err)
+                }) //END OF CUSTOM METHOFD WATER
+
+              }).catch(err => {
+                console.log("Error getting water pricing --> ", err)
+                _this.props.dispatch({type: "FETCHING_DONE"})
+              })
+
+              return // abort normal excution
+            }
+
             description = value.split('*')[0]
             qty = Math.abs(value.split('*')[2])
             price = Math.abs(value.split('*')[1])
@@ -228,7 +350,6 @@ export default class Product extends React.Component {
 
               this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
 
-            } else {
             }
 
           }).catch((err) => {

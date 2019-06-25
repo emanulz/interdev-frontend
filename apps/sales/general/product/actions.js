@@ -468,10 +468,13 @@ function caclSubtotal(product, qty, productDiscount, XMLVersion) {
       : 0
   // XML 4.3
   } else if (XMLVersion == '4.3') {
-
+    
     iv1 = (parseFloat(product.taxes_IVA) > 0)
       ? subTotal * (product.taxes_IVA / 100)
       : 0
+
+      console.log("IVA TO USE --> ", product.taxes_IVA)
+      console.log("IV1 --> ", iv1)
   // NOT FOUND
   } else {
     alertify.alert('ERROR', 'No se pudo leer la version activa del formato XML, los impuestos no se sumaran, por lo que el total puede estar inválido.')
@@ -501,7 +504,7 @@ function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscou
   console.log('XML VERSION updatedCartItem: ', XMLVersion)
   const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, XMLVersion)
   const details = !newPriceDetails ? itemsInCart[index].pricesData : newPriceDetails
-  console.log('after calc cubtotal')
+
   return {
     uuid: uuid,
     product: itemsInCart[index].product,
@@ -579,6 +582,28 @@ export function setProduct(kwargs, resolve, reject) {
     alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
     administrador del sistema con el siguiete error: ${error}`)
     reject()
+  })
+}
+
+export function handleWaterPricing(volume){
+    // console.log("Doing water stuff --> ", volume)
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'get',
+      url: `/api/productslist/water_pricing/?volume=${volume}`
+    })
+    .then(response => {
+      // console.log("Response data --> ", response.data)
+      resolve(response.data)
+    })
+    .catch(err => {
+      if(err.response){
+        console.log("Error --> ", error.response.data)
+      }
+
+      reject(err)
+    })
+  
   })
 }
 
