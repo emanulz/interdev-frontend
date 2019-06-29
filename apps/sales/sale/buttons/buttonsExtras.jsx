@@ -24,7 +24,8 @@ import {searchDiscountForTargetPrice} from '../../general/product/actions.js'
     calculatesDiscountForFinalPrice: store.config.globalConf.calculatesDiscountForFinalPrice,
     cartItems: store.cart.cartItems,
     globalDiscount: store.cart.globalDiscount,
-    client: store.clients.clientSelected
+    client: store.clients.clientSelected,
+    config: store.config.globalConf
   }
 })
 export default class Buttons extends React.Component {
@@ -81,7 +82,8 @@ export default class Buttons extends React.Component {
       this.props.dispatch, 
       this.props.cartItems,
       this.props.globalDiscount,
-      this.props.client
+      this.props.client,
+      this.props.config.overrideXMLversion
       )
 
   }

@@ -22,7 +22,7 @@ const uuidv1 = require('uuid/v1')
 
 // function to calculate the target discount on all items to  get to a target price
 
-export function searchDiscountForTargetPrice(dispatcher, cartItems, pred_discount, client) {
+export function searchDiscountForTargetPrice(dispatcher, cartItems, pred_discount, client, XMLVersion) {
   //prompt the user for the value
   console.log("Dispatcher --> ", dispatcher)
   if(cartItems.length < 1){
@@ -39,7 +39,8 @@ export function searchDiscountForTargetPrice(dispatcher, cartItems, pred_discoun
         parseFloat(target_discount).toFixed(4),
         pred_discount,
         client,
-        false
+        false,
+        XMLVersion
       ))
     }
   }
