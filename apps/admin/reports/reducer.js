@@ -10,7 +10,7 @@ import {makeTableFriendly} from './actions.js'
 
 const defaultDepartment = "0000"
 
-//const defaultWarehouse = "0000"
+const defaultWarehouse = "0000"
 
 const stateConst = {
     reportData: [],
@@ -22,7 +22,7 @@ const stateConst = {
     departments: [],
     selectedDepartment: defaultDepartment,
     warehouses: [],
-    //selectedWarehouse: defaultWarehouse
+    selectedWarehouse: defaultWarehouse
   }
   
 
