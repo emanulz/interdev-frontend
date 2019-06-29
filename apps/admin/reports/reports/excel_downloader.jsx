@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // import { getSingleItemDispatch, getItemReturn } from '../../../../utils/api.js'
 import alertify from 'alertifyjs'
 import Select2 from 'react-select2-wrapper'
+import { generalSave, getItemDispatch } from '../../../../utils/api.js'
 
 @connect(store => {
   return {
@@ -12,7 +13,9 @@ import Select2 from 'react-select2-wrapper'
     useReserves: store.config.globalConf.useReserves,
     useLegacyd151: store.config.globalConf.useLegacyd151,
     departments: store.generalReports.departments,
-    selectedDepartment: store.generalReports.selectedDepartment
+    selectedDepartment: store.generalReports.selectedDepartment,
+    warehouses: store.generalReports.warehouses,
+    selectedWarehouse: store.generalReports.selectedWarehouse,
   }
 })
 export default class ExcelFetcher extends React.Component {
@@ -25,6 +28,14 @@ export default class ExcelFetcher extends React.Component {
 
     this.props.dispatch({ type: 'SET_START_DATE', payload: `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${month_first.toString().padStart(2, '0')}` })
     this.props.dispatch({ type: 'SET_END_DATE', payload: `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${month_last.toString().padStart(2, '0')}` })
+
+    //obtain the warehouses
+    const warehouses_dispatch = {
+      url: '/api/warehouses/',
+      successType: 'REPORTS_WAREHOUSES_SUCCEDED',
+      errorType: 'REPORTS_WAREHOUSES_REJECTED',
+    }
+    this.props.dispatch(getItemDispatch(warehouses_dispatch));
   }
 
   onStartDateChange(e) {
@@ -107,6 +118,15 @@ export default class ExcelFetcher extends React.Component {
     window.location.href = url
   }
 
+  onWarehouseSelectedInventory(e) {
+    if (e.target.value == '0000') {
+      return // just the case where there are no families or was released on the default starting option
+    }
+
+    const url = `/reportsExcel/invvalue/?warehouses=${e.target.value}`
+    window.location.href = url
+  }
+
   buildFamilyUtilityRequester() {
 
     const departmentData = this.props.departments.map(department => {
@@ -162,6 +182,35 @@ export default class ExcelFetcher extends React.Component {
       </div>
     </div>
   }
+
+  buildWarehouseInventory() {
+
+    const warehouseData = this.props.warehouses.map(warehouse => {
+      return { text: `${warehouse.code} - ${warehouse.name}`, id: `${warehouse.id}` }
+    })
+
+    return <div className='excel-fetcher-utility'>
+      <div className='excel-fetcher-utility-family'>
+        <div className='excel-fetcher-utility-family-label'>
+          Seleccione la bodega:
+        </div>
+        <div className='excel-fetcher-utility-family-select'>
+          <Select2
+            name='warehouse'
+            value={this.props.selectedWarehouse}
+            className='form-control'
+            onSelect={this.onWarehouseSelectedInventory.bind(this)}
+            data={warehouseData}
+            options={{
+              placeholder: 'Elija una Bodega...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  }
+
 
   render() {
 
@@ -223,6 +272,16 @@ export default class ExcelFetcher extends React.Component {
       </div>
     }
 
+    let inventoriesValueByFamily = ''
+    if (this.props.installedApps.InventoriesAppInstalled) {
+      inventoriesValueByFamily = <div className='excel-fetcher-byfamily-item second'>
+        <div className='excel-fetcher-title'>
+          <h1>Valoración Por Bodega</h1>
+        </div>
+        {this.buildWarehouseInventory()}
+      </div>
+    }
+
     return <div className='excel-fetcher' >
       <div className='excel-fetcher-title'>
         <h1>Seleccione el período a reportar y descarge el reporte en formato Excel</h1>
@@ -261,6 +320,7 @@ export default class ExcelFetcher extends React.Component {
       <div className='excel-fetcher-byfamily'>
         {utilityByFamily}
         {inventoriesByFamily}
+        {inventoriesValueByFamily}
       </div>
     </div>
   }
