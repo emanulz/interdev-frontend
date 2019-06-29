@@ -10,6 +10,7 @@ import {makeTableFriendly} from './actions.js'
 
 const defaultDepartment = "0000"
 
+//const defaultWarehouse = "0000"
 
 const stateConst = {
     reportData: [],
@@ -19,13 +20,23 @@ const stateConst = {
     end_date: '',
     selected_section: 'downloadables',
     departments: [],
-    selectedDepartment: defaultDepartment
+    selectedDepartment: defaultDepartment,
+    warehouses: [],
+    //selectedWarehouse: defaultWarehouse
   }
   
 
 export default function reducer(state=stateConst, action){
     switch(action.type) {
         
+        case 'REPORTS_WAREHOUSES_SUCCEDED':
+        {
+            return {
+                ...state,
+                warehouses: action.payload
+            }
+        }
+
         case 'SET_SECTION':
         {
             return {
