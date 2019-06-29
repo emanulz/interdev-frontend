@@ -30,6 +30,7 @@ export default class Totals extends React.Component {
     let payObject = {}
     let isExempt = false
     let exemptAmount = 0
+    let returnedIVA = 0
     // LOAD ITEMS FROM SALE ONLY IF LOADED
     if (Object.keys(sale).length > 0) {
       total = sale.cart.cartTotal
@@ -39,6 +40,7 @@ export default class Totals extends React.Component {
       payObject = sale.pay
       isExempt = sale.cart.isExempt
       exemptAmount = sale.cart.cartExemptAmount
+      returnedIVA = sale.cart.returnedIVA
     }
 
     let advance = <tr />
@@ -59,6 +61,13 @@ export default class Totals extends React.Component {
       ? <tr>
         <th>IV Exonerado:</th>
         <td className='price'>{symbol} -{exemptAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+
+    const returnedIVARow = returnedIVA > 0
+      ? <tr>
+        <th>IVA Devuelto:</th>
+        <td className='price'>{symbol} -{returnedIVA.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />
 
@@ -88,6 +97,7 @@ export default class Totals extends React.Component {
             <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
           {ExemptTotal}
+          {returnedIVARow}
           <tr className='total-row'>
             <th>Total</th>
             <td>{symbol} {total.formatMoney(2, ',', '.')}</td>

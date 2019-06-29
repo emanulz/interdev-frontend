@@ -20,7 +20,8 @@ const stateConst = {
   otherCharges: [], // the other charges array
   otherChargesTotal: 0,
   pays10Percent: false,
-  pays10Setted: false
+  pays10Setted: false,
+  returnedIVA: 0
 }
 
 export default function reducer(state = stateConst, action) {
@@ -49,7 +50,8 @@ export default function reducer(state = stateConst, action) {
         otherCharges: [],
         otherChargesTotal: 0,
         pays10Percent: false,
-        pays10Setted: false
+        pays10Setted: false,
+        returnedIVA: 0
       }
     }
 
@@ -75,7 +77,8 @@ export default function reducer(state = stateConst, action) {
         otherCharges: [],
         otherChargesTotal: 0,
         pays10Percent: false,
-        pays10Setted: false
+        pays10Setted: false,
+        returnedIVA: 0
       }
     }
 
@@ -169,6 +172,18 @@ export default function reducer(state = stateConst, action) {
         otherCharges: otherCharges
       }
     } // case
+
+    case 'UPDATE_RETURNED_IVA':
+    {
+      const returnedIVA = action.payload
+      const cartTotal = state.cartTotal
+      const newCartTotal = cartTotal - returnedIVA
+      return {
+        ...state,
+        cartTotal: newCartTotal,
+        returnedIVA: returnedIVA
+      }
+    }
 
     case 'SET_GLOBAL_DISCOUNT':
     {

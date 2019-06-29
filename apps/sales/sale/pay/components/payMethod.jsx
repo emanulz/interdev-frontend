@@ -1,15 +1,23 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {updateReturnedIVA, updateTotals} from '../../../general/cart/actions.js'
 
 @connect((store) => {
-  return {payMethod: store.pay.payMethodActive}
+  return {
+    payMethod: store.pay.payMethodActive,
+    inCart: store.cart.cartItems,
+    isExempt: store.cart.isExempt,
+    config: store.config.globalConf
+  }
 })
 export default class PayMethod extends React.Component {
 
   clickChangePayMethod(method, ev) {
 
-    this.props.dispatch({type: 'CHANGE_PAY_METHOD', payload: method})
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales, this.props.config.overrideXMLversion))
+    this.props.dispatch(updateReturnedIVA(this.props.inCart, this.props.isExempt, this.props.config.overrideXMLversion, method, this.props.config.isHelathServiceProvider))
 
+    this.props.dispatch({type: 'CHANGE_PAY_METHOD', payload: method})
   }
 
   render() {

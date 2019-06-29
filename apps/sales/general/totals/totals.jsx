@@ -20,7 +20,8 @@ import alertify from 'alertifyjs'
     isExempt: store.cart.isExempt,
     exemptAmount: store.cart.cartExemptAmount,
     currencySymbol: store.currency.symbolSelected,
-    otherChargesTotal: store.cart.otherChargesTotal
+    otherChargesTotal: store.cart.otherChargesTotal,
+    returnedIVA: store.cart.returnedIVA
     // disabled: store.sales.completed
   }
 })
@@ -97,6 +98,14 @@ export default class Totals extends React.Component {
         <td className='price'>{symbol} {otherChargesTotal.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />
+
+    const returnedIVA = this.props.returnedIVA
+    const returnedIVARow = returnedIVA
+      ? <tr>
+        <th>IVA Devuelto:</th>
+        <td className='price'>{symbol} {returnedIVA.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
     return <div className='totals'>
       <div style={{
         'paddingTop': '0',
@@ -124,11 +133,11 @@ export default class Totals extends React.Component {
             </tr>
             {ExemptTotal}
             {otherCargesRow}
+            {returnedIVARow}
             <tr>
               {/* <th onClick={this.showInvoicePanel.bind(this)}>Total:</th> */}
               <th>Total:</th>
               <td className='price'>{symbol} {this.props.total.formatMoney(2, ',', '.')}</td>
-
             </tr>
           </tbody>
         </table>

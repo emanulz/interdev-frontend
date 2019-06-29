@@ -468,13 +468,11 @@ function caclSubtotal(product, qty, productDiscount, XMLVersion) {
       : 0
   // XML 4.3
   } else if (XMLVersion == '4.3') {
-    
     iv1 = (parseFloat(product.taxes_IVA) > 0)
       ? subTotal * (product.taxes_IVA / 100)
       : 0
-
-      console.log("IVA TO USE --> ", product.taxes_IVA)
-      console.log("IV1 --> ", iv1)
+    console.log('IVA TO USE -->', product.taxes_IVA)
+    console.log('IV1 --> ', iv1)
   // NOT FOUND
   } else {
     alertify.alert('ERROR', 'No se pudo leer la version activa del formato XML, los impuestos no se sumaran, por lo que el total puede estar inválido.')

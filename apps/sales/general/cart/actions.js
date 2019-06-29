@@ -12,6 +12,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 // This function updates totals the cart store item, generates new values according cart item objects, then push the to store
 export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
+
   console.log('XML VERSION updateTotals(CART ACTIONS FUNCTION): ', XMLVersion)
 
   let subtotal = 0
@@ -96,6 +97,32 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
       dontRound: dontRound
     }
   }
+}
+
+export function updateReturnedIVA(inCart, exempt, XMLVersion, payMethod, isHealthProvider) {
+  let returnedIVA = 0
+  // console.log('IS HEALTH------>', isHealthProvider)
+  // console.log('VERSION----->', XMLVersion)
+  // console.log('PAY METHOD----->', payMethod)
+  // console.log('EXEMPT----->', exempt)
+
+  if (XMLVersion == '4.3' && isHealthProvider && payMethod == 'CARD' && !exempt) {
+    inCart.forEach((item) => {
+      const product = item.product
+      const subTotal = item.subtotal
+      let iv1 = 0
+      if (product.is_service) {
+        iv1 = (parseFloat(product.taxes_IVA) > 0)
+          ? subTotal * (parseFloat(product.taxes_IVA) / 100)
+          : 0
+        returnedIVA = returnedIVA + iv1
+      }
+
+    })
+    // return {type: 'UPDATE_RETURNED_IVA', payload: returnedIVA}
+  }
+  // RETURN HERE
+  return {type: 'UPDATE_RETURNED_IVA', payload: returnedIVA}
 }
 
 // Finds a code in the cart and sends a dispatch to remove it from cart based on index
