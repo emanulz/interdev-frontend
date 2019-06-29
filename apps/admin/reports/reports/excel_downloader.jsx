@@ -123,7 +123,7 @@ export default class ExcelFetcher extends React.Component {
       return // just the case where there are no families or was released on the default starting option
     }
 
-    const url = `/reportsExcel/invvalue/?warehouse=${e.target.value}`
+    const url = `/reportsExcel/invvalue/?warehouses=${e.target.value}`
     window.location.href = url
   }
 
