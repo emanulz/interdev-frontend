@@ -348,6 +348,14 @@ export default class AdminTable extends React.Component {
               break
             }
 
+            case 'toFixed2':
+            {
+              item = <td key={`${el[idField]}_${header.field}`}>
+                {parseFloat(itemToRender).toFixed(2)}
+              </td>
+              break
+            }
+
             case 'priceAbs':
             {
               item = <td key={`${el[idField]}_${header.field}`}>

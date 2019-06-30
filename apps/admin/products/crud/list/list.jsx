@@ -67,9 +67,9 @@ export default class List extends React.Component {
         field: 'description',
         text: 'Descripción'
       }, {
-        field: 'use_taxes',
-        text: 'Usa Impuesto',
-        type: 'bool'
+        field: 'taxes_IVA',
+        text: 'Impuesto %',
+        type: 'toFixed2'
       }, {
         type: 'function_process',
         field: 'inventory_existent',
