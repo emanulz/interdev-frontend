@@ -115,6 +115,8 @@ export default class GenerlItem extends React.Component {
     product['taxes_IVA'] = rateValue
     product['is_used'] = false
 
+    product['price'] = product.sell_price / (1 + (parseFloat(product.taxes_IVA) / 100))
+
     this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
   }
 
@@ -194,17 +196,17 @@ export default class GenerlItem extends React.Component {
 
   updatePrice(ev) {
     const value = Math.abs(ev.target.value)
-    //console.log("Target value general item --> ", value)
+    // console.log("Target value general item --> ", value)
     const product = {
       ...this.props.product
     }
     product.sell_price = value
-    if(this.props.config.overrideXMLversion === "4.3"){
+    if (this.props.config.overrideXMLversion === '4.3') {
       product.price = value / (1 + (parseFloat(product.taxes_IVA) / 100))
-    }else{
+    } else {
       if (product.use_taxes) {
         product.price = value / (1 + (product.taxes / 100))
-        //console.log("Product Price --> ", product.price)
+        // console.log("Product Price --> ", product.price)
       } else {
         product.price = value
       }
@@ -242,6 +244,21 @@ export default class GenerlItem extends React.Component {
   }
 
   generateIVADiv(IVACodesList, IVARatesList, IVAFactorSelector) {
+
+    const usedRow = this.props.config.sellUsedProducts
+      ? <div className='general-item-row'>
+        <div className='form-group row-50 first'>
+          <label>Es usado?</label>
+          <input checked={this.props.product.is_used} name='is_used'
+            onChange={this.handleIsUsedChange.bind(this)}
+            type='checkbox' className='form-control' />
+        </div>
+        <div className='form-group row-50 last'>
+          {IVAFactorSelector}
+        </div>
+      </div>
+      : <div />
+
     return <div>
       <h3>IVA</h3>
       <div className='general-item-row'>
@@ -274,17 +291,7 @@ export default class GenerlItem extends React.Component {
           />
         </div>
       </div>
-      <div className='general-item-row'>
-        <div className='form-group row-50 first'>
-          <label>Es usado?</label>
-          <input checked={this.props.product.is_used} name='is_used'
-            onChange={this.handleIsUsedChange.bind(this)}
-            type='checkbox' className='form-control' />
-        </div>
-        <div className='form-group row-50 last'>
-          {IVAFactorSelector}
-        </div>
-      </div>
+      {usedRow}
       <div className='general-item-row'>
         <div className='form-group row-50 first'>
           <label>Tarifa a aplicar %</label>

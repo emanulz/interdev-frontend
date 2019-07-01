@@ -212,6 +212,18 @@ class Form3 extends React.Component {
 
     // IVARatesList = IVARatesList.sort
 
+    const usedRow = this.props.config.sellUsedProducts
+      ? <div className='form-group row input-block'>
+        <div className='col-xs-6 first'>
+          <label>Es Usado?</label>
+          <input checked={this.props.product.is_used} name='is_used'
+            onChange={this.handleIsUsedChange.bind(this)}
+            type='checkbox' className='form-control' />
+        </div>
+        {IVAFactorSelector}
+      </div>
+      : <div />
+
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
@@ -263,18 +275,9 @@ class Form3 extends React.Component {
           </div>
 
         </div>
-        <div className='form-group row input-block'>
 
-          <div className='col-xs-6 first'>
-            <label>Es Usado?</label>
-            <input checked={this.props.product.is_used} name='is_used'
-              onChange={this.handleIsUsedChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
+        {usedRow}
 
-          {IVAFactorSelector}
-
-        </div>
       </div>
 
       <div className='col-xs-12 col-sm-6 fields-container second'>
