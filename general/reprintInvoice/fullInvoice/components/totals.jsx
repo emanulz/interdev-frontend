@@ -52,8 +52,8 @@ export default class Totals extends React.Component {
       payObject = sale.pay
       isExempt = sale.cart.isExempt
       exemptAmount = sale.cart.cartExemptAmount
-      returnedIVA = sale.cart.returnedIVA
-      otherCharges = sale.cart.otherCharges
+      returnedIVA = sale.cart.returnedIVA ? sale.cart.returnedIVA : 0
+      otherCharges = sale.cart.otherCharges ? sale.cart.otherCharges : []
     }
 
     let advance = <tr />
