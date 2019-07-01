@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     sale: store.reprintInvoice.sale,
-    document: store.reprintInvoice.invoice,
+    ticket: store.reprintInvoice.ticket,
+    invoice: store.reprintInvoice.invoice,
     currencySymbol: store.currency.symbolSelected,
     config: store.config.globalConf
   }
@@ -14,7 +15,20 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
     const symbol = this.props.currencySymbol
-    const XMLVersion = this.props.document ? this.props.document.hacienda_resolution : ''
+
+    const ticket = this.props.ticket
+    const invoice = this.props.invoice
+    let XMLVersion = ''
+    try {
+      if (ticket) {
+        XMLVersion = this.props.ticket ? this.props.ticket.hacienda_resolution : ''
+      }
+
+      if (invoice) {
+        XMLVersion = this.props.invoice ? this.props.invoice.hacienda_resolution : ''
+      }
+    } catch (err) {}
+
     const cartItems = this.props.sale.cart ? this.props.sale.cart.cartItems : []
 
     // TAXES HEADER TEXT
@@ -22,7 +36,7 @@ export default class Table extends React.Component {
     if (XMLVersion == '4.2' || XMLVersion == '') {
       taxesHeader = 'IV'
     } else if (XMLVersion == '4.3') {
-      taxesHeader = 'IVA %'
+      taxesHeader = 'IVA'
     } else {
       taxesHeader = ''
     }
@@ -47,7 +61,7 @@ export default class Table extends React.Component {
             ? `G`
             : `E`
         } else if (XMLVersion == '4.3') {
-          taxesText = item.product.taxes_IVA ? `${item.product.taxes_IVA}` : ''
+          taxesText = item.product.taxes_IVA ? `${parseFloat(item.product.taxes_IVA).toFixed(0)}%` : ''
         } else {
           taxesText = ''
         }

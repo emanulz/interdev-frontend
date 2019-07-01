@@ -36,3 +36,4 @@ pip-log.txt
 *.env
 yarn.lock
 package-lock.json
+npm-debug.log

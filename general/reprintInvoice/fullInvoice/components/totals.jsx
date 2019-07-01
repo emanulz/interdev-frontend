@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 @connect((store) => {
   return {
     sale: store.reprintInvoice.sale,
-    document: store.reprintInvoice.invoice,
+    ticket: store.reprintInvoice.ticket,
+    invoice: store.reprintInvoice.invoice,
     currencySymbol: store.currency.symbolSelected,
     config: store.config.globalConf
   }
@@ -71,7 +72,20 @@ export default class Totals extends React.Component {
       </tr>
       : <tr />
 
-    const XMLVersion = this.props.document ? this.props.document.hacienda_resolution : ''
+    // DEFINE THE VERSION OF XML
+    const ticket = this.props.ticket
+    const invoice = this.props.invoice
+    let XMLVersion = ''
+    try {
+      if (ticket) {
+        XMLVersion = this.props.ticket ? this.props.ticket.hacienda_resolution : ''
+      }
+
+      if (invoice) {
+        XMLVersion = this.props.invoice ? this.props.invoice.hacienda_resolution : ''
+      }
+    } catch (err) {}
+
     let taxesLine = ''
     if (XMLVersion == '4.2' || XMLVersion == '') {
       taxesLine = 'IV'

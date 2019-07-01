@@ -218,43 +218,8 @@ class Form3 extends React.Component {
     return <div className='col-xs-12 row form-container'>
 
       <div className='col-xs-12 col-sm-6 fields-container first'>
-        <span>Impuestos</span>
-        <hr />
 
-        <div className='form-group row input-block'>
-
-          <div className='col-xs-6 first'>
-
-            <label>Impuesto 1</label>
-
-            <Select2
-              name='tax_code'
-              value={this.props.product.tax_code}
-              data={taxesData}
-              className='form-control'
-              onSelect={this.handleInputChange.bind(this)}
-              options={{
-                placeholder: 'Elija un Impuesto...',
-                noResultsText: 'Sin elementos'
-              }}
-            />
-          </div>
-
-          <div className='col-xs-4'>
-            <label>Valor 1 %</label>
-            <input value={this.props.product.taxes} name='taxes' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-
-          <div className='col-xs-2 second'>
-            <label>Activo?</label>
-            <input checked={this.props.product.use_taxes} name='use_taxes'
-              onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
-        </div>
-
-        <span>IVA (NUEVO)</span>
+        <span>IVA</span>
         <hr />
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>
