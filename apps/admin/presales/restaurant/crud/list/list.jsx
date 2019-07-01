@@ -131,6 +131,10 @@ export default class List extends React.Component {
         field: 'client',
         text: 'Nombre en Factura'
       }, {
+        type: 'date',
+        field: 'created',
+        text: 'Fecha'
+      }, {
         type: 'function_element',
         field: 'id',
         text: 'Cliente No Satisfecho',
@@ -153,8 +157,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/presales/?presale_type=RESTAURANT' successType='FETCH_RESTAURANT_PRESALES_FULFILLED' errorType='FETCH_RESTAURANT_PRESALES_REJECTED' />
-        <Pagination url='/api/presales/?presale_type=RESTAURANT' successType='FETCH_RESTAURANT_PRESALES_FULFILLED' errorType='FETCH_RESTAURANT_PRESALES_REJECTED' />
+        <ResultsPerPage url='/api/presales/?presale_type=RESTAURANT&ordering=-consecutive' successType='FETCH_RESTAURANT_PRESALES_FULFILLED' errorType='FETCH_RESTAURANT_PRESALES_REJECTED' />
+        <Pagination url='/api/presales/?presale_type=RESTAURANT&ordering=-consecutive' successType='FETCH_RESTAURANT_PRESALES_FULFILLED' errorType='FETCH_RESTAURANT_PRESALES_REJECTED' />
       </div>
       : <div />
 
