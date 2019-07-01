@@ -16,6 +16,16 @@ export default class Totals extends React.Component {
     return total
   }
 
+  getserviceAmount(otherCharges) {
+    let serviceAmount = 0
+    otherCharges.forEach(charge => {
+      if (charge.type == '06') {
+        serviceAmount = serviceAmount + charge.amount
+      }
+    })
+    return serviceAmount
+  }
+
   render() {
     const sale = this.props.sale
     // SET THE DEFAULT VALUES
@@ -23,6 +33,7 @@ export default class Totals extends React.Component {
     let taxes = 0
     let discountTotal = 0
     let subTotalNoDiscount = 0
+    let otherCharges = []
 
     // LOAD ITEMS FROM SALE ONLY IF LOADED
     if (Object.keys(sale).length > 0) {
@@ -30,6 +41,7 @@ export default class Totals extends React.Component {
       taxes = sale.cart.cartTaxes
       discountTotal = sale.cart.discountTotal
       subTotalNoDiscount = sale.cart.cartSubtotalNoDiscount
+      otherCharges = sale.cart.otherCharges ? sale.cart.otherCharges : []
     }
     let wasNSReserve = false
     try {
@@ -50,6 +62,15 @@ export default class Totals extends React.Component {
         <td>₡ {debt.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />
+
+    const serviceAmount = this.getserviceAmount(otherCharges)
+
+    const otherChargesRow = serviceAmount > 0
+      ? <tr>
+        <th>Servicio:</th>
+        <td className='price'>₡ {serviceAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
     return <div className='print-compact-presale-totals'>
 
       <table>
@@ -67,6 +88,7 @@ export default class Totals extends React.Component {
             <th>IV</th>
             <td>₡ {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
+          {otherChargesRow}
           <tr className='total-row'>
             <th>Total</th>
             <td>₡ {total.formatMoney(2, ',', '.')}</td>
