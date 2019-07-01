@@ -20,6 +20,16 @@ export default class Totals extends React.Component {
     return total
   }
 
+  getserviceAmount(otherCharges) {
+    let serviceAmount = 0
+    otherCharges.forEach(charge => {
+      if (charge.type == '06') {
+        serviceAmount = serviceAmount + charge.amount
+      }
+    })
+    return serviceAmount
+  }
+
   render() {
     const symbol = this.props.currencySymbol
     const sale = this.props.sale
@@ -32,6 +42,7 @@ export default class Totals extends React.Component {
     let isExempt = false
     let exemptAmount = 0
     let returnedIVA = 0
+    let otherCharges = []
     // LOAD ITEMS FROM SALE ONLY IF LOADED
     if (Object.keys(sale).length > 0) {
       total = sale.cart.cartTotal
@@ -42,6 +53,7 @@ export default class Totals extends React.Component {
       isExempt = sale.cart.isExempt
       exemptAmount = sale.cart.cartExemptAmount
       returnedIVA = sale.cart.returnedIVA
+      otherCharges = sale.cart.otherCharges
     }
 
     let advance = <tr />
@@ -94,6 +106,15 @@ export default class Totals extends React.Component {
     } else {
       taxesLine = ''
     }
+
+    const serviceAmount = this.getserviceAmount(otherCharges)
+
+    const otherChargesRow = serviceAmount > 0
+      ? <tr>
+        <th>Servicio:</th>
+        <td className='price'>{symbol} {serviceAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
     return <div className='reprint-full-invoice-totals'>
 
       <table>
@@ -112,6 +133,7 @@ export default class Totals extends React.Component {
           </tr>
           {ExemptTotal}
           {returnedIVARow}
+          {otherChargesRow}
           <tr className='total-row'>
             <th>Total</th>
             <td>{symbol} {total.formatMoney(2, ',', '.')}</td>
