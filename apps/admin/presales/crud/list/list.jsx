@@ -60,6 +60,10 @@ export default class List extends React.Component {
         field: 'consecutive',
         text: 'Consecutivo'
       }, {
+        field: 'created',
+        text: 'Fecha',
+        type: 'date'
+      }, {
         type: 'function_process',
         field: 'client',
         text: 'Cliente Hacienda',
@@ -89,8 +93,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/presales/' successType='FETCH_PRESALES_FULFILLED' errorType='FETCH_PRESALES_REJECTED' />
-        <Pagination url='/api/presales/' successType='FETCH_PRESALES_FULFILLED' errorType='FETCH_PRESALES_REJECTED' />
+        <ResultsPerPage url='/api/presales/?ordering=-consecutive' successType='FETCH_PRESALES_FULFILLED' errorType='FETCH_PRESALES_REJECTED' />
+        <Pagination url='/api/presales/?ordering=-consecutive' successType='FETCH_PRESALES_FULFILLED' errorType='FETCH_PRESALES_REJECTED' />
       </div>
       : <div />
 
