@@ -37,7 +37,7 @@ export default class Update extends React.Component {
           <Tabs defaultTab='one'>
             <TabList>
               <Tab className='oneThree' tabFor='one'>General</Tab>
-              <Tab className='oneThree' tabFor='two'>Precios e Impuestos</Tab>
+              <Tab className='oneThree' tabFor='two'>Precios</Tab>
               <Tab className='oneThree' tabFor='three'>Extras</Tab>
             </TabList>
 
