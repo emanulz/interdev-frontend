@@ -69,8 +69,8 @@ export default class Update extends React.Component {
           <Tabs>
             <TabList>
               <Tab className='oneFour' tabFor='one'>General</Tab>
-              <Tab className='oneFour' tabFor='two'>Precios e Inventarios</Tab>
-              <Tab className='oneFour' tabFor='four'>Impuestos y Extras</Tab>
+              <Tab className='oneFour' tabFor='two'>Precios e Impuestos</Tab>
+              <Tab className='oneFour' tabFor='four'>Extras</Tab>
               <Tab className='oneFour' tabFor='three'>Existencias</Tab>
             </TabList>
 
