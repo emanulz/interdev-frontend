@@ -16,7 +16,7 @@ export default class Actions extends React.Component {
   componentWillMount() {
     this.props.dispatch({type: 'PRESALE_PANEL_MOUNTED', payload: ''})
     const actionsKwargs = {
-      url: '/api/restaurantserviceorderactions/?limit=200',
+      url: '/api/restaurantserviceorderactions/?limit=40&ordering=-created',
       successType: 'FETCH_ACTIONS_FULFILLED',
       errorType: 'FETCH_ACTIONS_REJECTED'
     }
@@ -29,6 +29,10 @@ export default class Actions extends React.Component {
 
     const headerOrder = [
       {
+        field: 'created',
+        text: 'Creado',
+        type: 'date'
+      }, {
         field: 'table_name',
         text: 'Mesa'
       }, {
@@ -41,15 +45,17 @@ export default class Actions extends React.Component {
         field: 'qty',
         text: 'Cantidad'
       }, {
-        field: 'created',
-        text: 'Creado',
-        type: 'date'
+        field: 'id',
+        type: 'REPRINT_SERVICE_ORDER',
+        idField: 'id',
+        text: 'Reimprimir'
       }
     ]
 
     const tableData = this.props.actions.length ? this.props.actions : []
 
     return <div className='actions'>
+      <h1>ÚLTIMAS COMANDAS</h1>
       <AdminTable headerOrder={headerOrder} model='actions' data={tableData}
         idField='id' />
     </div>

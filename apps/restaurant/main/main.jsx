@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {fecthProfile} from './actions'
 import routes from './routes'
-import {getItemDispatch} from '../../../utils/api.js'
+import {getItemDispatch, loadGlobalConfig} from '../../../utils/api.js'
 import SingleProduct from '../../sales/general/product/singleProduct.jsx'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
 
@@ -36,6 +36,7 @@ export default class Main extends React.Component {
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getItemDispatch(tablesKwargs))
+    this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
   }
 
   // Main Layout

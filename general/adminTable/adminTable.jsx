@@ -100,6 +100,21 @@ export default class AdminTable extends React.Component {
     })
   }
 
+  reprintServiceOrder(id) {
+    const data = {
+      id: id
+    }
+    axios({
+      method: 'post',
+      url: '/api/restaurantserviceorderactions/set_for_reprint_SO/',
+      data: data
+    }).then((response) => {
+      alertify.alert('COMPLETADO', 'Elemento enviado para reimpresión...')
+    }).catch((err) => {
+      alertify.alert('ERROR', `Error al enviar el documento para reimpresión: ${err}`)
+    })
+  }
+
   resendMail(id, mails) {
     const noSpacesMails = mails.replace(/\s/g, '')
     const extraMails = noSpacesMails.split(',')
@@ -258,6 +273,13 @@ export default class AdminTable extends React.Component {
 
           let item
           switch (header.type) {
+            case 'REPRINT_SERVICE_ORDER':
+            {
+              item = <td key={`${el[idField]}_${header.field}_reprintSO`}>
+                <button className='btn btn-primary' onClick={this.reprintServiceOrder.bind(this, itemToRender)} >Reimprimir</button>
+              </td>
+              break
+            }
             case 'SEND_QUOTING_MAIL':
             {
               item = <td key={`${el[idField]}_${header.field}_resend`}>
