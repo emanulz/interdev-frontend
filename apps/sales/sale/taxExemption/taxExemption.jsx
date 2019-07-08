@@ -58,8 +58,11 @@ export default class TaxExemptionPanel extends React.Component {
   exemptSale() {
     const validaData = checkExemptionData(this.props.exemptionData)
     if (validaData) {
+      const exemptData = {
+        percentage: this.props.exemptionData.salePercent
+      }
       this.props.dispatch({type: 'EXEMPT_SALE', payload: true})
-      this.props.dispatch({type: 'SET_SALE_EXEMPT', payload: true})
+      this.props.dispatch({type: 'SET_SALE_EXEMPT', payload: exemptData})
       this.props.dispatch({type: 'HIDE_EXEMPTION_PANEL', payload: -1})
     }
   }
@@ -128,6 +131,11 @@ export default class TaxExemptionPanel extends React.Component {
         <div className='form-group col-xs-8'>
           <label>Fecha del documento</label>
           <input value={this.props.exemptionData.documentDate} name='documentDate' onChange={this.handleInputChange.bind(this)} type='date'
+            className='form-control' />
+        </div>
+        <div className='form-group col-xs-8'>
+          <label>% Exoneración</label>
+          <input value={this.props.exemptionData.salePercent} name='salePercent' onChange={this.handleInputChange.bind(this)} type='number'
             className='form-control' />
         </div>
         <div className='form-group col-xs-8 button-container'>

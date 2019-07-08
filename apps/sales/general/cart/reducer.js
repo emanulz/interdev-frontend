@@ -215,9 +215,10 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_SALE_EXEMPT':
     {
+      console.log('PAYLOADDDD---->', action.payload)
       const cartItems = [...state.cartItems]
       const newCartItems = cartItems.map(item => {
-        item['exempt_percentage'] = 100
+        item['exempt_percentage'] = action.payload.percentage
         return item
       })
       return {
