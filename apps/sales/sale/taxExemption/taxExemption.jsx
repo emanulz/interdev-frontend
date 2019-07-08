@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
 import {checkExemptionData} from './actions.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -45,6 +46,13 @@ export default class TaxExemptionPanel extends React.Component {
     }
 
     const name = target.name
+
+    if (name == 'salePercent') {
+      if (value > 100 || value < 0) {
+        alertify.alert('ERROR', `El valor de porcentaje de exoneración no puede ser mayor a 100% o menor a 0%, el valor digitado fue ${value}%`)
+        return false
+      }
+    }
 
     const exemptionData = {
       ...this.props.exemptionData

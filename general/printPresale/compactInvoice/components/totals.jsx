@@ -85,7 +85,7 @@ export default class Totals extends React.Component {
             <td>₡ {discountTotal.formatMoney(2, ',', '.')}</td>
           </tr>
           <tr>
-            <th>IV</th>
+            <th>IVA</th>
             <td>₡ {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
           {otherChargesRow}

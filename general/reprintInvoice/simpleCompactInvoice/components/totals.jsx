@@ -89,7 +89,7 @@ export default class Totals extends React.Component {
 
     const ExemptTotal = isExempt
       ? <tr>
-        <th>IV Exonerado:</th>
+        <th>IVA Exone:</th>
         <td style={tdStyles} className='price'>{symbol} -{exemptAmount.formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />

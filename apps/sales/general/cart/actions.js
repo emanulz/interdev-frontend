@@ -73,8 +73,8 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
   })
   // TODO Config for round or not
   // total = Math.round(subtotal + taxes)
-  const exemptAmount = exempt ? taxes : 0
-  total = exempt ? subtotal : subtotal + taxes
+  const exemptAmount = exempt ? calcExemptTotal(inCart) : 0
+  total = exempt ? subtotal + taxes - exemptAmount : subtotal + taxes
   // returs a dispatch with a payload of the obtained values
 
   const totalRounded = total
@@ -97,6 +97,19 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
       dontRound: dontRound
     }
   }
+}
+
+function calcExemptTotal(cart) {
+  let cartExemptTotal = 0
+  cart.forEach((item) => {
+    const product = item.product
+    const subTotal = item.subtotal
+    const iv1 = (parseFloat(product.taxes_IVA) > 0)
+      ? subTotal * (product.taxes_IVA / 100)
+      : 0
+    cartExemptTotal = cartExemptTotal + (iv1 * (parseFloat(item.exempt_percentage) / 100))
+  })
+  return cartExemptTotal
 }
 
 export function updateReturnedIVA(inCart, exempt, XMLVersion, payMethod, isHealthProvider) {
