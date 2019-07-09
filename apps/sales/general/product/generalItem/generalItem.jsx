@@ -432,18 +432,18 @@ export default class GenerlItem extends React.Component {
 
             <h3>Precio</h3>
             <div className='general-item-row'>
-              <div className='form-group row-30 first'>
+              <div className='form-group row-20 first'>
                 <label>Cantidad</label>
                 <input value={this.props.qty} name='qty'
                   onChange={this.updateQty.bind(this)}
                   type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
               </div>
-              <div className='form-group row-70 last'>
+              <div className='form-group row-40 middle'>
                 <label>Precio unit Sin IVA</label>
                 <input value={this.props.product.price} name='price' onChange={this.updatePrice.bind(this)}
                   type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
               </div>
-              <div className='form-group row-70 last'>
+              <div className='form-group row-40 last'>
                 <label>Precio unit Con IVA</label>
                 <input value={this.props.product.sell_price} name='sell_price' onChange={this.updatePrice.bind(this)}
                   type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
