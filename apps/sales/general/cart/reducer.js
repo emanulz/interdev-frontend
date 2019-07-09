@@ -215,7 +215,14 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_SALE_EXEMPT':
     {
-      console.log('PAYLOADDDD---->', action.payload)
+      return {
+        ...state,
+        isExempt: true
+      }
+    }
+
+    case 'SET_SALE_EXEMPT_PERCENTAGE':
+    {
       const cartItems = [...state.cartItems]
       const newCartItems = cartItems.map(item => {
         item['exempt_percentage'] = action.payload.percentage
@@ -223,7 +230,6 @@ export default function reducer(state = stateConst, action) {
       })
       return {
         ...state,
-        isExempt: true,
         cartItems: newCartItems
       }
     }
@@ -286,7 +292,8 @@ export default function reducer(state = stateConst, action) {
         discountTotal: action.payload.cart.discountTotal, // discount in currency
         totalNotNotRounded: action.payload.cart.totalNotNotRounded,
         otherCharges: action.payload.cart.otherCharges ? action.payload.cart.otherCharges : [],
-        pays10Percent: action.payload.cart.pays10Percent
+        pays10Percent: action.payload.cart.pays10Percent,
+        cartExemptAmount: action.payload.cartExemptAmount
       }
     }
 
@@ -306,7 +313,8 @@ export default function reducer(state = stateConst, action) {
         discountTotal: action.payload.cart.discountTotal, // discount in currency
         totalNotRounded: action.payload.cart.totalNotRounded,
         otherCharges: action.payload.cart.otherCharges ? action.payload.cart.otherCharges : [],
-        pays10Percent: action.payload.cart.pays10Percent
+        pays10Percent: action.payload.cart.pays10Percent,
+        cartExemptAmount: action.payload.cartExemptAmount
       }
     }
 

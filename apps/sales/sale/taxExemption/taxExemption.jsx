@@ -70,7 +70,8 @@ export default class TaxExemptionPanel extends React.Component {
         percentage: this.props.exemptionData.salePercent
       }
       this.props.dispatch({type: 'EXEMPT_SALE', payload: true})
-      this.props.dispatch({type: 'SET_SALE_EXEMPT', payload: exemptData})
+      this.props.dispatch({type: 'SET_SALE_EXEMPT', payload: true})
+      this.props.dispatch({type: 'SET_SALE_EXEMPT_PERCENTAGE', payload: exemptData})
       this.props.dispatch({type: 'HIDE_EXEMPTION_PANEL', payload: -1})
     }
   }

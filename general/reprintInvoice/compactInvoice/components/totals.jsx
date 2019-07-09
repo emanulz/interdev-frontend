@@ -77,6 +77,13 @@ export default class Totals extends React.Component {
       </tr>
       : <tr />
 
+    const taxTotal = isExempt
+      ? <tr>
+        <th>IVA Neto:</th>
+        <td className='price'>{symbol} {(parseFloat(taxes) - parseFloat(exemptAmount)).formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+
     const returnedIVARow = returnedIVA > 0
       ? <tr>
         <th>IVA Devuelto:</th>
@@ -134,6 +141,7 @@ export default class Totals extends React.Component {
             <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
           </tr>
           {ExemptTotal}
+          {taxTotal}
           {returnedIVARow}
           {otherChargesRow}
           <tr className='total-row'>
