@@ -21,7 +21,9 @@ const stateConst = {
   otherChargesTotal: 0,
   pays10Percent: false,
   pays10Setted: false,
-  returnedIVA: 0
+  returnedIVA: 0,
+  globalExemptPercentage: 0
+
 }
 
 export default function reducer(state = stateConst, action) {
@@ -86,7 +88,7 @@ export default function reducer(state = stateConst, action) {
     {
       // ADD THE EXEMPTION AMOUNT BASED ON THE CURRENT STATUS
       const item = action.payload
-      item['exempt_percentage'] = state.isExempt ? 100 : 0
+      item['exempt_percentage'] = state.isExempt ? state.globalExemptPercentage : 0
       return {
         ...state,
         cartHasItems: true,
@@ -121,7 +123,7 @@ export default function reducer(state = stateConst, action) {
 
       const newCart = [...state.cartItems]
       newCart[action.payload.index] = action.payload.item
-      newCart[action.payload.index]['exempt_percentage'] = state.isExempt ? 100 : 0
+      newCart[action.payload.index]['exempt_percentage'] = state.isExempt ? state.globalExemptPercentage : 0
       return {
         ...state,
         cartItems: newCart
@@ -133,7 +135,7 @@ export default function reducer(state = stateConst, action) {
 
       const newCart = [...state.cartItems]
       newCart[action.payload.index]['lote'] = action.payload.lote
-      newCart[action.payload.index]['exempt_percentage'] = state.isExempt ? 100 : 0
+      newCart[action.payload.index]['exempt_percentage'] = state.isExempt ? state.globalExemptPercentage : 0
       return {
         ...state,
         cartItems: newCart
@@ -230,7 +232,8 @@ export default function reducer(state = stateConst, action) {
       })
       return {
         ...state,
-        cartItems: newCartItems
+        cartItems: newCartItems,
+        globalExemptPercentage: action.payload.percentage
       }
     }
 

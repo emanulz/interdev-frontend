@@ -87,8 +87,14 @@ export default class Totals extends React.Component {
 
     const ExemptTotal = this.props.isExempt
       ? <tr>
-        <th>IV Exonerado:</th>
+        <th>IVA Exonerado:</th>
         <td className='price'>{symbol} {this.props.exemptAmount.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+    const taxTotal = this.props.isExempt
+      ? <tr>
+        <th>IVA Neto:</th>
+        <td className='price'>{symbol} {(this.props.taxes - this.props.exemptAmount).formatMoney(2, ',', '.')}</td>
       </tr>
       : <tr />
     const otherChargesTotal = this.props.otherChargesTotal
@@ -128,10 +134,11 @@ export default class Totals extends React.Component {
             </tr>
 
             <tr>
-              <th>IV:</th>
+              <th>IVA:</th>
               <td className='price'>{symbol} {this.props.taxes.formatMoney(2, ',', '.')}</td>
             </tr>
             {ExemptTotal}
+            {taxTotal}
             {otherCargesRow}
             {returnedIVARow}
             <tr>
