@@ -92,6 +92,10 @@ export default class GenerlItem extends React.Component {
     }
     product[name] = value
 
+    // if (name == 'sell_price') {
+
+    // }
+
     this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
   }
 
@@ -114,8 +118,8 @@ export default class GenerlItem extends React.Component {
     product['rate_code_IVA'] = value
     product['taxes_IVA'] = rateValue
     product['is_used'] = false
-
-    product['price'] = product.sell_price / (1 + (parseFloat(product.taxes_IVA) / 100))
+    product['price'] = product.price
+    product['sell_price'] = product.price * (1 + (parseFloat(product.taxes_IVA) / 100))
 
     this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
   }
@@ -195,20 +199,37 @@ export default class GenerlItem extends React.Component {
   }
 
   updatePrice(ev) {
+    const name = ev.target.name
     const value = Math.abs(ev.target.value)
     // console.log("Target value general item --> ", value)
     const product = {
       ...this.props.product
     }
-    product.sell_price = value
-    if (this.props.config.overrideXMLversion === '4.3') {
-      product.price = value / (1 + (parseFloat(product.taxes_IVA) / 100))
-    } else {
-      if (product.use_taxes) {
-        product.price = value / (1 + (product.taxes / 100))
-        // console.log("Product Price --> ", product.price)
+    if (name == 'sell_price') {
+      product.sell_price = value
+      if (this.props.config.overrideXMLversion === '4.3') {
+        product.price = (value / (1 + (parseFloat(product.taxes_IVA) / 100))).toFixed(2)
       } else {
-        product.price = value
+        if (product.use_taxes) {
+          product.price = value / (1 + (product.taxes / 100))
+          // console.log("Product Price --> ", product.price)
+        } else {
+          product.price = value
+        }
+      }
+    }
+
+    if (name == 'price') {
+      product.price = value
+      if (this.props.config.overrideXMLversion === '4.3') {
+        product.sell_price = (value * (1 + (parseFloat(product.taxes_IVA) / 100))).toFixed(2)
+      } else {
+        if (product.use_taxes) {
+          product.sell_price = value * (1 + (product.taxes / 100))
+          // console.log("Product Price --> ", product.price)
+        } else {
+          product.sell_price = value
+        }
       }
     }
 
@@ -418,7 +439,12 @@ export default class GenerlItem extends React.Component {
                   type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
               </div>
               <div className='form-group row-70 last'>
-                <label>Precio IVI</label>
+                <label>Precio unit Sin IVA</label>
+                <input value={this.props.product.price} name='price' onChange={this.updatePrice.bind(this)}
+                  type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+              </div>
+              <div className='form-group row-70 last'>
+                <label>Precio unit Con IVA</label>
                 <input value={this.props.product.sell_price} name='sell_price' onChange={this.updatePrice.bind(this)}
                   type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} />
               </div>
