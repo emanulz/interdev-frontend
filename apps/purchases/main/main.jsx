@@ -21,7 +21,7 @@ import '../appstyles/main.sass'
   return {
     fetching: store.fetching.fetching,
     sideMenuVisible: store.layout.sideMenuVisible,
-    cartItems: store.cart.cartItems
+    cartItems: store.purchase_cart.cartItems
   }
 })
 export default class Main extends React.Component {

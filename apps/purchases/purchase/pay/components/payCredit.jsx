@@ -2,8 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return {client: store.clients.clientSelected, 
-    debt: store.clients.clientSelectedDebt, 
+  return {client: store.purchase_clients.clientSelected, 
+    debt: store.purchase_clients.clientSelectedDebt, 
     creditDays: store.pay.creditDays,
     isEdit: store.purchase.is_closed,
   }

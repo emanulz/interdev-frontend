@@ -11,14 +11,14 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
-    inCart: store.cart.cartItems,
-    cartItemActive: store.cart.cartItemActive,
-    discountTotal: store.cart.discountTotal,
-    cartTaxes: store.cart.cartTaxes,
+    inCart: store.purchase_cart.cartItems,
+    cartItemActive: store.purchase_cart.cartItemActive,
+    discountTotal: store.purchase_cart.discountTotal,
+    cartTaxes: store.purchase_cart.cartTaxes,
     is_closed: store.purchase.is_closed,
-    orderTransport: store.cart.orderTransport,
-    cartSubtotal: store.cart.cartSubtotal,
-    discount_mode: store.cart.discount_mode,
+    orderTransport: store.purchase_cart.orderTransport,
+    cartSubtotal: store.purchase_cart.cartSubtotal,
+    discount_mode: store.purchase_cart.discount_mode,
     config: store.config.globalConf
   }
 })

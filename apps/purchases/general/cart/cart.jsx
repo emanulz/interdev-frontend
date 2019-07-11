@@ -8,7 +8,7 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
-    discount_mode: store.cart.discount_mode,
+    discount_mode: store.purchase_cart.discount_mode,
   }
 })
 export default class Cart extends React.Component {

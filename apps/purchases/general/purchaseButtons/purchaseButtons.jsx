@@ -9,10 +9,10 @@ import { inspect } from 'util'
         user: store.user.user,
         supplier: store.suppliers.supplierSelected,
         warehouse: store.warehouses.selectedWarehouse,
-        cart:store.cart,
+        cart:store.purchase_cart,
         pay:store.pay,
         purchase:store.purchase,
-        discount_mode: store.cart.discount_mode,
+        discount_mode: store.purchase_cart.discount_mode,
 
     }
 })

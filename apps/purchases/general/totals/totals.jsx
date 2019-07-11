@@ -3,16 +3,16 @@ import {connect} from 'react-redux'
 
 @connect(store=>{
     return{
-        cartItems: store.cart.cartItems,
-        cartSubtotal: store.cart.cartSubtotal,
-        cartTaxes: store.cart.cartTaxes,
-        discountTotal: store.cart.discountTotal,
-        cartTotal: store.cart.cartTotal,
+        cartItems: store.purchase_cart.cartItems,
+        cartSubtotal: store.purchase_cart.cartSubtotal,
+        cartTaxes: store.purchase_cart.cartTaxes,
+        discountTotal: store.purchase_cart.discountTotal,
+        cartTotal: store.purchase_cart.cartTotal,
         creditDays: store.pay.creditDays,
         invoiceDate: store.purchase.invoiceDate,
         invoiceNumber: store.purchase.invoiceNumber,
         is_closed: store.purchase.is_closed,
-        orderTransport: store.cart.orderTransport,
+        orderTransport: store.purchase_cart.orderTransport,
         
     }
 })

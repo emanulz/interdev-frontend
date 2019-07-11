@@ -4,11 +4,11 @@ import { updateItem } from '../product/actions.js'
 
 @connect(store => {
   return {
-    cartItemActive: store.cart.cartItemActive,
-    cartItems: store.cart.cartItems,
-    orderTransport: store.cart.orderTransport,
-    cartSubtotal: store.cart.cartSubtotal,
-    discount_mode: store.cart.discount_mode,
+    cartItemActive: store.purchase_cart.cartItemActive,
+    cartItems: store.purchase_cart.cartItems,
+    orderTransport: store.purchase_cart.orderTransport,
+    cartSubtotal: store.purchase_cart.cartSubtotal,
+    discount_mode: store.purchase_cart.discount_mode,
     selected_warehouse: store.warehouses.selectedWarehouse,
     config: store.config.globalConf
   }

@@ -51,7 +51,7 @@ export default class SideMenu extends React.Component {
     if (this.props.globalConf.CanCreateRequests) {
       childOrders.push(
         {
-          text: 'Pedidos',
+          text: 'Ódenes de Pedidos',
           class: 'fa-gift',
           href: '/purchases/requests'
         }
@@ -60,7 +60,7 @@ export default class SideMenu extends React.Component {
     if (this.props.globalConf.CanCreateOrders) {
       childOrders.push(
         {
-          text: 'Ordenes',
+          text: 'Órdenes de compra',
           class: 'fa-gift',
           href: '/purchases/orders'
         }

@@ -5,7 +5,7 @@ import AdminTable from '../../../../../../general/adminTable/adminTable.jsx'
 
 @connect(store=>{
     return {
-        cartItems: store.cart.cartItems,
+        cartItems: store.purchase_cart.cartItems,
         target_warehouse: store.warehouses.selectedWarehouse,
     }
 })
@@ -51,6 +51,7 @@ export default class Data extends React.Component {
                 type: 'function_process',
                 field: 'product',
                 text: 'Anterior',
+                idUnique: '1',
                 worker_method: this.calculate_previous_inv
 
             },
@@ -62,6 +63,7 @@ export default class Data extends React.Component {
                 type: 'function_process',
                 field: 'product',
                 text: 'Actual',
+                idUnique: '2',
                 worker_method: this.get_actual_inv
 
             },
@@ -71,7 +73,7 @@ export default class Data extends React.Component {
             }
         ]
 
-        const list = <AdminTable headerOrder={header} data={this.props.cartItems}/>
+        const list = <AdminTable idField='uuid' headerOrder={header} data={this.props.cartItems}/>
 
         return list
     }

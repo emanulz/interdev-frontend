@@ -11,15 +11,15 @@ import {recalcCart} from '../../general/product/actions'
 
 @connect((store) => {
   return {
-    clients: store.clients.clients,
-    clientSelected: store.clients.clientSelected,
-    cart: store.cart.cartItems,
-    globalDiscount: store.cart.globalDiscount,
-    client: store.clients.clientSelected,
-    users: store.clients.users,
-    user: store.clients.userSelected,
+    clients: store.purchase_clients.clients,
+    clientSelected: store.purchase_clients.clientSelected,
+    cart: store.purchase_cart.cartItems,
+    globalDiscount: store.purchase_cart.globalDiscount,
+    client: store.purchase_clients.clientSelected,
+    users: store.purchase_clients.users,
+    user: store.purchase_clients.userSelected,
     // movements: store.clientmovements.movements,
-    debt: store.clients.clientSelectedDebt
+    debt: store.purchase_clients.clientSelectedDebt
     // disabled: store.sales.completed
   }
 })

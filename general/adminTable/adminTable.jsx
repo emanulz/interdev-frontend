@@ -522,8 +522,9 @@ export default class AdminTable extends React.Component {
 
             case 'function_process':
             {
+              const idUnique = header.idUnique ? header.idUnique : Math.random()
               const amount = header.worker_method(itemToRender)
-              item = <td key={`${el[idField]}_${header.field}`}>
+              item = <td key={`${el[idField]}_${header.field}_${idUnique}`}>
                 {amount}
               </td>
               break

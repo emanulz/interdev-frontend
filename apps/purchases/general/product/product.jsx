@@ -8,10 +8,10 @@ import {searchProduct} from './actions.js'
 @connect((store) => {
   return {
     //products: store.products.products,
-    client: store.clients.clientSelected,
-    itemsInCart: store.cart.cartItems,
-    inputVal: store.products.inputVal,
-    globalDiscount: store.cart.globalDiscount,
+    client: store.purchase_clients.clientSelected,
+    itemsInCart: store.purchase_cart.cartItems,
+    inputVal: store.purchase_products.inputVal,
+    globalDiscount: store.purchase_cart.globalDiscount,
     is_closed: store.purchase.is_closed,
   }
 })

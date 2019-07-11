@@ -7,7 +7,7 @@ const Mousetrap = require('mousetrap')
 
 @connect((store) => {
   return {
-    cart: store.cart,
+    cart: store.purchase_cart,
     payMethod: store.pay.payMethod,
     pay: store.pay,
   }
