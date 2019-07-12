@@ -16,6 +16,24 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'ORDER_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: true,
+        sideMenuVisible: false
+      }
+    } // case
+
+    case 'REQUEST_PANEL_MOUNTED':
+    {
+      return {
+        ...state,
+        topBarToggleVisible: true,
+        sideMenuVisible: false
+      }
+    } // case
+
     case 'PURCHASE_LIST_PANEL_MOUNTED':
     {
       return {

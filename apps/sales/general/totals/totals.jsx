@@ -124,7 +124,7 @@ export default class Totals extends React.Component {
           <tbody>
             <tr>
               <th>Sub-Total:</th>
-              <td className='price'>{symbol} {this.props.subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+              <td className='price'>{symbol} {this.props.subTotalNoDiscount ? this.props.subTotalNoDiscount.formatMoney(2, ',', '.') : 0 }</td>
 
             </tr>
             <tr>

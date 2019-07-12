@@ -13,10 +13,12 @@ import Sups_Prod from '../cross_ref_views/sups-prod/main.jsx'
 import Prods_Sup from '../cross_ref_views/prods-sup/main.jsx'
 import Purchases_Sup from '../cross_ref_views/purchases-sup/main.jsx'
 import Orders from '../orders/main.jsx'
+import Requests from '../requests/main.jsx'
 
 const routes = <div className='heigh100'>
     <Route exact path='/purchases' component={Home} />
     <Route path='/purchases/orders' component={Orders} />
+    <Route path='/purchases/requests' component={Requests} />
     <Route path='/purchases/add' component={Purchase} />
     <Route path='/purchases/xml_add' component={SmartPurchase} />
     <Route path='/purchases/completelist' component={ListPurchases} />

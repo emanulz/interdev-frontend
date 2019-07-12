@@ -12,11 +12,14 @@
 @import "../../../../backend/static/vendor/side-panel/style"
 @import "../../../styles/reset"
 @import "../../../styles/globalVars"
+@import "../../../styles/ordersTabs"
 @import "purchasesVars"
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro')
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900')
 @import "../../../general/adminTable/adminTable"
 @import "../../../general/pagination/pagination"
+@import "../../sales/general/product/singleProduct"
+@import "../../sales/general/product/generalItem/generalItem"
 
 //defaults
 .mainContainer
@@ -53,6 +56,34 @@
 @import "../layout/_all"
 @import "../../../general/dataTable/dataTable"
 @import "../../../general/fetching/fetching"
-@import "../purchase/all"
 @import "../../../general/search/search"
 @import "../../../general/reportsPanel/reportsPanel"
+@import "../orders/all"
+@import "../requests/all"
+@import "../purchase/all"
+
+
+.select2
+  font-family: 'Source Sans Pro', sans-serif !important
+  width: 100% !important
+  & span
+    font-size: 13px !important
+
+.select2-results__options
+  & li
+    font-size: 13px !important
+
+.select2-container
+  & .select2-selection--single
+    height: 35px
+    & span
+      line-height: 35px
+
+.select2-selection__placeholder
+  font-size: 13px !important
+
+.select2-selection__rendered
+  line-height: 35px !important
+
+.select2-results__option
+  font-family: 'Source Sans Pro', sans-serif !important

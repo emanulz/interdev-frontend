@@ -29,10 +29,10 @@ export default class Order extends React.Component {
     this.props.dispatch(loadGlobalConfig('installed_apps', false, 'FETCH_INSTALLED_APPS_FULFILLED', 'FETCH_INSTALLED_APPS_REJECTED'))
     this.props.dispatch(loadGlobalConfig('receipt_styles', false, 'FETCH_RECEIPT_STYLES_FULFILLED', 'FETCH_RECEIPT_STYLES_REJECTED'))
     this.props.dispatch({type: 'CLEAR_CART'})
-    this.props.dispatch({type: 'ORDER_PANEL_MOUNTED', payload: ''})
+    this.props.dispatch({type: 'REQUEST_PANEL_MOUNTED', payload: ''})
 
     const uuid = uuidv1()
-    this.props.dispatch({type: 'SET_ORDER_UUID', payload: uuid})
+    this.props.dispatch({type: 'SET_REQUEST_UUID', payload: uuid})
 
   }
 
@@ -40,10 +40,9 @@ export default class Order extends React.Component {
   // Main Layout
   render() {
 
-    return <div className='order'>
+    return <div className='request'>
 
       <Currency />
-      <Content />
       <Content />
       <Aside />
       <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}

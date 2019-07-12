@@ -4,7 +4,6 @@ import routes from './routes'
 import { fetchProfile } from './actions'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { fetchGlobalPreferences } from './actions.js'
-import { productSearchDoubleClick } from '../general/product/actions.js'
 import UserProfile from '../../../general/userProfile/userProfile.jsx'
 import { loadGlobalConfig } from '../../../utils/api.js'
 
@@ -12,16 +11,15 @@ import { loadGlobalConfig } from '../../../utils/api.js'
 import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
-import Search from '../../../general/search/search.jsx'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
+
 
 import '../appstyles/main.sass'
 
 @connect(store => {
   return {
     fetching: store.fetching.fetching,
-    sideMenuVisible: store.layout.sideMenuVisible,
-    cartItems: store.purchase_cart.cartItems
+    sideMenuVisible: store.layout.sideMenuVisible
   }
 })
 export default class Main extends React.Component {
@@ -38,7 +36,7 @@ export default class Main extends React.Component {
         const content = <Router>
             <div>
                 <UserProfile />
-                <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind({ cartItems: this.props.cartItems })} />
+                
                 <SideMenu />
 
                 <div id='mainContainer' className={mainContainerClass} >

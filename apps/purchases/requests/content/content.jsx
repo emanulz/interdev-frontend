@@ -9,7 +9,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    fullWidth: store.order.fullWidth,
+    fullWidth: store.request.fullWidth,
     total: store.cart.cartTotal
   }
 })
@@ -21,16 +21,16 @@ export default class Main extends React.Component {
 
   // Main Layout
   render() {
-    const contentClass = this.props.fullWidth ? 'order-content fullWidth' : 'order-content'
-    const cartClass = this.props.fullWidth ? 'order-content-cart' : 'order-content-cart fullHeight'
-    const totalClass = this.props.fullWidth ? 'order-content-total' : 'order-content-total collapsed'
+    const contentClass = this.props.fullWidth ? 'request-content fullWidth' : 'request-content'
+    const cartClass = this.props.fullWidth ? 'request-content-cart' : 'request-content-cart fullHeight'
+    const totalClass = this.props.fullWidth ? 'request-content-total' : 'request-content-total collapsed'
 
     return <div className={contentClass}>
-      <div className='order-content-product' >
-        <Product key='Order' />
+      <div className='request-content-product' >
+        <Product key='Request' />
       </div>
       <div className={cartClass} >
-        <Cart caller='orders' key='Order' />
+        <Cart caller='requests' key='Request' />
       </div>
       <div className={totalClass} >
         ₡ {this.props.total.formatMoney()}

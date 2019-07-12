@@ -322,7 +322,7 @@ export default class CartItems extends React.Component {
         </div>
         <div className='cart-body-item-total'>
           <h5>Total</h5>
-          {symbol} {item.totalWithIv.formatMoney(2, ',', '.')}
+          {symbol} {item.totalWithIv ? item.totalWithIv.formatMoney(2, ',', '.') : 0}
         </div>
 
         <span className={removeIconClass}>

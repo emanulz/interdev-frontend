@@ -15,7 +15,7 @@ import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
 @connect((store) => {
   return {
-    fullWidth: store.order.fullWidth,
+    fullWidth: store.request.fullWidth,
     total: store.cart.cartTotal,
     currencySymbol: store.currency.symbolSelected
   }
@@ -43,7 +43,7 @@ export default class Aside extends React.Component {
             <Tab className='oneTwo' tabFor='one'>General</Tab>
             <Tab className='oneTwo' tabFor='two'>Extras</Tab>
             <TabPanel tabId='one'>
-              <h1>NUEVA ORDEN DE COMPRA:</h1>
+              <h1>NUEVO PEDIDO:</h1>
               {/* <Client /> */}
               {/* <PriceList /> */}
               <Currency />

@@ -76,35 +76,35 @@ export default class Cart extends React.Component {
   // Main Layout
   render() {
 
-    return <div className='cart'>
-      <div className='cart-header'>
-        <div className='cart-header-code'>
+    return <div className='purchase-cart'>
+      <div className='purchase-cart-header'>
+        <div className='purchase-cart-header-code'>
           <h5>Cód</h5>
         </div>
-        <div className='cart-header-description'>
+        <div className='purchase-cart-header-description'>
           <h5>Art</h5>
         </div>
-        <div className='cart-header-qty'>
+        <div className='purchase-cart-header-qty'>
           <h5>Cant</h5>
         </div>
-        <div className="cart-header-cost">
+        <div className="purchase-cart-header-cost">
           <h5>Costo Und</h5>
         </div>
-        <div className="cart-header-discount">
+        <div className="purchase-cart-header-discount">
           <h5>Descuento </h5>
-            <div className="cart-header-discount-radio" >
+            <div className="purchase-cart-header-discount-radio" >
               <input type="radio" name="discount_mode" value="money_based" onChange={this.discountRadioChanged.bind(this)} />
                 ₡
             </div> 
-            <div className="cart-header-discount-radio" >
+            <div className="purchase-cart-header-discount-radio" >
               <input type="radio" name="discount_mode" value="percent_based" defaultChecked={this.props.discount_mode==='percent_based'} onChange={this.discountRadioChanged.bind(this)}/>
                 %
             </div>
         </div>
-        <div className="cart-header-discountToClient">
+        <div className="purchase-cart-header-discountToClient">
           <h5>A Cliente</h5>
         </div>
-        <div className='cart-header-total'>
+        <div className='purchase-cart-header-total'>
           <h5>Sub Total</h5>
         </div>
       </div>

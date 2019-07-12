@@ -233,12 +233,12 @@ export default class CartItems extends React.Component {
 
   render() {
 
-    const cartItems = this.props.inCart
-    const items2 = cartItems.map((item, index) => {
+    const cartItems2 = this.props.inCart
+    const items2 = cartItems2.map((item, index) => {
 
       const activeClass = (item.product.code == this.props.cartItemActive || item.product.barcode == this.props.cartItemActive)
-        ? 'cart-activeRow cart-body-item'
-        : 'cart-body-item'
+        ? 'purchase-cart-activeRow cart-body-item'
+        : 'purchase-cart-body-item'
 
       const removeIconClass = this.props.disabled ? 'removeItemIcon disabled' : 'removeItemIcon'
 
@@ -283,31 +283,31 @@ export default class CartItems extends React.Component {
         key={item.uuid}
         onClick={this.setCartItemActive.bind(this, item.product.code)}
       >
-        <div className='cart-body-item-code'>
+        <div className='purchase-cart-body-item-code'>
           <h5>Código</h5>
           {item.product.code}
         </div>
-        <div className='cart-body-item-description'>
+        <div className='purchase-cart-body-item-description'>
           <h5>Desc</h5>
           {item.product.description}
         </div>
-        <div className='cart-body-item-qty'>
+        <div className='purchase-cart-body-item-qty'>
           <h5>Cantidad</h5>
           {qtyField}
         </div>
-        <div className="cart-body-item-cost">
+        <div className='purchase-cart-body-item-cost'>
           <h5>Costo</h5>
           {(item.cost ? item.cost : item.subtotal / item.qty).toFixed(2)}
         </div>
-        <div className='cart-body-item-discount'>
+        <div className='purchase-cart-body-item-discount'>
           <h5>Descuento</h5>
           {discountField}
         </div>
-        <div className='cart-body-item-discountToClient'>
+        <div className='purchase-cart-body-item-discountToClient'>
           <h5>A Cliente</h5>
           {discountToClientCheckbox}
         </div>
-        <div className='cart-body-item-total'>
+        <div className='purchase-cart-body-item-total'>
           <h5>Total</h5>
           {subTotalField}
         </div>
@@ -320,7 +320,7 @@ export default class CartItems extends React.Component {
       </div>
     })
 
-    return <div id='cart-body' className='cart-body'>
+    return <div id='cart-body' className='purchase-cart-body'>
       {items2}
     </div>
 

@@ -152,7 +152,7 @@ export default class Cart extends React.Component {
         </div>
       </div>
 
-      <CartItems dontCheckInv={this.props.dontCheckInv} />
+      <CartItems key='sales' dontCheckInv={this.props.dontCheckInv} />
 
     </div>
 

@@ -10,9 +10,11 @@ import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
 import PayPanel from './pay/payPanel.jsx'
 import Search from '../../../general/search/search.jsx'
+import { productSearchDoubleClick } from '../general/product/actions.js'
 
 @connect(store=>{
     return {
+    cartItems: store.purchase_cart.cartItems
     }
 })
 export default class Purchase extends React.Component {
@@ -24,7 +26,8 @@ export default class Purchase extends React.Component {
         
         const purchase_consecutive = this.props.location.pathname.split('/').pop()
         this.props.dispatch({type: 'PURCHASE_PANEL_MOUNTED', payload: ''})
-        this.props.dispatch({type:'CLEAR_PURCHASE'})
+        this.props.dispatch({type: 'CLEAR_PURCHASE'})
+        this.props.dispatch({type: 'CLEAR_CART'})
         if(this.props.isEdit){ 
             this.props.dispatch({type:'IS_PURCHASE_EDIT'})
             //load the instance from the db
@@ -43,9 +46,15 @@ export default class Purchase extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.dispatch({type: 'CLEAR_PURCHASE'})
+        this.props.dispatch({type: 'CLEAR_CART'})
+    }
+
     render() {
         return <div className='purchase' >
             <Search modelText='Proveedor' model='supplier' namespace='supplierSearch' onRowDoubleClick = {supplierSearchDoubleClick}/>
+            <Search modelText='Productos' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick.bind({ cartItems: this.props.cartItems })} />
             <Content/>
             <Aside/>
             <PayPanel/>

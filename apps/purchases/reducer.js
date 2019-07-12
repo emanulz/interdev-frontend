@@ -21,7 +21,20 @@ import userProfile from '../../general/userProfile/reducer.js'
 import smart_purchase from '../purchases/smart_purchase/reducer.js'
 import smart_cart from '../purchases/smart_purchase/step_c/reducer.js'
 import cross_ref from '../purchases/cross_ref_views/reducer.js'
+// ORDERS
 import order from './orders/reducer.js'
+import cart from '../sales/general/cart/reducer.js'
+import products from '../sales/general/product/reducer.js'
+import clients from '../sales/general/clients/reducer.js'
+import searchProducts from '../sales/general/search/products/reducer.js'
+import currency from '../../general/currency/reducer.js'
+import completed from '../sales/general/completed/reducer.js'
+import priceList from '../sales/general/priceList/reducer.js'
+import extras from '../sales/general/extras/reducer.js'
+import generalItem from '../sales/general/product/generalItem/reducer.js'
+
+// REQUESTS
+import request from './requests/reducer.js'
 
 export default combineReducers({
   main,
@@ -50,5 +63,15 @@ export default combineReducers({
   supplierLinker: search('supplierLinker'),
   productLinker: search('productLinker'),
   cross_ref,
-  order
+  order,
+  cart,
+  products,
+  clients,
+  currency,
+  completed,
+  priceList,
+  extras,
+  generalItem,
+  request
+
 })
