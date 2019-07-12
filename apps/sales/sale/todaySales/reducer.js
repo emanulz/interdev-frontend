@@ -1,12 +1,23 @@
 
 const stateConst = {
   todaySales: [],
-  isVisible: false
+  isVisible: false,
+  next: null,
+  previous: null
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'SET_TODAY_SALES_PREV_NEXT':
+    {
+      return {
+        ...state,
+        next: action.payload.next,
+        previous: action.payload.previous
+      }
+    }
 
     case 'SHOW_TODAY_SALES_PANEL':
     {
