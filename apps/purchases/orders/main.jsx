@@ -40,7 +40,7 @@ export default class Order extends React.Component {
   // Main Layout
   render() {
 
-    return <div className='order'>
+    return <div className='sale'>
 
       <Currency />
       <Content />
