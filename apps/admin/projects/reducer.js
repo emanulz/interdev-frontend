@@ -23,12 +23,23 @@ const stateConst = {
   projectActiveOld: projectModel,
   nextProject: 0,
   previousProject: 0,
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
+  initialActivitiesFetched: false,
+  initialProjectFetched: false,
+  projectFetching: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'PROJECT_FETCHING':
+    {
+      return {
+        ...state,
+        projectFetching: true
+      }
+    } // case
 
     case 'FETCH_USER_PROJECT_PERMISSIONS_FULLFILLED':
     {
@@ -92,11 +103,13 @@ export default function reducer(state = stateConst, action) {
       try {
         project.activities = JSON.parse(project.activities)
       } catch (err) {
-        project.activities = []
+        project.activities = project.activities ? project.activities : []
       }
       return {
         ...state,
-        projectActive: project
+        projectActive: project,
+        initialProjectFetched: true,
+        projectFetching: false
       }
     }
 
@@ -108,6 +121,17 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         projectActive: project
+      }
+    }
+
+    case 'SET_PROJECT_ACTIVITIES':
+    {
+      const project = {...state.projectActive}
+      project.activities = action.payload
+      return {
+        ...state,
+        projectActive: project,
+        initialActivitiesFetched: true
       }
     }
 
@@ -151,7 +175,10 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         projectActive: projectModel,
-        projectActiveOld: projectModel
+        projectActiveOld: projectModel,
+        initialActivitiesFetched: false,
+        initialProjectFetched: false,
+        projectFetching: false
       }
     }
 

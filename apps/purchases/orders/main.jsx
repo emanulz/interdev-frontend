@@ -10,6 +10,7 @@ import Currency from '../../../general/currency/currency.jsx'
 import Search from '../../../general/search/search.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {productSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../../sales/general/search/actions.js'
+import {supplierSearchDoubleClick} from '../general/suppliers/actions.js'
 import SingleProduct from '../../sales/general/product/singleProduct.jsx'
 import GeneralItem from '../../sales/general/product/generalItem/generalItem.jsx'
 
@@ -46,6 +47,7 @@ export default class Order extends React.Component {
       <Content />
       <Content />
       <Aside />
+      <Search modelText='Proveedor' model='supplier' namespace='supplierSearch' onRowDoubleClick={supplierSearchDoubleClick} />
       <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
       <SingleProduct />

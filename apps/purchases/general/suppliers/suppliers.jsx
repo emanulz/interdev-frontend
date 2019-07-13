@@ -1,73 +1,73 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {getItemDispatch} from '../../../../utils/api'
-import {findSupplier} from './actions'
+import { connect } from 'react-redux'
+import { getItemDispatch } from '../../../../utils/api'
+import { findSupplier } from './actions'
 
-@connect(store=>{
-    return {
-        suppliers:store.suppliers.suppliers,
-        supplierSelected:store.suppliers.supplierSelected,
-        is_closed: store.purchase.is_closed,
-    }
+@connect(store => {
+  return {
+    suppliers: store.suppliers.suppliers,
+    supplierSelected: store.suppliers.supplierSelected,
+    is_closed: store.purchase.is_closed
+  }
 })
 export default class Suppliers extends React.Component {
 
-    componentWillMount(){
-        this.props.dispatch({type: 'FETCHING_STARTED'})
-        this.props.dispatch({type:'CLEAR_SUPPLIERS_ALL'})
+  componentWillMount() {
+    this.props.dispatch({ type: 'FETCHING_STARTED' })
+    this.props.dispatch({ type: 'CLEAR_SUPPLIERS_ALL' })
 
-        const suppliersKwargs = {
-            url: '/api/suppliers/',
-            successType:'FETCH_SUPPLIERS_FULFILLED',
-            errorType: 'FETCH_SUPPLIERS_REJECTED'
-        }
-        this.props.dispatch(getItemDispatch(suppliersKwargs))
+    const suppliersKwargs = {
+      url: '/api/suppliers/',
+      successType: 'FETCH_SUPPLIERS_FULFILLED',
+      errorType: 'FETCH_SUPPLIERS_REJECTED'
     }
+    this.props.dispatch(getItemDispatch(suppliersKwargs))
+  }
 
-    inputKeyPress(ev){
-        if(ev.key == 'Enter'){
-            const code = ev.target.value
-            this.props.dispatch(findSupplier(code, this.props.suppliers))
-        }
+  inputKeyPress(ev) {
+    if (ev.key == 'Enter') {
+      const code = ev.target.value
+      this.props.dispatch(findSupplier(code, this.props.suppliers))
     }
+  }
 
-    displaySearch(){
-        this.props.dispatch({type:'supplierSearch_TOGGLE_SEARCH_PANEL'})
-    }
+  displaySearch() {
+    this.props.dispatch({ type: 'supplierSearch_TOGGLE_SEARCH_PANEL' })
+  }
 
-    render() {
-        
-        return this.buildSupplierData()
-    }
+  render() {
 
-    buildSupplierData(){
-        const prov = this.props.supplierSelected
-        const phone_element = prov.phone_number 
-        ?<div className="supplier-data-row" >
-            <h3>Teléfono:</h3>
-            <span>{prov.phone_number}</span>
+    return this.buildSupplierData()
+  }
+
+  buildSupplierData() {
+    const prov = this.props.supplierSelected
+    const phone_element = prov.phone_number
+      ? <div className='supplier-data-row' >
+        <h3>Teléfono:</h3>
+        <span>{prov.phone_number}</span>
+      </div>
+      : ''
+
+    return <div className='supplier' >
+      <div className='supplier-img' onClick={this.displaySearch.bind(this)}>
+        <img src='/media/default/profile.jpg' />
+      </div>
+
+      <div className='supplier-data'>
+        <div className='supplier-data-row'>
+          <h3>Proveedor:</h3>
+          <input onKeyDown={this.inputKeyPress.bind(this)} type='text'
+            placeholder={this.props.is_closed ? 'Deshabilitado compra cerrada' : 'Código Proveedor'}
+            disabled={this.props.is_closed} />
         </div>
-        :''
-
-        return <div className='supplier' >
-        <div className='supplier-img' onClick={this.displaySearch.bind(this)}>
-            <img src="/media/default/profile.jpg"/>
+        <div className='supplier-data-row'>
+          <h3>Nombre:</h3>
+          <span>{prov.name}</span>
         </div>
-
-        <div className="supplier-data">
-            <div className="supplier-data-row">
-                <h3>Proveedor:</h3>
-                <input onKeyDown={this.inputKeyPress.bind(this)} type="text"
-                placeholder={this.props.is_closed?'Deshabilitado compra cerrada':'Código Proveedor'}
-                disabled={this.props.is_closed}/>
-            </div>
-            <div className="supplier-data-row">
-                <h3>Nombre:</h3>
-                <span>{prov.name}</span>
-            </div>
-            {phone_element}
-        </div>
-        <hr/>
+        {phone_element}
+      </div>
+      <hr />
     </div>
-    }
+  }
 }

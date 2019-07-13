@@ -14,7 +14,8 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
   return {
     fething: store.fetching.fetching,
     activities: store.activities.activities,
-    pageSize: store.pagination.pageSize
+    pageSize: store.pagination.pageSize,
+    searchResults: store.adminSearch.searchResults
   }
 })
 export default class List extends React.Component {
@@ -55,7 +56,9 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const list = <AdminTable headerOrder={headerOrder} model='activities' data={this.props.activities}
+    const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.activities
+    const filteredData = tableData.filter(item => { return !item.deleted })
+    const list = <AdminTable headerOrder={headerOrder} model='activities' data={filteredData}
       addLink='/admin/activities/add' idField='id' />
 
     const content = this.props.fetching ? fetching : list

@@ -68,3 +68,21 @@ export function activitySearchDoubleClick(item, dispatch, activities) {
     administrador del sistema con el siguiete error: ${error}`)
   })
 }
+
+export function getProjectActivities(url) {
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      dispatch({type: 'SET_PROJECT_ACTIVITIES', payload: (response.data.activities ? response.data.activities : [])})
+    }).catch(function(err) {
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `Error al obtener las actividades del proyecto, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `Error al obtener las actividades del proyecto, ERROR: ${err}.`)
+      }
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
+}

@@ -51,7 +51,7 @@ export default class List extends React.Component {
           return '0'
         }
         const parsedInv = JSON.parse(item)
-        return parsedInv[salesWarehouse] === undefined ? 0 : parsedInv[salesWarehouse]
+        return parsedInv[salesWarehouse] === undefined ? 0 : parseFloat(parsedInv[salesWarehouse]).toFixed(2)
       }
 
       return getExistences(item)

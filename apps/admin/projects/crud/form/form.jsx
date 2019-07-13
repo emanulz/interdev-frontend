@@ -1,14 +1,17 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {clientSearchDoubleClick, activitySearchDoubleClick} from '../../actions.js'
+import {clientSearchDoubleClick, activitySearchDoubleClick, getProjectActivities} from '../../actions.js'
 import { setItemById } from '../../../../../utils/api'
 import Search from '../../../../../general/search/search.jsx'
 
 @connect((store) => {
   return {
     project: store.projects.projectActive,
-    projects: store.projects.projects
+    projects: store.projects.projects,
+    initialActivitiesFetched: store.projects.initialActivitiesFetched,
+    initialProjectFetched: store.projects.initialProjectFetched,
+    projectFetching: store.projects.projectFetching
   }
 })
 
@@ -35,19 +38,20 @@ class Form extends React.Component {
         history: this.props.history
       }
       this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch({type: 'PROJECT_FETCHING', payload: ''})
       this.props.dispatch(setItemById(kwargs))
 
     }
   }
 
-  componentWillUpdate(nextProps) {
+  componentDidUpdate(prevProps) {
 
     if (this.props.update) {
 
       const lookUp = this.props.location.pathname.split('/').pop()
 
-      if (nextProps.project.id == '0000000000') {
-
+      if (this.props.project.id == '0000000000' && !this.props.initialProjectFetched && !this.props.projectFetching) {
+        this.props.dispatch({type: 'PROJECT_FETCHING', payload: ''})
         const kwargs = {
           lookUpField: 'consecutive',
           url: '/api/projects',
@@ -63,6 +67,9 @@ class Form extends React.Component {
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch(setItemById(kwargs))
 
+      }
+      if (this.props.project.id != '0000000000' && !this.props.initialActivitiesFetched && this.props.initialProjectFetched) {
+        this.props.dispatch(getProjectActivities(`/api/projects/getRelatedActivities/?id_number=${this.props.project.id}`))
       }
     }
   }

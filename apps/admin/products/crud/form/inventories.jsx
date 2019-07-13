@@ -78,7 +78,7 @@ class Inventories extends React.Component {
       return inventory
         ? <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
-          <td>{inventory[warehouse.id] || '-' }</td>
+          <td>{inventory[warehouse.id] ? parseFloat(inventory[warehouse.id]).toFixed(2) : '-' }</td>
         </tr>
         : <tr key={warehouse.id}>
           <th>{warehouse.code} - {warehouse.name}</th>
