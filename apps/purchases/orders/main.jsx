@@ -13,6 +13,8 @@ import {productSearchDoubleClick, productSearchClick, productSearchActive, produ
 import {supplierSearchDoubleClick} from '../general/suppliers/actions.js'
 import SingleProduct from '../../sales/general/product/singleProduct.jsx'
 import GeneralItem from '../../sales/general/product/generalItem/generalItem.jsx'
+import TaxExemptionPanel from '../../sales/sale/taxExemption/taxExemption.jsx'
+import Send from './send/sendPanel.jsx'
 
 import {connect} from 'react-redux'
 const uuidv1 = require('uuid/v1')
@@ -52,6 +54,8 @@ export default class Order extends React.Component {
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
       <SingleProduct />
       <GeneralItem />
+      <Send />
+      <TaxExemptionPanel />
     </div>
 
   }

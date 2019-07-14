@@ -32,6 +32,8 @@ import completed from '../sales/general/completed/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
 import generalItem from '../sales/general/product/generalItem/reducer.js'
+import send from './orders/send/reducer.js'
+import taxExemption from '../sales/sale/taxExemption/reducer.js'
 
 // REQUESTS
 import request from './requests/reducer.js'
@@ -72,6 +74,8 @@ export default combineReducers({
   priceList,
   extras,
   generalItem,
-  request
+  request,
+  send,
+  taxExemption
 
 })

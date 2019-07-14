@@ -7,7 +7,7 @@ import React from 'react'
 import Notes from '../../../sales/general/extras/notes.jsx'
 import Totals from '../../../sales/general/totals/totals.jsx'
 // import ButtonsExtras from '../buttons/buttonsExtras.jsx'
-// import MainButtons from '../buttons/buttonsMain.jsx'
+import MainButtons from '../buttons/buttonsMain.jsx'
 import Currency from '../../../sales/general/currency/currency.jsx'
 // import PriceList from '../../general/priceList/priceList.jsx'
 import {connect} from 'react-redux'
@@ -125,7 +125,7 @@ export default class Aside extends React.Component {
               </div>
               <Currency />
               <Totals key='sales' />
-              {/* <MainButtons /> */}
+              <MainButtons />
             </TabPanel>
 
             <TabPanel tabId='two'>
