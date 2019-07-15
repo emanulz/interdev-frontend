@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
+import {formatDateTimeAmPm, formatDate} from '../../../../utils/formatDate.js'
 
 @connect((store) => {
   return {
@@ -17,6 +17,10 @@ export default class Data extends React.Component {
     const date = order.created
       ? `${formatDateTimeAmPm(order.created)}`
       : `${formatDateTimeAmPm(new Date())}`
+
+    const deliveryDate = order.delivery_date
+      ? `${formatDate(order.delivery_date)}`
+      : `${formatDate(new Date())}`
 
     const presellerName = orderUser.first_name
       ? `${orderUser.first_name} ${orderUser.last_name}`
@@ -59,6 +63,10 @@ export default class Data extends React.Component {
           <tr>
             <th>Fecha:</th>
             <td>{date}</td>
+          </tr>
+          <tr>
+            <th>Fecha Entrega:</th>
+            <td>{deliveryDate}</td>
           </tr>
         </tbody>
 

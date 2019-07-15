@@ -5,6 +5,7 @@ const stateConst = {
   activities: [],
   projectSelected: '',
   activitySelected: '',
+  deliveryDate: '',
   orders: []
 }
 
@@ -26,6 +27,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         orderUUID: action.payload
+      }
+    } // case
+
+    case 'SET_ORDER_DELIVERY_DATE':
+    {
+      return {
+        ...state,
+        deliveryDate: action.payload
+      }
+    } // case
+
+    case 'CLEAR_ORDER_DELIVERY_DATE':
+    {
+      return {
+        ...state,
+        deliveryDate: ''
       }
     } // case
 

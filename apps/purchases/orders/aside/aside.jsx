@@ -25,7 +25,8 @@ import Select2 from 'react-select2-wrapper'
     projects: store.order.projects,
     activities: store.order.activities,
     project: store.order.projectSelected,
-    activity: store.order.activitySelected
+    activity: store.order.activitySelected,
+    deliveryDate: store.order.deliveryDate
   }
 })
 export default class Aside extends React.Component {
@@ -42,6 +43,8 @@ export default class Aside extends React.Component {
       errorType: 'FETCH_ORDER_PROJECTS_REJECTED'
     }
     this.props.dispatch(getItemDispatch(projectKwargs))
+    const now = new Date()
+    this.props.dispatch({ type: 'SET_ORDER_DELIVERY_DATE', payload: `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}` })
   }
 
   setProjectActive(ev) {
@@ -58,6 +61,11 @@ export default class Aside extends React.Component {
     if (oldProps.project != this.props.project) {
       this.props.dispatch(getProjectActivities(`/api/projects/getRelatedActivities/?id_number=${this.props.project}`))
     }
+  }
+
+  setDeliveryDate(ev) {
+    const value = ev.target.value
+    this.props.dispatch({ type: 'SET_ORDER_DELIVERY_DATE', payload: value })
   }
 
   // Main Layout
@@ -94,6 +102,12 @@ export default class Aside extends React.Component {
               {/* <Client /> */}
               {/* <PriceList /> */}
               <Supplier />
+              <div className='order-aside-project'>
+                <h2>Fecha de Entrega:</h2>
+                <input className='order-delivery-date' type='date' name='deliveryDate'
+                  onChange={this.setDeliveryDate.bind(this)}
+                  value={this.props.deliveryDate} />
+              </div>
               <div className='order-aside-project'>
                 <h2>Proyecto:</h2>
                 <Select2

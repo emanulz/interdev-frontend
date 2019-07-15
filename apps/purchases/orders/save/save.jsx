@@ -16,7 +16,8 @@ import {loadOrderToPrint} from '../../../../general/printOrder/actions.js'
     exemptionData: store.taxExemption.exemptionData,
     isExempt: store.taxExemption.isExempt,
     project: store.order.projectSelected,
-    activity: store.order.activitySelected
+    activity: store.order.activitySelected,
+    deliveryDate: store.order.deliveryDate
   }
 })
 export default class SaveBtn extends React.Component {
@@ -41,7 +42,8 @@ export default class SaveBtn extends React.Component {
       user: JSON.stringify(this.props.user),
       extras: JSON.stringify(this.props.extras),
       currency_code: this.props.currency,
-      exchange_rate: this.props.exchange
+      exchange_rate: this.props.exchange,
+      delivery_date: this.props.deliveryDate
     }
 
     const kwargs = {
