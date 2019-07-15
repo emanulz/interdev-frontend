@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    order: store.printOrder.order,
+    request: store.printRequest.request,
     userProfile: store.userProfile
   }
 })
@@ -11,7 +11,7 @@ export default class Header extends React.Component {
 
   render() {
 
-    const headertext = 'Orden de Compra'
+    const headertext = 'Orden de Cotización'
 
     // BILL DATA
     const profile = this.props.userProfile.profile
@@ -46,12 +46,12 @@ export default class Header extends React.Component {
 
     return <div>
 
-      <div className='reprint-full-order-header'>
+      <div className='reprint-full-request-header'>
 
-        <div className='reprint-full-order-header-logo'>
+        <div className='reprint-full-request-header-logo'>
           <img style={{'width': `${logoWidth}`}} src={logoUrl} />
         </div>
-        <div className='reprint-full-order-header-info'>
+        <div className='reprint-full-request-header-info'>
           <h2>{headerName.toUpperCase()}</h2>
           <h3>{headerName2}</h3>
           <h3>{address1}</h3>
@@ -63,7 +63,7 @@ export default class Header extends React.Component {
 
       </div>
 
-      <div className='reprint-full-order-separator'>
+      <div className='reprint-full-request-separator'>
         <span />
 
         <h1>{headertext}</h1>

@@ -1,6 +1,7 @@
 const stateConst = {
   fullWidth: false,
-  requestUUID: ''
+  requestUUID: '',
+  requests: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -24,6 +25,22 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'FETCH_REQUESTS_FULFILLED':
+    {
+      return {
+        ...state,
+        requests: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_REQUESTS_REJECTED':
+    {
+      return {
+        ...state,
+        requests: []
+      }
+    } // case
   } // switch
 
   return state // default return

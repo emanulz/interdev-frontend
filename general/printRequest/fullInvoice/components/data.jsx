@@ -1,40 +1,36 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {formatDateTimeAmPm, formatDate} from '../../../../utils/formatDate.js'
+import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
 
 @connect((store) => {
   return {
-    order: store.printOrder.order
+    request: store.printRequest.request
   }
 })
 export default class Data extends React.Component {
 
   render() {
 
-    const order = this.props.order
-    const orderUser = Object.keys(order).length > 0 ? order.user : ''
+    const request = this.props.request
+    const requestUser = Object.keys(request).length > 0 ? request.user : ''
 
-    const date = order.created
-      ? `${formatDateTimeAmPm(order.created)}`
+    const date = request.created
+      ? `${formatDateTimeAmPm(request.created)}`
       : `${formatDateTimeAmPm(new Date())}`
 
-    const deliveryDate = order.delivery_date
-      ? `${formatDate(order.delivery_date)}`
-      : `${formatDate(new Date())}`
+    const presellerName = requestUser.first_name
+      ? `${requestUser.first_name} ${requestUser.last_name}`
+      : requestUser.length ? `${requestUser.username}` : ''
 
-    const presellerName = orderUser.first_name
-      ? `${orderUser.first_name} ${orderUser.last_name}`
-      : orderUser.length ? `${orderUser.username}` : ''
+    const id = request.consecutive ? request.consecutive : '0001'
 
-    const id = order.consecutive ? order.consecutive : '0001'
-
-    const seller = Object.keys(orderUser).length !== 0
+    const seller = Object.keys(requestUser).length !== 0
       ? presellerName
       : 'Cajero Predeterminado'
 
-    const supplier = order.supplier ? `${order.supplier.code} - ${order.supplier.name}` : '00 - Proveedor No Asignado'
+    const supplier = request.supplier ? `${request.supplier.code} - ${request.supplier.name}` : '00 - Proveedor No Asignado'
 
-    return <div className='reprint-full-order-data'>
+    return <div className='reprint-full-request-data'>
 
       <table className='supplier-table'>
         <thead>
@@ -63,10 +59,6 @@ export default class Data extends React.Component {
           <tr>
             <th>Fecha:</th>
             <td>{date}</td>
-          </tr>
-          <tr>
-            <th>Fecha Entrega:</th>
-            <td>{deliveryDate}</td>
           </tr>
         </tbody>
 

@@ -3,14 +3,14 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    order: store.printOrder.order
+    request: store.printRequest.request
   }
 })
 export default class Notes extends React.Component {
 
   render() {
 
-    const order = this.props.order
+    const request = this.props.request
     let extras = {
       notes: '',
       client: {
@@ -20,13 +20,13 @@ export default class Notes extends React.Component {
       }
     }
     try {
-      extras = order.extras ? JSON.parse(order.extras) : extras
+      extras = request.extras ? JSON.parse(request.extras) : extras
     } catch (err) { console.log('EXTRAS ERROR PARSE', err) }
     const notes = extras.notes
 
-    return <div className='reprint-full-order-notes'>
+    return <div className='reprint-full-request-notes'>
       <h1>Notas:</h1>
-      <div className='print-full-order-notes-content'>
+      <div className='print-full-request-notes-content'>
         <div>{notes}</div>
       </div>
 

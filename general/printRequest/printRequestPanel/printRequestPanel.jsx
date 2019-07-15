@@ -5,33 +5,33 @@ import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 
 @connect((store) => {
   return {
-    panelVisible: store.printOrder.isVisible,
-    isFull: store.printOrder.isFull
+    panelVisible: store.printRequest.isVisible,
+    isFull: store.printRequest.isFull
   }
 })
-export default class PrintOrderPanel extends React.Component {
+export default class PrintRequestPanel extends React.Component {
 
   hidePanel() {
 
-    this.props.dispatch({type: 'HIDE_PRINT_ORDER_PANEL', payload: -1})
+    this.props.dispatch({type: 'HIDE_PRINT_REQUEST_PANEL', payload: -1})
     // printDiv('full-invoice-print')
   }
 
   togglePanel() {
 
-    this.props.dispatch({type: 'TOGGLE_PRINT_ORDER_PANEL_FULL', payload: -1})
+    this.props.dispatch({type: 'TOGGLE_PRINT_REQUEST_PANEL_FULL', payload: -1})
 
   }
 
   printPanel() {
-    window.printDiv('print-order-print', ['/static/fixedBundles/css/purchases.css'])
+    window.printDiv('print-request-print', ['/static/fixedBundles/css/purchases.css'])
   }
 
   render() {
 
     const isVisible = (this.props.panelVisible)
-      ? 'print-order-panel is-visible'
-      : 'print-order-panel'
+      ? 'print-request-panel is-visible'
+      : 'print-request-panel'
     const isFullClass = (this.props.isFull)
       ? ''
       : ' compact-invoice-on'
@@ -42,10 +42,10 @@ export default class PrintOrderPanel extends React.Component {
 
     return <div className={isVisible}>
 
-      <div className={'print-order-panel-main' + isFullClass}>
-        <div className='print-order-panel-header'>
+      <div className={'print-request-panel-main' + isFullClass}>
+        <div className='print-request-panel-header'>
           <div>
-            Ordern de Compra
+            Orden de Cotización
           </div>
           <div>
             <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
@@ -55,7 +55,7 @@ export default class PrintOrderPanel extends React.Component {
           </div>
         </div>
 
-        <div id='print-order-print' className={'print-order-panel-container' + isFullClass}>
+        <div id='print-request-print' className={'print-request-panel-container' + isFullClass}>
 
           <FullInvoice />
 

@@ -3,19 +3,19 @@ import React from 'react'
 import Header from './components/header.jsx'
 import Data from './components/data.jsx'
 import Table from './components/table.jsx'
-import Totals from './components/totals.jsx'
+// import Totals from './components/totals.jsx'
 import Notes from './components/notes.jsx'
 
 export default class FullInvoice extends React.Component {
 
   render() {
 
-    return <div className='print-full-order'>
+    return <div className='print-full-request'>
 
       <Header />
       <Data />
       <Table />
-      <Totals />
+      {/* <Totals /> */}
       <Notes />
 
     </div>

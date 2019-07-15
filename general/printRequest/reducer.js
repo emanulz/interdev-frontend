@@ -1,14 +1,14 @@
 const stateConst = {
   isVisible: false,
   isFull: true,
-  order: {}
+  request: {}
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
-    case 'SHOW_PRINT_ORDER_PANEL':
+    case 'SHOW_PRINT_REQUEST_PANEL':
     {
       return {
         ...state,
@@ -16,7 +16,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'HIDE_PRINT_ORDER_PANEL':
+    case 'HIDE_PRINT_REQUEST_PANEL':
     {
       return {
         ...state,
@@ -24,7 +24,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'TOGGLE_PRINT_ORDER_PANEL':
+    case 'TOGGLE_PRINT_REQUEST_PANEL':
     {
       const visibleOrNot = state.isVisible
       return {
@@ -33,7 +33,7 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'TOGGLE_PRINT_ORDER_PANEL_FULL':
+    case 'TOGGLE_PRINT_REQUEST_PANEL_FULL':
     {
       const fullOrNot = state.isFull
       return {
@@ -42,27 +42,27 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
-    case 'SET_PRINT_ORDER':
+    case 'SET_PRINT_REQUEST':
     {
-      const order = action.payload
+      const request = action.payload
       try {
-        order.cart = JSON.parse(order.cart)
-        order.user = JSON.parse(order.user)
-        order.supplier = JSON.parse(order.supplier)
-        order.project = JSON.parse(order.project)
-        order.activity = JSON.parse(order.activity)
+        request.cart = JSON.parse(request.cart)
+        request.user = JSON.parse(request.user)
+        request.supplier = JSON.parse(request.supplier)
+        request.project = JSON.parse(request.project)
+        request.activity = JSON.parse(request.activity)
       } catch (err) { console.log(err) }
       return {
         ...state,
-        order: order
+        request: request
       }
     } // case
 
-    case 'CLEAR_PRINT_ORDER':
+    case 'CLEAR_PRINT_REQUEST':
     {
       return {
         ...state,
-        order: {}
+        request: {}
       }
     } // case
 

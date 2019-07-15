@@ -34,6 +34,7 @@ import generalItem from '../sales/general/product/generalItem/reducer.js'
 import send from './orders/send/reducer.js'
 import taxExemption from '../sales/sale/taxExemption/reducer.js'
 import printOrder from '../../general/printOrder/reducer.js'
+import printRequest from '../../general/printRequest/reducer.js'
 
 // REQUESTS
 import request from './requests/reducer.js'
@@ -78,6 +79,7 @@ export default combineReducers({
   request,
   send,
   taxExemption,
-  printOrder
+  printOrder,
+  printRequest
 
 })

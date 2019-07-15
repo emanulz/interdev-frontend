@@ -13,7 +13,7 @@ import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
 import PrintOrder from '../../../general/printOrder/printOrderPanel/printOrderPanel.jsx'
-
+import PrintRequest from '../../../general/printRequest/printRequestPanel/printRequestPanel.jsx'
 
 import '../appstyles/main.sass'
 
@@ -49,6 +49,7 @@ export default class Main extends React.Component {
         </div>
         <ReceiptPanel />
         <PrintOrder />
+        <PrintRequest />
       </div>
     </Router>
 

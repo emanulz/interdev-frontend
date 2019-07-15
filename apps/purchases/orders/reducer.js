@@ -97,7 +97,7 @@ export default function reducer(state = stateConst, action) {
         activitySelected: action.payload
       }
     } // case
-    case 'CLEAR__ORDER_ACTIVITY':
+    case 'CLEAR_ORDER_ACTIVITY':
     {
       return {
         ...state,
