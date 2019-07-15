@@ -12,6 +12,7 @@ import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 import ReceiptPanel from '../general/receipt/receiptPanel/receiptPanel.jsx'
+import PrintOrder from '../../../general/printOrder/printOrderPanel/printOrderPanel.jsx'
 
 
 import '../appstyles/main.sass'
@@ -30,28 +31,29 @@ export default class Main extends React.Component {
     this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
   }
 
-    render() {
-        const fetching = this.props.fetching ? <Fetching /> : ''
-        const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer' : 'mainContainer sideHidden'
-        const content = <Router>
-            <div>
-                <UserProfile />
-                
-                <SideMenu />
+  render() {
+    const fetching = this.props.fetching ? <Fetching /> : ''
+    const mainContainerClass = this.props.sideMenuVisible ? 'mainContainer' : 'mainContainer sideHidden'
+    const content = <Router>
+      <div>
+        <UserProfile />
 
-                <div id='mainContainer' className={mainContainerClass} >
-                    <TopBar />
-                    <div className='mainContainer-content' >
-                        {routes}
-                        {fetching}
-                    </div>
-                </div>
-                <ReceiptPanel />
-            </div>
-        </Router>
+        <SideMenu />
 
-        return <div>
-            {content}
+        <div id='mainContainer' className={mainContainerClass} >
+          <TopBar />
+          <div className='mainContainer-content' >
+            {routes}
+            {fetching}
+          </div>
         </div>
-    }
+        <ReceiptPanel />
+        <PrintOrder />
+      </div>
+    </Router>
+
+    return <div>
+      {content}
+    </div>
+  }
 }

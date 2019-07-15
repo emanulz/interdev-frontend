@@ -55,7 +55,7 @@ export default class Order extends React.Component {
       <SingleProduct />
       <GeneralItem />
       <Send />
-      <TaxExemptionPanel />
+      {/* <TaxExemptionPanel /> */}
     </div>
 
   }

@@ -2,7 +2,7 @@ import React from 'react'
 // import {saveItem, loadSale} from '../actions'
 import { saveItem } from './actions'
 import {connect} from 'react-redux'
-// import {loadOrderToPrint} from '../../../../general/printOrder/actions.js'
+import {loadOrderToPrint} from '../../../../general/printOrder/actions.js'
 
 @connect((store) => {
   return {
@@ -63,7 +63,7 @@ export default class SaveBtn extends React.Component {
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       // PRINT THE ORDER
-      // this.props.dispatch(loadOrderToPrint(data.consecutive))
+      this.props.dispatch(loadOrderToPrint(data.consecutive))
     }).catch((err) => {
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)

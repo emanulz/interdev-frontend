@@ -51,18 +51,32 @@ export default class SideMenu extends React.Component {
     if (this.props.globalConf.CanCreateRequests) {
       childOrders.push(
         {
-          text: 'Ódenes de Pedidos',
+          text: 'Ódenes de cotización',
           class: 'fa-gift',
           href: '/purchases/requests'
+        }
+      )
+      childOrders.push(
+        {
+          text: 'Listado de Ódenes de Cot.',
+          class: 'fa-gift',
+          href: '/purchases/requestslist'
         }
       )
     }
     if (this.props.globalConf.CanCreateOrders) {
       childOrders.push(
         {
-          text: 'Órdenes de compra',
+          text: 'Crear Órden De Compra',
           class: 'fa-gift',
           href: '/purchases/orders'
+        }
+      )
+      childOrders.push(
+        {
+          text: 'Listado de Órdenes',
+          class: 'fa-gift',
+          href: '/purchases/orderslist'
         }
       )
     }

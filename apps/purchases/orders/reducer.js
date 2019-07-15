@@ -4,7 +4,8 @@ const stateConst = {
   projects: [],
   activities: [],
   projectSelected: '',
-  activitySelected: ''
+  activitySelected: '',
+  orders: []
 }
 
 export default function reducer(state = stateConst, action) {
@@ -84,6 +85,23 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         activitySelected: ''
+      }
+    } // case
+
+    case 'FETCH_ORDERS_FULFILLED':
+    {
+      return {
+        ...state,
+        orders: action.payload
+      }
+
+    } // case
+
+    case 'FETCH_ORDERS_REJECTED':
+    {
+      return {
+        ...state,
+        orders: []
       }
     } // case
   } // switch

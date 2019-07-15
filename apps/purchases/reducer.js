@@ -26,7 +26,6 @@ import order from './orders/reducer.js'
 import cart from '../sales/general/cart/reducer.js'
 import products from '../sales/general/product/reducer.js'
 import clients from '../sales/general/clients/reducer.js'
-import searchProducts from '../sales/general/search/products/reducer.js'
 import currency from '../../general/currency/reducer.js'
 import completed from '../sales/general/completed/reducer.js'
 import priceList from '../sales/general/priceList/reducer.js'
@@ -34,6 +33,7 @@ import extras from '../sales/general/extras/reducer.js'
 import generalItem from '../sales/general/product/generalItem/reducer.js'
 import send from './orders/send/reducer.js'
 import taxExemption from '../sales/sale/taxExemption/reducer.js'
+import printOrder from '../../general/printOrder/reducer.js'
 
 // REQUESTS
 import request from './requests/reducer.js'
@@ -62,6 +62,7 @@ export default combineReducers({
   userProfile,
   smart_purchase,
   smart_cart,
+  adminSearch: search('adminSearch'),
   supplierLinker: search('supplierLinker'),
   productLinker: search('productLinker'),
   cross_ref,
@@ -76,6 +77,7 @@ export default combineReducers({
   generalItem,
   request,
   send,
-  taxExemption
+  taxExemption,
+  printOrder
 
 })
