@@ -291,45 +291,64 @@ export default class CartItems extends React.Component {
           type='number' className='form-control'
           value={item.discount}
         />
+      const fields = this.props.caller == 'requests'
+        ? <div className={activeClass}
+          key={item.uuid}
+          onClick={this.setCartItemActive.bind(this, item.product.code)}>
 
-      return <div className={activeClass}
-        key={item.uuid}
-        onClick={this.setCartItemActive.bind(this, item.product.code)}>
+          <div className='cart-body-item-requests-code' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
+            <h5>Código</h5>
+            {item.product.code}
+          </div>
+          <div className='cart-body-item-requests-description' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
+            <h5>Desc</h5>
+            {item.product.description}
+          </div>
+          <div className='cart-body-item-requests-qty'>
+            <h5>Cantidad</h5>
+            {qtyField}
+          </div>
+          <span className={removeIconClass}>
+            <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />
+          </span>
+        </div>
+        : <div className={activeClass}
+          key={item.uuid}
+          onClick={this.setCartItemActive.bind(this, item.product.code)}>
 
-        <div className='cart-body-item-code' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
-          <h5>Código</h5>
-          {item.product.code}
+          <div className='cart-body-item-code' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
+            <h5>Código</h5>
+            {item.product.code}
+          </div>
+          <div className='cart-body-item-description' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
+            <h5>Desc</h5>
+            {item.product.description}
+          </div>
+          <div className='cart-body-item-qty'>
+            <h5>Cantidad</h5>
+            {qtyField}
+          </div>
+          <div className='cart-body-item-unitPrice'>
+            <h5>P Unit</h5>
+            {symbol} {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
+          </div>
+          <div className='cart-body-item-discount'>
+            <h5>Descuento</h5>
+            {discountField}
+          </div>
+          <div className='cart-body-item-iva'>
+            <h5>IV</h5>
+            {taxesToUse}
+          </div>
+          <div className='cart-body-item-total'>
+            <h5>Total</h5>
+            {symbol} {item.totalWithIv ? item.totalWithIv.formatMoney(2, ',', '.') : 0}
+          </div>
+          <span className={removeIconClass}>
+            <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />
+          </span>
         </div>
-        <div className='cart-body-item-description' onDoubleClick={this.showProductPanel.bind(this, item.product)}>
-          <h5>Desc</h5>
-          {item.product.description}
-        </div>
-        <div className='cart-body-item-qty'>
-          <h5>Cantidad</h5>
-          {qtyField}
-        </div>
-        <div className='cart-body-item-unitPrice'>
-          <h5>P Unit</h5>
-          {symbol} {parseFloat(item.priceToUse).formatMoney(2, ',', '.')}
-        </div>
-        <div className='cart-body-item-discount'>
-          <h5>Descuento</h5>
-          {discountField}
-        </div>
-        <div className='cart-body-item-iva'>
-          <h5>IV</h5>
-          {taxesToUse}
-        </div>
-        <div className='cart-body-item-total'>
-          <h5>Total</h5>
-          {symbol} {item.totalWithIv ? item.totalWithIv.formatMoney(2, ',', '.') : 0}
-        </div>
-
-        <span className={removeIconClass}>
-          <i onClick={this.removeItem.bind(this, item.uuid)} className='fa fa-times-circle' />
-        </span>
-
-      </div>
+      return fields
     })
 
     // return <tbody className='table-body'>

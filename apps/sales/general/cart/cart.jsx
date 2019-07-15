@@ -127,8 +127,19 @@ export default class Cart extends React.Component {
     // const loteField = useLote
     //   ? <th>Lote</th>
     //   : <th />
-    return <div className='cart'>
-      <div className='cart-header'>
+    const header = this.props.caller == 'requests'
+      ? <div className='cart-header'>
+        <div className='cart-header-requests-code'>
+          <h5>Cód</h5>
+        </div>
+        <div className='cart-header-requests-description'>
+          <h5>Art</h5>
+        </div>
+        <div className='cart-header-requests-qty'>
+          <h5>Cant</h5>
+        </div>
+      </div>
+      : <div className='cart-header'>
         <div className='cart-header-code'>
           <h5>Cód</h5>
         </div>
@@ -151,9 +162,9 @@ export default class Cart extends React.Component {
           <h5>Total IVI</h5>
         </div>
       </div>
-
-      <CartItems key='sales' dontCheckInv={this.props.dontCheckInv} />
-
+    return <div className='cart'>
+      {header}
+      <CartItems caller={this.props.caller} key='sales' dontCheckInv={this.props.dontCheckInv} />
     </div>
 
   }

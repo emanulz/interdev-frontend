@@ -51,7 +51,7 @@ export default class SideMenu extends React.Component {
     if (this.props.globalConf.CanCreateRequests) {
       childOrders.push(
         {
-          text: 'Ódenes de cotización',
+          text: 'Crear Ódenes de cotización',
           class: 'fa-gift',
           href: '/purchases/requests'
         }
