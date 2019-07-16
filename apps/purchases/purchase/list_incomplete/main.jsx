@@ -4,6 +4,7 @@ import {getPaginationItemDispatch} from '../../../../utils/api.js'
 import AdminTable from '../../../../general/adminTable/adminTable.jsx'
 import Pagination from '../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
+import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
 import {saveItem} from '../../../../utils/api'
 
 @connect(store=>{
@@ -11,6 +12,7 @@ import {saveItem} from '../../../../utils/api'
         purchases: store.purchase.purchasesTableFriendly,
         fetching: store.fetching.fetching,
         pageSize: store.pagination.pageSize,
+        searchResults: store.purchaseSearch.searchResults,
         requires_incomplete_refresh: store.purchase.requires_incomplete_refresh,
     }
 })
@@ -122,10 +124,10 @@ export default class ListIncompletePurchases  extends React.Component {
                 <h1>Listado de Compras Incompletas: </h1>
             </div>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/purchaseincompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
-                <Pagination url='/api/purchaseincompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <ResultsPerPage url='/api/purchaseincompletelist/?ordering=-consecutive' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <Pagination url='/api/purchaseincompletelist/?ordering=-consecutive' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
             </div>
-            
+            <SearchAdmin model='purchase' namespace='purchaseSearch' notDeleted />
             {content}
         </div>
     

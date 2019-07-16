@@ -135,8 +135,8 @@ export default class ListPurchases  extends React.Component {
                 <h1>Listado de Compras: </h1>
             </div>
             <div className='admin-list-results-pagination' >
-                <ResultsPerPage url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
-                <Pagination url='/api/purchasecompletelist/' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <ResultsPerPage url='/api/purchasecompletelist/?ordering=-consecutive' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
+                <Pagination url='/api/purchasecompletelist/?ordering=-consecutive' successType='FETCH_PURCHASES_FULFILLED' errorType='FETCH_PURCHASES_REJECTED' />
             </div>
             <SearchAdmin model='purchase' namespace='purchaseSearch' />
             {content}

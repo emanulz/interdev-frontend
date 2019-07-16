@@ -73,7 +73,7 @@ export default class List extends React.Component {
         <h1>Mantenimiento de Actividades:</h1>
         {addLink}
       </div>
-      <SearchAdmin model='activity' namespace='adminSearch' />
+      <SearchAdmin model='activity' namespace='adminSearch' notDeleted />
 
       <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/activities/' successType='FETCH_ACTIVITIES_FULFILLED' errorType='FETCH_ACTIVITIES_REJECTED' />

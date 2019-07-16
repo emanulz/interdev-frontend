@@ -85,7 +85,7 @@ export default class List extends React.Component {
         <h1>Mantenimiento de Proyectos:</h1>
         {addLink}
       </div>
-      <SearchAdmin model='project' namespace='adminSearch' />
+      <SearchAdmin model='project' namespace='adminSearch' notDeleted />
 
       <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/projects/' successType='FETCH_PROJECTS_FULFILLED' errorType='FETCH_PROJECTS_REJECTED' />
