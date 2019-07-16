@@ -52,7 +52,7 @@ export default class NSReservesPanel extends React.Component {
       } catch (err) { data.extras = null }
       // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
       getFullClientById(data.client.id, _this.props.dispatch)
-      _this.props.dispatch({type: 'LOAD_CART', payload: data.cart})
+      _this.props.dispatch({type: 'LOAD_CART', payload: _this.checkAndFixCartIVA(data.cart)})
       _this.props.dispatch({type: 'SET_PRESALE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_NSRESERVE_ID', payload: data.id})
       _this.props.dispatch({type: 'SET_PRESALE_USER', payload: data.user})
@@ -68,6 +68,22 @@ export default class NSReservesPanel extends React.Component {
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
+  }
+
+  checkAndFixCartIVA(cart) {
+    cart.cartItems.forEach(line => {
+      if (!line.product.taxes_IVA) {
+        line.product.tax_code_IVA = '01'
+        if (parseFloat(line.product.taxes) == 0) {
+          line.product.rate_code_IVA = '01'
+          line.product.taxes_IVA = '0.00000'
+        } else {
+          line.product.rate_code_IVA = '08'
+          line.product.taxes_IVA = '13.00000'
+        }
+      }
+    })
+    return cart
   }
 
   setNullSinglePresale(id, consecutive) {

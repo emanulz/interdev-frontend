@@ -50,8 +50,13 @@ export default class List extends React.Component {
         if (salesWarehouse === undefined || salesWarehouse === '') {
           return '0'
         }
-        const parsedInv = JSON.parse(item)
-        return parsedInv[salesWarehouse] === undefined ? 0 : parseFloat(parsedInv[salesWarehouse]).toFixed(2)
+        let parsedInv = null
+        try {
+          parsedInv = JSON.parse(item)
+          return parsedInv[salesWarehouse] === undefined ? 0 : parseFloat(parsedInv[salesWarehouse]).toFixed(2)
+        } catch (err) {
+          return 0
+        }
       }
 
       return getExistences(item)

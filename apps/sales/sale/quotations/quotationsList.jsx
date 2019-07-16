@@ -100,6 +100,17 @@ export default class QuotationsPanel extends React.Component {
       const oldProduct = cart[item].product
       const price1 = oldProduct.price ? oldProduct.price : oldProduct.price1
       oldProduct.price1 = price1
+      // FIX FOR TAXES ON PRODUCT WITH NO IVA
+      if (!oldProduct.taxes_IVA) {
+        oldProduct.tax_code_IVA = '01'
+        if (parseFloat(oldProduct.taxes) == 0) {
+          oldProduct.rate_code_IVA = '01'
+          oldProduct.taxes_IVA = '0.00000'
+        } else {
+          oldProduct.rate_code_IVA = '08'
+          oldProduct.taxes_IVA = '13.00000'
+        }
+      }
       const lineData = {
         default_discount: cart[item].discount,
         id: oldProduct.id,

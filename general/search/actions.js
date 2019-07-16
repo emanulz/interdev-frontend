@@ -13,8 +13,15 @@ export function searchItem(text, model, namespace, clientId, presaleType, notDel
     }
   }
   const presaleTypeInner = presaleType ? presaleType : ''
-  console.log('PRESALEEEEE TYPE', presaleTypeInner)
-  const newstr = text.replace(/%/g, '&').replace('+', '!', 'gi').replace('*', '$', 'gi')
+  let newstr = text.replace(/%/g, '&').replace('+', '!', 'gi').replace('*', '$', 'gi')
+  // INTERCEPT STRING ONLY IF MODEL IS CLIENT
+  if (model == 'client') {
+    const newText = text.split('*')
+    if (newText[0] && newText[1]) {
+      newstr = `name=${newText[0]}&last_name=${newText[1]}`
+    }
+  }
+  console.log('TEXT TO SEARCH----->', newstr)
   const data = {
     model: model,
     max_results: 100,

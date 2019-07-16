@@ -162,7 +162,17 @@ export default class WorkOrdersPanel extends React.Component {
         const product = data.results[0]
         const price1 = oldProduct.price1 ? oldProduct.price1 : oldProduct.price
         product.price1 = price1
-
+        // FIX FOR TAXES ON PRODUCT WITH NO IVA
+        if (!product.taxes_IVA) {
+          product.tax_code_IVA = '01'
+          if (parseFloat(product.taxes) == 0) {
+            product.rate_code_IVA = '01'
+            product.taxes_IVA = '0.00000'
+          } else {
+            product.rate_code_IVA = '08'
+            product.taxes_IVA = '13.00000'
+          }
+        }
         const lineData = {
           default_discount: '0',
           id: product.id,
@@ -305,7 +315,7 @@ export default class WorkOrdersPanel extends React.Component {
             ...product
           }
           productCopy.price = usedObjects[item].amount / 1.13
-          productCopy.price1 = usedObjects[item].amount 
+          productCopy.price1 = usedObjects[item].amount / 1.13
           productCopy.description = usedObjects[item].description
           const lineData = {
             default_discount: '0',

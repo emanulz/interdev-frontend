@@ -90,7 +90,7 @@ export function loadPresaleItem(id, dispatch) {
     // _this.props.dispatch({type: 'CLIENT_SELECTED', payload: data.client})
     dispatch({type: 'SET_PRESALE_ID', payload: data.id})
     // IF it is quotation do as needed
-    dispatch({type: 'LOAD_CART', payload: data.cart})
+    dispatch({type: 'LOAD_CART', payload: checkAndFixCartIVA(data.cart)})
     dispatch({type: 'PRESALE_LOADED', payload: data.user})
     dispatch({type: 'SET_PRESALE_USER', payload: data.user})
     dispatch({type: 'SET_PRESALE_EXTRAS', payload: data.extras})
@@ -122,4 +122,20 @@ export function loadPresaleItem(id, dispatch) {
     }
     dispatch({type: 'FETCHING_DONE', payload: ''})
   })
+}
+
+function checkAndFixCartIVA(cart) {
+  cart.cartItems.forEach(line => {
+    if (!line.product.taxes_IVA) {
+      line.product.tax_code_IVA = '01'
+      if (parseFloat(line.product.taxes) == 0) {
+        line.product.rate_code_IVA = '01'
+        line.product.taxes_IVA = '0.00000'
+      } else {
+        line.product.rate_code_IVA = '08'
+        line.product.taxes_IVA = '13.00000'
+      }
+    }
+  })
+  return cart
 }
