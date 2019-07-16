@@ -304,8 +304,8 @@ export default class WorkOrdersPanel extends React.Component {
           const productCopy = {
             ...product
           }
-          productCopy.price = usedObjects[item].amount
-          productCopy.price1 = usedObjects[item].amount
+          productCopy.price = usedObjects[item].amount / 1.13
+          productCopy.price1 = usedObjects[item].amount / 1.13
           productCopy.description = usedObjects[item].description
           const lineData = {
             default_discount: '0',
