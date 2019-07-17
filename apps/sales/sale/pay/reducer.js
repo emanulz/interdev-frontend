@@ -194,6 +194,9 @@ export default function reducer(state = stateConst, action) {
     case 'CLEAR_PAY_OBJECT':
     {
       // state = stateConst
+      // DO NOT CLEAR ADVANCE
+      const payObjectCopy = {...state.payObject}
+      const cshaBefore = payObjectCopy.csha
       return {
         ...state,
         payMethodActive: 'CASH',
@@ -203,7 +206,7 @@ export default function reducer(state = stateConst, action) {
           cred: [{'type': 'CRED', 'amount': 0}],
           vouc: [],
           tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
-          csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
+          csha: cshaBefore
         }
       }
     } // case
@@ -211,6 +214,8 @@ export default function reducer(state = stateConst, action) {
     case 'CLEAR_PAY_OBJECT_MANTAIN_METHOD':
     {
       // state = stateConst
+      const payObjectCopy = {...state.payObject}
+      const cshaBefore = payObjectCopy.csha
       return {
         ...state,
         payObject: {
@@ -219,7 +224,7 @@ export default function reducer(state = stateConst, action) {
           cred: [{'type': 'CRED', 'amount': 0}],
           vouc: [],
           tran: [{'type': 'TRAN', 'amount': 0, 'transferNumber': '', 'bank': ''}],
-          csha: [{'type': 'CSHA', 'amount': 0, 'cashAdvanceId': ''}]
+          csha: cshaBefore
         }
       }
     } // case
