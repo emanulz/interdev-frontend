@@ -74,7 +74,7 @@ export default class NSReservesPanel extends React.Component {
     cart.cartItems.forEach(line => {
       if (!line.product.taxes_IVA) {
         line.product.tax_code_IVA = '01'
-        if (parseFloat(line.product.taxes) == 0 || !line.product.taxes.use_taxes) {
+        if (parseFloat(line.product.taxes) == 0 || !line.product.use_taxes) {
           line.product.rate_code_IVA = '01'
           line.product.taxes_IVA = '0.00000'
         } else {

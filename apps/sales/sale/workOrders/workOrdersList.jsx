@@ -165,7 +165,7 @@ export default class WorkOrdersPanel extends React.Component {
         // FIX FOR TAXES ON PRODUCT WITH NO IVA
         if (!product.taxes_IVA) {
           product.tax_code_IVA = '01'
-          if (parseFloat(product.taxes) == 0 || !product.taxes.use_taxes) {
+          if (parseFloat(product.taxes) == 0 || !product.use_taxes) {
             product.rate_code_IVA = '01'
             product.taxes_IVA = '0.00000'
           } else {
