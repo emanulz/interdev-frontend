@@ -43,6 +43,9 @@ export default class List extends React.Component {
         text: 'Código',
         type: 'primary'
       }, {
+        field: 'identifier',
+        text: 'Identificador'
+      }, {
         field: 'name',
         text: 'Nombre'
       }, {

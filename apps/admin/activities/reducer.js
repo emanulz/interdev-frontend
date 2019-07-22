@@ -7,6 +7,7 @@ const defaultPermissions = {
 
 const activityModel = {
   id: '0000000000',
+  identifier: '',
   name: '',
   description: '',
   is_active: true
