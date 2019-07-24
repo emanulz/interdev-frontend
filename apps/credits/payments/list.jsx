@@ -25,7 +25,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_PAYMENTS', payload: ''})
 
     const paymentKwargs = {
-      url: '/api/creditpaymentslist',
+      url: '/api/creditpaymentslist/?ordering=-consecutive',
       successType: 'FETCH_PAYMENTS_FULFILLED',
       errorType: 'FETCH_PAYMENTS_REJECTED'
     }
@@ -135,8 +135,8 @@ export default class List extends React.Component {
         />
       </div>
       <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/creditpaymentslist/' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
-        <Pagination url='/api/creditpaymentslist/' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
+        <ResultsPerPage url='/api/creditpaymentslist/?ordering=-consecutive' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
+        <Pagination url='/api/creditpaymentslist/?ordering=-consecutive' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
       </div>
       {content}
     </div>

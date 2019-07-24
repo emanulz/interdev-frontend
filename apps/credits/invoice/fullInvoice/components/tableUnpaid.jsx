@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {formatDate} from '../../../../../utils/formatDate.js'
+import {formatDate, formatDateTimeAmPm} from '../../../../../utils/formatDate.js'
 
 @connect((store) => {
   return {
@@ -37,7 +37,7 @@ export default class Table extends React.Component {
       : <tr>
         <td>NO HAY PENDIENTES</td>
       </tr>
-    const date = formatDate(new Date())
+    const date = formatDateTimeAmPm(new Date())
     return <div>
       <br />
       <br />

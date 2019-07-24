@@ -13,7 +13,7 @@ export default class Data extends React.Component {
   render() {
     // STYLES
     const fontFamily = 'Arial'
-    const fontSize = '15px'
+    const fontSize = '14px'
 
     const dataStyles = {
       fontFamily: fontFamily,
@@ -29,6 +29,7 @@ export default class Data extends React.Component {
     }
 
     const thStyles = {
+      width: '22%',
       fontFamily: fontFamily,
       fontSize: fontSize,
       fontWeight: 'bold'

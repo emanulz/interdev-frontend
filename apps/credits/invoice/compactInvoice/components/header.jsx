@@ -34,35 +34,84 @@ export default class Header extends React.Component {
     const address1 = local && local.long_address ? local.long_address : 'DIRECCION 1 NO CONFIGURADA'
     const address2 = local && local.receipt_address ? local.receipt_address : 'DIRECCION 2 NO CONFIGURADA'
 
-    const email = local && local.email ? local.email : ''
-    const emailTag = email ? <h3>{email}</h3> : ''
-
     const isNull = this.props.payment ? this.props.payment.is_null : false
 
     const headerText = isNull ? 'PAGO ANULADO' : 'RECIBO POR PAGO A FACTURAS'
 
-    return <div>
+    // STYLES
+    const fontFamily = 'Arial'
+    const fontSize = '16px'
+    const fontSize2 = '14px'
 
-      <div className='compact-invoice-header'>
+    const headerStyles = {
+      textAlign: 'center',
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold'
+    }
+    const separatorStyles = {
+      display: 'flex',
+      flexFlow: 'row',
+      justifyContent: 'space-between',
+      height: '40px',
+      lineHeight: '40px',
+      textTransform: 'uppercase'
+    }
 
-        <div className='compact-invoice-header-info'>
-          <h2>{headerName.toUpperCase()}</h2>
-          <h3>{headerName2}</h3>
-          <h3>{address1}</h3>
-          <h3>{address2}</h3>
-          <h3>Costa Rica</h3>
-          <h3>{telsText}</h3>
+    const h1Styles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      margin: '0 0 2px 0',
+      fontWeight: 'bold'
+    }
+
+    const h2Styles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      margin: '0 0 2px 0',
+      fontWeight: 'bold'
+    }
+
+    const h3Styles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize2,
+      margin: '0 0 2px 0',
+      fontWeight: 'bold'
+    }
+
+    const spanStyles = {
+      flexGrow: 1,
+      marginTop: '20px',
+      height: '1px',
+      borderTop: '1px solid black',
+      verticalAlign: 'middle'
+    }
+
+    const email = local && local.email ? local.email : ''
+    const emailTag = email ? <h3 style={h3Styles}>{email}</h3> : ''
+
+    return <div style={headerStyles}>
+
+      <div>
+
+        <div>
+          <h2 style={h2Styles}>{headerName.toUpperCase()}</h2>
+          <h3 style={h3Styles}>{headerName2}</h3>
+          <h3 style={h3Styles}>{address1}</h3>
+          <h3 style={h3Styles}>{address2}</h3>
+          <h3 style={h3Styles}>Costa Rica</h3>
+          <h3 style={h3Styles}>{telsText}</h3>
           {emailTag}
         </div>
 
       </div>
 
-      <div className='compact-invoice-separator'>
-        <span />
+      <div style={separatorStyles}>
+        <span style={spanStyles} />
 
-        <h1>{headerText}</h1>
+        <h1 style={h1Styles}>{headerText}</h1>
 
-        <span />
+        <span style={spanStyles} />
       </div>
     </div>
 

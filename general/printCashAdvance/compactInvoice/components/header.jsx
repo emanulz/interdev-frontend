@@ -89,9 +89,8 @@ export default class Header extends React.Component {
 
     return <div style={headerStyles}>
 
-      <div className='cash-advance-compact-invoice-header'>
-
-        <div className='cash-advance-compact-invoice-header-info'>
+      <div>
+        <div>
           <h2 style={h2Styles}>{headerName.toUpperCase()}</h2>
           <h3 style={h3Styles}>{headerName2}</h3>
           <h3 style={h3Styles}>{address1}</h3>
@@ -103,7 +102,7 @@ export default class Header extends React.Component {
 
       </div>
 
-      <div style={separatorStyles} className='cash-advance-compact-invoice-separator'>
+      <div style={separatorStyles}>
         <span style={spanStyles} />
 
         <h1 style={h1Styles}>{headertext}</h1>

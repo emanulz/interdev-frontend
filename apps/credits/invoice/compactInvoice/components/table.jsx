@@ -8,6 +8,31 @@ export default class Table extends React.Component {
 
   // Main Layout
   render() {
+    // STYLES
+    const fontFamily = 'Arial'
+    const fontSize = '15px'
+
+    const tableStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold',
+      marginTop: '10px',
+      border: 'none',
+      width: '100%'
+    }
+
+    const tableHeadThStyles = {
+      padding: '5px 0'
+
+    }
+
+    const tableBodyTdStyles = {
+      padding: '10px 0'
+    }
+
+    const tableBodyTrStyles = {
+      borderTop: '1px solid black'
+    }
 
     const sales = this.props.payment.sales
     const items = sales.length
@@ -20,14 +45,14 @@ export default class Table extends React.Component {
           ${dateObj.getFullYear()}`
           : '01/01/1970'
 
-        return <tr key={item.sale.id}>
-          <td>
+        return <tr style={tableBodyTrStyles} key={item.sale.id}>
+          <td style={tableBodyTdStyles}>
             {item.sale.consecutive}
           </td>
-          <td>
+          <td style={tableBodyTdStyles}>
             {date}
           </td>
-          <td>
+          <td style={tableBodyTdStyles}>
             ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
           </td>
         </tr>
@@ -38,15 +63,15 @@ export default class Table extends React.Component {
         <td>-</td>
       </tr>
 
-    return <table className='compact-invoice-table table'>
+    return <table style={tableStyles}>
       <thead>
         <tr>
-          <th>Factura #</th>
-          <th>Fecha Factura</th>
-          <th>Monto</th>
+          <th style={tableHeadThStyles}>Factura #</th>
+          <th style={tableHeadThStyles}>Fecha Factura</th>
+          <th style={tableHeadThStyles}>Monto</th>
         </tr>
       </thead>
-      <tbody className=''>
+      <tbody>
         {items}
       </tbody>
 

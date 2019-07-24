@@ -33,16 +33,16 @@ export default class Totals extends React.Component {
       fontSize: fontSize,
       fontWeight: 'bold',
       padding: '5px 0',
-      borderTop: '1px solid #ccc',
-      borderBottom: '1px solid #ccc'
+      borderTop: '1px solid black',
+      borderBottom: '1px solid black'
     }
 
     const tdStyles = {
       fontFamily: fontFamily,
       fontSize: fontSize,
       fontWeight: 'bold',
-      borderTop: '1px solid #ccc',
-      borderBottom: '1px solid #ccc',
+      borderTop: '1px solid black',
+      borderBottom: '1px solid black',
       textAlign: 'right'
     }
 
