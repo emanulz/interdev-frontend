@@ -12,13 +12,14 @@ export default class Data extends React.Component {
 
   render() {
     // STYLES
-    const fontFamily = 'Arial, sans-serif !important'
-    const fontSize = '13px'
+    const fontFamily = 'Arial'
+    const fontSize = '15px'
 
     const dataStyles = {
       fontFamily: fontFamily,
       fontSize: fontSize,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      padding: '10px 0'
     }
 
     const trStyles = {
@@ -67,27 +68,27 @@ export default class Data extends React.Component {
     const seller = Object.keys(user).length !== 0
       ? cashierName
       : 'Cajero Por Defecto'
-    return <div style={dataStyles} className='cash-advance-compact-invoice-data'>
+    return <div style={dataStyles}>
 
-      <table className='datenum-table'>
+      <table>
         <tbody>
-          <tr>
-            <th>Fecha:</th>
-            <td>{date}</td>
+          <tr style={trStyles}>
+            <th style={thStyles}>Fecha:</th>
+            <td style={tdStyles}>{date}</td>
           </tr>
-          <tr>
-            <th>Adel #:</th>
-            <td>{consecutive}</td>
+          <tr style={trStyles}>
+            <th style={thStyles}>Adel #:</th>
+            <td style={tdStyles}>{consecutive}</td>
           </tr>
           {workOrderOrVoucher}
-          <tr>
-            <th>Cliente:</th>
-            <td>{client}</td>
+          <tr style={trStyles}>
+            <th style={thStyles}>Cliente:</th>
+            <td style={tdStyles}>{client}</td>
           </tr>
 
-          <tr>
-            <th>Cajero:</th>
-            <td>{seller}</td>
+          <tr style={trStyles}>
+            <th style={thStyles}>Cajero:</th>
+            <td style={tdStyles}>{seller}</td>
           </tr>
 
         </tbody>

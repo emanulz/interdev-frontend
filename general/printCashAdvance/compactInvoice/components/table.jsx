@@ -8,17 +8,37 @@ export default class Table extends React.Component {
 
   // Main Layout
   render() {
+    const fontFamily = 'Arial'
+    const fontSize = '15px'
 
-    return <div className='cash-advance-compact-invoice-table'>
-      <div className='cash-advance-compact-invoice-table-header'>
-        <div className='cash-advance-compact-invoice-table-header-description'>Concepto:</div>
+    const divStyles = {
+      border: 'none',
+      fontFamily: fontFamily
+    }
+
+    const headerStyles = {
+      fontSize: fontSize,
+      color: 'black',
+      width: '100%',
+      display: 'flex',
+      flexFlow: 'row',
+      fontWeight: 'bold',
+      padding: '10px 0'
+    }
+
+    const bodyStyles = {
+      fontSize: fontSize,
+      color: 'black',
+      width: '100%',
+      padding: '10px 0'
+    }
+
+    return <div style={divStyles}>
+      <div style={headerStyles}>
+        <div>Concepto:</div>
       </div>
-      <div className='cash-advance-compact-invoice-table-body'>
-        <div className='cash-advance-compact-invoice-table-body-item'>
-          <div className='cash-advance-compact-invoice-table-body-item-description'>
-            {this.props.cashAdvance.description}
-          </div>
-        </div>
+      <div style={bodyStyles}>
+        {this.props.cashAdvance.description}
       </div>
     </div>
 

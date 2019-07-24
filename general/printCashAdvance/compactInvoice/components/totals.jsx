@@ -12,13 +12,47 @@ export default class Totals extends React.Component {
 
     const amount = this.props.cashAdvance.amount ? parseFloat(this.props.cashAdvance.amount) : 0
 
-    return <div className='cash-advance-compact-invoice-totals'>
+    const fontFamily = 'Arial'
+    const fontSize = '16px'
 
-      <table>
+    const divStyles = {
+      marginTop: '10px',
+      border: 'none',
+      fontFamily: fontFamily,
+      display: 'flex',
+      justifyContent: 'flex-end'
+    }
+
+    const tableStyles = {
+      width: '80%',
+      border: 'none'
+    }
+
+    const thStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold',
+      padding: '5px 0',
+      borderTop: '1px solid #ccc',
+      borderBottom: '1px solid #ccc'
+    }
+
+    const tdStyles = {
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: 'bold',
+      borderTop: '1px solid #ccc',
+      borderBottom: '1px solid #ccc',
+      textAlign: 'right'
+    }
+
+    return <div style={divStyles}>
+
+      <table style={tableStyles}>
         <tbody>
-          <tr className='total-row'>
-            <th>Total</th>
-            <td>₡ {amount.formatMoney(2, ',', '.')}</td>
+          <tr>
+            <th style={thStyles}>Total</th>
+            <td style={tdStyles}>₡ {amount.formatMoney(2, ',', '.')}</td>
           </tr>
         </tbody>
       </table>
