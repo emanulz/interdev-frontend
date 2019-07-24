@@ -3,8 +3,8 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import { setItem,  generalSave} from '../../../utils/api.js'
-
+import {setItem, generalSave} from '../../../utils/api.js'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -39,7 +39,23 @@ export default class MovementsList extends React.Component {
     this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
   }
 
-  nullPayment(){
+  confirmNull() {
+    // ALERTIFY CONFIRM
+    const _this = this
+    const consecutive = this.props.payment.consecutive
+    // CALC THE TOTAL AMOUNT OF PAYMENT
+    alertify.confirm('ANULAR', `Desea Anular el pago #${consecutive}? Esto reversará todos los movimientos de pago realizados y sumará saldo al cliente.`,
+      function() {
+        _this.nullPayment()
+      }, function() {
+        return true
+      }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+  }
+
+  nullPayment() {
     const kwargs = {
       url: '/api/creditpaymentscreate/nullpayment/',
       data: {id: this.props.payment.id},
@@ -124,7 +140,7 @@ export default class MovementsList extends React.Component {
               <i className='fa fa-credit-card' />
             </button>
             <button disabled={this.props.payment.is_null} className='btnPaymentNull form-control btn btn-danger' 
-              onClick={this.nullPayment.bind(this)}>
+              onClick={this.confirmNull.bind(this)}>
               Anular Pago
               <i className='fa fa-minus-circle' />
             </button>

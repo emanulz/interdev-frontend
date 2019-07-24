@@ -238,6 +238,26 @@ export default class Update extends React.Component {
     </tr>
   }
 
+  confirmSave() {
+    // ALERTIFY CONFIRM
+    const _this = this
+    const array = [...this.props.paymentArray]
+    let amount = 0
+    // CALC THE TOTAL AMOUNT OF PAYMENT
+    array.map(item => {
+      amount = amount + item.amount
+    })
+    alertify.confirm('REGISTRAR', `Desea Registrar el pago por un monto de ${parseFloat(amount).toFixed(2)}?`,
+      function() {
+        _this.saveMovements()
+      }, function() {
+        return true
+      }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+  }
+
   saveMovements() {
     // ITEMS USED BY PAYMENT OBJECT
     const array = [...this.props.paymentArray]
@@ -386,7 +406,7 @@ export default class Update extends React.Component {
             </select>
             {availableVouchersDiv}
 
-            <button onClick={this.saveMovements.bind(this)} disabled={!this.props.paymentArray.length} className='form-control'>
+            <button onClick={this.confirmSave.bind(this)} disabled={!this.props.paymentArray.length} className='form-control'>
               Registrar
             </button>
 

@@ -115,13 +115,6 @@ export default class List extends React.Component {
         text: 'Pago',
         textToRender: 'Ver Pago',
         type: 'textLink'
-      },
-      {
-        field: 'consecutive',
-        text: 'Anular',
-        textToRender: 'Anular',
-        type: 'function_on_click',
-        onClickFunction: this.nullPayment()
       }
     ]
 
