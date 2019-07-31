@@ -25,6 +25,21 @@ export default class SideMenu extends React.Component {
   // Main Layout
   render() {
 
+    const childReports = [
+      {
+        text: 'Generar Reportes',
+        class: 'fa-gift',
+        href: '/admin/reports'
+      }, {
+        text: 'Consultar Reportes',
+        class: 'fa-list',
+        href: '/admin/reportslist'
+      }
+    ]
+    const reportsComponent = <ComposedItem mainTittle='Reportes Generales' mainIcon='fa fa-tasks' childItems={childReports} />
+      
+
+
     const childInvoicing = [
       {
         text: 'Facturas Electrónicas',
@@ -287,6 +302,8 @@ export default class SideMenu extends React.Component {
     const salesInstalled = this.props.installedApps.SalesAppInstalled
       ? <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
       : <div />
+
+    
     return <div id='sideMenu' className='sideMenu'>
 
       {/* <h3 className='sideMenu-header'>{title.toUpperCase()}</h3> */}
@@ -296,11 +313,7 @@ export default class SideMenu extends React.Component {
 
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
-          <li>
-            <Link to='/admin/reports'>
-              <span className='fa fa-tasks' />
-              Reportes Generales</Link>
-          </li>
+          {reportsComponent}
           <ComposedItem mainTittle='Productos' mainIcon='fa-database' childItems={childProducts} />
           <ComposedItem mainTittle='Clientes' mainIcon='fa-street-view' childItems={chilClients} />
 

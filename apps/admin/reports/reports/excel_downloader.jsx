@@ -304,8 +304,8 @@ export default class ExcelFetcher extends React.Component {
 
       <div className='excel-fetcher-reports'>
         {/* <a href={`/reportsExcel/cashregister/?start=${s}&end=${e}`}>Cierre de Caja</a> */}
-        <a href={`/reportsExcel/generalsales/?start=${s}&end=${e}`}>General Ventas</a>
-        <a href={`/reportsExcel/generalpurchases/?start=${s}&end=${e}`}>General Compras</a>
+        <a href={`/reportsExcel/generalsales/?start=${s}&end=${e}`}>General Ventas IVA</a>
+        <a href={`/reportsExcel/generalpurchases/?start=${s}&end=${e}`}>General Compras IVA</a>
         <a href={`/reportsExcel/clientscatalog`}>Catálogo Clientes</a>
         <a href='/reportsExcel/productscatalog'>Lista de Precios</a>
         <a href={`/reportsExcel/d151/?start=${s}&end=${e}&money_limit=250`}>D151</a>
@@ -316,6 +316,8 @@ export default class ExcelFetcher extends React.Component {
         {rest_report}
         {bd_report}
         {reserves}
+        <a href={`/reportsExcel/generalsaleslegacy/?start=${s}&end=${e}`}>General Ventas Antiguo</a>
+        <a href={`/reportsExcel/generalpurchaseslegacy/?start=${s}&end=${e}`}>General Compras Antiguo</a>
       </div>
       <div className='excel-fetcher-byfamily'>
         {utilityByFamily}
