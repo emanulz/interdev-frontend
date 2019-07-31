@@ -11,6 +11,33 @@ export default class Data extends React.Component {
 
   render() {
 
+    const dataStyles = {
+      fontFamily: 'Lato',
+      fontSize: '15px',
+      position: 'relative',
+      display: 'flex',
+      flexFlow: 'row',
+      justifyContent: 'space-between'
+    }
+
+    const dataTable1Styles = {
+      border: 'none',
+      width: '60%'
+    }
+
+    const dataTable1ThStyles = {
+      height: '20px',
+      background: 'none',
+      color: 'black',
+      padding: '0'
+    }
+    const dataTable1TdStyles = {
+      height: '20px',
+      padding: '0',
+      fontSize: '16px',
+      fontWeight: 'bold'
+    }
+
     const order = this.props.order
     const orderUser = Object.keys(order).length > 0 ? order.user : ''
 
@@ -34,9 +61,9 @@ export default class Data extends React.Component {
 
     const supplier = order.supplier ? `${order.supplier.code} - ${order.supplier.name}` : '00 - Proveedor No Asignado'
 
-    return <div className='reprint-full-order-data'>
+    return <div style={dataStyles}>
 
-      <table className='supplier-table'>
+      <table style={dataTable1Styles}>
         <thead>
           <tr>
             <th>PROVEEDOR:</th>

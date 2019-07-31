@@ -13,6 +13,7 @@ const Mousetrap = require('mousetrap')
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales,
     // productSearchpanelVisible: store.searchProducts.visible
+    globalConf: store.config.globalConf
   }
 })
 export default class Cart extends React.Component {
@@ -106,14 +107,28 @@ export default class Cart extends React.Component {
         })
       }
       if (_this.props.caller == 'presales') {
-        _this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
-        document.getElementById('presaleCodeInput').focus()
-        Mousetrap.bind('esc', function() {
-          _this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: -1})
-          document.getElementById('productCodeInputField').focus()
-          document.getElementById('productCodeInputField').value = ''
-          Mousetrap.unbind('esc')
-        })
+        if (_this.props.globalConf.reserveAsDefaultPresale) {
+          _this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'RESERVE'})
+          _this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+          document.getElementById('presaleCodeInput').focus()
+          Mousetrap.bind('esc', function() {
+            _this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: -1})
+            document.getElementById('productCodeInputField').focus()
+            document.getElementById('productCodeInputField').value = ''
+            Mousetrap.unbind('esc')
+          })
+
+        } else {
+          _this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'REGULAR'})
+          _this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+          document.getElementById('presaleCodeInput').focus()
+          Mousetrap.bind('esc', function() {
+            _this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: -1})
+            document.getElementById('productCodeInputField').focus()
+            document.getElementById('productCodeInputField').value = ''
+            Mousetrap.unbind('esc')
+          })
+        }
       }
     })
   }

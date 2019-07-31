@@ -83,7 +83,7 @@ export default class Buttons extends React.Component {
         </button>
       </div>
       : ''
-    const reserveBtn = this.props.globalConf.useReserves
+    const reserveBtn = this.props.globalConf.useReserves && this.props.globalConf.reserveAsDefaultPresale
       ? <button
         disabled={this.props.disabled}
         onClick={this.saveReserve.bind(this)}
@@ -209,7 +209,7 @@ export default class Buttons extends React.Component {
           <i className='fa fa-list' />
         </span>
       </button> */}
-
+      {reserveBtn}
       <button
         disabled={this.props.disabled}
         onClick={this.showSendPanel.bind(this)}

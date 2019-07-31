@@ -11,6 +11,56 @@ export default class Header extends React.Component {
 
   render() {
 
+    const headerStyles = {
+      textAlign: 'center',
+      fontFamily: 'Lato',
+      fontSize: '15px',
+      fontWeight: 'bold',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    }
+
+    const headerInfoStyles = {
+      'flex-grow': 1,
+      'text-align': 'right'
+    }
+
+    const headerInfoH2Styles = {
+      fontSize: '14px',
+      margin: '0 0 5px 0',
+      fontWeight: 'bold'
+    }
+
+    const headerInfoH3Styles = {
+      fontSize: '11px',
+      margin: '0 0 2px 0',
+      fontWeight: 'normal'
+    }
+
+    const headerSeparatorStyles = {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      height: '50px',
+      lineHeight: '40px',
+      textTransform: 'uppercase'
+    }
+
+    const headerSeparatorSpanStyles = {
+      flexGrow: '1',
+      marginTop: '25px',
+      height: '1px',
+      borderTop: '1px solid #ccc',
+      verticalAlign: 'middle'
+    }
+
+    const headerSeparatorH1Styles = {
+      fontSize: '18px',
+      margin: '0 15px',
+      lineHeight: '50px'
+    }
+
     const headertext = 'Orden de Compra'
 
     // BILL DATA
@@ -37,7 +87,7 @@ export default class Header extends React.Component {
     const address2 = local && local.receipt_address ? local.receipt_address : 'DIRECCION 2 NO CONFIGURADA'
 
     const email = local && local.email ? local.email : ''
-    const emailTag = email ? <h3>{email}</h3> : ''
+    const emailTag = email ? <h3 style={headerInfoH3Styles}>{email}</h3> : ''
 
     // LOGO
     const logo = local && local.logo_name ? local.logo_name : 'logoInterdev.png'
@@ -46,28 +96,27 @@ export default class Header extends React.Component {
 
     return <div>
 
-      <div className='reprint-full-order-header'>
+      <div style={headerStyles}>
 
-        <div className='reprint-full-order-header-logo'>
+        <div>
           <img style={{'width': `${logoWidth}`}} src={logoUrl} />
         </div>
-        <div className='reprint-full-order-header-info'>
-          <h2>{headerName.toUpperCase()}</h2>
-          <h3>{headerName2}</h3>
-          <h3>{address1}</h3>
-          <h3>{address2}</h3>
-          <h3>Costa Rica</h3>
-          <h3>{telsText}</h3>
+        <div style={headerInfoStyles}>
+          <h2 style={headerInfoH2Styles}>{headerName.toUpperCase()}</h2>
+          <h3 style={headerInfoH3Styles}>{headerName2}</h3>
+          <h3 style={headerInfoH3Styles}>{address1}</h3>
+          <h3 style={headerInfoH3Styles}>{address2}</h3>
+          <h3 style={headerInfoH3Styles}>Costa Rica</h3>
+          <h3 style={headerInfoH3Styles}>{telsText}</h3>
           {emailTag}
         </div>
 
       </div>
 
-      <div className='reprint-full-order-separator'>
-        <span />
-
-        <h1>{headertext}</h1>
-        <span />
+      <div style={headerSeparatorStyles}>
+        <span style={headerSeparatorSpanStyles} />
+        <h1 style={headerSeparatorH1Styles}>{headertext}</h1>
+        <span style={headerSeparatorSpanStyles} />
       </div>
     </div>
 
