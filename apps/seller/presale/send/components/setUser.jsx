@@ -3,7 +3,12 @@ import {connect} from 'react-redux'
 import {getUserByCode} from '../actions.js'
 
 @connect((store) => {
-  return {code: store.send.userCode, pin: store.send.userPin}
+  return {
+    code: store.send.userCode,
+    pin: store.send.userPin,
+    globalConf: store.config.globalConf,
+    user: store.user
+  }
 })
 export default class PayCash extends React.Component {
 
@@ -40,10 +45,15 @@ export default class PayCash extends React.Component {
   }
 
   getUserByPin (ev) {
-    
     if (ev.key == 'Enter') {
       ev.preventDefault()
-      this.getUser()
+      if (this.props.globalConf.noPinOnPresale) {
+        this.props.dispatch({type: 'SET_SEND_USER', payload: this.props.user.user})
+        this.props.dispatch({type: 'SET_SEND_USER_PROFILE', payload: this.props.user.profile})
+        document.getElementById('sendPresaleButton').focus()
+      } else {
+        this.getUser()
+      }
     }
   }
 
@@ -53,6 +63,7 @@ export default class PayCash extends React.Component {
     // CALL THE CHECK USER AND PW METHOD
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getUserByCode(code, pin))
+
   }
 
   render() {
