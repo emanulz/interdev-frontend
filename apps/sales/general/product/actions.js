@@ -320,7 +320,7 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
     type: 'UPDATE_CART',
     payload: {
       item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
-        itemsInCart[indexInCart].uuid, XMLVersion),
+        itemsInCart[indexInCart].uuid, false, XMLVersion),
       index: indexInCart
     }
   }
@@ -344,7 +344,9 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
   const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
 
   const product = itemsInCart[indexInCart].product
-
+  if (qtyNum < 0.001) {
+    return {type: 'NO_ACTION', payload: ''}
+  }
   // const sameInCart = itemsInCart.filter(cart => cart.product.code == code || cart.product.barcode == code)
   // THIS VARIABLE HOLDS THE VALUE TO CHECK AGAINST
   const qtyToCheck = qtyNum
@@ -354,7 +356,7 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
     type: 'UPDATE_CART',
     payload: {
       item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
-        itemsInCart[indexInCart].uuid, XMLVersion),
+        itemsInCart[indexInCart].uuid, false, XMLVersion),
       index: indexInCart
     }
   }

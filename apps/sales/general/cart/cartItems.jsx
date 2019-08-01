@@ -80,20 +80,20 @@ export default class CartItems extends React.Component {
       }
 
       _this.props.dispatch(addSubOne(_this.props.cartItemActive, true, _this.props.inCart, _this.props.globalDiscount,
-        _this.props.client, _this.props.warehouse_id))
+        _this.props.client, _this.props.warehouse_id, _this.props.config.overrideXMLversion))
     })
 
-    Mousetrap.bind('mod+f', function(e) {
+    // Mousetrap.bind('mod+f', function(e) {
 
-      if (e.preventDefault) {
-        e.preventDefault()
-      } else {
-      // internet explorer
-        e.returnValue = false
-      }
+    //   if (e.preventDefault) {
+    //     e.preventDefault()
+    //   } else {
+    //   // internet explorer
+    //     e.returnValue = false
+    //   }
 
-      document.getElementById(`qty${_this.props.cartItemActive}`).focus()
-    })
+    //   document.getElementById(`qty${_this.props.cartItemActive}`).focus()
+    // })
 
     Mousetrap.bind('mod+-', function(e) {
       if (e.preventDefault) {
@@ -103,7 +103,7 @@ export default class CartItems extends React.Component {
         e.returnValue = false
       }
       _this.props.dispatch(addSubOne(_this.props.cartItemActive, false, _this.props.inCart, _this.props.globalDiscount,
-        _this.props.client, this.props.config.overrideXMLversion))
+        _this.props.client, _this.props.warehouse_id, _this.props.config.overrideXMLversion))
     })
 
     Mousetrap.bind('mod+*', function(e) {
@@ -119,7 +119,7 @@ export default class CartItems extends React.Component {
       alertify.prompt(`Nueva cantidad para el producto seleccionado`, 'Ingrese la nueva cantidad para el producto seleccionado', ''
         , function(evt, value) {
           __this.props.dispatch(updateQtyCode(__this.props.cartItemActive, value, __this.props.inCart,
-            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+            __this.props.globalDiscount, __this.props.client, __this.props.warehouse_id, _this.props.config.overrideXMLversion, _this.props.dontCheckInv))
         }
         , function() {})
         .set('labels', {ok: 'Ok', cancel: 'Cancelar'})
