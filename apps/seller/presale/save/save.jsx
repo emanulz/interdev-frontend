@@ -89,7 +89,7 @@ export default class SaveBtn extends React.Component {
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'PROCESS_COMPLETE', payload: ''})
       if (data.presale_type == 'RESERVE' || data.presale_type == 'QUOTING' || data.presale_type == 'NS_RESERVE') {
-        this.props.dispatch(loadPresaleToPrint(data.consecutive))
+        this.props.dispatch(loadPresaleToPrint(data.consecutive, true))
       } else {
         if (this.props.conf.NoF5AfterSendOrPrint) {
           alertify.alert('COMPLETADO', 'Preventa Enviada a Caja Correctamente')

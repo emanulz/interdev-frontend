@@ -3,8 +3,9 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 import axios from 'axios'
+const Mousetrap = require('mousetrap')
 
-export function loadPresaleToPrint(consecutive) {
+export function loadPresaleToPrint(consecutive, bind) {
   const url = `/api/presales/?consecutive=${consecutive}`
 
   return function(dispatch) {
@@ -32,6 +33,16 @@ export function loadPresaleToPrint(consecutive) {
         dispatch({type: 'CLEAR_PRINT_PRESALE', payload: ''})
         dispatch({type: 'FETCHING_DONE', payload: ''})
         alertify.alert('Error', `No se encontraron pre-ventas con el valor de consecutivo: ${consecutive}`)
+      }
+
+      if (bind) {
+        Mousetrap.bind('enter', function() {
+          Mousetrap.unbind('enter')
+          window.printDiv('print-presale-print', ['/static/fixedBundles/css/sales.css'])
+          // if (reload) {
+          //   window.location.href = '/sales'
+          // }
+        })
       }
 
     }).catch(function(error) { // ON ERROR FETCHING SALE CLEAN ALL
