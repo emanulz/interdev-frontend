@@ -43,7 +43,7 @@ export default class SingleProduct extends React.Component {
 
   }
   addItemToCart() {
-    const qty = this.props.qty ? this.props.qty : 1
+    const qty = this.props.qty ? Math.abs(this.props.qty) : 1
     this.props.dispatch({type: 'HIDE_SINGLE_PRODUCT_PANEL', payload: ''})
     this.props.dispatch({type: 'CLEAR_SINGLE_PRODUCT_QTY', payload: ''})
     this.props.dispatch({type: 'productSearch_HIDE_SEARCH_PANEL', payload: ''})
@@ -239,7 +239,7 @@ export default class SingleProduct extends React.Component {
     if (ev.key == 'Enter') {
       // EXECUTE CHANGE PRICE ACTION
     } else {
-      const val = parseFloat(ev.target.value)
+      const val = Math.abs(parseFloat(ev.target.value))
       this.props.dispatch({type: 'SET_SINGLE_PRODUCT_NEW_PRICE', payload: val})
     }
   }
