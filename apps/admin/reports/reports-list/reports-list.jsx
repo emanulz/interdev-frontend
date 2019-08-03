@@ -11,6 +11,6 @@ export default class ReportsListComponent extends React.Component {
 
 
     render() {
-        return <h1>A FUCKING AMAZING COMPONENT</h1>
+        return <h1>LISTADO REPORTES</h1>
     }
 }
