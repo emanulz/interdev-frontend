@@ -389,7 +389,11 @@ export default class AdminTable extends React.Component {
             case 'date':
             {
               // const date = moment(itemToRender).format('DD-MM-YYYY HH:mm:ss')
-              const date = formatDateTimeAmPm(itemToRender)
+              let date ="Indefinida"
+              if(itemToRender){
+                date = formatDateTimeAmPm(itemToRender)
+              }
+              
               item = <td key={`${el[idField]}_${header.field}`}>
                 {date}
               </td>

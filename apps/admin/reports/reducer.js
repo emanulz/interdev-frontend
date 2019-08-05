@@ -22,13 +22,131 @@ const stateConst = {
     departments: [],
     selectedDepartment: defaultDepartment,
     warehouses: [],
-    selectedWarehouse: defaultWarehouse
+    selectedWarehouse: defaultWarehouse,
+    report_records: [],
+    report_type_filter: 'ALL',
+    report_request_panel_visible: false,
+    report_to_generate: 'General Ventas', //constrols the type of report that will be queued for generation
+    refetch_reports: false,
+    notify_emails: '',
+    resend_email_panel_visible: false,
+    mailing_target: {},
+    mail_body: '',
+    mail_subject: ''
   }
   
 
 export default function reducer(state=stateConst, action){
     switch(action.type) {
         
+        case 'MAILING_REPORTS_SUCCESSFUL':
+        {
+            return {
+                ...state,
+                mailing_target: {},
+                mail_body: '',
+                mail_subject: '',
+                resend_email_panel_visible: false
+            }
+        }
+
+        case 'SET_MAILING_TARGET':
+        {
+            return {
+                ...state,
+                mailing_target: action.payload
+            }
+        }
+
+        case 'CLEAR_MAILING':
+        {
+            return {
+                ...state,
+                mailing_target: {},
+                mail_body: '',
+                mail_subject: ''
+            }
+        }
+
+        case 'SET_MAIL_BODY':
+        {
+            return {
+                ...state,
+                mail_body: action.payload
+            }
+        }
+
+        case 'SET_MAIL_SUBJECT':
+        {
+            return {
+                ...state,
+                mail_subject: action.payload
+            }
+        }
+
+        case 'TOGGLE_REPORT_MAILING_PANEL':
+        {
+            const next_status = !state.resend_email_panel_visible
+            return {
+                ...state,
+                resend_email_panel_visible: next_status
+            }
+        }
+
+        case 'SET_NOTIFY_EMAILS':
+        {
+            return {
+                ...state,
+                notify_emails: action.payload
+            }
+        }
+
+        case 'SET_REPORT_TYPE_TO_QUEUE': 
+        {
+            return {
+                ...state,
+                report_to_generate: action.payload
+            }
+        }
+
+        case 'NEW_REPORT_QUEUED':
+        {
+            return {
+                ...state,
+                report_request_panel_visible: false,
+                refetch_reports: true,
+                notify_emails: ''
+            }
+        }
+
+        case 'TOGGLE_REPORT_REQUEST_PANEL':
+        {
+            let b = !state.report_request_panel_visible
+            return {
+                ...state,
+                report_request_panel_visible: b
+            }
+        }
+
+        case 'FETCH_REPORT_RECORDS_FULFILLED':
+        {
+            console.log("Damm payload --> ", action.payload)
+            return {
+                ...state,
+                report_records: action.payload,
+                refetch_reports: false
+
+            }
+        }
+
+        case 'FETCH_REPORT_RECORDS_REJECTED':
+        {
+            return {
+                ...state,
+                report_records: []
+            }
+        }
+
         case 'REPORTS_WAREHOUSES_SUCCEDED':
         {
             return {
