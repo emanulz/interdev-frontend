@@ -37,8 +37,6 @@ export default class SideMenu extends React.Component {
       }
     ]
     const reportsComponent = <ComposedItem mainTittle='Reportes Generales' mainIcon='fa fa-tasks' childItems={childReports} />
-      
-
 
     const childInvoicing = [
       {
@@ -54,6 +52,14 @@ export default class SideMenu extends React.Component {
         class: 'fa-outdent',
         href: '/admin/invoicing/creditnotes'
       }, {
+        text: 'Compra Simplificada',
+        class: 'fa-id-card',
+        href: '/admin/invoicing/selfpurchases'
+      }, {
+        text: 'Aceptar Compras',
+        class: 'fa-upload',
+        href: '/admin/invoicing/purchases'
+      }, {
         text: 'Cola Aceptación',
         class: 'fa-outdent',
         href: '/admin/invoicing/purchases/accept_queue'
@@ -68,12 +74,12 @@ export default class SideMenu extends React.Component {
         }
       )
     }
-    const acceptPurchases = {
-      text: 'Aceptar Compras',
-      class: 'fa-upload',
-      href: '/admin/invoicing/purchases'
-    }
-    childInvoicing.push(acceptPurchases)
+    // const acceptPurchases = {
+    //   text: 'Aceptar Compras',
+    //   class: 'fa-upload',
+    //   href: '/admin/invoicing/purchases'
+    // }
+    // childInvoicing.push(acceptPurchases)
     if (this.props.user.is_staff) {
       childInvoicing.push(
         {

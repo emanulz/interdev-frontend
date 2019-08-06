@@ -43,6 +43,7 @@ import printReturn from '../../general/printReturn/reducer.js'
 import helpers from './helpers/reducer.js'
 import projects from './projects/reducer.js'
 import activities from './activities/reducer.js'
+import selfpurchases from './invoicing/selfpurchases/reducer.js'
 
 export default combineReducers({
   users,
@@ -77,6 +78,7 @@ export default combineReducers({
   etickets,
   ecreditNotes,
   edebitNotes,
+  selfpurchases,
   config,
   currency,
   printPresale,
