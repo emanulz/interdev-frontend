@@ -7,8 +7,8 @@ import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
-    client: store.clients.clientActive,
-    clients: store.clients.clients,
+    client: store.clientsAdmin.clientActive,
+    clients: store.clientsAdmin.clients,
     user: store.user.user
   }
 })

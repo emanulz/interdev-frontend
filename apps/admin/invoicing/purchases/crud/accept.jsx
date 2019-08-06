@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    permissions: store.clients.permissions,
+    permissions: store.clientsAdmin.permissions,
     loadedPurchase: store.epurchases.loadedPurchase
   }
 })

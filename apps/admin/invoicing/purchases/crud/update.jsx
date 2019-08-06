@@ -14,11 +14,11 @@ import {toggleItemsBar} from '../../layout/itemsBar/actions'
 
 @connect((store) => {
   return {
-    permissions: store.clients.permissions,
-    client: store.clients.clientActive,
-    nextClient: store.clients.nextClient,
-    previousClient: store.clients.previousClient,
-    clients: store.clients.clients
+    permissions: store.clientsAdmin.permissions,
+    client: store.clientsAdmin.clientActive,
+    nextClient: store.clientsAdmin.nextClient,
+    previousClient: store.clientsAdmin.previousClient,
+    clients: store.clientsAdmin.clients
   }
 })
 export default class Update extends React.Component {
