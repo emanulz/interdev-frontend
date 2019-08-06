@@ -86,7 +86,7 @@ export default class ReportRequestPanelComponent extends React.Component {
                 tipo_reporte: 0,
                 start_date: this.props.start_date,
                 end_date: this.props.end_date,
-                notify_emails: this.props.notify_emails,
+                notify_emails: this.props.notify_emails ? this.props.notify_emails : "",
             }
         }
 
@@ -113,7 +113,7 @@ export default class ReportRequestPanelComponent extends React.Component {
                 tipo_reporte: 1,
                 start_date: this.props.start_date,
                 end_date: this.props.end_date,
-                notify_emails: this.props.notify_emails,
+                notify_emails: this.props.notify_emails ? this.props.notify_emails : "",
             }
         }
 
