@@ -7,9 +7,9 @@ import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
-    product: store.products.productActive,
-    products: store.products.products,
-    file: store.products.file,
+    product: store.productsAdmin.productActive,
+    products: store.productsAdmin.products,
+    file: store.productsAdmin.file,
     config: store.config.globalConf
   }
 })

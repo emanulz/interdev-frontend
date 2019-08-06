@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 
 @connect((store) => {
   return {
-    permissions: store.products.permissions
+    permissions: store.productsAdmin.permissions
   }
 })
 export default class List extends React.Component {

@@ -7,10 +7,10 @@ import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
-    product: store.products.productActive,
-    products: store.products.products,
+    product: store.productsAdmin.productActive,
+    products: store.productsAdmin.products,
     user: store.user.user,
-    file: store.products.file,
+    file: store.productsAdmin.file
   }
 })
 
@@ -25,7 +25,7 @@ class CreateButtons extends React.Component {
     const fieldsOk = checkProductData(product, products)
 
     if (fieldsOk) {
-      let kwargs = {
+      const kwargs = {
         url: '/api/products/',
         item: product,
         logCode: 'PRODUCT_CREATE',

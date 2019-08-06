@@ -7,12 +7,12 @@ import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
-    product: store.products.productActive,
-    products: store.products.products,
-    productOld: store.products.productActiveOld,
+    product: store.productsAdmin.productActive,
+    products: store.productsAdmin.products,
+    productOld: store.productsAdmin.productActiveOld,
     user: store.user.user,
-    permissions: store.products.permissions,
-    file: store.products.file
+    permissions: store.productsAdmin.permissions,
+    file: store.productsAdmin.file
   }
 })
 

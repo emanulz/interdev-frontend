@@ -15,8 +15,8 @@ import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
 @connect((store) => {
   return {
-    permissions: store.products.permissions,
-    products: store.products.products
+    permissions: store.productsAdmin.permissions,
+    products: store.productsAdmin.products
   }
 })
 export default class Update extends React.Component {

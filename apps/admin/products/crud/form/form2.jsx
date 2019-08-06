@@ -7,12 +7,12 @@ import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
-    product: store.products.productActive,
-    taxes: store.products.taxes,
+    product: store.productsAdmin.productActive,
+    taxes: store.productsAdmin.taxes,
     config: store.config.globalConf,
-    IVARates: store.products.IVARates,
-    IVACodes: store.products.IVACodes,
-    IVAFactors: store.products.IVAFactors
+    IVARates: store.productsAdmin.IVARates,
+    IVACodes: store.productsAdmin.IVACodes,
+    IVAFactors: store.productsAdmin.IVAFactors
   }
 })
 

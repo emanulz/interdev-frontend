@@ -6,8 +6,8 @@ import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
   return {
-    client: store.clients.clientActive,
-    clients: store.clients.clients,
+    client: store.clientsAdmin.clientActive,
+    clients: store.clientsAdmin.clients,
     provinces: store.addresses.provinces,
     cantons: store.addresses.cantons,
     districts: store.addresses.districts,

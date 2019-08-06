@@ -4,8 +4,8 @@ import CreateButtons from './createButtonsClient-prod.jsx'
 
 @connect(store =>{
     return {
-        clientProdFormVisible: store.clients.clientProdFormVisible,
-        activeClientProd: store.clients.activeClientProd,
+        clientProdFormVisible: store.clientsAdmin.clientProdFormVisible,
+        activeClientProd: store.clientsAdmin.activeClientProd,
     }
 })
 export default class FormClientProd extends React.Component {

@@ -13,7 +13,7 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
-    products: store.products.products,
+    products: store.productsAdmin.products,
     pageSize: store.pagination.pageSize,
     searchResults: store.adminSearch.searchResults,
     salesWarehouse: store.userProfile.salesWarehouse

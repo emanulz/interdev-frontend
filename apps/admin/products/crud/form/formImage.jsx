@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
-    product: store.products.productActive,
-    products: store.products.products
+    product: store.productsAdmin.productActive,
+    products: store.productsAdmin.products
   }
 })
 

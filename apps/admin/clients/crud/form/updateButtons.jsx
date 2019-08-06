@@ -7,11 +7,11 @@ import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
-    client: store.clients.clientActive,
-    clients: store.clients.clients,
-    clientOld: store.clients.clientActiveOld,
+    client: store.clientsAdmin.clientActive,
+    clients: store.clientsAdmin.clients,
+    clientOld: store.clientsAdmin.clientActiveOld,
     user: store.user.user,
-    permissions: store.clients.permissions
+    permissions: store.clientsAdmin.permissions
   }
 })
 

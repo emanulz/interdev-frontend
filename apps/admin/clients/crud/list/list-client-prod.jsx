@@ -14,11 +14,11 @@ import {saveItem} from '../../../../../utils/api'
     return {
         fetching: store.fetching.fetching,
         pageSize: store.pagination.pageSize,
-        clientProds: store.clients.clientProds,
+        clientProds: store.clientsAdmin.clientProds,
         searchResults: store.clientProductSearch.searchResults,
-        clientActive: store.clients.clientActive,
+        clientActive: store.clientsAdmin.clientActive,
         productsSearcResults: store.productClientCreate.searchResults,
-        requires_refetch: store.clients.requires_refetch,
+        requires_refetch: store.clientsAdmin.requires_refetch
     }
 })
 export default class List extends React.Component {

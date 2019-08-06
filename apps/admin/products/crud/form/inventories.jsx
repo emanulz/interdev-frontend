@@ -5,8 +5,8 @@ import { getItemDispatch } from '../../../../../utils/api.js'
 
 @connect((store) => {
   return {
-    product: store.products.productActive,
-    products: store.products.products,
+    product: store.productsAdmin.productActive,
+    products: store.productsAdmin.products,
     warehouses: store.warehouses.warehouses
   }
 })

@@ -6,8 +6,8 @@ import ListClientProd  from '../list/list-client-prod.jsx'
 
 @connect((store) => {
   return {
-    client: store.clients.clientActive,
-    clients: store.clients.clients
+    client: store.clientsAdmin.clientActive,
+    clients: store.clientsAdmin.clients
   }
 })
 
