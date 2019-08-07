@@ -2,7 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 @connect((store) => {
-  return { registerClosure: store.printRegisterClosure.registerClosure }
+  return {
+    registerClosure: store.printRegisterClosure.registerClosure,
+    config: store.config.globalConf
+  }
 })
 export default class Table extends React.Component {
 
@@ -24,7 +27,7 @@ export default class Table extends React.Component {
     const systemCredCRCTotal = parseFloat(closure.closure_money_crc_system_credits)
 
     // CALCIULATES THE TOTAL AMOUNT OF CASH SALES
-    const totalCashSalesCRC = systemCashCRCTotal + systemTransferCRCTotal + systemCardCRCTotal - systemRecoveryCRCTotal + systemCreditNoteCRCTotal - openingMoneyCRC - manualMovementsBlanceCRC
+    const totalCashSalesCRC = systemCashCRCTotal + systemTransferCRCTotal + systemCardCRCTotal - systemRecoveryCRCTotal - systemCreditNoteCRCTotal - openingMoneyCRC - manualMovementsBlanceCRC
 
     const systemCardCRC = systemCardCRCTotal || cashierCardCRCTotal
       ? <div>
@@ -106,6 +109,13 @@ export default class Table extends React.Component {
       <h2>₡{manualMovementsBlanceCRC.formatMoney()}</h2>
     </div>
 
+    const depositTotal = this.props.config.printDepositTotalInRC
+      ? <div className='print-register-closure-compact-invoice-table-item'>
+        <h1>TOTAL A DEPOSITAR:</h1>
+        <h2>₡{systemCashCRCTotal.formatMoney()}</h2>
+      </div>
+      : <div />
+
     return <div className='print-register-closure-compact-invoice-table'>
       <div className='print-register-closure-compact-invoice-table-body'>
         <hr />
@@ -131,6 +141,10 @@ export default class Table extends React.Component {
         {cashierCashCRC}
         <hr />
         {registerBalanceCRC}
+        <hr />
+        FIN DEL RESUMEN
+        <hr />
+        {depositTotal}
       </div>
 
     </div>
