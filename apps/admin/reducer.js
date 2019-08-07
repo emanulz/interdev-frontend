@@ -45,6 +45,17 @@ import projects from './projects/reducer.js'
 import activities from './activities/reducer.js'
 import selfpurchases from './invoicing/selfpurchases/reducer.js'
 
+// SELF PURCHASE CART
+import selfpurchase from './invoicing/selfpurchases/crud/create/reducer.js'
+import cart from '../sales/general/cart/reducer.js'
+import products from '../sales/general/product/reducer.js'
+import clients from '../sales/general/clients/reducer.js'
+import completed from '../sales/general/completed/reducer.js'
+import priceList from '../sales/general/priceList/reducer.js'
+import extras from '../sales/general/extras/reducer.js'
+import generalItem from '../sales/general/product/generalItem/reducer.js'
+import taxExemption from '../sales/sale/taxExemption/reducer.js'
+
 export default combineReducers({
   users,
   taxpayer,
@@ -67,6 +78,7 @@ export default combineReducers({
   productClientCreate: search('productClientCreate'),
   clientSearch: search('clientSearch'),
   activitySearch: search('activitySearch'),
+  productSearch: search('productSearch'),
   clientCategories,
   sales,
   presales,
@@ -79,6 +91,7 @@ export default combineReducers({
   ecreditNotes,
   edebitNotes,
   selfpurchases,
+  selfpurchase,
   config,
   currency,
   printPresale,
@@ -93,5 +106,13 @@ export default combineReducers({
   helpers,
   projects,
   activities,
-  documentDetail
+  documentDetail,
+  cart,
+  products,
+  clients,
+  completed,
+  priceList,
+  extras,
+  generalItem,
+  taxExemption
 })

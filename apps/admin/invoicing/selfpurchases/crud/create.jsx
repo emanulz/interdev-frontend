@@ -2,7 +2,7 @@
  * Module dependencies
  */
 import React from 'react'
-import ListComponent from './list/list.jsx'
+import CreateComponent from './create/main.jsx'
 import Unauthorized from '../../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 
@@ -21,7 +21,7 @@ export default class List extends React.Component {
     switch (true) {
       case true:
       {
-        content = <ListComponent />
+        content = <CreateComponent />
         break
       } // case
 

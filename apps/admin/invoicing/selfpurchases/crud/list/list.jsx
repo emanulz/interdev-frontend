@@ -24,16 +24,16 @@ export default class List extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch({type: 'CLEAR_SELFPURCHASE', payload: ''})
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
-    const clientKwargs = {
-      url: `/api/CHANGEURL/?limit=${this.props.pageSize}&ordering=-created`,
+    const selfpurchasesKwargs = {
+      url: `/api/electronicselfpurchaselist/?limit=${this.props.pageSize}&ordering=-created`,
       successType: 'FETCH_SELFPURCHASES_FULFILLED',
       errorType: 'FETCH_SELFPURCHASES_REJECTED'
     }
-
+    // :TODO UNCOMENT THIS
     // this.props.dispatch(getPaginationItemDispatch(clientKwargs))
   }
 
@@ -139,21 +139,21 @@ export default class List extends React.Component {
         type: 'RESET_HUMAN',
         idField: 'id',
         text: 'Reintentar'
-      },
+      }
       // {
       //   field: 'consecutive_numbering',
       //   type: 'RESEND_MAIL',
       //   idField: 'id',
       //   text: 'Reenviar Correo'
       // },
-      {
-        field: 'consecutive_numbering',
-        type: 'link_mask',
-        target: 'invoicing/detail/invoice',
-        idField: 'id',
-        textToRender: 'Ver',
-        text: 'Detalles'
-      }
+      // {
+      //   field: 'consecutive_numbering',
+      //   type: 'link_mask',
+      //   target: 'invoicing/detail/invoice',
+      //   idField: 'id',
+      //   textToRender: 'Ver',
+      //   text: 'Detalles'
+      // }
     ]
 
     if (this.props.user.is_staff) {
@@ -174,8 +174,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/CHANGEURL/?ordering=-created' successType='FETCH_SELFPURCHASES_FULFILLED' errorType='FETCH_SELFPURCHASES_REJECTED' />
-        <Pagination url='/api/CHANGEURL/?ordering=-created' successType='FETCH_SELFPURCHASES_FULFILLED' errorType='FETCH_SELFPURCHASES_REJECTED' />
+        <ResultsPerPage url='/api/electronicselfpurchaselist/?ordering=-created' successType='FETCH_SELFPURCHASES_FULFILLED' errorType='FETCH_SELFPURCHASES_REJECTED' />
+        <Pagination url='/api/electronicselfpurchaselist/?ordering=-created' successType='FETCH_SELFPURCHASES_FULFILLED' errorType='FETCH_SELFPURCHASES_REJECTED' />
       </div>
       : <div />
 

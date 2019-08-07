@@ -46,7 +46,7 @@ export default class Order extends React.Component {
     return <div className='sale'>
 
       <Currency />
-      <Content />
+      {/* <Content /> */}
       <Content />
       <Aside />
       <Search modelText='Proveedor' model='supplier' namespace='supplierSearch' onRowDoubleClick={supplierSearchDoubleClick} />
