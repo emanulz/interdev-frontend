@@ -112,7 +112,7 @@ export default class Table extends React.Component {
     const depositTotal = this.props.config.printDepositTotalInRC
       ? <div className='print-register-closure-compact-invoice-table-item'>
         <h1>TOTAL A DEPOSITAR:</h1>
-        <h2>₡{systemCashCRCTotal.formatMoney()}</h2>
+        <h2>₡{(systemCashCRCTotal - openingMoneyCRC).formatMoney()}</h2>
       </div>
       : <div />
 
