@@ -41,7 +41,13 @@ export default class ReportRequestPanelComponent extends React.Component {
     }
 
     onStartDateChange(e) {
+
+        let minimum_date = new Date('2019-08-01')
         let start = new Date(e.target.value)
+        if(start < minimum_date){
+            alertify.alert('ERROR', `Los reportes IVA deben tener fecha Inicial mínima de 1 JULIO 2019`)
+            return 
+        }
         let end = new Date(this.props.end_date)
         start = new Date(start.getTime() + start.getTimezoneOffset() * 60000)
         end = new Date(end.getTime() + end.getTimezoneOffset() * 60000)
@@ -60,8 +66,13 @@ export default class ReportRequestPanelComponent extends React.Component {
       }
     
     onEndDateChange(e) {
+        let minimum_date = new Date('2019-08-01')
         let start = new Date(this.props.start_date)
         let end = new Date(e.target.value)
+        if(end < minimum_date){
+            alertify.alert('ERROR', `Los reportes IVA deben tener fecha Inicial mínima de 1 JULIO 2019`)
+            return 
+        }
         start = new Date(start.getTime() + start.getTimezoneOffset() * 60000)
         end = new Date(end.getTime() + end.getTimezoneOffset() * 60000)
 
