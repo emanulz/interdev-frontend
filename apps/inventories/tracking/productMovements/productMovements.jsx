@@ -57,7 +57,7 @@ export default class MovementsList extends React.Component {
 
       const id = nextprops.product.id
       const kwargs = {
-        url: '/api/inventorymovementslist',
+        url: '/api/inventorymovementslistcustom',
         ordering: '-created',
         filterField: 'product_id',
         filter: id,
@@ -81,7 +81,7 @@ export default class MovementsList extends React.Component {
 
     const id = this.props.product.id
     const kwargs = {
-      url: '/api/inventorymovementslist',
+      url: '/api/inventorymovementslistcustom',
       ordering: '-created',
       filterField: 'product_id',
       filter: id,
@@ -100,7 +100,7 @@ export default class MovementsList extends React.Component {
 
     const id = this.props.product.id
     const kwargs = {
-      url: '/api/inventorymovementslist',
+      url: '/api/inventorymovementslistcustom',
       ordering: '-created',
       filterField: 'product_id',
       filter: id,
