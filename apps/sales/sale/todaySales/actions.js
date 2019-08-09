@@ -32,7 +32,7 @@ export function getTodaySales(kwargs) {
   const ordering = kwargs.ordering
   const limit = kwargs.limit
 
-  const urltoFetch = `${url}/?${filterField}=${filter}&ordering=${ordering}&limit=${limit}`
+  const urltoFetch = `${url}/?ordering=${ordering}&limit=${limit}`
   console.log(urltoFetch)
   return function(dispatch) {
     axios.get(urltoFetch).then(function(response) {

@@ -34,7 +34,7 @@ export default class TodaySalesPanel extends React.Component {
     const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
     const limit = 10
     const kwargs = {
-      url: '/api/saleslist',
+      url: '/api/saleslistcustom',
       ordering: '-consecutive',
       filterField: 'start_date',
       filter: dateStr,

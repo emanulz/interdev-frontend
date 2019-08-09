@@ -28,7 +28,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: `adminSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
     const saleKwargs = {
-      url: `/api/saleslist/?limit=${this.props.pageSize}&ordering=-consecutive`,
+      url: `/api/saleslistcustom/?limit=${this.props.pageSize}&ordering=-consecutive`,
       successType: 'FETCH_SALES_FULFILLED',
       errorType: 'FETCH_SALES_REJECTED'
     }
@@ -111,8 +111,8 @@ export default class List extends React.Component {
 
     const paginationDiv = !this.props.searchResults.length
       ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/saleslist/?ordering=-consecutive' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
-        <Pagination url='/api/saleslist/?ordering=-consecutive' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
+        <ResultsPerPage url='/api/saleslistcustom/?ordering=-consecutive' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
+        <Pagination url='/api/saleslistcustom/?ordering=-consecutive' successType='FETCH_SALES_FULFILLED' errorType='FETCH_SALES_REJECTED' />
       </div>
       : <div />
 
