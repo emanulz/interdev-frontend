@@ -1,7 +1,7 @@
 
 const stateConst = {
   reinvoices: [],
-  isVisible: true,
+  isVisible: false,
   reinvoiceId: '',
   reinvoiceUser: {}
 }
