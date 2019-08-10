@@ -9,7 +9,8 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     sale: store.sale.saleActive,
-    returnItems: store.returnCart.returnItems
+    returnItems: store.returnCart.returnItems,
+    noInv: store.sale.noInvAfected
   }
 })
 export default class CartItems extends React.Component {
@@ -20,9 +21,12 @@ export default class CartItems extends React.Component {
                                por favor no intente modificar la página, un EMAIL ha sido enviado a los desarrolladores con el usuario que intenta realizar la acción`)
       return false
     }
-    const alreadyReturned = getAlreadyReturnedQty(item, this.props.sale)
-    const qty = parseFloat(item.qty) - alreadyReturned
-    this.props.dispatch(addToReturn(item, qty, alreadyReturned))
+    const alreadyReturned = getAlreadyReturnedQty(item, this.props.sale, this.props.noInv)
+    let qty = parseFloat(item.qty) - alreadyReturned
+    if (this.props.noInvAfected) {
+      qty = parseFloat(item.qty)
+    }
+    this.props.dispatch(addToReturn(item, qty, alreadyReturned, this.props.noInv))
   }
 
   render() {
@@ -30,10 +34,14 @@ export default class CartItems extends React.Component {
     const sale = this.props.sale
     const items2 = sale.cart
       ? sale.cart.cartItems.map((item, index) => {
-        const alreadyReturned = getAlreadyReturnedQty(item, sale)
+        const alreadyReturned = getAlreadyReturnedQty(item, sale, this.props.noInv)
         const alreadyIncart = this.props.returnItems.find(row => { return row.uuid == item.uuid })
         const alreadyAddedClass = alreadyIncart ? 'already-added' : ''
-        const grayedClass = alreadyReturned >= parseFloat(item.qty) ? 'cart-body-item all-returned' : 'cart-body-item'
+        let grayedClass = alreadyReturned >= parseFloat(item.qty) ? 'cart-body-item all-returned' : 'cart-body-item'
+        // IF NOT INV SETTED THE PREVIOUS RETURNED QTY DOES NOT MATTER
+        if (this.props.noInv) {
+          grayedClass = 'cart-body-item'
+        }
         return <div className={`${grayedClass} ${alreadyAddedClass}`} key={item.uuid} >
 
           <div className='cart-body-item-code'>

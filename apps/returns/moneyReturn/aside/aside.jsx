@@ -15,7 +15,8 @@ import {getItemDispatch} from '../../../../utils/api.js'
     registerClosures: store.moneyReturn.registerClosures,
     registerClosureSelected: store.moneyReturn.registerClosureSelected,
     config: store.config.globalConf,
-    user: store.user.user
+    user: store.user.user,
+    noInv: store.sale.noInvAfected
   }
 })
 export default class Aside extends React.Component {
@@ -61,6 +62,17 @@ export default class Aside extends React.Component {
         </select>
       </div>
       : ''
+    const returnMethodDiv = !this.props.noInv
+      ? <div className='moneyReturn-aside-content-method'>
+        <h1>Método de devolución</h1>
+        <select onChange={this.changeReturnMethod.bind(this)} className='form-control' name='return_method'
+          value={this.props.returnMethod} >
+          <option value='CASH'>EFECTIVO</option>
+          <option value='VOUCHER'>VOUCHER DE CRÉDITO</option>
+        </select>
+      </div>
+      : <div />
+
     return <div className={asideClass}>
       <div className={asideContainerClass}>
         <div className='moneyReturn-aside-content-header'>
@@ -70,14 +82,7 @@ export default class Aside extends React.Component {
         <div className='moneyReturn-aside-content-content'>
           <Clients />
           <Totals />
-          <div className='moneyReturn-aside-content-method'>
-            <h1>Método de devolución</h1>
-            <select onChange={this.changeReturnMethod.bind(this)} className='form-control' name='return_method'
-              value={this.props.returnMethod} >
-              <option value='CASH'>EFECTIVO</option>
-              <option value='VOUCHER'>VOUCHER DE CRÉDITO</option>
-            </select>
-          </div>
+          {returnMethodDiv}
           {selectRC}
         </div>
         <div className='moneyReturn-aside-content-footer'>

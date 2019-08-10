@@ -1,11 +1,27 @@
 const stateConst = {
   saleActive: {},
-  sales: {}
+  sales: {},
+  noInvAfected: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    // case 'NO_INV_CHANGED2':
+    // {
+    //   let returnItems = []
+    //   if (!action.payload) {
+    //     returnItems = [
+    //       // action.payload,
+    //       ...state.returnItemsOriginal
+    //     ]
+    //   }
+    //   return {
+    //     ...state,
+    //     returnItems: returnItems
+    //   }
+    // }
 
     case 'SET_SALE':
     {
@@ -62,6 +78,14 @@ export default function reducer(state = stateConst, action) {
         sales: {}
       }
     } // case
+
+    case 'NO_INV_CHANGED':
+    {
+      return {
+        ...state,
+        noInvAfected: action.payload
+      }
+    }
 
   } // switch
 

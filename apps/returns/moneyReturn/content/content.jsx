@@ -12,7 +12,9 @@ import {addToReturn, getAlreadyReturnedQty} from './return/actions.js'
   return {
     fullWidth: store.moneyReturn.fullWidth,
     sale: store.sale.saleActive,
-    returnCart: store.returnCart
+    returnCart: store.returnCart,
+    noInv: store.sale.noInvAfected,
+    conf: store.config.globalConf
   }
 })
 export default class Main extends React.Component {
@@ -36,6 +38,11 @@ export default class Main extends React.Component {
       this.props.dispatch(addToReturn(item, qty, alreadyReturned))
     }
   }
+  noInvChanged(event) {
+    const value = event.target.checked
+    this.props.dispatch({type: 'NO_INV_CHANGED', payload: value})
+    this.props.dispatch({type: 'CLEAR_RETURN_ALL', payload: value})
+  }
 
   // Main Layout
   render() {
@@ -45,10 +52,17 @@ export default class Main extends React.Component {
       ? sale.cart.cartTotal : 0
     const returnTotal = this.props.returnCart
       ? this.props.returnCart.returnTotal : 0
+    const noInvCNDIV = this.props.conf.canCreateNoInvCN
+      ? <div className='moneyReturn-content-sale-header-noInv'>
+      Sin Inv
+        <input type='checkbox' checked={this.props.noInv} onChange={this.noInvChanged.bind(this)} />
+      </div>
+      : <div />
     return <div className={contentClass}>
       <div className='moneyReturn-content-sale' >
         <div className='moneyReturn-content-sale-header'>
           VENTA# {sale.consecutive}
+          {noInvCNDIV}
           <span onClick={this.setInvoiceNull.bind(this)}>
             Anular
             <i className='fa fa-trash' />

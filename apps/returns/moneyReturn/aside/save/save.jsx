@@ -16,11 +16,8 @@ import { withRouter } from 'react-router-dom'
     returnItems: store.returnCart.returnItems,
     returnCart: store.returnCart,
     returnMethod: store.moneyReturn.return_method,
-    registerClosureSelected: store.moneyReturn.registerClosureSelected
-    // sales: store.sales.sales,
-    // saleId: store.sales.saleActiveId,
-    // sale: store.sales.saleActive,
-    // movements: store.clientmovements.movements
+    registerClosureSelected: store.moneyReturn.registerClosureSelected,
+    noInv: store.sale.noInvAfected
   }
 })
 class SaveBtn extends React.Component {
@@ -50,7 +47,7 @@ class SaveBtn extends React.Component {
     const warehouse = this.props.sale.cart.work_order_id ? this.props.warehouse2_id : this.props.warehouse_id
     // SALE
     const saleId = this.props.sale.id
-    const sale = this.props.sale
+    // const sale = this.props.sale
     const returnList = this.props.returnItems.map(item => {
       return {uuid: item.uuid, ret_qty: item.qty}
     })
@@ -59,7 +56,8 @@ class SaveBtn extends React.Component {
       'return_list': JSON.stringify(returnList),
       'return_method': returnMethod,
       'destination_warehouse_id': warehouse,
-      'register_closure_id': this.props.registerClosureSelected
+      'register_closure_id': this.props.registerClosureSelected,
+      'redo_cn': this.props.noInv
     }
 
     const kwargs = {

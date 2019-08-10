@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------------------------
 import alertify from 'alertifyjs'
 
-export function addToReturn(item, qty, alreadyReturned) {
+export function addToReturn(item, qty, alreadyReturned, noInv) {
   const subtotal = (item.subtotal / item.qty) * qty
   const totalIv = ((item.totalWithIv - item.subtotal) / item.qty) * qty
   const totalWithIv = (item.totalWithIv / item.qty) * qty
@@ -16,9 +16,10 @@ export function addToReturn(item, qty, alreadyReturned) {
     totalIv: totalIv,
     totalWithIv: totalWithIv
   }
-  if (alreadyReturned >= item.qty) {
+  console.log('NO INV FLAGG', noInv)
+  if (alreadyReturned >= item.qty && !noInv) {
     alertify.alert('ERROR', `Usted está intentando agregar un elemento que ya fue devuelto modificando los atributos,
-                             por favor no intente modificar la página, un EMAIL ha sido enviado a los desarrolladores con el usuario que intenta realizar la acción`)
+                             por favor no intente modificar la página, un EMAILLL ha sido enviado a los desarrolladores con el usuario que intenta realizar la acción`)
     return false
   }
   return function(dispatch) {
@@ -116,8 +117,10 @@ export function updateQty (code, qty, itemsInCart, sale) {
   // return {type: 'NO_ACTION', payload: ''}
 }
 
-export function getAlreadyReturnedQty(item, sale) {
-
+export function getAlreadyReturnedQty(item, sale, noInv) {
+  if (noInv) {
+    return 0
+  }
   try {
     const itemReturns = sale.returns_collection.filter(row => {
       if (row.uuid) {
