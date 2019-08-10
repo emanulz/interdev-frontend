@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import FullInvoice from '../fullInvoice/fullInvoice.jsx'
 import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 import SimpleCompactInvoice from '../simpleCompactInvoice/simpleCompactInvoice.jsx'
+import alertify from 'alertifyjs'
+import axios from 'axios'
 
 @connect((store) => {
   return {
@@ -54,6 +56,55 @@ export default class ReprintInvoicePanel extends React.Component {
     document.getElementById('link').click()
   }
 
+  regenerateInvoiceConfirm() {
+    // ALERTIFY CONFIRM
+    const _this = this
+    alertify.confirm('Re-Facturar', `Desea crear una copia de la venta seleccionada?`, function() {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.regenerateInvoice()
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'Si',
+      cancel: 'No'
+    })
+  }
+
+  regenerateInvoice() {
+    const sale = this.props.sale
+    const _this = this
+    const reinvoicePromise = new Promise((resolve, reject) => {
+      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      axios({
+        method: 'post',
+        url: '/api/presales/createFromSale/',
+        data: {'sale_id': sale.id}
+      })
+        .then((response) => {
+          resolve(response.data)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+
+    reinvoicePromise.then(() => {
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      _this.props.dispatch({ type: 'HIDE_REPRINT_INVOICE_PANEL', payload: -1 })
+      alertify.alert('COMPLETADO', `Se ha creado una copia de la venta seleccionada, dirígase a la aplicación de caja para facturarla`)
+    }).catch((err) => {
+      console.log(err.response.data)
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `Error al crear la copia de la factura, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `Error al crear la copia de la factura, ERROR: ${err}.`)
+      }
+      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
+
   render() {
 
     const isVisible = (this.props.panelVisible)
@@ -90,6 +141,12 @@ export default class ReprintInvoicePanel extends React.Component {
       zpl_link = <a id='link' href={`/api/saleslist/get_zpl/?sale_consec=${this.props.sale.consecutive}`} />
     }
 
+    const reInvoiceBtn = this.props.reinvoiceEnable
+      ? <div className='reprint-invoice-panel-main-reinvoice' onClick={this.regenerateInvoiceConfirm.bind(this)}>
+        <span>RE-FACTURAR</span>
+      </div>
+      : <div />
+
     return <div className={isVisible}>
 
       <div className={'reprint-invoice-panel-main' + isFullClass}>
@@ -114,11 +171,11 @@ export default class ReprintInvoicePanel extends React.Component {
         </div>
 
       </div>
-
       <div className='reprint-invoice-panel-main-change'>
         <span>CAMBIO</span>
         <h1>₡ {parseFloat(change).formatMoney(2, ',', '.')}</h1>
       </div>
+      {reInvoiceBtn}
 
     </div>
 

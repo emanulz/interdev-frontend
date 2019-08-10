@@ -16,7 +16,7 @@ import {loadSaleToReprint} from '../../../../../general/reprintInvoice/actions.j
     sales: store.sales.sales,
     pageSize: store.pagination.pageSize,
     searchResults: store.adminSearch.searchResults,
-    useDebitNotes: store.config.globalConf.useDebitNotes,
+    useDebitNotes: store.config.globalConf.useDebitNotes
   }
 })
 export default class List extends React.Component {
@@ -87,12 +87,13 @@ export default class List extends React.Component {
         field: 'consecutive',
         text: 'Factura',
         type: 'function_on_click',
+        idUnique: 2,
         textToRender: 'Ver',
         onClickFunction: this.reprintInvoice
       }
     ]
 
-    if(this.props.useDebitNotes){
+    if (this.props.useDebitNotes) {
       headerOrder.push({
         field: 'consecutive',
         text: 'N.D',

@@ -20,6 +20,7 @@ import presales from './sale/presales/reducer.js'
 import reserves from './sale/reserves/reducer.js'
 import nsreserves from './sale/nsreserves/reducer.js'
 import quotations from './sale/quotations/reducer.js'
+import reinvoices from './sale/reinvoices/reducer.js'
 import restaurantBills from './sale/restaurantBills/reducer.js'
 import workOrders from './sale/workOrders/reducer.js'
 import clientCreatePanel from './../../general/clientCreatePanel/reducer.js'
@@ -83,5 +84,6 @@ export default combineReducers({
   registerClosure,
   printRegisterClosure,
   nsreserves,
-  permissions
+  permissions,
+  reinvoices
 })

@@ -537,7 +537,8 @@ export default class AdminTable extends React.Component {
             {
               const visible = header.textToRender ? header.textToRender : itemToRender
               const ref = header.href ? header.href : '#'
-              item = <td key={`${el[idField]}_${header.field}_fclick`}>
+              const idUnique = header.idUnique ? header.idUnique : 1
+              item = <td key={`${el[idField]}_${header.field}_fclick_${idUnique}`}>
                 <a onClick={header.onClickFunction.bind(this, itemToRender)} href={ref} >{visible}</a>
               </td>
               break

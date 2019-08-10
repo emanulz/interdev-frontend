@@ -61,7 +61,7 @@ export default class Main extends React.Component {
             {fetching}
           </div>
         </div>
-        <ReprintInvoice />
+        <ReprintInvoice reinvoiceEnable />
         <PrintPresale />
         <PrintRegisterClosure />
         <PrintCashAdvance />
