@@ -49,7 +49,7 @@ export default class Buttons extends React.Component {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       axios({
         method: 'post',
-        url: '/api/electronicselfpurchaselist/',
+        url: '/api/electronicselfpurchase/',
         data: selfpurchase
       })
         .then((response) => {
