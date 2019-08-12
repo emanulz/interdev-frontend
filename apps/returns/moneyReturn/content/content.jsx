@@ -32,7 +32,7 @@ export default class Main extends React.Component {
   }
 
   addItem(item) {
-    const alreadyReturned = getAlreadyReturnedQty(item, this.props.sale)
+    const alreadyReturned = getAlreadyReturnedQty(item, this.props.sale, this.props.noInv)
     const qty = parseFloat(item.qty) - alreadyReturned
     if (qty > 0) {
       this.props.dispatch(addToReturn(item, qty, alreadyReturned))
