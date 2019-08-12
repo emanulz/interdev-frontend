@@ -21,7 +21,8 @@ const Mousetrap = require('mousetrap')
     reserveLoaded: store.completed.isReserveLoaded,
     config: store.config.globalConf,
     priceListSelected: store.priceList.listSelected,
-    usePriceListAsDefault: store.priceList.useAsDefault
+    usePriceListAsDefault: store.priceList.useAsDefault,
+    reinvoiceLoaded: store.completed.isReinvoiceLoaded,
     // defaultConfig: store.config.defaultSales,
     // userConfig: store.config.userSales
   }
@@ -424,7 +425,7 @@ export default class Product extends React.Component {
         <div className='product-inputs-code'>
           <i className='fa fa-barcode' />
           <input id='productCodeInputField'
-            disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) || this.props.reserveLoaded}
+            disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales && !this.props.reinvoiceLoaded) || this.props.reserveLoaded}
             onKeyDown={this.inputKeyPress.bind(this)}
             value={this.props.inputVal}
             onChange={this.inputKeyPress.bind(this)}
@@ -434,7 +435,7 @@ export default class Product extends React.Component {
             type='text' placeholder='Ingrese el Código del Producto'
             className='product-inputs-code-input mousetrap form-control input-lg' />
         </div>
-        <button disabled={this.props.disabled || this.props.presaleLoaded} onClick={this.searchProductClick.bind(this)}
+        <button disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales && !this.props.reinvoiceLoaded)} onClick={this.searchProductClick.bind(this)}
           className='product-inputs-search'>
           <span>
             <i className='fa fa-search' />

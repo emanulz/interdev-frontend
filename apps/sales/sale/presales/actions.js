@@ -100,6 +100,11 @@ export function loadPresaleItem(id, dispatch) {
       dispatch({type: 'HIDE_QUOTATIONS_PANEL', payload: -1})
       dispatch({type: 'QUOTATION_LOADED', payload: data.user})
     }
+    if (data.presale_type == 'RE_INVOICE') {
+      dispatch({type: 'SET_REINVOICE_ID', payload: data.id})
+      dispatch({type: 'HIDE_REINVOICES_PANEL', payload: -1})
+      dispatch({type: 'REINVOICE_LOADED', payload: data.user})
+    }
     if (data.cart.isExempt) {
       // alert('EXONERADAAAA')
       // console.log('EXEMP DATA', data.cart.exemption_data)

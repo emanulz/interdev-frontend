@@ -2,6 +2,7 @@ const stateConst = {
   completed: false,
   isPresaleLoaded: false,
   isQuotationLoaded: false,
+  isReinvoiceLoaded: false,
   isReserveLoaded: false,
   isWorkOrderLoaded: false,
   isRestaurantBillLoaded: false
@@ -42,6 +43,14 @@ export default function reducer(state = stateConst, action) {
         isQuotationLoaded: true
       }
     } // case
+
+    case 'REINVOICE_LOADED':
+      {
+        return {
+          ...state,
+          isReinvoiceLoaded: true
+        }
+      } // case
 
     case 'WORK_ORDER_LOADED':
     {

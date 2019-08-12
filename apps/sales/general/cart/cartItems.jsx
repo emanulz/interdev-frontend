@@ -18,6 +18,7 @@ const Mousetrap = require('mousetrap')
     warehouse_id: store.userProfile.salesWarehouse,
     presaleLoaded: store.completed.isPresaleLoaded,
     reserveLoaded: store.completed.isReserveLoaded,
+    reinvoiceLoaded: store.completed.isReinvoiceLoaded,
     isExempt: store.cart.isExempt,
     config: store.config.globalConf,
     currencySymbol: store.currency.symbolSelected,
@@ -241,7 +242,7 @@ export default class CartItems extends React.Component {
         ? 'cart-activeRow cart-body-item'
         : 'cart-body-item'
 
-      const removeIconClass = this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) ? 'removeItemIcon disabled' : 'removeItemIcon'
+      const removeIconClass = this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales && !this.props.reinvoiceLoaded) ? 'removeItemIcon disabled' : 'removeItemIcon'
 
       const taxes1 = (item.product.use_taxes)
         ? item.product.taxes
@@ -265,7 +266,7 @@ export default class CartItems extends React.Component {
 
       const qtyField = <input
         id={`qty${item.product.code}`}
-        disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales) || this.props.reserveLoaded}
+        disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales && !this.props.reinvoiceLoaded) || this.props.reserveLoaded}
         onChange={this.qtyInputChange.bind(this, item.uuid)}
         onFocus={this.fieldFocus.bind(this)}
         // onKeyUp={this.qtyInputKeyPress.bind(this)}
@@ -276,7 +277,7 @@ export default class CartItems extends React.Component {
 
       const discountField = this.props.client.saleLoaded
         ? <input
-          disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
+          disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales && !this.props.reinvoiceLoaded)}
           onChange={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}
@@ -284,7 +285,7 @@ export default class CartItems extends React.Component {
           defaultValue={item.discount}
         />
         : <input
-          disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales)}
+          disabled={this.props.disabled || (this.props.presaleLoaded && !this.props.config.canEditPresales && !this.props.reinvoiceLoaded)}
           onChange={this.discountInputKeyPress.bind(this, item.uuid)}
           onBlur={this.discountInputOnBlur.bind(this, item.uuid)}
           onFocus={this.fieldFocus.bind(this)}

@@ -172,7 +172,6 @@ export default class ReinvoicesPanel extends React.Component {
         <td>{presellerName}</td>
         <td>₡ {parseFloat(reinvoice.cart.cartTotal).formatMoney(2, ',', '.')}</td>
         <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, reinvoice.id, reinvoice.consecutive)} className='fa fa fa-trash' /></td>
-        <td className='loadRow'><i className='fa fa-print' onClick={this.printPresale.bind(this, reinvoice.consecutive)} /></td>
       </tr>
     })
 
@@ -197,7 +196,6 @@ export default class ReinvoicesPanel extends React.Component {
                 <td>Vendedor</td>
                 <td>Monto</td>
                 <td>Anular</td>
-                <td>Reimprimir</td>
               </tr>
             </thead>
             <tbody>

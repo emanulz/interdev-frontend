@@ -13,6 +13,7 @@ const Mousetrap = require('mousetrap')
     isPresaleLoaded: store.completed.isPresaleLoaded,
     isQuotationLoaded: store.completed.isQuotationLoaded,
     isReserveLoaded: store.completed.isReserveLoaded,
+    isReinvoiceLoaded: store.completed.isReinvoiceLoaded,
     isRestaurantBillLoaded: store.completed.isRestaurantBillLoaded,
     useReserves: store.config.globalConf.useReserves,
     useNSReserves: store.config.globalConf.useNSReserves,
@@ -23,7 +24,8 @@ const Mousetrap = require('mousetrap')
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
     activePresaleId: store.presales.activePresaleId,
     savePresaleAsReserve: store.config.globalConf.savePresaleAsReserve,
-    user: store.user.user
+    user: store.user.user,
+    reinvoices: store.reinvoices.reinvoices
   }
 })
 export default class Buttons extends React.Component {
@@ -100,6 +102,10 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_RESTAURANT_BILLS_PANEL', payload: -1})
   }
 
+  showReinvoicesPanel() {
+    this.props.dispatch({type: 'SHOW_REINVOICES_PANEL', payload: -1})
+  }
+
   savePresaleAsReserve() {
     
   }
@@ -141,6 +147,22 @@ export default class Buttons extends React.Component {
         }}
         className='btn btn-default buttons-payButton'>
         Cotizaciones
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+      const reinvoicesBtn = this.props.reinvoices.length
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded || this.props.isReinvoiceLoaded}
+        onClick={this.showReinvoicesPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Re-facturas
         <span>
           <i className='fa fa-list' />
         </span>
@@ -308,6 +330,7 @@ export default class Buttons extends React.Component {
 
       {presalesBtn}
       {workOrdersBtn}
+      {reinvoicesBtn}
       {restaurantBillsBtn}
       {saveReserveBtn}
       {/* <button
