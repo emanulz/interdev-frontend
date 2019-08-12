@@ -59,9 +59,11 @@ export default class List extends React.Component {
         }
 
         const relatedCN = JSON.parse(item.related_credit_notes)
-        if (relatedCN.length) {
-          className = `${className} CNApplied`
-        }
+        try {
+          if (relatedCN.length) {
+            className = `${className} CNApplied`
+          }
+        } catch (err) {}
 
         return <span className={className}>{text}</span>
       }
