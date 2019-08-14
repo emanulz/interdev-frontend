@@ -120,9 +120,9 @@ export default class Product extends React.Component {
       console.log('INSIDE 12 CHECK')
       console.log('SPLITTED CODE', splittedCode)
       if(splittedCode[0] == '2') {
-        const productCode = parseInt(splittedCode.slice(1, 4).join(''))
-        console.log('SLICE CODE', splittedCode.slice(1, 4))
-        const productQty = parseInt(splittedCode.slice(5, 11).join('')) / 1000
+        const productCode = parseInt(splittedCode.slice(1, 5).join(''))
+        console.log('SLICE CODE', splittedCode.slice(1, 5))
+        const productQty = parseInt(splittedCode.slice(6, 11).join('')) / 1000
         console.log('CODE', productCode)
         console.log('QTY', productQty)
         return `${productCode}*${productQty}`
