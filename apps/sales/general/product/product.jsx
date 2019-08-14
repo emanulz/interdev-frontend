@@ -111,7 +111,29 @@ export default class Product extends React.Component {
     //   this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
 
     // }
-  
+
+
+  getFormattedCode(code) {
+    console.log('INSIDE FUNC')
+    if (code.length == 12) {
+      const splittedCode = code.split('')
+      console.log('INSIDE 12 CHECK')
+      console.log('SPLITTED CODE', splittedCode)
+      if(splittedCode[0] == '2') {
+        const productCode = parseInt(splittedCode.slice(1, 4).join(''))
+        console.log('SLICE CODE', splittedCode.slice(1, 4))
+        const productQty = parseInt(splittedCode.slice(5, 11).join('')) / 1000
+        console.log('CODE', productCode)
+        console.log('QTY', productQty)
+        return `${productCode}*${productQty}`
+      } else {
+        return code
+      }
+    } else {
+      return code
+    }
+
+  }
 
   inputKeyPress(ev) {
     // if Key pressed id Enter
@@ -129,6 +151,10 @@ export default class Product extends React.Component {
       let taxesIVA = 13
 
       const XMLVersion = this.props.config.overrideXMLversion
+
+      if (this.props.config.isButcherShop) {
+        ev.target.value = this.getFormattedCode(ev.target.value)
+      }
 
       if (ev.target.value) {
         const modifier = this.getModifier(ev.target.value)
