@@ -34,7 +34,7 @@ export default class List extends React.Component {
       errorType: 'FETCH_SELFPURCHASES_REJECTED'
     }
     // :TODO UNCOMENT THIS
-    // this.props.dispatch(getPaginationItemDispatch(clientKwargs))
+    this.props.dispatch(getPaginationItemDispatch(selfpurchasesKwargs))
   }
 
   render() {
