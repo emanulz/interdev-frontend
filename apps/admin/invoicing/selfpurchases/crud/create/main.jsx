@@ -51,8 +51,6 @@ export default class SelfPurchase extends React.Component {
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
       <SingleProduct />
       <GeneralItem />
-      {/* <Send /> */}
-      {/* <TaxExemptionPanel /> */}
     </div>
 
   }

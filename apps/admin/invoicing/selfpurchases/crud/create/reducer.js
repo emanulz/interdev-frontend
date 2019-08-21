@@ -1,6 +1,8 @@
 const stateConst = {
   fullWidth: false,
-  selfpurchaseUUID: ''
+  selfpurchaseUUID: '',
+  supplierName: '',
+  relatedDocument: ''
 }
 
 export default function reducer(state = stateConst, action) {
@@ -21,6 +23,37 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         selfpurchaseUUID: action.payload
+      }
+    } // case
+    case 'SET_SELFPURCHASE_SUPPLIER_NAME':
+    {
+      return {
+        ...state,
+        supplierName: action.payload
+      }
+    } // case
+
+    case 'SET_SELFPURCHASE_RELATED_DOC':
+    {
+      return {
+        ...state,
+        relatedDocument: action.payload
+      }
+    } // case
+
+    case 'CLEAR_SELFPURCHASE_SUPPLIER_NAME':
+    {
+      return {
+        ...state,
+        supplierName: ''
+      }
+    } // case
+
+    case 'CLEAR_SELFPURCHASE_RELATED_DOC':
+    {
+      return {
+        ...state,
+        relatedDocument: ''
       }
     } // case
   } // switch

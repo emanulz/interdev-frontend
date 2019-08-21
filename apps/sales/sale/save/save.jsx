@@ -46,7 +46,6 @@ export default class SaveBtn extends React.Component {
     const isinvoice = this.props.isinvoice == 'FACTURA'
     console.log('IS INVOICEEE', isinvoice)
     // DETERMIN THE WAREHOUSE WHERE THE PRODUCTS ARE SUBSTRACTED
-
     const warehouse = this.props.workOrderId.length // IF ITS WORKSHOP
       ? this.props.warehouse2_id
       : this.props.reserveId.length || this.props.nsreserveId.length // IF ITS RESERVE OR NS RESERVE

@@ -59,11 +59,6 @@ export default class List extends React.Component {
           className = 'rejected'
         }
 
-        const relatedCN = JSON.parse(item.related_credit_notes)
-        if (relatedCN.length) {
-          className = `${className} CNApplied`
-        }
-
         return <span className={className}>{text}</span>
       }
       return getElementStatus(item)
@@ -94,7 +89,7 @@ export default class List extends React.Component {
         text: 'Consecutivo',
         type: 'text'
       }, {
-        field: 'sale_consecutive',
+        field: 'consecutive',
         text: 'Interno'
       }, {
         field: 'created',
@@ -103,12 +98,14 @@ export default class List extends React.Component {
       }, {
         field: 'client_name',
         text: 'Cliente'
-      }, {
-        field: 'sale_total',
-        text: 'Monto',
-        type: 'function_process',
-        worker_method: getTotal
-      }, {
+      }
+      // , {
+      //   field: 'sale_total',
+      //   text: 'Monto',
+      //   type: 'function_process',
+      //   worker_method: getTotal
+      // }
+      , {
         field: 'id',
         type: 'function_element',
         idField: 'id',

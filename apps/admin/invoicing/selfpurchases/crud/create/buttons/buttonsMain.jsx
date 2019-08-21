@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
 import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
@@ -14,10 +15,13 @@ import axios from 'axios'
     user: store.user.user,
     extras: store.extras,
     currency: store.currency.currencySelected,
-    exchange: store.currency.exchangeRateSelected
+    exchange: store.currency.exchangeRateSelected,
+    supplierName: store.selfpurchase.supplierName,
+    relatedDocument: store.selfpurchase.relatedDocument
   }
 })
-export default class Buttons extends React.Component {
+
+class Buttons extends React.Component {
 
   confirmSaveSelfPurchase() {
 
@@ -42,7 +46,9 @@ export default class Buttons extends React.Component {
       user: JSON.stringify(this.props.user),
       extras: JSON.stringify(this.props.extras),
       exchange_rate: this.props.exchange,
-      currency_code: this.props.currency
+      currency_code: this.props.currency,
+      supplier_name: this.props.supplierName,
+      related_document: this.props.relatedDocument
     }
 
     const createPromise = new Promise((resolve, reject) => {
@@ -62,7 +68,8 @@ export default class Buttons extends React.Component {
 
     createPromise.then((data) => {
       console.log(data)
-      // IMPLEMENT REDIRECT TO LIST
+      // REDIRECT TO LIST
+      this.props.history.push('/admin/invoicing/selfpurchases')
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {
@@ -100,3 +107,6 @@ export default class Buttons extends React.Component {
   }
 
 }
+
+// EXPORT THE CLASS WITH ROUTER
+export default withRouter(Buttons)

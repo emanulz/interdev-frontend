@@ -9,6 +9,7 @@ import Totals from '../../../../../../sales/general/totals/totals.jsx'
 // import ButtonsExtras from '../buttons/buttonsExtras.jsx'
 import MainButtons from '../buttons/buttonsMain.jsx'
 import Currency from '../../../../../../sales/general/currency/currency.jsx'
+import RelatedFields from '../relatedFields/relatedFields.jsx'
 // import PriceList from '../../general/priceList/priceList.jsx'
 import {connect} from 'react-redux'
 
@@ -34,6 +35,7 @@ export default class Aside extends React.Component {
     return <div className={asideClass}>
       <div className={asideContainerClass}>
         <Currency />
+        <RelatedFields />
         <Totals key='sales' />
         <Notes />
         <MainButtons />
