@@ -10,6 +10,7 @@ import ButtonsExtras from '../buttons/buttonsExtras.jsx'
 import MainButtons from '../buttons/buttonsMain.jsx'
 import Currency from '../../general/currency/currency.jsx'
 import PriceList from '../../general/priceList/priceList.jsx'
+import SellerSelector from '../sellerSelector/sellerSelector.jsx'
 import {connect} from 'react-redux'
 import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
@@ -17,7 +18,8 @@ import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
   return {
     fullWidth: store.sale.fullWidth,
     total: store.cart.cartTotal,
-    currencySymbol: store.currency.symbolSelected
+    currencySymbol: store.currency.symbolSelected,
+    config: store.config.globalConf
   }
 })
 export default class Aside extends React.Component {
@@ -31,6 +33,7 @@ export default class Aside extends React.Component {
     const symbol = this.props.currencySymbol
     const asideClass = this.props.fullWidth ? 'sale-aside collapsed' : 'sale-aside'
     const asideContainerClass = this.props.fullWidth ? 'sale-aside-content collapsed' : 'sale-aside-content'
+    const sellerSelectorObject = this.props.config.canSelectSeller ? <SellerSelector /> : <div />
     return <div className={asideClass}>
       <div className={asideContainerClass}>
         {/* <div className='sale-aside-arrow'>
@@ -46,6 +49,7 @@ export default class Aside extends React.Component {
               <Client />
               <PriceList />
               <Currency />
+              {sellerSelectorObject}
               <Totals />
               <MainButtons />
             </TabPanel>

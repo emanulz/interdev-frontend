@@ -29,7 +29,8 @@ const Mousetrap = require('mousetrap')
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
     marker: store.sale.saleUUID,
-    conf: store.config.globalConf
+    conf: store.config.globalConf,
+    sellerId: store.sale.seller_id
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -62,13 +63,18 @@ export default class SaveBtn extends React.Component {
     cart['work_order_id'] = this.props.workOrderId
     cart['work_order'] = JSON.stringify(this.props.workOrder)
     cart['exemption_data'] = exemptionData
+    // IF SELLER IS SELECTED AND CONF SAYS YOU CAN SELECT SELLER ADD IT TO EXTRAS
+    const extrasToSend = this.props.extras
+    if (this.props.conf.canSelectSeller && this.props.sellerId != '0') {
+      extrasToSend['seller_id'] = this.props.sellerId
+    }
     // SALE
     const sale = {
       cart: JSON.stringify(cart),
       client: JSON.stringify(this.props.client),
       user: JSON.stringify(this.props.user),
       pay: JSON.stringify(this.props.payObject),
-      extras: JSON.stringify(this.props.extras),
+      extras: JSON.stringify(extrasToSend),
       client_id: this.props.client.id,
       warehouse_id: warehouse,
       presale_id: this.props.presaleId,

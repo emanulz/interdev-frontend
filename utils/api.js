@@ -164,6 +164,30 @@ export function getItemDispatch(kwargs) {
 
 }
 
+export function getItemsListDispatch(kwargs) {
+
+  const url = kwargs.url
+  const successType = kwargs.successType
+
+  return function(dispatch) {
+    axios.get(url).then(function(response) {
+      dispatch({type: successType, payload: response.data})
+      dispatch({type: 'FETCHING_DONE'})
+    }).catch(function(err) {
+      if (err.response) {
+        console.log(err.response.data)
+        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+      } else {
+        console.log('NO CUSTOM ERROR')
+        console.log(err)
+        alertify.alert('Error', `${kwargs.errorMessage} ERROR: ${err}.`)
+      }
+      dispatch({type: 'FETCHING_DONE', payload: ''})
+    })
+  }
+
+}
+
 export function getItemByIDDispatch(kwargs) {
 
   const url = kwargs.url

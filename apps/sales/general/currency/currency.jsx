@@ -13,7 +13,7 @@ import {connect} from 'react-redux'
     config: store.config
   }
 })
-export default class Clients extends React.Component {
+export default class Currency extends React.Component {
 
   currencySelected(event) {
     const target = event.target
@@ -36,7 +36,7 @@ export default class Clients extends React.Component {
 
     let retItem = <div />
     const options = this.props.currencies.map(currency => {
-      return <option value={currency.currency_code}>{currency.currency_name}</option>
+      return <option key={currency.currency_code} value={currency.currency_code}>{currency.currency_name}</option>
     })
 
     try {
