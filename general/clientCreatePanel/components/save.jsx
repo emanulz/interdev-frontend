@@ -2,10 +2,10 @@
  * Module dependencies
  */
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import alertify from 'alertifyjs'
-import {saveClient} from '../actions.js'
-import {getFullClientById} from '../../../apps/sales/general/clients/actions.js'
+import { saveClient } from '../actions.js'
+import { getFullClientById } from '../../../apps/sales/general/clients/actions.js'
 import { generalSave } from '../../../utils/api.js'
 
 @connect((store) => {
@@ -17,7 +17,7 @@ import { generalSave } from '../../../utils/api.js'
 export default class ClientCreateSave extends React.Component {
 
   saveBtn() {
-    const client = {...this.props.client}
+    const client = { ...this.props.client }
     client['code'] = this.props.autoCode ? '' : client['code']
 
     const kwargs = {
@@ -28,14 +28,14 @@ export default class ClientCreateSave extends React.Component {
     const _this = this
 
     const updatePromise = new Promise((resolve, reject) => {
-      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch({ type: 'FETCHING_STARTED', payload: '' })
       _this.props.dispatch(saveClient(kwargs, resolve, reject))
     })
     // SAVE PROCESS
     updatePromise.then((data) => {
-      this.props.dispatch({type: 'CLEAR_CREATE_CLIENT', payload: ''})
-      this.props.dispatch({type: 'HIDE_CREATE_CLIENT_PANEL', payload: ''})
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      this.props.dispatch({ type: 'CLEAR_CREATE_CLIENT', payload: '' })
+      this.props.dispatch({ type: 'HIDE_CREATE_CLIENT_PANEL', payload: '' })
+      this.props.dispatch({ type: 'FETCHING_DONE', payload: '' })
       // THEN SET THE NEW CLIENT AS ACTIVE
       let newClient
       try {
@@ -56,17 +56,17 @@ export default class ClientCreateSave extends React.Component {
         console.log(err)
         alertify.alert('Error', `Hubo un error al Crear el Cliente, ERROR: ${err}.`)
       }
-      this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      this.props.dispatch({ type: 'FETCHING_DONE', payload: '' })
     })
 
   }
 
-  sicApi(){
-    let target_id = this.props.client.id_num
-    if(!target_id || target_id.length<9){
+  sicApi() {
+    const target_id = this.props.client.id_num
+    if (!target_id || target_id.length < 9) {
       alertify.alert('Información', `Se debe ingresar una identificación de 9 ó 10 dígitos.`)
     }
-    console.log("Target id --> ", target_id)
+    console.log('Target id --> ', target_id)
     const kwargs = {
       url: `/api/clients/getClientData/?id_number=${target_id}`,
       method: 'get',
@@ -77,19 +77,19 @@ export default class ClientCreateSave extends React.Component {
     }
 
     this.props.dispatch(generalSave(kwargs))
-    this.props.dispatch({type: "FETCHING_STARTED"})
+    this.props.dispatch({ type: 'FETCHING_STARTED' })
   }
 
   render() {
 
     return <div className='clientCreatePanel-content-save'>
-      <div onClick={this.saveBtn.bind(this)}>
-        Registrar
-        <i className='fa fa-save' aria-hidden='true' />
-      </div>
       <div onClick={this.sicApi.bind(this)}>
         Identificar ID
         <i className='fa fa-rocket' aria-hidden='true' />
+      </div>
+      <div onClick={this.saveBtn.bind(this)}>
+        Registrar
+        <i className='fa fa-save' aria-hidden='true' />
       </div>
     </div>
 
