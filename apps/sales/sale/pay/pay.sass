@@ -54,6 +54,8 @@
     height: calc(100% - 220px)
     min-height: 280px
     display: inline-block
+    @media screen and (max-width: $BREAK-SMALL)
+        top: 160px
 
 .pay-method-body
     display: inline-block
@@ -63,6 +65,13 @@
     width: 49%
     height: 100%
     border: 1px solid gray
+    @media screen and (max-width: $BREAK-SMALL)
+        display: flex
+        flex-flow: column
+        width: 100%
+        height: auto
+        position: relative
+        margin-bottom: 20px
     &-message
         font-size: 22px
         color: red
@@ -78,6 +87,9 @@
         color: white
         font-size: 18px
         line-height: 30px
+        @media screen and (max-width: $BREAK-SMALL)
+            position: relative
+            font-size: 15px
     & .add-voucher-btn
         position: absolute
         right: 15px
@@ -91,6 +103,9 @@
         top: 50px
         width: 100%
         padding: 0 10px
+        @media screen and (max-width: $BREAK-SMALL)
+            top: auto
+            margin-top: 10px
         & input
             position: relative
             width: 50%
@@ -99,7 +114,8 @@
             margin-left: 20px
             &.form-control
                 display: inline-block
-
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 15px
 .pay-side-bar
     position: absolute
     top: 0
@@ -108,6 +124,15 @@
     width: 49%
     height: 100%
     border: 1px solid gray
+    @media screen and (max-width: $BREAK-SMALL)
+        position: relative
+        display: flex
+        flex-flow: column
+        width: 100%
+        height: auto
+        left: 0
+        height: auto
+        margin-bottom: 20px
 
 .pay-tag
     display: inline-block
@@ -145,6 +170,8 @@
         background-color: #8394ad
         @media screen and (max-width: 768px)
             font-size: 12px
+        @media screen and (max-width: $BREAK-SMALL)
+            width: 55%
         &.enable
             cursor: pointer
             pointer-events: auto
@@ -163,42 +190,55 @@
     & select
         width: 100%
         height: 100%
+        @media screen and (max-width: $BREAK-SMALL)
+            font-size: 15px
 .edocument-type
     &.edocument-hidden
         display: none
 .pay-method-select
-        position: absolute
-        top: 60px
-        width: 100%
-        display: flex
-        flex-flow: row
-        justify-content: space-between
-        padding: 0 6% 0 5%
-        &-item
-            display: inline-block
-            width: 15%
-            height: 120px
-            font-size: 60px
-            line-height: 80px
-            text-align: center
-            border-radius: 5px
-            background-color: rgb(214, 214, 230)
-            cursor: pointer
-            &.selected
-                background-color: rgb(230, 255, 255)
-            &:hover
-                background-color: rgb(214, 230, 250)
-            &-header
-                display: block
-                line-height: 30px
-                font-size: 18px
-                width: 100%
-                height: 30px
-                position: relative
-                top: 0px
-                background-color: #2B3647
-                color: white
-                border-radius: 5px 5px 0 0
+    position: absolute
+    top: 60px
+    width: 100%
+    display: flex
+    flex-flow: row
+    justify-content: space-between
+    padding: 0 6% 0 5%
+    @media screen and (max-width: $BREAK-SMALL)
+        overflow-y: auto
+        justify-content: flex-start
+    &-item
+        display: inline-block
+        width: 15%
+        height: 120px
+        font-size: 60px
+        line-height: 80px
+        text-align: center
+        border-radius: 5px
+        background-color: rgb(214, 214, 230)
+        cursor: pointer
+        margin-right: 20px
+        @media screen and (max-width: $BREAK-SMALL)
+            min-width: 30%
+            font-size: 30px
+            line-height: 40px
+            height: 80px
+        &.selected
+            background-color: rgb(230, 255, 255)
+        &:hover
+            background-color: rgb(214, 230, 250)
+        &-header
+            display: block
+            line-height: 30px
+            font-size: 18px
+            width: 100%
+            height: 30px
+            position: relative
+            top: 0px
+            background-color: #2B3647
+            color: white
+            border-radius: 5px 5px 0 0
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 13px
 
 .pay-method-fileds
     display: grid
