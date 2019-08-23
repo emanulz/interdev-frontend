@@ -42,10 +42,32 @@ export default class Buttons extends React.Component {
   saveReserve() {
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'RESERVE'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+    if (this.props.globalConf.printChangeOnReserve) {
+      document.getElementById('presaleCashInput').focus()
+    } else {
+      document.getElementById('presaleCodeInput').focus()
+    }
+    const _this = this
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'HIDE_SEND_PANEL', sendload: -1})
+      _this.props.dispatch({type: 'CLEAR_PRESALE_CASH_AMOUNT', payload: 0})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
   }
   saveProforma() {
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'QUOTING'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+    document.getElementById('presaleCodeInput').focus()
+    const _this = this
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'HIDE_SEND_PANEL', sendload: -1})
+      _this.props.dispatch({type: 'CLEAR_PRESALE_CASH_AMOUNT', payload: 0})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
   }
   showEarnings() {
     getEarmings(this.props.cart)
@@ -56,6 +78,15 @@ export default class Buttons extends React.Component {
   saveNSReserve() {
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'NS_RESERVE'})
     this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
+    document.getElementById('presaleCodeInput').focus()
+    const _this = this
+    Mousetrap.bind('esc', function() {
+      _this.props.dispatch({type: 'HIDE_SEND_PANEL', sendload: -1})
+      _this.props.dispatch({type: 'CLEAR_PRESALE_CASH_AMOUNT', payload: 0})
+      document.getElementById('productCodeInputField').focus()
+      document.getElementById('productCodeInputField').value = ''
+      Mousetrap.unbind('esc')
+    })
   }
   newSale() {
     // window.location.reload()

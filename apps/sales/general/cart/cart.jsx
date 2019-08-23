@@ -107,12 +107,20 @@ export default class Cart extends React.Component {
         })
       }
       if (_this.props.caller == 'presales') {
+
         if (_this.props.globalConf.reserveAsDefaultPresale) {
           _this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'RESERVE'})
           _this.props.dispatch({type: 'SHOW_SEND_PANEL', payload: -1})
-          document.getElementById('presaleCodeInput').focus()
+
+          if (_this.props.globalConf.printChangeOnReserve) {
+            document.getElementById('presaleCashInput').focus()
+          } else {
+            document.getElementById('presaleCodeInput').focus()
+          }
+
           Mousetrap.bind('esc', function() {
-            _this.props.dispatch({type: 'HIDE_SEND_PANEL', payload: -1})
+            _this.props.dispatch({type: 'HIDE_SEND_PANEL', sendload: -1})
+            _this.props.dispatch({type: 'CLEAR_PRESALE_CASH_AMOUNT', payload: 0})
             document.getElementById('productCodeInputField').focus()
             document.getElementById('productCodeInputField').value = ''
             Mousetrap.unbind('esc')

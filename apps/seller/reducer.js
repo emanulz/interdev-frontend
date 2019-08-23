@@ -27,6 +27,7 @@ import presales from '../sales/sale/presales/reducer.js'
 import workOrders from '../sales/sale/workOrders/reducer.js'
 import quotations from '../sales/sale/quotations/reducer.js'
 import taxExemption from '../sales/sale/taxExemption/reducer.js'
+import pay from './presale/pay/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -57,5 +58,6 @@ export default combineReducers({
   presales,
   quotations,
   workOrders,
-  taxExemption
+  taxExemption,
+  pay
 })

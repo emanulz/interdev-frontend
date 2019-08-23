@@ -11,7 +11,9 @@ import SaveBtn from '../../save/save.jsx'
     currencySymbol: store.currency.symbolSelected,
     presaleType: store.send.presale_type,
     advanceAmount: store.send.advance_amount,
-    payMethod: store.send.pay_method
+    payMethod: store.send.pay_method,
+    cashAmount: store.pay.cashAmount,
+    globalConf: store.config.globalConf
   }
 })
 export default class PaySideBar extends React.Component {
@@ -32,10 +34,26 @@ export default class PaySideBar extends React.Component {
     const client = this.props.client
     const clientName = client.name && client.last_name ? `${client.name} ${client.last_name}` : 'Predeterminado'
 
-    sendButtonClass = (total > 0 && this.props.user.username)
-      ? 'send-tag tag-button enable'
-      : 'send-tag tag-button'
-    const disabledSend = !(total > 0 && this.props.user.username)
+    // CALCULATES THE CHANGE
+    const payCash = parseFloat(this.props.cashAmount)
+    const change = payCash - total
+
+    if (this.props.globalConf.printChangeOnReserve && this.props.presaleType == 'RESERVE') {
+      sendButtonClass = (total > 0 && this.props.user.username && change >= -0.1)
+        ? 'send-tag tag-button enable'
+        : 'send-tag tag-button'
+    } else {
+      sendButtonClass = (total > 0 && this.props.user.username)
+        ? 'send-tag tag-button enable'
+        : 'send-tag tag-button'
+    }
+
+    let disabledSend = !(total > 0 && this.props.user.username)
+
+    if (this.props.globalConf.printChangeOnReserve && this.props.presaleType == 'RESERVE') {
+      disabledSend = !(total > 0 && this.props.user.username && change >= -0.1)
+    }
+
     const advanceRow = this.props.presaleType == 'NS_RESERVE'
       ? <div className='send-side-bar-nsadvance'>
         <div className='send-side-bar-nsadvance-tag'>
