@@ -183,7 +183,7 @@ export default class List extends React.Component {
 
     return <div className='list list-container'>
       <div className='admin-list-header'>
-        <h1>Listado de Facturas Electrónicas:</h1>
+        <h1>Listado de Compras Simplificadas:</h1>
         {addLink}
       </div>
       {/* <div className='admin-list-search'>

@@ -29,7 +29,6 @@ export default class PayCash extends React.Component {
     const total = parseFloat(this.props.cart.cartTotal)
     const payCash = parseFloat(this.props.cashAmount)
     const change = payCash - total
-
     return <div className='send-method-body'>
 
       <div className='send-method-body-header'>
