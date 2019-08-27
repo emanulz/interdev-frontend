@@ -49,11 +49,11 @@ export default class SideMenu extends React.Component {
 
       <div className='sideMenu-wrapper col-xs-12'>
         <ul className='sideMenu-items'>
-          <li>
+          {/* <li>
             <Link to='/credits'>
               <span className='fa fa-home' />
               Crédito y Cobro</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/credits/receivable'>
               <span className='fa fa-user' />

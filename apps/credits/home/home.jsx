@@ -14,7 +14,8 @@ export default class Home extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'HOME_PANEL_MOUNTED', payload: ''})
+    // this.props.dispatch({type: 'HOME_PANEL_MOUNTED', payload: ''})
+    this.props.history.push('/credits/receivable')
 
   }
   // *******************************************************************
