@@ -16,6 +16,7 @@ import {savePayment, getClientVouchers} from './actions.js'
     user: store.user.user,
     clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt,
     creditPayMethod: store.payments.creditPayMethod,
+    creditPayNotes: store.payments.creditPayNotes,
     clientVouchers: store.payments.clientVouchers
   }
 })
@@ -79,6 +80,10 @@ export default class Update extends React.Component {
       this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       this.props.dispatch(getClientVouchers(kwargs))
     }
+  }
+
+  setPaymentNotes(event) {
+    this.props.dispatch({type: 'SET_CREDIT_PAY_NOTES', payload: event.target.value})
   }
 
   selectClientDEPRECATED(event) {
@@ -362,8 +367,8 @@ export default class Update extends React.Component {
     }
     const availableVouchersDiv = this.props.creditPayMethod == 'VOUCHER'
       ? <div className='vouchers-available'>
-        <h3>Disponible: ₡{voucherAmount.formatMoney(2, ',', '.')}</h3>
-        <h3>Restante: ₡{(voucherAmount - paymentTotal).formatMoney(2, ',', '.')}</h3>
+        <h3><span>Disponible:</span> ₡{voucherAmount.formatMoney(2, ',', '.')}</h3>
+        <h3><span>Restante:</span> ₡{(voucherAmount - paymentTotal).formatMoney(2, ',', '.')}</h3>
       </div>
       : <div />
 
@@ -375,7 +380,22 @@ export default class Update extends React.Component {
           <h1>CLIENTE: {client.code} - {client.name} {client.last_name}</h1>
         </div>
         <div className='payment-header-container'>
+          <div className='payment-header-container-pay-method'>
+            <h1>Método de Pago</h1>
+            <select onChange={this.setCreditPayMethod.bind(this)} className='form-control' name='pay_method'
+              value={this.props.creditPayMethod} >
+              <option value='CASH'>EFECTIVO</option>
+              <option value='CARD'>TARJETA</option>
+              <option value='TRANSFER'>TRANSFERENCIA</option>
+              <option value='VOUCHER'>VOUCHER DE CRÉDITO</option>
+            </select>
+            {availableVouchersDiv}
+            <h1>Notas:</h1>
+            <textarea rows='4' value={this.props.creditPayNotes} onChange={this.setPaymentNotes.bind(this)} />
+          </div>
+
           <div className='payment-header-container-totals'>
+            <h1>Totales:</h1>
             <table className='table table-bordered'>
               <tbody>
                 <tr>
@@ -392,19 +412,6 @@ export default class Update extends React.Component {
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          <div className='payment-header-container-btn'>
-
-            <h1>Método de Pago</h1>
-            <select onChange={this.setCreditPayMethod.bind(this)} className='form-control' name='pay_method'
-              value={this.props.creditPayMethod} >
-              <option value='CASH'>EFECTIVO</option>
-              <option value='CARD'>TARJETA</option>
-              <option value='TRANSFER'>TRANSFERENCIA</option>
-              <option value='VOUCHER'>VOUCHER DE CRÉDITO</option>
-            </select>
-            {availableVouchersDiv}
 
             <button onClick={this.confirmSave.bind(this)} disabled={!this.props.paymentArray.length} className='form-control'>
               Registrar

@@ -5,6 +5,7 @@ const stateConst = {
   },
   payments: [],
   creditPayMethod: 'CASH',
+  creditPayNotes: '',
   clientVouchers: []
 }
 
@@ -77,7 +78,16 @@ export default function reducer(state = stateConst, action) {
         payments: []
       }
     } // case
-
+    // ***********************************
+    // PAYMENT NOTES
+    // ***********************************
+    case 'SET_CREDIT_PAY_NOTES':
+    {
+      return {
+        ...state,
+        creditPayNotes: action.payload
+      }
+    } // case
     // ***********************************
     // PAYMENT OBJECT
     // ***********************************
