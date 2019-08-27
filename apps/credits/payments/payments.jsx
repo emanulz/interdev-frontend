@@ -86,21 +86,21 @@ export default class Update extends React.Component {
     this.props.dispatch({type: 'SET_CREDIT_PAY_NOTES', payload: event.target.value})
   }
 
-  selectClientDEPRECATED(event) {
-    event.preventDefault()
-    const target = event.target
-    const value = target.value
+  // selectClientDEPRECATED(event) {
+  //   event.preventDefault()
+  //   const target = event.target
+  //   const value = target.value
 
-    const clients = [
-      ...this.props.clients
-    ]
+  //   const clients = [
+  //     ...this.props.clients
+  //   ]
 
-    const clientSelected = clients.filter(client => {
-      return client.id == value
-    })
+  //   const clientSelected = clients.filter(client => {
+  //     return client.id == value
+  //   })
 
-    this.props.dispatch({type: 'SET_CLIENT', payload: clientSelected[0]})
-  }
+  //   this.props.dispatch({type: 'SET_CLIENT', payload: clientSelected[0]})
+  // }
 
   unselectClient() {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
@@ -111,8 +111,6 @@ export default class Update extends React.Component {
   paySaleComplete(sale, event) {
 
     this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
-    document.getElementById(`${sale.id}-checkbox-partial`).checked = false
-    document.getElementById(`${sale.id}-input-partial`).value = ''
 
     // CALC THE EXISTENT PAYMENT
     const array = [...this.props.paymentArray]
@@ -130,6 +128,7 @@ export default class Update extends React.Component {
     }
 
     if (event.target.checked) {
+      document.getElementById(`${sale.id}-input-partial`).value = Math.abs(parseFloat(sale.balance))
       if (this.props.creditPayMethod == 'VOUCHER') {
         const voucherBalance = voucherAmount - prevAmount - Math.abs(parseFloat(sale.balance))
         if (voucherBalance < -1) {
@@ -149,32 +148,33 @@ export default class Update extends React.Component {
 
     } else {
       this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+      document.getElementById(`${sale.id}-input-partial`).value = ''
     }
   }
 
-  paySaleAmount(sale, event) {
+  // paySaleAmount(sale, event) {
 
-    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+  //   this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
 
-    document.getElementById(`${sale.id}-checkbox-complete`).checked = false
+  //   document.getElementById(`${sale.id}-checkbox-complete`).checked = false
 
-    if (event.target.checked) {
-      const item = {
-        bill_id: sale.id,
-        sale: sale,
-        amount: 0,
-        complete: false,
-        type: sale.type
-      }
-      this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
+  //   if (event.target.checked) {
+  //     const item = {
+  //       bill_id: sale.id,
+  //       sale: sale,
+  //       amount: 0,
+  //       complete: false,
+  //       type: sale.type
+  //     }
+  //     this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
 
-    } else {
-      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
-    }
-  }
+  //   } else {
+  //     this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+  //   }
+  // }
 
   setPaySaleAmount(sale, event) {
-
+    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
     // CALC THE EXISTENT PAYMENT
     const array = [...this.props.paymentArray]
     let prevAmountNoThisSale = 0
@@ -199,14 +199,39 @@ export default class Update extends React.Component {
       const voucherBalance = voucherAmount - prevAmountNoThisSale - value
       if (voucherBalance < -1) {
         alertify.alert('ERROR', 'El monto a pagar es mayor que el disponible en vouchers.')
-        document.getElementById(`${sale.id}-checkbox-partial`).checked = false
+        // document.getElementById(`${sale.id}-checkbox-partial`).checked = false
         document.getElementById(`${sale.id}-input-partial`).value = ''
         this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
         return false
       }
     }
+    const salebalance = Math.abs(parseFloat(sale.balance))
+    console.log('SALE BALANCE', salebalance)
+    if (value >= salebalance) {
+      const item = {
+        bill_id: sale.id,
+        sale: sale,
+        amount: salebalance,
+        complete: true,
+        type: sale.type
+      }
+      this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
+      document.getElementById(`${sale.id}-checkbox-complete`).checked = true
+      document.getElementById(`${sale.id}-input-partial`).value = salebalance
+      document.getElementById(`${sale.id}-input-partial`).blur()
+    } else {
+      const item = {
+        bill_id: sale.id,
+        sale: sale,
+        amount: value,
+        complete: false,
+        type: sale.type
+      }
+      this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
+      document.getElementById(`${sale.id}-checkbox-complete`).checked = false
+    }
 
-    this.props.dispatch({type: 'SET_AMOUNT_PAYMENT_ARRAY', payload: {amount: value, sale: sale}})
+    // this.props.dispatch({type: 'SET_AMOUNT_PAYMENT_ARRAY', payload: {amount: value, sale: sale}})
   }
 
   paymentTableItem(sale) {
@@ -226,13 +251,13 @@ export default class Update extends React.Component {
           onClick={this.paySaleComplete.bind(this, sale)}
         />
       </td>
-      <td>
+      {/* <td>
         <input
           id={`${sale.id}-checkbox-partial`}
           type='checkbox'
           onClick={this.paySaleAmount.bind(this, sale)}
         />
-      </td>
+      </td> */}
       <td>
         <input
           id={`${sale.id}-input-partial`}
@@ -291,7 +316,8 @@ export default class Update extends React.Component {
       sales: sales,
       client_id: clientId,
       amount: amount,
-      pay_method: creditPayMethod
+      pay_method: creditPayMethod,
+      notes: this.props.creditPayNotes
     }
 
     console.log('PAYMENT', payment)
@@ -431,7 +457,6 @@ export default class Update extends React.Component {
               <th>Deuda</th>
               <th>Tipo</th>
               <th>Completa</th>
-              <th>Otro</th>
               <th>Monto</th>
             </tr>
           </thead>
