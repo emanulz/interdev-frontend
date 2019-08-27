@@ -607,8 +607,8 @@ export default class AdminTable extends React.Component {
             }
             case 'link_mask':
             {
-
-              item = <td key={`${el[idField]}_${header.field}_link_mask`}>
+              const uniqueId = header.uniqueId ? header.uniqueId : 0
+              item = <td key={`${el[idField]}_${header.field}_link_mask_${uniqueId}`}>
                 {/* <Link to={`/admin/${model}/edit#${itemToRender}`}>
                                               {itemToRender}
                                           </Link> */}

@@ -16,7 +16,8 @@ import SearchAdmin from '../../../general/search/searchAdmin.jsx'
     fething: store.fetching.fetching,
     clients: store.clients.clients,
     pageSize: store.pagination.pageSize,
-    searchResults: store.receivableSearch.searchResults
+    searchResults: store.receivableSearch.searchResults,
+    conf: store.config.globalConf
   }
 })
 export default class List extends React.Component {
@@ -69,16 +70,31 @@ export default class List extends React.Component {
         text: 'Pago',
         textToRender: 'Pago a Facturas',
         target: 'payment',
-        type: 'link_mask'
+        type: 'link_mask',
+        uniqueId: 1
       },
       {
         field: 'code',
         text: 'Listado de Pagos',
         textToRender: 'Listado de Pagos',
         target: 'receivable/payments/list',
-        type: 'link_mask'
+        type: 'link_mask',
+        uniqueId: 2
       }
     ]
+
+    if (this.props.conf.canAddManualCreditMovements) {
+      headerOrder.push(
+        {
+          field: 'code',
+          text: 'Mov Manual',
+          textToRender: 'Movimiento',
+          target: 'receivable/payments/addmovement',
+          type: 'link_mask',
+          uniqueId: 3
+        }
+      )
+    }
 
     const fetching = <div />
 

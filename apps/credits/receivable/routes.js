@@ -7,12 +7,14 @@ import List from './list.jsx'
 import UnpaidSales from './unpaidSales/unpaidSales.jsx'
 import PaymentList from './paymentList/paymentList.jsx'
 import saleMovements from './saleMovements/saleMovements.jsx'
+import ManualMovement from './manualMovement/manualMovement.jsx'
 
 const routes = <div className='heigh100'>
 
   <Route exact path='/credits/receivable' component={List} />
   <Route exact path='/credits/receivable/:code' component={UnpaidSales} />
   <Route exact path='/credits/receivable/payments/list/:code' component={PaymentList} />
+  <Route exact path='/credits/receivable/payments/addmovement/:code' component={ManualMovement} />
   <Route exact path='/credits/receivable/:code/:sale' component={saleMovements} />
 </div>
 

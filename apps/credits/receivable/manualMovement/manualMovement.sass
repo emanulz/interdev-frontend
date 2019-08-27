@@ -1,0 +1,40 @@
+.manualMovement
+  width: 50%
+  font-family: 'Lato', sans-serif
+  & h1
+    font-size: 20px
+    font-weight: bold
+  &-header
+    font-size: 16px
+    width: 100%
+    display: flex
+    flex-flow: row
+    margin: 20px 0
+    &-tittle
+      width: 150px
+      & div
+        height: 40px
+        padding: 10px
+        line-height: 20px
+        background-color: $PRIMARY-COLOR
+        color: white 
+    &-data
+      & div
+        height: 40px
+        padding: 10px
+        line-height: 20px
+  &-body
+    width: 100%
+    & textarea
+      resize: none
+    & label
+      font-weight: bolder
+      display: block
+      margin-bottom: 5px
+  &-save
+    margin-top: 20px
+    display: flex
+    flex-flow: row
+    justify-content: flex-end
+    & button
+      width: 40%

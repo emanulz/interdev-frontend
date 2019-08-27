@@ -417,7 +417,7 @@ export default class Update extends React.Component {
             </select>
             {availableVouchersDiv}
             <h1>Notas:</h1>
-            <textarea rows='4' value={this.props.creditPayNotes} onChange={this.setPaymentNotes.bind(this)} />
+            <textarea maxLength='250' rows='4' value={this.props.creditPayNotes} onChange={this.setPaymentNotes.bind(this)} />
           </div>
 
           <div className='payment-header-container-totals'>
