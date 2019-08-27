@@ -16,11 +16,11 @@ export default function reducer(state = stateConst, action) {
     // ***********************************
     case 'FETCH_PAYMENTS_FULFILLED':
     {
-      const payments = action.payload
-      payments.forEach(payment => {
-        const client = JSON.parse(payment.client)
-        payment.client = client
-      })
+      // const payments = action.payload
+      // payments.forEach(payment => {
+      //   const client = JSON.parse(payment.client)
+      //   payment.client = client
+      // })
       return {
         ...state,
         payments: action.payload
@@ -95,7 +95,7 @@ export default function reducer(state = stateConst, action) {
     {
       const payment = {...action.payload}
       payment.sales = JSON.parse(payment.sales)
-      payment.client = JSON.parse(payment.client)
+      // payment.client = JSON.parse(payment.client)
       return {
         ...state,
         paymentActive: payment
