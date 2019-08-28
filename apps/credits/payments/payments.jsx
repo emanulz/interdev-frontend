@@ -236,12 +236,12 @@ export default class Update extends React.Component {
 
   paymentTableItem(sale) {
 
-    const date = formatDate(sale.created)
-    const typeText = sale.type == 'SALE' ? 'FACTURA DE VENTA' : sale.type == 'PRESALE' ? 'APARTADO' : ''
+    const date = formatDate(sale.sale.created)
+    const typeText = sale.sale ? 'FACTURA DE VENTA' : sale.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
     return <tr key={`${sale.consecutive}_${sale.type}`}>
-      <td>{sale.consecutive}</td>
+      <td>{sale.sale.consecutive}</td>
       <td>{date}</td>
-      <td>₡ {sale.sale_total ? parseFloat(sale.sale_total).formatMoney(2, ',', '.') : 0}</td>
+      <td>₡ {sale.total ? parseFloat(sale.total).formatMoney(2, ',', '.') : 0}</td>
       <td>₡ {Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)).formatMoney(2, ',', '.') : 0}</td>
       <td>{typeText}</td>
       <td>
@@ -317,7 +317,8 @@ export default class Update extends React.Component {
       client_id: clientId,
       amount: amount,
       pay_method: creditPayMethod,
-      notes: this.props.creditPayNotes
+      notes: this.props.creditPayNotes,
+      type: 'DEBI'
     }
 
     console.log('PAYMENT', payment)

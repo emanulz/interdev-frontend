@@ -17,7 +17,7 @@ export default class ManualMovement extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      movementType: 'CRE',
+      movementType: 'CRED',
       movementAmount: '',
       movementNotes: ''
     }
@@ -108,8 +108,8 @@ export default class ManualMovement extends React.Component {
           <label>Tipo de Movimiento</label>
           <select onChange={this.handleInputChange.bind(this)} className='form-control' name='movementType'
             value={this.state.movementType} >
-            <option value='CRE'>Crédito</option>
-            <option value='DEB'>Débito</option>
+            <option value='CRED'>Crédito</option>
+            <option value='DEBI'>Débito</option>
           </select>
         </div>
         <div className='form-group'>
