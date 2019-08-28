@@ -60,17 +60,17 @@ export default class UnpaidSales extends React.Component {
 
   getPendingItem(item, client) {
 
-    const date = formatDate(item.created)
-    const typeText = item.type == 'SALE' ? 'FACTURA DE VENTA' : item.type == 'PRESALE' ? 'APARTADO' : ''
-    const typeChar = item.type == 'SALE' ? 'v' : item.type == 'PRESALE' ? 'a' : ''
+    const date = formatDate(item.sale.created)
+    const typeText = item.sale ? 'FACTURA DE VENTA' : item.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
+    const typeChar = item.sale ? 'v' : item.presale ? 'a' : 'm'
     return <tr key={`${item.consecutive}_${item.type}`}>
-      <td>{item.consecutive}</td>
+      <td>{item.sale.consecutive}</td>
       <td>{date}</td>
-      <td>₡ {item.sale_total ? parseFloat(item.sale_total).formatMoney(2, ',', '.') : 0}</td>
+      <td>₡ {item.total ? parseFloat(item.total).formatMoney(2, ',', '.') : 0}</td>
       {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}
       <td>₡ {item.balance ? parseFloat(item.balance).formatMoney(2, ',', '.') : 0}</td>
       <td>{typeText}</td>
-      <td><Link to={`/credits/receivable/${client.code}/${typeChar}${item.consecutive}`}>Ver Movimientos</Link></td>
+      <td><Link to={`/credits/receivable/${client.code}/${typeChar}${item.sale.consecutive}`}>Ver Movimientos</Link></td>
     </tr>
 
   }

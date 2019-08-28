@@ -1,8 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Select2 from 'react-select2-wrapper'
 import alertify from 'alertifyjs'
-// import alertify from 'alertifyjs'
 import {setItem} from '../../../utils/api'
 import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
@@ -86,22 +84,6 @@ export default class Update extends React.Component {
     this.props.dispatch({type: 'SET_CREDIT_PAY_NOTES', payload: event.target.value})
   }
 
-  // selectClientDEPRECATED(event) {
-  //   event.preventDefault()
-  //   const target = event.target
-  //   const value = target.value
-
-  //   const clients = [
-  //     ...this.props.clients
-  //   ]
-
-  //   const clientSelected = clients.filter(client => {
-  //     return client.id == value
-  //   })
-
-  //   this.props.dispatch({type: 'SET_CLIENT', payload: clientSelected[0]})
-  // }
-
   unselectClient() {
     this.props.dispatch({type: 'CLEAR_CLIENT', payload: ''})
     this.props.dispatch({type: 'CLEAR_CLIENT_SALES_WITH_DEBT', payload: ''})
@@ -138,7 +120,7 @@ export default class Update extends React.Component {
         }
       }
       const item = {
-        bill_id: sale.id,
+        record_id: sale.id,
         sale: sale,
         amount: Math.abs(parseFloat(sale.balance)),
         complete: true,
@@ -152,27 +134,6 @@ export default class Update extends React.Component {
     }
   }
 
-  // paySaleAmount(sale, event) {
-
-  //   this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
-
-  //   document.getElementById(`${sale.id}-checkbox-complete`).checked = false
-
-  //   if (event.target.checked) {
-  //     const item = {
-  //       bill_id: sale.id,
-  //       sale: sale,
-  //       amount: 0,
-  //       complete: false,
-  //       type: sale.type
-  //     }
-  //     this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
-
-  //   } else {
-  //     this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
-  //   }
-  // }
-
   setPaySaleAmount(sale, event) {
     this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
     // CALC THE EXISTENT PAYMENT
@@ -180,7 +141,7 @@ export default class Update extends React.Component {
     let prevAmountNoThisSale = 0
     // CALC THE TOTAL AMOUNT OF PAYMENT NOT INCLUDING THIS SALE
     array.map(item => {
-      if (item.bill_id != sale.id) {
+      if (item.record_id != sale.id) {
         prevAmountNoThisSale = prevAmountNoThisSale + item.amount
       }
     })
@@ -199,17 +160,15 @@ export default class Update extends React.Component {
       const voucherBalance = voucherAmount - prevAmountNoThisSale - value
       if (voucherBalance < -1) {
         alertify.alert('ERROR', 'El monto a pagar es mayor que el disponible en vouchers.')
-        // document.getElementById(`${sale.id}-checkbox-partial`).checked = false
         document.getElementById(`${sale.id}-input-partial`).value = ''
         this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
         return false
       }
     }
     const salebalance = Math.abs(parseFloat(sale.balance))
-    console.log('SALE BALANCE', salebalance)
     if (value >= salebalance) {
       const item = {
-        bill_id: sale.id,
+        record_id: sale.id,
         sale: sale,
         amount: salebalance,
         complete: true,
@@ -221,7 +180,7 @@ export default class Update extends React.Component {
       document.getElementById(`${sale.id}-input-partial`).blur()
     } else {
       const item = {
-        bill_id: sale.id,
+        record_id: sale.id,
         sale: sale,
         amount: value,
         complete: false,
@@ -231,38 +190,30 @@ export default class Update extends React.Component {
       document.getElementById(`${sale.id}-checkbox-complete`).checked = false
     }
 
-    // this.props.dispatch({type: 'SET_AMOUNT_PAYMENT_ARRAY', payload: {amount: value, sale: sale}})
   }
 
-  paymentTableItem(sale) {
+  paymentTableItem(record) {
 
-    const date = formatDate(sale.sale.created)
-    const typeText = sale.sale ? 'FACTURA DE VENTA' : sale.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
-    return <tr key={`${sale.consecutive}_${sale.type}`}>
-      <td>{sale.sale.consecutive}</td>
+    const date = formatDate(record.sale.created)
+    const typeText = record.sale ? 'FACTURA DE VENTA' : record.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
+    return <tr key={`${record.consecutive}_${record.type}`}>
+      <td>{record.sale.consecutive}</td>
       <td>{date}</td>
-      <td>₡ {sale.total ? parseFloat(sale.total).formatMoney(2, ',', '.') : 0}</td>
-      <td>₡ {Math.abs(parseFloat(sale.balance)) ? Math.abs(parseFloat(sale.balance)).formatMoney(2, ',', '.') : 0}</td>
+      <td>₡ {record.total ? parseFloat(record.total).formatMoney(2, ',', '.') : 0}</td>
+      <td>₡ {Math.abs(parseFloat(record.balance)) ? Math.abs(parseFloat(record.balance)).formatMoney(2, ',', '.') : 0}</td>
       <td>{typeText}</td>
       <td>
         <input
-          id={`${sale.id}-checkbox-complete`}
+          id={`${record.id}-checkbox-complete`}
           type='checkbox'
-          onClick={this.paySaleComplete.bind(this, sale)}
+          onClick={this.paySaleComplete.bind(this, record)}
         />
       </td>
-      {/* <td>
-        <input
-          id={`${sale.id}-checkbox-partial`}
-          type='checkbox'
-          onClick={this.paySaleAmount.bind(this, sale)}
-        />
-      </td> */}
       <td>
         <input
-          id={`${sale.id}-input-partial`}
+          id={`${record.id}-input-partial`}
           type='number'
-          onChange={this.setPaySaleAmount.bind(this, sale)}
+          onChange={this.setPaySaleAmount.bind(this, record)}
         />
       </td>
     </tr>
@@ -291,19 +242,9 @@ export default class Update extends React.Component {
   saveMovements() {
     // ITEMS USED BY PAYMENT OBJECT
     const array = [...this.props.paymentArray]
-    // const user = JSON.stringify(this.props.user)
-    // const client = JSON.stringify(this.props.client)
-    const sales = JSON.stringify(this.props.paymentArray)
+    const records = JSON.stringify(this.props.paymentArray)
     const clientId = this.props.client.id
     const creditPayMethod = this.props.creditPayMethod
-
-    // const newSales = array.map(sale => {
-    //   return {
-    //     amount: sale.amount,
-    //     bill_id: sale.bill_id,
-    //     sale
-    //   }
-    // })
 
     let amount = 0
 
@@ -313,15 +254,13 @@ export default class Update extends React.Component {
     })
 
     const payment = {
-      sales: sales,
+      records: records,
       client_id: clientId,
       amount: amount,
       pay_method: creditPayMethod,
       notes: this.props.creditPayNotes,
       type: 'DEBI'
     }
-
-    console.log('PAYMENT', payment)
 
     const kwargs = {
       url: '/api/creditpaymentscreate/',
@@ -337,7 +276,6 @@ export default class Update extends React.Component {
     })
 
     savePaymentPromise.then((data) => {
-      console.log(data)
       this.props.dispatch({type: 'SET_PAYMENT', payload: data})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       this.props.dispatch({type: 'SHOW_INVOICE_PANEL', payload: ''})
@@ -360,13 +298,13 @@ export default class Update extends React.Component {
     // ********************************************************************
     const client = this.props.client
 
-    const sales = this.props.clientActiveSalesWithDebt
-    sales.sort((a, b) => {
+    const records = this.props.clientActiveSalesWithDebt
+    records.sort((a, b) => {
       return new Date(a.created) - new Date(b.created)
     })
 
-    const rows = sales.length
-      ? sales.map(sale => {
+    const rows = records.length
+      ? records.map(sale => {
         return this.paymentTableItem(sale)
       })
       : this.props.client.code
