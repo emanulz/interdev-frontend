@@ -34,7 +34,7 @@ export default class Table extends React.Component {
       borderTop: '1px solid black'
     }
 
-    const sales = this.props.payment.sales
+    const sales = this.props.payment.records
     const items = sales.length
       ? sales.map((item) => {
 

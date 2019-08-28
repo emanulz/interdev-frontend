@@ -90,9 +90,9 @@ export default class Update extends React.Component {
     this.props.dispatch({type: 'CLEAR_PAYMENT_ARRAY', payload: ''})
   }
 
-  paySaleComplete(sale, event) {
+  paySaleComplete(record, event) {
 
-    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: record.id})
 
     // CALC THE EXISTENT PAYMENT
     const array = [...this.props.paymentArray]
@@ -110,38 +110,38 @@ export default class Update extends React.Component {
     }
 
     if (event.target.checked) {
-      document.getElementById(`${sale.id}-input-partial`).value = Math.abs(parseFloat(sale.balance))
+      document.getElementById(`${record.id}-input-partial`).value = Math.abs(parseFloat(record.balance))
       if (this.props.creditPayMethod == 'VOUCHER') {
-        const voucherBalance = voucherAmount - prevAmount - Math.abs(parseFloat(sale.balance))
+        const voucherBalance = voucherAmount - prevAmount - Math.abs(parseFloat(record.balance))
         if (voucherBalance < -1) {
           alertify.alert('ERROR', 'El monto a pagar es mayor que el disponible en vouchers.')
-          document.getElementById(`${sale.id}-checkbox-complete`).checked = false
+          document.getElementById(`${record.id}-checkbox-complete`).checked = false
           return false
         }
       }
       const item = {
-        record_id: sale.id,
-        sale: sale,
-        amount: Math.abs(parseFloat(sale.balance)),
+        record_id: record.id,
+        record: record,
+        amount: Math.abs(parseFloat(record.balance)),
         complete: true,
-        type: sale.type
+        type: record.type
       }
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
 
     } else {
-      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
-      document.getElementById(`${sale.id}-input-partial`).value = ''
+      this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: record.id})
+      document.getElementById(`${record.id}-input-partial`).value = ''
     }
   }
 
-  setPaySaleAmount(sale, event) {
-    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+  setPaySaleAmount(record, event) {
+    this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: record.id})
     // CALC THE EXISTENT PAYMENT
     const array = [...this.props.paymentArray]
     let prevAmountNoThisSale = 0
     // CALC THE TOTAL AMOUNT OF PAYMENT NOT INCLUDING THIS SALE
     array.map(item => {
-      if (item.record_id != sale.id) {
+      if (item.record_id != record.id) {
         prevAmountNoThisSale = prevAmountNoThisSale + item.amount
       }
     })
@@ -160,34 +160,32 @@ export default class Update extends React.Component {
       const voucherBalance = voucherAmount - prevAmountNoThisSale - value
       if (voucherBalance < -1) {
         alertify.alert('ERROR', 'El monto a pagar es mayor que el disponible en vouchers.')
-        document.getElementById(`${sale.id}-input-partial`).value = ''
-        this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: sale.id})
+        document.getElementById(`${record.id}-input-partial`).value = ''
+        this.props.dispatch({type: 'REMOVE_FROM_PAYMENT_ARRAY', payload: record.id})
         return false
       }
     }
-    const salebalance = Math.abs(parseFloat(sale.balance))
-    if (value >= salebalance) {
+    const recordbalance = Math.abs(parseFloat(record.balance))
+    if (value >= recordbalance) {
       const item = {
-        record_id: sale.id,
-        sale: sale,
-        amount: salebalance,
-        complete: true,
-        type: sale.type
+        record_id: record.id,
+        record: record,
+        amount: recordbalance,
+        complete: true
       }
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
-      document.getElementById(`${sale.id}-checkbox-complete`).checked = true
-      document.getElementById(`${sale.id}-input-partial`).value = salebalance
-      document.getElementById(`${sale.id}-input-partial`).blur()
+      document.getElementById(`${record.id}-checkbox-complete`).checked = true
+      document.getElementById(`${record.id}-input-partial`).value = recordbalance
+      document.getElementById(`${record.id}-input-partial`).blur()
     } else {
       const item = {
-        record_id: sale.id,
-        sale: sale,
+        record_id: record.id,
+        record: record,
         amount: value,
-        complete: false,
-        type: sale.type
+        complete: false
       }
       this.props.dispatch({type: 'ADD_TO_PAYMENT_ARRAY', payload: item})
-      document.getElementById(`${sale.id}-checkbox-complete`).checked = false
+      document.getElementById(`${record.id}-checkbox-complete`).checked = false
     }
 
   }
@@ -304,8 +302,8 @@ export default class Update extends React.Component {
     })
 
     const rows = records.length
-      ? records.map(sale => {
-        return this.paymentTableItem(sale)
+      ? records.map(record => {
+        return this.paymentTableItem(record)
       })
       : this.props.client.code
         ? <tr>

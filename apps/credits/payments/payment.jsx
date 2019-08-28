@@ -88,7 +88,7 @@ export default class MovementsList extends React.Component {
   render() {
     const payment = this.props.payment
 
-    const sales = payment.sales
+    const sales = payment.records
 
     const rows = sales.length
       ? sales.map(sale => {

@@ -9,7 +9,7 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
 
-    const sales = this.props.payment.sales
+    const sales = this.props.payment.records
     const items = sales.length
       ? sales.map((item) => {
 

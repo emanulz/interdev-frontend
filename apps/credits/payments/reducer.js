@@ -1,7 +1,7 @@
 const stateConst = {
   paymentArray: [],
   paymentActive: {
-    sales: []
+    records: []
   },
   payments: [],
   creditPayMethod: 'CASH',
@@ -96,7 +96,7 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         payment: {
-          sales: []
+          records: []
         }
       }
     }
@@ -104,7 +104,7 @@ export default function reducer(state = stateConst, action) {
     case 'SET_PAYMENT':
     {
       const payment = {...action.payload}
-      payment.sales = JSON.parse(payment.sales)
+      payment.records = payment.sales ? JSON.parse(payment.sales) : JSON.parse(payment.records)
       // payment.client = JSON.parse(payment.client)
       return {
         ...state,
@@ -136,7 +136,7 @@ export default function reducer(state = stateConst, action) {
     case 'REMOVE_FROM_PAYMENT_ARRAY':
     {
       const array = [...state.paymentArray]
-      const indexInArray = array.findIndex(item => item.sale.id == action.payload)
+      const indexInArray = array.findIndex(item => item.record.id == action.payload)
       if (indexInArray != -1) {
         array.splice(indexInArray, 1)
       }
@@ -149,7 +149,7 @@ export default function reducer(state = stateConst, action) {
     case 'SET_AMOUNT_PAYMENT_ARRAY':
     {
       const array = [...state.paymentArray]
-      const indexInArray = array.findIndex(item => item.sale.id == action.payload.sale.id)
+      const indexInArray = array.findIndex(item => item.record.id == action.payload.record.id)
       if (indexInArray != -1) {
         array[indexInArray]['amount'] = action.payload.amount
       }
