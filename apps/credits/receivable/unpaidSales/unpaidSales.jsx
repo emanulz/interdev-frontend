@@ -62,7 +62,7 @@ export default class UnpaidSales extends React.Component {
     const saleObjectToUse = item.sale ? item.sale : item.presale ? item.presale : item
     const date = formatDate(saleObjectToUse.created)
     const typeText = item.sale ? 'FACTURA DE VENTA' : item.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
-    const typeChar = item.sale ? 'v' : item.presale ? 'a' : 'm'
+    // const typeChar = item.sale ? 'v' : item.presale ? 'a' : 'm'
     return <tr key={`${saleObjectToUse.consecutive}_${typeText}`}>
       <td>{saleObjectToUse.consecutive}</td>
       <td>{date}</td>
@@ -70,7 +70,7 @@ export default class UnpaidSales extends React.Component {
       {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}
       <td>₡ {item.balance ? parseFloat(item.balance).formatMoney(2, ',', '.') : 0}</td>
       <td>{typeText}</td>
-      <td><Link to={`/credits/receivable/${client.code}/${typeChar}${saleObjectToUse.consecutive}`}>Ver Movimientos</Link></td>
+      <td><Link to={`/credits/receivable/${client.code}/${item.id}`}>Ver Movimientos</Link></td>
     </tr>
 
   }

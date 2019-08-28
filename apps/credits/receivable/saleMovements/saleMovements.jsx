@@ -3,95 +3,111 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-import { setItem } from '../../../../utils/api'
-import {getSaleMovements} from '../../../../utils/getSaleMovements'
+import { setItemById } from '../../../../utils/api'
+// import {getSaleMovements} from '../../../../utils/getSaleMovements'
 import { withRouter } from 'react-router-dom'
 
 @connect((store) => {
   return {
-    movements: store.saleMovements.saleMovements,
-    sale: store.saleMovements.saleActive,
-    presale: store.saleMovements.presaleActive
+    saleRecord: store.saleMovements.saleRecord
   }
 })
 
 class MovementsList extends React.Component {
 
-  componentWillMount() {
-    this.props.dispatch({type: 'CLEAR_SALE', payload: ''})
-    this.props.dispatch({type: 'CLEAR_SALE_MOVEMENTS', payload: ''})
+  // componentWillMount() {
+  //   this.props.dispatch({type: 'CLEAR_SALE', payload: ''})
+  //   this.props.dispatch({type: 'CLEAR_SALE_MOVEMENTS', payload: ''})
 
+  //   const lookUp = this.props.location.pathname.split('/').pop()
+
+  //   const firstChar = lookUp.charAt(0)
+  //   const lookUpToGet = lookUp.substr(1)
+  //   let kwargs = {}
+
+  //   if (firstChar == 'v') {
+  //     kwargs = {
+  //       lookUpField: 'consecutive',
+  //       url: '/api/saleslist/',
+  //       lookUpValue: lookUpToGet,
+  //       dispatchType: 'SET_SALE',
+  //       dispatchType2: '',
+  //       dispatchErrorType: 'SALE_NOT_FOUND',
+  //       history: this.props.history,
+  //       lookUpName: 'Número de consectivo',
+  //       modelName: 'Ventas'
+  //     }
+  //     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+  //     this.props.dispatch(setItem(kwargs))
+  //   }
+
+  //   if (firstChar == 'a') {
+  //     kwargs = {
+  //       lookUpField: 'consecutive',
+  //       url: '/api/presales/',
+  //       lookUpValue: lookUpToGet,
+  //       dispatchType: 'SET_PRESALE',
+  //       dispatchType2: '',
+  //       dispatchErrorType: 'PRESALE_NOT_FOUND',
+  //       history: this.props.history,
+  //       lookUpName: 'Número de consectivo',
+  //       modelName: 'Apartados'
+  //     }
+  //     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+  //     this.props.dispatch(setItem(kwargs))
+  //   }
+
+  // }
+
+  componentDidMount() {
+    this.props.dispatch({type: 'CLEAR_SALE_RECORD', payload: ''})
     const lookUp = this.props.location.pathname.split('/').pop()
-
-    const firstChar = lookUp.charAt(0)
-    const lookUpToGet = lookUp.substr(1)
-    let kwargs = {}
-
-    if (firstChar == 'v') {
-      kwargs = {
-        lookUpField: 'consecutive',
-        url: '/api/saleslist/',
-        lookUpValue: lookUpToGet,
-        dispatchType: 'SET_SALE',
-        dispatchType2: '',
-        dispatchErrorType: 'SALE_NOT_FOUND',
-        history: this.props.history,
-        lookUpName: 'Número de consectivo',
-        modelName: 'Ventas'
-      }
-      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      this.props.dispatch(setItem(kwargs))
+    const kwargs = {
+      url: '/api/creditsalerecord',
+      lookUpValue: lookUp,
+      dispatchType: 'SET_SALE_RECORD',
+      dispatchType2: '',
+      dispatchErrorType: 'CLEAR_SALE_RECORD',
+      history: this.props.history,
+      redirectUrl: this.props.location.pathname,
+      lookUpName: 'Número de id',
+      modelName: 'Records de Crédito'
     }
-
-    if (firstChar == 'a') {
-      kwargs = {
-        lookUpField: 'consecutive',
-        url: '/api/presales/',
-        lookUpValue: lookUpToGet,
-        dispatchType: 'SET_PRESALE',
-        dispatchType2: '',
-        dispatchErrorType: 'PRESALE_NOT_FOUND',
-        history: this.props.history,
-        lookUpName: 'Número de consectivo',
-        modelName: 'Apartados'
-      }
-      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-      this.props.dispatch(setItem(kwargs))
-    }
-
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(setItemById(kwargs))
   }
 
-  componentWillReceiveProps(nextprops) {
+  // componentWillReceiveProps(nextprops) {
 
-    if (nextprops.sale.id != '0000000000' && nextprops.sale.id != this.props.sale.id) {
+  //   if (nextprops.sale.id != '0000000000' && nextprops.sale.id != this.props.sale.id) {
 
-      const id = nextprops.sale.id
-      const kwargs = {
-        url: '/api/creditmovementslist',
-        saleId: id,
-        successType: 'FETCH_SALE_MOVEMENTS_FULFILLED',
-        errorType: 'FETCH_SALE_MOVEMENTS_REJECTED'
-      }
+  //     const id = nextprops.sale.id
+  //     const kwargs = {
+  //       url: '/api/creditmovementslist',
+  //       saleId: id,
+  //       successType: 'FETCH_SALE_MOVEMENTS_FULFILLED',
+  //       errorType: 'FETCH_SALE_MOVEMENTS_REJECTED'
+  //     }
 
-      this.props.dispatch(getSaleMovements(kwargs))
+  //     this.props.dispatch(getSaleMovements(kwargs))
 
-    }
+  //   }
 
-    if (nextprops.presale.id != '0000000000' && nextprops.presale.id != this.props.presale.id) {
+  //   if (nextprops.presale.id != '0000000000' && nextprops.presale.id != this.props.presale.id) {
 
-      const id = nextprops.presale.id
-      const kwargs = {
-        url: '/api/creditmovementslist',
-        saleId: id,
-        successType: 'FETCH_SALE_MOVEMENTS_FULFILLED',
-        errorType: 'FETCH_SALE_MOVEMENTS_REJECTED'
-      }
+  //     const id = nextprops.presale.id
+  //     const kwargs = {
+  //       url: '/api/creditmovementslist',
+  //       saleId: id,
+  //       successType: 'FETCH_SALE_MOVEMENTS_FULFILLED',
+  //       errorType: 'FETCH_SALE_MOVEMENTS_REJECTED'
+  //     }
 
-      this.props.dispatch(getSaleMovements(kwargs))
+  //     this.props.dispatch(getSaleMovements(kwargs))
 
-    }
+  //   }
 
-  }
+  // }
 
   movementItem(movement) {
     const movClass = movement.movement_type == 'CRED' ? 'credit' : 'debit'
@@ -110,14 +126,14 @@ class MovementsList extends React.Component {
 
   // Render the product
   render() {
-    const movements = this.props.movements
 
-    const sale = this.props.sale
-    const presale = this.props.presale
-    const saleItemToUse = sale.consecutive ? sale : presale.consecutive ? presale : {}
+    const record = this.props.saleRecord
+    const saleObjectToUse = record.sale ? record.sale : record.presale ? record.presale : record
+    const typeText = record.sale ? 'factura' : record.presale ? 'apartado' : 'MOVIMIENTO MANUAL'
     let debits = 0
     let credits = 0
-    const balance = sale.balance ? Math.abs(parseFloat(sale.balance)) : presale.balance ? Math.abs(parseFloat(presale.balance)) : 0
+    const balance = record.balance ? Math.abs(parseFloat(record.balance)) : 0
+    const movements = record.credit_movements ? record.credit_movements : []
 
     const rows = movements.length
       ? movements.map(movement => {
@@ -135,7 +151,7 @@ class MovementsList extends React.Component {
 
     return <div className='list-container'>
 
-      <h1>Movimientos de factura # {saleItemToUse.consecutive}</h1>
+      <h1>Movimientos de {typeText} # {saleObjectToUse.consecutive}</h1>
       <div className='row movements'>
         <div className='col-xs-12 col-sm-8'>
           <table className='table table-bordered'>
