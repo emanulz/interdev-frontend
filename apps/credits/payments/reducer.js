@@ -1,7 +1,7 @@
 const stateConst = {
   paymentArray: [],
   paymentActive: {
-    records: []
+    movements: []
   },
   payments: [],
   creditPayMethod: 'CASH',
@@ -96,19 +96,19 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         payment: {
-          records: []
+          movements: []
         }
       }
     }
 
     case 'SET_PAYMENT':
     {
-      const payment = {...action.payload}
-      payment.records = payment.sales ? JSON.parse(payment.sales) : JSON.parse(payment.records)
+      // const payment = {...action.payload}
+      // payment.records = payment.sales ? JSON.parse(payment.sales) : JSON.parse(payment.records)
       // payment.client = JSON.parse(payment.client)
       return {
         ...state,
-        paymentActive: payment
+        paymentActive: action.payload
       }
     }
 

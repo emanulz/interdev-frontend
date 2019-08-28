@@ -34,20 +34,20 @@ export default class Table extends React.Component {
       borderTop: '1px solid black'
     }
 
-    const sales = this.props.payment.records
-    const items = sales.length
-      ? sales.map((item) => {
-
-        const dateObj = item.sale.created ? new Date(item.sale.created) : ''
-        const date = item.sale.created
+    const movements = this.props.payment.movements
+    const items = movements.length
+      ? movements.map((item) => {
+        const saleObjectToUse = item.sale ? item.sale : item.presale ? item.presale : item
+        const dateObj = saleObjectToUse.created ? new Date(saleObjectToUse.created) : ''
+        const date = saleObjectToUse.created
           ? `${('0' + dateObj.getDate()).slice(-2)}/
           ${('0' + (dateObj.getMonth() + 1)).slice(-2)}/
           ${dateObj.getFullYear()}`
           : '01/01/1970'
 
-        return <tr style={tableBodyTrStyles} key={item.sale.id}>
+        return <tr style={tableBodyTrStyles} key={saleObjectToUse.id}>
           <td style={tableBodyTdStyles}>
-            {item.sale.consecutive}
+            {saleObjectToUse.consecutive}
           </td>
           <td style={tableBodyTdStyles}>
             {date}

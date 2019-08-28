@@ -12,10 +12,10 @@ import {formatDate, formatDateTimeAmPm} from '../../../../../utils/formatDate.js
 export default class Table extends React.Component {
 
   getPendingItem(item, tableBodyTrStyles, tableBodyTdStyles) {
-
-    const date = formatDate(item.created)
+    const saleObjectToUse = item.sale ? item.sale : item.presale ? item.presale : item
+    const date = formatDate(saleObjectToUse.created)
     return <tr style={tableBodyTrStyles} key={`${item.consecutive}_${item.type}`}>
-      <td style={tableBodyTdStyles}>{item.consecutive}</td>
+      <td style={tableBodyTdStyles}>{saleObjectToUse.consecutive}</td>
       <td style={tableBodyTdStyles}>{date}</td>
       {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}
       <td style={tableBodyTdStyles}>₡ {item.balance ? parseFloat(item.balance).formatMoney(2, ',', '.') : 0}</td>

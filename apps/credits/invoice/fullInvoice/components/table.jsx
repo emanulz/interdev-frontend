@@ -9,32 +9,32 @@ export default class Table extends React.Component {
   // Main Layout
   render() {
 
-    const sales = this.props.payment.records
-    const items = sales.length
-      ? sales.map((item) => {
-
-        const dateObj = item.sale.created ? new Date(item.sale.created) : ''
-        const date = item.sale.created
+    const movements = this.props.payment.movements
+    const items = movements.length
+      ? movements.map((item) => {
+        const saleObjectToUse = item.sale ? item.sale : item.presale ? item.presale : item
+        const dateObj = saleObjectToUse.created ? new Date(saleObjectToUse.created) : ''
+        const date = saleObjectToUse.created
           ? `${('0' + dateObj.getDate()).slice(-2)}/
           ${('0' + (dateObj.getMonth() + 1)).slice(-2)}/
           ${dateObj.getFullYear()}`
           : '01/01/1970'
 
-        return <tr key={item.sale.id}>
+        return <tr key={saleObjectToUse.id}>
           <td>
-            {item.sale.consecutive}
+            {saleObjectToUse.consecutive}
           </td>
           <td>
             {date}
           </td>
           <td>
-            ₡ {Math.abs(parseFloat(item.sale.balance)).formatMoney(2, ',', '.')}
+            ₡ {Math.abs(parseFloat(item.previous_balance)).formatMoney(2, ',', '.')}
           </td>
           <td>
             ₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}
           </td>
           <td>
-            ₡ {(Math.abs(parseFloat(item.sale.balance)) - parseFloat(item.amount)).formatMoney(2, ',', '.')}
+            ₡ {(Math.abs(parseFloat(item.previous_balance)) - parseFloat(item.amount)).formatMoney(2, ',', '.')}
           </td>
         </tr>
       })

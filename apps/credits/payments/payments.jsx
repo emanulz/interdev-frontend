@@ -194,7 +194,7 @@ export default class Update extends React.Component {
     const saleObjectToUse = record.sale ? record.sale : record.presale ? record.presale : record
     const date = formatDate(saleObjectToUse.created)
     const typeText = record.sale ? 'FACTURA DE VENTA' : record.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
-    return <tr key={`${record.id}_${record.type}`}>
+    return <tr key={`${record.id}_${typeText}`}>
       <td>{saleObjectToUse.consecutive}</td>
       <td>{date}</td>
       <td>₡ {record.total ? parseFloat(record.total).formatMoney(2, ',', '.') : 0}</td>
@@ -202,6 +202,7 @@ export default class Update extends React.Component {
       <td>{typeText}</td>
       <td>
         <input
+          key={`${record.id}-checkbox-complete`}
           id={`${record.id}-checkbox-complete`}
           type='checkbox'
           onClick={this.paySaleComplete.bind(this, record)}
@@ -209,6 +210,7 @@ export default class Update extends React.Component {
       </td>
       <td>
         <input
+          key={`${record.id}-input-partial`}
           id={`${record.id}-input-partial`}
           type='number'
           onChange={this.setPaySaleAmount.bind(this, record)}
