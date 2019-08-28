@@ -114,6 +114,7 @@ class MovementsList extends React.Component {
 
     const sale = this.props.sale
     const presale = this.props.presale
+    const saleItemToUse = sale.consecutive ? sale : presale.consecutive ? presale : {}
     let debits = 0
     let credits = 0
     const balance = sale.balance ? Math.abs(parseFloat(sale.balance)) : presale.balance ? Math.abs(parseFloat(presale.balance)) : 0
@@ -134,7 +135,7 @@ class MovementsList extends React.Component {
 
     return <div className='list-container'>
 
-      <h1>Movimientos de factura # {sale.consecutive}</h1>
+      <h1>Movimientos de factura # {saleItemToUse.consecutive}</h1>
       <div className='row movements'>
         <div className='col-xs-12 col-sm-8'>
           <table className='table table-bordered'>
