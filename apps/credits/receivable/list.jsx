@@ -42,18 +42,23 @@ export default class List extends React.Component {
 
     const dropdownElements = [
       {
-        url: '/credits/receivable',
-        text: 'Facturas Pendientes de Pago',
-        iconClass: 'fa fa-list'
-      },
-      {
         url: '/credits/payment',
         text: 'Pago a Facturas',
         iconClass: 'fa fa-list'
       },
       {
+        url: '/credits/receivable',
+        text: 'Facturas Pendientes de Pago',
+        iconClass: 'fa fa-list'
+      },
+      {
+        url: '/credits/receivable',
+        text: 'Listado de Facturas Pagadas',
+        iconClass: 'fa fa-list'
+      },
+      {
         url: '/credits/receivable/payments/list',
-        text: 'Listado de Pagos',
+        text: 'Listado de Pagos Realizados',
         iconClass: 'fa fa-list'
       }
     ]
@@ -61,7 +66,7 @@ export default class List extends React.Component {
     if (this.props.conf.canAddManualCreditMovements) {
       dropdownElements.push(
         {
-          text: 'Movimiento Manual',
+          text: 'Movimiento Manual de Crédito',
           url: '/credits/receivable/payments/addmovement',
           iconClass: 'fa fa-list'
         }
