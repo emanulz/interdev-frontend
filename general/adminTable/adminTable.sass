@@ -53,6 +53,64 @@
   &-active-row
     background-color: #595d63
     color: white
+  & .relativeAdminCell
+    position: relative
+  & .dropdownAdminCell
+    cursor: pointer
+    display: flex
+    flex-flow: row
+    justify-content: space-between
+    align-items: center
+    color: #3366BB
+    & i
+      font-size: 12px !important
+      margin-right: 20px
+  & .dropdownWidget
+    position: absolute
+    top: 100%
+    right: 20px
+    visibility: hidden
+    overflow: hidden
+    border: none
+    background-color: white
+    color: white
+    width: 250px
+    margin-top: -5px
+    border: 1px solid #cacaca
+    opacity: 0
+    transition: all 0.1s ease-in-out 0s, visibility 0s linear 0.1s, z-index 0s linear 0.01s
+    transform: translateY(-2em)
+    z-index: 1
+    &.visible
+      visibility: visible
+      z-index: 2
+      transition-delay: 0s, 0s, 0.3s
+      transform: translateY(0%)
+      opacity: 1
+      &:after
+        width: 0
+        height: 0
+        border-left: 5px solid transparent
+        border-right: 5px solid transparent
+        border-bottom: 5px solid black
+    &-element
+      height: 40px
+      padding: 5px
+      text-decoration: none
+      color: black
+      display: flex
+      flex-flow: row
+      justify-content: flex-start
+      align-items: center
+      border-bottom: 1px solid #cacaca
+      & i
+        margin-right: 20px
+        font-size: 15px !important
+      &:hover
+        background-color: $PRIMARY-COLOR
+        color: white
+
+
 
 .admin-list-search
   margin-top: 5px

@@ -40,6 +40,34 @@ export default class List extends React.Component {
   // Render the product
   render() {
 
+    const dropdownElements = [
+      {
+        url: '/credits/receivable',
+        text: 'Facturas Pendientes de Pago',
+        iconClass: 'fa fa-list'
+      },
+      {
+        url: '/credits/payment',
+        text: 'Pago a Facturas',
+        iconClass: 'fa fa-list'
+      },
+      {
+        url: '/credits/receivable/payments/list',
+        text: 'Listado de Pagos',
+        iconClass: 'fa fa-list'
+      }
+    ]
+
+    if (this.props.conf.canAddManualCreditMovements) {
+      dropdownElements.push(
+        {
+          text: 'Movimiento Manual',
+          url: '/credits/receivable/payments/addmovement',
+          iconClass: 'fa fa-list'
+        }
+      )
+    }
+
     const headerOrder = [
       {
         field: 'code',
@@ -59,42 +87,22 @@ export default class List extends React.Component {
         text: 'Saldo',
         type: 'priceAbs'
       },
+      // {
+      //   field: 'code',
+      //   text: 'Pago',
+      //   textToRender: 'Pago a Facturas',
+      //   target: 'payment',
+      //   type: 'link_mask',
+      //   uniqueId: 1
+      // },
       {
         field: 'code',
-        text: 'Facturas Pendientes',
-        textToRender: 'Ver Pendientes',
-        type: 'textLink'
-      },
-      {
-        field: 'code',
-        text: 'Pago',
-        textToRender: 'Pago a Facturas',
-        target: 'payment',
-        type: 'link_mask',
-        uniqueId: 1
-      },
-      {
-        field: 'code',
-        text: 'Listado de Pagos',
-        textToRender: 'Listado de Pagos',
-        target: 'receivable/payments/list',
-        type: 'link_mask',
-        uniqueId: 2
+        text: 'Acciones Disponibles',
+        textToRender: 'Acciones',
+        type: 'dropdown',
+        elements: dropdownElements
       }
     ]
-
-    if (this.props.conf.canAddManualCreditMovements) {
-      headerOrder.push(
-        {
-          field: 'code',
-          text: 'Mov Manual',
-          textToRender: 'Movimiento',
-          target: 'receivable/payments/addmovement',
-          type: 'link_mask',
-          uniqueId: 3
-        }
-      )
-    }
 
     const fetching = <div />
 

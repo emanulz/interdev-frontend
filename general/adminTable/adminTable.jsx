@@ -7,6 +7,7 @@ import {formatDateTimeAmPm} from '../../utils/formatDate.js'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
+
 const uuidv1 = require('uuid/v1')
 
 @connect((store) => {
@@ -181,6 +182,23 @@ export default class AdminTable extends React.Component {
       return client.last_name
     }
     return 'General'
+  }
+
+  dropdownWidget = (id, elements, itemToRender) => {
+    const elementsToRender = elements.map(element => {
+      return <Link className='dropdownWidget-element' to={{pathname: `${element.url}/${itemToRender}`}}>
+        <i className={element.iconClass} />
+        {element.text}
+      </Link>
+    })
+    return <div key={`dropdownWidget_${id}`} id={id} className='dropdownWidget'>
+      {elementsToRender}
+    </div>
+  }
+
+  toggleDropdown(id) {
+    const element = document.getElementById(id)
+    element.classList.toggle('visible')
   }
 
   render() {
@@ -389,11 +407,10 @@ export default class AdminTable extends React.Component {
             case 'date':
             {
               // const date = moment(itemToRender).format('DD-MM-YYYY HH:mm:ss')
-              let date ="Indefinida"
-              if(itemToRender){
+              let date = 'Indefinida'
+              if (itemToRender) {
                 date = formatDateTimeAmPm(itemToRender)
               }
-              
               item = <td key={`${el[idField]}_${header.field}`}>
                 {date}
               </td>
@@ -669,6 +686,20 @@ export default class AdminTable extends React.Component {
                 {`${itemToRender} ${itemToRender2}`}
               </td>
               break
+            }
+
+            case 'dropdown':
+            {
+              const uniqueId = header.uniqueId ? header.uniqueId : 0
+              const id = `adminTable-dropdown-${uniqueId}`
+              const dropDownBody = this.dropdownWidget(id, header.elements, itemToRender)
+              item = <td className=' dropdownAdminCell relativeAdminCell' key={`${el[idField]}_${header.field}_${uniqueId}`} onClick={this.toggleDropdown.bind(this, id)}>
+                {header.textToRender}
+                <i className='fa fa-chevron-down' />
+                {dropDownBody}
+              </td>
+              break
+
             }
 
             default:
