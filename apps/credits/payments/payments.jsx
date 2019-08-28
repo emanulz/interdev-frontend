@@ -191,11 +191,11 @@ export default class Update extends React.Component {
   }
 
   paymentTableItem(record) {
-
-    const date = formatDate(record.sale.created)
+    const saleObjectToUse = record.sale ? record.sale : record.presale ? record.presale : record
+    const date = formatDate(saleObjectToUse.created)
     const typeText = record.sale ? 'FACTURA DE VENTA' : record.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
-    return <tr key={`${record.consecutive}_${record.type}`}>
-      <td>{record.sale.consecutive}</td>
+    return <tr key={`${record.id}_${record.type}`}>
+      <td>{saleObjectToUse.consecutive}</td>
       <td>{date}</td>
       <td>₡ {record.total ? parseFloat(record.total).formatMoney(2, ',', '.') : 0}</td>
       <td>₡ {Math.abs(parseFloat(record.balance)) ? Math.abs(parseFloat(record.balance)).formatMoney(2, ',', '.') : 0}</td>
