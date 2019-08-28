@@ -70,17 +70,18 @@ export default class MovementsList extends React.Component {
     this.props.dispatch(generalSave(kwargs))
   }
 
-  saleItem(sale) {
-
-    const date = new Date(sale.sale.created)
-
-    return <tr key={sale.sale.id}>
-      <td>{sale.sale.consecutive}</td>
+  saleItem(item) {
+    const saleObjectToUse = item.sale ? item.sale : item.presale ? item.presale : item
+    const date = new Date(saleObjectToUse.created)
+    const typeText = item.sale ? 'FACTURA DE VENTA' : item.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
+    return <tr key={item.id}>
+      <td>{saleObjectToUse.consecutive}</td>
       <td>{`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</td>
-      <td>₡ {parseFloat(sale.sale.sale_total).formatMoney(2, ',', '.')}</td>
-      <td>₡ {parseFloat(sale.amount).formatMoney(2, ',', '.')}</td>
-      <td>₡ {Math.abs(parseFloat(sale.sale.balance)).formatMoney(2, ',', '.')}</td>
-      <td>₡ {(Math.abs(parseFloat(sale.sale.balance)) - parseFloat(sale.amount)).formatMoney(2, ',', '.')}</td>
+      <td>₡ {parseFloat(saleObjectToUse.sale_total).formatMoney(2, ',', '.')}</td>
+      <td>{typeText}</td>
+      <td>₡ {parseFloat(item.amount).formatMoney(2, ',', '.')}</td>
+      <td>₡ {Math.abs(parseFloat(item.previous_balance)).formatMoney(2, ',', '.')}</td>
+      <td>₡ {(Math.abs(parseFloat(item.previous_balance)) - parseFloat(item.amount)).formatMoney(2, ',', '.')}</td>
     </tr>
   }
 
@@ -88,10 +89,10 @@ export default class MovementsList extends React.Component {
   render() {
     const payment = this.props.payment
 
-    const sales = payment.records
+    const movements = payment.movements
 
-    const rows = sales.length
-      ? sales.map(sale => {
+    const rows = movements.length
+      ? movements.map(sale => {
         return this.saleItem(sale)
       })
       : <tr>
@@ -111,6 +112,7 @@ export default class MovementsList extends React.Component {
                 <th>Venta #</th>
                 <th>Fecha de venta</th>
                 <th>Total de la venta</th>
+                <th>Tipo</th>
                 <th>Monto Pagado</th>
                 <th>Saldo Anterior</th>
                 <th>Saldo Posterior</th>
