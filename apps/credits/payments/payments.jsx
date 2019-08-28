@@ -178,6 +178,8 @@ export default class Update extends React.Component {
       document.getElementById(`${record.id}-input-partial`).value = recordbalance
       document.getElementById(`${record.id}-input-partial`).blur()
     } else {
+      // IF THE FIELD IS BLANCK DO NOTHING AND LEAVE THE INVOICE OUT
+      if (value <= 0 || !value) { return false }
       const item = {
         record_id: record.id,
         record: record,

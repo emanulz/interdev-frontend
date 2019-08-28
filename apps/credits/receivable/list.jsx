@@ -44,18 +44,18 @@ export default class List extends React.Component {
       {
         url: '/credits/payment',
         text: 'Pago a Facturas',
-        iconClass: 'fa fa-list'
+        iconClass: 'fa fa-credit-card'
       },
       {
         url: '/credits/receivable',
         text: 'Facturas Pendientes de Pago',
-        iconClass: 'fa fa-list'
+        iconClass: 'fa fa-money'
       },
-      {
-        url: '/credits/receivable',
-        text: 'Listado de Facturas Pagadas',
-        iconClass: 'fa fa-list'
-      },
+      // {
+      //   url: '/credits/receivable',
+      //   text: 'Listado de Facturas Pagadas',
+      //   iconClass: 'fa fa-list'
+      // },
       {
         url: '/credits/receivable/payments/list',
         text: 'Listado de Pagos Realizados',
@@ -68,7 +68,7 @@ export default class List extends React.Component {
         {
           text: 'Movimiento Manual de Crédito',
           url: '/credits/receivable/payments/addmovement',
-          iconClass: 'fa fa-list'
+          iconClass: 'fa fa-id-card'
         }
       )
     }
