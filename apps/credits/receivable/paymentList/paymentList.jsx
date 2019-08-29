@@ -82,7 +82,7 @@ export default class PaymentList extends React.Component {
 
     const payments = this.props.clientActiveCreditPayments
     payments.sort((a, b) => {
-      return new Date(a.created) - new Date(b.created)
+      return new Date(b.created) - new Date(a.created)
     })
     const client = this.props.client
 

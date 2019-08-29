@@ -9,12 +9,13 @@ import {formatDate, formatDateTimeAmPm} from '../../../../../utils/formatDate.js
     clientActiveSalesWithDebt: store.unpaidSales.clientActiveSalesWithDebt
   }
 })
-export default class Table extends React.Component {
+export default class TableUnpaid extends React.Component {
 
   getPendingItem(item, tableBodyTrStyles, tableBodyTdStyles) {
     const saleObjectToUse = item.sale ? item.sale : item.presale ? item.presale : item
+    const typeText = item.sale ? 'FACTURA DE VENTA' : item.presale ? 'APARTADO' : 'MOVIMIENTO MANUAL'
     const date = formatDate(saleObjectToUse.created)
-    return <tr style={tableBodyTrStyles} key={`${item.consecutive}_${item.type}`}>
+    return <tr style={tableBodyTrStyles} key={`${saleObjectToUse.consecutive}_${typeText}`}>
       <td style={tableBodyTdStyles}>{saleObjectToUse.consecutive}</td>
       <td style={tableBodyTdStyles}>{date}</td>
       {/* <td>₡ {sale.debits ? sale.debits.formatMoney(2, ',', '.') : 0}</td> */}

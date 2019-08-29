@@ -186,7 +186,7 @@ export default class AdminTable extends React.Component {
 
   dropdownWidget = (id, elements, itemToRender) => {
     const elementsToRender = elements.map(element => {
-      return <Link className='dropdownWidget-element' to={{pathname: `${element.url}/${itemToRender}`}}>
+      return <Link key={element.url} className='dropdownWidget-element' to={{pathname: `${element.url}/${itemToRender}`}}>
         <i className={element.iconClass} />
         {element.text}
       </Link>
