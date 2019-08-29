@@ -691,7 +691,8 @@ export default class AdminTable extends React.Component {
             case 'dropdown':
             {
               const uniqueId = header.uniqueId ? header.uniqueId : 0
-              const id = `adminTable-dropdown-${uniqueId}`
+              const id = `adminTable-dropdown-${itemToRender}`
+              // const dropdownElementId = `dropdown-element-${itemToRender}`
               const dropDownBody = this.dropdownWidget(id, header.elements, itemToRender)
               item = <td className=' dropdownAdminCell relativeAdminCell' key={`${el[idField]}_${header.field}_${uniqueId}`} onClick={this.toggleDropdown.bind(this, id)}>
                 {header.textToRender}
