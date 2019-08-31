@@ -5,7 +5,8 @@ const stateConst = {
   reservesWarehouse: '',
   globalConf: {},
   installed_apps: {},
-  receiptStyles: {}
+  receiptStyles: {},
+  labelStyles: {}
 }
 
 export default function reducer(state = stateConst, action) {
@@ -110,7 +111,23 @@ export default function reducer(state = stateConst, action) {
       }
 
     } // case
+    case 'FETCH_LABEL_STYLES_FULFILLED':
+    {
+      return {
+        ...state,
+        labelStyles: action.payload.data
+      }
 
+    } // case
+
+    case 'FETCH_LABEL_STYLES_REJECTED':
+    {
+      return {
+        ...state,
+        labelStyles: {}
+      }
+
+    } // case
     case 'FETCH_INSTALLED_APPS_FULFILLED':
     {
       return {

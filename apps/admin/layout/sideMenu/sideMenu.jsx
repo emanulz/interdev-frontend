@@ -184,6 +184,16 @@ export default class SideMenu extends React.Component {
       }
     ]
 
+    if (this.props.config.printProductsLabels) {
+      childProducts.push(
+        {
+          text: 'Etiquetas',
+          class: 'fa-print',
+          href: '/admin/products/labels'
+        }
+      )
+    }
+
     if (this.props.user.is_staff) {
       childProducts.push(
         {

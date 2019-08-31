@@ -28,7 +28,7 @@ export default class List extends React.Component {
     this.props.dispatch({type: 'CLEAR_SALES', payload: ''})
 
     const saleKwargs = {
-      url: `/api/saleslist/?limit=${this.props.pageSize}&ordering=-consecutive`,
+      url: `/api/saleslistcustom/?limit=${this.props.pageSize}&ordering=-consecutive`,
       successType: 'FETCH_SALES_FULFILLED',
       errorType: 'FETCH_SALES_REJECTED'
     }
