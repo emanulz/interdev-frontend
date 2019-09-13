@@ -456,7 +456,7 @@ export default class Product extends React.Component {
                     mod_prod.price1 = final_price
                     mod_prod.description = product.description
                     mod_prod.taxes_IVA = product.taxes_IVA
-                    mod_prod.tax_code_IVA = product.taxes_IVA
+                    mod_prod.tax_code_IVA = product.tax_code_IVA
                       
                     const generalItemDefaultData = {
                       default_discount: '0',
