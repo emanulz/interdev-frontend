@@ -114,17 +114,16 @@ export default class Product extends React.Component {
 
 
   getFormattedCode(code) {
-    console.log('INSIDE FUNC')
+
     if (code.length == 12) {
       const splittedCode = code.split('')
-      console.log('INSIDE 12 CHECK')
-      console.log('SPLITTED CODE', splittedCode)
+      // console.log('SPLITTED CODE', splittedCode)
       if(splittedCode[0] == '2') {
         const productCode = parseInt(splittedCode.slice(1, 5).join(''))
-        console.log('SLICE CODE', splittedCode.slice(1, 5))
+        // console.log('SLICE CODE', splittedCode.slice(1, 5))
         const productQty = parseInt(splittedCode.slice(6, 11).join('')) / 1000
-        console.log('CODE', productCode)
-        console.log('QTY', productQty)
+        // console.log('CODE', productCode)
+        // console.log('QTY', productQty)
         return `${productCode}*${productQty}`
       } else {
         return code
@@ -139,7 +138,7 @@ export default class Product extends React.Component {
     // if Key pressed id Enter
     const _this = this
     if (ev.key == 'Enter') {
-      console.log("Settings --> ", this.props.config)
+      // console.log("Settings --> ", this.props.config)
       let code = ''
       let qty = 1
       let price = 0
@@ -168,7 +167,6 @@ export default class Product extends React.Component {
               _this.props.dispatch({type: "FETCHING_STARTED"})
               let water_data = handleWaterPricing(value.split('*')[0])
               water_data.then(water_result => {
-                console.log("I got the pricing data --> ", water_result)
                 //if data was received, iterate along the keys
                 
                 const set00ProductPromiseNew = new Promise((resolve, reject) => {
@@ -182,7 +180,7 @@ export default class Product extends React.Component {
                     }
                   }
       
-                  _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+                  _this.props.dispatch({type: 'FETCHING_STARTED'})
                   setProductNew(kwargs, resolve, reject)
                 })
 
@@ -316,7 +314,7 @@ export default class Product extends React.Component {
           if (modifier == '-') {
             priceNoIV = price
           }
-
+          if(description.length === 0){description="Producto"}
           const set00ProductPromiseNew = new Promise((resolve, reject) => {
             const kwargs = {
               url: '/api/products/getProdPrice/',
@@ -370,7 +368,7 @@ export default class Product extends React.Component {
                 money_discount: 0,
                 force_pricing: -1
               }
-              console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
+              // console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
               this.props.dispatch(productSelected(generalItemDefaultData, qty, this.props.itemsInCart,
                 this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
                 this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
@@ -404,29 +402,101 @@ export default class Product extends React.Component {
               }
             }
 
-            _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+            _this.props.dispatch({type: 'FETCHING_STARTED'})
             setProductNew(kwargs, resolve, reject)
           })
 
           setProductPromiseNew.then((data) => {
-            _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+            _this.props.dispatch({type: 'FETCHING_DONE'})
             const product = data[0].product
             if (product.code == '00') {
               _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
-              _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
+              _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL'})
             } else {
               // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
-              // _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
-              console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
-              this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
-                this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
-                this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
-              _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-              _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+              //do a special case if the product is marked as generic, use it to ask the price
+
+              if(product.ask_price){
+                // console.log("Product has to ask price")
+                //treat this as a 00 product using the data from the selected product
+                const handle_input = (ev, value) => {
+                  // console.log("Value entered --> ", value)
+                  if(isNaN(value)){
+                    alertify.alert('Error', 'Debe ingresar un número')
+                    return
+                  }
+
+                  const final_price = parseInt(value)
+                  if(final_price <= 1){
+                    alertify.alert('Error', 'El precio no puede ser tan bajo')
+                    return
+                  }
+      
+                  const set00ProductPromiseNew = new Promise((resolve, reject) => {
+                    const kwargs = {
+                      url: '/api/products/getProdPrice/',
+                      data: {
+                        prod_data: {
+                          code: '00'
+                        },
+                        clientId: _this.props.client.client.id
+                      }
+                    }
+        
+                    _this.props.dispatch({type: 'FETCHING_STARTED'})
+                    setProductNew(kwargs, resolve, reject)
+                  })
+
+                  set00ProductPromiseNew.then(data=>{
+                    _this.props.dispatch({type: 'FETCHING_DONE'})
+
+                    const mod_prod = JSON.parse(JSON.stringify(data[0].product))
+                    // console.log("Product source--> ", product)
+                    mod_prod.price = final_price / (1 + product.taxes_IVA /100.0)
+                    mod_prod.price1 = final_price
+                    mod_prod.description = product.description
+                    mod_prod.taxes_IVA = product.taxes_IVA
+                    mod_prod.tax_code_IVA = product.taxes_IVA
+                      
+                    const generalItemDefaultData = {
+                      default_discount: '0',
+                      id: product.id,
+                      max_discount: '0',
+                      product: mod_prod,
+                      table_price: '0',
+                      target_price_list: 'price1',
+                      current_discount: 0,
+                      promo_string: '',
+                      money_discount: 0,
+                      force_pricing: -1
+                    }
+                    this.props.dispatch(productSelected(generalItemDefaultData, 1, this.props.itemsInCart,
+                    this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
+                    this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+    
+                    this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+                  })
+
+                } //end of handle input
+
+                const handle_cancel = () => {alertify.alert('Error', 'Se debe ingresar un precio')}
+
+                alertify.prompt("Ingrese el precio", 'Precio final de la línea', '',
+                  handle_input,
+                  handle_cancel)
+
+              }else{
+                this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
+                  this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
+                  this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+                _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+                _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+              }
+
             }
 
           }).catch((err) => {
-            _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+            _this.props.dispatch({type: 'FETCHING_DONE'})
             console.log(err)
           })
         }

@@ -200,13 +200,14 @@ export function updateItemLote(itemsInCart, code, lote) {
 
 // When item is selected in code field
 export function productSelected(lineData, qty, itemsInCart, client, warehouseId, perLineVal, priceListSelected, usePriceListAsDefault, XMLVersion, dontCheckInv = false) {
-  console.log('XML VERSION productSelected: ', XMLVersion)
-  console.log('dontCheckInv productSelected: ', dontCheckInv)
+  // console.log('XML VERSION productSelected: ', XMLVersion)
+  // console.log('dontCheckInv productSelected: ', dontCheckInv)
   // GET TE DATA FROM THE LINE DATA
   const code = lineData.product.code
   const product = lineData.product
+  console.log("Prod code on product selected --> ", lineData)
   const predDiscount = lineData.default_discount
-  console.log('PRED DISCOUNTTTT', predDiscount)
+  // console.log('PRED DISCOUNTTTT', predDiscount)
   // DETERMIN THE PRICE TO USE
   const price = product.code == '00' || product.code == '000' ? product.price : determinPriceToUse(lineData, priceListSelected, usePriceListAsDefault, product)
   product.price = price
@@ -233,7 +234,7 @@ export function productSelected(lineData, qty, itemsInCart, client, warehouseId,
     }
   }
   const inventory = JSON.parse(product.inventory_existent)
-  console.log('INVENTORYYY', inventory)
+  // console.log('INVENTORYYY', inventory)
   console.log(qtyToCheck)
   // CHECK THE INVENTORY OF PRODUCT, IF INVENTORY NOT ENABLE OR INVENTORY IS ENOUGHT OR CAN BE NEGATIVE
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative || dontCheckInv) {
@@ -339,7 +340,7 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
 // Updates Amount based on qty input field
 
 export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, warehouseId, XMLVersion) {
-  console.log('XML VERSION addSubOne: ', XMLVersion)
+  // console.log('XML VERSION addSubOne: ', XMLVersion)
   const indexInCart = itemsInCart.findIndex(item => item.product.code == code)
   const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
 
@@ -361,8 +362,8 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
     }
   }
   const inventory = JSON.parse(product.inventory_existent)
-  console.log('INVENTORYYY', inventory)
-  console.log(qtyToCheck)
+  // console.log('INVENTORYYY', inventory)
+  // console.log(qtyToCheck)
   if (!product.inventory_enabled || inventory[warehouseId] >= qtyToCheck || product.inventory_negative) {
     return res
   }
@@ -615,7 +616,7 @@ export function setProductNew(kwargs, resolve, reject) {
     data: kwargs.data
   })
     .then((response) => {
-      console.log(response)
+      console.log("New prod set --> ", response)
       resolve(response.data)
     })
     .catch((err) => {
@@ -657,7 +658,6 @@ export function getProductsList(kwargs, resolve, reject) {
 }
 
 export function determinPriceToUse(line, priceListSelected, usePriceListAsDefault, product) {
-  console.log('LINEEEEE INDETERMINNN', line)
   // CALCULATE THE PRICE IF ITS A FIXED ONE
   if (line.force_pricing && line.force_pricing != -1) {
     const iv1 = product.use_taxes ? parseFloat(product.taxes) : 0

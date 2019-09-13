@@ -230,8 +230,8 @@ class Form extends React.Component {
           </div>
 
           <div className='col-xs-6 second'>
-            <label>Genérico</label>
-            <input checked={this.props.product.generic} name='generic'
+            <label>Pregunta Precio</label>
+            <input checked={this.props.product.ask_price} name='ask_price'
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
           </div>
