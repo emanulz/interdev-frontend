@@ -449,19 +449,26 @@ export default class Product extends React.Component {
 
                   set00ProductPromiseNew.then(data=>{
                     _this.props.dispatch({type: 'FETCHING_DONE'})
-
-                    const mod_prod = JSON.parse(JSON.stringify(data[0].product))
+                    let mod_prod
+                    if(this.props.config.askPriceAs00){
+                      mod_prod = JSON.parse(JSON.stringify(data[0].product))
+                      mod_prod.description = product.description
+                      mod_prod.taxes_IVA = product.taxes_IVA
+                      mod_prod.tax_code_IVA = product.tax_code_IVA
+                    }else{
+                      mod_prod = JSON.parse(JSON.stringify(product))
+                    }
                     // console.log("Product source--> ", product)
+                    // console.log("Before price mod --> ", mod_prod.price)
                     mod_prod.price = final_price / (1 + product.taxes_IVA /100.0)
-                    mod_prod.price1 = final_price
-                    mod_prod.description = product.description
-                    mod_prod.taxes_IVA = product.taxes_IVA
-                    mod_prod.tax_code_IVA = product.tax_code_IVA
+                    // console.log("After price mod --> ", mod_prod.price)
+                    mod_prod.price1 = final_price / (1 + product.taxes_IVA /100.0)
+
                       
                     const generalItemDefaultData = {
                       default_discount: '0',
                       id: product.id,
-                      max_discount: '0',
+                      max_discount: '10',
                       product: mod_prod,
                       table_price: '0',
                       target_price_list: 'price1',

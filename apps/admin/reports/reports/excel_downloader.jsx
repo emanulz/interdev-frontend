@@ -11,6 +11,7 @@ import { generalSave, getItemDispatch } from '../../../../utils/api.js'
     end_date: store.generalReports.end_date,
     installedApps: store.config.installed_apps,
     useReserves: store.config.globalConf.useReserves,
+    isTrinche: store.config.globalConf.isTrincheras,
     useLegacyd151: store.config.globalConf.useLegacyd151,
     departments: store.generalReports.departments,
     selectedDepartment: store.generalReports.selectedDepartment,
@@ -282,6 +283,12 @@ export default class ExcelFetcher extends React.Component {
       </div>
     }
 
+
+    let trincheReport1 = ''
+    if(this.props.isTrinche){
+      trincheReport1 = <a href={`/reportsExcel/trinchesalesinsight/?start=${s}&end=${e}`}>Trincheras</a>
+    }
+
     return <div className='excel-fetcher' >
       <div className='excel-fetcher-title'>
         <h1>Seleccione el período a reportar y descarge el reporte en formato Excel</h1>
@@ -306,6 +313,7 @@ export default class ExcelFetcher extends React.Component {
         {/* <a href={`/reportsExcel/cashregister/?start=${s}&end=${e}`}>Cierre de Caja</a> */}
         <a href={`/reportsExcel/generalsales/?start=${s}&end=${e}`}>General Ventas IVA</a>
         <a href={`/reportsExcel/generalpurchases/?start=${s}&end=${e}`}>General Compras IVA</a>
+        {trincheReport1}
         <a href={`/reportsExcel/clientscatalog`}>Catálogo Clientes</a>
         <a href='/reportsExcel/productscatalog'>Lista de Precios</a>
         <a href={`/reportsExcel/d151/?start=${s}&end=${e}&money_limit=250`}>D151</a>

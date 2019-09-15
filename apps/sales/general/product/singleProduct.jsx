@@ -85,7 +85,6 @@ export default class SingleProduct extends React.Component {
     }).catch((err) => {
       _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       console.log(err)
-      console.log(err)
     })
   }
 
@@ -181,7 +180,6 @@ export default class SingleProduct extends React.Component {
   }
 
   applyPromoString(string) {
-    console.log('INSIDE STRINGGG')
     const code = this.props.product.code
     const cartItems = this.props.cart
     const _this = this
