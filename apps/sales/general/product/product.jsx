@@ -23,8 +23,6 @@ const Mousetrap = require('mousetrap')
     priceListSelected: store.priceList.listSelected,
     usePriceListAsDefault: store.priceList.useAsDefault,
     reinvoiceLoaded: store.completed.isReinvoiceLoaded,
-    // defaultConfig: store.config.defaultSales,
-    // userConfig: store.config.userSales
   }
 })
 export default class Product extends React.Component {
@@ -84,34 +82,6 @@ export default class Product extends React.Component {
     // const modifier = firstTwo.match(regex)
     return modifier
   }
-
-
-    //   // _this.props.dispatch({type: 'FETCHING_STARTED'})
-
-    //   setProductNew(kwargs, resolve, reject)
-    // })
-    // if (product.code == '00') {
-    //   const generalItemDefaultData = {
-    //     default_discount: '0',
-    //     id: product.id,
-    //     max_discount: '0',
-    //     product: product,
-    //     table_price: '0',
-    //     target_price_list: 'price1',
-    //     current_discount: 0,
-    //     promo_string: '',
-    //     money_discount: 0,
-    //     force_pricing: -1
-    //   }
-    //   console.log('BEFORE ADD TO CART CHECK INV', this.props.dontCheckInv)
-    //   this.props.dispatch(productSelected(generalItemDefaultData, qty, this.props.itemsInCart,
-    //     this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
-    //     this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
-
-    //   this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-
-    // }
-
 
   getFormattedCode(code) {
 
@@ -235,9 +205,7 @@ export default class Product extends React.Component {
                         this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
         
                       this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-        
                     }
-  
                   }
       
                 }).catch((err) => {

@@ -73,13 +73,92 @@ export default class SingleProduct extends React.Component {
         _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
         _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
       } else {
-        // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
-        _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
-        this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
-          this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
-          this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
-        _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
-        _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+        if(product.ask_price){
+          //start of ask new code
+          // console.log("Product has to ask price")
+          //treat this as a 00 product using the data from the selected product
+          const handle_input = (ev, value) => {
+            // console.log("Value entered --> ", value)
+            if(isNaN(value)){
+              alertify.alert('Error', 'Debe ingresar un número')
+              return
+            }
+
+            const final_price = parseInt(value)
+            if(final_price <= 1){
+              alertify.alert('Error', 'El precio no puede ser tan bajo')
+              return
+            }
+
+            const set00ProductPromiseNew = new Promise((resolve, reject) => {
+              const kwargs = {
+                url: '/api/products/getProdPrice/',
+                data: {
+                  prod_data: {
+                    code: '00'
+                  },
+                  clientId: _this.props.client.client.id
+                }
+              }
+  
+              _this.props.dispatch({type: 'FETCHING_STARTED'})
+              setProductNew(kwargs, resolve, reject)
+            })
+
+            set00ProductPromiseNew.then(data=>{
+              _this.props.dispatch({type: 'FETCHING_DONE'})
+              let mod_prod
+              if(this.props.config.askPriceAs00){
+                mod_prod = JSON.parse(JSON.stringify(data[0].product))
+                mod_prod.description = product.description
+                mod_prod.taxes_IVA = product.taxes_IVA
+                mod_prod.tax_code_IVA = product.tax_code_IVA
+              }else{
+                mod_prod = JSON.parse(JSON.stringify(product))
+              }
+              // console.log("Product source--> ", product)
+              // console.log("Before price mod --> ", mod_prod.price)
+              mod_prod.price = final_price / (1 + product.taxes_IVA /100.0)
+              // console.log("After price mod --> ", mod_prod.price)
+              mod_prod.price1 = final_price / (1 + product.taxes_IVA /100.0)
+
+                
+              const generalItemDefaultData = {
+                default_discount: '0',
+                id: product.id,
+                max_discount: '10',
+                product: mod_prod,
+                table_price: '0',
+                target_price_list: 'price1',
+                current_discount: 0,
+                promo_string: '',
+                money_discount: 0,
+                force_pricing: -1
+              }
+              this.props.dispatch(productSelected(generalItemDefaultData, qty>1 ? qty : 1, this.props.itemsInCart,
+              this.props.client, this.props.warehouse_id, false, this.props.priceListSelected,
+              this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+
+              this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+            })
+
+          } //end of handle input
+
+          const handle_cancel = () => {alertify.alert('Error', 'Se debe ingresar un precio')}
+
+          alertify.prompt("Ingrese el precio", 'Precio final de la línea', '',
+            handle_input,
+            handle_cancel)
+          //end of new ask code
+        }else{
+          // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
+          _this.props.dispatch({type: 'ADD_TO_PRICES_DETAILS', payload: data[0]})
+          this.props.dispatch(productSelected(data[0], qty, this.props.itemsInCart,
+            this.props.client, this.props.warehouse_id, true, this.props.priceListSelected,
+            this.props.usePriceListAsDefault, this.props.config.overrideXMLversion, this.props.dontCheckInv))
+          _this.props.dispatch({type: 'CLEAR_PRODUCT_FIELD_VALUE', payload: 0})
+          _this.props.dispatch({type: 'SET_PRODUCT_ACTIVE_IN_CART', payload: code})
+        }
       }
 
     }).catch((err) => {
