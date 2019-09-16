@@ -31,10 +31,10 @@ export default class NSReservesPanel extends React.Component {
     this.props.dispatch({type: 'HIDE_NSRESERVES_PANEL', payload: -1})
   }
 
-  loadPresaleItem(id, ev) {
+  loadPresaleItem(consecutive, ev) {
 
     const _this = this
-    const url = `/api/presales/${id}`
+    const url = `/api/presales/reservepresaleview/?consecutive=${consecutive}`
     const loadPromise = new Promise((resolve, reject) => {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
       this.props.dispatch(loadNSReserve(url, resolve, reject))
@@ -43,9 +43,15 @@ export default class NSReservesPanel extends React.Component {
       console.log(data)
       this.props.dispatch({type: 'HIDE_NSRESERVES_PANEL', payload: -1})
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
-      data.cart = JSON.parse(data.cart)
-      data.client = JSON.parse(data.client)
-      data.user = JSON.parse(data.user)
+      try {
+        data.cart = JSON.parse(data.cart)
+      } catch (err) {}
+      try {
+        data.client = JSON.parse(data.credit_record.client)
+      } catch (err) { data.client = data.credit_record.client }
+      try {
+        data.user = JSON.parse(data.user)
+      } catch (err) {}
       try {
         data.extras = JSON.parse(data.extras)
         _this.props.dispatch({type: 'SET_CURRENCY', payload: data.currency_code})
@@ -107,7 +113,7 @@ export default class NSReservesPanel extends React.Component {
 
   loadAdvances(presale) {
     console.log('PRESALE', presale)
-    const advancesAmount = parseFloat(presale.cart.cartTotal) - parseFloat(presale.balance)
+    const advancesAmount = parseFloat(presale.cart.cartTotal) - parseFloat(presale.credit_record.balance)
     const advance = {'type': 'CSHA', 'amount': advancesAmount, 'presaleId': presale.id}
     this.props.dispatch({type: 'ADD_CASH_ADVANCE', payload: advance})
   }
@@ -141,7 +147,7 @@ export default class NSReservesPanel extends React.Component {
         ? `${nsreserve.user.first_name} ${nsreserve.user.last_name}`
         : `${nsreserve.user.username}`
       return <tr key={nsreserve.id}>
-        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, nsreserve.id)} className='fa fa-download' /></td>
+        <td className='loadRow'><i onClick={this.loadPresaleItem.bind(this, nsreserve.consecutive)} className='fa fa-download' /></td>
         <td>{nsreserve.consecutive}</td>
         <td>{`${formatDateTimeAmPm(nsreserve.created)}`}</td>
         <td>{`${clientName} ${clientLastName}`}</td>
