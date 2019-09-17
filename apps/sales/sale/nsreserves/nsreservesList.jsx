@@ -153,7 +153,7 @@ export default class NSReservesPanel extends React.Component {
         <td>{`${clientName} ${clientLastName}`}</td>
         <td>{presellerName}</td>
         <td>₡{parseFloat(nsreserve.cart.cartTotal).formatMoney(2, ',', '.')}</td>
-        <td>₡{parseFloat(nsreserve.balance).formatMoney(2, ',', '.')}</td>
+        {/* <td>₡{parseFloat(nsreserve.balance).formatMoney(2, ',', '.')}</td> */}
         {/* <td className='loadRow'><i onClick={this.setNullSinglePresale.bind(this, nsreserve.id, nsreserve.consecutive)} className='fa fa fa-trash' /></td> */}
       </tr>
     })
@@ -173,8 +173,8 @@ export default class NSReservesPanel extends React.Component {
                 <td>Fecha</td>
                 <td>Cliente</td>
                 <td>Vendedor</td>
-                <td>Monto</td>
-                <td>Por Pagar</td>
+                <td>Monto Sin Adelantos</td>
+                {/* <td>Por Pagar</td> */}
               </tr>
             </thead>
             <tbody>

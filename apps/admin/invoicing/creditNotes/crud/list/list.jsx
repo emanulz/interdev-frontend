@@ -69,16 +69,27 @@ export default class List extends React.Component {
 
     const getTotal = (item) => {
       function getTotalToShow(item) {
-        console.log('ITEMM', item)
         try {
-          const obj = JSON.parse(item)
+          const obj = JSON.parse(item.sale_total)
+          let total = 0
+          if (item.hacienda_resolution == '4.2' || item.hacienda_resolution == '') {
+            total = obj.total
+          } else {
+            const taxDetail = JSON.parse(item.taxation_detail)
+            const keys = Object.keys(taxDetail)
+            let taxes = 0
+            keys.forEach(element => {
+              taxes += parseFloat(taxDetail[element])
+            })
+            total = taxes + parseFloat(item.total_noivi)
+          }
           if (obj.currency == 'CRC') {
-            return `₡${parseFloat(obj.total).toFixed(2)}`
+            return `₡${parseFloat(total).toFixed(2)}`
           }
           if (obj.currency == 'USD') {
-            return `$${parseFloat(obj.total).toFixed(2)}`
+            return `$${parseFloat(total).toFixed(2)}`
           }
-          return `${parseFloat(obj.total).toFixed(2)}`
+          return `${parseFloat(total).toFixed(2)}`
         } catch (err) {
           console.log('ERRROR', err)
           return '0'
@@ -102,7 +113,7 @@ export default class List extends React.Component {
       }, {
         field: 'sale_total',
         text: 'Monto',
-        type: 'function_process',
+        type: 'function_element',
         worker_method: getTotal
       }, {
         field: 'id',

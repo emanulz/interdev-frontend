@@ -47,6 +47,27 @@ export default class Summary extends React.Component {
 
   }
 
+  getTotalToShowCN(item) {
+    try {
+      const obj = JSON.parse(item.sale_total)
+      let total = 0
+      if (item.hacienda_resolution == '4.2' || item.hacienda_resolution == '') {
+        total = obj.total
+      } else {
+        const taxDetail = JSON.parse(item.taxation_detail)
+        const keys = Object.keys(taxDetail)
+        let taxes = 0
+        keys.forEach(element => {
+          taxes += parseFloat(taxDetail[element])
+        })
+        total = taxes + parseFloat(item.total_noivi)
+      }
+      return parseFloat(total)
+    } catch (err) {
+      return 0
+    }
+  }
+
   determinModelID(model) {
     switch (model) {
       case 'invoice':
@@ -83,9 +104,12 @@ export default class Summary extends React.Component {
       ? (totalObject.currency == 'USD') ? '$' : (totalObject.currency == 'CRC') ? '₡' : ''
       : ''
     const client = this.props.document ? this.props.document.client_name : ''
-    const saleTotal = totalObject.total
+    let saleTotal = totalObject.total
       ? parseFloat(totalObject.total)
       : 0
+    if (model == 'creditnote') {
+      saleTotal = this.getTotalToShowCN(this.props.document)
+    }
     const status = getElementStatus(this.props.document)
     const cell = <td className={status.className}>{status.text}</td>
 
