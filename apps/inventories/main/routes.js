@@ -14,6 +14,7 @@ import MakeMassFileTransfer  from '../fileTransfer/main.jsx'
 import FileTransferLoader from '../fileTransferLoad/main.jsx'
 import ListFileTransfers from '../fileTransfer/list/main.jsx'
 import ListMassInv from '../fileTransfer/list-mass/main.jsx'
+import Transmutation from '../transmutation/main.jsx'
 
 const routes = <div className='heigh100'>
 
@@ -36,6 +37,7 @@ const routes = <div className='heigh100'>
   <Route path='/inventories/massloadlist/:mode' component={ListMassInv}/>
   {/* <Route path='/inventories/invloadlist/:mode' component={ListMassInv} />
   <Route path='/inventories/invloadlist/:mdoe' component={ListMassInv} /> */}
+  <Route path='/inventories/recipes' component={Transmutation}/>
   
 </div>
 

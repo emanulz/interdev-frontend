@@ -33,6 +33,7 @@ import warehouses2 from '../../general/warehouses/reducer.js'
 import picker from '../inventories/fileTransferLoad/loadFromFile/reducer.js'
 import transferDataLoad from '../inventories/fileTransferLoad/reducer.js'
 import warehouse_multi from '../../general/warehouse_multi/reducer.js'
+import transmutation from './transmutation/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -64,7 +65,8 @@ export default combineReducers({
   warehouses2,
   picker, 
   transferDataLoad,
-  warehouse_multi
+  warehouse_multi,
+  transmutation
 
 
 })
