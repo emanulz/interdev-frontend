@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
+import {formatDateTimeAmPm, formatDate} from '../../../../utils/formatDate.js'
 import {determinClientName, determinClientLastName} from '../../../../apps/sales/general/clients/actions.js'
 
 @connect((store) => {
@@ -14,6 +14,12 @@ import {determinClientName, determinClientLastName} from '../../../../apps/sales
   }
 })
 export default class Data extends React.Component {
+
+  addDate(date, days) {
+    const retDate = new Date(date)
+    retDate.setDate(retDate.getDate() + days)
+    return retDate
+  }
 
   render() {
 
@@ -130,6 +136,16 @@ export default class Data extends React.Component {
       </tr>
       : <tr />
 
+    const createdDate = sale.created ? sale.created : new Date()
+    const creditDays = extras.credit_days ? extras.credit_days : 0
+    const dueDate = this.addDate(createdDate, creditDays)
+    const saleDueDateRow = wasCredit && creditDays && this.props.config.printDueDateInInvoice > 0
+      ? <tr>
+        <th>Vencim:</th>
+        <td>{formatDate(dueDate)}</td>
+      </tr>
+      : <tr />
+
     return <div className='reprint-full-invoice-data'>
 
       <table className='client-table'>
@@ -159,6 +175,7 @@ export default class Data extends React.Component {
             <th>Fecha:</th>
             <td>{date}</td>
           </tr>
+          {saleDueDateRow}
           {longConsecRow}
           {numKeyRow}
           {payMethodRow}

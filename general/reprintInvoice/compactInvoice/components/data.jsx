@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
+import {formatDateTimeAmPm, formatDate} from '../../../../utils/formatDate.js'
 import {determinClientName, determinClientLastName} from '../../../../apps/sales/general/clients/actions.js'
 
 @connect((store) => {
@@ -9,10 +9,17 @@ import {determinClientName, determinClientLastName} from '../../../../apps/sales
     presale: store.reprintInvoice.presale,
     ticket: store.reprintInvoice.ticket,
     invoice: store.reprintInvoice.invoice,
-    taxPayer: store.userProfile.taxPayer
+    taxPayer: store.userProfile.taxPayer,
+    config: store.config.globalConf
   }
 })
 export default class Data extends React.Component {
+
+  addDate(date, days) {
+    const retDate = new Date(date)
+    retDate.setDate(retDate.getDate() + days)
+    return retDate
+  }
 
   render() {
     const sale = this.props.sale
@@ -35,6 +42,11 @@ export default class Data extends React.Component {
     const seller = Object.keys(presaleUser).length !== 0
       ? presellerName
       : cashierName
+
+    let wasCredit = false
+    try {
+      wasCredit = this.props.sale.pay.cred[0].amount
+    } catch (err) {}
 
     // DETERMIN THE NAME AND LASTNAME OF CLIENT BASED ON CLIENT CODE ANS EXTRAS
     let extras = {
@@ -107,6 +119,15 @@ export default class Data extends React.Component {
       </tr>
       : <tr />
 
+    const createdDate = sale.created ? sale.created : new Date()
+    const creditDays = extras.credit_days ? extras.credit_days : 0
+    const dueDate = this.addDate(createdDate, creditDays)
+    const saleDueDateRow = wasCredit && creditDays && this.props.config.printDueDateInInvoice > 0
+      ? <tr>
+        <th>Venc:</th>
+        <td>{formatDate(dueDate)}</td>
+      </tr>
+      : <tr />
     return <div className='reprint-compact-invoice-data'>
 
       <table className='datenum-table'>
@@ -115,6 +136,7 @@ export default class Data extends React.Component {
             <th>Fecha:</th>
             <td>{date}</td>
           </tr>
+          {saleDueDateRow}
           {docTypeRow}
           <tr>
             <th>Factura:</th>
