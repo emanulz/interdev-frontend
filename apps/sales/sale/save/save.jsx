@@ -9,6 +9,7 @@ const Mousetrap = require('mousetrap')
 @connect((store) => {
   return {
     cart: store.cart,
+    pay: store.pay,
     payMethod: store.pay.payMethod,
     payObject: store.pay.payObject,
     client: store.clients.clientSelected.client,
@@ -67,6 +68,9 @@ export default class SaveBtn extends React.Component {
     const extrasToSend = this.props.extras
     if (this.props.conf.canSelectSeller && this.props.sellerId != '0') {
       extrasToSend['seller_id'] = this.props.sellerId
+    }
+    if (!this.props.pay.isCredit) {
+      delete extrasToSend['credit_days']
     }
     // SALE
     const sale = {

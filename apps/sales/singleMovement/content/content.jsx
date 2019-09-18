@@ -69,7 +69,7 @@ export default class Content extends React.Component {
     const type = this.props.movement.is_input ? 'ENTRADA' : 'SALIDA'
 
     const _this = this
-    alertify.confirm('ABRIR', `Desea registrar el movimiento de ${type}, por un monto de ${symbol}${parseFloat(amount).formatMoney()}?`,
+    alertify.confirm('CONFIRMAR', `Desea registrar el movimiento de ${type}, por un monto de ${symbol}${parseFloat(amount).formatMoney()}?`,
       function() {
         _this.saveBtn()
       }, function() {

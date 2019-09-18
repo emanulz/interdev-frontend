@@ -47,6 +47,7 @@ export default class Clients extends React.Component {
       try {
         const client = JSON.parse(window.sessionStorage.getItem('generalClient'))
         this.props.dispatch({type: 'CLIENT_SELECTED', payload: client})
+        this.props.dispatch({type: 'SET_CREDIT_DAYS', payload: 0})
       } catch (err) {
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         getFullClientByCode('00', this.props.dispatch)

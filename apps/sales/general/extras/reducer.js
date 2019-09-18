@@ -6,7 +6,8 @@ const clientModel = {
 
 const stateConst = {
   notes: '',
-  client: clientModel
+  client: clientModel,
+  credit_days: 0
 }
 
 export default function reducer(state = stateConst, action) {
@@ -27,6 +28,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         client: action.payload
+      }
+    } // case
+
+    case 'SET_CREDIT_DAYS':
+    {
+      return {
+        ...state,
+        credit_days: action.payload
+      }
+    } // case
+
+    case 'CLEAR_CREDIT_DAYS':
+    {
+      return {
+        ...state,
+        credit_days: 0
       }
     } // case
 
