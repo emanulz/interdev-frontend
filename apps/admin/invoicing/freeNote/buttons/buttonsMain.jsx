@@ -42,13 +42,15 @@ class Buttons extends React.Component {
   saveSelfPurchase() {
     const _this = this
     const data = {
-      cart: JSON.stringify(this.props.cart),
-      user: JSON.stringify(this.props.user),
-      extras: JSON.stringify(this.props.extras),
-      exchange_rate: this.props.exchange,
-      currency_code: this.props.currency,
-      supplier_name: this.props.supplierName,
-      related_document: this.props.relatedDocument
+      data: {
+        cart: JSON.stringify(this.props.cart),
+        user: JSON.stringify(this.props.user),
+        extras: JSON.stringify(this.props.extras),
+        exchange_rate: this.props.exchange,
+        currency_code: this.props.currency,
+        supplier_name: this.props.supplierName,
+        related_document: this.props.relatedDocument
+      }
     }
 
     const createPromise = new Promise((resolve, reject) => {
