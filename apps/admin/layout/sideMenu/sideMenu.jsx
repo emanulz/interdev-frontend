@@ -74,6 +74,15 @@ export default class SideMenu extends React.Component {
         }
       )
     }
+    if (this.props.config.canCreateFreeCN) {
+      childInvoicing.push(
+        {
+          text: 'Nota Libre',
+          class: 'fa-sticky-note',
+          href: '/admin/invoicing/freenote'
+        }
+      )
+    }
     // const acceptPurchases = {
     //   text: 'Aceptar Compras',
     //   class: 'fa-upload',
@@ -319,7 +328,6 @@ export default class SideMenu extends React.Component {
       ? <ComposedItem mainTittle='Ventas' mainIcon='fa-list-ol' childItems={childSales} />
       : <div />
 
-    
     return <div id='sideMenu' className='sideMenu'>
 
       {/* <h3 className='sideMenu-header'>{title.toUpperCase()}</h3> */}

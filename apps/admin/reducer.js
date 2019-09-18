@@ -44,6 +44,7 @@ import helpers from './helpers/reducer.js'
 import projects from './projects/reducer.js'
 import activities from './activities/reducer.js'
 import selfpurchases from './invoicing/selfpurchases/reducer.js'
+import freenote from './invoicing/freeNote/reducer.js'
 
 // SELF PURCHASE CART
 import selfpurchase from './invoicing/selfpurchases/crud/create/reducer.js'
@@ -114,5 +115,6 @@ export default combineReducers({
   priceList,
   extras,
   generalItem,
-  taxExemption
+  taxExemption,
+  freenote
 })

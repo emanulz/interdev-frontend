@@ -1,0 +1,113 @@
+.freenote
+  display: flex
+  flex-flow: row
+  width: 100%
+  height: 100%
+  position: relative
+  font-family: 'Source Sans Pro', sans-serif
+  &-content
+    height: 100%
+    width: 70%
+    transition: width 0.3s ease
+    position: absolute
+    left: 0
+    &.fullWidth
+      width: 100%
+      display: block
+    &-product
+      padding: 0 20px
+      padding-top: 20px
+    &-cart
+      width: 100%
+      padding: 20px
+      height: calc(100% - 125px)
+      &.fullHeight
+        height: calc(100% - 65px)
+    &-total
+      height: 60px
+      width: 100%
+      text-align: center
+      background-color: $PRIMARY-COLOR
+      color: white
+      padding: 0 20px
+      line-height: 50px
+      font-size: 34px
+      position: relative
+      &.collapsed
+        display: none
+      & i
+        position: absolute
+        right: 30px
+        top: 16px
+        cursor: pointer
+    @media screen and (max-width: 768px)
+      width: 0
+      left: 0
+      display: none
+        
+  &-aside
+    height: 100%
+    width: 30%
+    transition: left 0.3s ease
+    position: absolute
+    left: 70%
+    display: flex
+    flex-flow: column
+    justify-content: space-between
+    & .order-delivery-date
+      width: 100%
+      height: 35px
+      border-radius: 5px
+      border: 1px solid #cacaca
+      box-shadow: none
+    & h1
+      margin-bottom: 10px
+      font-size: 18px
+      font-weight: bolder
+      font-family: 'Source Sans Pro', sans-serif
+    &.collapsed
+      left: 100%
+    &-arrow
+      text-align: center
+      margin-top: 20px
+      color: white
+      height: 45px
+      font-size: 20px
+      &-container
+        line-height: 45px
+        height: 100%
+        background-color: $PRIMARY-COLOR
+        cursor: pointer
+        &:hover
+          font-size: 26px
+    @media screen and (max-width: 768px)
+      left: 0
+      width: 100%
+      padding: 0 20px
+    &-total
+      min-height: 60px
+      width: 100%
+      background-color: $PRIMARY-COLOR
+      color: white
+      text-align: center
+      line-height: 60px
+      font-size: 34px
+      position: relative
+      & i
+        position: absolute
+        right: 10px
+        top: 16px
+        cursor: pointer
+        font-size: 30px
+    &-content
+      margin-top: 20px
+      overflow-x: auto
+    &-project
+      margin: 10px 10px 10px 0
+      & h2
+        margin-bottom: 5px
+        font-size: 15px
+        font-weight: bolder
+    //   visibility: visible
+    //   &.collapsed
+    //     visibility: hidden
