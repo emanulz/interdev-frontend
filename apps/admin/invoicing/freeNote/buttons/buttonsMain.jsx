@@ -16,8 +16,8 @@ import { withRouter } from 'react-router-dom'
     extras: store.extras,
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
-    supplierName: store.selfpurchase.supplierName,
-    relatedDocument: store.selfpurchase.relatedDocument
+    supplierName: store.freenote.supplierName,
+    relatedDocument: store.freenote.relatedDocument
   }
 })
 
@@ -27,7 +27,7 @@ class Buttons extends React.Component {
 
     // ALERTIFY CONFIRM
     const _this = this
-    alertify.confirm('CREAR', `Desea crear la compra de régimen simplificado con los datos seleccionados? Esta acción no se puede
+    alertify.confirm('CREAR', `Desea crear la nota con los datos seleccionados? Esta acción no se puede
     deshacer o modificar.`, function() {
       _this.saveSelfPurchase()
     }, function() {
@@ -41,7 +41,7 @@ class Buttons extends React.Component {
 
   saveSelfPurchase() {
     const _this = this
-    const selfpurchase = {
+    const data = {
       cart: JSON.stringify(this.props.cart),
       user: JSON.stringify(this.props.user),
       extras: JSON.stringify(this.props.extras),
@@ -53,10 +53,11 @@ class Buttons extends React.Component {
 
     const createPromise = new Promise((resolve, reject) => {
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      console.log('DATAA', data)
       axios({
         method: 'post',
-        url: '/api/electronicselfpurchase/',
-        data: selfpurchase
+        url: '/api/freereturns/',
+        data: data
       })
         .then((response) => {
           this.props.dispatch({type: 'CLEAR_SELF_PURCHASE', payload: ''})
@@ -69,16 +70,16 @@ class Buttons extends React.Component {
     createPromise.then((data) => {
       console.log(data)
       // REDIRECT TO LIST
-      this.props.history.push('/admin/invoicing/selfpurchases')
+      this.props.history.push('/admin/invoicing/creditnotes')
     }).catch((err) => {
       console.log(err.response.data)
       if (err.response) {
         console.log(err.response.data)
-        alertify.alert('Error', `Error al crear la Compra Simplificada, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
+        alertify.alert('Error', `Error al crear la NOTA, ERROR: ${err.response.data.friendly_errors}, ERROR DE SISTEMA: ${err.response.data.system_errors}`)
       } else {
         console.log('NO CUSTOM ERROR')
         console.log(err)
-        alertify.alert('Error', `Error al crear la Compra Simplificada, ERROR: ${err}.`)
+        alertify.alert('Error', `Error al crear la NOTA, ERROR: ${err}.`)
       }
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     })
@@ -97,7 +98,7 @@ class Buttons extends React.Component {
           'marginTop': '10px'
         }}
         className='btn btn-default buttons-payButton'>
-        Guardar Compra
+        Guardar Nota
         <span>
           <i className='fa fa-save' />
         </span>
