@@ -122,7 +122,6 @@ export function getFullClientByCode(code, dispatch) {
       console.log('CATEGORY', client.category)
       client.category = client.category.length ? JSON.parse(client.category) : {}
       dispatch({type: 'CLIENT_SELECTED', payload: client})
-      dispatch({type: 'SET_CREDIT_DAYS', payload: client})
       // ON LOAD DISPATCH OR CLEAN THE CLIENT TO UPDATE
       try {
         if (client.client.code != '00') {
@@ -169,9 +168,11 @@ export function getFullClientById(id, dispatch) {
       if (client.client.code != '00') {
         dispatch({type: 'SET_UPDATE_CLIENT', payload: client.client})
         dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'FACTURA'})
+        dispatch({type: 'SET_CREDIT_DAYS', payload: client.client.credit_days})
       } else {
         dispatch({type: 'CLEAR_UPDATE_CLIENT', payload: ''})
         dispatch({type: 'SET_IS_INVOICE_VALUE', payload: 'TIQUETE'})
+        dispatch({type: 'SET_CREDIT_DAYS', payload: 0})
       }
     } catch (err) {}
   }).catch((err) => {
