@@ -43,7 +43,7 @@ class Buttons extends React.Component {
     const _this = this
     const data = {
       data: {
-        cart: this.props.cart,
+        cart: JSON.stringify(this.props.cart),
         user: JSON.stringify(this.props.user),
         extras: JSON.stringify(this.props.extras),
         exchange_rate: this.props.exchange,
