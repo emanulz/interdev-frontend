@@ -17,7 +17,8 @@ import { withRouter } from 'react-router-dom'
     currency: store.currency.currencySelected,
     exchange: store.currency.exchangeRateSelected,
     supplierName: store.freenote.supplierName,
-    relatedDocument: store.freenote.relatedDocument
+    relatedDocument: store.freenote.relatedDocument,
+    client: store.clients.clientSelected
   }
 })
 
@@ -44,6 +45,7 @@ class Buttons extends React.Component {
     const data = {
       data: {
         cart: JSON.stringify(this.props.cart),
+        client: this.props.client.client.id,
         user: JSON.stringify(this.props.user),
         extras: JSON.stringify(this.props.extras),
         exchange_rate: this.props.exchange,

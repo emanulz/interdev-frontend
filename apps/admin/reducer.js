@@ -56,6 +56,9 @@ import priceList from '../sales/general/priceList/reducer.js'
 import extras from '../sales/general/extras/reducer.js'
 import generalItem from '../sales/general/product/generalItem/reducer.js'
 import taxExemption from '../sales/sale/taxExemption/reducer.js'
+import workOrders from '../sales/sale/workOrders/reducer.js'
+import clientUpdatePanel from '../../general/clientUpdatePanel/reducer.js'
+import clientCreatePanel from '../../general/clientCreatePanel/reducer.js'
 
 export default combineReducers({
   users,
@@ -116,5 +119,8 @@ export default combineReducers({
   extras,
   generalItem,
   taxExemption,
-  freenote
+  freenote,
+  workOrders,
+  clientCreatePanel,
+  clientUpdatePanel
 })

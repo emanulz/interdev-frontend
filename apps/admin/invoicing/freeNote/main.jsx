@@ -6,10 +6,12 @@ import React from 'react'
 // import { getItemDispatch } from '../../utils/api.js'
 import Content from './content/content.jsx'
 import Aside from './aside/aside.jsx'
+import ClientPanel from '../../../../general/clientCreatePanel/clientCreatePanel.jsx'
+import ClientUpdatePanel from '../../../../general/clientUpdatePanel/clientUpdatePanel.jsx'
 import Currency from '../../../../general/currency/currency.jsx'
 import Search from '../../../../general/search/search.jsx'
 // import {loadGlobalConfig} from '../../../../utils/api.js'
-import {productSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../../../sales/general/search/actions.js'
+import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../../../sales/general/search/actions.js'
 import SingleProduct from '../../../sales/general/product/singleProduct.jsx'
 import GeneralItem from '../../../sales/general/product/generalItem/generalItem.jsx'
 // import TaxExemptionPanel from '../../sales/sale/taxExemption/taxExemption.jsx'
@@ -46,8 +48,11 @@ export default class SelfPurchase extends React.Component {
       <Aside />
       <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
+      <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <SingleProduct />
       <GeneralItem />
+      <ClientPanel />
+      <ClientUpdatePanel />
     </div>
 
   }
