@@ -183,7 +183,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
         }
 
         const new_line = JSON.parse(JSON.stringify(active_line))
-        const discount = new_line.MontoDescuento!==null ? parseFloat(new_line.MontoDescuento) : 0
+        const discount = new_line.DescuentoTotalLinea!==null ? parseFloat(new_line.DescuentoTotalLinea) : 0
         const unit_price = (parseFloat(new_line.PrecioUnitario)-discount/parseFloat(new_line.Cantidad)).toFixed(5)
 
         switch(update_data.group){
