@@ -24,7 +24,7 @@ export default class ListPurchases  extends React.Component {
         this.props.dispatch({type: `purchaseSearch_CLEAR_SEARCH_RESULTS`, payload: ''})
 
         const purchasesKwargs = {
-            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}`,
+            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}&ordering=-consecutive`,
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED'
         }
@@ -35,7 +35,7 @@ export default class ListPurchases  extends React.Component {
 
     componentWillUpdate(nextProps){
         const purchasesKwargs = {
-            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}`,
+            url : `/api/purchasecompletelist/?limit=${this.props.pageSize}&ordering=-consecutive`,
             successType: 'FETCH_PURCHASES_FULFILLED',
             errorType: 'FETCH_PURCHASES_REJECTED',
         }

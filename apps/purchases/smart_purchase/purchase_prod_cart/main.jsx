@@ -27,15 +27,21 @@ export default class Purchase_Prod_Cart extends React.Component {
         const items = this.props.invoice_to_link !==null ? this.props.invoice_to_link.items_list : []
 
         const disp_items = items.map(item=>{
+            console.log("Item --> ", item)
             const qty = parseFloat(item.Cantidad).toFixed(2)
-            const discount = item.MontoDescuento!==null?parseFloat(item.MontoDescuento):0
+            const discount = item.DescuentoTotalLinea!==null?parseFloat(item.DescuentoTotalLinea):0
+            console.log("Discount --> ", discount)
             const unit_price = (parseFloat(item.PrecioUnitario)-discount/qty).toFixed(5)
-
+            console.log("Item Price --> ", item.PrecioUnitario)
             let line_class = "purchase-prod-cart-cont-item"
             if (item.NumeroLinea === this.props.active_line){
                 line_class += " prod-cart-active"
             }
 
+            let tax = 0
+            if(item.Impuesto){
+                tax = item.Impuesto.ImpuestoNeto.toFixed(5)
+            }
             return <div className={line_class} key={item.linked.id}
                 onClick={this.setItemActive.bind(this, item.NumeroLinea)}>
                         <div className="purchase-prod-cart-cont-code">
@@ -51,10 +57,10 @@ export default class Purchase_Prod_Cart extends React.Component {
                             {unit_price}
                         </div>
                         <div className="purchase-prod-cart-cont-discount">
-                            {item.MontoDescuento!==null?parseFloat(item.MontoDescuento):0}
+                            {item.DescuentoTotalLinea!==null?parseFloat(item.DescuentoTotalLinea):0}
                         </div>
                         <div className="purchase-prod-cart-cont-tax">
-                            {parseFloat(item.Impuesto)}   
+                            {tax}   
                         </div>
                         <div className="purchase-prod-cart-cont-subtotal">
                             {(unit_price*qty).toFixed(5)}

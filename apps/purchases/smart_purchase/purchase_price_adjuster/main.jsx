@@ -18,11 +18,6 @@ import {generalSave} from '../../../../utils/api.js'
 })
 export default class Purchase_PriceAdjuster extends React.Component {
 
-
-    componentWillMount() {
-
-    }
-
     componentWillReceiveProps(nextProps){
         
         if(this.props.do_global_price_calc===false && nextProps.do_global_price_calc ===true){
@@ -73,7 +68,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
         }
 
         const total_tax_factor = 1 + total_tax_fraction / 100.0
-        console.log("Total tax fraction shit--> ", total_tax_factor)
+        // console.log("Total tax fraction shit--> ", total_tax_factor)
         const default_discount = 1 - parseFloat(product.pred_discount)/100.0
       
         switch(updatePattern){
@@ -120,6 +115,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
         }
       
         //back calculate new utility
+        console.log("Received cost --> ", cost)
         let real_utility = 0
         if(cost<0.0001)
         {
@@ -318,7 +314,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
         }
         const new_line = JSON.parse(JSON.stringify(active_line))
         console.log("Scorching new line --> ", new_line)
-        const discount = new_line.MontoDescuento!==null ? parseFloat(new_line.MontoDescuento) : 0
+        const discount = new_line.MontoDescuento!==null ? parseFloat(new_line.DescuentoTotalLinea) : 0
         const unit_price = (parseFloat(new_line.PrecioUnitario)-discount/parseFloat(new_line.Cantidad)).toFixed(5)
 
         switch(price_group){
@@ -400,9 +396,9 @@ export default class Purchase_PriceAdjuster extends React.Component {
     buildDuckCart(){
         console.log("Build cart like json object")
         const items = this.props.invoice_to_link.items_list.map(item=>{
-            
+            console.log("Item for duck cart --> ", item)
             const qty = parseFloat(item.Cantidad)
-            const discount = item.MontoDescuento!==null ? parseFloat(item.MontoDescuento) : 0
+            const discount = item.DescuentoTotalLinea!==null ? parseFloat(item.DescuentoTotalLinea) : 0
             const cost = parseFloat(item.PrecioUnitario)-discount/(qty>0?qty:1)
 
             return {

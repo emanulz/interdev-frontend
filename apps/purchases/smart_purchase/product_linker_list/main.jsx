@@ -39,7 +39,6 @@ export default class ProductLinkerList extends React.Component{
         }
 
         const items = data.map((item) =>{
-            console.log("Item for pcode --> ", item)
             const codes = item.CodigosMeta?item.CodigosMeta:[]
             let target_sup_code = 'Indefinido'
             if(codes.length>0){
