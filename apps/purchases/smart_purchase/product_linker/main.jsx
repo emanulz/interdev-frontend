@@ -19,14 +19,15 @@ export default class ProductLinker extends React.Component {
         const kwargs = {
             url: `/api/productslist/${item_id}`,
             successType: 'SET_TO_LINK_INTERNAL_PRODUCT',
-            errorType: 'ERROR_GETTING_PRODUCT'
+            errorType: 'ERROR_GETTING_PRODUCT_LINKING'
         }
+
         dispatch(getSingleItemDispatch(kwargs))
 
     }
 
     render(){
-        return <div className="supplier-link">
+        return <div className="supplier-link-test">
             <Search modelText='Producto' model='product' namespace='productLinker' onRowDoubleClick = {this.onProductSelected}/>
         </div>
     }

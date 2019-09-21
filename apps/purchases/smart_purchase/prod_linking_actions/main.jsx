@@ -28,8 +28,9 @@ export default class ProdLinkingActions extends React.Component {
         if(this.props.product_to_link.linked !== "not-found"){
             this.props.dispatch({type:"SMART_PRODUCT_ALREADY_EXISTS"})
         }
-
+        
         const  prod = this.props.product_to_link
+        // console.log("Create a new prod for this --> ", prod)
         //get the tax data
         const total_tax = prod.ImpuestoMeta.reduce((acu, item)=>{
             return acu + parseFloat(item.Tarifa)
@@ -220,18 +221,17 @@ export default class ProdLinkingActions extends React.Component {
             errorMessage: "Ocurrio un rompiendo el enlaze del producto"
         }
 
-        console.log("Final unlink kwargs --> ", unlinkKwargs)
         this.props.dispatch(generalSave(unlinkKwargs))
 
     }
 
     displayProductSearch(){
+        console.log("Display search panel")
         this.props.dispatch({type:'productLinker_TOGGLE_SEARCH_PANEL'})
     }
 
 
     openProductDetail(){
-        console.log("Show product detail in new window")
         if(this.props.product_to_link.linked === "not-found"){
             this.props.dispatch({type:"SMART_PRODUCT_CANT_SHOW_UNLINKED"})
             return

@@ -7,6 +7,7 @@ import ProductLinkerList from '../product_linker_list/main.jsx'
 import ProdLinkingActions from '../prod_linking_actions/main.jsx'
 import ProductLinker from '../product_linker/main.jsx'
 import ProductLinkerConfirmation from '../product_linker_confirmation/main.jsx'
+import Search from '../../../../general/search/search.jsx'
 
 @connect(store=>{
     return {
@@ -23,6 +24,7 @@ export default class StepB extends React.Component {
     render() {
         const visibility_class = this.props.currentStep === "b" ? "" : " step-hidden"
         return <div className={'purchase_step stepB' + visibility_class}>
+
             <StepB_Header />
             <div className="stepb-products">
                 <ProductLinkerList class_name="product-pending-list" 

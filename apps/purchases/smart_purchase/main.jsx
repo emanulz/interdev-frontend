@@ -8,6 +8,7 @@ import { loadGlobalConfig } from '../../../utils/api.js'
 import StepA from './step_a/main.jsx'
 import StepB from './step_b/main.jsx'
 import StepC from './step_c/main.jsx'
+// import Search from '../../../general/search/search.jsx'
 
 @connect(store=>{
     return {
@@ -22,6 +23,7 @@ export default class SmartPurchase extends React.Component {
 
     render() {
         return <div className='smart_purchase'>
+
             <StepA />
             <StepB />
             <StepC />

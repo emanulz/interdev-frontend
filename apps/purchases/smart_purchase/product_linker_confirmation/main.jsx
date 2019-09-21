@@ -22,9 +22,9 @@ export default class ProductLinkerConfirmation extends React.Component {
     performProdLinking(){
 
         //this.props.dispatch({type: "TOGGLE_PROD_LINK_CONFIRMATION"})
-        console.log("Prod linking invoice --> ", this.props.invoice_to_link)
-        console.log("Prod linking to link prod --> ", this.props.to_link_product)
-        console.log("Internal prod to link --> ", this.props.internal_product_to_link)
+        // console.log("Prod linking invoice --> ", this.props.invoice_to_link)
+        // console.log("Prod linking to link prod --> ", this.props.to_link_product)
+        // console.log("Internal prod to link --> ", this.props.internal_product_to_link)
         let xml_code = null;
         if(this.props.to_link_product.CodigosMeta.length>0){
             xml_code = `${this.props.to_link_product.CodigosMeta[0].type}-${this.props.to_link_product.CodigosMeta[0].code}`

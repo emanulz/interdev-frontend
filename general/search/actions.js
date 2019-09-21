@@ -30,7 +30,7 @@ export function searchItem(text, model, namespace, clientId, presaleType, notDel
     presale_type: presaleTypeInner,
     not_deleted: notDeleted
   }
-  console.log('DATAAAA', data)
+  // console.log('DATAAAA', data)
   return function(dispatch) {
     console.log(data)
     axios({

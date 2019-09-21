@@ -25,37 +25,6 @@ export default class Purchase_Prod_Cart extends React.Component {
     buildCartItems(){
 
         const items = this.props.invoice_to_link !==null ? this.props.invoice_to_link.items_list : []
-        //combine lines so that items are unique
-        // const items = []
-        // for(var item of items_raw){
-        //     //console.log(item)
-        //     //find it on items
-        //     const target_index = items.findIndex(t=>{
-        //         return t.linked.code === item.linked.code
-        //     })
-        //     if(target_index===-1){
-        //         items.push(JSON.parse(JSON.stringify(item)))
-        //     }else{
-        //         console.log("WEIRD", item)
-
-        //         console.log("This was a bonification item")
-        //         const current_qty = parseFloat(items[target_index].Cantidad)
-        //         console.log("Current ", current_qty)
-        //         const extra_qty = parseFloat(item.Cantidad)
-        //         console.log("Extra --> ", extra_qty)
-
-        //         if(parseFloat(item.MontoTotalLinea)<0.0001){
-        //             items[target_index].Cantidad = (current_qty+ extra_qty).toFixed(2)
-        //             console.log("New combined qty --> ", items[target_index].Cantidad)
-        //         }else{
-        //             items[target_index] = JSON.parse(JSON.stringify(item))
-        //             items[target_index].Cantidad = (current_qty+ extra_qty).toFixed(2)
-        //         }
-        //     }
-
-
-        // }
-
 
         const disp_items = items.map(item=>{
             const qty = parseFloat(item.Cantidad).toFixed(2)

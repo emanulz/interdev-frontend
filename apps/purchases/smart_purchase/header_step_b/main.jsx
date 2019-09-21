@@ -55,15 +55,12 @@ export default class StepB_Header extends React.Component{
     render(){
 
         //build the dropdown options from the available documents
-        console.log("Docs data --> ", this.props.documents_data)
         const invoices_data = this.props.documents_data.map(invoice=>{
             return {text:invoice.header.NumeroConsecutivo, id: invoice.header.NumeroConsecutivo}
         })
-        console.log("Invoices data --> ", invoices_data)
 
         let supplier_name = ''
         if(this.props.invoice_to_link){
-            console.log("Proveedor --> ", this.props.invoice_to_link.emisor)
             if(this.props.invoice_to_link.emisor.NombreComercial && this.props.invoice_to_link.emisor.NombreComercial !== ''){
                 supplier_name = this.props.invoice_to_link.emisor.NombreComercial
             }else{

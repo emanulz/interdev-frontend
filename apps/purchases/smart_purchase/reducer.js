@@ -23,7 +23,11 @@ export default function reducer(state=stateConst, action) {
 
     switch(action.type) {
         
-
+        case 'ERROR_GETTING_PRODUCT_LINKING':    
+        {
+            console.log("Error getting prod for linking --> ", action.payload)
+            break
+        }
         case 'UPDATE_PROD_PRICING':
         {
             const newItems = [...state.invoice_to_link.items_list]
@@ -49,7 +53,7 @@ export default function reducer(state=stateConst, action) {
 
         case 'SMART_PROD_UNLINKED':
         {
-            console.log("Payload code --> ", action.payload)
+            // console.log("Payload code --> ", action.payload)
             const target_item = state.invoice_to_link.items_list.findIndex(item=>{
                 if(item.linked==="not-found"){
                     return false
@@ -57,7 +61,7 @@ export default function reducer(state=stateConst, action) {
                     return item.linked.code===action.payload
                 }})
 
-            console.log("target item in unlinking --> ", target_item)
+            // console.log("target item in unlinking --> ", target_item)
             const new_items_list = [...state.invoice_to_link.items_list]
             new_items_list[target_item].linked = "not-found"
             
@@ -84,7 +88,7 @@ export default function reducer(state=stateConst, action) {
                 
                 target_item = state.invoice_to_link.items_list.findIndex(item=>{
                     const first_code = `${item.CodigosMeta[0].type}-${item.CodigosMeta[0].code}`
-                    console.log("First code --> ", first_code)
+                    // console.log("First code --> ", first_code)
                     return first_code===who_am_i.supplier_code
                 })
             }else{

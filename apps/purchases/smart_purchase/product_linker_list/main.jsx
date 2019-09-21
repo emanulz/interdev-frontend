@@ -30,7 +30,7 @@ export default class ProductLinkerList extends React.Component{
             return <div className={"product-list-body-item" + active_class} key={key}
                 onClick={this.setProductActive.bind(this, key)}>
                 <div className={"product-list-body-item-pcode"}>
-                    {pcode !==""?pcode:"Sin Código"}
+                    {pcode?pcode:"Sin Código"}
                 </div>
                 <div className="product-list-body-item-pdesc">{pdesc}</div>
                 <div className="product-list-body-item-code">{code}</div>
@@ -39,6 +39,12 @@ export default class ProductLinkerList extends React.Component{
         }
 
         const items = data.map((item) =>{
+            console.log("Item for pcode --> ", item)
+            const codes = item.CodigosMeta?item.CodigosMeta:[]
+            let target_sup_code = 'Indefinido'
+            if(codes.length>0){
+                target_sup_code = codes[0].code
+            }
             const code = list_linked ? item.linked.code : "??"
             const description  = list_linked ? item.linked.description : "??"
             //console.log("Item for process --> ", item)
@@ -46,10 +52,10 @@ export default class ProductLinkerList extends React.Component{
             if(list_linked && item.linked === "not-found"){
                 return ''
             }else if(list_linked){
-                return buildItem(code, description, item.Codigo, item.Detalle, item.NumeroLinea, active_line)
+                return buildItem(code, description, target_sup_code, item.Detalle, item.NumeroLinea, active_line)
 
             }else if(!list_linked && item.linked === "not-found"){
-                return buildItem(code, description, item.Codigo, item.Detalle, item.NumeroLinea, active_line)
+                return buildItem(code, description, target_sup_code, item.Detalle, item.NumeroLinea, active_line)
             }else if(!list_linked){
                 return ""
             }
