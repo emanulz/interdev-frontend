@@ -94,7 +94,7 @@ export function getSingleItemDispatch(kwargs) {
   return function(dispatch) {
     axios.get(url).then(function(response) {
       dispatch({type: successType, payload: response.data})
-      dispatch({type: 'FETCHING_DONE', payload: ''})
+      dispatch({type: 'FETCHING_DONE'})
     }).catch(function(error) {
       console.log(error.response.status)
       // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE

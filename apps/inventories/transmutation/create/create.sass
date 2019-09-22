@@ -1,2 +1,48 @@
 .create-recipe
-    color: blue
+
+    &-add
+        &-buttons
+            display: flex
+            justify-content: space-between
+            & button
+                font-weight: bold
+                width: 20%
+
+    &-middle
+        display: flex
+        align-items: center
+    &-cards
+        
+        &-container
+            display: flex
+            flex-direction: column
+            align-items: center
+            &-title
+                font-weight: bold
+                font-size: 2em
+    &-crud-buttons
+        & button
+            width: 15%
+
+.rectangle
+    width: 20%
+    height: 20px
+    background: $PRIMARY-COLOR
+
+.triangle-right
+    width: 0
+    height: 0
+    border-top: 15px solid transparent
+    border-left: 25px solid $PRIMARY-COLOR
+    border-bottom: 15px solid transparent
+
+.ingredient-card
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
+    transition: 0.3s
+    width: 80%
+    &-container
+        padding: 2px 16px
+        & button
+            text-align: center
+            width: 20%
+
