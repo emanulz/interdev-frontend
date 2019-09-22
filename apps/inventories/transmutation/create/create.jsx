@@ -43,13 +43,21 @@ export default class CreateTransmutation extends React.Component {
     }
 
     onRemoveCard = (prod_id, is_input) => {
-        console.log("Remove from is_input --> ", is_input)
-        console.log("Remove this prod --> ", prod_id)
         
         if(is_input){
             this.props.dispatch({type: 'REMOVE_PROD_FROM_RECIPE_INPUT', payload: prod_id})
         }else{
             this.props.dispatch({type: 'REMOVE_PROD_FROM_RECIPE_OUTPUT', payload: prod_id})
+        }
+    }
+
+    onIngredientQtyChange = (event, prod_id, is_input) => {
+        const new_qty = event.target.value
+        console.log("Event --> ", event)
+        if(is_input){
+            this.props.dispatch({type: 'CHANGE_QTY_PROD_RECIPE_INPUT', payload: {prod_id: prod_id, qty: new_qty}})
+        }else{
+            this.props.dispatch({type: 'CHANGE_QTY_PROD_RECIPE_OUTPUT', payload: {prod_id: prod_id, qty: new_qty}})
         }
     }
 
@@ -60,6 +68,7 @@ export default class CreateTransmutation extends React.Component {
             key={prod.product.id}
             prod_data={prod}
             remove={this.onRemoveCard}
+            changeQty={this.onIngredientQtyChange}
             is_input={true}>
             </IngredientCard>
         })
@@ -69,6 +78,7 @@ export default class CreateTransmutation extends React.Component {
             key={prod.product.id}
             prod_data={prod}
             remove={this.onRemoveCard}
+            changeQty={this.onIngredientQtyChange}
             is_input={false}>
             </IngredientCard>
         })

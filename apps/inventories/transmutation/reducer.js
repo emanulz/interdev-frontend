@@ -27,6 +27,41 @@ export default function reducer(state=stateConst, action) {
             }
         }
 
+        case 'CHANGE_QTY_PROD_RECIPE_INPUT':
+        {
+            const index = state.inputs.findIndex(a => a.product.id === action.payload.prod_id)
+            if(index === -1){
+                return {
+                    ...state
+                }
+            }
+
+            const new_inputs = JSON.parse(JSON.stringify(state.inputs))
+            new_inputs[index].qty = action.payload.qty
+
+            return {
+                ...state,
+                inputs: new_inputs
+            }
+
+        }
+        case 'CHANGE_QTY_PROD_RECIPE_OUTPUT':
+        {
+            const index = state.outputs.findIndex(a => a.product.id === action.payload.prod_id)
+            if(index === -1){
+                return {
+                    ...state
+                }
+            }
+
+            const new_outputs = JSON.parse(JSON.stringify(state.outputs))
+            new_outputs[index].qty = action.payload.qty
+
+            return {
+                ...state,
+                outputs: new_outputs
+            }
+        }
         case 'REMOVE_PROD_FROM_RECIPE_INPUT': 
         {
             const index = state.inputs.findIndex(a => a.product.id === action.payload)
