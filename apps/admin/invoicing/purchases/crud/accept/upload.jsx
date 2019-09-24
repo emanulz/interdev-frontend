@@ -118,7 +118,8 @@ class Form extends React.Component {
       //do ok for normal usage, might write a validator later that check the alignment octetes
       //of the file to figure real format
       if(file.type === "text/xml"){ 
-        if(file.size > 25000){
+        console.log("File size --> ", file.size)
+        if(file.size > 2500000){
           console.log("File seems to large...skip, over 2.5 MB")
           continue
         }
