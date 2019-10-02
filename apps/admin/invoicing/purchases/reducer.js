@@ -15,7 +15,9 @@ const stateConst = {
   //extra states for multi upload
   multi_accept_files: '',
   accepted_queued_tasks: [],
-  refetch_queued_tasks: false
+  refetch_queued_tasks: false,
+  mass_process_result: [],
+  show_process_results: false
 
 }
 
@@ -23,7 +25,24 @@ export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
 
+    
+    case 'MULTI_PURCHASES_PROCESS_COMPLETE':
+    {
+      return {
+        ...state,
+        mass_process_result: action.payload,
+        show_process_results: true
+      }
+    }
 
+    case 'UPLOAD_RESULTS_DISMISSED':
+    {
+      return {
+        ...state,
+        mass_process_result: [],
+        show_process_results: false
+      }
+    }
 
     //multi accept cases
     case 'QUEUED_TASK_PROCESSED':
@@ -46,7 +65,7 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        accepted_queued_tasks: action.payload
+        accepted_queued_tasks: action.payload,
       }
     }
     case 'SET_DOCUMENTS_SELECTED':
