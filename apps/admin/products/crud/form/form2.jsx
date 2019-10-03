@@ -12,7 +12,8 @@ import Select2 from 'react-select2-wrapper'
     config: store.config.globalConf,
     IVARates: store.productsAdmin.IVARates,
     IVACodes: store.productsAdmin.IVACodes,
-    IVAFactors: store.productsAdmin.IVAFactors
+    IVAFactors: store.productsAdmin.IVAFactors,
+    usesSimpleUtility: store.config.globalConf.usesSimpleUtility
   }
 })
 
@@ -64,8 +65,7 @@ class Form2 extends React.Component {
     product['rate_code_IVA'] = value
     product['taxes_IVA'] = rateValue
     product['is_used'] = false
-
-    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion, this.props.usesSimpleUtility)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
@@ -95,7 +95,7 @@ class Form2 extends React.Component {
       product['rate_code_IVA'] = '08'
       product['taxes_IVA'] = 13
     }
-    product = determinAmounts(product, name, isUsed, this.props.config.overrideXMLversion)
+    product = determinAmounts(product, name, isUsed, this.props.config.overrideXMLversion, this.props.usesSimpleUtility)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
@@ -108,7 +108,7 @@ class Form2 extends React.Component {
 
     product['factor_IVA'] = (parseFloat(value).toFixed(5))
     product['taxes_IVA'] = ((parseFloat(value) - 1) * 100).toFixed(2)
-    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion, this.props.usesSimpleUtility)
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }
 
@@ -146,7 +146,7 @@ class Form2 extends React.Component {
 
     product[name] = value
 
-    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion)
+    product = determinAmounts(product, name, value, this.props.config.overrideXMLversion, this.props.usesSimpleUtility)
 
     this.props.dispatch({type: 'SET_PRODUCT', payload: product})
   }

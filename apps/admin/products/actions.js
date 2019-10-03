@@ -25,121 +25,121 @@ export function checkProductData(product, products) {
   return Ok
 }
 
-export function determinAmounts(product, fieldName, value, XMLVersion) {
-  console.log('XLM VERSION determinAmounts:', XMLVersion)
+export function determinAmounts(product, fieldName, value, XMLVersion, usesSimpleUtility) {
+  console.log('USES SIMPLE UTILITY determinAmounts:', usesSimpleUtility)
   switch (fieldName) {
 
     case 'sell_price1':
     {
-      product = fromSellPrice(product, value, 'price1', 'utility1', XMLVersion)
+      product = fromSellPrice(product, value, 'price1', 'utility1', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'sell_price2':
     {
-      product = fromSellPrice(product, value, 'price2', 'utility2', XMLVersion)
+      product = fromSellPrice(product, value, 'price2', 'utility2', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'sell_price3':
     {
-      product = fromSellPrice(product, value, 'price3', 'utility3', XMLVersion)
+      product = fromSellPrice(product, value, 'price3', 'utility3', XMLVersion, usesSimpleUtility)
       return product
     }
 
     case 'price1':
     {
-      product = fromPrice(product, value, 'sell_price1', 'utility1', XMLVersion)
+      product = fromPrice(product, value, 'sell_price1', 'utility1', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'price2':
     {
-      product = fromPrice(product, value, 'sell_price2', 'utility2', XMLVersion)
+      product = fromPrice(product, value, 'sell_price2', 'utility2', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'price3':
     {
-      product = fromPrice(product, value, 'sell_price3', 'utility3', XMLVersion)
+      product = fromPrice(product, value, 'sell_price3', 'utility3', XMLVersion, usesSimpleUtility)
       return product
     }
 
     case 'cost':
     {
-      product = fromCost(product, value, XMLVersion)
+      product = fromCost(product, value, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'cost_based':
     {
-      product = fromCost(product, product.cost, XMLVersion)
+      product = fromCost(product, product.cost, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'taxes':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'taxes2':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'taxes3':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'use_taxes':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'use_taxes2':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'use_taxes3':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'utility1':
     {
-      product = fromUtility(product, value, 'price1', 'sell_price1', XMLVersion)
+      product = fromUtility(product, value, 'price1', 'sell_price1', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'utility2':
     {
-      product = fromUtility(product, value, 'price2', 'sell_price2', XMLVersion)
+      product = fromUtility(product, value, 'price2', 'sell_price2', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'utility3':
     {
-      product = fromUtility(product, value, 'price3', 'sell_price3', XMLVersion)
+      product = fromUtility(product, value, 'price3', 'sell_price3', XMLVersion, usesSimpleUtility)
       return product
     }
     case 'tax_code_IVA':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'rate_code_IVA':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'factor_IVA':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'taxes_IVA':
     {
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
     case 'is_used':
     {
       console.log('HERRREEEEEE USED')
-      product = taxesChanged(product, XMLVersion)
+      product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
 
@@ -148,8 +148,8 @@ export function determinAmounts(product, fieldName, value, XMLVersion) {
   return product
 }
 
-function fromSellPrice(product, value, priceField, utilityField, XMLVersion) {
-  console.log('XLM VERSION fromSellPrice:', XMLVersion)
+function fromSellPrice(product, value, priceField, utilityField, XMLVersion, usesSimpleUtility) {
+  console.log('USES SIMPLE UTILITY fromSellPrice:', usesSimpleUtility)
 
   product.cost_based = false
 
@@ -178,7 +178,12 @@ function fromSellPrice(product, value, priceField, utilityField, XMLVersion) {
     product[priceField] = price.toFixed(2)
 
     // const utility = product.cost ? ((price / parseFloat(product.cost)) - 1) * 100 : 0
-    const utilityU = product.cost ? ((price - parseFloat(product.cost)) / price) * 100 : 0
+    let utilityU = 0
+    if (usesSimpleUtility) {
+      utilityU = product.cost ? ((price / parseFloat(product.cost)) - 1) * 100 : 0
+    } else {
+      utilityU = product.cost ? ((price - parseFloat(product.cost)) / price) * 100 : 0
+    }
 
     product[utilityField] = utilityU.toFixed(2)
     return product
@@ -190,8 +195,8 @@ function fromSellPrice(product, value, priceField, utilityField, XMLVersion) {
   }
 }
 
-function fromPrice(product, value, sellField, utilityField, XMLVersion) {
-  console.log('XLM VERSION fromPrice:', XMLVersion)
+function fromPrice(product, value, sellField, utilityField, XMLVersion, usesSimpleUtility) {
+  console.log('USES SIMPLE UTILITY fromPrice:', usesSimpleUtility)
   value = parseFloat(value)
   product.cost_based = false
 
@@ -219,7 +224,12 @@ function fromPrice(product, value, sellField, utilityField, XMLVersion) {
     product[sellField] = sellPrice.toFixed(2)
 
     // const utility = product.cost ? ((value / parseFloat(product.cost)) - 1) * 100 : 0
-    const utilityU = product.cost ? ((value - parseFloat(product.cost)) / value) * 100 : 0
+    let utilityU = 0
+    if (usesSimpleUtility) {
+      utilityU = product.cost ? ((value / parseFloat(product.cost)) - 1) * 100 : 0
+    } else {
+      utilityU = product.cost ? ((value - parseFloat(product.cost)) / value) * 100 : 0
+    }
     product[utilityField] = utilityU.toFixed(2)
     return product
 
@@ -230,8 +240,8 @@ function fromPrice(product, value, sellField, utilityField, XMLVersion) {
   }
 }
 
-function fromCost(product, cost, XMLVersion) {
-  console.log('XLM VERSION fromCost:', XMLVersion)
+function fromCost(product, cost, XMLVersion, usesSimpleUtility) {
+  console.log('USES SIMPLE UTILITY fromCost:', usesSimpleUtility)
   let iv1 = 0
   let iv2 = 0
   let iv3 = 0
@@ -250,15 +260,30 @@ function fromCost(product, cost, XMLVersion) {
       alertify.alert('ERROR', `No se pudo leer la version activa del formato XML, los impuestos no se sumaran, por lo que el total puede estar inválido. el valor leido es ${XMLVersion}`)
     }
     // const price = cost && product.utility ? parseFloat(cost) * (1 + (parseFloat(product.utility) / 100)) : 0
-    const priceU = cost && product.utility1 ? parseFloat(cost) / (1 - (parseFloat(product.utility1) / 100)) : 0
+    let priceU = 0
+    if (usesSimpleUtility) {
+      priceU = cost && product.utility1 ? parseFloat(cost) * (1 + (parseFloat(product.utility1) / 100)) : 0
+    } else {
+      priceU = cost && product.utility1 ? parseFloat(cost) / (1 - (parseFloat(product.utility1) / 100)) : 0
+    }
     product['price1'] = priceU.toFixed(2)
 
     // const price2 = cost && product.utility2 ? parseFloat(cost) * (1 + (parseFloat(product.utility2) / 100)) : 0
-    const priceU2 = cost && product.utility2 ? parseFloat(cost) / (1 - (parseFloat(product.utility2) / 100)) : 0
+    let priceU2 = 0
+    if (usesSimpleUtility) {
+      priceU2 = cost && product.utility2 ? parseFloat(cost) * (1 + (parseFloat(product.utility2) / 100)) : 0
+    } else {
+      priceU2 = cost && product.utility2 ? parseFloat(cost) / (1 - (parseFloat(product.utility2) / 100)) : 0
+    }
     product['price2'] = priceU2.toFixed(2)
 
     // const price3 = cost && product.utility3 ? parseFloat(cost) * (1 + (parseFloat(product.utility3) / 100)) : 0
-    const priceU3 = cost && product.utility3 ? parseFloat(cost) / (1 - (parseFloat(product.utility3) / 100)) : 0
+    let priceU3 = 0
+    if (usesSimpleUtility) {
+      priceU3 = cost && product.utility3 ? parseFloat(cost) * (1 + (parseFloat(product.utility3) / 100)) : 0
+    } else {
+      priceU3 = cost && product.utility3 ? parseFloat(cost) / (1 - (parseFloat(product.utility3) / 100)) : 0
+    }
     product['price3'] = priceU3.toFixed(2)
 
     // const sellPrice = (price * iv1) + (price * iv2) + (price * iv3) + price
@@ -276,6 +301,8 @@ function fromCost(product, cost, XMLVersion) {
     return product
 
   } else { // IF PRICE IS FIXED
+
+    alertify.alert('ERROR DE CÁLCULO', 'FAVOR REPORTAR ESTE CASO QUE NO DEBERIA SUCEDER...')
     const utility = product.price1 && parseFloat(product.price1) > 0 ? ((parseFloat(product.price1) / parseFloat(cost)) - 1) * 100 : 0
 
     // if (!isNaN(utility) && isFinite(utility)) {
@@ -306,8 +333,8 @@ function fromCost(product, cost, XMLVersion) {
 
 }
 
-function fromUtility(product, utility, priceField, sellPriceField, XMLVersion) {
-  console.log('XLM VERSION fromUtility:', XMLVersion)
+function fromUtility(product, utility, priceField, sellPriceField, XMLVersion, usesSimpleUtility) {
+  console.log('USES SIMPLE UTILITY fromUtility:', usesSimpleUtility)
   let iv1 = 0
   let iv2 = 0
   let iv3 = 0
@@ -325,7 +352,13 @@ function fromUtility(product, utility, priceField, sellPriceField, XMLVersion) {
       alertify.alert('ERROR', `No se pudo leer la version activa del formato XML, los impuestos no se sumaran, por lo que el total puede estar inválido. el valor leido es ${XMLVersion}`)
     }
     // const price = product.cost && utility ? parseFloat(product.cost) * (1 + (parseFloat(utility) / 100)) : 0
-    const priceU = product.cost && utility ? parseFloat(product.cost) / (1 - (parseFloat(utility) / 100)) : 0
+    let priceU = 0
+    if (usesSimpleUtility) {
+      priceU = product.cost && utility ? parseFloat(product.cost) * (1 + (parseFloat(utility) / 100)) : 0
+    } else {
+      priceU = product.cost && utility ? parseFloat(product.cost) / (1 - (parseFloat(utility) / 100)) : 0
+    }
+    // const priceU = product.cost && utility ? parseFloat(product.cost) / (1 - (parseFloat(utility) / 100)) : 0
     product[priceField] = priceU.toFixed(2)
 
     // const sellPrice = (price * iv1) + (price * iv2) + (price * iv3) + price
