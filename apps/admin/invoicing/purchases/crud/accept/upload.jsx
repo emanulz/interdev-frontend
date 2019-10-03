@@ -3,13 +3,16 @@ import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { uploadEPurchase } from '../../actions.js'
 import { generalSave } from '../../../../../../utils/api.js'
- 
+import  UploadResults  from './upload_results.jsx'
 const uuidv4 = require('uuid/v4')
 
 @connect((store) => {
   return {
     purchaseToUpload: store.epurchases.purchaseToUpload,
-    multi_accept_files: store.epurchases.multi_accept_files
+    multi_accept_files: store.epurchases.multi_accept_files,
+    accepted_queued_tasks: store.epurchases.accepted_queued_tasks,
+    mass_process_result: store.epurchases.mass_process_result,
+    show_process_results: store.epurchases.show_process_results,
   }
 })
 
@@ -83,8 +86,6 @@ class Form extends React.Component {
     reader.readAsDataURL(file)
   }
 
-
-
   uploadFile() {
     const formData = new FormData()
     formData.append('file', this.props.purchaseToUpload)
@@ -102,8 +103,6 @@ class Form extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch(uploadEPurchase(kwargs))
   }
-
-
 
   handleMultiFilesInput(e){
     console.log("handle multi files input change --> ")
@@ -181,12 +180,27 @@ class Form extends React.Component {
     this.props.dispatch(generalSave(kwargs))
   }
 
+  onUploadResultsDismiss = () => {
+    this.props.dispatch({type: 'UPLOAD_RESULTS_DISMISSED'})
+  }
+
   render() {
 
-    return <div className='col-xs-12 row form-container'>
 
+
+    let upload_results = ''
+    if(this.props.show_process_results){
+      upload_results = <UploadResults 
+      visible={this.props.show_process_results}
+      results={this.props.mass_process_result}
+      dismiss={this.onUploadResultsDismiss}>
+      </UploadResults>
+    }
+
+    return <div className='col-xs-12 row form-container crap'>
+      {upload_results}
       <div className='col-xs-12 fields-container first'>
-
+        
         <span>SELECCIONAR FACTURA ELECTRÓNICA</span>
         <hr />
 
