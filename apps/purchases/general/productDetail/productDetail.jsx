@@ -10,7 +10,8 @@ import { updateItem } from '../product/actions.js'
     cartSubtotal: store.purchase_cart.cartSubtotal,
     discount_mode: store.purchase_cart.discount_mode,
     selected_warehouse: store.warehouses.selectedWarehouse,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    usesSimpleUtility: store.config.globalConf.usesSimpleUtility
   }
 })
 export default class ProductDetail extends React.Component {
@@ -56,7 +57,8 @@ export default class ProductDetail extends React.Component {
         cartSubtotal: this.props.cartSubtotal,
         discount_mode: this.props.discount_mode,
         target_utility: new_utility,
-        XMLVersion: this.props.config.overrideXMLversion
+        XMLVersion: this.props.config.overrideXMLversion,
+        usesSimpleUtility: this.props.usesSimpleUtility
       }
       this.props.dispatch(updateItem(kwargs))
     }
@@ -83,7 +85,8 @@ export default class ProductDetail extends React.Component {
         cartSubtotal: this.props.cartSubtotal,
         discount_mode: e.target.discount_mode == undefined ? this.props.discount_mode : e.target.discount_mode,
         target_price: newWantedPrice,
-        XMLVersion: this.props.config.overrideXMLversion
+        XMLVersion: this.props.config.overrideXMLversion,
+        usesSimpleUtility: this.props.usesSimpleUtility
       }
       this.props.dispatch(updateItem(kwargs))
     }
@@ -135,7 +138,7 @@ export default class ProductDetail extends React.Component {
 
       current_price_tax = (cart_line.product.sell_price1)
       current_cost = cart_line.product.cost.toFixed(2)
-      current_utility = (cart_line.product.utility1 * 100).toFixed(2)
+      current_utility = (cart_line.product.utility1 * 1).toFixed(2)
       transport_cost = (cart_line.transport_cost ? cart_line.transport_cost : 0).toFixed(2)
       new_cost = (cart_line.cost ? cart_line.cost : cart_line.subtotal / cart_line.qty).toFixed(2)
       new_utility = cart_line.real_utility

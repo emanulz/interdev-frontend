@@ -19,7 +19,8 @@ const Mousetrap = require('mousetrap')
     orderTransport: store.purchase_cart.orderTransport,
     cartSubtotal: store.purchase_cart.cartSubtotal,
     discount_mode: store.purchase_cart.discount_mode,
-    config: store.config.globalConf
+    config: store.config.globalConf,
+    usesSimpleUtility: store.config.globalConf.usesSimpleUtility
   }
 })
 export default class CartItems extends React.Component {
@@ -112,7 +113,8 @@ export default class CartItems extends React.Component {
       discount_mode: this.props.discount_mode,
       // what changed
       subtotal: subTotal,
-      XMLVersion: this.props.config.overrideXMLversion
+      XMLVersion: this.props.config.overrideXMLversion,
+      usesSimpleUtility: this.props.usesSimpleUtility
 
     }
     this.props.dispatch(updateItem(kwargs))
@@ -133,7 +135,8 @@ export default class CartItems extends React.Component {
       discount_mode: this.props.discount_mode,
       //what changed
       qty: qty,
-      XMLVersion: this.props.config.overrideXMLversion
+      XMLVersion: this.props.config.overrideXMLversion,
+      usesSimpleUtility: this.props.usesSimpleUtility
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -162,7 +165,8 @@ export default class CartItems extends React.Component {
       discount_mode: this.props.discount_mode,
       //what changed
       target_utility: tUtility,
-      XMLVersion: this.props.config.overrideXMLversion
+      XMLVersion: this.props.config.overrideXMLversion,
+      usesSimpleUtility: this.props.usesSimpleUtility
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -194,7 +198,8 @@ export default class CartItems extends React.Component {
       discount_mode: this.props.discount_mode,
       // what changed
       discount: discount,
-      XMLVersion: this.props.config.overrideXMLversion
+      XMLVersion: this.props.config.overrideXMLversion,
+      usesSimpleUtility: this.props.usesSimpleUtility
     }
     this.props.dispatch(updateItem(kwargs))
   }
@@ -211,7 +216,8 @@ export default class CartItems extends React.Component {
       discount_mode: this.props.discount_mode,
       //what changed
       applyToClient: apply,
-      XMLVersion: this.props.config.overrideXMLversion
+      XMLVersion: this.props.config.overrideXMLversion,
+      usesSimpleUtility: this.props.usesSimpleUtility
     }
     this.props.dispatch(updateItem(kwargs))
 

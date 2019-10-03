@@ -135,7 +135,8 @@ export function updateItem(kwargs) {
     discount: newDiscount,
     applyToClient: reflectOnCost,
     transport_cost: transport_per_line_item,
-    XMLVersion: kwargs.XMLVersion
+    XMLVersion: kwargs.XMLVersion,
+    usesSimpleUtility: kwargs.usesSimpleUtility
   }
 
   const res = {
@@ -149,7 +150,7 @@ export function updateItem(kwargs) {
 }
 
 export function calculateRealUtility(cost, target_utility, target_price,
-  product, updatePattern, utility_method, XMLVersion, round_to_coin = 5) {
+  product, updatePattern, utility_method, XMLVersion, usesSimpleUtility, round_to_coin = 5) {
   console.log('calculateRealUtility XMLVerision: ', XMLVersion)
   let wanted_price = 0
   let total_tax_fraction = 0
@@ -174,14 +175,20 @@ export function calculateRealUtility(cost, target_utility, target_price,
   switch (updatePattern) {
     case 'byUtility':
     {
+      console.log('HERREE BY UTILITY USES SIMPLE UTILITY', usesSimpleUtility)
       let target_price_no_tax = 0
       if (utility_method === 'cost_based') {
         target_price_no_tax = cost * (1 + target_utility / 100.0)
       } else {
-        target_price_no_tax = cost / (1 - (target_utility / 100.0))
+        // IF CONFIG SAYS SO, USES SIMPLE UTILITY CALCULATION
+        if (usesSimpleUtility) {
+          target_price_no_tax = cost * (1 + (target_utility / 100.0))
+        } else {
+          target_price_no_tax = cost / (1 - (target_utility / 100.0))
+        }
       }
 
-      let target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
+      const target_price_ivi = target_price_no_tax * total_tax_factor * default_discount
       // trim decimals from the price
       let int_ivi_price = target_price_ivi
       if (product.use_coin_round) {
@@ -202,6 +209,7 @@ export function calculateRealUtility(cost, target_utility, target_price,
 
     case 'byPrice':
     {
+      console.log('HERREE BY PRICE USES SIMPLE UTILITY', usesSimpleUtility)
       let int_target_price = target_price
       let coin_round_modulus = 0
       if (product.use_coin_round) {
@@ -219,7 +227,11 @@ export function calculateRealUtility(cost, target_utility, target_price,
   if (utility_method === 'cost_based') {
     real_utility = (wanted_price / (total_tax_factor * default_discount)) / cost - 1
   } else {
-    real_utility = 1 - cost / (wanted_price / (total_tax_factor * default_discount))
+    if (usesSimpleUtility) {
+      real_utility = ((wanted_price / (total_tax_factor * default_discount)) / cost) - 1
+    } else {
+      real_utility = 1 - cost / (wanted_price / (total_tax_factor * default_discount))
+    }
   }
 
   return { 'real_utility': real_utility, 'new_price': wanted_price }
@@ -266,7 +278,7 @@ function updatedCartItem(kwargs) {
   console.log('updatedCartItem XMLVerision: ', kwargs.XMLVersion)
   // calculate the price data as needed
   const price_data = calculateRealUtility(kwargs.unit_cost, kwargs.newTUtility, kwargs.newTPrice,
-    kwargs.itemsInCart[kwargs.index].product, kwargs.updatePattern, 'price_based', kwargs.XMLVersion)
+    kwargs.itemsInCart[kwargs.index].product, kwargs.updatePattern, 'price_based', kwargs.XMLVersion, kwargs.usesSimpleUtility)
   console.log('Price data final calcs --> ', price_data)
   // keep the subtotal the same
   const uuid = kwargs.itemsInCart[kwargs.index].uuid

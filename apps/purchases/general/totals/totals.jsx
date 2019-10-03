@@ -19,8 +19,11 @@ import {connect} from 'react-redux'
 export default class Totals extends React.Component {
 
     transportAmountChanged(e){
-        const transport = parseFloat(e.target.value)?parseFloat(e.target.value):-1
-        if (transport == -1)return
+        const transport = parseFloat(e.target.value) ? parseFloat(e.target.value) : -1
+        if (transport == -1){
+            this.props.dispatch({type:'SET_TRANSPORT_AMOUNT', payload:0})
+            return
+        }
         this.props.dispatch({type:'SET_TRANSPORT_AMOUNT', payload:transport})
         
     }
