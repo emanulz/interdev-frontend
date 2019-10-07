@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 // import { getSingleItemDispatch, getItemReturn } from '../../../../utils/api.js'
 import alertify from 'alertifyjs'
 import Select2 from 'react-select2-wrapper'
-import { generalSave, getItemDispatch } from '../../../../utils/api.js'
+import {getItemDispatch } from '../../../../utils/api.js'
+import D151 from './d151_downloader.jsx'
 
 @connect(store => {
   return {
@@ -20,6 +21,23 @@ import { generalSave, getItemDispatch } from '../../../../utils/api.js'
   }
 })
 export default class ExcelFetcher extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      d151_limit: 2500000,
+    };
+  }
+
+  onD151LimitChange = (event) => {
+    let limit = event.target.value
+    if(isNaN(limit)){
+      return
+    }
+    this.setState({
+      d151_limit: limit
+    })
+  }
 
   componentWillMount() {
     const now = new Date()
@@ -230,9 +248,9 @@ export default class ExcelFetcher extends React.Component {
     }
 
     let legacy_d151 = ''
-    if (this.props.useLegacyd151) {
-      legacy_d151 = <a href={`/reportsExcel/d151legacy/?start=${s}&end=${e}&money_limit=250`}>D151 Legado</a>
-    }
+    // if (this.props.useLegacyd151) {
+    //   legacy_d151 = <a href={`/reportsExcel/d151legacy/?start=${s}&end=${e}&money_limit=250`}>D151 Legado</a>
+    // }
 
     let reserves = ''
     if (this.props.useReserves) {
@@ -316,7 +334,6 @@ export default class ExcelFetcher extends React.Component {
         {trincheReport1}
         <a href={`/reportsExcel/clientscatalog`}>Catálogo Clientes</a>
         <a href='/reportsExcel/productscatalog'>Lista de Precios</a>
-        <a href={`/reportsExcel/d151/?start=${s}&end=${e}&money_limit=250`}>D151</a>
         {inventoryValue}
         {creditsReport}
         {toPayReport}
@@ -331,6 +348,9 @@ export default class ExcelFetcher extends React.Component {
         {utilityByFamily}
         {inventoriesByFamily}
         {inventoriesValueByFamily}
+      </div>
+      <div>
+        <D151 start={s} end={e} limit={this.state.d151_limit} onLimitChange={this.onD151LimitChange}></D151>
       </div>
     </div>
   }
