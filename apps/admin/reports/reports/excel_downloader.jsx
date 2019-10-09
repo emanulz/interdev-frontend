@@ -27,6 +27,7 @@ export default class ExcelFetcher extends React.Component {
     super(props);
     this.state = {
       d151_limit: 2500000,
+      d151_client: '',
       per_client_client: '',
     };
   }
@@ -34,10 +35,20 @@ export default class ExcelFetcher extends React.Component {
   onD151LimitChange = (event) => {
     let limit = event.target.value
     if(isNaN(limit)){
-      return
+      limit = 0
     }
     this.setState({
       d151_limit: limit
+    })
+  }
+
+  onD151ClientChange = (event) => {
+    let new_val = event.target.value
+    if(!new_val){
+      new_val = ''
+    }
+    this.setState({
+      d151_client: new_val
     })
   }
 
@@ -361,6 +372,8 @@ export default class ExcelFetcher extends React.Component {
       <div className="detail-reports-container">
         <D151 
           start={s} end={e} limit={this.state.d151_limit} 
+          client={this.state.d151_client}
+          clientChange={this.onD151ClientChange}
           onLimitChange={this.onD151LimitChange}>
         </D151>
 

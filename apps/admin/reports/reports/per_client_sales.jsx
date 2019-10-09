@@ -3,7 +3,6 @@ import React from 'react'
 const sales_per_client = (props) => {
     
     let anchor = <p>Ingrese el código cédula antes de continuar</p>
-    console.log("Client set --> ", props.client)
 
     if(props.client && props.client !==""){
         anchor = <a href={`/reportsExcel/generalsales/?start=${props.start}&end=${props.end}&client=${props.client}`}>Ventas Cliente</a>
