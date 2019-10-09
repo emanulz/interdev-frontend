@@ -5,6 +5,7 @@ import alertify from 'alertifyjs'
 import Select2 from 'react-select2-wrapper'
 import {getItemDispatch } from '../../../../utils/api.js'
 import D151 from './d151_downloader.jsx'
+import PerClient from './per_client_sales.jsx'
 
 @connect(store => {
   return {
@@ -26,6 +27,7 @@ export default class ExcelFetcher extends React.Component {
     super(props);
     this.state = {
       d151_limit: 2500000,
+      per_client_client: '',
     };
   }
 
@@ -36,6 +38,13 @@ export default class ExcelFetcher extends React.Component {
     }
     this.setState({
       d151_limit: limit
+    })
+  }
+
+  onPerClientSalesChange = (event) => {
+    let client = event.target.value
+    this.setState({
+      per_client_client: client
     })
   }
 
@@ -349,8 +358,16 @@ export default class ExcelFetcher extends React.Component {
         {inventoriesByFamily}
         {inventoriesValueByFamily}
       </div>
-      <div>
-        <D151 start={s} end={e} limit={this.state.d151_limit} onLimitChange={this.onD151LimitChange}></D151>
+      <div className="detail-reports-container">
+        <D151 
+          start={s} end={e} limit={this.state.d151_limit} 
+          onLimitChange={this.onD151LimitChange}>
+        </D151>
+
+        <PerClient 
+          start={s} end={e} clientChange={this.onPerClientSalesChange} 
+          client={this.state.per_client_client}>
+        </PerClient>
       </div>
     </div>
   }
