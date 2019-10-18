@@ -51,8 +51,9 @@ export default class Access extends React.Component {
       </div>
       <div className='permissions-container-permissions-tab-item'>
         <select className='form-control' id='profile_to_apply_select'>
-          <option value='CASHIER'>Cajero</option>
           <option value='SELLER'>Vendedor</option>
+          <option value='CASHIER'>Cajero</option>
+          <option value='CASHIER_CREDIT'>Cajero y Crédito</option>
         </select>
       </div>
       <div className='permissions-container-permissions-tab-item'>
