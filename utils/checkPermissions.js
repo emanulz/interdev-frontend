@@ -70,3 +70,23 @@ export function assingUserPermission(kwargs, resolve, reject) {
       })
   }
 }
+
+// ASSING/QUIT SINGLE PERMISSION FUNCTION
+export function assingUserProfile(kwargs, resolve, reject) {
+  return function(dispatch) {
+    const data = JSON.stringify(
+      {profile: kwargs.profile, userId: kwargs.userId}
+    )
+    // calls the function in backend to check permissions
+    axios.post('/api/assinguserprofile/', data)
+      .then(function(response) {
+        console.log('SUCESSSS')
+        console.log('response')
+        resolve()
+      })
+      .catch(function(error) {
+        console.log(error.message)
+        reject(error)
+      })
+  }
+}

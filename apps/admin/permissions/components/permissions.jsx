@@ -5,6 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs'
 
+import Profiles from './forms/profiles.jsx'
 import Products from './forms/products.jsx'
 import Clients from './forms/clients.jsx'
 import Users from './forms/users.jsx'
@@ -28,8 +29,9 @@ export default class Permissions extends React.Component {
   render() {
 
     const content = this.props.user.id != '0000000000'
-      ? <Tabs vertical defaultTab='one'>
+      ? <Tabs vertical defaultTab='zero'>
         <TabList vertical>
+          <Tab tabFor='zero'>Perfiles</Tab>
           <Tab tabFor='one'>Accesos</Tab>
           <Tab tabFor='two'>Productos</Tab>
           <Tab tabFor='three'>Clientes</Tab>
@@ -42,6 +44,10 @@ export default class Permissions extends React.Component {
           <Tab tabFor='ten'>Vales de Crédito</Tab>
           <Tab tabFor='eleven'>Pagos de Crédito</Tab>
         </TabList>
+
+        <TabPanel tabId='zero'>
+          <Profiles />
+        </TabPanel>
 
         <TabPanel tabId='one'>
           <Access />
