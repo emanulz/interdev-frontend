@@ -52,7 +52,8 @@ export default class ReportsListComponent extends React.Component {
       console.log("Report ID type --> ", type)
         const types = {
             0: "GENERAL VENTAS",
-            1: "GENERAL COMPRAS"
+            1: "GENERAL COMPRAS",
+            2: "D151 GENERAL"
         }
 
         return types[+type] ? types[type] : "DESCONOCIDO"

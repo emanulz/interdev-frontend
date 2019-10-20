@@ -21,7 +21,6 @@ export default class ReportRequestPanelComponent extends React.Component {
     }
 
     onReportRequest(){
-        console.log("MAKE ME A SANDWICH!")
         switch(this.props.report_to_generate){
             case 'General Ventas':
             {
@@ -33,6 +32,9 @@ export default class ReportRequestPanelComponent extends React.Component {
                 this.queueGeneralPurchases()
                 break   
             }
+            case 'D151 Ventas':
+                this.queueD151()
+                break
         }
     }
 
@@ -141,6 +143,30 @@ export default class ReportRequestPanelComponent extends React.Component {
         this.props.dispatch(generalSave(kwargs))
     }
 
+    queueD151(){
+        this._checkDates(true, true)
+        const data = {
+            report: {
+                tipo_reporte: 2,
+                start_date: this.props.start_date,
+                end_date: this.props.end_date,
+                notify_emails: this.props.notify_emails ? this.props.notify_emails : "",
+            }
+        }
+
+        const kwargs = {
+            data: data,
+            url: '/api/asyncreporting/',
+            method: 'post',
+            successType: 'NEW_REPORT_QUEUED',
+            errorType: 'ERROR_QUEING_REPORT',
+            sucessMessage: "Generación reporte agendada. Regrese en unos minutos por el reporte.",
+            errorMessage: "Error agendando reporte. Revise la información e intente de nuevo."
+
+        }
+        this.props.dispatch(generalSave(kwargs))
+    }
+
     queueInvValue(){
         //requests to the backend the creation of a purchases report with the given information
         //on the panel
@@ -150,6 +176,7 @@ export default class ReportRequestPanelComponent extends React.Component {
     available_reports = [
         {name: "General Ventas", "enumCode": 0, controls: ["start_date", "end_date"], method: this.queueGeneralSales},   
         {name: "General Compras", "enumCode": 1, controls: ["start_date", "end_date"], method: this.queueGeneralPurchases},
+        {name: "D151 Ventas", "enumCode": 2, controls: ["start_date", "end_date"], method: this.queueD151}
         // {name: "Valoración Inventario", "enumCode": 2, controls: ["warehouse"], method: this.queueInvValue}  
        ]
 
