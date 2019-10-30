@@ -1,7 +1,7 @@
 export default function PrintElem(elem, stylesList) {
   const mywindow = window.open('', 'PRINT', 'height=400,width=600')
   // fire print on all data loaded
-
+  console.log("Window open --> ", mywindow);
   mywindow.document.write('<html><head><title>' + document.title + '</title>')
   for (const style of stylesList) {
     mywindow.document.write(`<link href="${style}" rel="stylesheet">`)
@@ -18,6 +18,14 @@ export default function PrintElem(elem, stylesList) {
 
   mywindow.onload = () => {
     mywindow.print()
+    // mywindow.close()
+  }
+
+  mywindow.oncancel = () => {
+    mywindow.close()
+  }
+
+  mywindow.onafterprint = () =>{
     mywindow.close()
   }
 
