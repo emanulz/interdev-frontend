@@ -18,7 +18,10 @@ export default function PrintElem(elem, stylesList) {
 
   mywindow.onload = () => {
     mywindow.print()
-    // mywindow.close()
+    let isFirefox = typeof InstallTrigger !== 'undefined';
+    if(isFirefox){
+      mywindow.close()
+    }
   }
 
   mywindow.oncancel = () => {
