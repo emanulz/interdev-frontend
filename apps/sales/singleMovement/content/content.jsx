@@ -97,7 +97,6 @@ export default class Content extends React.Component {
     })
 
     openPromise.then((data) => {
-      alertify.alert('COMPLETADO', 'Movimiento registrado correctamente')
       this.props.dispatch(loadRegisterMovementToPrintId(data.id))
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch((err) => {
