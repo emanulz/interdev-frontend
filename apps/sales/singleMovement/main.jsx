@@ -7,6 +7,7 @@ import Content from './content/content.jsx'
 import {loadGlobalConfig} from '../../../utils/api.js'
 import {connect} from 'react-redux'
 import RegisterClosure from '../registerClosure/registerClosure.jsx'
+import PrintManualRegisterMovementePanel from '../../../general/printManualRegisterMovement/printManualRegisterMovementPanel/printManualRegisterMovementPanel.jsx'
 
 @connect((store) => {
   return {
@@ -25,6 +26,8 @@ export default class SingleRegisterMovement extends React.Component {
     return <div className='single-register-movement'>
       <RegisterClosure />
       <Content />
+      <PrintManualRegisterMovementePanel />
+
     </div>
 
   }

@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import { saveItem } from './actions'
+import { loadRegisterMovementToPrintId } from '../../../../general/printManualRegisterMovement/actions.js'
 import alertify from 'alertifyjs'
 
 import {connect} from 'react-redux'
@@ -97,6 +98,7 @@ export default class Content extends React.Component {
 
     openPromise.then((data) => {
       alertify.alert('COMPLETADO', 'Movimiento registrado correctamente')
+      this.props.dispatch(loadRegisterMovementToPrintId(data.id))
       this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
     }).catch((err) => {
       if (err.response) {

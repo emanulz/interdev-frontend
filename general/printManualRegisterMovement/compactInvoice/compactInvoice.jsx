@@ -1,0 +1,23 @@
+import React from 'react'
+
+import Header from './components/header.jsx'
+import Table from './components/table.jsx'
+import Data from './components/data.jsx'
+import Totals from './components/totals.jsx'
+
+export default class CompactInvoice extends React.Component {
+
+  render() {
+
+    return <div className='cash-advance-compact-invoice'>
+
+      <Header />
+      <Data />
+      <Table />
+      <Totals />
+
+    </div>
+
+  }
+
+}
