@@ -3,7 +3,8 @@ const stateConst = {
   isInvoice: 'TIQUETE',
   saleUUID: '',
   seller_id: '0',
-  sellers: []
+  sellers: [],
+  selected_activity: '',
 }
 
 export default function reducer(state = stateConst, action) {
@@ -26,7 +27,14 @@ export default function reducer(state = stateConst, action) {
         isInvoice: action.payload
       }
     } // case
+    case 'SET_DOC_ACTIVITY':
+    {
+      return {
+        ...state,
+        selected_activity: action.payload
 
+      }
+    }
     case 'SET_SALE_UUID':
     {
       return {

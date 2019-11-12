@@ -14,7 +14,8 @@ const Mousetrap = require('mousetrap')
   return {
     panelVisible: store.pay.isVisible,
     payMethod: store.pay.payMethodActive,
-    default_invoice: store.userProfile.activeLocal.default_invoice
+    default_invoice: store.userProfile.activeLocal.default_invoice,
+    tp_activities: store.userProfile.activeLocal.tax_activities,
   }
 })
 export default class PayPanel extends React.Component {
@@ -33,6 +34,16 @@ export default class PayPanel extends React.Component {
     if (this.props.default_invoice == undefined && nextProps.default_invoice !== undefined) {
       this.props.dispatch({type: 'SET_IS_INVOICE_VALUE',
         payload: nextProps.default_invoice === true ? 'FACTURA' : 'TIQUETE'})
+    }
+
+    if (this.props.tp_activities == undefined && nextProps.tp_activities !== undefined) {
+
+      let activities_raw = nextProps.tp_activities
+      activities_raw = activities_raw.split(',')
+      const code = activities_raw[0].split('_')[0]
+
+      this.props.dispatch({type: 'SET_DOC_ACTIVITY', payload: code})
+
     }
 
   }

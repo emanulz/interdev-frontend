@@ -31,7 +31,8 @@ const Mousetrap = require('mousetrap')
     exchange: store.currency.exchangeRateSelected,
     marker: store.sale.saleUUID,
     conf: store.config.globalConf,
-    sellerId: store.sale.seller_id
+    sellerId: store.sale.seller_id,
+    selected_activity: store.sale.selected_activity,
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -46,7 +47,6 @@ export default class SaveBtn extends React.Component {
     // CHECK IF IS WORKSHOP OR NOT
     document.getElementById('saveSaleButton').blur()
     const isinvoice = this.props.isinvoice == 'FACTURA'
-    console.log('IS INVOICEEE', isinvoice)
     // DETERMIN THE WAREHOUSE WHERE THE PRODUCTS ARE SUBSTRACTED
     const warehouse = this.props.workOrderId.length // IF ITS WORKSHOP
       ? this.props.warehouse2_id
@@ -85,10 +85,14 @@ export default class SaveBtn extends React.Component {
       isinvoice: isinvoice,
       currency_code: this.props.currency,
       exchange_rate: this.props.exchange,
-      marker: this.props.marker
+      marker: this.props.marker,
     }
 
-    console.log('SALE', sale)
+    if(this.props.selected_activity){
+      sale['selected_activity'] = this.props.selected_activity
+    }
+
+    // console.log('SALE', sale)
 
     const kwargs = {
       url: '/api/sales/',

@@ -1,9 +1,8 @@
 import React from 'react'
-// import {saveItem, loadSale} from '../actions'
-import { saveItem } from '../../../../../utils/api'
+
 import {connect} from 'react-redux'
 import SaveBtn from '../../save/save.jsx'
-const Mousetrap = require('mousetrap')
+
 
 @connect((store) => {
   return {
@@ -17,11 +16,9 @@ const Mousetrap = require('mousetrap')
     isCredit: store.pay.isCredit,
     profile: store.userProfile,
     isInvoice: store.sale.isInvoice,
-    currencySymbol: store.currency.symbolSelected
-    // sales: store.sales.sales,
-    // saleId: store.sales.saleActiveId,
-    // sale: store.sales.saleActive,
-    // movements: store.clientmovements.movements
+    currencySymbol: store.currency.symbolSelected,
+    selected_activity: store.sale.selected_activity
+
   }
 })
 export default class PaySideBar extends React.Component {
@@ -37,43 +34,6 @@ export default class PaySideBar extends React.Component {
     }
     return total
   }
-
-  // saveBtn() {
-  //   // const sales = this.props.sales
-  //   const user = this.props.user
-  //   const sale = {
-  //     cart: JSON.stringify(this.props.cart),
-  //     client: JSON.stringify(this.props.client),
-  //     user: JSON.stringify(this.props.user),
-  //     pay: JSON.stringify(this.props.pay)
-  //   }
-
-  //   if (this.props.pay.payMethod == 'CREDIT') {
-  //     sale.pay.debt = this.props.cart.cartTotal
-  //     sale.pay.payed = false
-  //   }
-
-  //   const kwargs = {
-  //     url: '/api/sales/',
-  //     item: sale,
-  //     logCode: 'SALE_CREATE',
-  //     logDescription: 'Creación de nueva Venta',
-  //     logModel: 'SALE',
-  //     user: user,
-  //     itemOld: '',
-  //     sucessMessage: 'Venta creada Correctamente.',
-  //     errorMessage: 'Hubo un error al crear la Venta, intente de nuevo.',
-  //     dispatchType: 'CLEAR_SALE',
-  //     isSale: true
-  //   }
-
-  //   this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-  //   this.props.dispatch(saveItem(kwargs))
-  //   this.props.dispatch({type: 'HIDE_PAY_PANEL', payload: ''})
-
-  //   Mousetrap.reset()
-
-  // }
 
   getCashTag(symbol) {
     const cash = parseFloat(this.props.pay.payObject.cash[0].amount)
@@ -170,8 +130,13 @@ export default class PaySideBar extends React.Component {
     this.props.dispatch({type: 'SET_IS_INVOICE_VALUE', payload: val})
   }
 
+  setSelectedActivity(ev){
+    const val = ev.target.value;
+    this.props.dispatch({type: 'SET_DOC_ACTIVITY', payload: val})
+  }
+
   saveOnFocus() {
-    console.log('FOCUSSSS')
+    // console.log('FOCUSSSS')
   }
 
   render() {
@@ -195,38 +160,33 @@ export default class PaySideBar extends React.Component {
       : 'pay-tag tag-button'
     const disabledSave = !(total > 0 && change >= -0.1)
     const eDocumentSelectClass = this.props.profile.taxPayer.is_digital_invoicing_active ? 'edocument-visible' : 'edocument-hidden'
-    // switch (this.props.payMethod) {
+ 
+    //get possible activities from the tp local
+    let activities_raw = this.props.profile.activeLocal.tax_activities ? this.props.profile.activeLocal.tax_activities : ''
+    activities_raw = activities_raw.split(',')
 
-    //   case 'CASH':
-    //   {
-    //     change = totalInPay - total
-    //     payButtonClass = (total > 0 && change >= -0.1)
-    //       ? 'pay-tag tag-button enable'
-    //       : 'pay-tag tag-button'
-    //     break
-    //   }
+    let activities_data = []
+    for(let raw of activities_raw){
+      const bits = raw.split('_')
+      if(bits.length === 2){
+        activities_data.push(<option value={ bits[0] }>{ bits[0] + bits[1] }</option>)
+      }else{
+        activities_data.push(activities_data.push(<option value={ bits[0] }>{ bits[0] }</option>))
+      }
+    }
 
-    //   case 'CARD':
-    //   {
-    //     const auth = this.props.pay.cardAuth
-    //     const digits = this.props.pay.cardDigits
-    //     change = totalInPay - total
-    //     payButtonClass = (total > 0 && change >= -0.1)
-    //       ? 'pay-tag tag-button enable'
-    //       : 'pay-tag tag-button'
-    //     break
-    //   }
-    //   case 'CRED':
-    //   {
-    //     change = totalInPay - total
-    //     const available = parseFloat(this.props.client.credit_limit) - parseFloat(this.props.debt)
-    //     payButtonClass = (total > 0 && total <= available && this.props.client.has_credit)
-    //       ? 'pay-tag tag-button enable'
-    //       : 'pay-tag tag-button'
-    //     break
-    //   }
+    let activities_component = ''
+    if(activities_data.length>1){
+      activities_component = <div className={`edocument-type ${eDocumentSelectClass}`}>
+        <div className='pay-tag left'>ACTIVIDAD :</div>
+        <div className='pay-dropdown right'>
+          <select value={this.props.selected_activity} onChange={this.setSelectedActivity.bind(this)}>
+            {activities_data}
+          </select>
+        </div>
+      </div>
+    }
 
-    // }
 
     return <div className='pay-side-bar'>
       <div className='pay-method-body-header'>
@@ -265,6 +225,7 @@ export default class PaySideBar extends React.Component {
             </select>
           </div>
         </div>
+        {activities_component}
         <br />
         <SaveBtn payButtonClass={payButtonClass} disableSave={disabledSave} />
         {/* <button id='register-sale-btn' onFocus={this.saveOnFocus.bind(this)}>TEST</button> */}
