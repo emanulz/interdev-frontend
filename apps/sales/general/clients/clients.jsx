@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {userSelected, getFullClientByCode, determinClientName, determinClientLastName, determinClientEmail} from './actions'
 import {getProductsList, recalcCart} from '../product/actions'
 import { getItemDispatch } from '../../../../utils/api.js'
+import Select2 from 'react-select2-wrapper'
 // import {recalcCart} from '../../general/product/actions'
 const Mousetrap = require('mousetrap')
 
@@ -318,6 +319,24 @@ export default class Clients extends React.Component {
       ? <i disabled={this.props.disabled} className='fa fa-edit' onClick={clientEditOnClick} />
       : <i disabled className='fa' />
 
+    const localsData = this.props.clientSelected.client.locals ? this.props.clientSelected.client.locals.map(local => {
+      return {text: `${local.commercial_name} - ${local.email}`, id: local.id}
+    })
+      : []
+
+    const localsDropdown = this.props.clientSelected.client.locals
+      ? <Select2
+        name='clientLocal'
+        data={localsData}
+        // value={this.props.clientLocal.province}
+        className='form-control'
+        // onSelect={this.handleInputChange.bind(this)}
+        options={{
+          placeholder: 'Elija un local...',
+          noResultsText: 'Sin elementos'
+        }}
+      /> : <div />
+
     return <div className='client'>
 
       {/* <div className='client-img'>
@@ -355,7 +374,10 @@ export default class Clients extends React.Component {
             {emailToShow}
             <i disabled className='fa' />
           </div>
-
+          <div className='client-data-second-row-inline'>
+            <h3>Local :</h3>
+            {localsDropdown}
+          </div>
         </div>
 
       </div>

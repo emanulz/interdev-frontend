@@ -11,7 +11,8 @@ const clientSelectedModel = {
     last_name: 'Contado',
     name: 'Cliente',
     updated: '',
-    saleLoaded: false
+    saleLoaded: false,
+    locals: []
   }
 }
 
@@ -31,7 +32,8 @@ const stateConst = {
   users: [],
   clientSelected: clientSelectedModel,
   userSelected: userSelectedModel,
-  clientSelectedDebt: 0
+  clientSelectedDebt: 0,
+  clientLocalSelected: null
 }
 
 export default function reducer(state = stateConst, action) {
@@ -96,6 +98,9 @@ export default function reducer(state = stateConst, action) {
     }
     case 'CLIENT_SELECTED':
     {
+      if (!action.payload.client.locals) {
+        action.payload.client.locals = []
+      }
       return {
         ...state,
         clientSelected: action.payload
@@ -196,6 +201,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         clientSelected: client
+      }
+    }
+
+    case 'SET_CLIENT_LOCAL_TO_USE':
+    {
+      return {
+        ...state,
+        clientLocalSelected: action.payload
+      }
+    }
+
+    case 'CLEAR_CLIENT_LOCAL_TO_USE':
+    {
+      return {
+        ...state,
+        clientLocalSelected: null
       }
     }
 

@@ -162,7 +162,7 @@ class Form3 extends React.Component {
     localObject['client'] = this.props.client.id
 
     const kwargs = {
-      url: '/api/clientlocal/',
+      url: `/api/clientlocal/${localObject.id}/`,
       item: localObject,
       sucessMessage: 'Local Actualizado Correctamente.',
       errorMessage: 'Hubo un error al actualizar el Local del Cliente, intente de nuevo.',
