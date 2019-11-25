@@ -337,6 +337,13 @@ export default class Clients extends React.Component {
         }}
       /> : <div />
 
+    const clientLocalsRow = this.props.clientSelected.client.locals.length > 1
+      ? <div className='client-data-second-row-inline'>
+        <h3>Local :</h3>
+        {localsDropdown}
+      </div>
+      : <div />
+
     return <div className='client'>
 
       {/* <div className='client-img'>
@@ -374,10 +381,9 @@ export default class Clients extends React.Component {
             {emailToShow}
             <i disabled className='fa' />
           </div>
-          <div className='client-data-second-row-inline'>
-            <h3>Local :</h3>
-            {localsDropdown}
-          </div>
+
+          {clientLocalsRow}
+
         </div>
 
       </div>
