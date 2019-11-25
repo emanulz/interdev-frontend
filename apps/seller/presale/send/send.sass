@@ -23,6 +23,9 @@
         overflow-y: auto
         overflow-x: hidden
         min-width: 80%
+        @media screen and (max-width: 768px)
+            width: 100%
+            left: 0
     &-header
         position: absolute
         top: 0
@@ -35,6 +38,8 @@
         color: white
         background-color: #6F7E95
         line-height: 50px
+        @media screen and (max-width: 768px)
+            font-size: 15px
         & i
             position: absolute
             right: 5px
@@ -62,6 +67,13 @@
     width: 49%
     height: 100%
     border: 1px solid gray
+    @media screen and (max-width: 768px)
+        display: flex
+        flex-flow: column
+        width: 100%
+        height: auto
+        position: relative
+        margin-bottom: 20px
     &-header
         position: absolute
         display: block
@@ -73,16 +85,24 @@
         color: white
         font-size: 18px
         line-height: 30px
+        @media screen and (max-width: $BREAK-SMALL)
+            position: relative
+            font-size: 15px
     &-content
         position: relative
         display: block
         top: 50px
         left: 0
         width: 100%
+        @media screen and (max-width: $BREAK-SMALL)
+            top: auto
+            margin-top: 10px
         & input
             height: 50px
             font-size: 20px
             margin-left: 20px
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 15px
             &.form-control
                 display: inline-block
         & button
@@ -101,6 +121,11 @@
     width: 49%
     height: 100%
     border: 1px solid gray
+    @media screen and (max-width: 768px)
+        left: 0
+        width: 100%
+        height: auto
+        position: relative
     &-nsadvance
         margin: 10px 20px
         display: flex
@@ -115,6 +140,8 @@
             color: white
             margin-bottom: 15px
             border-radius: 5px
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 12px
         &-input
             margin-left: 15px !important
             padding-left: 10px
@@ -170,6 +197,9 @@
         font-size: 15px
         pointer-events: none
         background-color: #8394ad
+        @media screen and (max-width: $BREAK-SMALL)
+            margin-right: 0
+            width: 50%
         &.enable
             cursor: pointer
             pointer-events: auto
@@ -188,6 +218,8 @@
     justify-content: flex-start
     &-avatar
         width: 130px
+        @media screen and (max-width: $BREAK-SMALL)
+            display: none
         & img
             width: 100%
             border-radius: 100%
@@ -196,6 +228,9 @@
         flex-flow: column
         justify-content: center
         margin-left: 40px
+        @media screen and (max-width: $BREAK-SMALL)
+            width: 100%
+            margin-left: 0
         & h1
             font-size: 18px
             margin-bottom: 10px
@@ -206,10 +241,16 @@
             color: white
             line-height: 35px
             padding-left: 20px
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 15px
+                width: 100%
+                text-align: center
         &-name
             height: 35px
             display: flex
             flex-flow: row
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 15px
             & div:first-child
                 height: 100%
                 width: 120px
@@ -225,6 +266,8 @@
             height: 35px
             display: flex
             flex-flow: row
+            @media screen and (max-width: $BREAK-SMALL)
+                font-size: 15px
             & div:first-child
                 height: 100%
                 width: 120px
