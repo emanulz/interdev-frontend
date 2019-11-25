@@ -214,7 +214,7 @@ class Form3 extends React.Component {
         Crear
       </button>
       : this.props.is_updating_local
-        ? <button className='btn btn-success save-local-btn'>
+        ? <button onClick={this.updateLocalBtn.bind(this)} className='btn btn-success save-local-btn'>
           <span className='fa fa-save' />
           Guardar
         </button>
