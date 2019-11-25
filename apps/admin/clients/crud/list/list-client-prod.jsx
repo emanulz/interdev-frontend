@@ -153,9 +153,9 @@ export default class List extends React.Component {
         return <div className='list list-container'>
             <div className='admin-list-header'>
                 <h1>Referencia Descuentos Cliente-Producto</h1>
-                <div className='clientProdForm-add' onClick={this.showProdCreateSearch.bind(this)}>
+                <div className='clientProdForm-add addBtn' onClick={this.showProdCreateSearch.bind(this)}>
+                    <span className='fa fa-plus' />
                     Agregar entrada
-                    <i className='fa fa-plus' />
                 </div>
             </div>
 

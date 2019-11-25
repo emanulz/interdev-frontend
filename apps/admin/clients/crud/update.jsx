@@ -4,6 +4,7 @@
 import React from 'react'
 import Form from './form/form.jsx'
 import Form2 from './form/form2.jsx'
+import Form3 from './form/form3.jsx'
 
 import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
@@ -68,8 +69,9 @@ export default class Update extends React.Component {
           content = <div className='heigh100'>
             <Tabs>
               <TabList>
-                <Tab className='oneTwo' tabFor='one'>Cliente</Tab>
-                <Tab className='oneTwo' tabFor='two'>Precios</Tab>
+                <Tab className='oneThree' tabFor='one'>Cliente</Tab>
+                <Tab className='oneThree' tabFor='two'>Locales</Tab>
+                <Tab className='oneThree' tabFor='three'>Precios</Tab>
               </TabList>
 
               <TabPanel tabId='one'>
@@ -78,6 +80,10 @@ export default class Update extends React.Component {
               </TabPanel>
 
               <TabPanel tabId='two'>
+                <Form3 key={`${code}3`} update />
+              </TabPanel>
+
+              <TabPanel tabId='three'>
                 <Form2 key={`${code}2`} update />
               </TabPanel>
             </Tabs>
@@ -85,8 +91,22 @@ export default class Update extends React.Component {
 
         } else {
           content = <div className='heigh100'>
-            <Form key={code} update location={this.props.location} />
-            <UpdateButtons />
+            <Tabs defaultTab='two'>
+              <TabList>
+                <Tab className='oneTwo' tabFor='one'>Cliente</Tab>
+                <Tab className='oneTwo' tabFor='two'>Locales</Tab>
+              </TabList>
+
+              <TabPanel tabId='one'>
+                <Form key={`${code}1`} update />
+                <UpdateButtons />
+              </TabPanel>
+
+              <TabPanel tabId='two'>
+                <Form3 key={`${code}3`} update />
+              </TabPanel>
+            </Tabs>
+
           </div>
         }
 

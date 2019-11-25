@@ -22,6 +22,7 @@ class CreateButtons extends React.Component {
     const clientOld = {noPrevious: 'No previous Item needed'}
     const clients = this.props.clients
     const fieldsOk = checkClientData(client, clients)
+    delete client.locals
 
     if (fieldsOk) {
       const kwargs = {

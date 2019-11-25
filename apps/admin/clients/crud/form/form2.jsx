@@ -1,8 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import ListClientProd  from '../list/list-client-prod.jsx'
-
+import ListClientProd from '../list/list-client-prod.jsx'
 
 @connect((store) => {
   return {
@@ -68,9 +67,7 @@ class Form extends React.Component {
     return <div className='col-xs-12 row form-container'>
 
       <div className='col-xs-12'>
-        <span>Tabla de Precios</span>
-        <hr />
-        <ListClientProd/>
+        <ListClientProd />
       </div>
     </div>
   }

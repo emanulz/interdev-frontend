@@ -28,7 +28,21 @@ const clientModel = {
   pays_taxes: true,
   phone_number: '',
   pred_discount: 0,
-  pred_price_list: 1
+  pred_price_list: 1,
+  locals: []
+}
+
+const clientLocalModel = {
+  id: '0000000000',
+  province: '',
+  canton: '',
+  district: '',
+  town: '',
+  other_address: '',
+  phone_number: '',
+  cellphone_number: '',
+  email: '',
+  commercial_name: ''
 }
 
 const clientProdModel = {
@@ -49,6 +63,8 @@ const stateConst = {
   clients: [],
   clientActive: clientModel,
   clientActiveOld: clientModel,
+  clientLocalActive: clientLocalModel,
+  clientLocalActiveOld: clientLocalModel,
   nextClient: 0,
   previousClient: 0,
   permissions: defaultPermissions,
@@ -56,8 +72,10 @@ const stateConst = {
   selected_prod: '',
   clientProdFormVisible: false,
   activeClientProd: clientProdModel,
-  requires_refetch: false
-  
+  requires_refetch: false,
+  is_adding_local: false,
+  is_updating_local: false
+
 }
 
 export default function reducer(state = stateConst, action) {
@@ -67,19 +85,19 @@ export default function reducer(state = stateConst, action) {
     case 'FLAG_REFRESH_CLIENT_PROD':
     {
       return {
-        ...state, 
+        ...state,
         requires_refetch: true
       }
     }
 
     case 'CLIENT_PRODUCT_CREATE':
     {
-      let new_client_prod = JSON.parse(JSON.stringify(clientProdModel))
+      const new_client_prod = JSON.parse(JSON.stringify(clientProdModel))
       new_client_prod.product_id = action.payload.product.id
       new_client_prod.product_description = action.payload.product.description
       new_client_prod.product_code = action.payload.product.code
       new_client_prod.is_edit = false
-      
+
       return {
         ...state,
         clientProdFormVisible: true,
@@ -92,13 +110,13 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        clientProdFormVisible: false,
+        clientProdFormVisible: false
       }
     }
 
     case 'SET_ACTIVE_CLIENTPROD':
     {
-      return{
+      return {
         ...state,
         activeClientProd: action.payload
       }
@@ -106,14 +124,14 @@ export default function reducer(state = stateConst, action) {
 
     case 'CLIENT_PRODUCT_EDIT':
     {
-      //find the clientproduct line from the clientProds using the
-      //received code
+      // find the clientproduct line from the clientProds using the
+      // received code
       const prod = state.clientProds.find((prod)=>{
-        if (prod.product_code == action.payload){
+        if (prod.product_code == action.payload) {
           return prod
         }
       })
-      prod.is_edit=true
+      prod.is_edit = true
 
       return {
         ...state,
@@ -191,7 +209,7 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         clientProds: action.payload,
-        requires_refetch: false,
+        requires_refetch: false
 
       }
     }
@@ -221,6 +239,9 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_CLIENT':
     {
+      if (!action.payload.locals) {
+        action.payload.locals = []
+      }
       return {
         ...state,
         clientActive: action.payload
@@ -229,6 +250,9 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_CLIENT_OLD':
     {
+      if (!action.payload.locals) {
+        action.payload.locals = []
+      }
       return {
         ...state,
         clientActiveOld: action.payload
@@ -244,6 +268,74 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'SET_CLIENT_LOCALS':
+    {
+      return {
+        ...state,
+        clientLocals: action.payload
+      }
+    }
+
+    case 'CLEAR_CLIENT_LOCALS':
+    {
+      return {
+        ...state,
+        clientLocals: []
+      }
+    }
+
+    case 'SET_CLIENT_LOCAL':
+    {
+      return {
+        ...state,
+        clientLocalActive: action.payload
+      }
+    }
+
+    case 'SET_CLIENT_LOCAL_OLD':
+    {
+      return {
+        ...state,
+        clientLocalActiveOld: action.payload
+      }
+    }
+
+    case 'CLEAR_CLIENT_LOCAL':
+    {
+      return {
+        ...state,
+        clientLocalActive: clientLocalModel,
+        clientLocalActiveOld: clientLocalModel
+      }
+    }
+
+    case 'SET_CLIENT_LOCAL_ADDING':
+    {
+      return {
+        ...state,
+        is_adding_local: true,
+        is_updating_local: false
+      }
+    }
+
+    case 'SET_CLIENT_LOCAL_UPDATING':
+    {
+      return {
+        ...state,
+        is_adding_local: false,
+        is_updating_local: true
+      }
+    }
+    case 'CLEAR_CLIENT_LOCAL_ADDING_UPDATING':
+    {
+      return {
+        ...state,
+        clientLocalActive: clientLocalModel,
+        clientLocalActiveOld: clientLocalModel,
+        is_adding_local: false,
+        is_updating_local: false
+      }
+    }
   } // switch
 
   return state // default return

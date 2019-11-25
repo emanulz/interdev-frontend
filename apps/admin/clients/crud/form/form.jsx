@@ -281,7 +281,7 @@ class Form extends React.Component {
 
       </div>
 
-      <div className='col-xs-12 col-sm-4 fields-container buttons second'>
+      <div className='col-xs-12 col-sm-4 fields-container second'>
 
         <span>Contacto y dirección</span>
         <hr />
@@ -371,7 +371,7 @@ class Form extends React.Component {
 
       </div>
 
-      <div className='col-xs-12 col-sm-4 fields-container buttons second'>
+      <div className='col-xs-12 col-sm-4 fields-container third'>
 
         <span>Crédito y Decuentos</span>
         <hr />
