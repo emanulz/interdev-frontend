@@ -33,6 +33,7 @@ const Mousetrap = require('mousetrap')
     conf: store.config.globalConf,
     sellerId: store.sale.seller_id,
     selected_activity: store.sale.selected_activity,
+    clientLocalSelected: store.clientCreatePanel.clientLocalSelected
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -85,13 +86,15 @@ export default class SaveBtn extends React.Component {
       isinvoice: isinvoice,
       currency_code: this.props.currency,
       exchange_rate: this.props.exchange,
-      marker: this.props.marker,
+      marker: this.props.marker
     }
 
-    if(this.props.selected_activity){
+    if (this.props.selected_activity) {
       sale['selected_activity'] = this.props.selected_activity
     }
-
+    if (this.props.clientLocalSelected) {
+      sale['client_local'] = this.props.clientLocalSelected
+    }
     // console.log('SALE', sale)
 
     const kwargs = {

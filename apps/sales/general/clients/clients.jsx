@@ -33,7 +33,8 @@ const Mousetrap = require('mousetrap')
     provinces: store.clientCreatePanel.provinces,
     cantons: store.clientCreatePanel.cantons,
     districts: store.clientCreatePanel.districts,
-    towns: store.clientCreatePanel.towns
+    towns: store.clientCreatePanel.towns,
+    clientLocalSelected: store.clientCreatePanel.clientLocalSelected
   }
 })
 export default class Clients extends React.Component {
@@ -54,6 +55,7 @@ export default class Clients extends React.Component {
         getFullClientByCode('00', this.props.dispatch)
       }
     }
+    this.props.dispatch({type: 'CLEAR_CLIENT_LOCAL_TO_USE', payload: ''})
   }
 
   determinPriceList(client, category) {
@@ -175,6 +177,15 @@ export default class Clients extends React.Component {
 
   userUnSelect(ev) {
     this.props.dispatch({type: 'USER_CLEAR', payload: ''}) // dispatchs action according to result
+  }
+
+  setClientLocalSelected(ev) {
+    const _id = ev.target.value
+    this.props.dispatch({type: 'SET_CLIENT_LOCAL_TO_USE', payload: _id})
+  }
+
+  setClientLocalUnSelected(ev) {
+    this.props.dispatch({type: 'CLEAR_CLIENT_LOCAL_TO_USE', payload: ''}) // dispatchs action according to result
   }
 
   searchClientClick() {
@@ -328,9 +339,9 @@ export default class Clients extends React.Component {
       ? <Select2
         name='clientLocal'
         data={localsData}
-        // value={this.props.clientLocal.province}
+        value={this.props.clientLocalSelected}
         className='form-control'
-        // onSelect={this.handleInputChange.bind(this)}
+        onSelect={this.setClientLocalSelected.bind(this)}
         options={{
           placeholder: 'Elija un local...',
           noResultsText: 'Sin elementos'
