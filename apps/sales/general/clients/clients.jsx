@@ -34,7 +34,7 @@ const Mousetrap = require('mousetrap')
     cantons: store.clientCreatePanel.cantons,
     districts: store.clientCreatePanel.districts,
     towns: store.clientCreatePanel.towns,
-    clientLocalSelected: store.clientCreatePanel.clientLocalSelected
+    clientLocalSelected: store.clients.clientLocalSelected
   }
 })
 export default class Clients extends React.Component {
