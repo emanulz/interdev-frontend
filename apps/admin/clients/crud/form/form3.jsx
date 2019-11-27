@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {setItem} from '../../../../../utils/api'
-import {saveClientLocal, updateClientLocal} from '../../actions.js'
+import {saveClientLocal, updateClientLocal, deleteClientLocal} from '../../actions.js'
 import Select2 from 'react-select2-wrapper'
 import alertify from 'alertifyjs'
 
@@ -109,7 +109,6 @@ class Form3 extends React.Component {
     const local = this.props.client.locals.find(local => {
       return local.id == id
     })
-    console.log('LOCAL', local)
     if (local) {
       this.props.dispatch({type: 'SET_CLIENT_LOCAL', payload: local})
       this.props.dispatch({type: 'SET_CLIENT_LOCAL_UPDATING', payload: local})
@@ -136,7 +135,6 @@ class Form3 extends React.Component {
     const _this = this
 
     createPromise.then(() => {
-      console.log('THENNN')
       const kwargs = {
         lookUpField: 'code',
         url: '/api/clients/',
@@ -175,7 +173,6 @@ class Form3 extends React.Component {
     const _this = this
 
     updatePromise.then(() => {
-      console.log('THENNN')
       const kwargs = {
         lookUpField: 'code',
         url: '/api/clients/',
@@ -189,6 +186,43 @@ class Form3 extends React.Component {
         history: _this.props.history
       }
       _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch(setItem(kwargs))
+    }).catch((err) => {
+      console.log(err)
+    })
+
+  }
+
+  deleteLocalBtn(ev) {
+    const localObject = this.props.clientLocal
+    localObject['client'] = this.props.client.id
+
+    const kwargs = {
+      url: `/api/clientlocal/${localObject.id}/`,
+      sucessMessage: 'Local Eliminado Correctamente.',
+      errorMessage: 'Hubo un error al eliminar el Local del Cliente, intente de nuevo.',
+      dispatchType: 'CLEAR_CLIENT_LOCAL_DELETING'
+    }
+    const updatePromise = new Promise((resolve, reject) => {
+      this.props.dispatch({type: 'FETCHING_STARTED'})
+      this.props.dispatch(deleteClientLocal(kwargs, resolve, reject))
+    })
+    const _this = this
+
+    updatePromise.then(() => {
+      const kwargs = {
+        lookUpField: 'code',
+        url: '/api/clients/',
+        lookUpValue: _this.props.client.code,
+        dispatchType: 'SET_CLIENT',
+        dispatchType2: 'SET_CLIENT_OLD',
+        dispatchErrorType: 'CLIENT_NOT_FOUND',
+        lookUpName: 'código',
+        modelName: 'Clientes',
+        redirectUrl: '/admin/clients',
+        history: _this.props.history
+      }
+      _this.props.dispatch({type: 'FETCHING_STARTED'})
       _this.props.dispatch(setItem(kwargs))
     }).catch((err) => {
       console.log(err)
@@ -217,6 +251,13 @@ class Form3 extends React.Component {
         ? <button onClick={this.updateLocalBtn.bind(this)} className='btn btn-success save-local-btn'>
           <span className='fa fa-save' />
           Guardar
+        </button>
+        : ''
+
+    const deleteButton = this.props.is_updating_local
+        ? <button onClick={this.deleteLocalBtn.bind(this)} className='btn btn-danger save-local-btn'>
+          <span className='fa fa-times' />
+          Borrar
         </button>
         : ''
     // map the provinces and return items to render in Select2
@@ -380,11 +421,14 @@ class Form3 extends React.Component {
         </div>
 
         <div className='form-group row input-block'>
-          <div className='col-xs-6 first' />
+          <div className='col-xs-6 first'>
+            {deleteButton}
+          </div>
 
           <div className='col-xs-6 second'>
             {saveButton}
           </div>
+          
         </div>
       </div>
 

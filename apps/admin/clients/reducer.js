@@ -336,6 +336,16 @@ export default function reducer(state = stateConst, action) {
         is_updating_local: false
       }
     }
+    case 'CLEAR_CLIENT_LOCAL_DELETING':
+    {
+      return {
+        ...state,
+        clientLocalActive: clientLocalModel,
+        clientLocalActiveOld: clientLocalModel,
+        is_adding_local: false,
+        is_updating_local: false
+      }
+    }
   } // switch
 
   return state // default return
