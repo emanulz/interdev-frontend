@@ -42,6 +42,9 @@ export default class Buttons extends React.Component {
   showExemptionPanel() {
     this.props.dispatch({type: 'SHOW_EXEMPTION_PANEL', payload: -1})
   }
+  showReferenceDocPanel() {
+    this.props.dispatch({type: 'SHOW_REFERENCE_DOC_PANEL', payload: -1})
+  }
   showPresalesPanel() {
     this.props.dispatch({type: 'SHOW_PRESALES_PANEL', payload: -1})
   }
@@ -292,6 +295,21 @@ export default class Buttons extends React.Component {
         Exonerar
         <span>
           <i className='fa fa-map' />
+        </span>
+      </button>
+
+      <button
+        disabled={this.props.disabled}
+        onClick={this.showReferenceDocPanel.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        Doc Referencia
+        <span>
+          <i className='fa fa-file-o' />
         </span>
       </button>
 

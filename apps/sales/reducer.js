@@ -42,6 +42,7 @@ import registerMovements from './movements/reducer.js'
 import singleRegisterMovement from './singleMovement/reducer.js'
 import registerClosure from './registerClosure/reducer.js'
 import permissions from './permissions/reducer.js'
+import referenceDocs from './sale/referenceDocs/reducer.js'
 
 export default combineReducers({
   fetching,
@@ -87,5 +88,6 @@ export default combineReducers({
   nsreserves,
   permissions,
   reinvoices,
-  printManualRegisterMovement
+  printManualRegisterMovement,
+  referenceDocs
 })
