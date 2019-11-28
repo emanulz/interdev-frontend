@@ -91,7 +91,7 @@ export default class Update extends React.Component {
 
         } else {
           content = <div className='heigh100'>
-            <Tabs defaultTab='two'>
+            <Tabs>
               <TabList>
                 <Tab className='oneTwo' tabFor='one'>Cliente</Tab>
                 <Tab className='oneTwo' tabFor='two'>Locales</Tab>

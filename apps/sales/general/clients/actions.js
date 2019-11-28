@@ -182,33 +182,42 @@ export function getFullClientById(id, dispatch) {
   })
 }
 
-export function determinClientName(client, extraClient) {
+export function determinClientName(client, extraClient, localData = null) {
   if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
       return extraClient.name
+    }
+    if (localData) {
+      return localData.commercial_name
     }
     return client.name
   }
   return 'Cliente'
 }
 
-export function determinClientLastName(client, extraClient) {
+export function determinClientLastName(client, extraClient, localData = null) {
   if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
       return extraClient.last_name
+    }
+    if (localData) {
+      return ''
     }
     return client.last_name
   }
   return 'General'
 }
 
-export function determinClientEmail(client, extraClient) {
+export function determinClientEmail(client, extraClient, localData = null) {
   if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
       return extraClient.email
+    }
+    if (localData.email) {
+      return localData.email
     }
     return client.email ? client.email : 'Sin Correo Registrado'
   }
