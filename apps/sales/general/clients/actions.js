@@ -216,8 +216,10 @@ export function determinClientEmail(client, extraClient, localData = null) {
     if (client.code == '00') {
       return extraClient.email
     }
-    if (localData.email) {
-      return localData.email
+    if (localData) {
+      if (localData.email) {
+        return localData.email
+      }
     }
     return client.email ? client.email : 'Sin Correo Registrado'
   }
