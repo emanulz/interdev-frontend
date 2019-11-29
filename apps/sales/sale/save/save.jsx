@@ -33,7 +33,9 @@ const Mousetrap = require('mousetrap')
     conf: store.config.globalConf,
     sellerId: store.sale.seller_id,
     selected_activity: store.sale.selected_activity,
-    clientLocalSelected: store.clients.clientLocalSelected
+    clientLocalSelected: store.clients.clientLocalSelected,
+    referenceDocData: store.referenceDocs.referenceDocData,
+    referenceDocAdded: store.referenceDocs.referenceDocAdded
     // sales: store.sales.sales,
     // saleId: store.sales.saleActiveId,
     // sale: store.sales.saleActive,
@@ -92,6 +94,9 @@ export default class SaveBtn extends React.Component {
 
     if (this.props.selected_activity) {
       sale['selected_activity'] = this.props.selected_activity
+    }
+    if (this.props.referenceDocAdded) {
+      sale['reference_doc'] = JSON.stringify(this.props.referenceDocData)
     }
     // console.log('SALE', sale)
 

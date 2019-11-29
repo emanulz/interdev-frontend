@@ -1,6 +1,6 @@
 
 const stateConst = {
-  isVisible: true,
+  isVisible: false,
   referenceDocAdded: false,
   referenceDocData: {
     documentType: '99',
