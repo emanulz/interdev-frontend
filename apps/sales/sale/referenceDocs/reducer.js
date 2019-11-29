@@ -5,7 +5,8 @@ const stateConst = {
   referenceDocData: {
     documentType: '99',
     documentNumber: '',
-    documentCode: '99'
+    documentCode: '99',
+    documentNotes: ''
   }
 }
 
@@ -44,7 +45,8 @@ export default function reducer(state = stateConst, action) {
         referenceDocData: {
           documentType: '99',
           documentNumber: '',
-          documentCode: '99'
+          documentCode: '99',
+          documentNotes: ''
         }
       }
     } // case

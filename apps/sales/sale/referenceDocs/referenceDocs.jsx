@@ -77,10 +77,10 @@ export default class RefereceDocPanel extends React.Component {
       : 'referenceDoc-panel'
 
     const documentTypes = [
-      {text: `01 - Factura Electrónica`, id: '01'},
-      {text: `02 - Nota de Débito Electrónica`, id: '02'},
-      {text: `03 - Nota de Crédito Electrónica)`, id: '03'},
-      {text: `04 - Tiquete Electrónico`, id: '04'},
+      // {text: `01 - Factura Electrónica`, id: '01'},
+      // {text: `02 - Nota de Débito Electrónica`, id: '02'},
+      // {text: `03 - Nota de Crédito Electrónica)`, id: '03'},
+      // {text: `04 - Tiquete Electrónico`, id: '04'},
       {text: `05 - Nota de Despacho`, id: '05'},
       {text: `06 - Contrato`, id: '06'},
       {text: `07 - Procedimiento`, id: '07'},
@@ -145,6 +145,11 @@ export default class RefereceDocPanel extends React.Component {
         <div className='form-group col-xs-8'>
           <label># Documento</label>
           <input value={this.props.referenceDocData.documentNumber} name='documentNumber' onChange={this.handleInputChange.bind(this)} type='text'
+            className='form-control' />
+        </div>
+        <div className='form-group col-xs-8'>
+          <label>Razón</label>
+          <input value={this.props.referenceDocData.documentNotes} name='documentNotes' onChange={this.handleInputChange.bind(this)} type='text'
             className='form-control' />
         </div>
         <div className='form-group col-xs-8 button-container'>
