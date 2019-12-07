@@ -2,11 +2,17 @@ const stateConst = {
   isVisible: false,
   searchText: '',
   searchResults: [],
+  paginatedSearchResults: [],
   activeIndex: 0,
+  paginatedIndex: 1,
+  hasNext: false,
+  hasPrevious: false,
+  paginatedPageSize: 9,
   activeImageName: '',
   activeImageCode: '',
   previousSearch: '',
-  activeCode: ''
+  activeCode: '',
+  needsRefetch: false
 }
 
 const reducer = (namespace) => (state = stateConst, action) => {
@@ -52,7 +58,8 @@ const reducer = (namespace) => (state = stateConst, action) => {
     {
       return {
         ...state,
-        activeIndex: action.payload
+        activeIndex: action.payload,
+        needsRefetch: true
       }
     } // case
 
@@ -105,11 +112,44 @@ const reducer = (namespace) => (state = stateConst, action) => {
       }
     } // case
 
+    case `${namespace}_SET_PAGINATED_SEARCH_RESULTS`:
+    {
+      return {
+        ...state,
+        paginatedSearchResults: action.payload.results,
+        hasNext: action.payload.has_next,
+        hasPrevious: action.payload.has_previous,
+        needsRefetch: false
+      }
+    } // case
+
+    case `${namespace}_SET_PAGINATED_PAGE_SIZE`:
+    {
+      return {
+        ...state,
+        paginatedPageSize: action.payload
+      }
+    } // case
+
+    case `${namespace}_SET_PAGINATED_INDEX`:
+    {
+      return {
+        ...state,
+        paginatedIndex: action.payload,
+        needsRefetch: true
+      }
+    } // case
+
     case `${namespace}_CLEAR_SEARCH_RESULTS`:
     {
       return {
         ...state,
-        searchResults: []
+        searchResults: [],
+        paginatedSearchResults: [],
+        paginatedIndex: 0,
+        paginatedPageSize: 9,
+        hasNext: false,
+        hasPrevious: false
       }
     } // case
 

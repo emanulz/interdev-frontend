@@ -1,10 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {searchItem} from './actions.js'
+import {searchItem, searchItemPaginated} from './actions.js'
 @connect((store, ownProps) => {
   return {
     searchText: store[ownProps.namespace].searchText,
-    searchResults: store[ownProps.namespace].searchResults}
+    searchResults: store[ownProps.namespace].searchResults,
+    pageSize: store[ownProps.namespace].paginatedPageSize,
+    paginatedIndex: store[ownProps.namespace].paginatedIndex,
+    needsRefetch: store[ownProps.namespace].needsRefetch
+  }
 })
 export default class SearchPanel extends React.Component {
 
@@ -12,6 +16,15 @@ export default class SearchPanel extends React.Component {
     const searchText = nextProps.searchText
     if (!searchText.length & this.props.searchText.length) {
       this.props.dispatch({type: `${this.props.namespace}_CLEAR_SEARCH_RESULTS`, payload: ''})
+    }
+
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log('DID UPDATE PREV PROPS', prevProps)
+    console.log('DID UPDATE CURRENT PROPS', this.props)
+    if (this.props.needsRefetch && this.props.paginatedIndex != prevProps.paginatedIndex) {
+      this.searchAction()
     }
   }
 
@@ -30,7 +43,12 @@ export default class SearchPanel extends React.Component {
     const text = this.props.searchText
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     const presale_type = this.props.presale_type ? this.props.presale_type : ''
-    this.props.dispatch(searchItem(text, this.props.model, this.props.namespace, this.props.clientId, presale_type, this.props.notDeleted))
+    const offset = this.props.paginatedIndex * this.props.pageSize
+    if (this.props.paginated) {
+      this.props.dispatch(searchItemPaginated(text, this.props.model, this.props.namespace, this.props.clientId, presale_type, this.props.notDeleted, offset, this.props.pageSize))
+    } else {
+      this.props.dispatch(searchItem(text, this.props.model, this.props.namespace, this.props.clientId, presale_type, this.props.notDeleted))
+    }
   }
 
   render() {

@@ -21,7 +21,7 @@ export default class List extends React.Component {
     switch (this.props.permissions.list) {
       case true:
       {
-        content = <ListComponent />
+        content = <ListComponent paginated />
         break
       } // case
 

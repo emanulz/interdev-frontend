@@ -9,6 +9,7 @@ import SearchAdmin from '../../../../../general/search/searchAdmin.jsx'
 import { getPaginationItemDispatch } from '../../../../../utils/api.js'
 import Pagination from '../../../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx'
+import PaginatedSearchNavigation from '../../../../../general/search/paginatedSearchNavigation.jsx'
 
 @connect((store) => {
   return {
@@ -16,6 +17,7 @@ import ResultsPerPage from '../../../../../general/pagination/resultsPerPage.jsx
     products: store.productsAdmin.products,
     pageSize: store.pagination.pageSize,
     searchResults: store.adminSearch.searchResults,
+    paginatedSearchResults: store.adminSearch.paginatedSearchResults,
     salesWarehouse: store.userProfile.salesWarehouse
   }
 })
@@ -88,7 +90,10 @@ export default class List extends React.Component {
     ]
 
     const fetching = <div />
-    const tableData = this.props.searchResults.length ? this.props.searchResults : this.props.products
+    const tableData = this.props.paginated
+      ? this.props.paginatedSearchResults.length ? this.props.paginatedSearchResults : this.props.products
+      : this.props.searchResults.length ? this.props.searchResults : this.props.products
+
     const list = <AdminTable headerOrder={headerOrder} model='products' data={tableData}
       addLink='/admin/products/add' idField='id' sortedBy='code' />
 
@@ -99,12 +104,21 @@ export default class List extends React.Component {
       Agregar
     </Link>
 
-    const paginationDiv = !this.props.searchResults.length
-      ? <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-        <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-      </div>
-      : <div />
+    const paginationDiv = this.props.paginated
+      ? !this.props.paginatedSearchResults.length
+        ? <div className='admin-list-results-pagination' >
+          <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+          <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+        </div>
+        : <div className='admin-list-results-pagination'>
+          <PaginatedSearchNavigation namespace='adminSearch' />
+        </div>
+      : !this.props.searchResults.length
+        ? <div className='admin-list-results-pagination' >
+          <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+          <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
+        </div>
+        : <div />
 
     return <div className='list list-container'>
       <div className='admin-list-header'>
@@ -112,12 +126,9 @@ export default class List extends React.Component {
         {addLink}
       </div>
 
-      <SearchAdmin model='product' namespace='adminSearch' />
+      <SearchAdmin paginated={this.props.paginated} model='product' namespace='adminSearch' />
       {paginationDiv}
-      {/* <div className='admin-list-results-pagination' >
-        <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-        <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
-      </div> */}
+
       {content}
     </div>
 
