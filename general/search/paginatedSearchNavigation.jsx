@@ -16,12 +16,10 @@ import {connect} from 'react-redux'
 export default class PaginationResultsNextPrev extends React.Component {
 
   nextPage(ev) {
-    console.log('INDEX BEFORE', this.props.paginatedIndex)
     this.props.dispatch({type: `${this.props.namespace}_SET_PAGINATED_INDEX`, payload: this.props.paginatedIndex + 1})
   }
 
   prevPage(ev) {
-    console.log('INDEX BEFORE', this.props.paginatedIndex)
     this.props.dispatch({type: `${this.props.namespace}_SET_PAGINATED_INDEX`, payload: this.props.paginatedIndex - 1})
   }
 

@@ -21,8 +21,6 @@ export default class SearchPanel extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('DID UPDATE PREV PROPS', prevProps)
-    console.log('DID UPDATE CURRENT PROPS', this.props)
     if (this.props.needsRefetch && this.props.paginatedIndex != prevProps.paginatedIndex) {
       this.searchAction()
     }
