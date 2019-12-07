@@ -127,7 +127,9 @@ const reducer = (namespace) => (state = stateConst, action) => {
     {
       return {
         ...state,
-        paginatedPageSize: action.payload
+        paginatedPageSize: action.payload,
+        paginatedIndex: 0,
+        needsRefetch: true
       }
     } // case
 

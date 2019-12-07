@@ -110,9 +110,7 @@ export default class List extends React.Component {
           <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
           <Pagination url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />
         </div>
-        : <div className='admin-list-results-pagination'>
-          <PaginatedSearchNavigation namespace='adminSearch' />
-        </div>
+        : <PaginatedSearchNavigation namespace='adminSearch' />
       : !this.props.searchResults.length
         ? <div className='admin-list-results-pagination' >
           <ResultsPerPage url='/api/productslist/' successType='FETCH_PRODUCTS_FULFILLED' errorType='FETCH_PRODUCTS_REJECTED' />

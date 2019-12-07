@@ -21,7 +21,7 @@ export default class SearchPanel extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.needsRefetch && this.props.paginatedIndex != prevProps.paginatedIndex) {
+    if (this.props.needsRefetch && (this.props.paginatedIndex != prevProps.paginatedIndex || this.props.pageSize != prevProps.pageSize)) {
       this.searchAction()
     }
   }
@@ -41,7 +41,7 @@ export default class SearchPanel extends React.Component {
     const text = this.props.searchText
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     const presale_type = this.props.presale_type ? this.props.presale_type : ''
-    const offset = this.props.paginatedIndex * this.props.pageSize
+    const offset = this.props.paginatedIndex * (this.props.pageSize + 1)
     if (this.props.paginated) {
       this.props.dispatch(searchItemPaginated(text, this.props.model, this.props.namespace, this.props.clientId, presale_type, this.props.notDeleted, offset, this.props.pageSize))
     } else {

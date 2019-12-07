@@ -23,6 +23,11 @@ export default class PaginationResultsNextPrev extends React.Component {
     this.props.dispatch({type: `${this.props.namespace}_SET_PAGINATED_INDEX`, payload: this.props.paginatedIndex - 1})
   }
 
+  setPageSize(ev) {
+    const size = parseInt(ev.target.value)
+    this.props.dispatch({type: `${this.props.namespace}_SET_PAGINATED_PAGE_SIZE`, payload: size})
+  }
+
   render() {
 
     const pageText = `${this.props.paginatedIndex + 1}`
@@ -45,10 +50,25 @@ export default class PaginationResultsNextPrev extends React.Component {
       : <div key='next_btn' className='pagination-item itemDisabled'>
         <i className='fa fa-chevron-right' />
       </div>
-    return <div className='pagination'>
-      {prevBtn}
-      {currentPageBtn}
-      {nextBtn}
+
+    const resultsPerPage = <div className='resultsPerPage'>
+      <h1>Resultados Búsqueda por página:</h1>
+      <select value={this.props.pageSize} onChange={this.setPageSize.bind(this)}>
+        <option value={9}>10</option>
+        <option value={19}>20</option>
+        <option value={29}>30</option>
+        <option value={39}>40</option>
+        <option value={49}>50</option>
+      </select>
+    </div>
+
+    return <div className='admin-list-results-pagination'>
+      <div className='pagination'>
+        {prevBtn}
+        {currentPageBtn}
+        {nextBtn}
+      </div>
+      {resultsPerPage}
     </div>
 
   }
