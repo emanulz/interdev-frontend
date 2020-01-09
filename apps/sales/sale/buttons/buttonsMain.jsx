@@ -4,6 +4,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {loadPresaleItem} from '../presales/actions.js'
+import {getPendingRestaurantBills} from '../restaurantBills/actions.js'
+import {getPendingWorkOrders} from '../workOrders/actions.js'
+import {getPendingReserves} from '../reserves/actions.js'
+import {getPendingNSReserves} from '../nsreserves/actions.js'
 const Mousetrap = require('mousetrap')
 
 @connect((store) => {
@@ -80,15 +84,61 @@ export default class Buttons extends React.Component {
   }
   showReservesPanel() {
     this.props.dispatch({type: 'SHOW_RESERVES_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      successType: 'FETCH_RESERVES_FULFILLED',
+      errorType: 'FETCH_RESERVES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingReserves(kwargs))
   }
   showNSReservesPanel() {
     this.props.dispatch({type: 'SHOW_NSRESERVES_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      successType: 'FETCH_NSRESERVES_FULFILLED',
+      errorType: 'FETCH_NSRESERVES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingNSReserves(kwargs))
   }
   showQuotationsPanel() {
     this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
   }
   showWorkOrdersPanel() {
     this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/listworkorders',
+      ordering: '-updated',
+      filterField: 'is_closed',
+      filter: 'True',
+      filterField2: 'paid',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      filterField4: 'is_warranty',
+      filter4: 'False',
+      filterField5: 'closed_no_repair',
+      filter5: 'False',
+      successType: 'FETCH_WORK_ORDERS_FULFILLED',
+      errorType: 'FETCH_WORK_ORDERS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingWorkOrders(kwargs))
   }
   showTodaySalesPanel() {
     this.props.dispatch({type: 'SHOW_TODAY_SALES_PANEL', payload: -1})
@@ -100,6 +150,22 @@ export default class Buttons extends React.Component {
 
   showRestaurantBillsPanel() {
     this.props.dispatch({type: 'SHOW_RESTAURANT_BILLS_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      filterField4: 'destroyed',
+      filter4: 'False',
+      successType: 'FETCH_RESTAURANT_BILLS_FULFILLED',
+      errorType: 'FETCH_RESTAURANT_BILLS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingRestaurantBills(kwargs))
   }
 
   showReinvoicesPanel() {
@@ -107,7 +173,7 @@ export default class Buttons extends React.Component {
   }
 
   savePresaleAsReserve() {
-    
+
   }
 
   newSale() {
@@ -152,7 +218,7 @@ export default class Buttons extends React.Component {
         </span>
       </button>
       : ''
-      const reinvoicesBtn = this.props.reinvoices.length
+    const reinvoicesBtn = this.props.reinvoices.length
       ? <button
         disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isReserveLoaded || this.props.isQuotationLoaded || this.props.isNSReserveLoaded || this.props.isReinvoiceLoaded}
         onClick={this.showReinvoicesPanel.bind(this)}

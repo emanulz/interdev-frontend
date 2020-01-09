@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadNSReserve, getPendingNSReserves, setNSReserveNull} from './actions.js'
+import {loadNSReserve, setNSReserveNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
 
@@ -11,20 +11,20 @@ import alertify from 'alertifyjs'
 export default class NSReservesPanel extends React.Component {
 
   componentWillMount() {
-    const kwargs = {
-      url: '/api/presales',
-      ordering: '-consecutive',
-      filterField: 'closed',
-      filter: 'True',
-      filterField2: 'billed',
-      filter2: 'False',
-      filterField3: 'is_null',
-      filter3: 'False',
-      successType: 'FETCH_NSRESERVES_FULFILLED',
-      errorType: 'FETCH_NSRESERVES_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getPendingNSReserves(kwargs))
+    // const kwargs = {
+    //   url: '/api/presales',
+    //   ordering: '-consecutive',
+    //   filterField: 'closed',
+    //   filter: 'True',
+    //   filterField2: 'billed',
+    //   filter2: 'False',
+    //   filterField3: 'is_null',
+    //   filter3: 'False',
+    //   successType: 'FETCH_NSRESERVES_FULFILLED',
+    //   errorType: 'FETCH_NSRESERVES_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getPendingNSReserves(kwargs))
   }
 
   hidePanel() {

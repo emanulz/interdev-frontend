@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadRestaurantBill, getPendingRestaurantBills, setRestaurantBillNull} from './actions.js'
+import {loadRestaurantBill, setRestaurantBillNull} from './actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
 import {getSingleItemDispatch} from '../../../../utils/api.js'
 import alertify from 'alertifyjs'
@@ -17,22 +17,22 @@ import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 export default class RestaurantBillsPanel extends React.Component {
 
   componentWillMount() {
-    const kwargs = {
-      url: '/api/presales',
-      ordering: '-consecutive',
-      filterField: 'closed',
-      filter: 'True',
-      filterField2: 'billed',
-      filter2: 'False',
-      filterField3: 'is_null',
-      filter3: 'False',
-      filterField4: 'destroyed',
-      filter4: 'False',
-      successType: 'FETCH_RESTAURANT_BILLS_FULFILLED',
-      errorType: 'FETCH_RESTAURANT_BILLS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getPendingRestaurantBills(kwargs))
+    // const kwargs = {
+    //   url: '/api/presales',
+    //   ordering: '-consecutive',
+    //   filterField: 'closed',
+    //   filter: 'True',
+    //   filterField2: 'billed',
+    //   filter2: 'False',
+    //   filterField3: 'is_null',
+    //   filter3: 'False',
+    //   filterField4: 'destroyed',
+    //   filter4: 'False',
+    //   successType: 'FETCH_RESTAURANT_BILLS_FULFILLED',
+    //   errorType: 'FETCH_RESTAURANT_BILLS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getPendingRestaurantBills(kwargs))
   }
 
   hidePanel() {
