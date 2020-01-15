@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getItemDispatch } from '../../../../utils/api'
-import { findSupplier } from './actions'
+import { findSupplier, findSupplierCodeSearch } from './actions'
 
 @connect(store => {
   return {
@@ -27,7 +27,7 @@ export default class Suppliers extends React.Component {
   inputKeyPress(ev) {
     if (ev.key == 'Enter') {
       const code = ev.target.value
-      this.props.dispatch(findSupplier(code, this.props.suppliers))
+      this.props.dispatch(findSupplierCodeSearch(code))
     }
   }
 

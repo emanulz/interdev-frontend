@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import {searchGenericItem}  from "../../../../general/search/actions"
 // ------------------------------------------------------------------------------------------
 // CONFIG DEFAULT AXIOS
 // ------------------------------------------------------------------------------------------
@@ -15,6 +15,11 @@ export function  supplierSearchDoubleClick(item, dispatch){
         alertify.alert('ERROR', `Error al obtener el valor del API, por favor intente de nuevo o comuníquese con el
         administrador del sistema con el siguiete error: ${error}`)
     })
+}
+
+export function findSupplierCodeSearch(keyword){
+    return searchGenericItem(`code=${keyword}`, 'supplier', 
+    'SUPPLIER_FOUND_SELECTED', 'SUPPLIER_NOT_FOUND', 5, true)
 }
 
 export function findSupplier(code, suppliers){

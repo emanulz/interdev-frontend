@@ -62,6 +62,14 @@ export default function reducer(state=stateConst, action){
                 supplierSelected: supplierModel
             }
         }
+        case 'SUPPLIER_FOUND_SELECTED':
+        {
+            return {
+                ...state,
+                supplierSelected:action.payload[0]
+
+            }
+        }
         case 'FETCH_SUPPLIERS_FULFILLED':
         {
             return {
