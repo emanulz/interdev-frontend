@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadWorkOrder, getPendingWorkOrders, reopenWorkOrder} from './actions.js'
+import {loadWorkOrder, reopenWorkOrder} from './actions.js'
 import {productSelected, setProduct} from '../../general/product/actions.js'
 import {getFullClientById} from '../../general/clients/actions.js'
 import alertify from 'alertifyjs'
@@ -23,24 +23,24 @@ import alertify from 'alertifyjs'
 export default class WorkOrdersPanel extends React.Component {
 
   componentWillMount() {
-    const kwargs = {
-      url: '/api/listworkorders',
-      ordering: '-updated',
-      filterField: 'is_closed',
-      filter: 'True',
-      filterField2: 'paid',
-      filter2: 'False',
-      filterField3: 'is_null',
-      filter3: 'False',
-      filterField4: 'is_warranty',
-      filter4: 'False',
-      filterField5: 'closed_no_repair',
-      filter5: 'False',
-      successType: 'FETCH_WORK_ORDERS_FULFILLED',
-      errorType: 'FETCH_WORK_ORDERS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getPendingWorkOrders(kwargs))
+    // const kwargs = {
+    //   url: '/api/listworkorders',
+    //   ordering: '-updated',
+    //   filterField: 'is_closed',
+    //   filter: 'True',
+    //   filterField2: 'paid',
+    //   filter2: 'False',
+    //   filterField3: 'is_null',
+    //   filter3: 'False',
+    //   filterField4: 'is_warranty',
+    //   filter4: 'False',
+    //   filterField5: 'closed_no_repair',
+    //   filter5: 'False',
+    //   successType: 'FETCH_WORK_ORDERS_FULFILLED',
+    //   errorType: 'FETCH_WORK_ORDERS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getPendingWorkOrders(kwargs))
   }
 
   hidePanel() {

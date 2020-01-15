@@ -4,6 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getEarmings} from './actions.js'
+import {getPendingQuotations} from '../../../sales/sale/quotations/actions.js'
 
 @connect((store) => {
   return {
@@ -43,6 +44,20 @@ export default class Buttons extends React.Component {
   }
   showQuotationsPanel() {
     this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      successType: 'FETCH_QUOTATIONS_FULFILLED',
+      errorType: 'FETCH_QUOTATIONS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingQuotations(kwargs))
   }
   saveNSReserve() {
     this.props.dispatch({type: 'SET_PRESALE_TYPE', payload: 'NS_RESERVE'})

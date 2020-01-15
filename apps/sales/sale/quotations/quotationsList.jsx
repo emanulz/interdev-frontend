@@ -1,10 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {formatDateTimeAmPm} from '../../../../utils/formatDate.js'
-import {loadQuotation, getPendingQuotations, setQuotationNull} from './actions.js'
+import {loadQuotation, setQuotationNull} from './actions.js'
 import {loadPresaleItem} from '../presales/actions.js'
 import {getFullClientById, determinClientName, determinClientLastName} from '../../general/clients/actions.js'
-import {productSelected, setProduct} from '../../general/product/actions.js'
+import {productSelected} from '../../general/product/actions.js'
 import alertify from 'alertifyjs'
 import {loadPresaleToPrint} from '../../../../general/printPresale/actions.js'
 import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
@@ -26,20 +26,20 @@ import SearchAdmin from '../../../../general/search/searchAdmin.jsx'
 export default class QuotationsPanel extends React.Component {
 
   componentWillMount() {
-    const kwargs = {
-      url: '/api/presales',
-      ordering: '-consecutive',
-      filterField: 'closed',
-      filter: 'True',
-      filterField2: 'billed',
-      filter2: 'False',
-      filterField3: 'is_null',
-      filter3: 'False',
-      successType: 'FETCH_QUOTATIONS_FULFILLED',
-      errorType: 'FETCH_QUOTATIONS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getPendingQuotations(kwargs))
+    // const kwargs = {
+    //   url: '/api/presales',
+    //   ordering: '-consecutive',
+    //   filterField: 'closed',
+    //   filter: 'True',
+    //   filterField2: 'billed',
+    //   filter2: 'False',
+    //   filterField3: 'is_null',
+    //   filter3: 'False',
+    //   successType: 'FETCH_QUOTATIONS_FULFILLED',
+    //   errorType: 'FETCH_QUOTATIONS_REJECTED'
+    // }
+    // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    // this.props.dispatch(getPendingQuotations(kwargs))
   }
 
   hidePanel() {

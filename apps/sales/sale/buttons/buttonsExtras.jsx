@@ -3,7 +3,9 @@
  */
 import React from 'react'
 import {connect} from 'react-redux'
-
+import {getPendingQuotations} from '../quotations/actions'
+import {getPendingReserves} from '../reserves/actions.js'
+import {getPendingNSReserves} from '../nsreserves/actions.js'
 import {searchDiscountForTargetPrice} from '../../general/product/actions.js'
 
 @connect((store) => {
@@ -50,12 +52,54 @@ export default class Buttons extends React.Component {
   }
   showReservesPanel() {
     this.props.dispatch({type: 'SHOW_RESERVES_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      successType: 'FETCH_RESERVES_FULFILLED',
+      errorType: 'FETCH_RESERVES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingReserves(kwargs))
   }
   showNSReservesPanel() {
     this.props.dispatch({type: 'SHOW_NSRESERVES_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      successType: 'FETCH_NSRESERVES_FULFILLED',
+      errorType: 'FETCH_NSRESERVES_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingNSReserves(kwargs))
   }
   showQuotationsPanel() {
     this.props.dispatch({type: 'SHOW_QUOTATIONS_PANEL', payload: -1})
+    const kwargs = {
+      url: '/api/presales',
+      ordering: '-consecutive',
+      filterField: 'closed',
+      filter: 'True',
+      filterField2: 'billed',
+      filter2: 'False',
+      filterField3: 'is_null',
+      filter3: 'False',
+      successType: 'FETCH_QUOTATIONS_FULFILLED',
+      errorType: 'FETCH_QUOTATIONS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getPendingQuotations(kwargs))
   }
   showWorkOrdersPanel() {
     this.props.dispatch({type: 'SHOW_WORK_ORDERS_PANEL', payload: -1})
@@ -78,17 +122,15 @@ export default class Buttons extends React.Component {
     // this.props.dispatch({type: 'NEW_SALE', payload: -1})
   }
 
-  searchDiscount(){
-    console.log("Target price!")
-    //shown an alertify input for the wanted target price
+  searchDiscount() {
+    // shown an alertify input for the wanted target price
     searchDiscountForTargetPrice(
       this.props.dispatch, 
       this.props.cartItems,
       this.props.globalDiscount,
       this.props.client,
       this.props.config.overrideXMLversion
-      )
-
+    )
   }
 
   // Main Layout
@@ -324,7 +366,5 @@ export default class Buttons extends React.Component {
       {buttons}
 
     </div>
-
   }
-
 }
