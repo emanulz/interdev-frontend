@@ -16,6 +16,7 @@ import PerClient from './per_client_sales.jsx'
     isTrinche: store.config.globalConf.isTrincheras,
     useLegacyd151: store.config.globalConf.useLegacyd151,
     departments: store.generalReports.departments,
+    subDepartments: store.generalReports.subDepartments,
     selectedDepartment: store.generalReports.selectedDepartment,
     warehouses: store.generalReports.warehouses,
     selectedWarehouse: store.generalReports.selectedWarehouse,
@@ -157,6 +158,15 @@ export default class ExcelFetcher extends React.Component {
     window.location.href = url
   }
 
+  onSubFamilySelectedInventory(e) {
+    if (e.target.value == '0000') {
+      return // just the case where there are no families or was released on the default starting option
+    }
+
+    const url = `/reportsExcel/invvalue/?subdepartment=${e.target.value}`
+    window.location.href = url
+  }
+
   onWarehouseSelectedInventory(e) {
     if (e.target.value == '0000') {
       return // just the case where there are no families or was released on the default starting option
@@ -214,6 +224,34 @@ export default class ExcelFetcher extends React.Component {
             data={departmentData}
             options={{
               placeholder: 'Elija una Familia...',
+              noResultsText: 'Sin elementos'
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  }
+
+  buildSubFamilyinventoryRequester() {
+
+    const subDepartmentData = this.props.subDepartments.map(subDepartment => {
+      return { text: `${subDepartment.identifier} - ${subDepartment.name}`, id: `${subDepartment.id}` }
+    })
+
+    return <div className='excel-fetcher-utility'>
+      <div className='excel-fetcher-utility-family'>
+        <div className='excel-fetcher-utility-family-label'>
+          Seleccione la sub familia:
+        </div>
+        <div className='excel-fetcher-utility-family-select'>
+          <Select2
+            name='subDepartment'
+            value={this.props.selectedSubDepartment}
+            className='form-control'
+            onSelect={this.onSubFamilySelectedInventory.bind(this)}
+            data={subDepartmentData}
+            options={{
+              placeholder: 'Elija una Sub Familia...',
               noResultsText: 'Sin elementos'
             }}
           />
@@ -305,9 +343,19 @@ export default class ExcelFetcher extends React.Component {
     if (this.props.installedApps.InventoriesAppInstalled) {
       inventoriesByFamily = <div className='excel-fetcher-byfamily-item second'>
         <div className='excel-fetcher-title'>
-          <h1>Reporte de Existencias Por Familia</h1>
+          <h1>Reporte Existencias Familia</h1>
         </div>
         {this.buildFamilyinventoryRequester()}
+      </div>
+    }
+
+    let inventoriesBySubFamily = ''
+    if (this.props.installedApps.InventoriesAppInstalled) {
+      inventoriesBySubFamily = <div className='excel-fetcher-byfamily-item second'>
+        <div className='excel-fetcher-title'>
+          <h1>Reporte Existencias SubFamilia</h1>
+        </div>
+        {this.buildSubFamilyinventoryRequester()}
       </div>
     }
 
@@ -367,6 +415,7 @@ export default class ExcelFetcher extends React.Component {
       <div className='excel-fetcher-byfamily'>
         {utilityByFamily}
         {inventoriesByFamily}
+        {inventoriesBySubFamily}
         {inventoriesValueByFamily}
       </div>
       <div className="detail-reports-container">

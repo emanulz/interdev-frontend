@@ -9,6 +9,7 @@ import {makeTableFriendly} from './actions.js'
 // }
 
 const defaultDepartment = "0000"
+const defaultSubDepartment = "0000"
 
 const defaultWarehouse = "0000"
 
@@ -20,7 +21,9 @@ const stateConst = {
     end_date: '',
     selected_section: 'downloadables',
     departments: [],
+    subDepartments: [],
     selectedDepartment: defaultDepartment,
+    selectedSubDepartment: defaultSubDepartment,
     warehouses: [],
     selectedWarehouse: defaultWarehouse,
     report_records: [],
@@ -130,7 +133,7 @@ export default function reducer(state=stateConst, action){
 
         case 'FETCH_REPORT_RECORDS_FULFILLED':
         {
-            console.log("Damm payload --> ", action.payload)
+
             return {
                 ...state,
                 report_records: action.payload,
@@ -192,6 +195,22 @@ export default function reducer(state=stateConst, action){
                 departments: []
             }
         }
+
+        case 'FETCH_PRODUCT_SUBDEPARTMENTS_FULFILLED':
+            {
+                return {
+                    ...state,
+                    subDepartments: action.payload
+                }
+            }
+            case 'FETCH_PRODUCT_SUBDEPARTMENTS_REJECTED':
+            {
+                console.log("Sub deps received --> ", action.payload);
+                return {
+                    ...state,
+                    subDepartments: []
+                }
+            }
         case 'PURCHASES_VRS_SALES_FETCHED':
         {
             const data = JSON.parse(JSON.stringify(action.payload))
