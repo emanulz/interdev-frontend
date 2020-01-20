@@ -5,6 +5,7 @@ import alertify from 'alertifyjs'
 import axios from 'axios'
 
 export function searchItem(text, model, namespace, clientId, presaleType, notDeleted) {
+  if (model == 'productCompact') { model = 'product' }
   if (!text.length) {
     alertify.alert('ERROR', `Debe digitar una búsqueda válida.`)
     return function(dispatch) {

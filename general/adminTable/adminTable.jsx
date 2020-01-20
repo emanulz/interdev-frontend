@@ -291,10 +291,17 @@ export default class AdminTable extends React.Component {
 
           let item
           switch (header.type) {
+            case 'ADD_TO_CART':
+            {
+              item = <td key={`${el[idField]}_${header.field}_reprintSO`}>
+                <button className='btn btn-primary' onClick={this.rowDoubleClick.bind(this, el[idField])} ><i className='fa fa-plus' /></button>
+              </td>
+              break
+            }
             case 'REPRINT_SERVICE_ORDER':
             {
               item = <td key={`${el[idField]}_${header.field}_reprintSO`}>
-                <button className='btn btn-primary' onClick={this.reprintServiceOrder.bind(this, itemToRender)} >Reimprimir</button>
+                <button className='btn btn-success' onClick={this.reprintServiceOrder.bind(this, itemToRender)} >Reimprimir</button>
               </td>
               break
             }

@@ -102,12 +102,14 @@ export default class Sale extends React.Component {
   // Main Layout
   render() {
 
+    const productModel = this.props.conf.mobileSales ? 'productCompact' : 'product'
+
     return <div className='sale'>
       <RegisterClosure />
       <Currency />
       <Content />
       <Aside />
-      <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
+      <Search modelText='Producto' model={productModel} namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
         onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <PayPanel />

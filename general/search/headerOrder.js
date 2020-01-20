@@ -12,7 +12,7 @@ export function getHeaderOrder(model, salesWarehouse) {
     return getExistences(item)
   }
 
-  item=>{return JSON.parse(item)}
+  item => { return JSON.parse(item) }
 
   const clientHeader = [
     {
@@ -62,6 +62,26 @@ export function getHeaderOrder(model, salesWarehouse) {
       text: 'Precio IVI',
       type: 'price'
     }
+  ]
+
+  const productCompactHeader = [
+    {
+      field: 'code',
+      text: 'Código',
+      width: '150px'
+    }, {
+      field: 'description',
+      text: 'Descripción'
+    }, {
+      field: 'sell_price1',
+      text: 'Precio IVI',
+      type: 'price'
+    }, {
+      field: 'code',
+      text: 'Agregar',
+      type: 'ADD_TO_CART'
+    }
+
   ]
 
   const activityHeader = [
@@ -118,6 +138,9 @@ export function getHeaderOrder(model, salesWarehouse) {
     }
     case 'activity': {
       return activityHeader
+    }
+    case 'productCompact': {
+      return productCompactHeader
     }
   }
 
