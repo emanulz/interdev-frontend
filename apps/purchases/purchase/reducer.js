@@ -12,6 +12,9 @@ const stateConst = {
     //old: '',
     requires_incomplete_refresh: false,
     requires_complete_refresh: false,
+    purchase_total: 0,
+    order_transport: 0,
+    total_discount: 0,
 
   }
 
@@ -44,7 +47,7 @@ const stateConst = {
               return {
                   ...state,
                   purchase_id: action.payload.id,
-                  is_closed: action.payload.is_closed
+                  is_closed: action.payload.is_closed,
               }
           }
           case 'IS_PURCHASE_EDIT':
@@ -70,13 +73,22 @@ const stateConst = {
           }
           case 'LOADED_PURCHASE':
           {
-              return {
-                ...state,
-                invoiceNumber:action.payload.invoice_number,
-                invoiceDate:action.payload.invoice_date,
-                is_closed: action.payload.is_closed,
-                purchase_id: action.payload.id,
-              }
+            let cart = {order_transport: 0}
+            try{
+                cart = JSON.parse(action.payload.cart)
+            }catch(err){
+                console.log("Error parsing cart --> ", err)
+            }
+                
+            return {
+            ...state,
+            invoiceNumber:action.payload.invoice_number,
+            invoiceDate:action.payload.invoice_date,
+            is_closed: action.payload.is_closed,
+            purchase_id: action.payload.id,
+            purchase_total: action.payload.purchase_total,
+            order_transport:cart.orderTransport
+            }
           }
           case 'INVOICE_DATE_CHANGED':
           {

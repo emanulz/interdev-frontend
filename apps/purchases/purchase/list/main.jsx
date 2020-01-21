@@ -115,12 +115,18 @@ export default class ListPurchases  extends React.Component {
                 field:'invoice_number',
                 text:'Número Factura',
                 type: 'text'
+            },
+            {
+                field:'purchase_total',
+                text:'Total Factura',
+                type: 'currency'
             }
         ]
 
         
         const fetching = <div/>
         let tableData = this.props.searchResults.length ? this.props.searchResults : this.props.purchases
+
         if(this.props.searchResults.length){
             tableData = makeTableFriendly(tableData)
         }

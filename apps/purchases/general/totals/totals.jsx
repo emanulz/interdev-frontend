@@ -13,7 +13,9 @@ import {connect} from 'react-redux'
         invoiceNumber: store.purchase.invoiceNumber,
         is_closed: store.purchase.is_closed,
         orderTransport: store.purchase_cart.orderTransport,
-        
+        purchase_total: store.purchase.purchase_total,
+        order_transport: store.purchase.order_transport,
+        purchase: store.purchase
     }
 })
 export default class Totals extends React.Component {
@@ -44,8 +46,26 @@ export default class Totals extends React.Component {
     }
 
     render (){
-        const total = this.props.cartTotal.formatMoney(2, ',', '.')
+
+        console.log("Purchase object --> ", this.props.purchase)
+
+        console.log("Discount --> ", this.props.discountTotal)
+        let cart_total_raw = this.props.cartTotal;
+        if (isNaN(cart_total_raw)){
+            cart_total_raw = parseFloat(this.props.purchase_total)
+        }
+        // console.log("Purchase in totals --> ", this.props.purchase)
+        let total = cart_total_raw.formatMoney(2, ',', '.')
+        
+
         const subtotal = this.props.cartSubtotal.formatMoney(2, ',', '.')
+        let taxes = this.props.cartTaxes
+        
+        if(!this.props.cartTaxes){
+            taxes = parseFloat(this.props.purchase_total) - this.props.cartSubtotal - parseFloat(this.props.order_transport)
+            taxes.formatMoney(2, ',', '.')
+        }
+
         return <div className='totals'>
             <div className='totals-data-row'>
                 <div className='totals-data-row-label' >Número de Factura:</div>
@@ -82,7 +102,7 @@ export default class Totals extends React.Component {
                 <input className='totals-data-row-input' type='number'
                 onChange={this.taxesAmountChanged.bind(this)}
                 disabled={this.props.is_closed}
-                value={this.props.cartTaxes} />
+                value={taxes} />
             </div>
 
             <div className='totals-data-row'>

@@ -23,6 +23,7 @@ export function makeTableFriendly(purchases){
             pay_type: pay_map[p.pay_type],
             invoice_date: p.invoice_date,
             invoice_number: p.invoice_number,
+            purchase_total: p.purchase_total
         }
         return pretty
     })

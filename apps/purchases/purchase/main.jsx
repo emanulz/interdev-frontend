@@ -25,7 +25,7 @@ export default class Purchase extends React.Component {
         this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
         
         const purchase_consecutive = this.props.location.pathname.split('/').pop()
-        this.props.dispatch({type: 'PURCHASE_PANEL_MOUNTED', payload: ''})
+        this.props.dispatch({type: 'PURCHASE_PANEL_MOUNTED'})
         this.props.dispatch({type: 'CLEAR_PURCHASE'})
         this.props.dispatch({type: 'CLEAR_CART'})
         if(this.props.isEdit){ 
