@@ -17,6 +17,8 @@ export default class Table extends React.Component {
     const symbol = this.props.currencySymbol
     const ticket = this.props.ticket
     const invoice = this.props.invoice
+    const doNotPrintIVA = this.props.config.doNotPrintIVAInReceipt
+
     let XMLVersion = ''
     try {
       if (ticket) {
@@ -51,6 +53,12 @@ export default class Table extends React.Component {
         taxesText = '%'
       }
 
+      const taxesCol = doNotPrintIVA
+        ? <div className='reprint-compact-invoice-table-body-item-data-iv' />
+        : <div className='reprint-compact-invoice-table-body-item-data-iv'>
+          {taxesText}
+        </div>
+      const totalValue = doNotPrintIVA ? Math.round(item.totalWithIv) : item.subTotalNoDiscount
       return <div className='reprint-compact-invoice-table-body-item' key={item.uuid}>
         <div className='reprint-compact-invoice-table-body-item-description'>
           {item.product.description}
@@ -62,21 +70,23 @@ export default class Table extends React.Component {
           <div className='reprint-compact-invoice-table-body-item-data-code'>
             {item.product.code}
           </div>
-          <div className='reprint-compact-invoice-table-body-item-data-iv'>
-            {taxesText}
-          </div>
+          {taxesCol}
           <div className='reprint-compact-invoice-table-body-item-data-total'>
-            {symbol} {item.subTotalNoDiscount.formatMoney(2, ',', '.')}
+            {symbol} {totalValue.formatMoney(2, ',', '.')}
           </div>
         </div>
       </div>
     })
 
+    const taxesCol = doNotPrintIVA
+      ? <div className='reprint-compact-invoice-table-header-iv' />
+      : <div className='reprint-compact-invoice-table-header-iv'>{taxesHeader}</div>
+
     return <div className='reprint-compact-invoice-table'>
       <div className='reprint-compact-invoice-table-header'>
         <div className='reprint-compact-invoice-table-header-qty'>Cant</div>
         <div className='reprint-compact-invoice-table-header-code'>Código</div>
-        <div className='reprint-compact-invoice-table-header-iv'>{taxesHeader}</div>
+        {taxesCol}
         <div className='reprint-compact-invoice-table-header-total'>Total</div>
       </div>
       <div className='reprint-compact-invoice-table-body'>

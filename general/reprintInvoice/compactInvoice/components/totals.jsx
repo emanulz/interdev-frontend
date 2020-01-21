@@ -43,6 +43,7 @@ export default class Totals extends React.Component {
     let exemptAmount = 0
     let returnedIVA = 0
     let otherCharges = []
+    const doNotPrintIVA = this.props.config.doNotPrintIVAInReceipt
     // LOAD ITEMS FROM SALE ONLY IF LOADED
     if (Object.keys(sale).length > 0) {
       total = sale.cart.cartTotal
@@ -123,23 +124,28 @@ export default class Totals extends React.Component {
       </tr>
       : <tr />
 
+    const subTotalToPrint = doNotPrintIVA ? Math.round(subTotalNoDiscount + taxes) : subTotalNoDiscount
+    const ivaRow = doNotPrintIVA
+      ? <tr />
+      : <tr>
+        <th>{taxesLine}</th>
+        <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
+      </tr>
+
     return <div className='reprint-compact-invoice-totals'>
 
       <table>
         <tbody>
           <tr>
             <th>Sub-total</th>
-            <td>{symbol} {subTotalNoDiscount.formatMoney(2, ',', '.')}</td>
+            <td>{symbol} {subTotalToPrint.formatMoney(2, ',', '.')}</td>
 
           </tr>
           <tr>
             <th>Descuento</th>
             <td>{symbol} {discountTotal.formatMoney(2, ',', '.')}</td>
           </tr>
-          <tr>
-            <th>{taxesLine}</th>
-            <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
-          </tr>
+          {ivaRow}
           {ExemptTotal}
           {taxTotal}
           {returnedIVARow}
