@@ -7,6 +7,7 @@ import Select2 from 'react-select2-wrapper'
 @connect((store) => {
   return {
     product: store.productsAdmin.productActive,
+    productFetching: store.productsAdmin.productFetching,
     products: store.productsAdmin.products,
     productDepartments: store.productDepartments.productDepartments,
     productSubDepartments: store.productSubDepartments.productSubDepartments
@@ -71,8 +72,8 @@ class Form extends React.Component {
 
       const lookUp = this.props.location.pathname.split('/').pop()
 
-      if (nextProps.product.id == '0000000000') {
-
+      if (nextProps.product.id == '0000000000' && !nextProps.productFetching) {
+        console.log('PRODUCT FETCHING', nextProps.productFetching)
         const kwargs = {
           lookUpField: 'code',
           url: '/api/productslist/',
@@ -85,6 +86,7 @@ class Form extends React.Component {
           redirectUrl: '/admin/products',
           history: this.props.history
         }
+        this.props.dispatch({type: 'SET_PRODUCT_FETCHING', payload: ''})
         this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
         this.props.dispatch(setItem(kwargs))
 

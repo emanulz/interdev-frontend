@@ -76,12 +76,22 @@ const stateConst = {
   IVARates: [],
   IVACodes: [],
   IVAFactors: [],
-  file: ''
+  file: '',
+  productFetching: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'SET_PRODUCT_FETCHING':
+    {
+      return {
+        ...state,
+        productFetching: true
+      }
+    }
+
     case 'SET_IMAGE_FILE':
     {
       return {
@@ -153,7 +163,8 @@ export default function reducer(state = stateConst, action) {
     {
       return {
         ...state,
-        productActive: action.payload
+        productActive: action.payload,
+        productFetching: false
       }
     }
 
@@ -170,7 +181,8 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         productActive: productModel,
-        productActiveOld: productModel
+        productActiveOld: productModel,
+        productFetching: false
       }
     }
 

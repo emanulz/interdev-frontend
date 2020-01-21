@@ -16,32 +16,6 @@ import Select2 from 'react-select2-wrapper'
 
 class Form3 extends React.Component {
 
-  componentWillMount() {
-    const IVARatesKwargs = {
-      url: `/api/administration/?group=IVA_RATES`,
-      successType: 'FETCH_IVA_RATES_FULFILLED',
-      errorType: 'FETCH_IVA_RATES_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(IVARatesKwargs))
-
-    const IVACodesKwargs = {
-      url: `/api/administration/?group=IVA_CODES`,
-      successType: 'FETCH_IVA_CODES_FULFILLED',
-      errorType: 'FETCH_IVA_CODES_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(IVACodesKwargs))
-
-    const IVAFactorsKwargs = {
-      url: `/api/administration/?group=IVA_FACTORS`,
-      successType: 'FETCH_IVA_FACTORS_FULFILLED',
-      errorType: 'FETCH_IVA_FACTORS_REJECTED'
-    }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(IVAFactorsKwargs))
-  }
-
   // HANDLE INPUT CHANGE
   handleInputChange(event) {
 
