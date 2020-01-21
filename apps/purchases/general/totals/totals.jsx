@@ -47,9 +47,6 @@ export default class Totals extends React.Component {
 
     render (){
 
-        console.log("Purchase object --> ", this.props.purchase)
-
-        console.log("Discount --> ", this.props.discountTotal)
         let cart_total_raw = this.props.cartTotal;
         if (isNaN(cart_total_raw)){
             cart_total_raw = parseFloat(this.props.purchase_total)
@@ -62,7 +59,7 @@ export default class Totals extends React.Component {
         let taxes = this.props.cartTaxes
         
         if(!this.props.cartTaxes){
-            taxes = parseFloat(this.props.purchase_total) - this.props.cartSubtotal - parseFloat(this.props.order_transport)
+            taxes = parseFloat(this.props.purchase_total) - (this.props.cartSubtotal -this.props.discountTotal) - parseFloat(this.props.order_transport)
             taxes.formatMoney(2, ',', '.')
         }
 

@@ -11,12 +11,14 @@ export function updateTotals(inCart, total_taxes, orderTransport, discount_mode)
 
   // for Each element adds the values to get totals
   inCart.forEach((item) => {
-    subtotal += item.subtotal
+    let line_discount = 0
     if(discount_mode==='percent_based'){
-      total_discount+=(item.discount/100.0*item.subtotal)
+      line_discount  =(item.discount/100.0*item.subtotal)
     }else{
-      total_discount += item.discount
+      line_discount  += item.discount
     }
+    total_discount += line_discount 
+    subtotal += item.subtotal + line_discount
     
   })
 

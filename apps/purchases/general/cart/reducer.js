@@ -93,6 +93,12 @@ export default function reducer(state = stateConst, action) {
     case 'LOADED_PURCHASE':
     {
       const cart = JSON.parse(action.payload.cart)
+      let subtotal = 0
+      let total_discount = 0
+      for(let line of cart.cartItems){
+        subtotal += line.subtotal + line.discount 
+        total_discount += line.discount
+      }
       return {
         ...state,
         editable:cart.editable,
@@ -101,12 +107,13 @@ export default function reducer(state = stateConst, action) {
         isNull: cart.isNull,
         cartHasItems: cart.cartHasItems,
         cartItems: cart.cartItems,
-        cartSubtotal: cart.cartSubtotal,
+        cartSubtotal: subtotal,
         cartTaxes: cart.cartTaxes,
         cartTotal: cart.cartTotal,
-        discountTotal: cart.discountTotal,
+        discountTotal: total_discount,
         cartItemActive: cart.cartItemActive,
         orderTransport:cart.orderTransport?cart.orderTransport:0,
+        discount_mode: cart.discount_mode
       }
     }
 
