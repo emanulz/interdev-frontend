@@ -194,6 +194,27 @@ class Form extends React.Component {
       return {text: `${town.code} - ${town.name}`, id: town.code}
     })
 
+    const locals = this.props.client.locals.map(local => {
+      return {text: `${local.commercial_name ? local.commercial_name : 'SIN NOMBRE COMERCIAL'}`, id: local.id}
+    })
+
+    const localsDiv = locals.length > 1 && this.props.update
+      ? <div className='form-group'>
+        <label>Locales</label>
+        <Select2
+          name='locals'
+          data={locals}
+          value={this.props.client.canton}
+          className='form-control'
+          // onSelect={this.handleInputChange.bind(this)}
+          options={{
+            placeholder: 'Elija un Local...',
+            noResultsText: 'Sin elementos'
+          }}
+        />
+      </div>
+      : <div />
+
     const maxDiscountGroup = this.props.client.category_id
       ? ''
       : <div className='form-group'>
@@ -286,6 +307,7 @@ class Form extends React.Component {
         <span>Contacto y dirección</span>
         <hr />
 
+        {localsDiv}
         <div className='form-group row input-block'>
           <div className='col-xs-6 first'>
 

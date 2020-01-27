@@ -255,11 +255,11 @@ class Form3 extends React.Component {
         : ''
 
     const deleteButton = this.props.is_updating_local
-        ? <button onClick={this.deleteLocalBtn.bind(this)} className='btn btn-danger save-local-btn'>
-          <span className='fa fa-times' />
-          Borrar
-        </button>
-        : ''
+      ? <button onClick={this.deleteLocalBtn.bind(this)} className='btn btn-danger save-local-btn'>
+        <span className='fa fa-times' />
+        Borrar
+      </button>
+      : ''
     // map the provinces and return items to render in Select2
     const provincesData = provinces.map(province => {
       return {text: `${province.code} - ${province.name}`, id: `${province.code}`}
