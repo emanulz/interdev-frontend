@@ -120,7 +120,6 @@ const article_brands = [
     {"id": "Gibson", "text":"21-Gibson"},
     {"id": "Whirlpool", "text":"22-Whirlpool"},
     {"id": "Mabe", "text":"23-Mabe"},
-    {"id": "Panasonic", "text":"24-Panasonic"},
     {"id": "Frigidaire", "text":"25-Frigidaire"},
     {"id": "West Bend", "text":"26-West Bend"},
     {"id": "Nostalgia Electrics", "text":"27-Nostalgia Electrics"},
