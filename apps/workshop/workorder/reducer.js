@@ -274,7 +274,7 @@ export default function reducer(state = stateConst, action){
                 failure_objects = []
             }
 
-            const mixed_failures = [...article_failures, failure_objects]
+            const mixed_failures = [...article_failures, ...failure_objects]
             return {
                 ...state,
                 article_failures: mixed_failures
