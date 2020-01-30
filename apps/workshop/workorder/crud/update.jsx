@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 
 @connect((store) => {

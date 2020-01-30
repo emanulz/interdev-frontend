@@ -240,6 +240,90 @@ export default function reducer(state = stateConst, action){
 
     switch (action.type){
 
+        case 'SET_DB_APPLIANCES':
+        {
+            let appliance_objects = action.payload
+            let index_offset = article_types.length
+            if(appliance_objects){
+                appliance_objects = appliance_objects.map((item, index) => {
+                    return {
+                        id: item.name, text: `${index + 1 + index_offset}-${item.name}`
+                    }
+                })
+            }else{
+                appliance_objects = []
+            }
+
+            const mixed_appliances = [...article_types, ...appliance_objects]
+            return {
+                ...state,
+                article_types: mixed_appliances
+            }
+        }
+
+        case 'SET_DB_ARTICLE_FAILURES':
+        {
+            let failure_objects = action.payload
+            let index_offset = article_failures.length
+            if(failure_objects){
+                failure_objects = failure_objects.map((item, index) => {
+                    return {
+                        id: item.name, text: `${index + 1 + index_offset}-${item.name}`
+                    }
+                })
+            }else{
+                failure_objects = []
+            }
+
+            const mixed_failures = [...article_failures, failure_objects]
+            return {
+                ...state,
+                article_failures: mixed_failures
+            }
+        }
+
+        case 'SET_DB_BRANDS':
+        {
+            let brand_objects = action.payload
+            let index_offset = article_brands.length
+            if(brand_objects){
+                brand_objects = brand_objects.map((item, index) => {
+                    return {
+                        id: item.name, text: `${index + 1 + index_offset}-${item.name}`
+                    }
+                })
+            }else{
+                brand_objects = []
+            }
+
+            const mixed_brands = [...article_brands, ...brand_objects]
+            return {
+                ...state,
+                article_brands: mixed_brands
+            }
+        }
+
+        case 'SET_DB_COLORS':
+        {
+            let color_objects = action.payload
+            let index_offset = article_colors.length 
+            if(color_objects){
+                color_objects = color_objects.map((item, index) => {
+                    return {
+                        id: item.name, text: `${index + 1 + index_offset}-${item.name}`
+                    }
+                })
+            }else{
+                color_objects = []
+            }
+
+            const mixed_colors = [...article_colors, ...color_objects]
+            return {
+                ...state,
+                article_colors: mixed_colors
+            }
+        }
+
         case 'SET_STOCK_CHECK':
         {
             return{

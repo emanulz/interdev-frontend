@@ -6,6 +6,7 @@ import Client from '../../../general/clients/clients.jsx'
 import {checkCashAdvance} from '../../actions.js'
 import CreateWorkOrderButtons from './createWorkOrderButtons.jsx'
 import ReceiptPanel from '../../../general/receipt/receiptPanel/receiptPanel.jsx'
+import {getItemDispatch, generalSave} from '../../../../../utils/api'
 
 @connect((store)=>{
     return {
@@ -37,11 +38,47 @@ export default class Form extends React.Component {
     componentWillMount(){
         this.props.dispatch({type:'CLEAR_WORK_ORDER'})
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'})
+        //get colors
+        const kwargs_colors = {
+            url: '/api/administration/?limit=1000&group=colores',
+            method: 'get',
+            successType: 'SET_DB_COLORS',
+            errorType: 'SET_DB_COLORS_REJECTED'
+        }
+        this.props.dispatch(getItemDispatch(kwargs_colors))
+
+        //get brands
+        const kwargs_brands = {
+            url: '/api/administration/?limit=1000&group=marcas',
+            method: 'get',
+            successType: 'SET_DB_BRANDS',
+            errorType: 'SET_DB_BRANDS_REJECTED'
+        }
+        this.props.dispatch(getItemDispatch(kwargs_brands))
+
+        //get appliances
+        const kwargs_appliances = {
+            url: '/api/administration/?limit=1000&group=electrodomesticos',
+            method: 'get',
+            successType: 'SET_DB_APPLIANCES',
+            errorType: 'SET_DB_APPLIANCES_REJECTED'
+        }
+        this.props.dispatch(getItemDispatch(kwargs_appliances))
+
+        //get failures
+        const kwargs_failures = {
+            url: '/api/administration/?limit=1000&group=desperfectos',
+            method: 'get',
+            successType: 'SET_DB_ARTICLE_FAILURES',
+            errorType: 'SET_DB_ARTICLE_FAILURES_REJECTED'
+        }
+        this.props.dispatch(getItemDispatch(kwargs_failures))
     }
 
     componentWillUnmount(){
         this.props.dispatch({type:'CLEAR_WORK_ORDER'})
         this.props.dispatch({type:'CASH_ADVANCE_CLEAR'}) 
+
     }
 
     componentWillUpdate(){

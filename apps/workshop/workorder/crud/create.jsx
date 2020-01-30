@@ -3,7 +3,7 @@
  */
 import React from 'react'
 
-import {setItem, getSingleItemDispatch, loadGlobalConfig} from '../../../../utils/api.js'
+import {setItem} from '../../../../utils/api.js'
 import Unauthorized from '../../../../general/unauthorized.jsx'
 import {connect} from 'react-redux'
 import Form from './form/form.jsx'

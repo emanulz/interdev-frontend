@@ -13,7 +13,7 @@ import {connect} from 'react-redux'
 export default class Main extends React.Component {
 
     toggleWidth(){
-        this.props.dispatch({type: 'TOGGLE_FULL_WIDTH', payload: ''})
+        this.props.dispatch({type: 'TOGGLE_FULL_WIDTH'})
     }
 
     //Main layout
