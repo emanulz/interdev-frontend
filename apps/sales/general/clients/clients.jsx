@@ -80,6 +80,7 @@ export default class Clients extends React.Component {
 
       // SET THE CLIENT PRICE LIST
       // const priceList = nextProps.client.category.pred_price_list ? nextProps.client.category.pred_price_list : 1
+    
       const priceList = this.determinPriceList(nextProps.client.client, nextProps.client.category)
       this.props.dispatch({type: 'SET_PRICE_LIST', payload: priceList})
 
