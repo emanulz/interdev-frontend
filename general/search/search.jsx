@@ -74,6 +74,7 @@ export default class SearchPanel extends React.Component {
           <input
             id={`${this.props.namespace}-input-field`}
             className='mousetrap'
+            autoComplete='off'
             type='text'
             placeholder='Ingrese un texto para buscar...'
             onChange={this.inputKeyPress.bind(this)}
