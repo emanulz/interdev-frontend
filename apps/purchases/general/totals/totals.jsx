@@ -47,7 +47,6 @@ export default class Totals extends React.Component {
     }
 
     render (){
-        console.log("Full cart --> ", this.props.full_cart)
         let cart_total_raw = this.props.cartTotal;
         if (isNaN(cart_total_raw)){
             cart_total_raw = parseFloat(this.props.purchase_total)
