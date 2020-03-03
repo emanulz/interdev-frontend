@@ -15,7 +15,8 @@ import {connect} from 'react-redux'
         orderTransport: store.purchase_cart.orderTransport,
         purchase_total: store.purchase.purchase_total,
         order_transport: store.purchase.order_transport,
-        purchase: store.purchase
+        purchase: store.purchase,
+        full_cart: store.purchase_cart,
     }
 })
 export default class Totals extends React.Component {
@@ -46,22 +47,26 @@ export default class Totals extends React.Component {
     }
 
     render (){
-
+        console.log("Full cart --> ", this.props.full_cart)
         let cart_total_raw = this.props.cartTotal;
         if (isNaN(cart_total_raw)){
             cart_total_raw = parseFloat(this.props.purchase_total)
         }
         // console.log("Purchase in totals --> ", this.props.purchase)
+        cart_total_raw -= this.props.discountTotal
         let total = cart_total_raw.formatMoney(2, ',', '.')
         
 
-        const subtotal = this.props.cartSubtotal.formatMoney(2, ',', '.')
+       
+
         let taxes = this.props.cartTaxes
+
+        const subtotal = cart_total_raw - this.props.discountTotal + taxes + this.props.orderTransport
         
-        if(!this.props.cartTaxes){
-            taxes = parseFloat(this.props.purchase_total) - (this.props.cartSubtotal -this.props.discountTotal) - parseFloat(this.props.order_transport)
-            taxes.formatMoney(2, ',', '.')
-        }
+        // if(!this.props.cartTaxes){
+        //     taxes = parseFloat(this.props.purchase_total) - (this.props.cartSubtotal -this.props.discountTotal) - parseFloat(this.props.order_transport)
+        //     taxes.formatMoney(2, ',', '.')
+        // }
 
         return <div className='totals'>
             <div className='totals-data-row'>

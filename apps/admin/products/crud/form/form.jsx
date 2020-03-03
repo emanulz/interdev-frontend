@@ -73,7 +73,7 @@ class Form extends React.Component {
       const lookUp = this.props.location.pathname.split('/').pop()
 
       if (nextProps.product.id == '0000000000' && !nextProps.productFetching) {
-        console.log('PRODUCT FETCHING', nextProps.productFetching)
+        // console.log('PRODUCT FETCHING', nextProps.productFetching)
         const kwargs = {
           lookUpField: 'code',
           url: '/api/productslist/',
