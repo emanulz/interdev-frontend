@@ -254,6 +254,20 @@ export default function reducer(state = stateConst, action) {
       }
     } // case
 
+    case 'SET_PRODUCT_USE_INVENTORY_AS_DEFAULT':
+    {
+
+      const product = {...state.productActive}
+      product['inventory_enabled'] = true
+      product['inventory_negative'] = false
+
+      return {
+        ...state,
+        productActive: product
+      }
+
+    }
+
   } // switch
 
   return state // default return

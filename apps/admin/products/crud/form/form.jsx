@@ -10,7 +10,8 @@ import Select2 from 'react-select2-wrapper'
     productFetching: store.productsAdmin.productFetching,
     products: store.productsAdmin.products,
     productDepartments: store.productDepartments.productDepartments,
-    productSubDepartments: store.productSubDepartments.productSubDepartments
+    productSubDepartments: store.productSubDepartments.productSubDepartments,
+    conf: store.config.globalConf
   }
 })
 
@@ -42,6 +43,10 @@ class Form extends React.Component {
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getItemDispatch(productSubDepartmentKwargs))
+
+    if (this.props.conf.useInventoryAsDefault) {
+      this.props.dispatch({type: 'SET_PRODUCT_USE_INVENTORY_AS_DEFAULT', payload: ''})
+    }
     // *******************************************************************
 
     if (this.props.update) {
@@ -92,6 +97,7 @@ class Form extends React.Component {
 
       }
     }
+
   }
 
   // HANDLE INPUT CHANGE
