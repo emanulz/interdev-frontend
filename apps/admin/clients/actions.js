@@ -70,7 +70,6 @@ export function saveClientLocal(kwargs, resolve, reject) {
 }
 
 export function updateClientLocal(kwargs, resolve, reject) {
-
   const item = kwargs.item
   const url = kwargs.url
   return function(dispatch) {
@@ -104,7 +103,6 @@ export function updateClientLocal(kwargs, resolve, reject) {
       })
   }
 }
-
 
 export function deleteClientLocal(kwargs, resolve, reject) {
 

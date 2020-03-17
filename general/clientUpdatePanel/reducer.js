@@ -13,12 +13,27 @@ const clientModel = {
   canton: '',
   district: '',
   town: '',
-  other_address: ''
+  other_address: '',
+  locals: []
+}
+
+const clientLocalModel = {
+  id: '0000000000',
+  province: '',
+  canton: '',
+  district: '',
+  town: '',
+  other_address: '',
+  phone_number: '',
+  cellphone_number: '',
+  email: '',
+  commercial_name: ''
 }
 
 const stateConst = {
   isVisible: false,
-  clientActive: clientModel
+  clientActive: clientModel,
+  clientLocalActive: clientLocalModel
 }
 
 export default function reducer(state = stateConst, action) {
@@ -46,6 +61,14 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         clientActive: action.payload
+      }
+    }
+
+    case 'SET_UPDATE_CLIENT_LOCAL':
+    {
+      return {
+        ...state,
+        clientLocalActive: action.payload
       }
     }
 
