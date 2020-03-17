@@ -313,7 +313,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
             })
         }
         const new_line = JSON.parse(JSON.stringify(active_line))
-        console.log("Scorching new line --> ", new_line)
+        // console.log("Scorching new line --> ", new_line)
         const discount = new_line.MontoDescuento!==null ? parseFloat(new_line.DescuentoTotalLinea) : 0
         const unit_price = (parseFloat(new_line.PrecioUnitario)-discount/parseFloat(new_line.Cantidad)).toFixed(5)
 
@@ -329,7 +329,7 @@ export default class Purchase_PriceAdjuster extends React.Component {
                     'cost_based'
 
                 )
-                console.log("updating price 1 --> ", new_pricing)
+                // console.log("updating price 1 --> ", new_pricing)
                 new_line.target_utility_1 = new_pricing['real_utility']
                 new_line.wanted_price_1 = new_pricing['new_price']
                 this.props.dispatch({type:"UPDATE_PROD_PRICING", payload: new_line})
