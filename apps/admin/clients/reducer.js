@@ -144,9 +144,12 @@ export default function reducer(state = stateConst, action) {
     {
       const client = state.clientActive
       client.canton = ''
+      const clientLocal = state.clientLocalActive
+      clientLocal.canton = ''
       return {
         ...state,
-        clientActive: client
+        clientActive: client,
+        clientLocalActive: clientLocal
       }
     } // case
 
@@ -154,9 +157,12 @@ export default function reducer(state = stateConst, action) {
     {
       const client = state.clientActive
       client.district = ''
+      const clientLocal = state.clientLocalActive
+      clientLocal.district = ''
       return {
         ...state,
-        clientActive: client
+        clientActive: client,
+        clientLocalActive: clientLocal
       }
     } // case
 
@@ -164,9 +170,12 @@ export default function reducer(state = stateConst, action) {
     {
       const client = state.clientActive
       client.town = ''
+      const clientLocal = state.clientLocalActive
+      clientLocal.town = ''
       return {
         ...state,
-        clientActive: client
+        clientActive: client,
+        clientLocalActive: clientLocal
       }
     } // case
 

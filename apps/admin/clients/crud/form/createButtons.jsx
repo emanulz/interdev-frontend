@@ -58,7 +58,6 @@ class CreateButtons extends React.Component {
       ok: 'Permanecer',
       cancel: 'No guardar'
     })
-
   }
 
   render() {

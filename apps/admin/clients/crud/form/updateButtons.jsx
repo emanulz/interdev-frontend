@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {checkClientData} from '../../actions'
+import {checkClientData, updateClientLocal} from '../../actions'
 import {updateItem, getItemDoubleDispatch, deleteItem} from '../../../../../utils/api'
 import { withRouter } from 'react-router-dom'
 import alertify from 'alertifyjs'
@@ -11,7 +11,8 @@ import alertify from 'alertifyjs'
     clients: store.clientsAdmin.clients,
     clientOld: store.clientsAdmin.clientActiveOld,
     user: store.user.user,
-    permissions: store.clientsAdmin.permissions
+    permissions: store.clientsAdmin.permissions,
+    clientLocal: store.clientsAdmin.clientLocalActive
   }
 })
 
@@ -25,48 +26,67 @@ class UpdateButtons extends React.Component {
     const clients = this.props.clients
     const fieldsOk = checkClientData(client, clients)
 
-    if (fieldsOk) {
-      const kwargs = {
-        url: `/api/clients/${client.id}/`,
-        baseUrl: `/api/clients/`,
-        item: client,
-        logCode: 'CLIENT_UPDATE',
-        logDescription: 'Actualización de cliente',
-        logModel: 'CLIENT',
-        user: user,
-        itemOld: clientOld,
-        sucessMessage: 'Cliente actualizado Correctamente.',
-        errorMessage: 'Hubo un error al actualizar el Cliente, intente de nuevo.',
-        dispatchType: 'CLEAR_CLIENT'
-      }
+    const localObject = this.props.clientLocal
+    localObject['client'] = this.props.client.id
 
-      if (redirect) {
-        kwargs.redirectUrl = '/admin/clients'
-        kwargs.history = this.props.history
-      }
-
-      const _this = this
-
-      const updatePromise = new Promise((resolve, reject) => {
-        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-        _this.props.dispatch(updateItem(kwargs))
-        resolve()
-      })
-
-      updatePromise.then(() => {
-        const clientKwargs = {
-          url: '/api/clients',
-          successType: 'FETCH_CLIENTS_FULFILLED',
-          successType2: 'CLEAR_CLIENT',
-          errorType: 'FETCH_CLIENTS_REJECTED'
-        }
-        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-        _this.props.dispatch(getItemDoubleDispatch(clientKwargs))
-      }).catch((err) => {
-        console.log(err)
-      })
-
+    const localKwargs = {
+      url: `/api/clientlocal/${localObject.id}/`,
+      item: localObject,
+      errorMessage: 'Hubo un error al actualizar el Local del Cliente, intente de nuevo.',
+      dispatchType: 'CLEAR_CLIENT_LOCAL_ADDING_UPDATING'
     }
+    const updateLocalPromise = new Promise((resolve, reject) => {
+      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch(updateClientLocal(localKwargs, resolve, reject))
+    })
+    const _this = this
+
+    updateLocalPromise.then(() => {
+      const __this = _this
+      if (fieldsOk) {
+        const kwargs = {
+          url: `/api/clients/${client.id}/`,
+          baseUrl: `/api/clients/`,
+          item: client,
+          logCode: 'CLIENT_UPDATE',
+          logDescription: 'Actualización de cliente',
+          logModel: 'CLIENT',
+          user: user,
+          itemOld: clientOld,
+          sucessMessage: 'Cliente actualizado Correctamente.',
+          errorMessage: 'Hubo un error al actualizar el Cliente, intente de nuevo.',
+          dispatchType: 'CLEAR_CLIENT'
+        }
+
+        if (redirect) {
+          kwargs.redirectUrl = '/admin/clients'
+          kwargs.history = this.props.history
+        }
+
+        const updatePromise = new Promise((resolve, reject) => {
+          __this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          __this.props.dispatch(updateItem(kwargs))
+          resolve()
+        })
+
+        updatePromise.then(() => {
+          const clientKwargs = {
+            url: '/api/clients',
+            successType: 'FETCH_CLIENTS_FULFILLED',
+            successType2: 'CLEAR_CLIENT',
+            errorType: 'FETCH_CLIENTS_REJECTED'
+          }
+          __this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+          __this.props.dispatch(getItemDoubleDispatch(clientKwargs))
+        }).catch((err) => {
+          console.log(err)
+        })
+
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
+
   }
 
   deleteBtn() {

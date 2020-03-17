@@ -10,7 +10,7 @@ import ListClientProd from '../list/list-client-prod.jsx'
   }
 })
 
-class Form extends React.Component {
+class Form2 extends React.Component {
   // REACT METHODS
 
   // HANDLE INPUT CHANGE
@@ -74,4 +74,4 @@ class Form extends React.Component {
 }
 
 // EXPORT THE CLASS WITH ROUTER
-export default withRouter(Form)
+export default withRouter(Form2)

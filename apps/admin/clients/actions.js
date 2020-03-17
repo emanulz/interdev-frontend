@@ -81,7 +81,9 @@ export function updateClientLocal(kwargs, resolve, reject) {
       data: item
     })
       .then((response) => {
-        alertify.alert('Completado', kwargs.sucessMessage)
+        if (kwargs.sucessMessage) {
+          alertify.alert('Completado', kwargs.sucessMessage)
+        }
         dispatch({type: kwargs.dispatchType, payload: ''})
         dispatch({type: 'FETCHING_DONE', payload: ''})
         resolve()

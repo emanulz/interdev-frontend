@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { setItem } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
+import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
@@ -12,7 +13,8 @@ import Select2 from 'react-select2-wrapper'
     cantons: store.addresses.cantons,
     districts: store.addresses.districts,
     clientCategories: store.clientCategories.clientCategories,
-    towns: store.addresses.towns
+    towns: store.addresses.towns,
+    clientLocal: store.clientsAdmin.clientLocalActive
   }
 })
 
@@ -72,6 +74,15 @@ class Form extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.client.id != prevProps.client.id && this.props.client.id != '0000000000') {
+      // HERE SET LOCAL TO DEFAULT
+      const local = this.props.client.locals[0]
+      this.props.dispatch({type: 'SET_CLIENT_LOCAL', payload: local})
+      this.props.dispatch({type: 'SET_CLIENT_LOCAL_UPDATING', payload: local})
+    }
+  }
+
   // HANDLE INPUT CHANGE
   handleInputChange(event) {
 
@@ -112,6 +123,58 @@ class Form extends React.Component {
     client[name] = value
 
     this.props.dispatch({type: 'SET_CLIENT', payload: client})
+  }
+
+  handleInputLocalChange(event) {
+    const target = event.target
+    let value
+    // const value = target.type === 'checkbox' ? target.checked : target.value
+    switch (target.type) {
+      case 'checkbox':
+      {
+        value = target.checked
+        break
+      }
+      case 'number':
+      {
+        value = parseFloat(target.value)
+          ? parseFloat(target.value)
+          : 0
+        break
+      }
+      case 'select-one':
+      {
+        this.clearAdrresses(target.name)
+        value = target.value
+        break
+      }
+      default:
+      {
+        value = target.value
+      }
+    }
+
+    const name = target.name
+
+    const clientLocal = {
+      ...this.props.clientLocal
+    }
+
+    clientLocal[name] = value
+
+    this.props.dispatch({type: 'SET_CLIENT_LOCAL', payload: clientLocal})
+  }
+
+  handleLocalChange(ev) {
+    const local = this.props.client.locals.find(local => {
+      return local.id == ev.target.value
+    })
+    if (local) {
+      this.props.dispatch({type: 'SET_CLIENT_LOCAL', payload: local})
+      this.props.dispatch({type: 'SET_CLIENT_LOCAL_UPDATING', payload: local})
+    } else {
+      alertify.alert('ERROR', 'No se encontró el local a editar.')
+    }
   }
 
   clearAdrresses(name) {
@@ -165,38 +228,59 @@ class Form extends React.Component {
     })
 
     // Filter the cantons data Based on the province selection stored in client active item
-    const filteredCantons = cantons.filter(el => {
-      return el.province_code == this.props.client.province
-    })
-
+    let filteredCantons = []
+    if (this.props.update) {
+      filteredCantons = cantons.filter(el => {
+        return el.province_code == this.props.clientLocal.province
+      })
+    } else {
+      filteredCantons = cantons.filter(el => {
+        return el.province_code == this.props.client.province
+      })
+    }
     // map the filtered cantons and return items to render in Select2
     const cantonsData = filteredCantons.map(canton => {
       return {text: `${canton.code} - ${canton.name}`, id: canton.code}
     })
 
     // Filter the districts data Based on the province and canton selection stored in client active item
-    const filteredDistricts = districts.filter(el => {
-      return el.province_code == this.props.client.province && el.canton_code == this.props.client.canton
-    })
-
+    let filteredDistricts = []
+    if (this.props.update) {
+      filteredDistricts = districts.filter(el => {
+        return el.province_code == this.props.clientLocal.province && el.canton_code == this.props.clientLocal.canton
+      })
+    } else {
+      filteredDistricts = districts.filter(el => {
+        return el.province_code == this.props.client.province && el.canton_code == this.props.client.canton
+      })
+    }
     // map the filtered districts and return items to render in Select2
     const districtsData = filteredDistricts.map(district => {
       return {text: `${district.code} - ${district.name}`, id: district.code}
     })
 
     // Filter the towns data Based on the province and canton selection stored in client active item
-    const filteredTowns = towns.filter(el => {
-      return el.province_code == this.props.client.province && el.canton_code == this.props.client.canton && el.district_code == this.props.client.district
-    })
-
+    let filteredTowns = []
+    if (this.props.update) {
+      filteredTowns = towns.filter(el => {
+        return el.province_code == this.props.clientLocal.province && el.canton_code == this.props.clientLocal.canton && el.district_code == this.props.clientLocal.district
+      })
+    } else {
+      filteredTowns = towns.filter(el => {
+        return el.province_code == this.props.client.province && el.canton_code == this.props.client.canton && el.district_code == this.props.client.district
+      })
+    }
     // map the filtered towns and return items to render in Select2
     const townsData = filteredTowns.map(town => {
       return {text: `${town.code} - ${town.name}`, id: town.code}
     })
 
-    const locals = this.props.client.locals.map(local => {
-      return {text: `${local.commercial_name ? local.commercial_name : 'SIN NOMBRE COMERCIAL'}`, id: local.id}
-    })
+    let locals = []
+    if (this.props.client.locals) {
+      locals = this.props.client.locals.map(local => {
+        return {text: `${local.commercial_name ? local.commercial_name : 'SIN NOMBRE COMERCIAL'}`, id: local.id}
+      })
+    }
 
     const localsDiv = locals.length > 1 && this.props.update
       ? <div className='form-group'>
@@ -204,9 +288,9 @@ class Form extends React.Component {
         <Select2
           name='locals'
           data={locals}
-          value={this.props.client.canton}
+          value={this.props.clientLocal.id}
           className='form-control'
-          // onSelect={this.handleInputChange.bind(this)}
+          onSelect={this.handleLocalChange.bind(this)}
           options={{
             placeholder: 'Elija un Local...',
             noResultsText: 'Sin elementos'
@@ -231,7 +315,7 @@ class Form extends React.Component {
         <label>Desc Predet %</label>
         <input value={this.props.client.pred_discount} name='pred_discount'
           onChange={this.handleInputChange.bind(this)}
-          type='number'
+          type='text'
           className='form-control' onFocus={this.fieldFocus.bind(this)} />
       </div>
 
@@ -296,8 +380,9 @@ class Form extends React.Component {
 
         <div className='form-group'>
           <label>Email</label>
-          <input value={this.props.client.email} name='email' onChange={this.handleInputChange.bind(this)} type='email'
-            className='form-control' />
+          <input value={this.props.update ? this.props.clientLocal.email : this.props.client.email} name='email'
+            onChange={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
+            type='email' className='form-control' />
         </div>
 
       </div>
@@ -312,15 +397,17 @@ class Form extends React.Component {
           <div className='col-xs-6 first'>
 
             <label>Teléfono</label>
-            <input value={this.props.client.phone_number} name='phone_number' onChange={this.handleInputChange.bind(this)}
+            <input value={this.props.update ? this.props.clientLocal.phone_number : this.props.client.phone_number} name='phone_number'
+              onChange={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
               type='text'
               className='form-control' />
           </div>
 
           <div className='col-xs-6 second'>
             <label>Celular</label>
-            <input value={this.props.client.cellphone_number} name='cellphone_number'
-              onChange={this.handleInputChange.bind(this)}
+            <input value={this.props.update ? this.props.clientLocal.cellphone_number : this.props.client.cellphone_number}
+              name='cellphone_number'
+              onChange={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
               type='text'
               className='form-control' />
           </div>
@@ -330,9 +417,9 @@ class Form extends React.Component {
           <Select2
             name='province'
             data={provincesData}
-            value={this.props.client.province}
+            value={this.props.update ? this.props.clientLocal.province : this.props.client.province}
             className='form-control'
-            onSelect={this.handleInputChange.bind(this)}
+            onSelect={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
             options={{
               placeholder: 'Elija una Provincia...',
               noResultsText: 'Sin elementos'
@@ -345,9 +432,9 @@ class Form extends React.Component {
           <Select2
             name='canton'
             data={cantonsData}
-            value={this.props.client.canton}
+            value={this.props.update ? this.props.clientLocal.canton : this.props.client.canton}
             className='form-control'
-            onSelect={this.handleInputChange.bind(this)}
+            onSelect={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
             options={{
               placeholder: 'Elija un Cantón...',
               noResultsText: 'Sin elementos'
@@ -360,9 +447,9 @@ class Form extends React.Component {
           <Select2
             name='district'
             data={districtsData}
-            value={this.props.client.district}
+            value={this.props.update ? this.props.clientLocal.district : this.props.client.district}
             className='form-control'
-            onSelect={this.handleInputChange.bind(this)}
+            onSelect={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
             options={{
               placeholder: 'Elija un Distrito...',
               noResultsText: 'Sin elementos'
@@ -375,9 +462,9 @@ class Form extends React.Component {
           <Select2
             name='town'
             data={townsData}
-            value={this.props.client.town}
+            value={this.props.update ? this.props.clientLocal.town : this.props.client.town}
             className='form-control'
-            onSelect={this.handleInputChange.bind(this)}
+            onSelect={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
             options={{
               placeholder: 'Elija un Barrio...',
               noResultsText: 'Sin elementos'
@@ -387,8 +474,9 @@ class Form extends React.Component {
 
         <div className='form-group'>
           <label>Otras Señas</label>
-          <input value={this.props.client.other_address} name='other_address' onChange={this.handleInputChange.bind(this)} type='text'
-            className='form-control' />
+          <input value={this.props.update ? this.props.clientLocal.other_address : this.props.client.other_address} name='other_address'
+            onChange={this.props.update ? this.handleInputLocalChange.bind(this) : this.handleInputChange.bind(this)}
+            type='text' className='form-control' />
         </div>
 
       </div>
@@ -422,13 +510,6 @@ class Form extends React.Component {
         {predPriceListGroup}
 
         <div className='form-group row input-block'>
-          {/* <div className='col-xs-6 first'>
-
-            <label>Paga Impuestos</label>
-            <input checked={this.props.client.pays_taxes} name='pays_taxes' onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-
-          </div> */}
 
           <div className='col-xs-6 first'>
 

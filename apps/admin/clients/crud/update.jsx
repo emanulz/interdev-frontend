@@ -80,7 +80,7 @@ export default class Update extends React.Component {
               </TabPanel>
 
               <TabPanel tabId='two'>
-                <Form3 key={`${code}3`} update />
+                <Form3 key={`${code}2`} update />
               </TabPanel>
 
               <TabPanel tabId='three'>
@@ -103,8 +103,9 @@ export default class Update extends React.Component {
               </TabPanel>
 
               <TabPanel tabId='two'>
-                <Form3 key={`${code}3`} update />
+                <Form3 key={`${code}2`} update />
               </TabPanel>
+
             </Tabs>
 
           </div>
