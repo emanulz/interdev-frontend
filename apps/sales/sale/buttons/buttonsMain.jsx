@@ -172,8 +172,8 @@ export default class Buttons extends React.Component {
     this.props.dispatch({type: 'SHOW_REINVOICES_PANEL', payload: -1})
   }
 
-  savePresaleAsReserve() {
-
+  showSaveReservePanel() {
+    this.props.dispatch({type: 'SHOW_SAVE_RESERVE_PANEL', payload: -1})
   }
 
   newSale() {
@@ -322,7 +322,8 @@ export default class Buttons extends React.Component {
 
     const saveReserveBtn = this.props.savePresaleAsReserve && this.props.user.is_superuser && (this.props.isPresaleLoaded || this.props.isQuotationLoaded)
       ? <button
-        onClick={this.savePresaleAsReserve.bind(this)}
+        onClick={this.showSaveReservePanel.bind(this)}
+        id='save-as-reserve-btn'
         style={{
           'height': '48px',
           'width': '49%',
@@ -339,6 +340,7 @@ export default class Buttons extends React.Component {
     const buttons = this.props.disabled
       ? <div>
         <button
+          id='show-invoice-again-btn'
           onClick={this.showInvoicePanel.bind(this)}
           style={{
             'height': '48px',

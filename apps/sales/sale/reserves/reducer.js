@@ -2,6 +2,7 @@
 const stateConst = {
   reserves: [],
   isVisible: false,
+  isSavePanelVisible: false,
   reserveId: '',
   reserveUser: {}
 }
@@ -54,6 +55,22 @@ export default function reducer(state = stateConst, action) {
       return {
         ...state,
         isVisible: false
+      }
+    } // case
+
+    case 'SHOW_SAVE_RESERVE_PANEL':
+    {
+      return {
+        ...state,
+        isSavePanelVisible: true
+      }
+    } // case
+
+    case 'HIDE_SAVE_RESERVE_PANEL':
+    {
+      return {
+        ...state,
+        isSavePanelVisible: false
       }
     } // case
 
