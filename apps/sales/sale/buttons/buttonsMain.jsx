@@ -322,6 +322,7 @@ export default class Buttons extends React.Component {
 
     const saveReserveBtn = this.props.savePresaleAsReserve && this.props.user.is_superuser && (this.props.isPresaleLoaded || this.props.isQuotationLoaded)
       ? <button
+        disabled={this.props.disabled}
         onClick={this.showSaveReservePanel.bind(this)}
         id='save-as-reserve-btn'
         style={{
