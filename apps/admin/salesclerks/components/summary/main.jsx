@@ -19,7 +19,7 @@ import DateRangePicker from '../date/main.jsx'
 export default class SalesclerkSummary extends React.Component {
 
   componentWillMount() {
-    this.props.dispatch({type: "FETCHING_STARTED"})
+    // this.props.dispatch({type: "FETCHING_STARTED"})
     this.props.dispatch({type: "SET_DATE_AS_TODAY"})
   }
 
@@ -84,7 +84,7 @@ export default class SalesclerkSummary extends React.Component {
       successType: 'FETCH_GENERAL_DATA_FULFILLED',
       errorType: 'FETCH_GENERAL_DATA_REJECTED'
     }
-
+    this.props.dispatch({type: "FETCHING_STARTED"})
     console.log("Final kwargs --> ", kwargs)
     this.props.dispatch(getSingleItemDispatch(kwargs))
   }
