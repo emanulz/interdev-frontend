@@ -9,7 +9,7 @@ const defaultExtras = {
   id: '-1',
   product_id: '-1',
   mass: 0,
-  reseller_comission: 0
+  reseller_commision: 0
 }
 
 const productModel = {
@@ -170,9 +170,13 @@ export default function reducer(state = stateConst, action) {
     case 'SET_PRODUCT':
     {
       if(!action.payload.product_extras){
-        action.payload.product_extras = defaultExtras
+          action.payload.product_extras = defaultExtras
+              
+      }else {
+        if(action.payload.product_extras[0]){
+          action.payload.product_extras = action.payload.product_extras[0]
+        }
       }
-      console.log("Results SET PROD--> ", action.payload.product_extras);
       return {
         ...state,
         productActive: action.payload,

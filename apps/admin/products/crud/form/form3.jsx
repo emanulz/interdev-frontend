@@ -44,7 +44,7 @@ class Form3 extends React.Component {
     let product = {
       ...this.props.product
     }
-    if(name==='mass' || name ==='reseller_comission'){
+    if(name==='mass' || name ==='reseller_commision'){
       product['product_extras'][name] = value
     }else{
       product[name] = value
@@ -70,7 +70,7 @@ class Form3 extends React.Component {
     if(this.props.update){
     extra_field_prods = <div className='col-xs-4'>
         <label>Comisión dist.</label>
-        <input value={this.props.product.product_extras.reseller_comission} name='reseller_comission' onChange={this.handleInputChange.bind(this)}
+        <input value={this.props.product.product_extras.reseller_commision} name='reseller_commision' onChange={this.handleInputChange.bind(this)}
           type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
 
         <label>Masa (kg)</label>
