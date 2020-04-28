@@ -302,10 +302,10 @@ export function setItem(kwargs) {
           dispatch({type: kwargs.dispatchType2, payload: response.data.results[0]})
         }
         
-        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'FETCHING_DONE'})
 
       } else {
-        dispatch({type: kwargs.dispatchErrorType, payload: ''})
+        dispatch({type: kwargs.dispatchErrorType})
         alertify.alert('Error', `No hay ${kwargs.modelName} con el valor de ${kwargs.lookUpName}: ${kwargs.lookUpValue}`,
           function() { history.push(redirectUrl) })
       }
@@ -337,10 +337,10 @@ export function setItemById(kwargs) {
           dispatch({type: kwargs.dispatchType2, payload: response.data})
         }
 
-        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'FETCHING_DONE'})
 
       } else {
-        dispatch({type: kwargs.dispatchErrorType, payload: ''})
+        dispatch({type: kwargs.dispatchErrorType})
         alertify.alert('Error', `No hay ${kwargs.modelName} con el valor de ${kwargs.lookUpName}: ${kwargs.lookUpValue}`,
           function() { history.push(redirectUrl) })
       }

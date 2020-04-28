@@ -260,8 +260,7 @@ class Form2 extends React.Component {
             noResultsText: 'Sin elementos'
           }}
         />
-        {/* <input value={this.props.product.factor_IVA} name='factor_IVA' onChange={this.handleInputChange.bind(this)}
-          type='number' className='form-control' onFocus={this.fieldFocus.bind(this)} /> */}
+
       </div>
       : <div />
 
@@ -438,100 +437,7 @@ class Form2 extends React.Component {
 
         <span>Inventarios</span>
         <hr />
-        {/*
-        <div className='form-group row input-block'>
-
-          <div className='col-xs-6 first'>
-
-            <label>Impuesto 1</label>
-
-            <Select2
-              name='tax_code'
-              value={this.props.product.tax_code}
-              data={taxesData}
-              className='form-control'
-              onSelect={this.handleInputChange.bind(this)}
-              options={{
-                placeholder: 'Elija un Impuesto...',
-                noResultsText: 'Sin elementos'
-              }}
-            />
-          </div>
-
-          <div className='col-xs-4'>
-            <label>Valor 1 %</label>
-            <input value={this.props.product.taxes} name='taxes' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-
-          <div className='col-xs-2 second'>
-            <label>Activo?</label>
-            <input checked={this.props.product.use_taxes} name='use_taxes'
-              onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
-        </div>
-
-        <div className='form-group row input-block'>
-
-          <div className='col-xs-6 first'>
-            <label>Impuesto 2</label>
-            <Select2
-              name='tax_code2'
-              value={this.props.product.tax_code2}
-              data={taxesData}
-              className='form-control'
-              onSelect={this.handleInputChange.bind(this)}
-              options={{
-                placeholder: 'Elija un Impuesto...',
-                noResultsText: 'Sin elementos'
-              }}
-            />
-          </div>
-
-          <div className='col-xs-4'>
-            <label>Valor 2 %</label>
-            <input value={this.props.product.taxes2} name='taxes2' onChange={this.handleInputChange.bind(this)}
-              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-          </div>
-
-          <div className='col-xs-2 second'>
-            <label>Activo?</label>
-            <input checked={this.props.product.use_taxes2} name='use_taxes2'
-              onChange={this.handleInputChange.bind(this)}
-              type='checkbox' className='form-control' />
-          </div>
-        </div> */}
-        {/* <div className='form-group row input-block'>
-        <div className='col-xs-6 first'>
-          <label>Impuesto 3</label>
-          <Select2
-            name='taxes_code3'
-            value={this.props.product.taxes_code3}
-            data={taxesData}
-            className='form-control'
-            onSelect={this.handleInputChange.bind(this)}
-            options={{
-              placeholder: 'Elija un Impuesto...',
-              noResultsText: 'Sin elementos'
-            }}
-          />
-        </div>
-
-        <div className='col-xs-4'>
-          <label>Valor 3 %</label>
-          <input value={this.props.product.taxes3} name='taxes3' onChange={this.handleInputChange.bind(this)}
-            type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
-        </div>
-
-        <div className='col-xs-2 second'>
-          <label>Activo?</label>
-          <input checked={this.props.product.use_taxes3} name='use_taxes3'
-            onChange={this.handleInputChange.bind(this)}
-            type='checkbox' className='form-control' />
-        </div>
-      </div> */}
-
+        
         <div className='form-group row input-block'>
 
           <div className='col-xs-6 second'>

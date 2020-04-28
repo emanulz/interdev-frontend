@@ -48,13 +48,14 @@ class UpdateButtons extends React.Component {
 
       const _this = this
       const updatePromise = new Promise((resolve, reject) => {
-        _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+        _this.props.dispatch({type: 'FETCHING_STARTED'})
         const formData = new FormData()
         formData.append('file', this.props.file)
         formData.append('prod', JSON.stringify(kwargs.item))
         kwargs.item = formData
+        console.log("PATCH PROD DATA --> ", kwargs)
         _this.props.dispatch(updateItem(kwargs))
-        // resolve()
+
       })
 
       updatePromise.then(() => {

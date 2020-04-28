@@ -111,12 +111,7 @@ export default class Update extends React.Component {
     return <div className='create heigh100'>
       <div className='create-edit-header'>
         <h1>EDITAR PRODUCTO</h1>
-        {/* <Link to={`/admin/products/edit/${this.props.previousProduct}`}>
-          <span className={`previous fa fa-chevron-circle-left`} />
-        </Link>
-        <Link to={`/admin/products/edit/${this.props.nextProduct}`}>
-          <span className='next fa fa-chevron-circle-right' />
-        </Link> */}
+
         <span onClick={this.toggleBar.bind(this)} className='list fa fa-list' />
       </div>
       <br />

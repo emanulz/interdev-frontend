@@ -26,7 +26,7 @@ export function checkProductData(product, products) {
 }
 
 export function determinAmounts(product, fieldName, value, XMLVersion, usesSimpleUtility) {
-  console.log('USES SIMPLE UTILITY determinAmounts:', usesSimpleUtility)
+
   switch (fieldName) {
 
     case 'sell_price1':
@@ -138,10 +138,14 @@ export function determinAmounts(product, fieldName, value, XMLVersion, usesSimpl
     }
     case 'is_used':
     {
-      console.log('HERRREEEEEE USED')
       product = taxesChanged(product, XMLVersion, usesSimpleUtility)
       return product
     }
+    case 'mass':
+      {
+        product.product_extras.mass = value
+        return product
+      }
 
   }
 

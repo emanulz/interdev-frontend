@@ -19,9 +19,9 @@ class Form extends React.Component {
   // REACT METHODS
   componentWillMount() {
 
-    this.props.dispatch({type: 'CLEAR_PRODUCT', payload: ''})
-    this.props.dispatch({type: 'CLEAR_IMAGE_FILE', payload: ''})
-    this.props.dispatch({type: 'CLEAR_NEXT_PREV_PRODUCT', payload: ''})
+    this.props.dispatch({type: 'CLEAR_PRODUCT'})
+    this.props.dispatch({type: 'CLEAR_IMAGE_FILE'})
+    this.props.dispatch({type: 'CLEAR_NEXT_PREV_PRODUCT'})
 
     // Fetch the elements of the Departments model and dispatch to reducer
     // *******************************************************************
@@ -30,7 +30,7 @@ class Form extends React.Component {
       successType: 'FETCH_PRODUCT_DEPARTMENTS_FULFILLED',
       errorType: 'FETCH_PRODUCT_DEPARTMENTS_REJECTED'
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch(getItemDispatch(productDepartmentKwargs))
     // *******************************************************************
 
@@ -65,7 +65,7 @@ class Form extends React.Component {
         redirectUrl: '/admin/products',
         history: this.props.history
       }
-      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch({type: 'FETCHING_STARTED'})
       this.props.dispatch(setItem(kwargs))
 
     }

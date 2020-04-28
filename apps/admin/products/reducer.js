@@ -5,6 +5,13 @@ const defaultPermissions = {
   delete: 'unfetched'
 }
 
+const defaultExtras = {
+  id: '-1',
+  product_id: '-1',
+  mass: 0,
+  reseller_comission: 0
+}
+
 const productModel = {
   id: '0000000000',
   code: '',
@@ -62,13 +69,14 @@ const productModel = {
   factor_IVA: 1,
   rate_code_IVA: '08',
   tax_code_IVA: '01',
-  taxes_IVA: 13
+  taxes_IVA: 13,
+  product_extras: defaultExtras
 }
 
 const stateConst = {
   products: [],
   productActive: productModel,
-  productActiveOld: productModel,
+  // productActiveOld: productModel,
   nextProduct: 0,
   previousProduct: 0,
   permissions: defaultPermissions,
@@ -161,18 +169,14 @@ export default function reducer(state = stateConst, action) {
 
     case 'SET_PRODUCT':
     {
+      if(!action.payload.product_extras){
+        action.payload.product_extras = defaultExtras
+      }
+      console.log("Results SET PROD--> ", action.payload.product_extras);
       return {
         ...state,
         productActive: action.payload,
         productFetching: false
-      }
-    }
-
-    case 'SET_PRODUCT_OLD':
-    {
-      return {
-        ...state,
-        productActiveOld: action.payload
       }
     }
 
