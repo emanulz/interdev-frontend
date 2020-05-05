@@ -77,7 +77,7 @@ export default function reducer(state = stateConst, action) {
     } // case
     case 'CLIENT_SIC_DATA_FETCHED':
     {
-      if(!action.payload){
+      if(!action.payload || action.payload === 'NOT-FOUND'){
         return {
           ...state
         }

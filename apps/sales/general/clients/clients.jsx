@@ -90,7 +90,7 @@ export default class Clients extends React.Component {
       const getNewLineDataPromise = new Promise((resolve, reject) => {
         const cartItems = _this.props.cartItems
         const codesData = cartItems.map(item => {
-          console.log('ITEM IN UPDATE', item)
+
           // return item.product.code
           return {
             code: item.product.code,
@@ -110,7 +110,7 @@ export default class Clients extends React.Component {
             prod_data: codesData
           }
         }
-        console.log('PRICESS DETAILS SENT', kwargs.data)
+        // console.log('PRICESS DETAILS SENT', kwargs.data)
         if (codesData.length) {
           _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
           getProductsList(kwargs, resolve, reject)
@@ -118,7 +118,7 @@ export default class Clients extends React.Component {
       })
 
       getNewLineDataPromise.then((data) => {
-        console.log('PRICESS DETAILS AFTER CLIENT UPDATE', data)
+        // console.log('PRICESS DETAILS AFTER CLIENT UPDATE', data)
         // _this.props.dispatch({type: 'SET_PRICES_DETAILS', payload: data})
         _this.props.dispatch({type: 'SET_MASS_PRICES_DATA', payload: data})
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
@@ -129,14 +129,6 @@ export default class Clients extends React.Component {
         console.log(err)
       })
 
-      // SETS VALUE OF DEFAULT DISCOUNT TO FIELD OR 0
-      // if (nextProps.client.pred_discount) {
-      //   document.getElementById('discountField').value = discount
-      //   document.getElementById('discountField').disabled = true
-      // } else {
-      //   document.getElementById('discountField').value = ''
-      //   document.getElementById('discountField').disabled = false
-      // }
 
     }
   }
@@ -274,35 +266,7 @@ export default class Clients extends React.Component {
 
   }
 
-  // determinClientName() {
-  //   if (this.props.clientSelected.client) {
-  //     if (this.props.clientSelected.client.code == '00') {
-  //       return this.props.extraClient.name
-  //     }
-  //     return this.props.clientSelected.client.name
-  //   }
-  //   return 'Cliente'
-  // }
 
-  // determinClientLastName() {
-  //   if (this.props.clientSelected.client) {
-  //     if (this.props.clientSelected.client.code == '00') {
-  //       return this.props.extraClient.last_name
-  //     }
-  //     return this.props.clientSelected.client.last_name
-  //   }
-  //   return 'General'
-  // }
-
-  // determinClientEmail() {
-  //   if (this.props.clientSelected.client) {
-  //     if (this.props.clientSelected.client.code == '00') {
-  //       return this.props.extraClient.email
-  //     }
-  //     return this.props.clientSelected.client.email ? this.props.clientSelected.client.email : 'Sin Correo Registrado'
-  //   }
-  //   return 'Sin Correo Registrado'
-  // }
 
   // Main Layout
   render() {

@@ -34,8 +34,7 @@ export default function reducer(state = stateConst, action) {
     {
       
       //if the payload includes a code is an already existent code
-      
-      if(!action.payload){
+      if(!action.payload || action.payload === 'NOT-FOUND'){
         return {
           ...state
         }

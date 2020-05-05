@@ -28,14 +28,14 @@ export default class ClientCreateSave extends React.Component {
     const _this = this
 
     const updatePromise = new Promise((resolve, reject) => {
-      _this.props.dispatch({ type: 'FETCHING_STARTED', payload: '' })
+      _this.props.dispatch({ type: 'FETCHING_STARTED'})
       _this.props.dispatch(saveClient(kwargs, resolve, reject))
     })
     // SAVE PROCESS
     updatePromise.then((data) => {
-      this.props.dispatch({ type: 'CLEAR_CREATE_CLIENT', payload: '' })
-      this.props.dispatch({ type: 'HIDE_CREATE_CLIENT_PANEL', payload: '' })
-      this.props.dispatch({ type: 'FETCHING_DONE', payload: '' })
+      this.props.dispatch({ type: 'CLEAR_CREATE_CLIENT'})
+      this.props.dispatch({ type: 'HIDE_CREATE_CLIENT_PANEL'})
+      this.props.dispatch({ type: 'FETCHING_DONE'})
       // THEN SET THE NEW CLIENT AS ACTIVE
       let newClient
       try {
