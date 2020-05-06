@@ -210,11 +210,16 @@ export function determinClientLastName(client, extraClient, localData = null) {
   return 'General'
 }
 
-export function determinClientEmail(client, extraClient, localData = null) {
+export function determinClientEmail(client, extraClient, localData = null, localSelected = null) {
   if (client.client) { client = client.client }
   if (client) {
     if (client.code == '00') {
       return extraClient.email
+    }
+    if (localSelected == null && client.locals){
+      return client.locals[0].email
+    } else if (localSelected){
+      return localSelected.email
     }
     if (localData) {
       if (localData.email) {
