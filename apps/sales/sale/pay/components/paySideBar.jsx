@@ -169,9 +169,9 @@ export default class PaySideBar extends React.Component {
     for(let raw of activities_raw){
       const bits = raw.split('_')
       if(bits.length === 2){
-        activities_data.push(<option value={ bits[0] }>{ bits[0] + bits[1] }</option>)
+        activities_data.push(<option key={bits[0]} value={ bits[0] }>{ bits[0] + bits[1] }</option>)
       }else{
-        activities_data.push(activities_data.push(<option value={ bits[0] }>{ bits[0] }</option>))
+        activities_data.push(activities_data.push(<option key={bits[0]} value={ bits[0] }>{ bits[0] }</option>))
       }
     }
 
@@ -220,8 +220,8 @@ export default class PaySideBar extends React.Component {
           <div className='pay-tag left'>TIPO COMP :</div>
           <div className='pay-dropdown right'>
             <select value={this.props.isInvoice} onChange={this.setTicketOrInvoice.bind(this)}>
-              <option value='TIQUETE'>Tiquete Electrónico</option>
-              <option value='FACTURA'>Factura Electrónica</option>
+              <option key='1' value='TIQUETE'>Tiquete Electrónico</option>
+              <option key='2' value='FACTURA'>Factura Electrónica</option>
             </select>
           </div>
         </div>

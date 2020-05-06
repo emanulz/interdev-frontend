@@ -217,7 +217,9 @@ export function determinClientEmail(client, extraClient, localData = null, local
       return extraClient.email
     }
     if (localSelected == null && client.locals){
-      return client.locals[0].email
+      if (client.locals[0]) {
+        return client.locals[0].email
+      }
     } else if (localSelected){
       return localSelected.email
     }
