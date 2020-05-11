@@ -26,7 +26,7 @@ export default class GeneralReports extends React.Component {
     }
     this.props.dispatch({ type: 'FETCHING_STARTED'})
     this.props.dispatch(getItemDispatch(productDepartmentKwargs))
-    console.log("Get sub deps")
+
     this.props.dispatch(getItemDispatch(productSubDepartmentKwargs)) 
   }
 

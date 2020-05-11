@@ -35,13 +35,23 @@ const stateConst = {
     resend_email_panel_visible: false,
     mailing_target: {},
     mail_body: '',
-    mail_subject: ''
+    mail_subject: '',
+    uses_commision_report: false
   }
   
 
 export default function reducer(state=stateConst, action){
     switch(action.type) {
         
+        case 'USES_COMISSION_SUCCESFUL':
+        {
+            console.log("Action payload --> ", action)
+            return {
+                ...state,
+                uses_commision_report: action.payload
+            }
+        }
+
         case 'MAILING_REPORTS_SUCCESSFUL':
         {
             return {

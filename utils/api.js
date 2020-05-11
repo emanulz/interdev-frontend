@@ -724,7 +724,7 @@ export function loadGlobalConfig(section, name, success, fail) {
         dispatch({type: success, payload: {data: data, section: section}})
       }).catch(function(error) {
         dispatch({type: fail, payload: error})
-        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'FETCHING_DONE'})
       })
     }
   }

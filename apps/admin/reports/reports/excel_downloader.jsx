@@ -6,6 +6,7 @@ import Select2 from 'react-select2-wrapper'
 import {getItemDispatch } from '../../../../utils/api.js'
 import D151 from './d151_downloader.jsx'
 import PerClient from './per_client_sales.jsx'
+import {loadGlobalConfig} from '../../../../utils/api'
 
 @connect(store => {
   return {
@@ -17,6 +18,7 @@ import PerClient from './per_client_sales.jsx'
     useLegacyd151: store.config.globalConf.useLegacyd151,
     departments: store.generalReports.departments,
     subDepartments: store.generalReports.subDepartments,
+    uses_commision_report: store.generalReports.uses_commision_report,
     selectedDepartment: store.generalReports.selectedDepartment,
     warehouses: store.generalReports.warehouses,
     selectedWarehouse: store.generalReports.selectedWarehouse,
@@ -76,6 +78,8 @@ export default class ExcelFetcher extends React.Component {
       errorType: 'REPORTS_WAREHOUSES_REJECTED',
     }
     this.props.dispatch(getItemDispatch(warehouses_dispatch));
+
+    this.props.dispatch(loadGlobalConfig('sales', 'trackEmployeeComission', 'USES_COMISSION_SUCCESFUL', 'USES_COMISSION_REJECTED'))
   }
 
   onStartDateChange(e) {
@@ -369,10 +373,16 @@ export default class ExcelFetcher extends React.Component {
       </div>
     }
 
-
+    console.log('Props -->', this.props)
+    console.log("FRACK HERE --> ", this.props.uses_commision_report)
     let trincheReport1 = ''
     if(this.props.isTrinche){
       trincheReport1 = <a href={`/reportsExcel/trinchesalesinsight/?start=${s}&end=${e}`}>Trincheras</a>
+    }
+
+    let commision_report = ''
+    if(this.props.uses_commision_report){
+      commision_report = <a href={`/reportsExcel/commisionreport/?start=${s}&end=${e}`}>Comisiones</a>
     }
 
     return <div className='excel-fetcher' >
@@ -402,6 +412,7 @@ export default class ExcelFetcher extends React.Component {
         {trincheReport1}
         <a href={`/reportsExcel/clientscatalog`}>Catálogo Clientes</a>
         <a href='/reportsExcel/productscatalog'>Lista de Precios</a>
+        {commision_report}
         {inventoryValue}
         {creditsReport}
         {toPayReport}
