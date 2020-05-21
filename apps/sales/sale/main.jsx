@@ -31,6 +31,7 @@ import {loadGlobalConfig} from '../../../utils/api.js'
 import { socketDispatcher } from './socketDispatcher.js'
 import {productSearchDoubleClick, clientSearchDoubleClick, productSearchClick, productSearchActive, productSetAction} from '../general/search/actions.js'
 import {loadPresaleItem} from './presales/actions.js'
+import ConfigLoader from '../../../general/configLoader/configLoader.jsx'
 
 import {connect} from 'react-redux'
 const uuidv1 = require('uuid/v1')
@@ -49,9 +50,9 @@ export default class Sale extends React.Component {
     // this.props.dispatch(loadGlobalConfig('inventory', 'sales_warehouse', 'FETCH_SALES_WAREHOUSE_FULFILLED', 'FETCH_SALES_WAREHOUSE_REJECTED'))
     this.props.dispatch(loadGlobalConfig('inventory', 'workshop_warehouse', 'FETCH_WORKSHOP_WAREHOUSE_FULFILLED', 'FETCH_WORKSHOP_WAREHOUSE_REJECTED'))
     // this.props.dispatch(loadGlobalConfig('inventory', 'reserves_warehouse', 'FETCH_RESERVES_WAREHOUSE_FULFILLED', 'FETCH_RESERVES_WAREHOUSE_REJECTED'))
-    this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
-    this.props.dispatch(loadGlobalConfig('installed_apps', false, 'FETCH_INSTALLED_APPS_FULFILLED', 'FETCH_INSTALLED_APPS_REJECTED'))
-    this.props.dispatch(loadGlobalConfig('receipt_styles', false, 'FETCH_RECEIPT_STYLES_FULFILLED', 'FETCH_RECEIPT_STYLES_REJECTED'))
+    // this.props.dispatch(loadGlobalConfig('global_conf', false, 'FETCH_GLOBAL_CONF_FULFILLED', 'FETCH_GLOBAL_CONF_REJECTED'))
+    // this.props.dispatch(loadGlobalConfig('installed_apps', false, 'FETCH_INSTALLED_APPS_FULFILLED', 'FETCH_INSTALLED_APPS_REJECTED'))
+    // this.props.dispatch(loadGlobalConfig('receipt_styles', false, 'FETCH_RECEIPT_STYLES_FULFILLED', 'FETCH_RECEIPT_STYLES_REJECTED'))
 
     this.props.dispatch({type: 'SALE_PANEL_MOUNTED', payload: ''})
 
@@ -106,6 +107,10 @@ export default class Sale extends React.Component {
     const productModel = this.props.conf.mobileSales ? 'productCompact' : 'product'
 
     return <div className='sale'>
+      <ConfigLoader sectionName='global_conf' successDispatch='FETCH_GLOBAL_CONF_FULFILLED' failDispatch='FETCH_GLOBAL_CONF_REJECTED' />
+      <ConfigLoader sectionName='installed_apps' successDispatch='FETCH_INSTALLED_APPS_FULFILLED' failDispatch='FETCH_INSTALLED_APPS_REJECTED' />
+      <ConfigLoader sectionName='receipt_styles' successDispatch='FETCH_RECEIPT_STYLES_FULFILLED' failDispatch='FETCH_RECEIPT_STYLES_REJECTED' />
+
       <RegisterClosure />
       <Currency />
       <Content />

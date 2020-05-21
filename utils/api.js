@@ -164,6 +164,38 @@ export function getItemDispatch(kwargs) {
 
 }
 
+export function getItemDispatchAndCacheIt(kwargs) {
+
+  const url = kwargs.url
+  const successType = kwargs.successType
+  const errorType = kwargs.errorType
+  const cacheName = kwargs.cacheName
+
+  return function(dispatch) {
+    if (localStorage.getItem(`interdev_${cacheName}`) === null) {
+      axios.get(url).then(function(response) {
+        localStorage.setItem(`interdev_${cacheName}`, JSON.stringify(response.data.results))
+        dispatch({type: successType, payload: response.data.results})
+        dispatch({type: 'FETCHING_DONE'})
+      }).catch(function(error) {
+        localStorage.removeItem(`interdev_${cacheName}`)
+        console.log(error.response.status)
+        // IF THE ERROR IS UNAUTORIZED PAGE WILL SHOW THE MESSAGE
+        dispatch({type: 'FETCHING_DONE'})
+        if (error.response.status != 403) {
+          alertify.alert('ERROR', `Error al obtener un valor del API, por favor intente de nuevo o comuníquese con el
+          administrador del sistema con el siguiente error: ${error}`)
+          dispatch({type: errorType, payload: error})
+        }
+      })
+    } else {
+      dispatch({type: successType, payload: JSON.parse(localStorage.getItem(`interdev_${cacheName}`))})
+      dispatch({type: 'FETCHING_DONE'})
+    }
+  }
+
+}
+
 export function getItemsListDispatch(kwargs) {
 
   const url = kwargs.url

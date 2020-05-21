@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {productSelected} from '../actions.js'
-import { getItemDispatch } from '../../../../../utils/api'
+import { getItemDispatch, getItemDispatchAndCacheIt } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
 
 @connect((store) => {
@@ -31,26 +31,29 @@ export default class GenerlItem extends React.Component {
     const IVARatesKwargs = {
       url: `/api/administration/?group=IVA_RATES`,
       successType: 'FETCH_IVA_RATES_FULFILLED',
-      errorType: 'FETCH_IVA_RATES_REJECTED'
+      errorType: 'FETCH_IVA_RATES_REJECTED',
+      cacheName: 'IVA_RATES'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(IVARatesKwargs))
+    this.props.dispatch(getItemDispatchAndCacheIt(IVARatesKwargs))
 
     const IVACodesKwargs = {
       url: `/api/administration/?group=IVA_CODES`,
       successType: 'FETCH_IVA_CODES_FULFILLED',
-      errorType: 'FETCH_IVA_CODES_REJECTED'
+      errorType: 'FETCH_IVA_CODES_REJECTED',
+      cacheName: 'IVA_CODES'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(IVACodesKwargs))
+    this.props.dispatch(getItemDispatchAndCacheIt(IVACodesKwargs))
 
     const IVAFactorsKwargs = {
       url: `/api/administration/?group=IVA_FACTORS`,
       successType: 'FETCH_IVA_FACTORS_FULFILLED',
-      errorType: 'FETCH_IVA_FACTORS_REJECTED'
+      errorType: 'FETCH_IVA_FACTORS_REJECTED',
+      cacheName: 'IVA_FACTORS'
     }
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(getItemDispatch(IVAFactorsKwargs))
+    this.props.dispatch(getItemDispatchAndCacheIt(IVAFactorsKwargs))
   }
 
   hidePanel() {

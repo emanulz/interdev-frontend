@@ -3,7 +3,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import SaveBtn from '../../save/save.jsx'
 
-
 @connect((store) => {
   return {
     cart: store.cart,
