@@ -7,8 +7,11 @@ import { setItemById } from '../../../../utils/api'
 // import {getSaleMovements} from '../../../../utils/getSaleMovements'
 import { withRouter } from 'react-router-dom'
 
+import { loadClientToShow } from '../../clientCard/actions.js'
+
 @connect((store) => {
   return {
+    client: store.clients.clientActive,
     saleRecord: store.saleMovements.saleRecord
   }
 })
@@ -124,6 +127,11 @@ class MovementsList extends React.Component {
     </tr>
   }
 
+  showClientInfo() {
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(loadClientToShow(this.props.saleRecord.client.code))
+  }
+
   // Render the product
   render() {
 
@@ -152,6 +160,32 @@ class MovementsList extends React.Component {
     return <div className='list-container'>
 
       <h1>Movimientos de {typeText} # {saleObjectToUse.consecutive}</h1>
+
+      <div className='unpaidSales-header'>
+        <div className='unpaidSales-header-tittle'>
+          <div>
+            Cliente
+          </div>
+          <div>
+            Saldo Total:
+          </div>
+          <div>
+            Datos Cliente:
+          </div>
+        </div>
+        <div className='unpaidSales-header-data'>
+          <div>
+            {`${this.props.client.code} - ${this.props.client.name} ${this.props.client.last_name}`}
+          </div>
+          <div>
+            ₡ {Math.abs(parseFloat(this.props.client.balance)).formatMoney(2, ',', '.')}
+          </div>
+          <div>
+            <button onClick={this.showClientInfo.bind(this)}>Consultar</button>
+          </div>
+        </div>
+      </div>
+
       <div className='row movements'>
         <div className='col-xs-12 col-sm-8'>
           <table className='table table-bordered'>

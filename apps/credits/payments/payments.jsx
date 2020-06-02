@@ -6,6 +6,8 @@ import {getClientPendingSales} from '../../../utils/getClientPendingSales.js'
 import {formatDate} from '../../../utils/formatDate.js'
 import {savePayment, getClientVouchers} from './actions.js'
 
+import { loadClientToShow } from '../clientCard/actions.js'
+
 @connect((store) => {
   return {
     paymentArray: store.payments.paymentArray,
@@ -293,6 +295,11 @@ export default class Update extends React.Component {
 
   }
 
+  showClientInfo() {
+    const element = document.getElementById('clientCard')
+    element.classList.add('visible')
+  }
+
   render() {
 
     // ********************************************************************
@@ -344,7 +351,7 @@ export default class Update extends React.Component {
 
       <div className='payment-header'>
         <div className='payment-header-client'>
-          <h1>CLIENTE: {client.code} - {client.name} {client.last_name}</h1>
+          <h1>CLIENTE: {client.code} - {client.name} {client.last_name} <button style={{'marginLeft': '10px'}} onClick={this.showClientInfo.bind(this)}>Datos</button></h1>
         </div>
         <div className='payment-header-container'>
           <div className='payment-header-container-pay-method'>

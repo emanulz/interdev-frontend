@@ -8,6 +8,8 @@ import { setItem } from '../../../../utils/api'
 import {Link} from 'react-router-dom'
 import {formatDate} from '../../../../utils/formatDate.js'
 
+import { loadClientToShow } from '../../clientCard/actions.js'
+
 @connect((store) => {
   return {
     client: store.clients.clientActive,
@@ -75,6 +77,11 @@ export default class UnpaidSales extends React.Component {
 
   }
 
+  showClientInfo() {
+    const element = document.getElementById('clientCard')
+    element.classList.add('visible')
+  }
+
   // Render the product
   render() {
 
@@ -102,7 +109,10 @@ export default class UnpaidSales extends React.Component {
             Cliente
           </div>
           <div>
-          Saldo Total:
+            Saldo Total:
+          </div>
+          <div>
+            Datos Cliente:
           </div>
         </div>
         <div className='unpaidSales-header-data'>
@@ -111,6 +121,9 @@ export default class UnpaidSales extends React.Component {
           </div>
           <div>
             ₡ {Math.abs(parseFloat(this.props.client.balance)).formatMoney(2, ',', '.')}
+          </div>
+          <div>
+            <button onClick={this.showClientInfo.bind(this)}>Consultar</button>
           </div>
         </div>
       </div>

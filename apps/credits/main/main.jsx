@@ -14,6 +14,7 @@ import TopBar from '../layout/topBar/topBar.jsx'
 import SideMenu from '../layout/sideMenu/sideMenu.jsx'
 import Fetching from '../../../general/fetching/fetching.jsx'
 import Invoice from '../invoice/invoicePanel/invoicePanel.jsx'
+import ClientCard from '../clientCard/clientCard.jsx'
 
 import '../appstyles/main.sass'
 
@@ -46,6 +47,7 @@ export default class Main extends React.Component {
             {routes}
             {fetching}
             <Invoice />
+            <ClientCard />
           </div>
         </div>
       </div>

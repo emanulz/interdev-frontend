@@ -11,6 +11,8 @@ import Pagination from '../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
 import SearchAdmin from '../../../general/search/searchAdmin.jsx'
 
+import { loadClientToShow } from '../clientCard/actions.js'
+
 @connect((store) => {
   return {
     fething: store.fetching.fetching,
@@ -35,6 +37,11 @@ export default class List extends React.Component {
 
     this.props.dispatch(getPaginationItemDispatch(clientKwargs))
 
+  }
+
+  showClientInfo(item) {
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(loadClientToShow(item))
   }
 
   // Render the product
@@ -74,10 +81,18 @@ export default class List extends React.Component {
     }
 
     const headerOrder = [
+
       {
         field: 'code',
         text: 'Código',
         type: 'primaryNoEdit'
+      }, {
+        field: 'code',
+        text: 'Cliente',
+        type: 'function_on_click',
+        idUnique: 2,
+        textToRender: 'Ver',
+        onClickFunction: this.showClientInfo
       }, {
         field: 'name',
         text: 'Nombre',
