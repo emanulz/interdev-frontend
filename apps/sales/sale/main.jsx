@@ -116,7 +116,8 @@ export default class Sale extends React.Component {
       <Content />
       <Aside />
       <Search modelText='Producto' model={productModel} namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
-        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction} />
+        onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage setAction={productSetAction}
+        usePerLocalProds={this.props.conf.usePerLocalProds} />
       <Search modelText='Cliente' model='client' namespace='clientSearch' onRowDoubleClick={clientSearchDoubleClick} />
       <PayPanel />
       <Presales />

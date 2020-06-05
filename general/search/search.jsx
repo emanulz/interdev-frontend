@@ -51,7 +51,10 @@ export default class SearchPanel extends React.Component {
   searchAction() {
     const text = this.props.searchText
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
-    this.props.dispatch(searchItem(text, this.props.model, this.props.namespace))
+    const kwargs = {
+      'usePerLocalProds': this.props.usePerLocalProds
+    }
+    this.props.dispatch(searchItem(text, this.props.model, this.props.namespace, null, null, null, kwargs))
   }
 
   render() {

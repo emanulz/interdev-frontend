@@ -4,7 +4,7 @@
 import alertify from 'alertifyjs'
 import axios from 'axios'
 
-export function searchItem(text, model, namespace, clientId, presaleType, notDeleted) {
+export function searchItem(text, model, namespace, clientId, presaleType, notDeleted, kwargs = {}) {
   if (model == 'productCompact') { model = 'product' }
   if (!text.length) {
     alertify.alert('ERROR', `Debe digitar una búsqueda válida.`)
@@ -28,7 +28,8 @@ export function searchItem(text, model, namespace, clientId, presaleType, notDel
     search_key: newstr,
     clientId: clientId,
     presale_type: presaleTypeInner,
-    not_deleted: notDeleted
+    not_deleted: notDeleted,
+    kwargs: kwargs
   }
   // console.log('DATAAAA', data)
   return function(dispatch) {
