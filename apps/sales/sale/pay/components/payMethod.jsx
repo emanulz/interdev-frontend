@@ -14,7 +14,7 @@ export default class PayMethod extends React.Component {
 
   clickChangePayMethod(method, ev) {
 
-    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales, this.props.config.overrideXMLversion))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales, this.props.config.overrideXMLversion, this.props.config.usesNewExemptionProcess))
     this.props.dispatch(updateReturnedIVA(this.props.inCart, this.props.isExempt, this.props.config.overrideXMLversion, method, this.props.config.isHelathServiceProvider))
 
     this.props.dispatch({type: 'CHANGE_PAY_METHOD', payload: method})

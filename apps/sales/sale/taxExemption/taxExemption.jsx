@@ -6,6 +6,7 @@ import alertify from 'alertifyjs'
 
 @connect((store) => {
   return {
+    conf: store.config.globalConf,
     exemptionData: store.taxExemption.exemptionData,
     isVisible: store.taxExemption.isVisible,
     isExempt: store.taxExemption.isExempt}
@@ -47,6 +48,9 @@ export default class TaxExemptionPanel extends React.Component {
 
     const name = target.name
 
+    console.log('NAME-->', name)
+    console.log('VALUE-->', value)
+
     if (name == 'salePercent') {
       if (value > 100 || value < 0) {
         alertify.alert('ERROR', `El valor de porcentaje de exoneración no puede ser mayor a 100% o menor a 0%, el valor digitado fue ${value}%`)
@@ -76,6 +80,19 @@ export default class TaxExemptionPanel extends React.Component {
     }
   }
 
+  exemptSaleNew() {
+    const validaData = checkExemptionData(this.props.exemptionData)
+    if (validaData) {
+      const exemptData = {
+        percentage: this.props.exemptionData.salePercent
+      }
+      this.props.dispatch({type: 'EXEMPT_SALE', payload: true})
+      this.props.dispatch({type: 'SET_SALE_EXEMPT', payload: true})
+      this.props.dispatch({type: 'SET_SALE_EXEMPT_PERCENTAGE_NEW', payload: exemptData})
+      this.props.dispatch({type: 'HIDE_EXEMPTION_PANEL', payload: -1})
+    }
+  }
+
   notExemptSale() {
     this.props.dispatch({type: 'CLEAR_SALE_EXEMPT', payload: false})
     this.props.dispatch({type: 'CLEAR_EXEMPTION_DATA', payload: false})
@@ -96,6 +113,35 @@ export default class TaxExemptionPanel extends React.Component {
       {text: `05 - Zonas Francas`, id: '05'},
       {text: `99 - Otros`, id: '99'}
     ]
+
+    const exemptPercentageOptions = [
+      {text: `1%`, id: 1},
+      {text: `2%`, id: 2},
+      {text: `4%`, id: 4},
+      {text: `8%`, id: 8},
+      {text: `13%`, id: 13}
+    ]
+
+    const exemptPercentageInput = this.props.conf.usesNewExemptionProcess
+      ? <div className='form-group col-xs-8'>
+        <label>% Exoneración</label>
+        <Select2
+          name='salePercent'
+          data={exemptPercentageOptions}
+          value={this.props.exemptionData.salePercent}
+          className='form-control'
+          onSelect={this.handleInputChange.bind(this)}
+          options={{
+            placeholder: 'Elija un % de exoneración...',
+            noResultsText: 'Sin elementos'
+          }}
+        />
+      </div>
+      : <div className='form-group col-xs-8'>
+        <label>% Exoneración</label>
+        <input value={this.props.exemptionData.salePercent} name='salePercent' onChange={this.handleInputChange.bind(this)} type='number'
+          className='form-control' />
+      </div>
 
     const exemptButton = this.props.isExempt
       ? <button className='form-control btn btn-danger' onClick={this.notExemptSale.bind(this)} disabled={!this.props.isExempt || !this.props.isVisible}>
@@ -142,11 +188,9 @@ export default class TaxExemptionPanel extends React.Component {
           <input value={this.props.exemptionData.documentDate} name='documentDate' onChange={this.handleInputChange.bind(this)} type='date'
             className='form-control' />
         </div>
-        <div className='form-group col-xs-8'>
-          <label>% Exoneración</label>
-          <input value={this.props.exemptionData.salePercent} name='salePercent' onChange={this.handleInputChange.bind(this)} type='number'
-            className='form-control' />
-        </div>
+
+        {exemptPercentageInput}
+
         <div className='form-group col-xs-8 button-container'>
           {exemptButton}
         </div>

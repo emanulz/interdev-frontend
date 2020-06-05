@@ -32,7 +32,7 @@ export default class searchProducts extends React.Component {
     return <div className={visibleOrNot} onClick={this.panelClick.bind(this)}>
 
       <header className='cd-panel-header'>
-        <h1>Búsqueda de Producto</h1>
+        <h1>Búsqueda de Productoo</h1>
       </header>
 
       <div className='cd-panel-container'>

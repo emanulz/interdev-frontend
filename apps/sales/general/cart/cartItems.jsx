@@ -40,7 +40,7 @@ export default class CartItems extends React.Component {
   // On component update (The cart has been modified) calls the update totals method in actions file.
   componentDidUpdate(prevProps) {
 
-    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales, this.props.config.overrideXMLversion))
+    this.props.dispatch(updateTotals(this.props.inCart, this.props.isExempt, this.props.config.dontRoundInSales, this.props.config.overrideXMLversion, this.props.config.usesNewExemptionProcess))
 
     // Auto Scroll To end of container
     // const elem = document.getElementById('cart-body')

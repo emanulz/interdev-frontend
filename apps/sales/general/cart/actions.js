@@ -11,7 +11,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 // ------------------------------------------------------------------------------------------
 
 // This function updates totals the cart store item, generates new values according cart item objects, then push the to store
-export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
+export function updateTotals(inCart, exempt, dontRound, XMLVersion, usesNewExemptProcess = false) {
 
   console.log('XML VERSION updateTotals(CART ACTIONS FUNCTION): ', XMLVersion)
 
@@ -73,7 +73,7 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
   })
   // TODO Config for round or not
   // total = Math.round(subtotal + taxes)
-  const exemptAmount = exempt ? calcExemptTotal(inCart) : 0
+  const exemptAmount = exempt ? calcExemptTotal(inCart, usesNewExemptProcess) : 0
   total = exempt ? subtotal + taxes - exemptAmount : subtotal + taxes
   // returs a dispatch with a payload of the obtained values
 
@@ -99,16 +99,30 @@ export function updateTotals(inCart, exempt, dontRound, XMLVersion) {
   }
 }
 
-function calcExemptTotal(cart) {
+function calcExemptTotal(cart, usesNewExemptProcess = false) {
   let cartExemptTotal = 0
-  cart.forEach((item) => {
-    const product = item.product
-    const subTotal = item.subtotal
-    const iv1 = (parseFloat(product.taxes_IVA) > 0)
-      ? subTotal * (product.taxes_IVA / 100)
-      : 0
-    cartExemptTotal = cartExemptTotal + (iv1 * (parseFloat(item.exempt_percentage) / 100))
-  })
+  if (usesNewExemptProcess) {
+    cart.forEach((item) => {
+      const product = item.product
+      const subTotal = item.subtotal
+      const iv1 = (parseFloat(product.taxes_IVA) > 0)
+        ? subTotal * (product.taxes_IVA / 100)
+        : 0
+      const ivaToPay = (parseFloat(product.taxes_IVA) > 0)
+        ? subTotal * ((product.taxes_IVA - parseFloat(item.exempt_percentage)) / 100)
+        : 0
+      cartExemptTotal = cartExemptTotal + (iv1 - ivaToPay)
+    })
+  } else {
+    cart.forEach((item) => {
+      const product = item.product
+      const subTotal = item.subtotal
+      const iv1 = (parseFloat(product.taxes_IVA) > 0)
+        ? subTotal * (product.taxes_IVA / 100)
+        : 0
+      cartExemptTotal = cartExemptTotal + (iv1 * (parseFloat(item.exempt_percentage) / 100))
+    })
+  }
   return cartExemptTotal
 }
 

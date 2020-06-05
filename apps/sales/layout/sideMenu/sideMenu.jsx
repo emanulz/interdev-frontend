@@ -2,6 +2,7 @@
  * Module dependencies
  */
 import React from 'react'
+import alertify from 'alertifyjs'
 import Search from './components/search/search.jsx'
 import User from './components/user/user.jsx'
 // import ComposedItem from './components/items/composed.jsx'
@@ -17,6 +18,21 @@ export default class SideMenu extends React.Component {
 
   componentDidMount() {
     document.getElementById('loader').classList.remove('loader')
+  }
+
+  clearSalesChache() {
+    // ALERTIFY CONFIRM
+    alertify.confirm('LIMPIAR CONFIGURACIONES', `¿Desea limpiar las configuraciones almacenadas en caché y recargar la página? Esto debe hacerse 
+    solo en caso de comportamiento irregular del sistema o por recomendación de los administradores.`,
+    function() {
+      localStorage.clear()
+      location.reload()
+    }, function() {
+      return true
+    }).set('labels', {
+      ok: 'LIMPIAR',
+      cancel: 'CANCELAR'
+    })
   }
 
   // Main Layout
@@ -74,11 +90,12 @@ export default class SideMenu extends React.Component {
               <span className='fa fa-list-ol' />
               Movimientos</Link>
           </li>
-          {/* <li>
-            <Link to='/sales/presale'>
-              <span className='fa fa-user' />
-              Nueva Preventa</Link>
-          </li> */}
+          <li onClick={this.clearSalesChache.bind(this)}>
+            <a>
+              <span className='fa fa-refresh' />
+              Limpiar Caché De La Caja
+            </a>
+          </li>
 
         </ul>
       </div>

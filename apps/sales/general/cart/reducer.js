@@ -237,6 +237,24 @@ export default function reducer(state = stateConst, action) {
       }
     }
 
+    case 'SET_SALE_EXEMPT_PERCENTAGE_NEW':
+    {
+      const cartItems = [...state.cartItems]
+      const newCartItems = cartItems.map(item => {
+        if (item.product.taxes_IVA >= action.payload.percentage) {
+          item['exempt_percentage'] = action.payload.percentage
+        } else {
+          item['exempt_percentage'] = item.product.taxes_IVA
+        }
+        return item
+      })
+      return {
+        ...state,
+        cartItems: newCartItems,
+        globalExemptPercentage: action.payload.percentage
+      }
+    }
+
     case 'CLEAR_SALE_EXEMPT':
     {
       const cartItems = [...state.cartItems]
