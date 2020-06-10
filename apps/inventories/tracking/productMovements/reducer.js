@@ -6,12 +6,23 @@ const productModel = {
 const stateConst = {
   products: [],
   productActive: productModel,
-  inventoryMovements: []
+  inventoryMovements: [],
+  next: null,
+  previous: null
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'SET_INVENTORY_MOVEMENTS_PREV_NEXT':
+    {
+      return {
+        ...state,
+        next: action.payload.next,
+        previous: action.payload.previous
+      }
+    }
 
     case 'SET_PRODUCT_TRACKING':
     {

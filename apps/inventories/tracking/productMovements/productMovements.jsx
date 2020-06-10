@@ -4,7 +4,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import { setItem } from '../../../../utils/api'
-import {getInventoryMovements} from './actions'
+import {getInventoryMovements, getInventoryMovementsUrl} from './actions'
 import Select2 from 'react-select2-wrapper'
 // import Pagination from '../../../../general/pagination/pagination.jsx'
 // import ResultsPerPage from '../../../../general/pagination/resultsPerPage.jsx'
@@ -17,7 +17,9 @@ import Select2 from 'react-select2-wrapper'
     warehouseActive: store.warehouses.warehouseActive,
     departments: store.products.departments,
     subdepartments: store.products.subdepartments,
-    warehouse_id: store.userProfile.salesWarehouse
+    warehouse_id: store.userProfile.salesWarehouse,
+    next: store.inventoryMovements.next,
+    previous: store.inventoryMovements.previous
   }
 })
 
@@ -112,6 +114,16 @@ export default class MovementsList extends React.Component {
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch(getInventoryMovements(kwargs))
 
+  }
+
+  getInventoryMovementsPrevNext(url) {
+    const kwargs = {
+      url: url,
+      successType: 'FETCH_INVENTORY_MOVEMENTS_FULFILLED',
+      errorType: 'FETCH_INVENTORY_MOVEMENTS_REJECTED'
+    }
+    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch(getInventoryMovementsUrl(kwargs))
   }
 
   movementItem(movement) {
@@ -213,6 +225,13 @@ export default class MovementsList extends React.Component {
       return {text: `${warehouse.code} - ${warehouse.name}`, id: warehouse.id}
     })
 
+    const nextButton = this.props.next
+      ? <button className='next btn' onClick={this.getInventoryMovementsPrevNext.bind(this, this.props.next)}><span>Siguiente</span> <i className='fa fa-chevron-right' /></button>
+      : <div />
+    const previousButton = this.props.previous
+      ? <button className='previous btn' onClick={this.getInventoryMovementsPrevNext.bind(this, this.props.previous)}> <i className='fa fa-chevron-left' /> <span>Anterior</span></button>
+      : <div />
+
     return <div className='list-container'>
 
       <h1>Movimientos de Inventario:</h1>
@@ -246,6 +265,10 @@ export default class MovementsList extends React.Component {
             <ResultsPerPage url='/api/inventorymovementslist/' successType='FETCH_INVENTORY_MOVEMENTS_FULFILLED' errorType='FETCH_INVENTORY_MOVEMENTS_REJECTED' />
             <Pagination url='/api/inventorymovementslist/' successType='FETCH_INVENTORY_MOVEMENTS_FULFILLED' errorType='FETCH_INVENTORY_MOVEMENTS_REJECTED' />
           </div> */}
+          <div class='intentory-prev-next-btn-container'>
+            {previousButton}
+            {nextButton}
+          </div>
           <table className='table movements-table table-bordered'>
             <thead>
               <tr>
