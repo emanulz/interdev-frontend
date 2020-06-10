@@ -49,6 +49,7 @@ export default class SearchPanel extends React.Component {
   }
 
   searchAction() {
+    console.log("SEARCHING");
     const text = this.props.searchText
     this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     const kwargs = {

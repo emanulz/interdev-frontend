@@ -6,7 +6,9 @@ import CompactInvoice from '../compactInvoice/compactInvoice.jsx'
 @connect((store) => {
   return {
     panelVisible: store.printPresale.isVisible,
-    isFull: store.printPresale.isFull
+    isFull: store.printPresale.isFull,
+    config: store.config.globalConf,
+    sale: store.printPresale.presale
   }
 })
 export default class PrintPresalePanel extends React.Component {
@@ -27,7 +29,31 @@ export default class PrintPresalePanel extends React.Component {
     window.printDiv('print-presale-print', ['/static/fixedBundles/css/sales.css'])
   }
 
+  getZpl = () => {
+
+    let link = document.createElement('a');
+    link.href = `/api/presales/get_presale_zpl/?presale_consec=${this.props.sale.consecutive}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+  }
+
+
+  
+
   render() {
+    let zpl_button = ''
+    if (this.props.config) {
+      if (this.props.config.EnableZplDownloads) {
+        if (this.props.sale) {
+          
+          zpl_button = <i onClick={()=>{this.getZpl()}} className='fa fa-download' aria-hidden='true' />
+          
+        }
+      }
+
+    }
 
     const isVisible = (this.props.panelVisible)
       ? 'print-presale-panel is-visible'
@@ -51,7 +77,8 @@ export default class PrintPresalePanel extends React.Component {
             <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
             <i onClick={this.togglePanel.bind(this)} className='fa fa-file-text-o' aria-hidden='true' />
             <i onClick={this.printPanel.bind(this)} className='fa fa-print' aria-hidden='true' />
-            {/* <i onClick={this.toggleInvoice.bind(this)} className='fa fa-coffee' aria-hidden='true' /> */}
+            {zpl_button}
+            {/* {zpl_link} */}
           </div>
         </div>
 
