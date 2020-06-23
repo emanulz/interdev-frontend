@@ -22,6 +22,7 @@ import {loadGlobalConfig} from '../../../../utils/api'
     selectedDepartment: store.generalReports.selectedDepartment,
     warehouses: store.generalReports.warehouses,
     selectedWarehouse: store.generalReports.selectedWarehouse,
+    conf: store.config.globalConf
   }
 })
 export default class ExcelFetcher extends React.Component {
@@ -319,6 +320,11 @@ export default class ExcelFetcher extends React.Component {
       reserves = <a href={`/reportsExcel/reservesdestroyed/?start=${s}&end=${e}`}>Reservas Descartadas</a>
     }
 
+    let detailedSales = ''
+    if (this.props.conf.useDetailedSalesReport) {
+      detailedSales = <a href={`/reportsExcel/detailedsales/?start=${s}&end=${e}`}>Ventas Detalladas</a>
+    }
+
     let inventoryValue = ''
     if (this.props.installedApps.InventoriesAppInstalled) {
       inventoryValue = <a href='/reportsExcel/invvalue'>Valoración Inventario</a>
@@ -420,6 +426,7 @@ export default class ExcelFetcher extends React.Component {
         {rest_report}
         {bd_report}
         {reserves}
+        {detailedSales}
         <a href={`/reportsExcel/generalsaleslegacy/?start=${s}&end=${e}`}>General Ventas Antiguo</a>
         <a href={`/reportsExcel/generalpurchaseslegacy/?start=${s}&end=${e}`}>General Compras Antiguo</a>
       </div>

@@ -63,7 +63,7 @@ export default class ListPurchases  extends React.Component {
         }
 
         // ALERTIFY CONFIRM
-        alertify.confirm('Eliminar', `Desea marcar como pago el registro?
+        alertify.confirm('Pagar', `Desea marcar como pago el registro?
                                     Esta acción no se puede deshacer.`,
         function() {
         _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
