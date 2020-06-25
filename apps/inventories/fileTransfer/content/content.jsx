@@ -52,10 +52,10 @@ export default class Main extends React.Component {
       let prod = ''
       let cart = ''
       if(checkInv){
-        prod = <Product />
+        prod = <Product ignorePerLocals={true}/>
         cart = <Cart  />
       }else{
-        prod = <Product dontCheckInv/>
+        prod = <Product dontCheckInv ignorePerLocals={true}/>
         cart = <Cart dontCheckInv/>
       }
 

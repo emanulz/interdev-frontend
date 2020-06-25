@@ -31,22 +31,12 @@ export default class Product extends React.Component {
     this.codeInput.focus()
   }
 
-  componentDidUpdate() {
-    // this.codeInput.focus()
-  }
-
+ 
   componentWillMount() {
 
     // this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
     this.props.dispatch({type: 'CLEAR_PRODUCTS', payload: ''})
 
-    // const productKwargs = {
-    //   url: '/getproducts',
-    //   successType: 'FETCH_PRODUCTS_FULFILLED',
-    //   errorType: 'FETCH_PRODUCTS_REJECTED'
-    // }
-
-    // this.props.dispatch(getItemDispatch(productKwargs))
 
   }
 
@@ -365,7 +355,8 @@ export default class Product extends React.Component {
               data: {
                 clientId: _this.props.client.client.id,
                 prod_data: {
-                  code: code
+                  code: code,
+                  ignorePerLocals: this.props.ignorePerLocals ? this.props.ignorePerLocals : false
                 }
               }
             }

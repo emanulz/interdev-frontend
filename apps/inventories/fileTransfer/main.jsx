@@ -51,9 +51,9 @@ export default class MakeMassFileTransfer extends React.Component {
         
             <Content />
             <Aside />
-            <SingleProduct dontCheckInv/>
+            <SingleProduct dontCheckInv ignorePerLocals={true}/>
             <Search modelText='Producto' model='product' namespace='productSearch' onRowDoubleClick={productSearchDoubleClick}
-                onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage />
+                onRowClick={productSearchClick} onActiveItem={productSearchActive} sortedBy='code' useImage usePerLocalProds={false} />
         
         </div>
     }
