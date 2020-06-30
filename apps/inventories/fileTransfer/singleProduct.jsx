@@ -47,31 +47,32 @@ export default class SingleProduct extends React.Component {
     //   this.props.globalDiscount, this.props.client, this.props.warehouse_id))
     const code = this.props.product.code
     const _this = this
-    console.log("MADE IT HERE 1")
+
     const setProductPromiseNew = new Promise((resolve, reject) => {
       const kwargs = {
         url: '/api/products/getProdPrice/',
         data: {
           prod_data: {
-            code: code
+            code: code,
+            ignorePerLocals: this.props.ignorePerLocals ? this.props.ignorePerLocals : false
           },
           clientId: _this.props.client.client.id
         }
       }
 
-      _this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      _this.props.dispatch({type: 'FETCHING_STARTED'})
       setProductNew(kwargs, resolve, reject)
     }).catch(err => {
       console.log("HERE FACK --> ", err)
     })
 
     setProductPromiseNew.then((data) => {
-      console.log("THIS IS DATA 0 --> ", data[0])
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+
+      _this.props.dispatch({type: 'FETCHING_DONE'})
       const product = data[0].product
       if (product.code == '00') {
         _this.props.dispatch({type: 'SET_GENERAL_ITEM_PRODUCT', payload: product})
-        _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL', payload: ''})
+        _this.props.dispatch({type: 'SHOW_GENERAL_ITEM_PANEL'})
       } else {
         // ADD THE DETAIL TO PRODUCT DETAIL OBJECTS
         
@@ -84,7 +85,7 @@ export default class SingleProduct extends React.Component {
       }
 
     }).catch((err) => {
-      _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+      _this.props.dispatch({type: 'FETCHING_DONE'})
       console.log(err)
     })
   }
@@ -155,7 +156,7 @@ export default class SingleProduct extends React.Component {
           </table>
         </div>
         <div className='single-product-panel-content-image'>
-          <h1>Imagen del Artículo</h1>
+          <h1>Imágen del Artículo</h1>
           <img src={imageUrl} onError={(e) => { e.target.src = '/media/default/noimage.png' }} />
         </div>
       </div>
