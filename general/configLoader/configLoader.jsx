@@ -30,7 +30,11 @@ export default class ClientUpdatePanel extends React.Component {
         config.forEach(item => {
           data[item.name] = item.value
         })
+        console.log('DATAAAA', data)
         localStorage.setItem(`interdev_conf_${sectionName}`, JSON.stringify(data))
+        if (sectionName == 'global_conf') {
+          localStorage.setItem(`interdev_conf_settingsVersion`, data.settingsCurrentVersion)
+        }
         _this.props.dispatch({type: successDispatch, payload: {data: data, section: sectionName}})
       }).catch(function(error) {
         localStorage.removeItem(`interdev_conf_${sectionName}`)
@@ -38,7 +42,25 @@ export default class ClientUpdatePanel extends React.Component {
         _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
       })
     } else {
-      _this.props.dispatch({type: successDispatch, payload: {data: JSON.parse(localStorage.getItem(`interdev_conf_${sectionName}`)), section: sectionName}})
+      if (sectionName == 'global_conf') {
+        axios.get(`/api/administration/helpertasks/checkSettingsVersion/`).then(function(response) {
+          const settingsVersion = response.data
+          const storageSettingsVersion = localStorage.getItem(`interdev_conf_settingsVersion`)
+          if (settingsVersion == storageSettingsVersion) {
+            _this.props.dispatch({type: successDispatch, payload: {data: JSON.parse(localStorage.getItem(`interdev_conf_${sectionName}`)), section: sectionName}})
+          } else {
+            localStorage.clear()
+            alert('cache cleared')
+            location.reload()
+          }
+        }).catch(function(error) {
+          // localStorage.removeItem(`interdev_conf_${sectionName}`)
+          _this.props.dispatch({type: failDispatch, payload: error})
+          _this.props.dispatch({type: 'FETCHING_DONE', payload: ''})
+        })
+      } else {
+        _this.props.dispatch({type: successDispatch, payload: {data: JSON.parse(localStorage.getItem(`interdev_conf_${sectionName}`)), section: sectionName}})
+      }
     }
 
   }
