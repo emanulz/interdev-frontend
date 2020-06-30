@@ -50,7 +50,7 @@ export default class ClientUpdatePanel extends React.Component {
             _this.props.dispatch({type: successDispatch, payload: {data: JSON.parse(localStorage.getItem(`interdev_conf_${sectionName}`)), section: sectionName}})
           } else {
             localStorage.clear()
-            alert('cache cleared')
+            alert('Cache de la caja eliminado, se recargará la página')
             location.reload()
           }
         }).catch(function(error) {
