@@ -70,6 +70,9 @@ const productModel = {
   rate_code_IVA: '08',
   tax_code_IVA: '01',
   taxes_IVA: 13,
+  reduced_rate_code_IVA: '08',
+  reduced_taxes_IVA: 13,
+  can_use_reduced_rates: false,
   product_extras: defaultExtras
 }
 

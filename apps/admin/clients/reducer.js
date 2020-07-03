@@ -29,7 +29,8 @@ const clientModel = {
   phone_number: '',
   pred_discount: 0,
   pred_price_list: 1,
-  locals: []
+  locals: [],
+  can_use_reduced_rates: false
 }
 
 const clientLocalModel = {

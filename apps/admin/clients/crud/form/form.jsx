@@ -518,6 +518,13 @@ class Form extends React.Component {
               type='checkbox' className='form-control' />
 
           </div>
+          <div className='col-xs-6 first'>
+
+            <label>Tarifa IVA Reducida?</label>
+            <input checked={this.props.client.can_use_reduced_rates} name='can_use_reduced_rates' onChange={this.handleInputChange.bind(this)}
+              type='checkbox' className='form-control' />
+
+          </div>
         </div>
 
         <div className='form-group row input-block'>

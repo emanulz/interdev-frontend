@@ -45,6 +45,26 @@ class Form2 extends React.Component {
     this.props.dispatch(getItemDispatch(IVAFactorsKwargs))
   }
 
+  handleReducedRateChange(event) {
+    let rateValue = 0
+    const value = event.target.value
+    const rateIndex = this.props.IVARates.findIndex(element => {
+      return element.code == value
+    })
+    if (rateIndex != -1) {
+      rateValue = this.props.IVARates[rateIndex].value
+    } else {
+      alert('NOT RATE FOUND')
+    }
+
+    const product = {
+      ...this.props.product
+    }
+    product['reduced_rate_code_IVA'] = value
+    product['reduced_taxes_IVA'] = rateValue
+    this.props.dispatch({type: 'SET_PRODUCT', payload: product})
+  }
+
   handleRateChange(event) {
     let rateValue = 0
     const value = event.target.value
@@ -431,13 +451,41 @@ class Form2 extends React.Component {
               type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
           </div>
 
+          <div className='col-xs-12 first'>
+            <label>Usa Tarifa Reducida?</label>
+            <div className='col-xs-6'>
+              <input checked={this.props.product.can_use_reduced_rates} name='can_use_reduced_rates'
+                onChange={this.handleInputChange.bind(this)}
+                type='checkbox' className='form-control' />
+            </div>
+          </div>
+          <div className='col-xs-6' hidden={!this.props.product.can_use_reduced_rates}>
+            <label>Código Tarifa Reducida</label>
+            <Select2
+              name='reduced_rate_code_IVA'
+              value={this.props.product.reduced_rate_code_IVA}
+              data={IVARatesList}
+              className='form-control'
+              onSelect={this.handleReducedRateChange.bind(this)}
+              options={{
+                placeholder: 'Elija una Tarifa...',
+                noResultsText: 'Sin elementos'
+              }}
+            />
+          </div>
+          <div className='col-xs-6 first' hidden={!this.props.product.can_use_reduced_rates}>
+            <label>Valor IVA Reducido</label>
+            <input disabled value={this.props.product.reduced_taxes_IVA} name='reduced_taxes_IVA' onChange={this.handleInputChange.bind(this)}
+              type='text' className='form-control' onFocus={this.fieldFocus.bind(this)} />
+          </div>
+
         </div>
 
         {usedRow}
 
         <span>Inventarios</span>
         <hr />
-        
+
         <div className='form-group row input-block'>
 
           <div className='col-xs-6 second'>
