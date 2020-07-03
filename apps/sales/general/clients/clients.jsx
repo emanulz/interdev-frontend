@@ -95,12 +95,12 @@ export default class Clients extends React.Component {
           return {
             code: item.product.code,
             qty: item.qty,
-            promo_string: item.pricesData.promo_string,
-            money_discount: item.pricesData.money_discount,
+            promo_string: item.pricesData ? item.pricesData.promo_string : '',
+            money_discount: item.pricesData ? item.pricesData.money_discount : 0,
             current_discount: item.discount,
-            force_list: item.pricesData.force_list,
+            force_list: item.pricesData ? item.pricesData.force_list : false,
             // THE VARIABLE CHANGED IN THIS METHOD IS THE FORCE PRICING
-            force_pricing: item.pricesData.force_pricing
+            force_pricing: item.pricesData ? item.pricesData.force_pricing : false
           }
         })
         const kwargs = {
