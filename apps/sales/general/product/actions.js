@@ -82,7 +82,6 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
     // })
     const detail = item.pricesData
     console.log('DETAIL', detail)
-
     const newItem = item
     // DETERMIN THE PRICE TO USE
     const price = item.product.code == '00' || item.product.code == '000' ? item.product.price : determinPriceToUse(detail, priceListSelected, usePriceListAsDefault, item.product)
@@ -95,9 +94,10 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
       const currectDiscount = parseFloat(detail.current_discount)
       const discountToUse = currectDiscount >= predDiscount ? currectDiscount : predDiscount
       item.discount = discountToUse
-      data = caclSubtotal(item.product, item.qty, discountToUse, XMLVersion)
+      detail['isRecalculated'] = true
+      data = caclSubtotal(item.product, item.qty, discountToUse, XMLVersion, detail)
     } else {
-      data = caclSubtotal(item.product, item.qty, item.discount, XMLVersion)
+      data = caclSubtotal(item.product, item.qty, item.discount, XMLVersion, detail)
     }
 
     newItem.subtotal = data.subtotal
@@ -105,6 +105,10 @@ export function recalcCart(itemsInCart, pricesDetails, priceListSelected, usePri
     newItem.discountCurrency = data.discountCurrency
     newItem.subTotalNoDiscount = data.subTotalNoDiscount
     newItem.priceToUse = data.priceToUse
+    newItem.product = data.newProd
+    newItem.originalIVA = data.originalIVA
+    newItem.originalIVARate = data.originalIVARate
+    newItem.ivaToUse = data.ivaToUse
 
     return newItem
 
@@ -140,7 +144,7 @@ export function updateItemDiscount(itemsInCart, code, discount, predDiscount, cl
         type: 'UPDATE_CART',
         payload: {
           item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, discount, predDiscount, client,
-            itemsInCart[indexInCart].uuid, pricesDetails, XMLVersion),
+            itemsInCart[indexInCart].uuid, pricesDetails, XMLVersion, details),
           index: indexInCart
         }
       }
@@ -158,7 +162,7 @@ export function updateItemDiscount(itemsInCart, code, discount, predDiscount, cl
       type: 'UPDATE_CART',
       payload: {
         item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty, maxDiscount, predDiscount, client,
-          itemsInCart[indexInCart].uuid, false, XMLVersion),
+          itemsInCart[indexInCart].uuid, false, XMLVersion, details),
         index: indexInCart
       }
     }
@@ -256,6 +260,8 @@ export function updateQty (code, qty, itemsInCart, predDiscount, client, warehou
   const indexInCart = itemsInCart.findIndex(item => item.uuid == code)
 
   const product = itemsInCart[indexInCart].product
+  const detail = itemsInCart[indexInCart].pricesData
+  console.log('DETAIL', detail)
 
   if (!product.fractioned && !Number.isInteger(qtyNum)) {
     alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
@@ -277,7 +283,7 @@ export function updateQty (code, qty, itemsInCart, predDiscount, client, warehou
     type: 'UPDATE_CART',
     payload: {
       item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
-        itemsInCart[indexInCart].uuid, false, XMLVersion),
+        itemsInCart[indexInCart].uuid, false, XMLVersion, detail),
       index: indexInCart
     }
   }
@@ -301,6 +307,9 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
 
   const product = itemsInCart[indexInCart].product
 
+  const detail = itemsInCart[indexInCart].pricesData
+  console.log('DETAIL', detail)
+
   if (!product.fractioned && !Number.isInteger(qtyNum)) {
     alertify.alert('NO FRACIONADO', `El producto seleccionado solo acepta valores enteros, no acepta fracionados`)
     return {type: 'NOT', payload: -1}
@@ -321,7 +330,7 @@ export function updateQtyCode (code, qty, itemsInCart, predDiscount, client, war
     type: 'UPDATE_CART',
     payload: {
       item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
-        itemsInCart[indexInCart].uuid, false, XMLVersion),
+        itemsInCart[indexInCart].uuid, false, XMLVersion, detail),
       index: indexInCart
     }
   }
@@ -345,6 +354,8 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
   const qtyNum = subOrAdd ? parseFloat(itemsInCart[indexInCart].qty + 1) : parseFloat(itemsInCart[indexInCart].qty - 1)
 
   const product = itemsInCart[indexInCart].product
+  const detail = itemsInCart[indexInCart].pricesData
+  console.log('DETAIL', detail)
   if (qtyNum < 0.001) {
     return {type: 'NO_ACTION', payload: ''}
   }
@@ -357,7 +368,7 @@ export function addSubOne (code, subOrAdd, itemsInCart, predDiscount, client, wa
     type: 'UPDATE_CART',
     payload: {
       item: updatedCartItem(itemsInCart, indexInCart, qtyNum, itemsInCart[indexInCart].discount, predDiscount, client,
-        itemsInCart[indexInCart].uuid, false, XMLVersion),
+        itemsInCart[indexInCart].uuid, false, XMLVersion, detail),
       index: indexInCart
     }
   }
@@ -383,7 +394,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
   // check if product in cart
   const indexInCart = itemsInCart.findIndex(cart => cart.product.code == code || cart.product.barcode == code)
 
-  const dataNewProd = caclSubtotal(product, qty, predDiscount, XMLVersion)
+  const dataNewProd = caclSubtotal(product, qty, predDiscount, XMLVersion, lineData)
   console.log(dataNewProd)
   let promoApplied = false
   try {
@@ -399,7 +410,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
         type: 'ADD_TO_CART',
         payload: {
           uuid: uuid,
-          product: product,
+          product: dataNewProd.newProd,
           qty: qty,
           discount: dataNewProd.discount,
           discountCurrency: dataNewProd.discountCurrency,
@@ -409,14 +420,17 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
           lote: '-',
           priceToUse: dataNewProd.priceToUse,
           pricesData: pricesData,
-          promoApplied: promoApplied
+          promoApplied: promoApplied,
+          originalIVA: dataNewProd.originalIVA,
+          originalIVARate: dataNewProd.originalIVARate,
+          ivaToUse: dataNewProd.ivaToUse
         }
       }
       : {
         type: 'UPDATE_CART',
         payload: {
           item: updatedCartItem(itemsInCart, indexInCart, itemsInCart[indexInCart].qty + qty,
-            itemsInCart[indexInCart].discount, predDiscount, client, itemsInCart[indexInCart].uuid, false, XMLVersion),
+            itemsInCart[indexInCart].discount, predDiscount, client, itemsInCart[indexInCart].uuid, false, XMLVersion, lineData),
           index: indexInCart
         }
       }
@@ -429,7 +443,7 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
       type: 'ADD_TO_CART',
       payload: {
         uuid: uuid,
-        product: product,
+        product: dataNewProd.newProd,
         qty: qty,
         discount: 0,
         discountCurrency: dataNewProd.discountCurrency,
@@ -437,7 +451,10 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
         subtotal: dataNewProd.subtotal,
         totalWithIv: dataNewProd.totalWithIv,
         lote: '-',
-        priceToUse: dataNewProd.priceToUse
+        priceToUse: dataNewProd.priceToUse,
+        originalIVA: dataNewProd.originalIVA,
+        originalIVARate: dataNewProd.originalIVARate,
+        ivaToUse: dataNewProd.ivaToUse
       }
     }
     return res
@@ -446,18 +463,21 @@ function checkIfInCart(code, qty, product, itemsInCart, predDiscount, client, pe
 }
 
 // calculates the subtotal by line, also the total with iv included, the discount in currency format
-function caclSubtotal(product, qty, productDiscount, XMLVersion) {
+function caclSubtotal(product, qty, productDiscount, XMLVersion, lineData) {
   console.log('XML VERSION caclSubtotal: ', XMLVersion)
   // const price = priceToUse(product, client)
   const price = product.price
   const subTotalNoDiscount = price * qty
   const discount = productDiscount ? parseFloat(productDiscount) : 0
+  const newProd = {...product}
   // const subTotal = price * qty * (1 - (productDiscount / 100)) * (1 - (predDiscount / 100))
   const subTotal = price * qty * (1 - (discount / 100))
 
   let iv1 = 0
   let iv2 = 0
   let iv3 = 0
+
+  let ivReduced = 0
 
   // PREVIOUS VERSIONS USES OLD CODE
   if (XMLVersion == '4.2' || XMLVersion == '') {
@@ -472,11 +492,35 @@ function caclSubtotal(product, qty, productDiscount, XMLVersion) {
       : 0
   // XML 4.3
   } else if (XMLVersion == '4.3') {
-    iv1 = (parseFloat(product.taxes_IVA) > 0)
-      ? subTotal * (product.taxes_IVA / 100)
-      : 0
-    console.log('IVA TO USE -->', product.taxes_IVA)
-    console.log('IV1 --> ', iv1)
+    if (!lineData.isRecalculated) {
+      newProd['original_taxes_IVA'] = product.taxes_IVA
+      newProd['original_rate_code_IVA'] = product.rate_code_IVA
+    }
+    if (lineData.can_use_reduced_rates) {
+      newProd.taxes_IVA = product.reduced_taxes_IVA
+      newProd.rate_code_IVA = product.reduced_rate_code_IVA
+      console.log('REDUCED IVA TO USE -->', product.reduced_taxes_IVA)
+      console.log('IV1 --> ', iv1)
+
+      iv1 = (parseFloat(newProd.reduced_taxes_IVA) > 0)
+        ? subTotal * (newProd.reduced_taxes_IVA / 100)
+        : 0
+
+    } else {
+      if (lineData.isRecalculated) {
+        newProd.taxes_IVA = product.original_taxes_IVA
+        newProd.rate_code_IVA = product.original_rate_code_IVA
+        iv1 = (parseFloat(newProd.taxes_IVA) > 0)
+          ? subTotal * (newProd.taxes_IVA / 100)
+          : 0
+      } else {
+        iv1 = (parseFloat(newProd.taxes_IVA) > 0)
+          ? subTotal * (newProd.taxes_IVA / 100)
+          : 0
+      }
+      console.log('IVA TO USE -->', newProd.taxes_IVA)
+      console.log('IV1 --> ', iv1)
+    }
   // NOT FOUND
   } else {
     alertify.alert('ERROR', 'No se pudo leer la version activa del formato XML, los impuestos no se sumaran, por lo que el total puede estar inválido.')
@@ -496,20 +540,24 @@ function caclSubtotal(product, qty, productDiscount, XMLVersion) {
     discountCurrency: discountCurrency,
     subTotalNoDiscount: subTotalNoDiscount,
     priceToUse: price,
-    discount: discount.toString()
+    originalIVA: lineData.isRecalculated ? product.original_taxes_IVA : product.taxes_IVA,
+    originalIVARate: lineData.isRecalculated ? product.original_rate_code_IVA : product.rate_code_IVA,
+    ivaToUse: iv1,
+    discount: discount.toString(),
+    newProd: newProd
   }
 
 }
 
 // updates an item in the cart with new information, this aux funtion returns new updated object ready for replace the stored one
-function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscount, client, uuid, newPriceDetails, XMLVersion) {
+function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscount, client, uuid, newPriceDetails, XMLVersion, lineData) {
   console.log('XML VERSION updatedCartItem: ', XMLVersion)
-  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, XMLVersion)
+  const data = caclSubtotal(itemsInCart[index].product, newQty, productDiscount, XMLVersion, lineData)
   const details = !newPriceDetails ? itemsInCart[index].pricesData : newPriceDetails
 
   return {
     uuid: uuid,
-    product: itemsInCart[index].product,
+    product: data.newProd,
     discountCurrency: data.discountCurrency,
     qty: newQty,
     discount: data.discount,
@@ -518,7 +566,10 @@ function updatedCartItem(itemsInCart, index, newQty, productDiscount, predDiscou
     totalWithIv: data.totalWithIv,
     lote: itemsInCart[index].lote,
     priceToUse: data.priceToUse,
-    pricesData: details
+    pricesData: details,
+    originalIVA: data.originalIVA,
+    originalIVARate: data.originalIVARate,
+    ivaToUse: data.ivaToUse
   }
 }
 
