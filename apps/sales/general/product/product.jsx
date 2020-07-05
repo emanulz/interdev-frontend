@@ -315,6 +315,7 @@ export default class Product extends React.Component {
 
             if (product.code == '00') {
               const generalItemDefaultData = {
+                can_use_reduced_rates: false,
                 default_discount: '0',
                 id: product.id,
                 max_discount: '0',

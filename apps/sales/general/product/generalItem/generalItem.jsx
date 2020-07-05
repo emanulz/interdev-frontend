@@ -173,6 +173,7 @@ export default class GenerlItem extends React.Component {
   addToCart() {
     const product = this.props.product
     const generalItemDefaultData = {
+      can_use_reduced_rates: false,
       default_discount: '0',
       id: product.id,
       max_discount: '0',
