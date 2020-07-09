@@ -132,7 +132,7 @@ export default class List extends React.Component {
 
     return <div className='list list-container'>
       <div className='admin-list-header'>
-        <h1>Listado de pagos a facturas@2:</h1>
+        <h1>Listado de pagos a facturas:</h1>
       </div>
 
       <SearchAdmin paginated={this.props.paginated} model='credit_payments' namespace='paymentsSearch' paginated />
