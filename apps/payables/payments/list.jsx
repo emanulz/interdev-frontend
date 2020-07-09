@@ -20,7 +20,7 @@ export default class List extends React.Component {
 
   componentWillMount() {
 
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch({type: 'CLEAR_PAYMENTS', payload: ''})
 
     const paymentKwargs = {

@@ -27,5 +27,6 @@ export default combineReducers({
   pagination,
   clientCreditPayments,
   receivableSearch: search('receivableSearch'),
-  userProfile
+  userProfile,
+  paymentsSearch: search('paymentsSearch')
 })

@@ -39,7 +39,7 @@ export default class SearchPanel extends React.Component {
 
   searchAction() {
     const text = this.props.searchText
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     const presale_type = this.props.presale_type ? this.props.presale_type : ''
     const offset = this.props.paginatedIndex * (this.props.pageSize + 1)
     if (this.props.paginated) {

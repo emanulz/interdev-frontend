@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {generalSave} from '../../../utils/api'
 // components
 import AdminTable from '../../../general/adminTable/adminTable.jsx'
+import SearchAdmin from '../../../general/search/searchAdmin.jsx'
 import { getPaginationItemDispatch } from '../../../utils/api.js'
 import Pagination from '../../../general/pagination/pagination.jsx'
 import ResultsPerPage from '../../../general/pagination/resultsPerPage.jsx'
@@ -14,7 +15,10 @@ import alertify from 'alertifyjs'
 @connect((store) => {
   return {
     payments: store.payments.payments,
-    pageSize: store.pagination.pageSize
+    pageSize: store.pagination.pageSize,
+    fething: store.fetching.fetching,
+    searchResults: store.paymentsSearch.searchResults,
+    paginatedSearchResults: store.paymentsSearch.paginatedSearchResults
   }
 })
 export default class List extends React.Component {
@@ -117,23 +121,21 @@ export default class List extends React.Component {
         type: 'textLink'
       }
     ]
-
     const fetching = <div />
-    const list = <AdminTable headerOrder={headerOrder} model='payments' data={payments}
+    const tableData = this.props.paginatedSearchResults.length ? this.props.paginatedSearchResults : this.props.payments
+  
+
+    const list = <AdminTable headerOrder={headerOrder} model='payments' data={tableData}
       idField='id' app='credits' />
 
     const content = this.props.fetching ? fetching : list
 
     return <div className='list list-container'>
       <div className='admin-list-header'>
-        <h1>Listado de pagos a facturas:</h1>
+        <h1>Listado de pagos a facturas@2:</h1>
       </div>
-      <div className='admin-list-search'>
-        <input
-          type='text'
-          placeholder='Ingrese un texto para buscar...'
-        />
-      </div>
+
+      <SearchAdmin paginated={this.props.paginated} model='credit_payments' namespace='paymentsSearch' paginated />
       <div className='admin-list-results-pagination' >
         <ResultsPerPage url='/api/creditpaymentslist/?ordering=-consecutive' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
         <Pagination url='/api/creditpaymentslist/?ordering=-consecutive' successType='FETCH_PAYMENTS_FULFILLED' errorType='FETCH_PAYMENTS_REJECTED' />
