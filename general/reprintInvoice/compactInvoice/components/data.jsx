@@ -60,7 +60,16 @@ export default class Data extends React.Component {
     try {
       extras = sale.extras ? JSON.parse(sale.extras) : extras
     } catch (err) { console.log('ERROR PARSE', err) }
-    const client = sale.client ? `${sale.client.code} - ${determinClientName(sale.client, extras.client, sale.local_data)} ${determinClientLastName(sale.client, extras.client, sale.local_data)}` : '00 - Cliente General'
+    const ignore_code = sale.client
+    ? sale.client.code.startsWith("_") ? true : false
+    : false
+
+    let client = ''
+    if(ignore_code){
+      client = sale.client ? `${determinClientName(sale.client, extras.client, sale.local_data)} ${determinClientLastName(sale.client, extras.client, sale.local_data)}` : '00 - Cliente General'
+    }else{
+      client = sale.client ? `${sale.client.code} - ${determinClientName(sale.client, extras.client, sale.local_data)} ${determinClientLastName(sale.client, extras.client, sale.local_data)}` : '00 - Cliente General'
+    }
 
     const ticket = this.props.ticket
     const invoice = this.props.invoice
