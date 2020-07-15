@@ -19,6 +19,8 @@ import { generalSave } from '../../../../../utils/api'
 })
 
 class Form extends React.Component {
+
+  cabysSearchKey = '';
   // REACT METHODS
   componentWillMount() {
 
@@ -143,7 +145,8 @@ class Form extends React.Component {
   }
 
   handleCabysChange(event){
-    console.log("YAY CABYS CHANGE")
+    this.cabysSearchKey = event.target.value
+
   }
 
 
@@ -151,7 +154,7 @@ class Form extends React.Component {
     console.log("Cabys code --> ", this.props.product.cabys.catCode)
     const kwargs = {
       method: 'get',
-      url: `/api/products/cabysValidate/?code=${this.props.product.cabys.catCode}`,
+      url: `/api/products/cabysValidate/?code=${this.cabysSearchKey}`,
       sucessMessage: `Código verificado correctamente.`,
       errorMessage: `Hubo un error al verificar el código.`,
       successType: 'CABYS_VERIFY_RESULT',
@@ -390,7 +393,7 @@ class Form extends React.Component {
           </div>
           <div className="col-xs-6">
               <label>Código Cabys</label>
-              <input value={this.props.product.cabys.catCode} name='cabys_catcode' onChange={this.handleCabysChange.bind(this)}
+              <input name='cabys_catcode' onChange={this.handleCabysChange.bind(this)}
               type='text' className='form-control' />
           </div>
           <div className="col-xs-6">
