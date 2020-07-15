@@ -163,7 +163,7 @@ class Form extends React.Component {
   }
 
   displayCabysSearch(){
-    
+
     this.props.dispatch({type: 'TOGGLE_CABYS_SEARCH_PANEL'})
   }
 
@@ -201,6 +201,13 @@ class Form extends React.Component {
         <div>Código Cabys activo:</div>
         <div>{cod_desc}</div>
       </div>
+    }
+
+    let cabysSearchPanel = ''
+    if(this.props.conf.usesCabysSearcher){
+      cabysSearchPanel = <button 
+        className="btn btn-info"
+        onClick={this.displayCabysSearch.bind(this)}>Búscar</button>
     }
     return <div className='col-xs-12 row form-container'>
       <SearchCabysPanel filterA={null} filterB={null} filterC={null} rate={null} />
@@ -387,8 +394,10 @@ class Form extends React.Component {
               type='text' className='form-control' />
           </div>
           <div className="col-xs-6">
-              <button onClick={this.verifyCabysCode.bind(this)}>Verificar</button>
-              <button onClick={this.displayCabysSearch.bind(this)}>Búscar</button>
+              <button 
+              className="btn btn-info"
+              onClick={this.verifyCabysCode.bind(this)}>Verificar</button>
+              {cabysSearchPanel}
               {active_cabys}
           </div>
         </div>
