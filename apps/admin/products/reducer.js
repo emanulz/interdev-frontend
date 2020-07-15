@@ -12,6 +12,18 @@ const defaultExtras = {
   reseller_commision: 0
 }
 
+const defaultCabys = {
+  id: '',
+  level: '',
+  catCode: '',
+  description: '',
+  isGood: true,
+  taxRate: 13,
+  categories: []
+
+}
+
+
 const productModel = {
   id: '0000000000',
   code: '',
@@ -67,7 +79,8 @@ const productModel = {
   reduced_rate_code_IVA: '02',
   reduced_taxes_IVA: 1,
   can_use_reduced_rates: false,
-  product_extras: defaultExtras
+  product_extras: defaultExtras,
+  cabys: defaultCabys
 }
 
 const stateConst = {
@@ -82,12 +95,42 @@ const stateConst = {
   IVACodes: [],
   IVAFactors: [],
   file: '',
-  productFetching: false
+  productFetching: false,
+  cabysSearchResults: [],
+  showCabysSearchPanel: false
 }
 
 export default function reducer(state = stateConst, action) {
 
   switch (action.type) {
+
+    case 'TOGGLE_CABYS_SEARCH_PANEL':
+    {
+      return {
+        ...state,
+        showCabysSearchPanel: !state.showCabysSearchPanel
+      }
+    }
+
+    case 'CABYS_SEARCH_RESULT':
+    {
+      console.log("Cabys Search Result --> ", action.payload);
+      return {
+        ...state,
+        cabysSearchResults: action.payload
+      }
+    }
+
+    case 'CABYS_VERIFY_RESULT':
+    {
+      console.log("CABYS VERIFY RESULT --> ", action.payload);
+      // const productActive
+      return {
+        ...state,
+        productActive: {...state.productActive, ...{cabys: action.payload}}
+        
+      }
+    }
 
     case 'SET_PRODUCT_FETCHING':
     {
@@ -173,6 +216,10 @@ export default function reducer(state = stateConst, action) {
         if(action.payload.product_extras[0]){
           action.payload.product_extras = action.payload.product_extras[0]
         }
+      }
+      console.log("Product received --> ", action.payload)
+      if(!action.payload.cabys){
+        action.payload.cabys = defaultCabys
       }
       return {
         ...state,

@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { setItem, getItemDispatch } from '../../../../../utils/api'
 import Select2 from 'react-select2-wrapper'
+import SearchCabysPanel from './searchCabysPanel.jsx'
+
+import { generalSave } from '../../../../../utils/api'
 
 @connect((store) => {
   return {
@@ -139,6 +142,31 @@ class Form extends React.Component {
     ev.target.select()
   }
 
+  handleCabysChange(event){
+    console.log("YAY CABYS CHANGE")
+  }
+
+
+  verifyCabysCode(){
+    console.log("Cabys code --> ", this.props.product.cabys.catCode)
+    const kwargs = {
+      method: 'get',
+      url: `/api/products/cabysValidate/?code=${this.props.product.cabys.catCode}`,
+      sucessMessage: `Código verificado correctamente.`,
+      errorMessage: `Hubo un error al verificar el código.`,
+      successType: 'CABYS_VERIFY_RESULT',
+      errorType: 'FETCHING_DONE'
+
+    }
+
+    this.props.dispatch(generalSave(kwargs))
+  }
+
+  displayCabysSearch(){
+    
+    this.props.dispatch({type: 'TOGGLE_CABYS_SEARCH_PANEL'})
+  }
+
   render() {
 
     // ********************************************************************
@@ -162,8 +190,20 @@ class Form extends React.Component {
     // ********************************************************************
     // RETURN BLOCK
     // ********************************************************************
-    return <div className='col-xs-12 row form-container'>
 
+    let active_cabys = <div>
+    <div>Código Cabys activo:</div>
+      <div>Sin definir</div>
+    </div>
+    if(this.props.product.cabys.id){
+      const cod_desc = `${this.props.product.cabys.catCode} - ${this.props.product.cabys.description}`
+      active_cabys = <div>
+        <div>Código Cabys activo:</div>
+        <div>{cod_desc}</div>
+      </div>
+    }
+    return <div className='col-xs-12 row form-container'>
+      <SearchCabysPanel filterA={null} filterB={null} filterC={null} rate={null} />
       <div className='col-xs-12 col-sm-6 fields-container first'>
 
         <span>Códigos y Descripción</span>
@@ -340,6 +380,16 @@ class Form extends React.Component {
             <input checked={this.props.product.is_service} name='is_service'
               onChange={this.handleInputChange.bind(this)}
               type='checkbox' className='form-control' />
+          </div>
+          <div className="col-xs-6">
+              <label>Código Cabys</label>
+              <input value={this.props.product.cabys.catCode} name='cabys_catcode' onChange={this.handleCabysChange.bind(this)}
+              type='text' className='form-control' />
+          </div>
+          <div className="col-xs-6">
+              <button onClick={this.verifyCabysCode.bind(this)}>Verificar</button>
+              <button onClick={this.displayCabysSearch.bind(this)}>Búscar</button>
+              {active_cabys}
           </div>
         </div>
 

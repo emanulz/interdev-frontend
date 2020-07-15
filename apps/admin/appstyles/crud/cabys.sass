@@ -1,0 +1,68 @@
+.cabysTableBody
+    display: block
+    width: 3200px
+    overflow-x: hidden
+.data-element
+    &-a
+        width: 120px
+    &-b
+        width: 300px
+    .search-button-container
+    display: flex
+    align-items: center
+.cabys-panel
+    width: 100%
+    height: 100%
+    position: absolute
+    top: -110%
+    left: 0
+    z-index: 150
+    background-color: hsla(0,0%,57%,.67)
+    background-size: 100% 100%
+    transition: all .2s ease-in-out
+    font-family: Source Sans Pro,sans-serif
+    &-search-keys
+        &-container
+            display: flex
+            justify-content: space-around
+    &-search-
+    
+    &-main
+        position: absolute
+        width: 90%
+        left: 5%
+        background-color: #d6d6d6
+        bottom: 0
+        top: 0
+        height: 100%
+        overflow-y: auto
+        display: flex
+        flex-flow: column
+    &.is-visible
+        position: absolute
+        top: 0
+        z-index: 15
+        right: 0
+    &-header
+        width: 100%
+        height: 40px
+        text-align: center
+        background-color: $PRIMARY-COLOR-ACCENT
+        color: white
+        font-size: 20px
+        line-height: 40px
+        font-family: 'Source Sans Pro', sans-serif
+        margin-bottom: 10px
+        & i
+            position: absolute
+            right: 5px
+            top: 2px
+            cursor: pointer
+            &:hover
+                font-size: 25px
+    &-container
+        margin: 15px
+        &-title
+            font-size: 16px
+            font-weight: bold
+

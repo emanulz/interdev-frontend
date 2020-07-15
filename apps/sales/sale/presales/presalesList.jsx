@@ -164,7 +164,6 @@ export default class PresalesPanel extends React.Component {
         PREVENTAS SIN FACTURAR
         <i onClick={this.hidePanel.bind(this)} className='fa fa-times' aria-hidden='true' />
       </div>
-      {/* <Search /> */}
       <div className='presales-panel-container'>
         <div className='col-xs-12'>
           <table className='table'>

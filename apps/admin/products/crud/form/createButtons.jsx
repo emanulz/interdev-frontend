@@ -24,10 +24,17 @@ class CreateButtons extends React.Component {
     const products = this.props.products
     const fieldsOk = checkProductData(product, products)
 
+    const prod_data = {...product}
+    if(prod_data.cabys){
+      if(!prod_data.cabys.id){
+        delete prod_data.cabys
+      }
+    }
+    console.log("Final CABYS DATA --> ", prod_data)
     if (fieldsOk) {
       const kwargs = {
         url: '/api/products/',
-        item: product,
+        item: prod_data,
         logCode: 'PRODUCT_CREATE',
         logDescription: 'Creación de nuevo Producto',
         logModel: 'PRODUCT',
@@ -42,7 +49,7 @@ class CreateButtons extends React.Component {
         kwargs.redirectUrl = '/admin/products'
         kwargs.history = this.props.history
       }
-      this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+      this.props.dispatch({type: 'FETCHING_STARTED'})
       const formData = new FormData()
       formData.append('file', this.props.file)
       formData.append('prod', JSON.stringify(kwargs.item))

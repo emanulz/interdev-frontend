@@ -27,10 +27,17 @@ class UpdateButtons extends React.Component {
     const fieldsOk = checkProductData(product, products)
 
     if (fieldsOk) {
+      const prod_data = {...product}
+      if(prod_data.cabys){
+        if(!prod_data.cabys.id){
+          delete prod_data.cabys
+        }
+      }
+      console.log("GOD DAMM DATA HERE --> ", prod_data)
       const kwargs = {
         url: `/api/products/${product.id}/`,
         baseUrl: `/api/products/`,
-        item: product,
+        item: prod_data,
         logCode: 'PRODUCT_UPDATE',
         logDescription: 'Actualización Producto',
         logModel: 'PRODUCT',

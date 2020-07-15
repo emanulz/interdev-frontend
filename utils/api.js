@@ -409,19 +409,22 @@ export function generalSave(kwargs) {
       data: data
     })
       .then((response) => {
-        alertify.alert('Completado', kwargs.sucessMessage)
+        if(kwargs.sucessMessage){
+          alertify.alert('Completado', kwargs.sucessMessage)
           .set('onok', function() {
             if (kwargs.redirectUrl) {
               kwargs.history.push(kwargs.redirectUrl)
             }
           })
+        }
+
         if(kwargs.workerMethod){
           kwargs.workerMethod(response.data)
         }else{
           dispatch({type: kwargs.successType, payload: response.data})
         }
         
-        dispatch({type: 'FETCHING_DONE', payload: ''})
+        dispatch({type: 'FETCHING_DONE'})
 
       }).catch((err) => {
         if (err.response) {

@@ -34,7 +34,7 @@ export default class GenerlItem extends React.Component {
       errorType: 'FETCH_IVA_RATES_REJECTED',
       cacheName: 'IVA_RATES'
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch(getItemDispatchAndCacheIt(IVARatesKwargs))
 
     const IVACodesKwargs = {
@@ -43,7 +43,7 @@ export default class GenerlItem extends React.Component {
       errorType: 'FETCH_IVA_CODES_REJECTED',
       cacheName: 'IVA_CODES'
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch(getItemDispatchAndCacheIt(IVACodesKwargs))
 
     const IVAFactorsKwargs = {
@@ -52,7 +52,7 @@ export default class GenerlItem extends React.Component {
       errorType: 'FETCH_IVA_FACTORS_REJECTED',
       cacheName: 'IVA_FACTORS'
     }
-    this.props.dispatch({type: 'FETCHING_STARTED', payload: ''})
+    this.props.dispatch({type: 'FETCHING_STARTED'})
     this.props.dispatch(getItemDispatchAndCacheIt(IVAFactorsKwargs))
   }
 
