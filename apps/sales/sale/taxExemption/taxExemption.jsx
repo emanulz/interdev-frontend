@@ -67,6 +67,14 @@ export default class TaxExemptionPanel extends React.Component {
     this.props.dispatch({type: 'SET_EXEMPTION_DATA', payload: exemptionData})
   }
 
+  decideExemptionMethod() {
+    if (this.props.conf.usesNewExemptionProcess) {
+      this.exemptSaleNew()
+    } else {
+      this.exemptSale()
+    }
+  }
+
   exemptSale() {
     const validaData = checkExemptionData(this.props.exemptionData)
     if (validaData) {
@@ -156,7 +164,7 @@ export default class TaxExemptionPanel extends React.Component {
         No-Exonerar
         <i className='fa fa-map' />
       </button>
-      : <button className='form-control btn btn-primary' onClick={this.exemptSale.bind(this)} disabled={this.props.isExempt || !this.props.isVisible}>
+      : <button className='form-control btn btn-primary' onClick={this.decideExemptionMethod.bind(this)} disabled={this.props.isExempt || !this.props.isVisible}>
         Exonerar
         <i className='fa fa-map' />
       </button>
