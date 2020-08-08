@@ -15,6 +15,8 @@ const stateConst = {
     product_to_link: null,
     internal_product_to_link: null,
     show_prod_link_confirmation: true,
+    purchase_type: 'PURCHASE',
+
 }
 
 
@@ -27,6 +29,14 @@ export default function reducer(state=stateConst, action) {
         {
             console.log("Error getting prod for linking --> ", action.payload)
             break
+        }
+        case 'UPDATE_PURCHASE_TYPE':    
+        {
+            return {
+                ...state,
+                purchase_type: action.payload
+            }
+            
         }
         case 'UPDATE_PROD_PRICING':
         {

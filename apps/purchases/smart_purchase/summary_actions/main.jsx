@@ -2,13 +2,15 @@ import React from 'react'
 import {connect} from 'react-redux'
 import alertify from 'alertifyjs'
 const uuidv4 = require('uuid/v4')
-
+import Select2 from 'react-select2-wrapper'
 import {generalSave} from '../../../../utils/api.js'
 
 @connect(store=>{
     return {
         document_data_selected: store.smart_purchase.document_data_selected,
-        selectedFile: store.smart_purchase.selectedFile
+        selectedFile: store.smart_purchase.selectedFile,
+        purchase_type: store.smart_purchase.purchase_type
+
     }
 })
 export default class Summary_Actions extends React.Component {
@@ -17,7 +19,6 @@ export default class Summary_Actions extends React.Component {
 
     createNewSupplier(e){
         if(this.props.document_data_selected === null){
-            console.log("Document data not selected")
             return
         }
         let sup = this.props.document_data_selected.emisor
@@ -58,6 +59,7 @@ export default class Summary_Actions extends React.Component {
         formData.append('file', this.props.selectedFile)
         formData.append('taxpayer_response', response)
         formData.append('token', uuidv4())
+        formData.append('purchase_type', this.props.purchase_type)
 
         const kwargs = {
             url: '/api/facturareception/processHaciendaXML/',
@@ -102,6 +104,14 @@ export default class Summary_Actions extends React.Component {
     goToStepB(){
         this.props.dispatch({type: "GO_TO_STEP", payload: "b"})
     }
+
+    handlePurTypeChange(event) {
+        const value = event.target.value
+        const name = event.target.name
+
+        this.props.dispatch({type: 'UPDATE_PURCHASE_TYPE', payload: value})
+      }
+
     render(){
 
 
@@ -111,9 +121,10 @@ export default class Summary_Actions extends React.Component {
         let associateSupplier = ''
         let createSupplier = ''
         let associateCodes = ''
+        let pur_type = ''
 
         const doc = this.props.document_data_selected
-        if( doc !=null){
+        if(doc !=null){
 
             //show the reject document
             rejectDocument = <div className="doc-actions-action"
@@ -129,7 +140,32 @@ export default class Summary_Actions extends React.Component {
 
             //make the accept conditional to the invoice
             //not having been accepted
+
             if(!doc.already_accepted){
+
+                const data = [
+                    {
+                        text: 'Compra',
+                        id: 'PURCHASE'
+                    },
+                    {
+                        text: 'Gasto',
+                        id: 'EXPENSE'
+                    }
+                ]
+                pur_type = <Select2
+                    name='pur_type'
+                    value={this.props.purchase_type}
+                    data={data}
+                    className='form-control'
+                    onSelect={this.handlePurTypeChange.bind(this)}
+                    options={{
+                    placeholder: 'Elija un tipo de gasto...',
+                    noResultsText: 'Sin elementos'
+                    }}
+                />
+
+                
                 acceptDocument = <div className="doc-actions-action"
                 onClick={this.acceptPurchase.bind(this)}>
                 <div className="doc-actions-action-row">
@@ -187,6 +223,7 @@ export default class Summary_Actions extends React.Component {
         return <div className="doc-actions">
             <h1 className="section_header">Acciones Disponibles</h1>
             <hr/>
+            {pur_type}
             {acceptDocument}
             {rejectDocument}
             
