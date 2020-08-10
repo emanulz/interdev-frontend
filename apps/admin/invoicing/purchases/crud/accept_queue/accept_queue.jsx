@@ -3,10 +3,11 @@ import {connect} from 'react-redux'
 import AdminTable from '../../../../../../general/adminTable/adminTable.jsx'
 import { getPaginationItemDispatch } from '../../../../../../utils/api.js'
 import Select2 from 'react-select2-wrapper'
-import Pagination from '../../../../../../general/pagination/pagination.jsx'
-import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.jsx'
-import { createDeflateRaw } from 'zlib';
+// import Pagination from '../../../../../../general/pagination/pagination.jsx'
+// import ResultsPerPage from '../../../../../../general/pagination/resultsPerPage.jsx'
+// import { createDeflateRaw } from 'zlib';
 import { generalSave } from '../../../../../../utils/api.js'
+import { getItemDispatch } from '../../../../../../utils/api.js'
 
 @connect((store) => {
     return {
@@ -15,6 +16,8 @@ import { generalSave } from '../../../../../../utils/api.js'
         searchResults: store.adminSearch.searchResults,
         accepted_queued_tasks: store.epurchases.accepted_queued_tasks,
         refetch_queued_tasks: store.epurchases.refetch_queued_tasks,
+        activities: store.epurchases.activities,
+        target_activity: store.epurchases.target_activity
     }
 })
 export default class AcceptQueue extends React.Component {
@@ -30,12 +33,21 @@ export default class AcceptQueue extends React.Component {
     componentWillMount(){
 
         this.getInitialQueuedTasks()
+        const kwargs = {
+            url: '/api/taxpayerlocalsro/',
+            successType: 'TAX_PAYER_LOCAL_ACTIVITIES_FULFILLED',
+            errorType: 'TAX_PAYER_LOCAL_ACTIVITIES_REJECTED'
+          }
+        this.props.dispatch(getItemDispatch(kwargs))
     }
 
     componentWillReceiveProps(nextProps){
         if(nextProps.refetch_queued_tasks && !this.props.refetch_queued_tasks){
             this.props.dispatch({type: 'RESET_REFETCH_QUEUED'})
             this.getInitialQueuedTasks()
+        }
+        if(nextProps.activities.length > 0 && this.props.activities.length === 0){
+            this.props.dispatch({type: 'TAX_PAYER_ACTIVITY_SELECTED', payload: nextProps.activities[0].id});
         }
     }
 
@@ -101,14 +113,19 @@ export default class AcceptQueue extends React.Component {
         
         let task_id = kwargs.task_id
         let accept_reject = kwargs.accept_reject
-
+        if(!this.props.target_activity){
+            alertify.alert('ERROR', 'Debe especificar la actividad asociada.')
+            return
+        }
         let request_data = [
             {
                 task_id: task_id,
                 accept_reject: accept_reject,
-                mode: this.state.purchases_mode[task_id]
+                mode: this.state.purchases_mode[task_id],
+                activity: this.props.target_activity
             }
         ]
+        console.log("Dam request data --> ", request_data)
 
         const request_kwargs = {
             url: '/api/facturareception/processAcceptQueuedTasks/',
@@ -125,14 +142,19 @@ export default class AcceptQueue extends React.Component {
     }
 
     processAllDocsInTask(accept_reject, e){
-        console.log("Accept reject --> ", accept_reject)
+        // console.log("Accept reject --> ", accept_reject)
         let request_data = []
+        if(!this.props.target_activity){
+            alertify.alert('ERROR', 'Debe especificar la actividad asociada.')
+            return
+        }
 
         for(let task of this.props.accepted_queued_tasks){
             request_data.push({
                 task_id: task.id,
                 accept_reject: accept_reject,
-                mode: this.state.purchases_mode[task.id]
+                mode: this.state.purchases_mode[task.id],
+                activity: this.props.target_activity
             })
         }
 
@@ -151,7 +173,19 @@ export default class AcceptQueue extends React.Component {
 
     }
 
+    setTargetActivity(ev){
+        const value = ev.target.value;
+        this.props.dispatch({type: 'TAX_PAYER_ACTIVITY_SELECTED', payload: value});
+    }
+
     render(){
+
+        const activity_options = this.props.activities.map(
+            a => {
+                const name =  `${a.code}-${a.activity_name}`
+                return <option value={a.id}>{name}</option>
+            }
+        );
 
         const options = [
                 {text: "Compra", id: "Compra"},
@@ -268,7 +302,15 @@ export default class AcceptQueue extends React.Component {
             className='form-buttons-container-save form-control btn-danger'>
             RECHAZAR TODOS
             </button>
-            
+    
+        const activity_selector = <div className='viewInvoice-activity'>
+            <h1>Actividad económica:</h1>
+            <select onChange={this.setTargetActivity.bind(this)} className='form-control'
+            value={this.props.target_activity} >
+            {activity_options}
+            </select>
+        </div>
+
         const table = <AdminTable headerOrder={headerOrder} model="taskhelpers" data={tableData} idField='id'/>
 
         const content = this.props.fetching ? fetching : table
@@ -288,6 +330,7 @@ export default class AcceptQueue extends React.Component {
                 {accept_all_button}
                 {reject_all_button}
             </div>
+            <div>{activity_selector}</div>
             {content}
         </div>
     }

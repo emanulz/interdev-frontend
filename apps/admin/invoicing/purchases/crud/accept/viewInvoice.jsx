@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {acceptEPurchase} from '../../actions.js'
 import alertify from 'alertifyjs'
+import { getItemDispatch } from '../../../../../../utils/api.js'
 
 
 @connect((store) => {
@@ -11,11 +12,23 @@ import alertify from 'alertifyjs'
     loadedPurchase: store.epurchases.loadedPurchase,
     epurchaseType: store.epurchases.epurchaseType,
     token: store.epurchases.token,
+    activities: store.epurchases.activities,
+    target_activity: store.epurchases.target_activity
   }
 })
 
 class Form extends React.Component {
 
+
+
+  componentWillMount(){
+    const kwargs = {
+      url: '/api/taxpayerlocalsro/',
+      successType: 'TAX_PAYER_LOCAL_ACTIVITIES_FULFILLED',
+      errorType: 'TAX_PAYER_LOCAL_ACTIVITIES_REJECTED'
+    }
+    this.props.dispatch(getItemDispatch(kwargs))
+  }
 
   // REACT METHODS
   fieldFocus(ev) {
@@ -28,6 +41,7 @@ class Form extends React.Component {
     formData.append('taxpayer_response', 'ACCEPTED')
     formData.append('purchase_type', this.props.epurchaseType)
     formData.append('token', this.props.token)
+    formData.append('activity', this.props.target_activity)
     const kwargs = {
       url: '/api/facturareception/processHaciendaXML/',
       item: formData,
@@ -84,7 +98,19 @@ class Form extends React.Component {
     this.props.dispatch({type: 'SET_EPURCHASE_TYPE', payload: value})
   }
 
+  setTargetActivity(ev){
+    const value = ev.target.value;
+    this.props.dispatch({type: 'TAX_PAYER_ACTIVITY_SELECTED', payload: value});
+  }
+
   render() {
+    const activity_options = this.props.activities.map(
+      a => {
+        const name =  `${a.code}-${a.activity_name}`
+        return <option value={a.id}>{name}</option>
+      }
+    );
+
 
     const item = this.props.loadedPurchase
     const buttons = this.props.loadedPurchase.can_be_accepted
@@ -144,6 +170,13 @@ class Form extends React.Component {
           value={this.props.epurchaseType} >
           <option value='PURCHASE'>Compra</option>
           <option value='EXPENSE'>Gasto</option>
+        </select>
+      </div>
+      <div className='viewInvoice-activity'>
+        <h1>Actividad económica:</h1>
+        <select onChange={this.setTargetActivity.bind(this)} className='form-control'
+          value={this.props.target_activity} >
+          {activity_options}
         </select>
       </div>
 

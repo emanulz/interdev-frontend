@@ -17,7 +17,9 @@ const stateConst = {
   accepted_queued_tasks: [],
   refetch_queued_tasks: false,
   mass_process_result: [],
-  show_process_results: false
+  show_process_results: false,
+  activities: [],
+  target_activity: ''
 
 }
 
@@ -32,6 +34,36 @@ export default function reducer(state = stateConst, action) {
         ...state,
         mass_process_result: action.payload,
         show_process_results: true
+      }
+    }
+    case 'TAX_PAYER_LOCAL_ACTIVITIES_FULFILLED':
+    {
+      // console.log("Activities received --> ", action.payload)
+      const new_activities = [];
+      for(let local of action.payload){
+        for(let activity of local.activities){
+          new_activities.push(
+            {
+              id: activity.activity.id,
+              code: activity.activity.code,
+              activity_name: activity.activity.activity_name
+            }
+          );
+        }
+      }
+
+      return {
+        ...state,
+        activities: new_activities
+      }
+    }
+
+    case 'TAX_PAYER_ACTIVITY_SELECTED':
+    {
+
+      return {
+        ...state,
+        target_activity: action.payload
       }
     }
 
