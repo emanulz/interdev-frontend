@@ -27,7 +27,14 @@ class Form extends React.Component {
       successType: 'TAX_PAYER_LOCAL_ACTIVITIES_FULFILLED',
       errorType: 'TAX_PAYER_LOCAL_ACTIVITIES_REJECTED'
     }
-    this.props.dispatch(getItemDispatch(kwargs))
+    this.props.dispatch(getItemDispatch(kwargs))   
+
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(this.props.activities.length===0 && nextProps.activities.length>0){
+      this.props.dispatch({type: 'TAX_PAYER_ACTIVITY_SELECTED', payload: nextProps.activities[0].id})
+    }
   }
 
   // REACT METHODS
