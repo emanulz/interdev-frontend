@@ -132,6 +132,13 @@ export default class Totals extends React.Component {
         <td>{symbol} {taxes.formatMoney(2, ',', '.')}</td>
       </tr>
 
+    const discountRow = parseFloat(discountTotal) > 0
+      ? <tr>
+        <th>Descuento</th>
+        <td>{symbol} {discountTotal.formatMoney(2, ',', '.')}</td>
+      </tr>
+      : <tr />
+
     return <div className='reprint-compact-invoice-totals'>
 
       <table>
@@ -141,10 +148,7 @@ export default class Totals extends React.Component {
             <td>{symbol} {subTotalToPrint.formatMoney(2, ',', '.')}</td>
 
           </tr>
-          <tr>
-            <th>Descuento</th>
-            <td>{symbol} {discountTotal.formatMoney(2, ',', '.')}</td>
-          </tr>
+          {discountRow}
           {ivaRow}
           {ExemptTotal}
           {taxTotal}
