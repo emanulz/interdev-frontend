@@ -40,10 +40,10 @@ export default class ProdLinkingActions extends React.Component {
         let product = {
             use_taxes: false,
             taxes: 0,
-            use_taxes2: false,
-            taxes2: 0,
-            use_taxes3: false,
-            taxes3: 0,
+            // use_taxes2: false,
+            // taxes2: 0,
+            // use_taxes3: false,
+            // taxes3: 0,
             pred_discount: 0
         }
 
@@ -58,16 +58,16 @@ export default class ProdLinkingActions extends React.Component {
                 }
                 case 1:
                 {
-                    product.use_taxes2 = true
-                    product.taxes2 = parseFloat(prod.ImpuestoMeta[index].Tarifa)
-                    product.tax_code2 = prod.ImpuestoMeta[index].Codigo
+                    // product.use_taxes2 = true
+                    // product.taxes2 = parseFloat(prod.ImpuestoMeta[index].Tarifa)
+                    // product.tax_code2 = prod.ImpuestoMeta[index].Codigo
                     break
                 }
                 case 2:
                 {
-                    product.use_taxes3 = true
-                    product.taxes3 = parseFloat(prod.ImpuestoMeta[index].Tarifa)
-                    product.tax_code3 = prod.ImpuestoMeta[index].Codigo
+                    // product.use_taxes3 = true
+                    // product.taxes3 = parseFloat(prod.ImpuestoMeta[index].Tarifa)
+                    // product.tax_code3 = prod.ImpuestoMeta[index].Codigo
                     break
                 }
                 default:
@@ -143,12 +143,12 @@ export default class ProdLinkingActions extends React.Component {
             use_taxes: product.use_taxes,
             taxes: product.taxes,
             tax_code: product.tax_code,
-            use_taxes2: product.use_taxes2,
-            taxes2: product.taxes2,
-            tax_code2: product.tax_code2,
-            use_taxes3: product.use_taxes3,
-            taxes3: product.taxes3,
-            tax_code3: product.tax_code3,
+            // use_taxes2: product.use_taxes2,
+            // taxes2: product.taxes2,
+            // tax_code2: product.tax_code2,
+            // use_taxes3: product.use_taxes3,
+            // taxes3: product.taxes3,
+            // tax_code3: product.tax_code3,
             utility1: (real_p1_Data.real_utility*100).toFixed(5),
             utility2: (real_p2_Data.real_utility*100).toFixed(5),
             utility3: (real_p3_Data.real_utility*100).toFixed(5),
