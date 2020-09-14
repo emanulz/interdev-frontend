@@ -7,6 +7,8 @@ import {getPendingQuotations} from '../quotations/actions'
 import {getPendingReserves} from '../reserves/actions.js'
 import {getPendingNSReserves} from '../nsreserves/actions.js'
 import {searchDiscountForTargetPrice} from '../../general/product/actions.js'
+import alertify from 'alertifyjs'
+import axios from 'axios'
 
 @connect((store) => {
   return {
@@ -21,6 +23,7 @@ import {searchDiscountForTargetPrice} from '../../general/product/actions.js'
     usePresales: store.config.globalConf.usePresales,
     useQuoting: store.config.globalConf.useQuoting,
     useResrestaurant: store.config.globalConf.useRestaurant,
+    canRequestMAGInfo: store.config.globalConf.canRequestMAGInfo,
     acceptCashAdvances: store.config.globalConf.acceptCashAdvances,
     workshopAppInstalled: store.config.installed_apps.WorkshopAppInstalled,
     calculatesDiscountForFinalPrice: store.config.globalConf.calculatesDiscountForFinalPrice,
@@ -122,10 +125,61 @@ export default class Buttons extends React.Component {
     // this.props.dispatch({type: 'NEW_SALE', payload: -1})
   }
 
+  checkMAGInfo() {
+    // window.location.reload()
+    const clientID = this.props.client.client.id_num
+    alertify.prompt('CONSULTA MAG', 'Número de Cédula', clientID
+      , function(evt, value) {
+        axios.get(`https://api.hacienda.go.cr/fe/agropecuario?identificacion=${value}`).then(function(response) {
+
+          console.log(response.data)
+
+          const clientData = response.data.situacionTributaria
+
+          const clientName = clientData ? clientData.nombre : 'NO ENCONTRADO'
+
+          const activities = clientData ? clientData.actividades : false
+          let activitiesStrig = 'NINGUNA ENCONTRADA'
+          if (activities) {
+            activitiesStrig = ''
+            activities.forEach(activity => {
+              activitiesStrig += `${activity['codigo']} - ${activity['descripcion']} `
+            })
+            // for (let activity in activities) {
+            //   activitiesStrig += `${activity['codigo']} - ${activity['descripcion']} `
+            // }
+          }
+
+          const activo = response.data.listaDatosMAG[0]
+            ? response.data.listaDatosMAG[0].indicadorActivoMAG
+            : false
+
+          if (activo) {
+            alertify.alert('ACTIVO EN MAG', `EL CLIENTE ESTA ACTIVO EN EL MAG CON LOS SIGUIENTES DATOS:
+            NOMBRE: ${clientName}
+            ACTIVIDADES: ${activitiesStrig}
+
+            `)
+          } else {
+            // alertify.console.error();('CLIENTE NO ACTIVO EN MAG', 'EL CLIENTE NO ESTA ACTIVO EN EL MAG')
+            alertify.alert('NO ACTIVO', `EL CLIENTE NO ESTA ACTIVO EN EL MAG CON:
+            NOMBRE: ${clientName}
+            ACTIVIDADES: ${activitiesStrig}
+            `)
+          }
+
+        })
+      }
+      , function() {
+
+      })
+    // this.props.dispatch({type: 'NEW_SALE', payload: -1})
+  }
+
   searchDiscount() {
     // shown an alertify input for the wanted target price
     searchDiscountForTargetPrice(
-      this.props.dispatch, 
+      this.props.dispatch,
       this.props.cartItems,
       this.props.globalDiscount,
       this.props.client,
@@ -232,6 +286,23 @@ export default class Buttons extends React.Component {
         }}
         className='btn btn-default buttons-payButton'>
         Apartados
+        <span>
+          <i className='fa fa-list' />
+        </span>
+      </button>
+      : ''
+
+    const checkMAGBtn = this.props.canRequestMAGInfo
+      ? <button
+        disabled={this.props.disabled || this.props.isWorkOrderLoaded || this.props.isPresaleLoaded || this.props.isRestaurantBillLoaded || this.props.isQuotationLoaded || this.props.isReserveLoaded}
+        onClick={this.checkMAGInfo.bind(this)}
+        style={{
+          'height': '48px',
+          'width': '49%',
+          'marginTop': '10px'
+        }}
+        className='btn btn-default buttons-payButton'>
+        INFO MAG
         <span>
           <i className='fa fa-list' />
         </span>
@@ -360,6 +431,7 @@ export default class Buttons extends React.Component {
       {nsreservesBtn}
       {cashAdvanceBtn}
       {targetPriceBtn}
+      {checkMAGBtn}
 
       {/* {workOrdersBtn} */}
 
